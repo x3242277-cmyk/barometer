@@ -1,0 +1,184 @@
+{
+  "firms": [
+    {
+      "id": "Direct Polls",
+      "he": "דירקט פולס",
+      "short": "DP",
+      "lead": "שלמה פילבר",
+      "calibrated": true,
+      "outlets": [
+        "ערוץ 14"
+      ],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fdirect_polls.PNG?alt=media&token=ceb3f812-bc77-4720-af04-e1575f4cb76a",
+      "about": "מכון פרטי שנוסד ב־2019. מפרסם באופן כמעט בלעדי בערוץ 14 ונחשב לזה שמראה בעקביות את התוצאות הגבוהות ביותר לגוש הימין."
+    },
+    {
+      "id": "Panels Politics",
+      "he": "פאנלס פוליטיקס",
+      "short": "PP",
+      "lead": "ד״ר מנחם לזר",
+      "calibrated": true,
+      "outlets": [
+        "מעריב",
+        "וואלה",
+        "Mako / ערוץ הכנסת",
+        "103FM"
+      ],
+      "about": "המכון הפורה ביותר בשוק הישראלי — 12 מתוך 39 סקרי חודש הכיול של 2022. עובד מול כמה כלי תקשורת במקביל."
+    },
+    {
+      "id": "Midgam",
+      "he": "מדגם",
+      "short": "מ",
+      "lead": "מנו גבע",
+      "calibrated": true,
+      "outlets": [
+        "חדשות 12",
+        "גלי צה״ל"
+      ],
+      "about": "אחד ממכוני הסקרים הוותיקים; ספק הסקרים המסורתי של חדשות 12 ושל גלי צה״ל."
+    },
+    {
+      "id": "Kantar",
+      "he": "קנטר",
+      "short": "K",
+      "lead": "צוות המחקר של קנטר ישראל",
+      "calibrated": true,
+      "outlets": [
+        "כאן 11"
+      ],
+      "logo": "https://kantar.wd3.myworkdayjobs.com/KANTAR/assets/logo",
+      "about": "זרוע ישראלית של חברת מחקר בינלאומית; ספק הסקרים של תאגיד השידור."
+    },
+    {
+      "id": "Camil Fuchs",
+      "he": "קמיל פוקס",
+      "short": "ק״פ",
+      "lead": "פרופ׳ קמיל פוקס",
+      "calibrated": true,
+      "outlets": [
+        "חדשות 13"
+      ],
+      "about": "סטטיסטיקאי, פרופסור אמריטוס באוניברסיטת תל אביב. הסוקר המזוהה ביותר עם חדשות 13."
+    },
+    {
+      "id": "Smith",
+      "he": "סמית",
+      "short": "S",
+      "lead": "רפי סמית",
+      "calibrated": true,
+      "outlets": [
+        "גלי ישראל",
+        "כאן 11"
+      ],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fsmith.PNG?alt=media&token=3a1e97a6-f3e6-45cc-bf52-fa0065c06687",
+      "about": "מכון ותיק בשוק הישראלי, מפרסם בעיקר ברדיו האזורי ובכאן."
+    },
+    {
+      "id": "Maagar Mochot",
+      "he": "מאגר מוחות",
+      "short": "מ״מ",
+      "lead": "פרופ׳ יצחק כ״ץ",
+      "calibrated": true,
+      "outlets": [
+        "ישראל היום",
+        "ערוץ 16"
+      ],
+      "about": "מכון ותיק בניהולו של פרופ׳ יצחק כ״ץ; מפרסם בישראל היום ולאחרונה גם בערוץ 16."
+    },
+    {
+      "id": "Dudi Hasid",
+      "he": "דודי חסיד",
+      "short": "ד״ח",
+      "lead": "דודי חסיד",
+      "calibrated": false,
+      "outlets": [
+        "כאן 11"
+      ],
+      "about": "סוקר שלא פרסם סדרת סקרים בחודש האחרון של 2022 ולכן אין לו ציון כיול באתר. מקבל משקל ניטרלי."
+    },
+    {
+      "id": "Yossi Tatika",
+      "he": "יוסי טאטיקה",
+      "short": "י״ט",
+      "lead": "יוסי טאטיקה",
+      "calibrated": false,
+      "outlets": [
+        "זמן ישראל"
+      ],
+      "about": "סוקר ללא סדרת כיול מ־2022 באתר. מקבל משקל ניטרלי."
+    },
+    {
+      "id": "Tzuriel Sharon",
+      "he": "צוריאל שרון",
+      "short": "צ״ש",
+      "lead": "צוריאל שרון",
+      "calibrated": false,
+      "outlets": [
+        "i24NEWS"
+      ],
+      "about": "סוקר ללא סדרת כיול מ־2022 באתר. מקבל משקל ניטרלי."
+    },
+    {
+      "id": "Channel 13 composite",
+      "he": "מדגם משולב 13",
+      "short": "13",
+      "lead": "יצחק כ״ץ + המדד ושותפים",
+      "calibrated": false,
+      "outlets": [
+        "חדשות 13"
+      ],
+      "about": "סדרת סקרים משולבת של חדשות 13 בעונה הנוכחית, ללא רצף כיול מזוהה מ־2022."
+    }
+  ],
+  "sourceMap": {
+    "channel_14": {
+      "firm": "Direct Polls",
+      "outlet": "ערוץ 14"
+    },
+    "maariv": {
+      "firm": "Panels Politics",
+      "outlet": "מעריב"
+    },
+    "walla": {
+      "firm": "Panels Politics",
+      "outlet": "וואלה"
+    },
+    "channel_12": {
+      "firm": "Midgam",
+      "outlet": "חדשות 12"
+    },
+    "channel_16": {
+      "firm": "Maagar Mochot",
+      "outlet": "ערוץ 16"
+    },
+    "kan_news": {
+      "firm": "Dudi Hasid",
+      "outlet": "כאן 11"
+    },
+    "zman_israel": {
+      "firm": "Yossi Tatika",
+      "outlet": "זמן ישראל"
+    },
+    "i24news": {
+      "firm": "Tzuriel Sharon",
+      "outlet": "i24NEWS"
+    },
+    "channel_13": {
+      "firm": "Channel 13 composite",
+      "outlet": "חדשות 13"
+    }
+  },
+  "outletLogos": {
+    "חדשות 13": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Channel_13_%28Israel%29_logo.svg",
+    "חדשות 12": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Keshet12_2018.svg",
+    "חדשות 12 / קשת": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Keshet12_2018.svg",
+    "ערוץ 14": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Noamperetz-now14logo.png",
+    "כאן 11": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Kan11Logo.svg",
+    "מעריב": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Maariv_logo.svg",
+    "ישראל היום": "https://upload.wikimedia.org/wikipedia/commons/7/74/Israel_Hayom.svg",
+    "Mako / ערוץ הכנסת": "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/8f/73/aa/8f73aa01-2a3a-4b2a-6bb4-9a49655345f1/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
+    "103FM": "https://is1-ssl.mzstatic.com/image/thumb/Purple112/v4/e8/91/43/e89143ab-f36f-5950-bbfb-28b752680330/AppIcon-0-0-1x_U007emarketing-0-0-0-1-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
+    "גלי ישראל": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/bb/98/6ebb986d-64d4-59c3-7fe9-c8d705268e1e/AppIcon-galiisrael-0-0-1x_U007emarketing-0-11-0-85-220.png/1200x630wa.png"
+  }
+}

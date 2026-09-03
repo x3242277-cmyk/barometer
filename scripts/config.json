@@ -1,0 +1,8 @@
+{
+  "//": "הגדרות שליפת הסקרים. sourceUrl חייב להחזיר JSON. אם המקור שלכם מחזיר מבנה אחר — התאימו את normalize() בקובץ update-polls.mjs.",
+  "sourceUrl": "https://skarim.org/api/polls",
+  "windowDays": 14,
+  "outFile": "data/current-polls.json",
+  "requestTimeoutMs": 20000,
+  "userAgent": "Barometer-PollFetcher/1.0 (+static site updater)"
+}

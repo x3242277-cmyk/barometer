@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "בנק הקולות החרדי",
+    "subtitle": "למה ש״ס לא תרד מ־10.4 ויהדות התורה לא תרד מ־7.8",
+    "floors": { "shas": 10.4, "utj": 7.8 },
+    "floorsSum": 18.2,
+    "actual2022": { "shas": 11, "utj": 7, "sum": 18 }
+  },
+  "population": {
+    "size": 1452350,
+    "shareOfPopulation": 14.3,
+    "shareOfJews": 18.1,
+    "shareOfJews2009": 12.5,
+    "growth": 4.2,
+    "growthNational": 1.9,
+    "growthNonHarediJews": 1.4,
+    "medianAge": 16,
+    "medianAgeOtherJews": 36,
+    "under20": 57,
+    "under20Other": 31,
+    "projection2030": 16,
+    "src": "idi_yearbook"
+  },
+  "turnout": {
+    "harediCities2022": 82.4,
+    "harediCities2021": 79.7,
+    "national2022": 70.63,
+    "arab2022": 53.2,
+    "settlements2022": 73.3,
+    "developmentTowns2022": 66.8,
+    "kibbutzim2022": 69.6,
+    "cities": ["אלעד", "ביתר עילית", "מודיעין עילית"],
+    "src": "idi_patterns"
+  },
+  "loyalty": [
+    { "year": 2022, "harediLists": 86, "religiousZionism": 7, "other": 7, "src": "idi_religion22" },
+    { "year": 2021, "harediLists": 89, "utj": 60, "shas": 29, "religiousZionism": 4, "likud": 3, "other": 4, "src": "idi_religion21" }
+  ],
+  "history": {
+    "shas":  [
+      {"y":"2003","v":258879,"s":11},{"y":"2006","v":299054,"s":12},{"y":"2009","v":286300,"s":11},
+      {"y":"2013","v":331868,"s":11},{"y":"2015","v":241613,"s":7},{"y":"4.2019","v":258275,"s":8},
+      {"y":"9.2019","v":330199,"s":9},{"y":"2020","v":352853,"s":9},{"y":"2021","v":316008,"s":9},{"y":"2022","v":392964,"s":11}
+    ],
+    "utj": [
+      {"y":"2003","v":135087,"s":5},{"y":"2006","v":147091,"s":6},{"y":"2009","v":147954,"s":5},
+      {"y":"2013","v":195892,"s":7},{"y":"2015","v":210143,"s":6},{"y":"4.2019","v":249049,"s":8},
+      {"y":"9.2019","v":268775,"s":7},{"y":"2020","v":274437,"s":7},{"y":"2021","v":248391,"s":7},{"y":"2022","v":280194,"s":7}
+    ],
+    "src": "idi_parties"
+  },
+  "polling": {
+    "sampleSize": 500,
+    "marginOfError": 4,
+    "threshold": 3.25,
+    "reason": "המדגם הטלוויזיוני הטיפוסי הוא כ־500 נשאלים, ולכן טעות הדגימה שלו עולה על 4% — יותר מאחוז החסימה עצמו. חרדים מחוברים פחות לתקשורת הכללית ונענים פחות לסקרים, במיוחד לסקרי אינטרנט. המכונים מתקנים את זה במשקלות דמוגרפיים, אבל שקלול של מדגם קטן מגדיל את השגיאה במקום להקטין אותה.",
+    "src": "ipf_polling"
+  },
+  "sources": {
+    "idi_yearbook":   { "name": "המכון הישראלי לדמוקרטיה — שנתון החברה החרדית 2025", "url": "https://www.idi.org.il/haredi/2025/?chapter=62168" },
+    "idi_patterns":   { "name": "המכון הישראלי לדמוקרטיה — דפוסי הצבעה 2022 לעומת 2021", "url": "https://www.idi.org.il/articles/46440" },
+    "idi_religion22": { "name": "המכון הישראלי לדמוקרטיה — הצבעת יהודים 2022 לפי הגדרה דתית", "url": "https://www.idi.org.il/articles/64803" },
+    "idi_religion21": { "name": "המכון הישראלי לדמוקרטיה — דפוסי הצבעה 2021 לפי הגדרה דתית", "url": "https://www.idi.org.il/articles/46138" },
+    "idi_parties":    { "name": "המכון הישראלי לדמוקרטיה — דפי המפלגות ש״ס ויהדות התורה", "url": "https://en.idi.org.il/israeli-elections-and-parties/parties/shas/" },
+    "ipf_polling":    { "name": "Israel Policy Forum — Israeli Election Polls & Pollsters", "url": "https://israelpolicyforum.org/2026/08/20/israeli-election-polls-pollsters/" }
+  }
+}

@@ -785,19 +785,8 @@ footer a{color:#EBD9AE}
     </div>
 
     <section class="sec">
-      <div class="sec-head">
-        <div><p class="kicker">מבנה הרשימות</p><h2 style="font-size:1.5rem">עם מי המודל רץ</h2></div>
-        <div class="switch gold" role="group" aria-label="מבנה הרשימות">
-          <button type="button" data-merge="1" aria-pressed="true">איחודי 2026</button>
-          <button type="button" data-merge="0" aria-pressed="false">מבנה 2022</button>
-        </div>
-      </div>
-      <div class="notice" id="merge-note"><span class="ic">✓</span><p style="margin:0"></p></div>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">התוצאה</p><h2>מה הדמוגרפיה לבדה נותנת</h2></div>
-      <p class="sec-note">מפת המפלגות היא של 2022 בכוונה — המודל שואל מה היה קורה לאותן רשימות בדיוק, בגודל האוכלוסייה של 2026.</p></div>
+      <div class="sec-head"><div><p class="kicker">התוצאה</p><h2>ארבעה גושים, אחוז קולות</h2></div>
+      <p class="sec-note">בלי מפלגות. הקולות של 2022 מקובצים לארבעה גושים — ימין, מרכז–שמאל, חרדים, ערבים — ומגודלים לפי הגידול הטבעי של כל קבוצה. האחוזים מתורגמים ל־120 מנדטים בחלוקה פרופורציונלית.</p></div>
       <div class="split">
         <div class="hemi">
           <div id="demo-hemi"></div>
@@ -805,18 +794,18 @@ footer a{color:#EBD9AE}
           <div class="legend" id="demo-legend"></div>
         </div>
         <div class="card pad">
-          <p class="kicker">מה הדמוגרפיה לבדה עשתה · לפי אחוז קולות וזכאות לגוש</p>
+          <p class="kicker">2022 → 2026 → מנדטים</p>
           <div id="demo-delta"></div>
         </div>
       </div>
-      <div class="sec-head" style="margin-top:26px"><div><p class="kicker">לפי אחוז קולות</p><h2 style="font-size:1.4rem">כל 13 הרשימות — כולל מתחת לאחוז החסימה</h2></div>
-      <p class="sec-note">המספר הגדול הוא אחוז הקולות שהדמוגרפיה נותנת לרשימה; המנדטים משניים, ולידם השינוי בנקודות אחוז מ־2022. רשימה שאינה חוצה את 3.25% מוצגת באפור עם אפס מנדטים — אבל הקולות שלה נספרים בזכאות הגוש שלמעלה.</p></div>
-      <div class="parties" id="demo-parties" style="margin-top:4px"></div>
+      <div class="sec-head" style="margin-top:26px"><div><p class="kicker">המנועים</p><h2 style="font-size:1.4rem">כמה כל מגזר גדל</h2></div>
+      <p class="sec-note">הגידול הטבעי של כל קבוצת אוכלוסייה לאורך ארבע שנים — זה כל מה שמזיז את המודל. הערכים לקוחים ממרכז טאוב ומהמכון הישראלי לדמוקרטיה.</p></div>
+      <div class="parties" id="demo-sectors" style="margin-top:4px"></div>
     </section>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">המנועים</p><h2>חמש קבוצות, חמישה קצבי גידול</h2></div>
-      <p class="sec-note">גררו את הידיות כדי לבדוק תרחישים. הערכים ההתחלתיים לקוחים ממרכז טאוב ומהמכון הישראלי לדמוקרטיה.</p></div>
+      <div class="sec-head"><div><p class="kicker">תרחישים</p><h2>מה אם הגידול או ההצבעה משתנים</h2></div>
+      <p class="sec-note">גררו את הידיות כדי לבדוק תרחישים אחרים — קצב גידול שונה, או שיעור הצבעה שונה בכל מגזר.</p></div>
       <div class="grid g2" id="demo-controls"></div>
       <button class="btn ghost" type="button" id="demo-reset" style="margin-top:16px">איפוס לערכי הבסיס</button>
     </section>
@@ -1682,39 +1671,11 @@ function demoParams() {
   return out;
 }
 
-/* איחודי הרשימות של 2026: מי שרץ יחד היום, נספר יחד במודל */
-const MERGERS_2026 = [
-  { into: "labor",             name: "הדמוקרטים (העבודה + מרצ)",              from: ["labor", "meretz"] },
-  { into: "hadash_taal",       name: "הרשימה המשותפת (חד״ש–תע״ל + בל״ד)",     from: ["hadash_taal", "balad"] },
-  { into: "religious_zionism", name: "הציונות הדתית–עוצמה + הבית היהודי",     from: ["religious_zionism", "jewish_home"] }
-];
-
-function demoPartyList(merged) {
-  const D = S.demo;
-  if (!merged) return D.parties2022.map(p => ({ ...p }));
-  const byId = Object.fromEntries(D.parties2022.map(p => [p.id, p]));
-  const absorbed = new Set();
-  const out = [];
-  D.parties2022.forEach(p => {
-    if (absorbed.has(p.id)) return;
-    const m = MERGERS_2026.find(x => x.into === p.id);
-    if (!m) { out.push({ ...p }); return; }
-    const parts = m.from.map(id => byId[id]).filter(Boolean);
-    const votes = parts.reduce((s, x) => s + x.votes, 0);
-    const mix = {};
-    parts.forEach(x => Object.entries(x.mix).forEach(([k, v]) => { mix[k] = (mix[k] || 0) + v * x.votes / votes; }));
-    parts.forEach(x => absorbed.add(x.id));
-    out.push({ id: p.id, name: m.name, votes, seats: parts.reduce((s, x) => s + x.seats, 0), camp: p.camp, mix, merged: true, parts: parts.map(x => x.name) });
-  });
-  return out;
-}
-
-function runDemoModel(years, merged = S.demoMerged !== false) {
+function runDemoModel(years) {
   const D = S.demo, P = demoParams();
   const base = Object.fromEntries(D.sectors.map(s => [s.id, s.turnout]));
-  const list = demoPartyList(merged);
   const votes = {};
-  list.forEach(p => {
+  D.parties2022.forEach(p => {
     let f = 0;
     for (const [sec, wgt] of Object.entries(p.mix)) {
       const g = Math.pow(1 + P[sec].growth, years);
@@ -1726,91 +1687,76 @@ function runDemoModel(years, merged = S.demoMerged !== false) {
   const totalValid = Object.values(votes).reduce((a, b) => a + b, 0) + D.meta.otherVotes2022 * otherScale;
   const thr = totalValid * D.meta.threshold;
   const passing = Object.fromEntries(Object.entries(votes).filter(([, v]) => v >= thr));
-  const pairs = S.demo.surplusAgreements.filter(([a, b]) => passing[a] != null && passing[b] != null);
+  const pairs = D.surplusAgreements.filter(([a, b]) => passing[a] != null && passing[b] != null);
   const seats = baderOfer(passing, pairs, 120);
-  return { list, byId: Object.fromEntries(list.map(p => [p.id, p])), votes, totalValid, thr, passing, seats,
-           failed: Object.keys(votes).filter(k => !(k in passing)), merged };
+  const camp = Object.fromEntries(D.parties2022.map(p => [p.id, p.camp]));
+  const campVotes = {};
+  Object.entries(votes).forEach(([id, v]) => { campVotes[camp[id]] = (campVotes[camp[id]] || 0) + v; });
+  const campTotal = Object.values(campVotes).reduce((a, b) => a + b, 0);
+  return { votes, totalValid, thr, passing, seats, campVotes, campTotal,
+           failed: Object.keys(votes).filter(k => !(k in passing)) };
 }
 
-function renderDemography() {
-  const D = S.demo;
-  const now = runDemoModel(D.meta.years), base = runDemoModel(0), base22 = runDemoModel(0, false);
-  const byId = now.byId;
-  const campSeats = {}; Object.keys(D.camps).forEach(c => campSeats[c] = 0);
-  Object.entries(now.seats).forEach(([id, n]) => campSeats[byId[id].camp] += n);
-  const campSeats22 = {}; Object.keys(D.camps).forEach(c => campSeats22[c] = 0);
-  Object.entries(base.seats).forEach(([id, n]) => campSeats22[byId[id].camp] += n);
+/* חלוקת 120 מנדטים פרופורציונלית בין ארבעת הגושים — שארית גדולה, בלי אחוז חסימה */
+const blocSeats = m => largestRemainder(Object.fromEntries(
+  Object.entries(m.campVotes).map(([c, v]) => [c, v / m.campTotal * 120])), 120);
 
+const BLOC_LABEL = { right: "ימין ודתי־לאומי", center: "מרכז–שמאל", haredi: "חרדים", arab: "ערבים" };
+
+function renderDemography() {
+  const D = S.demo, P = demoParams(), years = D.meta.years;
+  const now = runDemoModel(years), base = runDemoModel(0);
   const order = ["right", "haredi", "arab", "center"];
-  const items = [];
-  order.forEach(c => Object.entries(now.seats).filter(([id]) => byId[id].camp === c)
-    .sort((a, b) => b[1] - a[1])
-    .forEach(([id, n]) => items.push({ color: D.camps[c].color, count: n, label: `${byId[id].name} · ${n}` })));
-  const bloc = campSeats.right + campSeats.haredi;
+  const seats = blocSeats(now), seats22 = blocSeats(base);
+  const share = (m, c) => 100 * m.campVotes[c] / m.campTotal;
+  const bloc = seats.right + seats.haredi, bloc22 = seats22.right + seats22.haredi;
+
+  const items = order.map(c => ({ color: D.camps[c].color, count: seats[c], label: `${BLOC_LABEL[c]} · ${seats[c]}` }));
   $("#demo-hemi").innerHTML = `<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px">
       <div><p class="kicker" style="margin:0">מודל דמוגרפי · ${D.meta.targetYear}</p><h3 style="margin-top:4px">120 המנדטים לפי מבנה האוכלוסייה</h3></div>
       <p style="margin:0;color:var(--ink-3);font-size:.8rem">גוש ימין וחרדים: <b style="color:var(--navy);font-size:1.05rem">${bloc}</b></p></div>` +
-    hemicycleSVG(items, { aria: "תחזית דמוגרפית" });
-  $("#demo-blocbar").innerHTML = blocBarHTML(order.map(c => ({ count: campSeats[c], color: D.camps[c].color, label: `${D.camps[c].name}: ${campSeats[c]}` })));
+    hemicycleSVG(items, { aria: "תחזית דמוגרפית לפי גוש" });
+  $("#demo-blocbar").innerHTML = blocBarHTML(order.map(c => ({ count: seats[c], color: D.camps[c].color, label: `${BLOC_LABEL[c]}: ${seats[c]}` })));
   $("#demo-legend").innerHTML = order.map(c =>
-    `<span style="display:inline-flex;align-items:center;gap:8px;font-size:.83rem;font-weight:600"><i style="width:11px;height:11px;border-radius:3px;background:${D.camps[c].color}"></i><b class="num">${campSeats[c]}</b> ${esc(D.camps[c].name)} <span dir="ltr" style="color:var(--ink-3)">(${campSeats[c] - campSeats22[c] >= 0 ? "+" : ""}${campSeats[c] - campSeats22[c]})</span></span>`).join("");
+    `<span style="display:inline-flex;align-items:center;gap:8px;font-size:.83rem;font-weight:600"><i style="width:11px;height:11px;border-radius:3px;background:${D.camps[c].color}"></i><b class="num">${seats[c]}</b> ${esc(BLOC_LABEL[c])} <span dir="ltr" style="color:var(--ink-3)">(${seats[c] - seats22[c] >= 0 ? "+" : ""}${seats[c] - seats22[c]})</span></span>`).join("");
 
-  const totalGrowth = 100 * (Object.values(now.votes).reduce((a, b) => a + b, 0) / Object.values(base.votes).reduce((a, b) => a + b, 0) - 1);
-  const campVotes = {}; order.forEach(c => campVotes[c] = 0);
-  Object.entries(now.votes).forEach(([id, v]) => { campVotes[byId[id].camp] += v; });
-  const campShare = c => 100 * campVotes[c] / now.totalValid;      // כולל קולות מתחת לאחוז החסימה
-  const campProp  = c => campShare(c) / 100 * 120;                  // זכאות פרופורציונלית טהורה
-  const wastedSeats = order.reduce((s, c) => s + Math.abs(campProp(c) - campSeats[c]), 0) / 2;
+  const totalGrowth = 100 * (now.campTotal / base.campTotal - 1);
+  const wasted = D.parties2022.filter(p => p.seats === 0);
+  const wastedVotes = wasted.reduce((s, p) => s + p.votes, 0);
   $("#demo-delta").innerHTML = `<div style="margin-top:8px">
       <b style="display:block;font-family:var(--serif);font-size:2.6rem;font-weight:900;line-height:1;color:${bloc >= 61 ? "var(--navy)" : "var(--red)"}">${bloc}</b>
-      <span style="color:var(--ink-3);font-size:.8rem">מנדטים לגוש הימני–חרדי · בפועל ב־2022: 64</span></div>
-    <table style="width:100%;min-width:0;margin-top:16px;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums">
+      <span style="color:var(--ink-3);font-size:.8rem">מנדטים לגוש הימני–חרדי · פרופורציונלית ב־2022: ${bloc22}</span></div>
+    <table style="width:100%;min-width:0;margin-top:16px;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums">
       <thead><tr style="color:var(--ink-3);font-size:.72rem;font-weight:700">
         <th style="text-align:start;padding:4px 2px">גוש</th>
-        <th style="text-align:end;padding:4px 2px">% קולות</th>
-        <th style="text-align:end;padding:4px 2px">זכאות יחסית</th>
-        <th style="text-align:end;padding:4px 2px">בפועל</th></tr></thead>
+        <th style="text-align:end;padding:4px 2px">2022</th>
+        <th style="text-align:end;padding:4px 2px">2026</th>
+        <th style="text-align:end;padding:4px 2px">שינוי, נק׳</th>
+        <th style="text-align:end;padding:4px 2px">מנדטים</th></tr></thead>
       <tbody>${order.map(c => {
-        const sh = campShare(c), prop = campProp(c), act = campSeats[c], gap = act - prop;
-        const gtag = Math.abs(gap) < 0.05 ? `<span style="color:var(--ink-3);font-size:.9em">±0</span>`
-          : `<span dir="ltr" style="color:${gap > 0 ? "#1F6349" : "#8E241A"};font-size:.9em">${gap > 0 ? "+" : "−"}${r1(Math.abs(gap))}</span>`;
+        const s0 = share(base, c), s1 = share(now, c), d = s1 - s0, ds = seats[c] - seats22[c];
+        const dtag = (t, val) => `<span dir="ltr" style="color:${t > 0.049 ? "#1F6349" : t < -0.049 ? "#8E241A" : "var(--ink-3)"}">${t > 0.049 ? "+" : t < -0.049 ? "−" : "±"}${val}</span>`;
         return `<tr style="border-top:1px solid var(--rule-2)">
-          <td style="padding:7px 2px"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${D.camps[c].color};margin-inline-end:6px;vertical-align:middle"></i>${esc(D.camps[c].name)}</td>
-          <td style="text-align:end;padding:7px 2px">${sh.toFixed(1)}%</td>
-          <td style="text-align:end;padding:7px 2px;color:var(--ink-3)">${prop.toFixed(1)}</td>
-          <td style="text-align:end;padding:7px 2px"><b>${act}</b> ${gtag}</td></tr>`;
+          <td style="padding:7px 2px"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${D.camps[c].color};margin-inline-end:6px;vertical-align:middle"></i>${esc(BLOC_LABEL[c])}</td>
+          <td style="text-align:end;padding:7px 2px;color:var(--ink-3)">${s0.toFixed(1)}%</td>
+          <td style="text-align:end;padding:7px 2px;font-weight:700">${s1.toFixed(1)}%</td>
+          <td style="text-align:end;padding:7px 2px">${dtag(d, r1(Math.abs(d)))}</td>
+          <td style="text-align:end;padding:7px 2px"><b>${seats[c]}</b>&nbsp;${dtag(ds, Math.abs(ds))}</td></tr>`;
       }).join("")}</tbody>
     </table>
-    <p style="margin:14px 0 0;color:var(--ink-2);font-size:.82rem"><b>זכאות יחסית</b> = חלֵק הקולות של הגוש × 120, כולל קולות שירדו לטמיון. <b>בפועל</b> = תוצאת בדר־עופר: אחוז החסימה והסכמי העודפים מזיזים בסך הכול ${r1(wastedSeats) === 1 ? "<b>מנדט אחד</b>" : `כ־<b>${r1(wastedSeats)}</b> מנדטים`} בין הגושים לעומת חלוקה פרופורציונלית טהורה.</p>
-    <p style="margin:10px 0 0;color:var(--ink-2);font-size:.82rem">אותו מבנה רשימות, אותם הרגלי הצבעה — רק אוכלוסייה בגודל של ${D.meta.targetYear}. סך הקולות הכשרים גדל ב־<b>${r1(totalGrowth)}%</b> ב־${D.meta.years} שנים, אך לא באופן אחיד — וזה כל הסיפור.</p>
-    ${now.failed.length ? `<p style="margin:10px 0 0;color:var(--ink-3);font-size:.78rem">מתחת לאחוז החסימה במודל: ${now.failed.map(id => esc(byId[id].name)).join(", ")}.</p>`
-      : `<p style="margin:10px 0 0;color:#1F6349;font-size:.78rem">בתרחיש הזה אף רשימה אינה נופלת מתחת לאחוז החסימה — אף קול לא הולך לאיבוד.</p>`}`;
+    <p style="margin:14px 0 0;color:var(--ink-2);font-size:.82rem">המנדטים הם <b>חלוקה פרופורציונלית טהורה</b>: אחוז הקולות של הגוש × 120. כל קול נספר לגוש שלו — גם של מפלגות שלבדן לא היו עוברות את אחוז החסימה — כך שאף גוש לא מאבד קולות לפח.</p>
+    <p style="margin:10px 0 0;color:var(--ink-3);font-size:.78rem">לכן זה שונה מ־2022 האמיתי: אז ${fmt(wastedVotes)} קולות (${wasted.map(p => esc(p.name)).join(", ")}) לא הפכו למנדטים והתחלקו מחדש, וגוש ימין־חרדי קיבל 64 במקום ${bloc22} שמגיעים לו פרופורציונלית. סך הקולות הכשרים גדל כאן ב־<b>${r1(totalGrowth)}%</b> ב־${years} שנים — אך לא באופן אחיד בין הגושים, וזה כל הסיפור.</p>`;
 
-  const thrPct = 100 * D.meta.threshold;
-  const share22 = id => base.votes[id] != null ? 100 * base.votes[id] / base.totalValid : null;
-  $("#demo-parties").innerHTML = Object.entries(now.votes).sort((a, b) => b[1] - a[1]).map(([id, v]) => {
-    const p = byId[id], col = D.camps[p.camp].color;
-    const share = 100 * v / now.totalValid, n = now.seats[id] || 0;
-    const passed = id in now.passing, s22 = share22(id), dPP = s22 == null ? null : share - s22;
-    const dSeat = n - (base.seats[id] || 0);
-    const ppTxt = dPP == null ? "" : `<span style="color:${dPP > 0.05 ? "#1F6349" : dPP < -0.05 ? "#8E241A" : "var(--ink-3)"}">${dPP > 0.05 ? "▲" : dPP < -0.05 ? "▼" : "±"}‏ ${r1(Math.abs(dPP))} נק׳</span>`;
-    const sub = passed
-      ? `<b style="color:var(--ink-2)">${n} מנדטים${dSeat ? ` (${dSeat > 0 ? "+" : ""}${dSeat})` : ""}</b> · ${ppTxt} מ־2022 · ב־2022 ${s22 == null ? "—" : pct(s22)}${p.merged ? " (יחד)" : ""}`
-      : `<b style="color:var(--ink-2)">0 מנדטים</b> · מתחת לאחוז החסימה (${r1(thrPct)}%), חסר ${r1(thrPct - share)} נק׳ · ${ppTxt} מ־2022`;
-    return `<div class="prow" style="--c:${col}${passed ? "" : ";opacity:.62"}">
-      <span class="orglogo" style="background:${col};color:#fff;border:0">${esc(initials(p.name))}</span>
-      <div style="min-width:0"><div class="pname">${esc(p.name)}</div><div class="psub">${sub}</div>${passed ? "" : `<span class="tagfix">קולות שיורדים לטמיון</span>`}</div>
-      <div class="pbar" style="--c:${col};--w:${clamp(share / 26 * 100)}%"><i></i></div>
-      <div class="pseats num" style="${passed ? "" : "color:var(--ink-3)"}">${share.toFixed(1)}<span style="font-size:.46em;font-weight:700">%</span></div></div>`;
+  $("#demo-sectors").innerHTML = D.sectors.map(s => {
+    const g = P[s.id].growth, chg = (Math.pow(1 + g, years) - 1) * 100;
+    const e26 = s.eligible2022 * Math.pow(1 + g, years);
+    return `<div class="prow" style="--c:${s.color}">
+      <span class="orglogo" style="background:${s.color};color:#fff;border:0">${esc(initials(s.name))}</span>
+      <div style="min-width:0"><div class="pname">${esc(s.name)}</div>
+        <div class="psub">${fmt(s.eligible2022)} → ${fmt(e26)} בעלי זכות בחירה · ${(g * 100).toFixed(1)}% לשנה</div></div>
+      <div class="pbar" style="--c:${s.color};--w:${clamp(chg / 20 * 100)}%"><i></i></div>
+      <div class="pseats num" style="color:${s.color}" dir="ltr">+${r1(chg)}<span style="font-size:.46em;font-weight:700">%</span></div></div>`;
   }).join("");
-
-  /* הערת מבנה הרשימות */
-  const mergedList = MERGERS_2026.map(m => m.name).join(" · ");
-  $("#merge-note").className = "notice " + (now.merged ? "" : "warm");
-  $("#merge-note").querySelector("p").innerHTML = now.merged
-    ? `<b>המודל רץ לפי איחודי 2026.</b> מרצ והעבודה רצות יחד כ"הדמוקרטים", חד״ש–תע״ל ובל״ד כ"רשימה המשותפת", והבית היהודי בתוך הציונות הדתית. לכן ${fmt(S.demo.parties2022.find(p => p.id === "meretz").votes + S.demo.parties2022.find(p => p.id === "balad").votes)} הקולות שירדו לטמיון ב־2022 <b>נספרים כאן במלואם</b> — וזו הסיבה שהתמונה שונה מ־2022 גם לפני שנגענו בדמוגרפיה.`
-    : `<b>מבחן שפיות:</b> במבנה של 2022 ובגידול אפס, המודל משחזר את התוצאה מנדט במנדט — 32 לליכוד, 24 ליש עתיד, 4 לעבודה — כולל בדר־עופר והסכמי העודפים שנחתמו בפועל. מרצ, בל״ד והבית היהודי נופלות מתחת לאחוז החסימה, בדיוק כפי שקרה.`;
-  $$("[data-merge]").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.merge === "1") === (S.demoMerged !== false))));
 
   renderDemoControls();
 }
@@ -1961,7 +1907,6 @@ function wire() {
     renderDemography();
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
-  $$("[data-merge]").forEach(b => b.addEventListener("click", () => { S.demoMerged = b.dataset.merge === "1"; renderDemography(); }));
 
   $("#anec-next").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); });
   $("#anec-prev").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) - 1; renderAnecdote(); });
@@ -2236,7 +2181,7 @@ function renderHaredi() {
     </div>
     <p style="color:var(--ink-2);font-size:.88rem;margin:14px 0 0">לשם השוואה: שיעור ההצבעה הנמוך ביותר שנמדד בערים החרדיות בעשור הוא ${pct(H.turnout.harediCities2021)}, והנאמנות לא ירדה מ־${pct(H.loyalty[0].harediLists)} באף מדידה. ${needTurnout < H.turnout.harediCities2021 - 5 || needLoyalty < H.loyalty[0].harediLists - 5 ? "כלומר: הסקרים מתמחרים אירוע חסר תקדים." : "כלומר: הסקרים מתמחרים ירידה אפשרית, אך חריגה."}</p>
     <div class="notice warm" style="margin-top:16px"><span class="ic">↓</span><p style="margin:0">ולמרות כל זה, האתר <b>לא</b> קובע ${modelSum} מנדטים — מה שהמודל הדמוגרפי המלא נותן. הרצפה שנקבעה היא <b>${r1(floors)}</b>: כמעט זהה לחישוב מהמגזר שלמעלה (${r1(st.total)}), וזהה לתוצאה שהתקבלה בפועל בקלפי ב־2022 (18). עדיף לטעות בכיוון השמרני.</p></div>
-    <p style="margin:12px 0 0;color:var(--ink-3);font-size:.78rem">שתי דרכים שונות לחשב, ושתיהן מגיעות לאותו אזור: החישוב מהמגזר שלמעלה נותן ${r1(st.total)} מנדטים, ו<a href="#/demography" style="color:var(--navy)">המודל הדמוגרפי המלא</a> — שמריץ בדר־עופר על כל הרשימות — נותן ${modelSum}. אף אחד מהם לא נותן את ${r1(pollSum)} שהסקרים אומרים.</p>`;
+    <p style="margin:12px 0 0;color:var(--ink-3);font-size:.78rem">שתי דרכים שונות לחשב, ושתיהן מגיעות לאותו אזור: החישוב מהמגזר שלמעלה נותן ${r1(st.total)} מנדטים, ו<a href="#/demography" style="color:var(--navy)">המודל הדמוגרפי המלא</a> נותן לגוש החרדי ${modelSum} מנדטים. אף אחד מהם לא נותן את ${r1(pollSum)} שהסקרים אומרים.</p>`;
 
   /* היסטוריה */
   renderHaredHistory();

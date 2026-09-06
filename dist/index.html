@@ -263,16 +263,19 @@ td.n,th.n{text-align:end; font-variant-numeric:tabular-nums}
 .outlet-icons span{display:grid; place-items:center; width:26px; height:26px; border:1px solid var(--rule-2); border-radius:7px; background:#fff; color:var(--ink-3); font-size:.55rem; font-weight:800; overflow:hidden}
 .outlet-icons img{width:100%; height:100%; object-fit:contain; padding:3px}
 
-/* ---------- clean result rows ---------- */
-.result-row{display:grid; grid-template-columns:44px minmax(130px,1.05fr) minmax(120px,2.2fr) 64px; align-items:center; gap:16px; padding:14px 18px; background:var(--paper-2); border-bottom:1px solid var(--rule-2)}
-.result-row:last-child{border-bottom:0}
-.result-row:hover{background:var(--paper-3)}
-.result-party{min-width:0}
-.result-party strong{display:block; font-size:1rem; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.result-party small{display:block; margin-top:3px; color:var(--ink-3); font-size:.72rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.result-track{height:11px; border-radius:6px; background:#ECE8DF; overflow:hidden}
-.result-track i{display:block; width:var(--w); height:100%; border-radius:6px; background:var(--c)}
-.result-num{font-family:var(--serif); font-size:2.15rem; font-weight:900; line-height:1; text-align:end; color:var(--c)}
+/* ---------- result grid: תמונה ומספר ---------- */
+.result-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px}
+.rcard{display:grid; justify-items:center; align-content:start; gap:6px; padding:18px 12px 14px; text-align:center;
+  background:var(--paper-2); border:1px solid var(--rule); border-top:3px solid var(--c); border-radius:14px; box-shadow:var(--shadow-s)}
+.rcard:hover{background:var(--paper-3)}
+.rcard-logo{width:54px; height:54px; border-radius:13px; background:#fff; border:1px solid var(--rule-2); display:grid; place-items:center; overflow:hidden}
+.rcard-logo img{width:100%; height:100%; object-fit:contain; padding:5px}
+.rcard-logo b{display:none}
+.rcard-logo.nologo{background:var(--c); border-color:var(--c)}
+.rcard-logo.nologo b{display:block; color:#fff; font-weight:800; font-size:.92rem}
+.rcard-num{font-family:var(--serif); font-size:2.35rem; font-weight:900; line-height:1; color:var(--c)}
+.rcard strong{font-size:.9rem; font-weight:800; line-height:1.22}
+.rcard small{color:var(--ink-3); font-size:.68rem; font-weight:600; line-height:1.3}
 
 /* ---------- rank cards ---------- */
 .ranks{display:grid; gap:10px}
@@ -476,9 +479,9 @@ footer a{color:#EBD9AE}
   .steps{grid-template-columns:1fr}
   .prow{grid-template-columns:34px minmax(0,1fr) 52px; gap:10px}
   .prow .pbar{grid-column:2/3; grid-row:2}
-  .result-row{grid-template-columns:38px minmax(0,1fr) 52px; gap:10px; padding:12px 13px}
-  .result-track{grid-column:2/3; grid-row:2}
-  .result-num{font-size:1.85rem}
+  .result-grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px}
+  .rcard{padding:14px 8px 11px}
+  .rcard-num{font-size:2rem}
   .rank{grid-template-columns:24px 42px 1fr 60px; gap:10px; padding:13px 11px}
   .rank .meters{grid-column:1/-1; grid-template-columns:repeat(2,1fr); gap:8px; padding-top:6px}
   .rank .final b{font-size:1.6rem}
@@ -673,7 +676,7 @@ footer a{color:#EBD9AE}
         <div><p class="kicker">פירוט המנדטים</p><h3>הערכת המפלגות</h3></div>
         <p class="sec-note">עיגול בשיטת השארית הגדולה כדי שהסכום יישאר 120 בדיוק.</p>
       </div>
-      <div class="parties" id="party-rows"></div>
+      <div class="result-grid" id="party-rows"></div>
     </section>
   </div>
 </section>
@@ -830,7 +833,7 @@ footer a{color:#EBD9AE}
         <div><p class="kicker">מפלגות</p><h2>מי בפנים, מי על הקצה</h2></div>
         <p class="sec-note">כאשר יהיו נתוני אמת, הטבלה תציג גם קולות ואחוזים. לפני כן היא מציגה את המדגם בלבד.</p>
       </div>
-      <div class="parties" id="live-party-rows"></div>
+      <div class="result-grid" id="live-party-rows"></div>
     </section>
 
     <section class="sec">
@@ -876,7 +879,7 @@ footer a{color:#EBD9AE}
       <div class="sec-head">
         <div><p class="kicker">מפלגות</p><h2>התוצאות לפי רשימה</h2></div>
       </div>
-      <div class="parties" id="results-party-rows"></div>
+      <div class="result-grid" id="results-party-rows"></div>
     </section>
   </div>
 </section>
@@ -1572,8 +1575,8 @@ function renderHome() {
     .map(([id, n]) => {
       const m = partyMeta(id), col = BLOCS[m.alignment].color;
       const tag = (id === "shas" && est.parties.shas > est.raw.shas + .01) ? `רצפת ${FLOORS.shas}` : (id === "yahadut_hatora" && est.parties.yahadut_hatora > est.raw.yahadut_hatora + .01) ? `רצפת ${FLOORS.yahadut_hatora}` : "";
-      const sub = tag ? `בסקרים ${r1(est.raw[id])} → אחרי תיקון ${r1(est.parties[id])}` : `אומדן גולמי ${r1(est.parties[id])}`;
-      return resultRowHTML({ meta: m, value: n, color: col, sub, tag, max: 35 });
+      const sub = tag ? `בסקרים ${r1(est.raw[id])}` : "";
+      return resultRowHTML({ meta: m, value: n, color: col, sub, tag });
     }).join("");
 }
 
@@ -1598,17 +1601,14 @@ function outletIconStrip(outlets = []) {
   }).join("")}</div>`;
 }
 
-function resultRowHTML({ meta, value, color, sub = "", tag = "", max = 35 }) {
-  return `<div class="result-row" style="--c:${color};--w:${clamp(value / max * 100)}%">
-    <span class="plogo-wrap" style="--c:${color}"><img class="plogo" src="${esc(meta.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('nologo');this.remove()"><b>${esc(initials(meta.name))}</b></span>
-    <div class="result-party">
-      <strong title="${esc(meta.name)}">${esc(meta.name)}</strong>
-      ${sub ? `<small>${esc(sub)}</small>` : ""}
-      ${tag ? `<span class="tagfix">${esc(tag)}</span>` : ""}
-    </div>
-    <div class="result-track" aria-hidden="true"><i></i></div>
-    <b class="result-num num">${r1(value)}</b>
-  </div>`;
+function resultRowHTML({ meta, value, color, sub = "", tag = "" }) {
+  return `<article class="rcard" style="--c:${color}">
+    <span class="rcard-logo" style="--c:${color}"><img src="${esc(meta.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('nologo');this.remove()"><b>${esc(initials(meta.name))}</b></span>
+    <b class="rcard-num num">${r1(value)}</b>
+    <strong title="${esc(meta.name)}">${esc(meta.name)}</strong>
+    ${sub ? `<small>${esc(sub)}</small>` : ""}
+    ${tag ? `<span class="tagfix">${esc(tag)}</span>` : ""}
+  </article>`;
 }
 
 /* ============================================================
@@ -1669,8 +1669,8 @@ function renderPolls() {
       ? `<img src="${esc(f.meta.logo)}" alt="${esc(f.meta.he)}">`
       : esc(f.meta.short || "?");
     return `<article class="pollcard">
-      <div class="chanwrap"><span class="chan" title="${esc(f.meta.he)}">${firmMark}</span>
-        <span class="firmmark" title="${esc(p.channelHebrewName)}">${outletMark}</span></div>
+      <div class="chanwrap"><span class="chan" title="${esc(p.channelHebrewName)}">${outletMark}</span>
+        <span class="firmmark" title="${esc(f.meta.he)}">${firmMark}</span></div>
       <div style="min-width:0"><h4>${esc(p.channelHebrewName)} · ${esc(p.date)}</h4>
         <p>${esc(f.meta.he)} · ${esc(f.meta.lead || "")}${series && series.polls.length > 1 ? ` · סדרה של ${series.polls.length} סקרים` : ""}</p>
         ${f.meta.calibrated ? "" : `<span class="badge neutral">ללא כיול 2022 · משקל ניטרלי</span>`}</div>
@@ -2249,7 +2249,7 @@ function renderLiveResults() {
       const col = BLOCS[p.meta.alignment]?.color || BLOCS.Unknown.color;
       const votes = p.votes != null ? `${fmt(p.votes)} קולות` : (p.pct != null ? pct(p.pct) : "מדגם מנדטים");
       const pctText = p.pct != null && p.votes != null ? ` · ${pct(p.pct)}` : "";
-      return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText, max: 35 });
+      return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText });
     }).join("");
   }
 
@@ -2323,7 +2323,7 @@ function renderOfficialResults() {
     const col = BLOCS[p.meta.alignment]?.color || BLOCS.Unknown.color;
     const votes = p.votes != null ? `${fmt(p.votes)} קולות` : "אין עדיין קולות";
     const pctText = p.pct != null ? ` · ${pct(p.pct)}` : "";
-    return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText, max: 35 });
+    return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText });
   }).join("");
 }
 

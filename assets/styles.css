@@ -257,16 +257,19 @@ td.n,th.n{text-align:end; font-variant-numeric:tabular-nums}
 .outlet-icons span{display:grid; place-items:center; width:26px; height:26px; border:1px solid var(--rule-2); border-radius:7px; background:#fff; color:var(--ink-3); font-size:.55rem; font-weight:800; overflow:hidden}
 .outlet-icons img{width:100%; height:100%; object-fit:contain; padding:3px}
 
-/* ---------- clean result rows ---------- */
-.result-row{display:grid; grid-template-columns:44px minmax(130px,1.05fr) minmax(120px,2.2fr) 64px; align-items:center; gap:16px; padding:14px 18px; background:var(--paper-2); border-bottom:1px solid var(--rule-2)}
-.result-row:last-child{border-bottom:0}
-.result-row:hover{background:var(--paper-3)}
-.result-party{min-width:0}
-.result-party strong{display:block; font-size:1rem; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.result-party small{display:block; margin-top:3px; color:var(--ink-3); font-size:.72rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.result-track{height:11px; border-radius:6px; background:#ECE8DF; overflow:hidden}
-.result-track i{display:block; width:var(--w); height:100%; border-radius:6px; background:var(--c)}
-.result-num{font-family:var(--serif); font-size:2.15rem; font-weight:900; line-height:1; text-align:end; color:var(--c)}
+/* ---------- result grid: תמונה ומספר ---------- */
+.result-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px}
+.rcard{display:grid; justify-items:center; align-content:start; gap:6px; padding:18px 12px 14px; text-align:center;
+  background:var(--paper-2); border:1px solid var(--rule); border-top:3px solid var(--c); border-radius:14px; box-shadow:var(--shadow-s)}
+.rcard:hover{background:var(--paper-3)}
+.rcard-logo{width:54px; height:54px; border-radius:13px; background:#fff; border:1px solid var(--rule-2); display:grid; place-items:center; overflow:hidden}
+.rcard-logo img{width:100%; height:100%; object-fit:contain; padding:5px}
+.rcard-logo b{display:none}
+.rcard-logo.nologo{background:var(--c); border-color:var(--c)}
+.rcard-logo.nologo b{display:block; color:#fff; font-weight:800; font-size:.92rem}
+.rcard-num{font-family:var(--serif); font-size:2.35rem; font-weight:900; line-height:1; color:var(--c)}
+.rcard strong{font-size:.9rem; font-weight:800; line-height:1.22}
+.rcard small{color:var(--ink-3); font-size:.68rem; font-weight:600; line-height:1.3}
 
 /* ---------- rank cards ---------- */
 .ranks{display:grid; gap:10px}
@@ -470,9 +473,9 @@ footer a{color:#EBD9AE}
   .steps{grid-template-columns:1fr}
   .prow{grid-template-columns:34px minmax(0,1fr) 52px; gap:10px}
   .prow .pbar{grid-column:2/3; grid-row:2}
-  .result-row{grid-template-columns:38px minmax(0,1fr) 52px; gap:10px; padding:12px 13px}
-  .result-track{grid-column:2/3; grid-row:2}
-  .result-num{font-size:1.85rem}
+  .result-grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px}
+  .rcard{padding:14px 8px 11px}
+  .rcard-num{font-size:2rem}
   .rank{grid-template-columns:24px 42px 1fr 60px; gap:10px; padding:13px 11px}
   .rank .meters{grid-column:1/-1; grid-template-columns:repeat(2,1fr); gap:8px; padding-top:6px}
   .rank .final b{font-size:1.6rem}

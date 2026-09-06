@@ -382,8 +382,8 @@ function renderHome() {
     .map(([id, n]) => {
       const m = partyMeta(id), col = BLOCS[m.alignment].color;
       const tag = (id === "shas" && est.parties.shas > est.raw.shas + .01) ? `רצפת ${FLOORS.shas}` : (id === "yahadut_hatora" && est.parties.yahadut_hatora > est.raw.yahadut_hatora + .01) ? `רצפת ${FLOORS.yahadut_hatora}` : "";
-      const sub = tag ? `בסקרים ${r1(est.raw[id])} → אחרי תיקון ${r1(est.parties[id])}` : `אומדן גולמי ${r1(est.parties[id])}`;
-      return resultRowHTML({ meta: m, value: n, color: col, sub, tag, max: 35 });
+      const sub = tag ? `בסקרים ${r1(est.raw[id])}` : "";
+      return resultRowHTML({ meta: m, value: n, color: col, sub, tag });
     }).join("");
 }
 
@@ -408,17 +408,14 @@ function outletIconStrip(outlets = []) {
   }).join("")}</div>`;
 }
 
-function resultRowHTML({ meta, value, color, sub = "", tag = "", max = 35 }) {
-  return `<div class="result-row" style="--c:${color};--w:${clamp(value / max * 100)}%">
-    <span class="plogo-wrap" style="--c:${color}"><img class="plogo" src="${esc(meta.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('nologo');this.remove()"><b>${esc(initials(meta.name))}</b></span>
-    <div class="result-party">
-      <strong title="${esc(meta.name)}">${esc(meta.name)}</strong>
-      ${sub ? `<small>${esc(sub)}</small>` : ""}
-      ${tag ? `<span class="tagfix">${esc(tag)}</span>` : ""}
-    </div>
-    <div class="result-track" aria-hidden="true"><i></i></div>
-    <b class="result-num num">${r1(value)}</b>
-  </div>`;
+function resultRowHTML({ meta, value, color, sub = "", tag = "" }) {
+  return `<article class="rcard" style="--c:${color}">
+    <span class="rcard-logo" style="--c:${color}"><img src="${esc(meta.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('nologo');this.remove()"><b>${esc(initials(meta.name))}</b></span>
+    <b class="rcard-num num">${r1(value)}</b>
+    <strong title="${esc(meta.name)}">${esc(meta.name)}</strong>
+    ${sub ? `<small>${esc(sub)}</small>` : ""}
+    ${tag ? `<span class="tagfix">${esc(tag)}</span>` : ""}
+  </article>`;
 }
 
 /* ============================================================
@@ -479,8 +476,8 @@ function renderPolls() {
       ? `<img src="${esc(f.meta.logo)}" alt="${esc(f.meta.he)}">`
       : esc(f.meta.short || "?");
     return `<article class="pollcard">
-      <div class="chanwrap"><span class="chan" title="${esc(f.meta.he)}">${firmMark}</span>
-        <span class="firmmark" title="${esc(p.channelHebrewName)}">${outletMark}</span></div>
+      <div class="chanwrap"><span class="chan" title="${esc(p.channelHebrewName)}">${outletMark}</span>
+        <span class="firmmark" title="${esc(f.meta.he)}">${firmMark}</span></div>
       <div style="min-width:0"><h4>${esc(p.channelHebrewName)} · ${esc(p.date)}</h4>
         <p>${esc(f.meta.he)} · ${esc(f.meta.lead || "")}${series && series.polls.length > 1 ? ` · סדרה של ${series.polls.length} סקרים` : ""}</p>
         ${f.meta.calibrated ? "" : `<span class="badge neutral">ללא כיול 2022 · משקל ניטרלי</span>`}</div>
@@ -1059,7 +1056,7 @@ function renderLiveResults() {
       const col = BLOCS[p.meta.alignment]?.color || BLOCS.Unknown.color;
       const votes = p.votes != null ? `${fmt(p.votes)} קולות` : (p.pct != null ? pct(p.pct) : "מדגם מנדטים");
       const pctText = p.pct != null && p.votes != null ? ` · ${pct(p.pct)}` : "";
-      return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText, max: 35 });
+      return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText });
     }).join("");
   }
 
@@ -1133,7 +1130,7 @@ function renderOfficialResults() {
     const col = BLOCS[p.meta.alignment]?.color || BLOCS.Unknown.color;
     const votes = p.votes != null ? `${fmt(p.votes)} קולות` : "אין עדיין קולות";
     const pctText = p.pct != null ? ` · ${pct(p.pct)}` : "";
-    return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText, max: 35 });
+    return resultRowHTML({ meta: p.meta, value: p.mandates, color: col, sub: votes + pctText });
   }).join("");
 }
 

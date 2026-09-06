@@ -39,12 +39,14 @@
   <div class="wrap">
     <div class="tabs" role="tablist">
       <a class="tab" href="#/"           data-view="home"><i>◆</i>התחזית</a>
-      <a class="tab" href="#/polls"      data-view="polls"><i>◆</i>סקרי השבועיים</a>
-      <a class="tab" href="#/2022"       data-view="e2022"><i>◆</i>בחירות 2022: מי דייק</a>
+      <a class="tab" href="#/polls"      data-view="polls"><i>◆</i>סקרי 2026</a>
+      <a class="tab" href="#/2022"       data-view="e2022"><i>◆</i>מדד אמינות המכונים</a>
       <a class="tab" href="#/haredi"     data-view="haredi"><i>◆</i>בנק הקולות החרדי</a>
       <a class="tab" href="#/regions"    data-view="regions"><i>◆</i>פילוח אזורי</a>
       <a class="tab" href="#/demography" data-view="demography"><i>◆</i>התחזית היבשה</a>
       <a class="tab" href="#/method"     data-view="method"><i>◆</i>מתודולוגיה</a>
+      <a class="tab event-tab" href="#/live"       data-view="live"><i>◆</i>ליל הבחירות</a>
+      <a class="tab event-tab" href="#/results"    data-view="results"><i>◆</i>תוצאות אמת</a>
     </div>
   </div>
 </nav>
@@ -64,6 +66,7 @@
           <a class="btn" href="#/method">איך זה מחושב</a>
           <a class="btn ghost" href="#/2022">מי דייק ב־2022 <span aria-hidden="true">←</span></a>
         </div>
+        <div class="election-countdown" id="election-countdown" aria-live="polite"></div>
       </div>
       <div class="gauge">
         <div class="gauge-head">
@@ -78,7 +81,11 @@
   </div>
 
   <div class="wrap">
-    <section class="sec" style="padding-top:36px">
+    <section class="sec home-stats-sec" style="padding-top:36px">
+      <div class="stats" id="home-stats"></div>
+    </section>
+
+    <section class="sec anecdote-sec">
       <article class="anecdote" id="anecdote">
         <div class="anecdote-side">
           <span class="anecdote-mark" aria-hidden="true">?!</span>
@@ -97,10 +104,6 @@
           </div>
         </div>
       </article>
-    </section>
-
-    <section class="sec" style="padding-top:0">
-      <div class="stats" id="home-stats"></div>
     </section>
 
     <section class="sec">
@@ -147,13 +150,13 @@
   </div>
 </section>
 
-<!-- ==================== סקרי השבועיים ==================== -->
-<section class="view" id="view-polls" aria-label="סקרי השבועיים האחרונים">
+<!-- ==================== סקרי 2026 ==================== -->
+<section class="view" id="view-polls" aria-label="סקרי 2026">
   <div class="wrap">
     <div class="page-intro">
-      <p class="kicker">כל הנתונים הגולמיים</p>
-      <h2>סקרי השבועיים האחרונים</h2>
-      <p>כל סקר שפורסם בחלון הנע של 14 יום, עם המכון שביצע אותו והגוף שנתן לו במה. כשמכון מפרסם כמה סקרים באותו חלון, נוצר לו קודם ממוצע אחד — כך שריבוי פרסומים אינו מקנה לאותו מכון כוח עודף בתחזית.</p>
+      <p class="kicker">חלון הבחירות הנוכחי</p>
+      <h2>סקרי 2026</h2>
+      <p>כל סקר עדכני בדרך לבחירות 2026, עם המכון שביצע אותו והגוף שנתן לו במה. כשמכון מפרסם כמה סקרים באותו חלון, נוצר לו קודם ממוצע אחד — כך שריבוי פרסומים אינו מקנה לאותו מכון כוח עודף בתחזית.</p>
     </div>
 
     <section class="sec">
@@ -198,14 +201,18 @@
   </div>
 </section>
 
-<!-- ==================== בחירות 2022 ==================== -->
-<section class="view" id="view-e2022" aria-label="בחירות 2022">
+<!-- ==================== מדד אמינות המכונים ==================== -->
+<section class="view" id="view-e2022" aria-label="מדד אמינות מכוני הסקרים">
   <div class="wrap">
     <div class="page-intro">
-      <p class="kicker">חודש הכיול · 29.09–28.10.2022</p>
-      <h2>בחירות 2022: מי דייק ומי פספס</h2>
-      <p>39 סקרים פורסמו בחודש האחרון לפני הבחירות לכנסת ה־25. כאן הם נמדדים אחד־אחד מול תוצאות האמת — ומול התרחיש ההיפותטי שבו מרצ הייתה עוברת את אחוז החסימה. הציון שמתקבל הוא בדיוק המשקל שכל מכון מקבל בתחזית של היום.</p>
+      <p class="kicker">כיול אמינות · התחלה מכנסת 25</p>
+      <h2>מדד אמינות מכוני הסקרים</h2>
+      <p>כאן נבדוק אילו מכוני סקרים היו קרובים לתוצאות האמת, ואילו נטו להחמיץ את התמונה הרחבה. בשלב הנוכחי המדד מכויל על הבחירות לכנסת ה־25; הכנסת ה־24 תיכנס כבסיס השוואה נוסף אחרי שנוסיף לה ארכיון סקרים מלא ואחיד.</p>
     </div>
+
+    <section class="sec calibration-sec">
+      <div class="calibration-strip" id="calibration-strip"></div>
+    </section>
 
     <section class="sec">
       <div class="sec-head">
@@ -226,6 +233,7 @@
         <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — שגיאה מוחלטת ממוצעת ב־11 רשימות</span></div>
         <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות ורציפות לאורך חודש הכיול</span></div>
       </div>
+      <div class="notice warm" style="margin:16px 0"><span class="ic">+</span><p style="margin:0"><b>הרחבה מתוכננת:</b> הכנסת ה־24 תתווסף למדד רק אחרי טעינת סקרי 2021 באותו פורמט. כך הציון יבדוק מכונים לאורך שתי מערכות בחירות, בלי לערבב מקורות חלקיים.</p></div>
       <div class="ranks" id="rank-list"></div>
     </section>
 
@@ -243,6 +251,104 @@
         <div class="count" id="arch-count"></div>
       </div>
       <div class="tablewrap"><table id="arch-table"></table></div>
+    </section>
+  </div>
+</section>
+
+
+<!-- ==================== ליל הבחירות ==================== -->
+<section class="view" id="view-live" aria-label="ליל הבחירות">
+  <div class="wrap">
+    <div class="page-intro live-intro">
+      <p class="kicker">מדגם ← ספירת אמת</p>
+      <h2>ליל הבחירות, בזמן אמת</h2>
+      <p>עמוד עבודה ליום הבחירות: מהרגע שבו מתפרסם המדגם ועד פרסום תוצאות האמת. הדף מוכן להתחבר לקובץ נתונים מתעדכן, ולהציג את תמונת המנדטים, שיעור הספירה, הגושים והמפלגות המרכזיות במקום אחד.</p>
+    </div>
+
+    <section class="sec">
+      <div class="live-status" id="live-status"></div>
+    </section>
+
+    <section class="sec">
+      <div class="split live-main">
+        <div class="hemi">
+          <div class="sec-head" style="margin-bottom:12px">
+            <div><p class="kicker">תמונת מנדטים</p><h2 id="live-main-title">ממתינים לנתונים</h2></div>
+            <p class="sec-note" id="live-main-note"></p>
+          </div>
+          <div id="live-hemi"></div>
+          <div class="blocbar" id="live-blocbar"></div>
+          <div class="legend" id="live-legend"></div>
+        </div>
+        <div class="grid" style="gap:16px">
+          <div class="card pad live-card">
+            <p class="kicker">רגע הפרסום</p>
+            <div id="live-clock"></div>
+          </div>
+          <div class="card pad live-card">
+            <p class="kicker">ספירת אמת</p>
+            <div id="live-counting"></div>
+          </div>
+          <div class="card pad live-card">
+            <p class="kicker">תנועה באתר</p>
+            <div id="live-traffic"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div><p class="kicker">מפלגות</p><h2>מי בפנים, מי על הקצה</h2></div>
+        <p class="sec-note">כאשר יהיו נתוני אמת, הטבלה תציג גם קולות ואחוזים. לפני כן היא מציגה את המדגם בלבד.</p>
+      </div>
+      <div class="parties" id="live-party-rows"></div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><div><p class="kicker">ציר זמן</p><h2>מה השתנה במהלך הלילה</h2></div></div>
+      <div class="live-feed" id="live-feed"></div>
+    </section>
+  </div>
+</section>
+
+
+<!-- ==================== תוצאות אמת ==================== -->
+<section class="view" id="view-results" aria-label="תוצאות אמת">
+  <div class="wrap">
+    <div class="page-intro">
+      <p class="kicker">ספירה רשמית</p>
+      <h2>תוצאות האמת</h2>
+      <p>דף נקי לתוצאות הרשמיות בלבד. בזמן אמת הוא יתמלא מתוך אותו קובץ נתונים מתעדכן, אבל יציג רק את הספירה בפועל — בלי לערבב אותה עם מדגמים או תחזיות.</p>
+    </div>
+
+    <section class="sec">
+      <div class="live-status" id="results-status"></div>
+    </section>
+
+    <section class="sec">
+      <div class="split">
+        <div class="hemi">
+          <div class="sec-head" style="margin-bottom:12px">
+            <div><p class="kicker">חלוקת מנדטים</p><h2 id="results-title">ממתינים לספירה</h2></div>
+            <p class="sec-note" id="results-note"></p>
+          </div>
+          <div id="results-hemi"></div>
+          <div class="blocbar" id="results-blocbar"></div>
+          <div class="legend" id="results-legend"></div>
+        </div>
+        <div class="card pad">
+          <p class="kicker">סיכום ספירה</p>
+          <div id="results-counting"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <div><p class="kicker">מפלגות</p><h2>התוצאות לפי רשימה</h2></div>
+      </div>
+      <div class="parties" id="results-party-rows"></div>
     </section>
   </div>
 </section>
@@ -381,16 +487,15 @@
     </div>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">התוצאה</p><h2>ארבעה גושים, אחוז קולות</h2></div>
-      <p class="sec-note">בלי מפלגות. הקולות של 2022 מקובצים לארבעה גושים — ימין, מרכז–שמאל, חרדים, ערבים — ומגודלים לפי הגידול הטבעי של כל קבוצה. האחוזים מתורגמים ל־120 מנדטים בחלוקה פרופורציונלית.</p></div>
+      <div class="sec-head"><div><p class="kicker">התוצאה</p><h2>ארבעה גושים, אחוזי תמיכה</h2></div>
+      <p class="sec-note">בלי מפלגות ובלי חלוקת מנדטים. הקולות של 2022 מקובצים לארבעה גושים — ימין, שמאל, חרדים, ערבים — ומגודלים לפי הגידול הטבעי של כל קבוצה. התוצאה מוצגת כאחוזי תמיכה בלבד.</p></div>
       <div class="split">
-        <div class="hemi">
-          <div id="demo-hemi"></div>
-          <div class="blocbar" id="demo-blocbar"></div>
+        <div class="hemi share-panel">
+          <div id="demo-share-chart"></div>
           <div class="legend" id="demo-legend"></div>
         </div>
         <div class="card pad">
-          <p class="kicker">2022 → 2026 → מנדטים</p>
+          <p class="kicker">2022 → 2026 → אחוזים</p>
           <div id="demo-delta"></div>
         </div>
       </div>

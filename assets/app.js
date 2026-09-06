@@ -299,9 +299,11 @@ function renderElectionTimer() {
   }
   const t = countdownParts(Math.max(0, target - now));
   const pad = n => String(n).padStart(2, "0");
-  const cells = now >= exit
+  const narrow = (typeof window !== "undefined" ? window.innerWidth : 1200) < 560;
+  const full = now >= exit
     ? [["00", "ימים"], ["00", "שעות"], ["00", "דקות"], ["00", "שניות"]]
     : [[t.days, "ימים"], [pad(t.hours), "שעות"], [pad(t.minutes), "דקות"], [pad(t.seconds), "שניות"]];
+  const cells = narrow ? full.slice(0, 2) : full;
   box.classList.toggle("is-live", live);
   box.innerHTML = `<div class="cd-head">
       <p class="kicker">${live ? '<span class="cd-dot"></span>' : ""}שעון בחירות</p>
@@ -368,9 +370,7 @@ function renderHome() {
     .sort((a, b) => b[1] - a[1] || est.parties[b[0]] - est.parties[a[0]])
     .map(([id, n]) => {
       const m = partyMeta(id), col = BLOCS[m.alignment].color;
-      const tag = (id === "shas" && est.parties.shas > est.raw.shas + .01) ? `רצפת ${FLOORS.shas}` : (id === "yahadut_hatora" && est.parties.yahadut_hatora > est.raw.yahadut_hatora + .01) ? `רצפת ${FLOORS.yahadut_hatora}` : "";
-      const sub = tag ? `בסקרים ${r1(est.raw[id])}` : "";
-      return resultRowHTML({ meta: m, value: n, color: col, sub, tag, id });
+      return resultRowHTML({ meta: m, value: n, color: col, id });
     }).join("");
 }
 
@@ -395,11 +395,15 @@ function outletIconStrip(outlets = []) {
   }).join("")}</div>`;
 }
 
+/* איור מקום שמור לתמונת מנהיג — קווי עיפרון מינימליים, מוחלף בכל כרטיס שיש לו תמונה ב-data/leaders.json */
+const LEADER_PLACEHOLDER = "data:image/svg+xml," + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><g fill="none" stroke="#94A0AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="48" cy="34" r="16.5"/><path d="M18.5 84c1.8-15.6 12.8-24.6 29.5-24.6S75.7 68.4 77.5 84"/><path d="M39 75c2.6 3.6 6 5.4 9 5.4s6.4-1.8 9-5.4" opacity=".5"/></g></svg>`);
+
 function resultRowHTML({ meta, value, color, sub = "", tag = "", id = "" }) {
   const photo = (S.leaders && S.leaders[normId(id)]) || "";
-  const img = photo || meta.logo || "";
-  return `<article class="rcard${photo ? " has-photo" : ""}" style="--c:${color}">
-    <span class="rcard-face" style="--c:${color}"><img src="${esc(img)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('nologo');this.remove()"><b>${esc(initials(meta.name))}</b></span>
+  const img = photo || LEADER_PLACEHOLDER;
+  return `<article class="rcard ${photo ? "has-photo" : "is-placeholder"}" style="--c:${color}">
+    <span class="rcard-face" style="--c:${color}"><img src="${esc(img)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}';this.closest('.rcard').classList.replace('has-photo','is-placeholder')"><b>${esc(initials(meta.name))}</b></span>
     <b class="rcard-num num">${r1(value)}</b>
     <strong title="${esc(meta.name)}">${esc(meta.name)}</strong>
     ${sub ? `<small>${esc(sub)}</small>` : ""}
@@ -878,7 +882,7 @@ function renderDemography() {
         <th style="text-align:start;padding:4px 2px">גוש</th>
         <th style="text-align:end;padding:4px 2px">2022</th>
         <th style="text-align:end;padding:4px 2px">2026</th>
-        <th style="text-align:end;padding:4px 2px">שינוי (נק׳ אחוז)</th></tr></thead>
+        <th style="text-align:end;padding:4px 2px">שינוי</th></tr></thead>
       <tbody>${order.map(c => {
         const s0 = share(base, c), s1 = share(now, c), d = s1 - s0;
         const dtag = (t, val) => `<span dir="ltr" style="color:${t > 0.049 ? "#1F6349" : t < -0.049 ? "#8E241A" : "var(--ink-3)"}">${t > 0.049 ? "+" : t < -0.049 ? "−" : "±"}${val}</span>`;
@@ -913,7 +917,7 @@ function renderDemography() {
       <div class="pseats num" style="color:${s.color}">${r1(sh1)}<span style="font-size:.46em;font-weight:700">%</span>
         <span dir="ltr" style="display:block;font-family:var(--sans);font-size:.58rem;font-weight:700;color:var(--ink-3)">ב־2022: ${r1(sh0)}%</span></div>
     </div>`).join("")}</div>
-    <p class="sector-verdict"><b>הקבוצה הגדולה ביותר בקלפי</b> היא ${esc(big.s.name)} — ${r1(big.sh1)}% מכלל המצביעים. אבל מאזן הכוח זז: ל${esc(grew.s.name)} פריון גבוה (${r1(grew.g * 100)}% גידול לשנה) ואחוז הצבעה של ${r1(grew.t * 100)}%, ולכן חלקם בקלפי עולה מ־<b>${r1(grew.sh0)}%</b> ל־<b>${r1(grew.sh1)}%</b> עד ${D.meta.targetYear} — <b>+${r1(grew.d)} נקודות</b>. ${esc(shrank.s.name)}, לעומת זאת, יורדים מ־${r1(shrank.sh0)}% ל־${r1(shrank.sh1)}% (${r1(shrank.d)} נקודות) בשל גידול איטי${shrank.s.id === "hiloni" ? " ומאזן הגירה שלילי" : ""}. זו כל התזוזה שהמודל למעלה מתרגם לאחוזי תמיכה בגושים.</p>`;
+    <p class="sector-verdict"><b>הקבוצה הגדולה ביותר בקלפי</b> היא ${esc(big.s.name)} — ${r1(big.sh1)}% מכלל המצביעים. אבל מאזן הכוח זז: ל${esc(grew.s.name)} פריון גבוה (${r1(grew.g * 100)}% גידול לשנה) ואחוז הצבעה של ${r1(grew.t * 100)}%, ולכן חלקם בקלפי עולה מ־<b>${r1(grew.sh0)}%</b> ל־<b>${r1(grew.sh1)}%</b> עד ${D.meta.targetYear} — עלייה של <b>${r1(grew.d)} נקודות אחוז</b>. ${esc(shrank.s.name)}, לעומת זאת, יורדים מ־${r1(shrank.sh0)}% ל־${r1(shrank.sh1)}% (${r1(Math.abs(shrank.d))} נקודות אחוז פחות) בשל גידול איטי${shrank.s.id === "hiloni" ? " ומאזן הגירה שלילי" : ""}. זו כל התזוזה שהמודל למעלה מתרגם לאחוזי תמיכה בגושים.</p>`;
 
   renderDemoControls();
 }
@@ -1188,8 +1192,17 @@ function routeFromHash() {
 /* ============================================================
    13. אירועים
    ============================================================ */
+function syncMastheadHeight() {
+  const m = $(".masthead");
+  if (m) document.documentElement.style.setProperty("--masthead-h", m.offsetHeight + "px");
+}
+
 function wire() {
   window.addEventListener("hashchange", routeFromHash);
+  const mh = $(".masthead");
+  if (mh && window.ResizeObserver) new ResizeObserver(syncMastheadHeight).observe(mh);
+  syncMastheadHeight();
+  window.addEventListener("resize", syncMastheadHeight);
 
   $$("[data-mode]").forEach(b => b.addEventListener("click", () => {
     S.mode = b.dataset.mode;

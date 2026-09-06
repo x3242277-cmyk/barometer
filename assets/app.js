@@ -327,11 +327,15 @@ function structuralFix(raw) {
 
 function forecast(mode) {
   const ids = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
-  const w = s => mode === "weighted" ? firmScore(s.meta) / 100 : 1;
+  const w = s => mode !== "simple" ? firmScore(s.meta) / 100 : 1;
   const W = S.series.reduce((sum, s) => sum + w(s), 0);
   const raw = Object.fromEntries(ids.map(id => [id, S.series.reduce((sum, s) => sum + (s.parties[id] || 0) * w(s), 0) / W]));
   const fix = { parties: { ...raw }, added: 0 };
   const blocs = Object.fromEntries(Object.keys(BLOCS).map(al => [al, S.series.reduce((sum, s) => sum + s.blocs[al] * w(s), 0) / W]));
+  if (mode === 'scenario') {
+    const scenario = scenarioForecast(raw, S.scenarioOptions);
+    return { raw, parties: scenario.parties, blocs, fix, scenario };
+  }
   return { raw, parties: fix.parties, blocs, fix };
 }
 
@@ -393,13 +397,14 @@ function renderHome() {
 
 
   $("#gauge-svg").innerHTML = "";
-  $("#gauge-mode").textContent = S.mode === "weighted" ? "ממוצע משוקלל" : "ממוצע פשוט";
+  $("#gauge-mode").textContent = S.mode === 'scenario' ? 'תרחיש 8 + 11' : S.mode === "weighted" ? "ממוצע משוקלל" : "ממוצע פשוט";
   $("#gauge-read").innerHTML = order.map(k =>
     `<div><b style="color:${BLOCS[k].color}">${blocSeats[k]}</b><span>${esc(BLOCS[k].he)}</span></div>`).join("");
   $("#gauge-verdict").textContent = "החלוקה היא לפי שיוך הרשימות במאגר; היא אינה תחזית להרכב קואליציה. רוב בכנסת דורש 61 מושבים.";
 
   $("#bloc-members").innerHTML = order.map(k => `<details><summary>${esc(BLOCS[k].he)} · ${blocSeats[k]} מנדטים</summary><p>${Object.keys(seats).filter(id => partyMeta(id).alignment === k).map(id => esc(partyMeta(id).name)).join(" · ")}</p></details>`).join("");
   renderForecastOverview(est, seats);
+  renderScenarioPanel(est);
   // stats
   const calN = S.series.filter(s => s.meta.calibrated).length;
   $("#home-stats").innerHTML = [
@@ -432,7 +437,7 @@ function renderHome() {
       <div style="color:var(--ink-3);font-size:.68rem">מתוך 100</div></div></div>
     <p style="margin:12px 0 0;color:var(--ink-2);font-size:.85rem">מפרסם ב־${esc(tm.outlets.join(", "))}.</p>`;
 
-  $("#fix-box").innerHTML = '<p>הממוצע מבוסס על הסקרים שבחלון הזמן. לא מתווספים מנדטים למפלגה מסוימת ולא מוחלת רצפת מנדטים.</p><a class="src" href="#/method">שיטת החישוב וההנחות ←</a>';
+  $("#fix-box").innerHTML = (est.scenario ? '<p>נבחר תרחיש: ש״ס 11 ויהדות התורה 8, עם תיקוני גושים. אלה הנחות מפעיל האתר. הממוצע המקורי זמין בכפתור משוקלל אמינות.</p>' : '<p>הממוצע מבוסס על הסקרים שבחלון הזמן. במצב זה אין רצפת מנדטים או תיקונים ייעודיים למפלגות.</p>') + '<a class="src" href="#/method">שיטת החישוב וההנחות ←</a>';
 
   // party rows
   /* שורה עליונה: ימין וחרדים. שורה תחתונה: מרכז–שמאל וערבים. בתוך כל שורה —
@@ -525,6 +530,8 @@ function renderPolls() {
   $("#poll-count").textContent = `${new Set(rows.map(outletKey)).size} כלי תקשורת · ${rows.length} סקרים בסינון`;
 
   renderPollCards(rows, polls);
+  renderIconFilters();
+  renderPartyProfile(rows);
   renderPartyTrend(rows);
   renderFirmCards();
 }
@@ -847,7 +854,7 @@ function demoParams() {
 }
 
 function runDemoModel(years) {
-  const D = S.demo, P = demoParams();
+  const D = S.demo, P = years === 0 ? Object.fromEntries(S.demo.sectors.map(s=>[s.id,{growth:s.growth,turnout:s.turnout}])) : demoParams();
   const base = Object.fromEntries(D.sectors.map(s => [s.id, s.turnout]));
   const votes = {};
   D.parties2022.forEach(p => {
@@ -879,111 +886,10 @@ const blocSeats = m => largestRemainder(Object.fromEntries(
 const BLOC_LABEL = { right: "ימין", center: "שמאל", haredi: "חרדים", arab: "ערבים" };
 
 function renderDemography() {
-  const D = S.demo, P = demoParams(), years = D.meta.years;
-  const now = runDemoModel(years), base = runDemoModel(0);
-  const order = ["right", "haredi", "arab", "center"];
-  const share = (m, c) => 100 * m.campVotes[c] / m.campTotal;
-  const shares = order.map(c => {
-    const s0 = share(base, c), s1 = share(now, c), d = s1 - s0;
-    return { id: c, color: D.camps[c].color, label: BLOC_LABEL[c], s0, s1, d };
-  });
-  const bloc = share(now, "right") + share(now, "haredi");
-  const bloc22 = share(base, "right") + share(base, "haredi");
-  const left = share(now, "center") + share(now, "arab");
-  const left22 = share(base, "center") + share(base, "arab");
-  const dRight = bloc - bloc22, dLeft = left - left22;
-  const deltaTag = d => `<span dir="ltr" class="${d > 0.049 ? "pos" : d < -0.049 ? "neg" : "flat"}">${d > 0.049 ? "+" : d < -0.049 ? "−" : "±"}${r1(Math.abs(d))}</span>`;
-  const swingRow = (name, sub, s0, s1) => {
-    const d = s1 - s0, grew = d >= 0;
-    return `<div class="bloc-swing-row" style="--c:${grew ? D.camps.right.color : D.camps.center.color}">
-      <span>גוש ${name} <em>(${sub})</em></span>
-      <b class="num" dir="ltr">${r1(s0)}% <span class="arrow">→</span> ${r1(s1)}%</b>
-      <strong class="${grew ? "pos" : "neg"}">${grew ? "▲ גדל" : "▼ הצטמק"}</strong>
-    </div>`;
-  };
-  const blocSwing = `<div class="bloc-swing">
-    ${swingRow("הימין", "ימין + חרדים", bloc22, bloc)}
-    ${swingRow("השמאל", "שמאל + ערבים", left22, left)}
-  </div>`;
-
-  $("#demo-share-chart").innerHTML = `<div class="share-head">
-      <div><p class="kicker" style="margin:0">מודל מול מודל</p><h3>2022 מול 2026</h3></div>
-      <p>גוש הימין: <b dir="ltr">${r1(bloc22)}% → ${r1(bloc)}%</b></p>
-    </div>
-    ${blocSwing}
-    <div class="compare-stacks" role="img" aria-label="השוואת אחוזי תמיכה לפי גוש בין 2022 ל-2026">
-      <div class="compare-stack-row">
-        <b>2022</b>
-        <div class="share-stack">
-          ${shares.map(x => `<span style="--w:${x.s0.toFixed(3)}%;--c:${x.color}" title="${esc(x.label)} ${r1(x.s0)}%">${r1(x.s0)}%</span>`).join("")}
-        </div>
-      </div>
-      <div class="compare-stack-row strong">
-        <b>2026</b>
-        <div class="share-stack">
-          ${shares.map(x => `<span style="--w:${x.s1.toFixed(3)}%;--c:${x.color}" title="${esc(x.label)} ${r1(x.s1)}%">${r1(x.s1)}%</span>`).join("")}
-        </div>
-      </div>
-    </div>
-    <div class="share-rows">
-      ${shares.map(x => `<div class="share-row" style="--c:${x.color};--w:${x.s1.toFixed(3)}%">
-        <span><i></i>${esc(x.label)}</span>
-        <b class="num">${r1(x.s1)}%</b>
-        <em>ב־2022: ${r1(x.s0)}% · ${deltaTag(x.d)}</em>
-        <strong><i></i></strong>
-      </div>`).join("")}
-    </div>`;
-  $("#demo-legend").innerHTML = order.map(c =>
-    `<span style="display:inline-flex;align-items:center;gap:8px;font-size:.83rem;font-weight:600"><i style="width:11px;height:11px;border-radius:3px;background:${D.camps[c].color}"></i><b class="num">${r1(share(now, c))}%</b> ${esc(BLOC_LABEL[c])} <span dir="ltr" style="color:var(--ink-3)">(${share(now, c) - share(base, c) >= 0 ? "+" : ""}${r1(share(now, c) - share(base, c))})</span></span>`).join("");
-
-  const totalGrowth = 100 * (now.campTotal / base.campTotal - 1);
-  $("#demo-delta").innerHTML = `<div class="delta-heads">
-      <div><b class="num" style="color:${D.camps.right.color}">${r1(bloc)}%</b><span>גוש הימין <span dir="ltr" class="${dRight >= 0 ? "pos" : "neg"}">${dRight >= 0 ? "+" : "−"}${r1(Math.abs(dRight))}</span></span></div>
-      <div><b class="num" style="color:${D.camps.center.color}">${r1(left)}%</b><span>גוש השמאל <span dir="ltr" class="${dLeft >= 0 ? "pos" : "neg"}">${dLeft >= 0 ? "+" : "−"}${r1(Math.abs(dLeft))}</span></span></div></div>
-    <p style="margin:6px 0 0;color:var(--ink-3);font-size:.76rem">ב־2022: ימין ${r1(bloc22)}% · שמאל ${r1(left22)}%</p>
-    <table style="width:100%;min-width:0;margin-top:16px;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums">
-      <thead><tr style="color:var(--ink-3);font-size:.72rem;font-weight:700">
-        <th style="text-align:start;padding:4px 2px">גוש</th>
-        <th style="text-align:end;padding:4px 2px">2022</th>
-        <th style="text-align:end;padding:4px 2px">2026</th>
-        <th style="text-align:end;padding:4px 2px">שינוי</th></tr></thead>
-      <tbody>${order.map(c => {
-        const s0 = share(base, c), s1 = share(now, c), d = s1 - s0;
-        const dtag = (t, val) => `<span dir="ltr" style="color:${t > 0.049 ? "#1F6349" : t < -0.049 ? "#8E241A" : "var(--ink-3)"}">${t > 0.049 ? "+" : t < -0.049 ? "−" : "±"}${val}</span>`;
-        return `<tr style="border-top:1px solid var(--rule-2)">
-          <td style="padding:7px 2px"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${D.camps[c].color};margin-inline-end:6px;vertical-align:middle"></i>${esc(BLOC_LABEL[c])}</td>
-          <td style="text-align:end;padding:7px 2px;color:var(--ink-3)">${s0.toFixed(1)}%</td>
-          <td style="text-align:end;padding:7px 2px;font-weight:700">${s1.toFixed(1)}%</td>
-          <td style="text-align:end;padding:7px 2px">${dtag(d, r1(Math.abs(d)))}</td></tr>`;
-      }).join("")}</tbody>
-    </table>
-    <p style="margin:14px 0 0;color:var(--ink-2);font-size:.82rem">העמוד הזה בכוונה לא הופך את התוצאה למפת מנדטים. הוא מראה רק את שינוי יחסי הכוח באחוזי תמיכה, כדי לבודד את האפקט הדמוגרפי בלי אחוז חסימה, עודפים או עיגולי חלוקה.</p>
-    <p style="margin:10px 0 0;color:var(--ink-3);font-size:.78rem">סך הקולות הכשרים במודל גדל ב־<b>${r1(totalGrowth)}%</b> ב־${years} שנים — אך לא באופן אחיד בין הגושים, וזה כל הסיפור.</p>`;
-
-  const secVoters = (s, yr) => s.eligible2022 * Math.pow(1 + P[s.id].growth, yr) * P[s.id].turnout;
-  const tot0 = D.sectors.reduce((a, s) => a + secVoters(s, 0), 0);
-  const totN = D.sectors.reduce((a, s) => a + secVoters(s, years), 0);
-  const secRows = D.sectors.map(s => ({
-    s, g: P[s.id].growth, t: P[s.id].turnout,
-    sh0: 100 * secVoters(s, 0) / tot0,
-    sh1: 100 * secVoters(s, years) / totN
-  })).map(r => ({ ...r, d: r.sh1 - r.sh0 }));
-  const maxSh = Math.max(...secRows.map(r => r.sh1));
-  const grew = [...secRows].sort((a, b) => b.d - a.d)[0];
-  const shrank = [...secRows].sort((a, b) => a.d - b.d)[0];
-  const big = [...secRows].sort((a, b) => b.sh1 - a.sh1)[0];
-  $("#demo-sectors").innerHTML = `<div class="parties">${secRows.map(({ s, g, t, sh0, sh1, d }) => `
-    <div class="prow" style="--c:${s.color}">
-      <span class="orglogo" style="background:${s.color};color:#fff;border:0">${esc(initials(s.name))}</span>
-      <div style="min-width:0"><div class="pname">${esc(s.name)}</div>
-        <div class="psub">${fmt(s.eligible2022)} בעלי זכות בחירה · ${r1(t * 100)}% מהם מצביעים · +${r1(g * 100)}% גידול לשנה</div></div>
-      <div class="pbar" style="--c:${s.color};--w:${(sh1 / maxSh * 100).toFixed(1)}%"><i></i></div>
-      <div class="pseats num" style="color:${s.color}">${r1(sh1)}<span style="font-size:.46em;font-weight:700">%</span>
-        <span dir="ltr" style="display:block;font-family:var(--sans);font-size:.58rem;font-weight:700;color:var(--ink-3)">ב־2022: ${r1(sh0)}%</span></div>
-    </div>`).join("")}</div>
-    <p class="sector-verdict"><b>הקבוצה הגדולה ביותר בקלפי</b> היא ${esc(big.s.name)} — ${r1(big.sh1)}% מכלל המצביעים. אבל מאזן הכוח זז: ל${esc(grew.s.name)} פריון גבוה (${r1(grew.g * 100)}% גידול לשנה) ואחוז הצבעה של ${r1(grew.t * 100)}%, ולכן חלקם בקלפי עולה מ־<b>${r1(grew.sh0)}%</b> ל־<b>${r1(grew.sh1)}%</b> עד ${D.meta.targetYear} — עלייה של <b>${r1(grew.d)} נקודות אחוז</b>. ${esc(shrank.s.name)}, לעומת זאת, יורדים מ־${r1(shrank.sh0)}% ל־${r1(shrank.sh1)}% (${r1(Math.abs(shrank.d))} נקודות אחוז פחות) בשל גידול איטי${shrank.s.id === "hiloni" ? " ומאזן הגירה שלילי" : ""}. זו כל התזוזה שהמודל למעלה מתרגם לאחוזי תמיכה בגושים.</p>`;
-
   renderDemoControls();
+  renderDemoComparison();
+  const P=demoParams();
+  $('#demo-sectors').innerHTML=`<div class="tablewrap card"><table><caption>בעלי זכות בחירה ושיעורי השתתפות · הנחות המודל</caption><tr><th>קבוצה</th><th>2022</th><th>2026 בתרחיש</th><th>גידול שנתי</th><th>הצבעה</th></tr>${S.demo.sectors.map(s=>`<tr><th>${esc(s.name)}</th><td>${fmt(s.eligible2022)}</td><td>${fmt(s.eligible2022*Math.pow(1+P[s.id].growth,S.demo.meta.years))}</td><td>${pct(P[s.id].growth*100)}</td><td>${pct(P[s.id].turnout*100)}</td></tr>`).join('')}</table></div>`;
 }
 
 function renderDemoControls() {
@@ -1315,12 +1221,13 @@ function wire() {
     if (g && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); S.selectedLoc = Number(g.dataset.loc); renderLocDetail(); }
   });
 
-  $("#demo-controls").addEventListener("input", e => {
+  $("#demo-controls").addEventListener("change", e => {
     const el = e.target; if (!el.dataset.sec) return;
     const sec = el.dataset.sec, kind = el.dataset.kind, v = Number(el.value);
     S.demoOverrides[sec] ||= {};
     S.demoOverrides[sec][kind] = kind === "growth" ? v / 100 : v / 100;
     renderDemography();
+    $(`#demo-controls [data-sec="${CSS.escape(sec)}"][data-kind="${CSS.escape(kind)}"]`)?.focus();
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
 
@@ -1371,12 +1278,13 @@ async function boot() {
     S.calibrations = S.elections.map(e => {
       const attributed = e.data.polls.filter(p => p.firm).length;
       const missing = e.data.polls.length - attributed;
-      return { year: e.year, election: e.election, status: "active", polls: attributed,
+      return { year: e.year, election: e.election, status: e.year === 2021 ? 'pending' : "active", polls: attributed,
         note: missing ? `${attributed} מתוך ${e.data.polls.length} סקרים משויכים למכון` : "כל הסקרים משויכים למכון" };
     });
     const win = inWindow(cur.polls, cur.generatedAt);
     S.cur = { ...cur, polls: win.polls };
-    S.stats = combineCalibrations(S.elections);
+    // 2021 attribution was disputed; keep the archive visible but quarantine its weights until official reconciliation.
+    S.stats = combineCalibrations(S.elections.filter(e=>e.year!==2021));
     S.counterStats = scoreFirms(hist, COUNTERFACTUAL);
     S.series = buildSeries(S.cur.polls);
 
@@ -1462,7 +1370,7 @@ function harediState() {
   const H = S.haredi, D = S.demo;
   const sec = D.sectors.find(x => x.id === "haredi");
   const years = D.meta.years;
-  const eligible2026 = sec.eligible2022 * Math.pow(1 + sec.growth, years);
+  const eligible2026 = sec.eligible2022 * Math.pow(1 + (S.harGrowth ?? sec.growth * 100) / 100, years);
   const turnout = (S.harTurnout ?? H.turnout.harediCities2022) / 100;
   const loyalty = (S.harLoyalty ?? H.loyalty[0].harediLists) / 100;
   const model = runDemoModel(years);
@@ -1484,7 +1392,7 @@ function renderHaredi() {
       p: `<b>${H.population.shareOfPopulation}%</b> מהאוכלוסייה ו־<b>${H.population.shareOfJews}%</b> מהיהודים — לעומת ${H.population.shareOfJews2009}% ב־2009. גדלה ב־<b>${H.population.growth}%</b> בשנה, פי ${(H.population.growth / H.population.growthNonHarediJews).toFixed(1)} מהיהודים הלא־חרדים. גיל חציוני ${H.population.medianAge} מול ${H.population.medianAgeOtherJews}.`,
       s: H.population.src },
     { c: "#17457F", big: pct(H.turnout.harediCities2022), unit: "שיעור הצבעה",
-      p: `בערים החרדיות (${H.turnout.cities.join(", ")}), לעומת ${pct(H.turnout.national2022)} ארצי ו־${pct(H.turnout.arab2022)} ביישובים הערביים. ב־2021 זה היה ${pct(H.turnout.harediCities2021)} — הכיוון הוא למעלה, לא למטה.`,
+      p: `בערים החרדיות (${H.turnout.cities.join(", ")}), לעומת ${pct(H.turnout.national2022)} ארצי ו־${pct(H.turnout.arab2022)} ביישובים הערביים. ב־2021 נמדד ${pct(H.turnout.harediCities2021)}. אלה נתונים משתי מערכות בחירות.`,
       s: H.turnout.src },
     { c: "#B8862B", big: pct(H.loyalty[0].harediLists), unit: "מצביעים לרשימות החרדיות",
       p: `מכלל המצביעים החרדים ב־2022. רק ${pct(H.loyalty[0].religiousZionism)} הצביעו לציונות הדתית. ב־2021 המספר היה אפילו גבוה יותר — ${pct(H.loyalty[1].harediLists)}, מתוכם ${pct(H.loyalty[1].utj)} לג׳ ו־${pct(H.loyalty[1].shas)} לש״ס.`,
@@ -1507,7 +1415,7 @@ function renderHaredi() {
     <div class="calcline"><span>÷ מחיר מנדט (${fmt(st.cost)})</span><b class="num">${r1(st.seatsFromSector)} מנדטים</b></div>
     <div class="calcline"><span>+ מצביעי ש״ס שאינם חרדים (מסורתיים ודתיים)</span><b class="num">${r1(st.shasOutside)} מנדטים</b></div>
     <div class="calcout"><b class="num">${r1(st.total)}</b><span>מנדטים לש״ס וליהדות התורה — לפני שהסתכלנו על סקר אחד</span></div>
-    <label class="slider"><span>שיעור הצבעה במגזר<b class="num">${pct(st.turnout * 100)}</b></span>
+    <label class="slider"><span>גידול שנתי של בעלי זכות הבחירה<b>${r1(S.harGrowth ?? st.sec.growth*100)}%</b></span><input id="har-growth" type="range" min="0" max="6" step="0.1" value="${S.harGrowth ?? st.sec.growth*100}"></label><label class="slider"><span>שיעור הצבעה במגזר<b class="num">${pct(st.turnout * 100)}</b></span>
       <input type="range" min="45" max="95" step="0.5" value="${(st.turnout * 100).toFixed(1)}" id="har-turnout" style="accent-color:#17457F"></label>
     <label class="slider"><span>נאמנות לרשימות החרדיות<b class="num">${pct(st.loyalty * 100)}</b></span>
       <input type="range" min="55" max="95" step="0.5" value="${(st.loyalty * 100).toFixed(1)}" id="har-loyalty" style="accent-color:#B8862B"></label>
@@ -1521,7 +1429,7 @@ function renderHaredi() {
   const needLoyalty = 100 * (needSector * st.cost) / (st.eligible2026 * st.turnout);
   const floors = H.meta.floors.shas + H.meta.floors.utj;
   const modelSum = (st.model.seats.shas || 0) + (st.model.seats.utj || 0);
-  $("#haredi-verdict").innerHTML = `<p class="kicker">השוואת הנחות</p><h3>תרחיש דמוגרפי מול ממוצע הסקרים</h3><p>ממוצע הסקרים לש״ס וליהדות התורה: <b>${r1(pollSum)}</b> מנדטים. התרחיש לפי ההנחות שנבחרו: <b>${r1(st.total)}</b> מנדטים.</p><p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. התרחיש אינו משנה את התחזית הראשית, ואין בה רצפת מנדטים.</p>`;
+  $("#haredi-verdict").innerHTML = `<p class="kicker">השוואת הנחות</p><h3>תרחיש דמוגרפי מול ממוצע הסקרים</h3><p>ממוצע הסקרים לש״ס וליהדות התורה: <b>${r1(pollSum)}</b> מנדטים. התרחיש לפי ההנחות שנבחרו: <b>${r1(st.total)}</b> מנדטים.</p><p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. תרחיש 8 + 11 בעמוד הראשי הוא הנחה נפרדת; המחשבון כאן אינו מוכיח רצפת מנדטים.</p>`;
 
   /* היסטוריה */
   renderHaredHistory();
@@ -1542,16 +1450,16 @@ function renderHaredi() {
       <span>${k === "shas" ? "ש״ס" : "יהדות התורה"}</span>
       <i><b style="--w:${clamp(mean / 12 * 100)}%"></b></i>
       <span class="v" dir="ltr">${r1(mean)} → ${act}</span></div>`;
-  }).join("") + `<p style="margin:10px 0 0;color:var(--ink-2);font-size:.85rem">ממוצע 39 סקרי הכיול מול התוצאה בפועל. ש״ס פוספסה ב־<b>${r1(11 - avg(S.hist.polls.map(p => p.p.shas)))}</b> מנדטים; ג׳ נמדדה במדויק. הפער כולו התרכז במפלגה אחת — וזה בדיוק מה שקורה כשמדגם קטן מפספס תת־קבוצה.</p>`;
+  }).join("") + `<p style="margin:10px 0 0;color:var(--ink-2);font-size:.85rem">ממוצע ${S.hist.polls.length} סקרי הכיול מול התוצאה בפועל. ש״ס פוספסה ב־<b>${r1(11 - avg(S.hist.polls.map(p => p.p.shas)))}</b> מנדטים; ג׳ נמדדה במדויק. הפער ההיסטורי אינו מוכיח מה תהיה הטעות בבחירות הבאות.</p>`;
 
   $("#haredi-sources").innerHTML = Object.values(H.sources).map(x =>
     `<a class="card pad" href="${esc(x.url)}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;justify-content:space-between;gap:14px;align-items:center">
       <span style="font-size:.9rem;font-weight:600">${esc(x.name)}</span><span aria-hidden="true" style="color:var(--navy)">↗</span></a>`).join("");
 
   /* wiring */
-  const wire = (id, key) => $(id).addEventListener("input", e => { S[key] = Number(e.target.value); renderHaredi(); });
-  wire("#har-turnout", "harTurnout"); wire("#har-loyalty", "harLoyalty");
-  $("#har-reset").addEventListener("click", () => { S.harTurnout = null; S.harLoyalty = null; renderHaredi(); });
+  const wire = (id, key) => $(id).addEventListener("change", e => { S[key] = Number(e.target.value); renderHaredi(); $(id)?.focus(); });
+  wire("#har-growth", "harGrowth"); wire("#har-turnout", "harTurnout"); wire("#har-loyalty", "harLoyalty");
+  $("#har-reset").addEventListener("click", () => { S.harGrowth = null; S.harTurnout = null; S.harLoyalty = null; renderHaredi(); });
 }
 
 function renderHaredHistory() {

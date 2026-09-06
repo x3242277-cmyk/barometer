@@ -12,8 +12,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-const css = await rd("assets/styles.css");
-const js = (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js"));
+let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css"));
+for (const motif of ['polls','community','growth','ballot']) {
+  const file = `background-${motif}.svg`;
+  css = css.replaceAll(file, 'data:image/svg+xml;base64,' + Buffer.from(await rd('assets/'+file)).toString('base64'));
+}
+const js = (await rd("assets/scenario.js")) + "\n" + (await rd("assets/upgrade.js")) + "\n" + (await rd("assets/analytics.js")) + "\n" + (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js"));
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
 const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
@@ -42,6 +46,8 @@ const scriptTag = `<script>\n${js}\n<\/script>`;
 
 // גוף העמוד בלבד
 let body = html.slice(html.indexOf("<body>") + 6, html.lastIndexOf("</body>"));
+// חותמות הגרסה (?v=...) נועדו לקאש של האתר החי; בקובץ היחיד הכול מוטמע ואין להן מקום
+body = body.replace(/(assets\/[^"'?\s]+)\?v=[0-9a-f]+/g, "$1");
 body = body.replaceAll("assets/logo.svg", logoDataUri);
 const title = "ברומטר";
 const fullTitle = "ברומטר · מדד הסקרים והאמינות";

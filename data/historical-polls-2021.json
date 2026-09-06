@@ -1,5 +1,8 @@
 {
   "meta": {
+    "verificationStatus": "pending-official-reconciliation",
+    "verificationNote": "6.9.2026: שיוכי סקרי 2021 טרם אומתו מול קובצי ועדת הבחירות. הארכיון מוצג כמקור משני ואינו משמש למשקלי התחזית הראשית עד השלמת הבדיקה.",
+    "officialArchiveAttempted": "https://bechirot24.bechirot.gov.il/election/Decisions/Pages/Surveys.aspx",
     "election": "הכנסת ה־24",
     "electionDate": "2021-03-23",
     "note": "סקרי 30 הימים שלפני הבחירות, מאותו מקור ובאותו חלון שבו מכויל 2022.",

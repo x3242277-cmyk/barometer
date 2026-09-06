@@ -7,6 +7,7 @@ const element = id => {
 const context = vm.createContext({console, Intl, Date, setInterval(){}, clearInterval(){}});
 vm.runInContext(fs.readFileSync('assets/explore.js','utf8'),context);
 vm.runInContext(fs.readFileSync('assets/app.js','utf8'),context);
+vm.runInContext('renderIconFilters=()=>{};renderPartyProfile=()=>{};',context);
 context.document = {querySelector:element};
 context.fixtures = Object.fromEntries(['current-polls','historical-polls','pollsters'].map(f=>[f,JSON.parse(fs.readFileSync('data/'+f+'.json','utf8'))]));
 vm.runInContext(`S.cur=fixtures['current-polls'];S.hist=fixtures['historical-polls'];S.firms=fixtures.pollsters;S.stats=scoreFirms(S.hist);S.series=buildSeries(S.cur.polls);renderFirmCards=()=>{};renderPolls();`,context);

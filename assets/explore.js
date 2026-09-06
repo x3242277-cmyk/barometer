@@ -151,7 +151,7 @@ function wireExploration() {
     if(select){S.focusParty=S.focusParty===select.dataset.selectParty?'':select.dataset.selectParty;renderPolls();$('#poll-party').focus();}
     const focus=e.target.closest('[data-focus-party]');
     if(focus){S.focusParty=focus.dataset.focusParty;S.trendParty=S.focusParty;location.hash='#/polls';}
-    if(e.target.closest('.nav-menu a'))$('.nav-more').open=false;
+    
   });
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.nav-more').open){$('.nav-more').open=false;$('.nav-more summary').focus();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.nav-more')?.open){$('.nav-more').open=false;$('.nav-more summary').focus();}});
 }

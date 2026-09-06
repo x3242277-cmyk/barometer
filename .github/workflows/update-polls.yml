@@ -1,23 +1,33 @@
-name: עדכון סקרים יומי
+name: עדכון סקרים
+
 on:
   schedule:
-    - cron: "0 5 * * *"      # 08:00 שעון ישראל (05:00 UTC)
-  workflow_dispatch:          # אפשר גם להריץ ידנית מלשונית Actions
+    # 09:00 ו-21:00 שעון ישראל. GitHub מריץ ב-UTC ובלי מעבר שעון —
+    # הערכים כאן מכוונים לשעון קיץ (IDT, UTC+3). בחורף (UTC+2) זה יוצא 08:00 ו-20:00.
+    - cron: "0 6 * * *"
+    - cron: "0 18 * * *"
+  workflow_dispatch:            # הרצה ידנית מלשונית Actions
+
 permissions:
   contents: write
+
+concurrency:
+  group: update-polls
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: "20" }
-      - name: שליפת סקרים חדשים
+        with: { node-version: "22" }
+      - name: שליפת סקרים חדשים מ-skarim.org
         run: node scripts/update-polls.mjs
       - name: קומיט אם השתנה משהו
         run: |
           git config user.name  "barometer-bot"
           git config user.email "bot@users.noreply.github.com"
           git add data/current-polls.json data/polls-archive.json
-          git diff --staged --quiet || git commit -m "עדכון אוטומטי של סקרי 14 הימים האחרונים"
+          git diff --staged --quiet || git commit -m "עדכון אוטומטי של הסקרים ($(date -u +%d.%m.%Y\ %H:%M) UTC)"
           git push

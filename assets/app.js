@@ -17,7 +17,7 @@ const heDate = iso => { const d = new Date(iso); return isNaN(d) ? iso : d.toLoc
 
 const BLOCS = {
   Right:   { he: "ימין",  short: "ימין",  color: "#17457F" },
-  Left:    { he: "שמאל",  short: "שמאל",  color: "#DE7A2C" },
+  Left:    { he: "שמאל",  short: "שמאל",  color: "#C0392B" },
   Haredi:  { he: "חרדים", short: "חרדים", color: "#5B4B8A" },
   Arabs:   { he: "ערבים", short: "ערבים", color: "#2E8467" },
   Unknown: { he: "לא משויך", short: "אחר", color: "#96A0AB" }
@@ -98,7 +98,7 @@ function gaugeSVG(value, max = 120, opts = {}) {
   const [b61x, b61y] = pt(a61, R + 30);
   const [nx, ny] = pt(av, 112);
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="מד הגושים: ${Math.round(value)} מנדטים לימין ולחרדים">
-    ${arc(Math.PI, a61, R, 16, "#DE7A2C")}
+    ${arc(Math.PI, a61, R, 16, "#C0392B")}
     ${arc(a61, 0, R, 16, "#17457F")}
     ${ticks}
     <text x="${e0x.toFixed(1)}" y="${(e0y + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="#6C7885" font-weight="700">0</text>
@@ -458,7 +458,7 @@ function renderPolls() {
     }).join("")}</tr>`;
   }).join("") || `<tr><td colspan="${ids.length+1}" class="empty">לא נמצאו סקרים לפי הסינון.</td></tr>`;
   $("#polls-table").innerHTML = head + `<tbody>${body}</tbody>`;
-  const blocColor = x => { const al = alignOf(x); return al === "Haredi" || al === "Right" ? "#17457F" : al === "Left" ? "#DE7A2C" : al === "Arabs" ? "#2E8467" : "#96A0AB"; };
+  const blocColor = x => { const al = alignOf(x); return al === "Haredi" || al === "Right" ? "#17457F" : al === "Left" ? "#C0392B" : al === "Arabs" ? "#2E8467" : "#96A0AB"; };
   $("#polls-cards").innerHTML = rows.map(p => {
     const f = firmOf(p.sourceId);
     const prev = polls.filter(q => q.channelHebrewName === p.channelHebrewName && parsePollDate(q) < parsePollDate(p))
@@ -472,7 +472,7 @@ function renderPolls() {
     return `<article class="poll-result-card"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div><time>${esc(p.date)}</time></header>
       <div class="poll-blocs">
         <span style="--c:#17457F"><b>${bloc.right}</b> ימין וחרדים</span>
-        <span style="--c:#DE7A2C"><b>${bloc.left}</b> מרכז–שמאל</span>
+        <span style="--c:#C0392B"><b>${bloc.left}</b> מרכז–שמאל</span>
         <span style="--c:#2E8467"><b>${bloc.arab}</b> ערביות</span>
       </div>
       <div class="poll-bars">${shown.map(x => {
@@ -514,11 +514,11 @@ function renderTrend(polls) {
   const days = [...new Set(pts.map(p => p.t))].map(t =>
     `<text x="${x(t).toFixed(1)}" y="${H - 10}" font-size="10.5" fill="#6C7885" text-anchor="middle">${new Date(t).toLocaleDateString("he-IL", { day: "2-digit", month: "2-digit" })}</text>`).join("");
   $("#trend-box").innerHTML = `<svg class="spark" viewBox="0 0 ${W} ${H}" role="img" aria-label="מגמת הגושים בסקרים">
-      ${grid}${line("left", "#DE7A2C")}${line("right", "#17457F")}${line("haredi", "#5B4B8A")}${line("ar", "#2E8467")}${days}</svg>
+      ${grid}${line("left", "#C0392B")}${line("right", "#17457F")}${line("haredi", "#5B4B8A")}${line("ar", "#2E8467")}${days}</svg>
     <div class="legend" style="margin-top:6px">
       <span style="--c:#17457F;display:inline-flex;align-items:center;gap:8px"><i style="width:11px;height:11px;border-radius:3px;background:#17457F"></i>ימין</span>
       <span style="display:inline-flex;align-items:center;gap:8px"><i style="width:11px;height:11px;border-radius:3px;background:#5B4B8A"></i>חרדים</span>
-      <span style="display:inline-flex;align-items:center;gap:8px"><i style="width:11px;height:11px;border-radius:3px;background:#DE7A2C"></i>שמאל</span>
+      <span style="display:inline-flex;align-items:center;gap:8px"><i style="width:11px;height:11px;border-radius:3px;background:#C0392B"></i>שמאל</span>
       <span style="display:inline-flex;align-items:center;gap:8px"><i style="width:11px;height:11px;border-radius:3px;background:#2E8467"></i>ערבים</span>
       <span style="display:inline-flex;align-items:center;gap:8px"><i style="width:16px;height:0;border-top:2px dashed #141A21"></i>קו ה־61</span>
     </div>`;
@@ -574,7 +574,7 @@ function render2022() {
 
   $("#scen-cards").innerHTML = [
     { t: "גוש נתניהו", v: tb.netanyahu, c: "#17457F" },
-    { t: "הגוש היוצא", v: tb.outgoing, c: "#DE7A2C" },
+    { t: "הגוש היוצא", v: tb.outgoing, c: "#C0392B" },
     { t: "חד״ש–תע״ל", v: tb.outside, c: "#2E8467" }
   ].map(x => `<div class="card pad" style="border-top:4px solid ${x.c}">
       <p class="kicker" style="color:${x.c}">${esc(x.t)}</p>

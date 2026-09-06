@@ -458,14 +458,28 @@ function renderPolls() {
     }).join("")}</tr>`;
   }).join("") || `<tr><td colspan="${ids.length+1}" class="empty">לא נמצאו סקרים לפי הסינון.</td></tr>`;
   $("#polls-table").innerHTML = head + `<tbody>${body}</tbody>`;
+  const blocColor = x => { const al = alignOf(x); return al === "Haredi" || al === "Right" ? "#17457F" : al === "Left" ? "#DE7A2C" : al === "Arabs" ? "#2E8467" : "#96A0AB"; };
   $("#polls-cards").innerHTML = rows.map(p => {
     const f = firmOf(p.sourceId);
-    const parties = [...p.parties].sort((a,b) => b.mandates-a.mandates || a.name.localeCompare(b.name,'he'));
-    const max = Math.max(1,...parties.map(x=>x.mandates));
+    const prev = polls.filter(q => q.channelHebrewName === p.channelHebrewName && parsePollDate(q) < parsePollDate(p))
+      .sort((a, b) => parsePollDate(b) - parsePollDate(a))[0];
+    const prevVal = id => prev ? prev.parties.filter(x => normId(x.id) === normId(id)).reduce((n, x) => n + x.mandates, 0) : null;
+    const parties = [...p.parties].sort((a, b) => b.mandates - a.mandates || a.name.localeCompare(b.name, 'he'));
+    const shown = parties.filter(x => x.mandates > 0);
+    const max = Math.max(1, ...shown.map(x => x.mandates));
+    const bloc = { right: 0, left: 0, arab: 0 };
+    p.parties.forEach(x => { const al = alignOf(x); if (al === "Right" || al === "Haredi") bloc.right += x.mandates; else if (al === "Left") bloc.left += x.mandates; else if (al === "Arabs") bloc.arab += x.mandates; });
     return `<article class="poll-result-card"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div><time>${esc(p.date)}</time></header>
-      <div class="poll-chart-label"><span>מפלגה</span><span>מנדטים</span></div>
-      <div class="poll-bars">${parties.map(x => `<div class="poll-bar"><span title="${esc(x.name)}">${esc(x.name)}</span><i aria-hidden="true"><b style="width:${100*x.mandates/max}%"></b></i><strong>${x.mandates}</strong></div>`).join("")}</div>
-      <footer><span>סה״כ ${parties.reduce((n,x)=>n+x.mandates,0)} מנדטים</span><span>נתוני הסקר כפי שנשמרו במאגר</span></footer></article>`;
+      <div class="poll-blocs">
+        <span style="--c:#17457F"><b>${bloc.right}</b> ימין וחרדים</span>
+        <span style="--c:#DE7A2C"><b>${bloc.left}</b> מרכז–שמאל</span>
+        <span style="--c:#2E8467"><b>${bloc.arab}</b> ערביות</span>
+      </div>
+      <div class="poll-bars">${shown.map(x => {
+        const pv = prevVal(x.id), d = pv == null ? null : x.mandates - pv;
+        return `<div class="poll-bar" style="--c:${blocColor(x)}"><span title="${esc(x.name)}">${esc(x.name)}</span><i aria-hidden="true"><b style="width:${100 * x.mandates / max}%"></b></i><strong>${x.mandates}${d ? `<em class="${d > 0 ? "up" : "down"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</em>` : ""}</strong></div>`;
+      }).join("")}</div>
+      <footer><span>סה״כ ${p.parties.reduce((n, x) => n + x.mandates, 0)} מנדטים</span><span>${prev ? `המספרים הקטנים: שינוי מול סקר ${esc(p.channelHebrewName)} הקודם (${esc(prev.date)})` : `סקר ${esc(p.channelHebrewName)} הראשון בחלון`}</span></footer></article>`;
   }).join("") || '<p class="empty">לא נמצאו סקרים לפי הסינון. נסו לבחור את כל המכונים וכל הפרסומים.</p>';
   $("#polls-table-wrap").hidden = S.pollView !== "table";
   $("#polls-cards").hidden = S.pollView !== "cards";

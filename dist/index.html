@@ -585,13 +585,18 @@ footer a{color:#EBD9AE}
 .poll-result-card h3{font-family:var(--sans);font-size:1.1rem;margin:0}
 .poll-result-card header p{margin:4px 0 0;font-size:.82rem;color:var(--ink-3)}
 .poll-result-card time{font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--ink-2);white-space:nowrap;background:#f3f5f2;padding:6px 10px;border-radius:6px}
-.poll-chart-label{display:flex;justify-content:space-between;padding:18px 24px 8px;color:var(--ink-3);font-size:.7rem}
-.poll-bars{display:grid;gap:10px;padding:4px 24px 24px}
-.poll-bar{display:grid;grid-template-columns:minmax(105px,1.1fr) minmax(60px,1.6fr) 28px;align-items:center;gap:12px;min-height:25px}
+.poll-blocs{display:flex;flex-wrap:wrap;gap:8px;padding:16px 24px 6px}
+.poll-blocs span{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;color:var(--ink-2);font-weight:600}
+.poll-blocs span::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--c)}
+.poll-blocs b{font-family:var(--serif);font-size:1rem;color:var(--c);font-variant-numeric:tabular-nums}
+.poll-bars{display:grid;gap:10px;padding:8px 24px 22px}
+.poll-bar{display:grid;grid-template-columns:minmax(100px,1.05fr) minmax(56px,1.5fr) 52px;align-items:center;gap:12px;min-height:25px}
 .poll-bar>span{font-size:.84rem;line-height:1.35}
 .poll-bar>i{height:8px;background:#eef1ee;border-radius:2px;overflow:hidden}
-.poll-bar i b{display:block;height:100%;background:#527174;border-radius:2px}
-.poll-bar>strong{font-size:1rem;font-variant-numeric:tabular-nums;text-align:end;color:#263b40}
+.poll-bar i b{display:block;height:100%;background:var(--c,#527174);border-radius:2px}
+.poll-bar>strong{font-size:1rem;font-variant-numeric:tabular-nums;text-align:end;color:#263b40;display:inline-flex;align-items:baseline;gap:4px;justify-content:flex-end}
+.poll-bar>strong em{font-style:normal;font-size:.68rem;font-weight:700}
+.poll-bar>strong em.up{color:#1F6349}.poll-bar>strong em.down{color:#8E241A}
 .poll-result-card footer{display:flex;justify-content:space-between;gap:10px;background:#f8f9f6;border-top:1px solid #edf0ec;padding:13px 24px;font-size:.72rem;color:var(--ink-3)}
 #polls-table-wrap{max-height:none;box-shadow:none;border-radius:14px;scrollbar-width:thin}
 #polls-table{min-width:1120px;width:100%;border-collapse:separate;border-spacing:0}
@@ -1728,14 +1733,28 @@ function renderPolls() {
     }).join("")}</tr>`;
   }).join("") || `<tr><td colspan="${ids.length+1}" class="empty">לא נמצאו סקרים לפי הסינון.</td></tr>`;
   $("#polls-table").innerHTML = head + `<tbody>${body}</tbody>`;
+  const blocColor = x => { const al = alignOf(x); return al === "Haredi" || al === "Right" ? "#17457F" : al === "Left" ? "#DE7A2C" : al === "Arabs" ? "#2E8467" : "#96A0AB"; };
   $("#polls-cards").innerHTML = rows.map(p => {
     const f = firmOf(p.sourceId);
-    const parties = [...p.parties].sort((a,b) => b.mandates-a.mandates || a.name.localeCompare(b.name,'he'));
-    const max = Math.max(1,...parties.map(x=>x.mandates));
+    const prev = polls.filter(q => q.channelHebrewName === p.channelHebrewName && parsePollDate(q) < parsePollDate(p))
+      .sort((a, b) => parsePollDate(b) - parsePollDate(a))[0];
+    const prevVal = id => prev ? prev.parties.filter(x => normId(x.id) === normId(id)).reduce((n, x) => n + x.mandates, 0) : null;
+    const parties = [...p.parties].sort((a, b) => b.mandates - a.mandates || a.name.localeCompare(b.name, 'he'));
+    const shown = parties.filter(x => x.mandates > 0);
+    const max = Math.max(1, ...shown.map(x => x.mandates));
+    const bloc = { right: 0, left: 0, arab: 0 };
+    p.parties.forEach(x => { const al = alignOf(x); if (al === "Right" || al === "Haredi") bloc.right += x.mandates; else if (al === "Left") bloc.left += x.mandates; else if (al === "Arabs") bloc.arab += x.mandates; });
     return `<article class="poll-result-card"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div><time>${esc(p.date)}</time></header>
-      <div class="poll-chart-label"><span>מפלגה</span><span>מנדטים</span></div>
-      <div class="poll-bars">${parties.map(x => `<div class="poll-bar"><span title="${esc(x.name)}">${esc(x.name)}</span><i aria-hidden="true"><b style="width:${100*x.mandates/max}%"></b></i><strong>${x.mandates}</strong></div>`).join("")}</div>
-      <footer><span>סה״כ ${parties.reduce((n,x)=>n+x.mandates,0)} מנדטים</span><span>נתוני הסקר כפי שנשמרו במאגר</span></footer></article>`;
+      <div class="poll-blocs">
+        <span style="--c:#17457F"><b>${bloc.right}</b> ימין וחרדים</span>
+        <span style="--c:#DE7A2C"><b>${bloc.left}</b> מרכז–שמאל</span>
+        <span style="--c:#2E8467"><b>${bloc.arab}</b> ערביות</span>
+      </div>
+      <div class="poll-bars">${shown.map(x => {
+        const pv = prevVal(x.id), d = pv == null ? null : x.mandates - pv;
+        return `<div class="poll-bar" style="--c:${blocColor(x)}"><span title="${esc(x.name)}">${esc(x.name)}</span><i aria-hidden="true"><b style="width:${100 * x.mandates / max}%"></b></i><strong>${x.mandates}${d ? `<em class="${d > 0 ? "up" : "down"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</em>` : ""}</strong></div>`;
+      }).join("")}</div>
+      <footer><span>סה״כ ${p.parties.reduce((n, x) => n + x.mandates, 0)} מנדטים</span><span>${prev ? `המספרים הקטנים: שינוי מול סקר ${esc(p.channelHebrewName)} הקודם (${esc(prev.date)})` : `סקר ${esc(p.channelHebrewName)} הראשון בחלון`}</span></footer></article>`;
   }).join("") || '<p class="empty">לא נמצאו סקרים לפי הסינון. נסו לבחור את כל המכונים וכל הפרסומים.</p>';
   $("#polls-table-wrap").hidden = S.pollView !== "table";
   $("#polls-cards").hidden = S.pollView !== "cards";

@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css">
+<script src="assets/explore.js" defer></script>
 <script src="assets/app.js" defer></script>
 </head>
 <body>
@@ -38,16 +39,18 @@
 
 <nav class="tabsbar" aria-label="ניווט ראשי">
   <div class="wrap">
-    <div class="tabs" role="tablist">
-      <a class="tab" href="#/"           data-view="home"><i>◆</i>התחזית</a>
-      <a class="tab" href="#/polls"      data-view="polls"><i>◆</i>סקרי 2026</a>
-      <a class="tab" href="#/2022"       data-view="e2022"><i>◆</i>מדד אמינות המכונים</a>
-      <a class="tab" href="#/haredi"     data-view="haredi"><i>◆</i>בנק הקולות החרדי</a>
-      <a class="tab" href="#/regions"    data-view="regions"><i>◆</i>פילוח אזורי</a>
-      <a class="tab" href="#/demography" data-view="demography"><i>◆</i>התחזית היבשה</a>
-      <a class="tab" href="#/method"     data-view="method"><i>◆</i>מתודולוגיה</a>
-      <a class="tab event-tab" href="#/live"       data-view="live"><i>◆</i>ליל הבחירות</a>
-      <a class="tab event-tab" href="#/results"    data-view="results"><i>◆</i>תוצאות אמת</a>
+    <div class="tabs">
+      <a class="tab" href="#/" data-view="home">תמונת מצב</a>
+      <a class="tab" href="#/polls" data-view="polls">סקרים והשוואה</a>
+      <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
+      <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
+      <details class="nav-more"><summary>עוד נתונים</summary><div class="nav-menu">
+        <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
+        <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+        <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
+        <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
+        <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
+      </div></details>
     </div>
   </div>
 </nav>
@@ -55,135 +58,48 @@
 <main id="main">
 
 <!-- ==================== התחזית ==================== -->
-<section class="view" id="view-home" aria-label="התחזית">
-  <div class="hero">
-    <div class="hero-art" aria-hidden="true" id="hero-art"></div>
-    <div class="wrap hero-in">
-      <div>
-        <p class="eyebrow">ממוצע נע · 14 יום · משוקלל אמינות</p>
-        <h1>הסקרים אומרים הרבה.<br><em>אנחנו מודדים כמה מהם צדקו.</em></h1>
-        <p class="lede">סקרי הבחירות, המקורות ושיטת החישוב במקום אחד. השוו בין המפלגות ובין המכונים, עיינו בנתונים והסיקו את המסקנות שלכם.</p>
-        <div class="hero-cta">
-          <a class="btn" href="#/method">איך זה מחושב</a>
-          <a class="btn ghost" href="#/2022">מי דייק ב־2022 <span aria-hidden="true">←</span></a>
-        </div>
-      </div>
-      <div class="gauge">
-        <div class="gauge-head">
-          <p>מד הגושים</p>
-          <p id="gauge-mode">משוקלל</p>
-        </div>
-        <div id="gauge-svg"></div>
-        <div class="gauge-read" id="gauge-read"></div>
-        <p class="gauge-verdict" id="gauge-verdict"></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="wrap">
-    <section class="sec home-stats-sec" style="padding-top:36px">
-      <div class="stats" id="home-stats"></div>
+<section class="view" id="view-home" aria-label="תמונת מצב">
+  <div class="hero"><div class="hero-art" aria-hidden="true" id="hero-art"></div>
+    <div class="wrap hero-in"><div><p class="eyebrow">ברומטר · נתונים לבחירות 2026</p><h1>תמונת המנדטים.<br><em>המסקנות שלכם.</em></h1><p class="lede">המפלגות, הסקרים והמקורות — עם שיטת חישוב גלויה.</p></div><div class="hero-cta"><a class="btn" href="#/polls">השוואת סקרים ←</a><a class="btn ghost" href="#/method">איך זה מחושב</a></div></div>
+  </div><div class="wrap">
+    <section class="home-stats-sec"><div class="stats" id="home-stats"></div></section>
+    <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">ממוצע 14 הימים האחרונים</p><h2>המנדטים לפי מפלגה</h2></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="weighted" aria-pressed="true">משוקלל אמינות</button><button type="button" data-mode="simple" aria-pressed="false">ממוצע פשוט</button></div></div>
+      <p class="data-explainer">אומדן של האתר, לא סקר בודד. ללא רצפות מנדטים; העיגול ל־120 חל על כל הרשימות. <a href="#/method">שיטת החישוב</a></p>
+      <div class="switch forecast-views" role="group" aria-label="תצוגת התחזית"><button type="button" data-homeview="bars" aria-pressed="true">מפלגות</button><button type="button" data-homeview="seats" aria-pressed="false">מפת הכנסת</button><button type="button" data-homeview="blocs" aria-pressed="false">גושים ושיוך</button><button type="button" data-homeview="table" aria-pressed="false">טבלת נתונים</button></div>
+      <div id="forecast-bars" data-homepanel="bars"></div><div id="forecast-table" data-homepanel="table" class="tablewrap" tabindex="0" role="region" aria-label="נתוני התחזית" hidden></div>
+      <div class="hemi" id="hemi-box" data-homepanel="seats" hidden><div class="sec-head"><h3>מפת 120 המושבים</h3><p id="hemi-updated"></p></div><div id="hemi-svg"></div><div class="blocbar" id="blocbar"></div><div class="legend" id="bloclegend"></div><p class="data-explainer">לערכים ולשמות הרשימות עברו לטבלת הנתונים.</p></div>
+      <div class="gauge" data-homepanel="blocs" hidden><div class="gauge-head"><p>חלוקה לפי השיוך במאגר</p><p id="gauge-mode"></p></div><div id="gauge-svg"></div><div class="gauge-read" id="gauge-read"></div><p class="gauge-verdict" id="gauge-verdict"></p><div id="bloc-members"></div></div>
     </section>
-
-    <section class="sec anecdote-sec">
-      <article class="anecdote" id="anecdote">
-        <div class="anecdote-side">
-          <span class="anecdote-mark" aria-hidden="true">?!</span>
-          <p class="kicker" style="color:#fff;opacity:.75">טווחי המנדטים בסקרים</p>
-        </div>
-        <div class="anecdote-body">
-          <h3 id="anec-title"></h3>
-          <p id="anec-text"></p>
-          <div class="anecdote-foot">
-            <span id="anec-meta"></span>
-            <div class="anecdote-nav">
-              <button type="button" id="anec-prev" aria-label="הקודם">‹</button>
-              <span id="anec-count"></span>
-              <button type="button" id="anec-next" aria-label="הבא">›</button>
-            </div>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head">
-        <div><p class="kicker">תמונת מצב</p><h2>התחזית המשוקללת</h2></div>
-        <div class="switch" role="group" aria-label="אופן חישוב">
-          <button type="button" data-mode="weighted" aria-pressed="true">משוקלל אמינות</button>
-          <button type="button" data-mode="simple" aria-pressed="false">ממוצע פשוט</button>
-        </div>
-      </div>
-
-      <div class="notice"><span class="ic">i</span><p style="margin:0"><b>זו אינה תוצאת סקר.</b> זהו אומדן מתמטי של האתר, המבוסס על ממוצע 14 יום ועל הדיוק ההיסטורי המתועד של כל מכון שיש לו כיול.</p></div>
-
-      <div class="split" style="margin-top:18px">
-        <div class="hemi" id="hemi-box">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
-            <div><p class="kicker" style="margin:0">120 מושבים</p><h3 style="margin-top:4px">מפת הכנסת</h3></div>
-            <p class="sec-note" style="font-size:.78rem" id="hemi-updated"></p>
-          </div>
-          <div id="hemi-svg"></div>
-          <div class="blocbar" id="blocbar"></div>
-          <div class="legend" id="bloclegend"></div>
-        </div>
-        <div class="grid" style="gap:16px">
-          <div class="card pad">
-            <p class="kicker">המכון המדויק ביותר</p>
-            <div id="top-firm"></div>
-            <a class="btn ghost" style="margin-top:14px" href="#/2022">כל הדירוג <span aria-hidden="true">←</span></a>
-          </div>
-          <div class="card pad">
-            <p class="kicker">שקיפות החישוב</p>
-            <h3 style="margin:4px 0 10px">כלל זהה לכל המפלגות</h3>
-            <div id="fix-box"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec-head" style="margin:40px 0 18px">
-        <div><p class="kicker">פירוט המנדטים</p><h3>הערכת המפלגות</h3></div>
-        <p class="sec-note">עיגול בשיטת השארית הגדולה כדי שהסכום יישאר 120 בדיוק.</p>
-      </div>
-      <div class="result-grid" id="party-rows"></div>
-    </section>
+    <section class="sec"><div class="sec-head"><div><p class="kicker">להכיר את הנתונים</p><h2>המפלגות במבט קרוב</h2></div><p class="sec-note">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="result-grid" id="party-rows"></div></section>
+    <section class="sec methodology-cards"><div class="grid g2"><div class="card pad"><p class="kicker">הדיוק ההיסטורי במדד</p><div id="top-firm"></div><a class="btn ghost" href="#/2022">כל המכונים והמדדים ←</a></div><div class="card pad"><p class="kicker">שקיפות החישוב</p><h3>כלל זהה לכל המפלגות</h3><div id="fix-box"></div></div></div></section>
+    <section class="sec anecdote-sec"><article class="anecdote" id="anecdote"><div class="anecdote-side"><p class="kicker">טווחי המנדטים בסקרים</p></div><div class="anecdote-body"><h3 id="anec-title"></h3><p id="anec-text"></p><div class="anecdote-foot"><span id="anec-meta"></span><div class="anecdote-nav"><button type="button" id="anec-prev" aria-label="המפלגה הקודמת">‹</button><span id="anec-count"></span><button type="button" id="anec-next" aria-label="המפלגה הבאה">›</button></div></div></div></article></section>
   </div>
 </section>
 
 <!-- ==================== סקרי 2026 ==================== -->
 <section class="view" id="view-polls" aria-label="סקרי 2026">
   <div class="wrap">
-    <div class="page-intro">
-      <p class="kicker">חלון הבחירות הנוכחי</p>
-      <h2>סקרי 2026</h2>
-      <p>כל סקר עדכני בדרך לבחירות 2026, עם המכון שביצע אותו והגוף שנתן לו במה. כשמכון מפרסם כמה סקרים באותו חלון, נוצר לו קודם ממוצע אחד — כך שריבוי פרסומים אינו מקנה לאותו מכון כוח עודף בתחזית.</p>
+    <div class="page-head">
+      <div class="page-head-main">
+        <h2>סקרי 2026</h2>
+        <div class="stats" id="polls-stats"></div>
+      </div>
     </div>
 
-    <section class="sec">
-      <div class="stats" id="polls-stats"></div>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head">
-        <div><p class="kicker">השוואת סקרים</p><h2>כל סקר, כל המפלגות</h2></div>
-        <div class="switch gold" role="group" aria-label="תצוגה">
-          <button type="button" data-pollview="table" aria-pressed="false">טבלה</button>
-          <button type="button" data-pollview="cards" aria-pressed="true">כרטיסים</button>
-        </div>
-      </div>
+    <section class="sec polls-sec">
       <div class="controls">
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
-        <div class="count" id="poll-count"></div>
+        <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label><div class="switch gold controls-view" role="group" aria-label="תצוגה"><button type="button" data-pollview="cards" aria-pressed="true">כרטיסים</button><button type="button" data-pollview="compare" aria-pressed="false">השוואת מכונים</button></div><div class="count" id="poll-count" aria-live="polite"></div>
       </div>
-      <p class="poll-data-note">מנדטים כפי שנשמרו במאגר, ללא תיקוני מודל. 0 = אפס מנדטים; — = אין נתון במאגר. בטבלה ניתן לגלול לצדדים להשוואת כל הרשימות.</p><div id="polls-table-wrap" class="tablewrap" tabindex="0" role="region" aria-label="טבלת השוואת סקרים, ניתנת לגלילה" hidden><table id="polls-table"></table></div>
-      <div id="polls-cards" class="pollcards"></div>
+      <details class="poll-data-note"><summary>איך לקרוא את הנתונים</summary><p>מנדטים כפי שנשמרו במאגר, ללא תיקוני מודל. הרשימות מסודרות בכל תצוגה מהמנדטים הרבים למעטים. 0 = אפס מנדטים; — = אין נתון במאגר. כל כרטיס מציג את הסקר האחרון של כלי התקשורת, ובורר התאריך שבו מחליף לסקר קודם שלו. הפס בראש כל כרטיס הוא חלוקת הגושים, והוי מסמן גוש שהגיע ל־61.</p></details>
+      <p id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></p><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div>
     </section>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">מגמה</p><h2>איך זזו הגושים בשבועיים</h2></div>
-      <p class="sec-note">כל נקודה היא סקר בודד; הקווים מחברים את הסקרים לפי תאריך ואינם ממוצע נע. החלוקה לפי השיוך במאגר, ולא לפי קואליציה אפשרית.</p></div>
-      <div class="card pad" id="trend-box"></div>
+      <div class="sec-head"><div><p class="kicker">מגמה</p><h2>התוצאות לאורך זמן</h2></div>
+      <p class="sec-note">כל נקודה היא סקר בודד. הקווים מחברים רק סקרים של אותו מכון ואותו מפרסם; הם אינם ממוצע נע.</p></div>
+      <label class="field trend-field"><span>מפלגה בגרף</span><select id="trend-party"></select></label><div class="card pad" id="trend-box"></div>
     </section>
 
     <section class="sec">
@@ -205,19 +121,21 @@
 <section class="view" id="view-e2022" aria-label="מדד אמינות מכוני הסקרים">
   <div class="wrap">
     <div class="page-intro">
-      <p class="kicker">כיול אמינות · התחלה מכנסת 25</p>
+      <p class="kicker">כיול אמינות · כנסת 24 וכנסת 25</p>
       <h2>מדד אמינות מכוני הסקרים</h2>
-      <p>כאן נבדוק אילו מכוני סקרים היו קרובים לתוצאות האמת, ואילו נטו להחמיץ את התמונה הרחבה. בשלב הנוכחי המדד מכויל על הבחירות לכנסת ה־25; הכנסת ה־24 תיכנס כבסיס השוואה נוסף אחרי שנוסיף לה ארכיון סקרים מלא ואחיד.</p>
+      <p>כאן נבדוק אילו מכוני סקרים היו קרובים לתוצאות האמת, ואילו נטו להחמיץ את התמונה הרחבה. המדד מכויל על שתי מערכות בחירות — הכנסת ה־24 והכנסת ה־25 — כל אחת בחלון של 30 הימים שלפני יום הבחירות. מכון שהופיע בשתיהן מקבל את ממוצע שני הציונים במשקל שווה.</p>
     </div>
 
     <section class="sec calibration-sec">
       <div class="calibration-strip" id="calibration-strip"></div>
+      <div class="switch calib-switch" id="calib-switch" role="group" aria-label="מערכת הבחירות שמוצגת בעמוד"></div>
+      <p class="data-explainer" id="calib-note"></p>
     </section>
 
     <section class="sec">
       <div class="sec-head">
-        <div><p class="kicker">שני עולמות</p><h2>התוצאה שהייתה, והתוצאה שכמעט הייתה</h2></div>
-        <div class="switch gold" role="group" aria-label="תרחיש">
+        <div><p class="kicker">התוצאה</p><h2 id="scen-title">התוצאה שהייתה, והתוצאה שכמעט הייתה</h2></div>
+        <div class="switch gold" id="scen-switch" role="group" aria-label="תרחיש">
           <button type="button" data-scen="actual" aria-pressed="true">תוצאות האמת</button>
           <button type="button" data-scen="counterfactual" aria-pressed="false">אילו מרצ עברה</button>
         </div>
@@ -230,21 +148,21 @@
       <div class="sec-head"><div><p class="kicker">נוסחת הציון</p><h2>איך נמדד מכון</h2></div></div>
       <div class="fstrip three">
         <div class="fblock" style="--c:#17457F"><b>60%</b><span>דיוק בגושים — השאלה שקובעת מי מרכיב ממשלה</span></div>
-        <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — שגיאה מוחלטת ממוצעת ב־11 רשימות</span></div>
+        <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — שגיאה מוחלטת ממוצעת בכל הרשימות</span></div>
         <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות ורציפות לאורך חודש הכיול</span></div>
       </div>
-      <div class="notice warm" style="margin:16px 0"><span class="ic">+</span><p style="margin:0"><b>הרחבה מתוכננת:</b> הכנסת ה־24 תתווסף למדד רק אחרי טעינת סקרי 2021 באותו פורמט. כך הציון יבדוק מכונים לאורך שתי מערכות בחירות, בלי לערבב מקורות חלקיים.</p></div>
+      <div class="notice warm" style="margin:16px 0"><span class="ic">+</span><p style="margin:0"><b>הציון משתי מערכות:</b> כל מערכת נספרת במשקל שווה, כך שמכון עם הרבה סקרים באחת מהן אינו מקבל יתרון על כמות. ליד כל מכון מופיע הפירוט לפי כנסת, ומכון שהופיע רק באחת מהן מסומן ככזה.</p></div>
       <div class="ranks" id="rank-list"></div>
     </section>
 
     <section class="sec">
       <div class="sec-head"><div><p class="kicker">ההטיה שחזרה על עצמה</p><h2>מה כל הסקרים פספסו יחד</h2></div>
-      <p class="sec-note">ממוצע כל 39 הסקרים מול התוצאה בפועל. השוואה היסטורית בלבד; אינה משנה את נתוני הסקרים הנוכחיים.</p></div>
+      <p class="sec-note" id="bias-note">ממוצע כל הסקרים בחלון מול התוצאה בפועל. השוואה היסטורית בלבד; אינה משנה את נתוני הסקרים הנוכחיים.</p></div>
       <div class="tablewrap"><table id="bias-table"></table></div>
     </section>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">הארכיון המלא</p><h2>39 הסקרים, אחד־אחד</h2></div></div>
+      <div class="sec-head"><div><p class="kicker">הארכיון המלא</p><h2 id="arch-title">הסקרים, אחד־אחד</h2></div></div>
       <div class="controls">
         <label class="field"><span>סינון לפי מכון</span><select id="arch-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>חיפוש</span><input id="arch-q" type="search" placeholder="מכון, ערוץ או תאריך"></label>

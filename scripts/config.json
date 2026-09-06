@@ -1,8 +1,13 @@
 {
-  "//": "שליפת הסקרים מ-skarim.org. sourceUrl הוא דף הבית — הסקריפט מחלץ את __NEXT_DATA__ ומשם את עשרת הסקרים האחרונים. אין תלות ב-buildId.",
+  "//": "שליפת הסקרים מ-skarim.org. sourceUrl הוא דף הבית; sitemapUrl הוא מפת כל דפי הסקרים. התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
   "sourceUrl": "https://www.skarim.org/",
-  "windowDays": 14,
+  "sitemapUrl": "https://www.skarim.org/api/static/sitemap-polls",
+  "pollPageBase": "https://www.skarim.org",
+  "year": 2026,
+  "maxPerOutlet": 4,
   "outFile": "data/current-polls.json",
   "requestTimeoutMs": 20000,
-  "userAgent": "Barometer-PollFetcher/1.0 (+static site updater)"
+  "requestDelayMs": 250,
+  "userAgent": "Barometer-PollFetcher/1.0 (+static site updater)",
+  "from": "2026-08-01"
 }

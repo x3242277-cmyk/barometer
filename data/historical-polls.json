@@ -1,4 +1,10 @@
 {
+  "meta": {
+    "election": "הכנסת ה־25",
+    "electionDate": "2022-11-01",
+    "note": "סקרי 30 הימים שלפני הבחירות.",
+    "source": "ארכיון האתר"
+  },
   "window": {
     "from": "2022-09-29",
     "to": "2022-10-28"
@@ -15,6 +21,25 @@
     "hadash_taal": 5,
     "meretz": 0,
     "raam": 5
+  },
+  "blocs": {
+    "netanyahu": [
+      "likud",
+      "shas",
+      "utj",
+      "religious_zionism"
+    ],
+    "outgoing": [
+      "yesh_atid",
+      "national_unity",
+      "labor",
+      "yisrael_beiteinu",
+      "meretz",
+      "raam"
+    ],
+    "outside": [
+      "hadash_taal"
+    ]
   },
   "polls": [
     {

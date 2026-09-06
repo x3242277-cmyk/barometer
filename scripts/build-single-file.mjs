@@ -13,7 +13,7 @@ const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
 const css = await rd("assets/styles.css");
-const js = await rd("assets/app.js");
+const js = (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js"));
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
 const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));

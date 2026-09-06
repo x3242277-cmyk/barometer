@@ -5,1283 +5,4756 @@
       "id": "20260904082257",
       "date": "04.09.2026",
       "dateTimestamp": 1788480000000,
-      "publishedAt": 1788480000000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fmaariv.png?alt=media&token=31804b8b-7b8a-4c43-9154-0bb23b677ab3",
+      "publishedAt": 1788499140000,
+      "channel": "",
       "channelHebrewName": "מעריב",
       "sourceId": "maariv",
       "parties": [
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 23,
           "alignment": "Opposition"
         },
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 20,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 15,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 10,
           "alignment": "Opposition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Coalition"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Coalition"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "hakalkalit",
           "name": "הכלכלית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped4198666906266188273.jpg09-January-202121%3A15.jpg?alt=media&token=6b7d9b8b-8e38-46d4-9c30-84e5f99b1609",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "makom_lekulanu",
           "name": "מקום לכולנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmakom_lekulanu_1788346716683_%D7%9C%D7%95%D7%92%D7%95_%D7%9C%D7%90%D7%AA%D7%A8-08.avif?alt=media&token=1be4aa9e-c766-4e65-89b2-4f98152af063",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "mifleget_hazibur_haharedi",
           "name": "הציבור החרדי",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmifleget_hazibur_haharedi_1788346603387_%D7%9E%D7%A4%D7%9C%D7%92%D7%AA_%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8_%D7%94%D7%97%D7%A8%D7%93%D7%99.png?alt=media&token=fd524485-7581-4dd5-a364-72623ca455cd",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/maariv-2026-09-04"
     },
     {
       "id": "20260903204411",
       "date": "03.09.2026",
       "dateTimestamp": 1788393600000,
-      "publishedAt": 1788393600000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FCh14IL.svg.png?alt=media&token=8891f536-88ed-477d-8e03-801651ccb944",
+      "publishedAt": 1788446640000,
+      "channel": "",
       "channelHebrewName": "ערוץ 14",
       "sourceId": "channel_14",
       "parties": [
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 31,
           "alignment": "Coalition"
         },
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 22,
           "alignment": "Opposition"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 10,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Opposition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Opposition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "noam",
           "name": "נועם",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fnoam_flag.png?alt=media&token=c703e7ce-6985-4a02-8f4e-c150a028e13c",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/channel-14-2026-09-03"
     },
     {
       "id": "20260903182310",
       "date": "03.09.2026",
       "dateTimestamp": 1788393600000,
-      "publishedAt": 1788393600000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fisraeltoday.png?alt=media&token=bf666988-cdf5-4994-a034-78d61bbf59e6",
+      "publishedAt": 1788446640000,
+      "channel": "",
       "channelHebrewName": "ישראל היום",
       "sourceId": "israel_hayom",
       "parties": [
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 24,
           "alignment": "Opposition"
         },
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 21,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 13,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Coalition"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/israel-hayom-2026-09-03"
     },
     {
       "id": "20260903174832",
       "date": "03.09.2026",
       "dateTimestamp": 1788393600000,
-      "publishedAt": 1788393600000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fzman%20israel.png?alt=media&token=99d1a231-bd13-4725-8876-bbbc8eec39c8",
+      "publishedAt": 1788446640000,
+      "channel": "",
       "channelHebrewName": "זמן ישראל",
       "sourceId": "zman_israel",
       "parties": [
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 22,
           "alignment": "Coalition"
         },
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 22,
           "alignment": "Opposition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 15,
           "alignment": "Opposition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 10,
           "alignment": "Opposition"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Coalition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Opposition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Arabs"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Coalition"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Unknown"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/zman-israel-2026-09-03"
     },
     {
       "id": "20260902211546",
       "date": "02.09.2026",
       "dateTimestamp": 1788307200000,
-      "publishedAt": 1788307200000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fnews16_flag_1786459946331_Channel16_Logo.svg.jpg?alt=media&token=c06f9b58-97f3-44af-a434-cfedcbfaf287",
+      "publishedAt": 1788369720000,
+      "channel": "",
       "channelHebrewName": "ערוץ 16",
       "sourceId": "channel_16",
       "parties": [
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 20,
           "alignment": "Opposition"
         },
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 19,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 18,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 10,
           "alignment": "Opposition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Coalition"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Coalition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Opposition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Coalition"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Arabs"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "hakalkalit",
           "name": "הכלכלית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped4198666906266188273.jpg09-January-202121%3A15.jpg?alt=media&token=6b7d9b8b-8e38-46d4-9c30-84e5f99b1609",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "mifleget_hazibur_haharedi",
           "name": "הציבור החרדי",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmifleget_hazibur_haharedi_1788346603387_%D7%9E%D7%A4%D7%9C%D7%92%D7%AA_%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8_%D7%94%D7%97%D7%A8%D7%93%D7%99.png?alt=media&token=fd524485-7581-4dd5-a364-72623ca455cd",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/channel-16-2026-09-02"
     },
     {
       "id": "20260902205315",
       "date": "02.09.2026",
       "dateTimestamp": 1788307200000,
-      "publishedAt": 1788307200000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FLOGO_i24NEWS.png?alt=media&token=9d581dfc-1f17-48b1-a564-774ba94a76f0",
+      "publishedAt": 1788369720000,
+      "channel": "",
       "channelHebrewName": "i24NEWS",
       "sourceId": "i24news",
       "parties": [
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 27,
           "alignment": "Coalition"
         },
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 23,
           "alignment": "Opposition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Opposition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Coalition"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "hakalkalit",
           "name": "הכלכלית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped4198666906266188273.jpg09-January-202121%3A15.jpg?alt=media&token=6b7d9b8b-8e38-46d4-9c30-84e5f99b1609",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "israel_thila",
           "name": "ישראל תחילה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fisrael_thila_1787768448075_Israel-First.png?alt=media&token=3b4ff63a-e40b-415a-926e-3dc62c1d2793",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "mifleget_hazibur_haharedi",
           "name": "הציבור החרדי",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmifleget_hazibur_haharedi_1788346603387_%D7%9E%D7%A4%D7%9C%D7%92%D7%AA_%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8_%D7%94%D7%97%D7%A8%D7%93%D7%99.png?alt=media&token=fd524485-7581-4dd5-a364-72623ca455cd",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "noam",
           "name": "נועם",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fnoam_flag.png?alt=media&token=c703e7ce-6985-4a02-8f4e-c150a028e13c",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/i24news-2026-09-02"
     },
     {
       "id": "20260902202549",
       "date": "02.09.2026",
       "dateTimestamp": 1788307200000,
-      "publishedAt": 1788307200000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fnews13.png?alt=media&token=ac6fb50f-bd06-44b4-948d-e50c9d5e5ae4",
+      "publishedAt": 1788369720000,
+      "channel": "",
       "channelHebrewName": "חדשות 13",
       "sourceId": "channel_13",
       "parties": [
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 22,
           "alignment": "Opposition"
         },
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 21,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 12,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 11,
           "alignment": "Opposition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Arabs"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Opposition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Coalition"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/channel-13-2026-09-02"
     },
     {
       "id": "20260902140003",
       "date": "02.09.2026",
       "dateTimestamp": 1788307200000,
-      "publishedAt": 1788307200000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fic_walla.png?alt=media&token=b5fc3482-05c7-4b70-a6d3-a0bdee341593",
+      "publishedAt": 1788346260000,
+      "channel": "",
       "channelHebrewName": "וואלה",
       "sourceId": "walla",
       "parties": [
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 24,
           "alignment": "Opposition"
         },
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 22,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 15,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 10,
           "alignment": "Opposition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Arabs"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Coalition"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "hakalkalit",
           "name": "הכלכלית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped4198666906266188273.jpg09-January-202121%3A15.jpg?alt=media&token=6b7d9b8b-8e38-46d4-9c30-84e5f99b1609",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "israel_thila",
           "name": "ישראל תחילה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fisrael_thila_1787768448075_Israel-First.png?alt=media&token=3b4ff63a-e40b-415a-926e-3dc62c1d2793",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "makom_lekulanu",
           "name": "מקום לכולנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmakom_lekulanu_1788346716683_%D7%9C%D7%95%D7%92%D7%95_%D7%9C%D7%90%D7%AA%D7%A8-08.avif?alt=media&token=1be4aa9e-c766-4e65-89b2-4f98152af063",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "mifleget_hazibur_haharedi",
           "name": "הציבור החרדי",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmifleget_hazibur_haharedi_1788346603387_%D7%9E%D7%A4%D7%9C%D7%92%D7%AA_%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8_%D7%94%D7%97%D7%A8%D7%93%D7%99.png?alt=media&token=fd524485-7581-4dd5-a364-72623ca455cd",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/walla-2026-09-02"
     },
     {
       "id": "20260831210801",
       "date": "31.08.2026",
       "dateTimestamp": 1788134400000,
-      "publishedAt": 1788134400000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fhadashot2.png?alt=media&token=1d6a689b-5187-44b5-bb02-d0eb38544ae0",
+      "publishedAt": 1788199500000,
+      "channel": "",
       "channelHebrewName": "חדשות 12",
       "sourceId": "channel_12",
       "parties": [
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 24,
           "alignment": "Opposition"
         },
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 23,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 15,
           "alignment": "Opposition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 11,
           "alignment": "Opposition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 9,
           "alignment": "Opposition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Coalition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Arabs"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "hakalkalit",
           "name": "הכלכלית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped4198666906266188273.jpg09-January-202121%3A15.jpg?alt=media&token=6b7d9b8b-8e38-46d4-9c30-84e5f99b1609",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "zehut",
           "name": "זהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fzehut.png?alt=media&token=68197b52-3d63-4dac-a0e2-debf80af5ec9",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         }
-      ]
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-08-31"
     },
     {
       "id": "20260830211211",
       "date": "30.08.2026",
       "dateTimestamp": 1788048000000,
-      "publishedAt": 1788048000000,
-      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FCh14IL.svg.png?alt=media&token=8891f536-88ed-477d-8e03-801651ccb944",
+      "publishedAt": 1788110640000,
+      "channel": "",
       "channelHebrewName": "ערוץ 14",
       "sourceId": "channel_14",
       "parties": [
         {
           "id": "likud",
           "name": "הליכוד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Flikud.png?alt=media&token=10a366fe-3a06-4355-bc33-d561ba785ba0",
+          "logoUrl": "",
           "mandates": 31,
           "alignment": "Coalition"
         },
         {
           "id": "yashar",
           "name": "ישר! עם איזנקוט.",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fyashar_1774698402086_yahar.jpg?alt=media&token=45d1724c-7923-4836-86c6-47eef2d45d76",
+          "logoUrl": "",
           "mandates": 24,
           "alignment": "Opposition"
         },
         {
           "id": "shas",
           "name": "ש\"ס",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fshas.png?alt=media&token=c8439758-1d9c-4821-9a67-d72fd09d6351",
+          "logoUrl": "",
           "mandates": 10,
           "alignment": "Coalition"
         },
         {
           "id": "hademokratim",
           "name": "הדמוקרטים",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fcropped865610184444340507.jpg_09052025_211240?alt=media&token=0a882dee-c2c2-46d9-8fe8-84d8a0393724",
+          "logoUrl": "",
           "mandates": 8,
           "alignment": "Opposition"
         },
         {
           "id": "ndi",
           "name": "ישראל ביתנו",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fndi%2Fimg_2025_03_28_16_18_08.png?alt=media&token=78fd7414-478b-4045-a3db-7bfccf7fb07b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Opposition"
         },
         {
           "id": "ozma_yehudit",
           "name": "עוצמה יהודית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fozma_yehudit%2Fimg_2025_04_19_09_16_25.png?alt=media&token=dfd79469-7126-4c76-a659-9f6f10c34d8b",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "reshima_meshutefet",
           "name": "הרשימה המשותפת",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Freshima_meshutefet.png?alt=media&token=be163c06-e62c-4467-a92b-9d0caed80e46",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Arabs"
         },
         {
           "id": "yahadut_hatora",
           "name": "יהדות התורה",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Ftorahjudaism.jpg?alt=media&token=e4e00479-1bc3-4b43-9fba-cfcbbe7ca4a7",
+          "logoUrl": "",
           "mandates": 7,
           "alignment": "Coalition"
         },
         {
           "id": "beyahad",
           "name": "ביחד",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbeyahad_1777230786054_6012348392543030450.jpg?alt=media&token=59b94996-00c9-4fbe-b45f-78a50bdde093",
+          "logoUrl": "",
           "mandates": 6,
           "alignment": "Opposition"
         },
         {
           "id": "raam",
           "name": "רע\"מ",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fraam%2Fimg_2025_04_15_22_21_32.png?alt=media&token=f7779e2b-c63a-4237-b632-1ecdabb94880",
+          "logoUrl": "",
           "mandates": 5,
           "alignment": "Arabs"
         },
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Coalition"
         },
         {
           "id": "zionut_datit",
           "name": "הציונות הדתית",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
+          "logoUrl": "",
           "mandates": 4,
           "alignment": "Coalition"
         },
         {
           "id": "ahdut_party",
           "name": "האחדות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fahdut_party_1786523807689_ahdut_party_flag.avif?alt=media&token=89df9286-04ba-4907-b929-0802cc001ef0",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "bait_zioni",
           "name": "בית ציוני",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fbait_zioni_1785305176417_Screenshot_2026-07-29_at_9.04.44.png?alt=media&token=cfcc8059-1b95-40ae-879f-0a47fe2fb6d4",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Unknown"
         },
         {
           "id": "kahollavan",
           "name": "כחול לבן",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2F2020%2Fkahollavan2020.png?alt=media&token=9e8efd60-1634-4bfe-b9c0-1f1fcb31d53b",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Opposition"
         },
         {
           "id": "noam",
           "name": "נועם",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fnoam_flag.png?alt=media&token=c703e7ce-6985-4a02-8f4e-c150a028e13c",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         },
         {
           "id": "zehut",
           "name": "זהות",
-          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fzehut.png?alt=media&token=68197b52-3d63-4dac-a0e2-debf80af5ec9",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ],
+      "sourceUrl": "https://www.skarim.org/polls/channel-14-2026-08-30"
+    },
+    {
+      "id": "20260830202941",
+      "date": "30.08.2026",
+      "dateTimestamp": 1788048000000,
+      "publishedAt": 1788110640000,
+      "channel": "",
+      "channelHebrewName": "כאן 11",
+      "sourceId": "kan_news",
+      "sourceUrl": "https://www.skarim.org/polls/kan-news-2026-08-30",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260828080245",
+      "date": "28.08.2026",
+      "dateTimestamp": 1787875200000,
+      "publishedAt": 1787893080000,
+      "channel": "",
+      "channelHebrewName": "מעריב",
+      "sourceId": "maariv",
+      "sourceUrl": "https://www.skarim.org/polls/maariv-2026-08-28",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 25,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 20,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260827203238",
+      "date": "27.08.2026",
+      "dateTimestamp": 1787788800000,
+      "publishedAt": 1787851740000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 14",
+      "sourceId": "channel_14",
+      "sourceUrl": "https://www.skarim.org/polls/channel-14-2026-08-27",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 31,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "noam",
+          "name": "נועם",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260827175115",
+      "date": "27.08.2026",
+      "dateTimestamp": 1787788800000,
+      "publishedAt": 1787842080000,
+      "channel": "",
+      "channelHebrewName": "זמן ישראל",
+      "sourceId": "zman_israel",
+      "sourceUrl": "https://www.skarim.org/polls/zman-israel-2026-08-27",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 26,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260826225026",
+      "date": "26.08.2026",
+      "dateTimestamp": 1787702400000,
+      "publishedAt": 1787768160000,
+      "channel": "",
+      "channelHebrewName": "חדשות 13",
+      "sourceId": "channel_13",
+      "sourceUrl": "https://www.skarim.org/polls/channel-13-2026-08-26",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 19,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260826220218",
+      "date": "26.08.2026",
+      "dateTimestamp": 1787702400000,
+      "publishedAt": 1787768160000,
+      "channel": "",
+      "channelHebrewName": "i24NEWS",
+      "sourceId": "i24news",
+      "sourceUrl": "https://www.skarim.org/polls/i24news-2026-08-26",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 26,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260826212153",
+      "date": "26.08.2026",
+      "dateTimestamp": 1787702400000,
+      "publishedAt": 1787768160000,
+      "channel": "",
+      "channelHebrewName": "וואלה",
+      "sourceId": "walla",
+      "sourceUrl": "https://www.skarim.org/polls/walla-2026-08-26",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 25,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "israel_thila",
+          "name": "ישראל תחילה",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260826202428",
+      "date": "26.08.2026",
+      "dateTimestamp": 1787702400000,
+      "publishedAt": 1787755680000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 16",
+      "sourceId": "channel_16",
+      "sourceUrl": "https://www.skarim.org/polls/channel-16-2026-08-26",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 16,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260824211126",
+      "date": "24.08.2026",
+      "dateTimestamp": 1787529600000,
+      "publishedAt": 1787593080000,
+      "channel": "",
+      "channelHebrewName": "חדשות 12",
+      "sourceId": "channel_12",
+      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-08-24",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260824204127",
+      "date": "24.08.2026",
+      "dateTimestamp": 1787529600000,
+      "publishedAt": 1787593080000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 14",
+      "sourceId": "channel_14",
+      "sourceUrl": "https://www.skarim.org/polls/channel-14-2026-08-24",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 32,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260823213149",
+      "date": "23.08.2026",
+      "dateTimestamp": 1787443200000,
+      "publishedAt": 1787509380000,
+      "channel": "",
+      "channelHebrewName": "כאן 11",
+      "sourceId": "kan_news",
+      "sourceUrl": "https://www.skarim.org/polls/kan-news-2026-08-23",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260821075342",
+      "date": "21.08.2026",
+      "dateTimestamp": 1787270400000,
+      "publishedAt": 1787287800000,
+      "channel": "",
+      "channelHebrewName": "מעריב",
+      "sourceId": "maariv",
+      "sourceUrl": "https://www.skarim.org/polls/maariv-2026-08-21",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 26,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 20,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260820200625",
+      "date": "20.08.2026",
+      "dateTimestamp": 1787184000000,
+      "publishedAt": 1787240340000,
+      "channel": "",
+      "channelHebrewName": "זמן ישראל",
+      "sourceId": "zman_israel",
+      "sourceUrl": "https://www.skarim.org/polls/zman-israel-2026-08-20",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260820184333",
+      "date": "20.08.2026",
+      "dateTimestamp": 1787184000000,
+      "publishedAt": 1787240340000,
+      "channel": "",
+      "channelHebrewName": "ישראל היום",
+      "sourceId": "israel_hayom",
+      "sourceUrl": "https://www.skarim.org/polls/israel-hayom-2026-08-20",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260819204237",
+      "date": "19.08.2026",
+      "dateTimestamp": 1787097600000,
+      "publishedAt": 1787161200000,
+      "channel": "",
+      "channelHebrewName": "חדשות 13",
+      "sourceId": "channel_13",
+      "sourceUrl": "https://www.skarim.org/polls/channel-13-2026-08-19",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 26,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260819172007",
+      "date": "19.08.2026",
+      "dateTimestamp": 1787097600000,
+      "publishedAt": 1787161200000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 16",
+      "sourceId": "channel_16",
+      "sourceUrl": "https://www.skarim.org/polls/channel-16-2026-08-19",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 25,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 16,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260819165535",
+      "date": "19.08.2026",
+      "dateTimestamp": 1787097600000,
+      "publishedAt": 1787147580000,
+      "channel": "",
+      "channelHebrewName": "כאן 11",
+      "sourceId": "kan_news",
+      "sourceUrl": "https://www.skarim.org/polls/kan-news-2026-08-19",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260818215334",
+      "date": "18.08.2026",
+      "dateTimestamp": 1787011200000,
+      "publishedAt": 1787077080000,
+      "channel": "",
+      "channelHebrewName": "i24NEWS",
+      "sourceId": "i24news",
+      "sourceUrl": "https://www.skarim.org/polls/i24news-2026-08-18",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 31,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260817210222",
+      "date": "17.08.2026",
+      "dateTimestamp": 1786924800000,
+      "publishedAt": 1786989600000,
+      "channel": "",
+      "channelHebrewName": "חדשות 12",
+      "sourceId": "channel_12",
+      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-08-17",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260816203214",
+      "date": "16.08.2026",
+      "dateTimestamp": 1786838400000,
+      "publishedAt": 1786901400000,
+      "channel": "",
+      "channelHebrewName": "כאן 11",
+      "sourceId": "kan_news",
+      "sourceUrl": "https://www.skarim.org/polls/kan-news-2026-08-16",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260814094907",
+      "date": "14.08.2026",
+      "dateTimestamp": 1786665600000,
+      "publishedAt": 1786689960000,
+      "channel": "",
+      "channelHebrewName": "מעריב",
+      "sourceId": "maariv",
+      "sourceUrl": "https://www.skarim.org/polls/maariv-2026-08-14",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260813224800",
+      "date": "13.08.2026",
+      "dateTimestamp": 1786579200000,
+      "publishedAt": 1786650360000,
+      "channel": "",
+      "channelHebrewName": "זמן ישראל",
+      "sourceId": "zman_israel",
+      "sourceUrl": "https://www.skarim.org/polls/zman-israel-2026-08-13",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 25,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260813200123",
+      "date": "13.08.2026",
+      "dateTimestamp": 1786579200000,
+      "publishedAt": 1786640340000,
+      "channel": "",
+      "channelHebrewName": "i24NEWS",
+      "sourceId": "i24news",
+      "sourceUrl": "https://www.skarim.org/polls/i24news-2026-08-13",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 30,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hakalkalit",
+          "name": "הכלכלית",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260812205629",
+      "date": "12.08.2026",
+      "dateTimestamp": 1786492800000,
+      "publishedAt": 1786556640000,
+      "channel": "",
+      "channelHebrewName": "חדשות 13",
+      "sourceId": "channel_13",
+      "sourceUrl": "https://www.skarim.org/polls/channel-13-2026-08-12",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 12,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "ahdut_party",
+          "name": "האחדות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260810205734",
+      "date": "10.08.2026",
+      "dateTimestamp": 1786320000000,
+      "publishedAt": 1786384500000,
+      "channel": "",
+      "channelHebrewName": "חדשות 12",
+      "sourceId": "channel_12",
+      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-08-10",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 24,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260810175727",
+      "date": "10.08.2026",
+      "dateTimestamp": 1786320000000,
+      "publishedAt": 1786384500000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 16",
+      "sourceId": "channel_16",
+      "sourceUrl": "https://www.skarim.org/polls/channel-16-2026-08-10",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 16,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 12,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zehut",
+          "name": "זהות",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "20260806192932",
+      "date": "06.08.2026",
+      "dateTimestamp": 1785974400000,
+      "publishedAt": 1786034700000,
+      "channel": "",
+      "channelHebrewName": "ישראל היום",
+      "sourceId": "israel_hayom",
+      "sourceUrl": "https://www.skarim.org/polls/israel-hayom-2026-08-06",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "bait_zioni",
+          "name": "בית ציוני",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        }
+      ]
+    },
+    {
+      "id": "20260723183757",
+      "date": "23.07.2026",
+      "dateTimestamp": 1784764800000,
+      "publishedAt": 1784820900000,
+      "channel": "",
+      "channelHebrewName": "ישראל היום",
+      "sourceId": "israel_hayom",
+      "sourceUrl": "https://www.skarim.org/polls/israel-hayom-2026-07-23",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "miluimnikim_party",
+          "name": "מפלגת מילואימניקים",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "20260427133915",
+      "date": "27.04.2026",
+      "dateTimestamp": 1777248000000,
+      "publishedAt": 1777309380000,
+      "channel": "",
+      "channelHebrewName": "וואלה",
+      "sourceId": "walla",
+      "sourceUrl": "https://www.skarim.org/polls/walla-2026-04-27",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 28,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 27,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 15,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hadash_taal",
+          "name": "חד\"ש-תע\"ל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "balad",
+          "name": "בל\"ד",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "miluimnikim_party",
+          "name": "מפלגת מילואימניקים",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
           "mandates": 0,
           "alignment": "Coalition"
         }

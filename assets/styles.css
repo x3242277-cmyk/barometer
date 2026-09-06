@@ -55,7 +55,7 @@ button,input,select,textarea{font:inherit}
 button,select,label{cursor:pointer}
 h1,h2,h3,h4{font-family:var(--serif); font-weight:700; line-height:1.16; letter-spacing:0; margin:0; text-wrap:balance}
 .num{font-family:var(--serif); font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; letter-spacing:0}
-.wrap{width:min(1220px, calc(100% - 40px)); margin-inline:auto}
+.wrap{width:min(1780px, calc(100% - 40px)); margin-inline:auto}
 .skip{position:fixed; top:10px; right:10px; z-index:200; transform:translateY(-160%); background:var(--navy); color:#fff; padding:10px 16px; border-radius:8px; font-weight:700; text-decoration:none}
 .skip:focus{transform:none}
 :focus-visible{outline:3px solid var(--gold); outline-offset:2px; border-radius:4px}
@@ -287,7 +287,7 @@ td.n,th.n{text-align:end; font-variant-numeric:tabular-nums}
 .rcard:hover{background:var(--paper-3)}
 .rcard-face{width:clamp(120px,42%,168px); aspect-ratio:1; border-radius:50%; background:var(--paper-3); border:2px solid var(--rule); display:grid; place-items:center; overflow:hidden}
 .rcard-face img{width:100%; height:100%; object-fit:cover}
-.rcard.is-placeholder .rcard-face{background:var(--paper-2); border-style:dashed}
+.rcard.is-placeholder .rcard-face{background:var(--paper-3); border:1px dashed var(--rule)}
 .rcard.is-placeholder .rcard-face img{object-fit:contain; padding:20px; opacity:.85}
 .rcard.has-photo .rcard-face{border:3px solid var(--c)}
 .rcard-face b{display:none}
@@ -372,7 +372,7 @@ details.math .body{padding:0 20px 20px; color:var(--ink-2); font-size:.9rem}
 .src a{color:var(--navy)}
 
 /* poll list */
-.pollcards{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+.pollcards{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
 .pollcard{display:grid; grid-template-columns:52px minmax(0,1fr) auto; gap:14px; align-items:center; padding:15px; background:var(--paper-2); border:1px solid var(--rule); border-radius:var(--r); box-shadow:var(--shadow-s)}
 .pollcard .chanwrap{position:relative; width:52px; height:52px}
 .pollcard .chan{width:52px; height:52px; border-radius:12px; background:#fff; border:1px solid var(--rule-2); display:grid; place-items:center; overflow:hidden}
@@ -573,7 +573,7 @@ footer a{color:#EBD9AE}
 #view-polls .controls{padding:18px 20px;background:#eceeea;border:1px solid #dce0da;border-radius:14px;align-items:end}
 #view-polls .field select{min-width:190px;background:#fff}
 .poll-data-note{font-size:.8rem;line-height:1.7;color:var(--ink-3);margin:16px 2px 22px}
-#polls-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+#polls-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .poll-result-card{background:#fff;border:1px solid #dce0da;border-radius:18px;overflow:hidden;box-shadow:0 3px 16px #172c3a05}
 .poll-result-card header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 24px;border-bottom:1px solid #edf0ec}
 .poll-result-card h3{font-family:var(--sans);font-size:1.1rem;margin:0}
@@ -646,3 +646,241 @@ footer a{color:#EBD9AE}
   .header-countdown .countdown-cells .num{font-size:.95rem}
   .header-countdown .cd-sep{padding-bottom:8px}
 }
+
+/* Exploration layout — retains the existing paper, navy and gold palette. */
+:root{--ink-3:#536170}
+[hidden]{display:none!important}
+.tabs{overflow:visible;align-items:stretch;justify-content:flex-start}
+.tabsbar .wrap::before,.tabsbar .wrap::after{display:none}
+.nav-more{position:relative;display:flex;align-items:center}
+.nav-more>summary{cursor:pointer;padding:18px 20px;font-weight:700;white-space:nowrap;color:var(--ink-2);min-height:44px}
+.nav-menu{position:absolute;inset-inline-end:0;top:100%;width:255px;padding:8px;background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow-m);z-index:50}
+.nav-menu .tab{display:block;text-align:start;white-space:normal;padding:12px;border:0}
+.nav-more[open]>summary{color:var(--navy);background:var(--paper-3)}
+.hero-in{grid-template-columns:1fr auto;padding:28px 0;gap:24px;align-items:center}
+.hero h1{font-size:clamp(2rem,3.7vw,3rem);line-height:1.12;margin:10px 0}
+.hero h1 br{display:none}.hero h1 em{margin-inline-start:8px}
+.hero .lede{font-size:1rem;line-height:1.6;margin:0;max-width:65ch}
+.hero .eyebrow{font-size:.78rem;padding:0;background:none}
+.hero .hero-cta{margin:0;align-content:center;gap:10px}
+.hero-art{opacity:.22}
+.home-stats-sec{padding:16px 0 0;border:0}
+.home-stats-sec .stats,#polls-stats{display:flex;flex-wrap:wrap;gap:10px 26px;box-shadow:none;background:none;border:0;border-radius:0;padding:0}
+.home-stats-sec .stats>div,#polls-stats>div{display:flex;align-items:baseline;gap:7px;border:0;padding:0;text-align:start}
+.home-stats-sec .stats b,#polls-stats b{font-size:1.2rem;line-height:1.4}
+.home-stats-sec .stats span,#polls-stats span{font-size:.83rem;margin:0}
+.forecast-section{padding-top:24px!important}
+.forecast-section .sec-head{margin-bottom:10px}
+.data-explainer{font-size:.88rem;color:var(--ink-3);line-height:1.7;margin:8px 0 16px}
+.data-explainer a{text-decoration:underline;color:var(--navy)}
+.forecast-views{margin:0 0 18px;flex-wrap:wrap;border-radius:12px}
+.forecast-views button{min-height:44px}
+#forecast-bars{padding:18px 22px;border:1px solid var(--rule);border-radius:16px;background:var(--paper-2);box-shadow:var(--shadow-s)}
+.chart-caption{display:flex;justify-content:space-between;color:var(--ink-3);font-size:.8rem;border-bottom:1px solid var(--rule-2);padding-bottom:12px;margin-bottom:8px}
+.forecast-bar-grid{display:grid;grid-auto-flow:column;grid-template-columns:1fr 1fr;grid-template-rows:repeat(var(--rows,7),auto);gap:0 34px}
+.forecast-bar{display:grid;grid-template-columns:140px minmax(50px,1fr) 36px;align-items:center;gap:12px;padding:11px 0;min-height:48px;background:none;border:0;border-bottom:1px solid var(--rule-2);text-align:start;border-radius:0;color:var(--ink)}
+.forecast-bar>span{font-size:.92rem;font-weight:600;line-height:1.35}
+.forecast-bar>i{height:9px;background:var(--paper-3);border-radius:3px;overflow:hidden}
+.forecast-bar i b{display:block;height:100%;background:var(--navy);border-radius:3px}
+.forecast-bar strong{font-size:1.35rem;text-align:end;font-variant-numeric:tabular-nums;color:var(--navy)}
+.forecast-bar:hover{background:var(--paper-3)}
+.gauge-read{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.gauge-read>div{text-align:center;padding:14px 5px;border:1px solid var(--rule);border-radius:10px}
+#bloc-members details{border-bottom:1px solid var(--rule);padding:8px 0}
+#bloc-members summary{min-height:44px;padding:10px;cursor:pointer}
+#bloc-members p{font-size:.9rem;padding:0 10px;color:var(--ink-2)}
+.result-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.rcard{padding:16px 14px 14px;gap:9px;box-shadow:var(--shadow-s);position:relative;overflow:hidden}
+.rcard .rcard-face{width:100%;max-width:158px;height:auto;aspect-ratio:3/4;border-radius:9px;border:0;background:none}
+.rcard.has-photo .rcard-face{border:0}
+.rcard-face img{object-fit:contain;object-position:center}
+.rcard.is-placeholder .rcard-face img{padding:34px}
+.rcard-num{font-size:2.3rem;color:var(--c)}
+.rcard strong{font-size:1rem;color:var(--ink)}
+.mandate-label{font-size:.76rem;color:var(--ink-3)}
+.party-inspect{min-height:44px;width:100%;background:var(--paper-3);color:var(--navy);border:1px solid var(--rule);border-radius:8px;margin-top:5px;font-weight:700;font-size:.84rem}
+.methodology-cards .btn{margin-top:16px}
+.anecdote-side .kicker{color:#fff}
+#view-polls .page-intro{padding:26px 0 16px;max-width:none}
+#view-polls .page-intro h2{font-size:2.2rem}
+#view-polls .page-intro p:last-child{font-size:.97rem;max-width:80ch;margin-bottom:0}
+#view-polls .page-intro+.sec{padding:12px 0 18px;border:0}
+#view-polls .page-intro+.sec+.sec{padding-top:20px}
+#view-polls .controls{padding:14px 16px;gap:12px 18px}
+#view-polls .field{min-width:0}
+#view-polls .field select{min-width:155px}
+.poll-data-note{font-size:.85rem;margin:12px 0 16px;color:var(--ink-3)}
+.poll-result-card header p,.poll-result-card time{font-size:.86rem}
+.poll-result-card footer{font-size:.8rem;line-height:1.6}
+.poll-result-card{display:flex;flex-direction:column}
+.poll-result-card footer{margin-top:auto}
+.poll-list{grid-template-columns:1fr;padding:8px 20px 12px;gap:0}
+.poll-list li{grid-template-columns:minmax(0,1fr) 35px 30px;gap:10px;min-height:45px;padding:0 4px}
+.poll-list li>b{font-family:var(--sans);font-size:1.15rem;color:var(--navy);text-align:end}
+.poll-party-name{border:0;background:none;padding:10px 0;color:var(--ink-2);font-size:.93rem;text-align:start;white-space:normal;line-height:1.4}
+.neutral-delta{color:var(--ink-3);font-size:.82rem!important;font-variant-numeric:tabular-nums}
+.party-highlight{background:#F2E9D6!important;box-shadow:inset -3px 0 var(--gold)}
+.focus-summary{padding:14px 18px;background:#F2E9D6;border:1px solid #C8AE7D;border-radius:10px;font-size:.96rem;color:#4D4028}
+.zero-results,.poll-bloc-details{margin:0 20px 12px;font-size:.87rem;color:var(--ink-2)}
+.zero-results summary,.poll-bloc-details summary,.trend-data summary{cursor:pointer;min-height:44px;padding:10px 0;color:var(--navy);font-weight:600}
+.zero-results p,.bloc-members-note{font-size:.85rem;line-height:1.7}
+.poll-blocs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:12px 0;gap:12px}
+.poll-blocs span{color:var(--ink-2);font-size:.85rem}
+.poll-seatbar{margin:14px 0 0;overflow:visible;border-radius:0}
+.poll-seatbar .poll-61{inset-inline-start:calc(100% * 61 / 120);top:0;bottom:0;width:2px;background:#17212D;box-shadow:0 0 0 1px #fff}
+.poll-seatbar .poll-61::after{display:none}
+.majority-note{font-size:.8rem;margin:7px 0;color:var(--ink-3)}
+#compare-picker{border:1px solid var(--rule);border-radius:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px;margin:0}
+#compare-picker legend{padding:0 8px;font-weight:700;color:var(--navy)}
+#compare-picker label{display:grid;grid-template-columns:22px 1fr;align-items:center;gap:3px 8px;border:1px solid var(--rule);border-radius:8px;padding:12px;font-size:.88rem;cursor:pointer;background:var(--paper-2)}
+#compare-picker small{grid-column:2;font-size:.8rem;color:var(--ink-3)}
+#compare-picker input{width:18px;height:18px;accent-color:var(--navy)}
+#compare-picker label:has(input:disabled){opacity:.55}
+#compare-status{font-size:.85rem;color:var(--ink-3)}
+#compare-table{max-height:none}
+#compare-table table{width:100%;min-width:570px}
+#compare-table td{text-align:center;font-size:1.15rem;font-variant-numeric:tabular-nums}
+#compare-table th{text-align:center;white-space:normal;min-width:130px}
+#compare-table th:first-child{text-align:start}
+#compare-table button{min-height:44px;border:0;background:none;text-align:start;color:var(--navy);font-size:.9rem}
+table caption{padding:14px;text-align:start;font-size:.84rem;color:var(--ink-3)}
+.trend-field{display:block;max-width:300px;margin-bottom:16px}
+.trend-field select{width:100%;min-height:44px}
+.trend-scroll{overflow-x:auto}
+.trend-scroll .spark{min-width:700px}
+.trend-legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin:14px 0;font-size:.85rem;color:var(--ink-2)}
+.trend-legend span{padding:4px 0}
+.trend-data{margin-top:16px;border-top:1px solid var(--rule)}
+.trend-data .tablewrap{max-height:none}
+button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:1000px){.result-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.hero-in{grid-template-columns:1fr}.hero .hero-cta{justify-content:flex-start}.forecast-bar{grid-template-columns:115px minmax(35px,1fr) 30px}.tabs .tab,.nav-more>summary{font-size:.85rem;padding:14px 12px}}
+@media(max-width:760px){
+ .hero-in{padding:22px 0;gap:14px}.hero h1{font-size:2rem}.hero h1 br{display:block}.hero h1 em{margin:0}.hero .lede{font-size:.94rem}
+ .hero .hero-cta .btn{flex:none;font-size:.84rem;padding:10px 14px}
+ .tabs{display:flex;flex-wrap:wrap;padding:0}.tabs .tab,.nav-more>summary{font-size:.78rem;padding:12px 9px;min-height:44px}.nav-more{margin-inline-start:auto}
+ .nav-menu{position:fixed;top:calc(var(--masthead-h,60px) + 44px);inset-inline-end:12px;width:min(280px,calc(100vw - 24px))}
+ .home-stats-sec .stats,#polls-stats{gap:8px 20px}.home-stats-sec .stats b,#polls-stats b{font-size:1rem}
+ .forecast-bar-grid{grid-auto-flow:row;grid-template-columns:1fr;grid-template-rows:none}.forecast-bar{grid-template-columns:135px minmax(40px,1fr) 30px}.forecast-bar>span{font-size:.9rem}
+ #forecast-bars{padding:14px}.gauge-read{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .result-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rcard{padding:10px}.rcard .rcard-face{width:100%;max-width:124px;height:auto;aspect-ratio:3/4}.rcard-num{font-size:2rem}.rcard strong{font-size:.9rem}.rcard.is-placeholder .rcard-face img{padding:20px}
+ #compare-picker{grid-template-columns:1fr 1fr;padding:12px;gap:8px}#compare-picker label{padding:10px;font-size:.8rem}
+ #view-polls .controls{grid-template-columns:1fr 1fr}#view-polls .field select{min-width:0}.poll-list{padding:8px 16px}
+ .forecast-views{display:flex;width:100%}.forecast-views button{flex:1;padding:9px;font-size:.78rem}
+ .sec-head{gap:12px}.sec-head .switch{flex-wrap:wrap}.poll-result-card footer{font-size:.8rem}
+}
+
+
+/* --- שורות הגושים בכרטיסי המפלגות --- */
+/* שורה עליונה ימין וחרדים, תחתונה מרכז–שמאל וערבים. --n הוא מספר הכרטיסים
+   בשורה, כך שכל שורה מתחלקת לרוחב מלא ולא נגררת לשורת המשך. */
+.result-grid{display:block}
+.party-row{display:grid;grid-template-columns:repeat(var(--n,6),minmax(0,1fr));gap:14px;margin-bottom:14px;justify-content:end}
+.party-row:last-child{margin-bottom:0}
+
+/* הכרטיס כולו כפתור — אין יותר לשונית "לנתוני המפלגה" בתחתיתו */
+button.rcard{cursor:pointer;font:inherit;color:inherit;width:100%;text-align:center;transition:transform .12s,box-shadow .12s}
+button.rcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-m);border-color:var(--c)}
+button.rcard:active{transform:none}
+.rcard .mandate-label{margin-bottom:2px}
+
+/* --- ערוץ שחוזר בטבלה: שורה אחת + משולש שפותח את השאר --- */
+.outlet-toggle{display:inline-flex;align-items:center;gap:4px;margin-inline-start:auto;min-width:44px;min-height:44px;justify-content:center;
+  border:1px solid var(--rule);border-radius:8px;background:var(--paper-3);color:var(--navy);font-size:.8rem;font-weight:700;cursor:pointer;line-height:1}
+.outlet-toggle span{font-variant-numeric:tabular-nums}
+.outlet-toggle[aria-expanded="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.outlet-toggle[aria-expanded="true"]::first-letter{}
+.outlet-head.has-more .orgcell{gap:10px}
+.outlet-head.has-more .orgcell>div:nth-child(2){flex:1}
+tr.outlet-more{background:var(--paper-3)}
+tr.outlet-more th{padding-inline-start:26px}
+tr.outlet-more .orgcell strong{font-weight:600;font-size:.9rem}
+.outlet-more-mark{width:14px;height:14px;flex:none;border-inline-end:1px solid var(--rule);border-bottom:1px solid var(--rule);border-end-end-radius:4px;margin-bottom:8px}
+
+@media(max-width:1000px){.pollcards,#polls-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .party-row{grid-template-columns:repeat(min(var(--n,4),4),minmax(0,1fr))}}
+@media(max-width:760px){.pollcards,#polls-cards{grid-template-columns:1fr}
+  .party-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+
+/* פס השיוך בראש הכרטיס, בצבע הגוש — ואותו צבע גם למספר המנדטים */
+button.rcard::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;height:5px;background:var(--c)}
+button.rcard .rcard-num{color:var(--c)}
+button.rcard.is-placeholder::before{opacity:.55}
+
+/* --- כיול על שתי מערכות בחירות --- */
+.calib-switch{margin-top:16px;flex-wrap:wrap}
+.calib-switch button{min-height:44px}
+.calibration-sec .data-explainer{margin:10px 0 0}
+.calib-runs{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.calib-runs b{display:inline-flex;align-items:baseline;gap:5px;padding:2px 8px;border:1px solid var(--rule);
+  border-radius:100px;background:var(--paper-3);font-size:.72rem;font-weight:700;color:var(--ink-2)}
+.calib-runs b em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--navy);font-weight:800}
+.calib-runs i{font-style:normal;font-size:.7rem;color:var(--ink-3);align-self:center}
+tr.unattributed{opacity:.62}
+tr.unattributed .chip{background:var(--paper-3)}
+
+
+/* --- פס הגושים בראש כרטיס הסקר: חצי מהעובי, בלי מספרים --- */
+.poll-blocbar{position:relative;display:flex;height:9px;margin:0 20px 4px;border-radius:3px;overflow:visible;background:var(--paper-3)}
+.poll-blocbar>span{position:relative;min-width:3px}
+.poll-blocbar>span:first-child{border-start-start-radius:3px;border-end-start-radius:3px}
+.poll-blocbar>span:last-child{border-start-end-radius:3px;border-end-end-radius:3px}
+/* הוי של הגוש שעבר 61 */
+.poll-blocbar>span>b{position:absolute;inset-inline:0;bottom:calc(100% + 4px);text-align:center;
+  font-size:.95rem;font-weight:900;line-height:1}
+.poll-blocbar>span{color:var(--ink)}
+ /* קו הרוב מסומן משני הקצוות: כל גוש גדול נמדד מול 61 מהצד שלו. */
+.poll-blocbar .poll-61{position:absolute;inset-block:-3px;width:2px;background:#17212D;box-shadow:0 0 0 1px #fff}
+.poll-blocbar .poll-61.from-start{inset-inline-start:calc(100% * 61 / 120)}
+.poll-blocbar .poll-61.from-end{inset-inline-end:calc(100% * 61 / 120)}
+.poll-result-card .poll-blocbar{margin-top:26px}
+.poll-result-card header{padding-bottom:6px}
+
+
+/* --- גוון מזהה לכל מכון סקרים --- */
+/* גוונים עמומים ומובחנים, שלא מתחרים בצבעי הגושים ואינם נושאים משמעות
+   פוליטית: הם רק עוזרים לעקוב אחרי שורות של אותו מכון לאורך הטבלה. */
+.seat-cell{background:color-mix(in srgb, var(--firm, #64707C) calc(var(--strength, 0) * 30%), var(--paper-3))}
+tr.outlet-head>th,tr.outlet-more>th{box-shadow:inset -4px 0 var(--firm, #64707C)}
+tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
+.outlet-toggle[aria-expanded="true"]{background:var(--firm, var(--navy));border-color:var(--firm, var(--navy))}
+.poll-result-card{border-top:3px solid var(--firm, var(--rule))}
+.poll-result-card header h3{color:var(--firm, var(--ink))}
+
+#compare-picker label{border-inline-start:4px solid var(--firm,var(--rule))}
+#compare-table th[style*="--firm"]{border-top:3px solid var(--firm,var(--rule))}
+
+
+/* --- כותרת עמוד קומפקטית: שורה אחת של כותרת, מונים ומתג תצוגה --- */
+.page-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;
+  padding:12px 0 10px;border-bottom:1px solid var(--rule)}
+.page-head-main{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 22px;min-width:0}
+.page-head h2{font-size:1.5rem;margin:0;line-height:1.15}
+.page-head .stats{margin:0}
+.polls-sec{padding:14px 0 0!important;border:0!important}
+/* שורת הסינון בשורה אחת: תווית לצד הבורר, בלי לגזול גובה מהתוכן */
+#view-polls .controls{display:flex;flex-wrap:wrap;align-items:center;padding:8px 14px;gap:8px 18px;margin-bottom:10px}
+#view-polls .field{flex-direction:row;align-items:center;gap:8px;margin:0}
+#view-polls .field span{font-size:.76rem;white-space:nowrap;color:var(--ink-3);margin:0}
+#view-polls .field select{min-height:36px;padding-block:5px;font-size:.85rem}
+#view-polls .controls .count{font-size:.8rem}
+.poll-data-note{margin:0 0 12px}
+.poll-data-note summary{cursor:pointer;min-height:34px;display:flex;align-items:center;
+  font-size:.82rem;color:var(--navy);font-weight:600}
+.poll-data-note p{margin:4px 0 0;font-size:.84rem;line-height:1.7;color:var(--ink-3)}
+@media(max-width:760px){.page-head{padding:14px 0 12px}.page-head h2{font-size:1.35rem}}
+
+/* פס הכרטיסיות: אותו מידע, פחות גובה */
+.tabsbar .tab{padding:12px 14px}
+.nav-more>summary{padding:12px 16px}
+
+/* --- בורר התאריך בכרטיס הסקר --- */
+.poll-date-pick select{min-height:34px;padding:5px 26px 5px 10px;border:1px solid var(--rule);border-radius:8px;
+  background:var(--paper-3);color:var(--ink-2);font:inherit;font-size:.84rem;font-variant-numeric:tabular-nums;cursor:pointer}
+.poll-date-pick select:hover{border-color:var(--firm,var(--navy));color:var(--firm,var(--ink))}
+.poll-result-card header time{font-variant-numeric:tabular-nums}
+/* מתג התצוגה יושב עכשיו בשורת הסינונים */
+.controls-view{margin-inline-start:auto}
+.controls-view button{padding:7px 14px;font-size:.82rem;min-height:36px}
+
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}

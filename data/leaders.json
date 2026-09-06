@@ -2,18 +2,18 @@
   "//": "תמונות מנהיגי המפלגות לכרטיסי התוצאה. מפתח = מזהה המפלגה בנתוני הסקר. ערך = נתיב מקומי (assets/leaders/<id>.jpg) או כתובת URL. הבנייה מטמיעה נתיבים מקומיים כ-data URI. מפלגה עם ערך ריק — מוצג איור המילואים.",
   "photos": {
     "likud": "assets/leaders/likud.jpg",
-    "yashar": "assets/leaders/yashar.jpg",
-    "hademokratim": "assets/leaders/hademokratim.jpg",
-    "shas": "assets/leaders/shas.jpg",
-    "yahadut_hatora": "assets/leaders/yahadut_hatora.jpg",
-    "beyahad": "",
-    "ndi": "",
-    "ozma_yehudit": "",
-    "reshima_meshutefet": "",
-    "raam": "",
-    "zionut_datit": "",
-    "zionut_datit_zehut": "",
-    "ofer_vinter_party": "",
+    "yashar": "assets/leaders/hademokratim.jpg",
+    "hademokratim": "assets/leaders/yashar.jpg",
+    "shas": "assets/leaders/yahadut_hatora.jpg",
+    "yahadut_hatora": "assets/leaders/shas.jpg",
+    "beyahad": "assets/leaders/beyahad.jpg",
+    "ndi": "assets/leaders/ndi.jpg",
+    "ozma_yehudit": "assets/leaders/ozma_yehudit.jpg",
+    "reshima_meshutefet": "assets/leaders/joint-list.jpg",
+    "raam": "assets/leaders/raam.jpg",
+    "zionut_datit": "assets/leaders/religious-zionism.jpg",
+    "zionut_datit_zehut": "assets/leaders/religious-zionism.jpg",
+    "ofer_vinter_party": "assets/leaders/ofer_vinter_party.jpg",
     "ahdut_party": "",
     "bait_zioni": "",
     "kahollavan": "",
@@ -22,6 +22,10 @@
     "hakalkalit": "",
     "mifleget_hazibur_haharedi": "",
     "israel_thila": "",
-    "makom_lekulanu": ""
-  }
+    "makom_lekulanu": "",
+    "hadash_taal": "assets/leaders/hadash_taal.jpg",
+    "balad": "",
+    "miluimnikim_party": ""
+  },
+  "mappingNote": "שיוכי הדמוקרטים/ישר וש״ס/יהדות התורה הוחלפו לפי תיקון מפורש של בעל האתר ב־06.09.2026. שמות הקבצים הישנים נשמרו; photos הוא מקור השיוך. ב־06.09.2026 שויכו גם ליברמן (ישראל ביתנו), לפיד ובנט (ביחד), עופר וינטר (עמך ישראל) ובן גביר (עוצמה יהודית) מקבצי ההעלאה. raam.jpg ו-hadash_taal.jpg טרם קיימים — עד שיישמרו, הכרטיסים מציגים את איור המילואים."
 }

@@ -125,14 +125,17 @@ h1,h2,h3,h4{font-family:var(--serif); font-weight:700; line-height:1.16; letter-
 .btn.ghost{background:transparent; color:var(--navy)}
 .btn.ghost:hover{background:rgba(18,52,92,.07)}
 
-.election-countdown{display:flex; align-items:center; justify-content:space-between; gap:18px; max-width:560px; margin-top:22px; padding:14px 16px; border:1px solid rgba(18,52,92,.14); border-radius:14px; background:rgba(255,255,255,.68); box-shadow:var(--shadow-s)}
-.election-countdown .kicker{margin:0 0 6px}
-.election-countdown h3{font-size:1.05rem}
-.election-countdown span{display:block; color:var(--ink-3); font-size:.78rem; font-weight:600}
-.countdown-cells{display:flex; gap:8px; flex:none}
-.countdown-cells b{display:grid; place-items:center; min-width:62px; padding:8px 10px; border-radius:10px; background:var(--paper-2); border:1px solid var(--rule-2)}
-.countdown-cells .num{font-family:var(--serif); font-size:1.45rem; line-height:1; color:var(--navy)}
-.countdown-cells em{font-style:normal; margin-top:3px; color:var(--ink-3); font-size:.68rem}
+.election-countdown{display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:600px; margin-top:24px; padding:16px 20px; border-radius:16px;
+  background:linear-gradient(135deg,#0E2A4A,#17457F 60%,#1C3A63); color:#fff; box-shadow:0 14px 34px rgba(14,42,74,.28)}
+.election-countdown .cd-head .kicker{margin:0 0 7px; display:inline-flex; align-items:center; gap:7px; color:#EBD9AE; border-color:rgba(235,217,174,.5)}
+.election-countdown h3{font-size:1.02rem; color:#fff; line-height:1.3}
+.election-countdown .cd-head span{display:block; margin-top:3px; color:rgba(255,255,255,.62); font-size:.76rem; font-weight:600}
+.cd-dot{width:8px; height:8px; border-radius:50%; background:var(--red); box-shadow:0 0 0 0 rgba(176,48,36,.6); animation:pulse 2s infinite}
+.countdown-cells{display:flex; align-items:flex-start; gap:6px; flex:none}
+.countdown-cells b{display:grid; place-items:center; min-width:58px; padding:9px 8px 7px; border-radius:10px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.16)}
+.countdown-cells .num{font-family:var(--serif); font-size:1.7rem; font-weight:700; line-height:1; color:#fff; font-variant-numeric:tabular-nums}
+.countdown-cells em{font-style:normal; margin-top:5px; color:rgba(255,255,255,.6); font-size:.64rem; font-weight:600; letter-spacing:.04em}
+.cd-sep{align-self:center; padding-top:6px; font-family:var(--serif); font-size:1.3rem; color:rgba(255,255,255,.4)}
 
 /* barometer gauge */
 .gauge{background:rgba(255,255,255,.94); border:1px solid var(--rule); border-radius:18px; box-shadow:var(--shadow-m); padding:22px 22px 18px}
@@ -224,12 +227,13 @@ h1,h2,h3,h4{font-family:var(--serif); font-weight:700; line-height:1.16; letter-
 .share-row>em{font-style:normal; color:var(--ink-3); font-size:.74rem; white-space:nowrap}
 .share-row .pos{color:#1F6349}.share-row .neg{color:#8E241A}.share-row .flat{color:var(--ink-3)}
 .pos{color:#1F6349}.neg{color:#8E241A}
-.bloc-swing{display:grid; gap:8px; margin-top:4px}
-.bloc-swing-row{display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--rule-2); border-inline-start:4px solid var(--c); border-radius:10px; background:var(--paper-2)}
-.bloc-swing-row>span{font-weight:800; font-size:.9rem}
+.bloc-swing{display:grid; gap:10px; margin-top:4px}
+.bloc-swing-row{display:grid; grid-template-columns:1fr auto; align-items:baseline; row-gap:4px; column-gap:12px; padding:13px 15px; border:1px solid var(--rule-2); border-inline-start:4px solid var(--c); border-radius:10px; background:var(--paper-2)}
+.bloc-swing-row>span{grid-column:1/-1; font-weight:800; font-size:.9rem}
 .bloc-swing-row>span em{font-style:normal; color:var(--ink-3); font-weight:600; font-size:.82rem}
-.bloc-swing-row>b{font-size:1.35rem; color:var(--c)}
-.bloc-swing-row>strong{font-size:.86rem; font-weight:800; white-space:nowrap}
+.bloc-swing-row>b{font-size:1.4rem; color:var(--c); font-variant-numeric:tabular-nums}
+.bloc-swing-row>b .arrow{color:var(--ink-3); margin:0 3px; font-weight:400}
+.bloc-swing-row>strong{text-align:end; font-size:.82rem; font-weight:800; white-space:nowrap}
 .delta-heads{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px}
 .delta-heads b{display:block; font-family:var(--serif); font-size:2rem; font-weight:900; line-height:1}
 .delta-heads span{display:block; margin-top:4px; color:var(--ink-3); font-size:.78rem; font-weight:600}
@@ -470,9 +474,10 @@ footer a{color:#EBD9AE}
   .hero .lede{font-size:1rem; line-height:1.72}
   .hero-cta{gap:8px}
   .hero-cta .btn{flex:1 1 142px; justify-content:center; padding-inline:12px}
-  .election-countdown{display:grid; gap:12px; padding:13px}
-  .countdown-cells{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
+  .election-countdown{display:grid; gap:12px; padding:14px 16px; max-width:100%}
+  .countdown-cells{display:grid; grid-template-columns:repeat(4,1fr); gap:6px}
   .countdown-cells b{min-width:0}
+  .cd-sep{display:none}
   .gauge{border-radius:16px; padding:18px 16px 16px}
   .gauge-read b{font-size:1.62rem}
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -1248,7 +1253,7 @@ const ELECTION_TIMELINE = {
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"weighted", scen:"actual",
             pollView:"table", view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
-            calibrations:[], leaders:{} };
+            calibrations:[], leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */
 function hemicycleLayout(total, rows = 4) {
@@ -1498,22 +1503,23 @@ function renderElectionTimer() {
   const now = Date.now();
   const open = Date.parse(ELECTION_TIMELINE.pollsOpen);
   const exit = Date.parse(ELECTION_TIMELINE.exitPolls);
-  let target = open, title = "עד פתיחת הקלפיות", sub = "בחירות 2026";
+  let target = open, title = "עד פתיחת הקלפיות", sub = "בחירות 2026", live = false;
   if (now >= open && now < exit) {
-    target = exit;
-    title = "עד פרסום המדגמים";
-    sub = "הקלפיות פתוחות";
+    target = exit; title = "עד סגירת הקלפיות ופרסום המדגמים"; sub = "הקלפיות פתוחות"; live = true;
   } else if (now >= exit) {
-    title = "המדגמים פורסמו";
-    sub = "עוברים למדגמים ולתוצאות האמת";
+    title = "הקלפיות נסגרו"; sub = "עוברים למדגמים ולתוצאות האמת"; live = true;
   }
-  const left = countdownParts(target - now);
+  const t = countdownParts(Math.max(0, target - now));
+  const pad = n => String(n).padStart(2, "0");
   const cells = now >= exit
-    ? [["00", "ימים"], ["00", "שעות"], ["00", "דקות"]]
-    : [[left.days, "ימים"], [left.hours, "שעות"], [left.minutes, "דקות"]];
-  box.innerHTML = `<div><p class="kicker">שעון בחירות</p><h3>${esc(title)}</h3><span>${esc(sub)}</span></div>
-    <div class="countdown-cells">${cells.map(([n, l]) =>
-      `<b><span class="num">${String(n).padStart(2, "0")}</span><em>${esc(l)}</em></b>`).join("")}</div>`;
+    ? [["00", "ימים"], ["00", "שעות"], ["00", "דקות"], ["00", "שניות"]]
+    : [[t.days, "ימים"], [pad(t.hours), "שעות"], [pad(t.minutes), "דקות"], [pad(t.seconds), "שניות"]];
+  box.classList.toggle("is-live", live);
+  box.innerHTML = `<div class="cd-head">
+      <p class="kicker">${live ? '<span class="cd-dot"></span>' : ""}שעון בחירות</p>
+      <h3>${esc(title)}</h3><span>${esc(sub)}</span></div>
+    <div class="countdown-cells">${cells.map(([n, l], idx) =>
+      `${idx ? '<i class="cd-sep">:</i>' : ""}<b><span class="num">${n}</span><em>${esc(l)}</em></b>`).join("")}</div>`;
 }
 
 /* ============================================================
@@ -2054,22 +2060,22 @@ function renderDemography() {
   const left22 = share(base, "center") + share(base, "arab");
   const dRight = bloc - bloc22, dLeft = left - left22;
   const deltaTag = d => `<span dir="ltr" class="${d > 0.049 ? "pos" : d < -0.049 ? "neg" : "flat"}">${d > 0.049 ? "+" : d < -0.049 ? "−" : "±"}${r1(Math.abs(d))}</span>`;
+  const swingRow = (name, sub, s0, s1) => {
+    const d = s1 - s0, grew = d >= 0;
+    return `<div class="bloc-swing-row" style="--c:${grew ? D.camps.right.color : D.camps.center.color}">
+      <span>גוש ${name} <em>(${sub})</em></span>
+      <b class="num">${r1(s0)}% <span class="arrow">→</span> ${r1(s1)}%</b>
+      <strong class="${grew ? "pos" : "neg"}">${grew ? "▲ גדל" : "▼ הצטמק"}</strong>
+    </div>`;
+  };
   const blocSwing = `<div class="bloc-swing">
-    <div class="bloc-swing-row" style="--c:${D.camps.right.color}">
-      <span>גוש הימין <em>(ימין + חרדים)</em></span>
-      <b class="num">${r1(bloc)}%</b>
-      <strong dir="ltr" class="${dRight >= 0 ? "pos" : "neg"}">${dRight >= 0 ? "▲ גדל ב־" : "▼ קטן ב־"}${r1(Math.abs(dRight))} נק׳</strong>
-    </div>
-    <div class="bloc-swing-row" style="--c:${D.camps.center.color}">
-      <span>גוש השמאל <em>(שמאל + ערבים)</em></span>
-      <b class="num">${r1(left)}%</b>
-      <strong dir="ltr" class="${dLeft >= 0 ? "pos" : "neg"}">${dLeft >= 0 ? "▲ גדל ב־" : "▼ קטן ב־"}${r1(Math.abs(dLeft))} נק׳</strong>
-    </div>
+    ${swingRow("הימין", "ימין + חרדים", bloc22, bloc)}
+    ${swingRow("השמאל", "שמאל + ערבים", left22, left)}
   </div>`;
 
   $("#demo-share-chart").innerHTML = `<div class="share-head">
       <div><p class="kicker" style="margin:0">מודל מול מודל</p><h3>2022 מול 2026</h3></div>
-      <p>גוש הימין: <b>${r1(bloc)}%</b> <span dir="ltr" class="${dRight >= 0 ? "pos" : "neg"}" style="font-weight:800">${dRight >= 0 ? "+" : "−"}${r1(Math.abs(dRight))}</span></p>
+      <p>גוש הימין: <b>${r1(bloc22)}% → ${r1(bloc)}%</b></p>
     </div>
     ${blocSwing}
     <div class="compare-stacks" role="img" aria-label="השוואת אחוזי תמיכה לפי גוש בין 2022 ל-2026">
@@ -2090,7 +2096,7 @@ function renderDemography() {
       ${shares.map(x => `<div class="share-row" style="--c:${x.color};--w:${x.s1.toFixed(3)}%">
         <span><i></i>${esc(x.label)}</span>
         <b class="num">${r1(x.s1)}%</b>
-        <em>${deltaTag(x.d)} נק׳ מ־2022</em>
+        <em>ב־2022: ${r1(x.s0)}% · ${deltaTag(x.d)}</em>
         <strong><i></i></strong>
       </div>`).join("")}
     </div>`;
@@ -2107,7 +2113,7 @@ function renderDemography() {
         <th style="text-align:start;padding:4px 2px">גוש</th>
         <th style="text-align:end;padding:4px 2px">2022</th>
         <th style="text-align:end;padding:4px 2px">2026</th>
-        <th style="text-align:end;padding:4px 2px">שינוי, נק׳</th></tr></thead>
+        <th style="text-align:end;padding:4px 2px">שינוי (נק׳ אחוז)</th></tr></thead>
       <tbody>${order.map(c => {
         const s0 = share(base, c), s1 = share(now, c), d = s1 - s0;
         const dtag = (t, val) => `<span dir="ltr" style="color:${t > 0.049 ? "#1F6349" : t < -0.049 ? "#8E241A" : "var(--ink-3)"}">${t > 0.049 ? "+" : t < -0.049 ? "−" : "±"}${val}</span>`;
@@ -2455,8 +2461,8 @@ function wire() {
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
 
-  $("#anec-next").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); });
-  $("#anec-prev").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) - 1; renderAnecdote(); });
+  $("#anec-next").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); scheduleAnec(); });
+  $("#anec-prev").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) - 1; renderAnecdote(); scheduleAnec(); });
 
   $("#bloclegend").addEventListener("click", e => {
     const b = e.target.closest("[data-bloc]"); if (!b) return;
@@ -2511,8 +2517,9 @@ async function boot() {
     wire();
     await refreshLiveResults(true);
     renderElectionTimer();
-    S.countdownTimer = setInterval(renderElectionTimer, 30000);
+    S.countdownTimer = setInterval(() => { if (!document.hidden) renderElectionTimer(); }, 1000);
     S.liveTimer = setInterval(refreshLiveResults, 60000);
+    scheduleAnec();
     routeFromHash();
   } catch (err) {
     console.error(err);
@@ -2656,6 +2663,13 @@ function buildAnecdotes() {
     "מקור: תוצאות 2022 מול התחזית הנוכחית");
 
   return A;
+}
+
+function scheduleAnec() {
+  clearInterval(S.anecTimer);
+  S.anecTimer = setInterval(() => {
+    if (S.view === "home" && !document.hidden) { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); }
+  }, 10000);
 }
 
 function renderAnecdote() {

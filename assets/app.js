@@ -41,7 +41,7 @@ const ELECTION_TIMELINE = {
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"weighted", scen:"actual",
             pollView:"table", view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
-            calibrations:[], leaders:{} };
+            calibrations:[], leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */
 function hemicycleLayout(total, rows = 4) {
@@ -291,22 +291,23 @@ function renderElectionTimer() {
   const now = Date.now();
   const open = Date.parse(ELECTION_TIMELINE.pollsOpen);
   const exit = Date.parse(ELECTION_TIMELINE.exitPolls);
-  let target = open, title = "עד פתיחת הקלפיות", sub = "בחירות 2026";
+  let target = open, title = "עד פתיחת הקלפיות", sub = "בחירות 2026", live = false;
   if (now >= open && now < exit) {
-    target = exit;
-    title = "עד פרסום המדגמים";
-    sub = "הקלפיות פתוחות";
+    target = exit; title = "עד סגירת הקלפיות ופרסום המדגמים"; sub = "הקלפיות פתוחות"; live = true;
   } else if (now >= exit) {
-    title = "המדגמים פורסמו";
-    sub = "עוברים למדגמים ולתוצאות האמת";
+    title = "הקלפיות נסגרו"; sub = "עוברים למדגמים ולתוצאות האמת"; live = true;
   }
-  const left = countdownParts(target - now);
+  const t = countdownParts(Math.max(0, target - now));
+  const pad = n => String(n).padStart(2, "0");
   const cells = now >= exit
-    ? [["00", "ימים"], ["00", "שעות"], ["00", "דקות"]]
-    : [[left.days, "ימים"], [left.hours, "שעות"], [left.minutes, "דקות"]];
-  box.innerHTML = `<div><p class="kicker">שעון בחירות</p><h3>${esc(title)}</h3><span>${esc(sub)}</span></div>
-    <div class="countdown-cells">${cells.map(([n, l]) =>
-      `<b><span class="num">${String(n).padStart(2, "0")}</span><em>${esc(l)}</em></b>`).join("")}</div>`;
+    ? [["00", "ימים"], ["00", "שעות"], ["00", "דקות"], ["00", "שניות"]]
+    : [[t.days, "ימים"], [pad(t.hours), "שעות"], [pad(t.minutes), "דקות"], [pad(t.seconds), "שניות"]];
+  box.classList.toggle("is-live", live);
+  box.innerHTML = `<div class="cd-head">
+      <p class="kicker">${live ? '<span class="cd-dot"></span>' : ""}שעון בחירות</p>
+      <h3>${esc(title)}</h3><span>${esc(sub)}</span></div>
+    <div class="countdown-cells">${cells.map(([n, l], idx) =>
+      `${idx ? '<i class="cd-sep">:</i>' : ""}<b><span class="num">${n}</span><em>${esc(l)}</em></b>`).join("")}</div>`;
 }
 
 /* ============================================================
@@ -847,22 +848,22 @@ function renderDemography() {
   const left22 = share(base, "center") + share(base, "arab");
   const dRight = bloc - bloc22, dLeft = left - left22;
   const deltaTag = d => `<span dir="ltr" class="${d > 0.049 ? "pos" : d < -0.049 ? "neg" : "flat"}">${d > 0.049 ? "+" : d < -0.049 ? "−" : "±"}${r1(Math.abs(d))}</span>`;
+  const swingRow = (name, sub, s0, s1) => {
+    const d = s1 - s0, grew = d >= 0;
+    return `<div class="bloc-swing-row" style="--c:${grew ? D.camps.right.color : D.camps.center.color}">
+      <span>גוש ${name} <em>(${sub})</em></span>
+      <b class="num">${r1(s0)}% <span class="arrow">→</span> ${r1(s1)}%</b>
+      <strong class="${grew ? "pos" : "neg"}">${grew ? "▲ גדל" : "▼ הצטמק"}</strong>
+    </div>`;
+  };
   const blocSwing = `<div class="bloc-swing">
-    <div class="bloc-swing-row" style="--c:${D.camps.right.color}">
-      <span>גוש הימין <em>(ימין + חרדים)</em></span>
-      <b class="num">${r1(bloc)}%</b>
-      <strong dir="ltr" class="${dRight >= 0 ? "pos" : "neg"}">${dRight >= 0 ? "▲ גדל ב־" : "▼ קטן ב־"}${r1(Math.abs(dRight))} נק׳</strong>
-    </div>
-    <div class="bloc-swing-row" style="--c:${D.camps.center.color}">
-      <span>גוש השמאל <em>(שמאל + ערבים)</em></span>
-      <b class="num">${r1(left)}%</b>
-      <strong dir="ltr" class="${dLeft >= 0 ? "pos" : "neg"}">${dLeft >= 0 ? "▲ גדל ב־" : "▼ קטן ב־"}${r1(Math.abs(dLeft))} נק׳</strong>
-    </div>
+    ${swingRow("הימין", "ימין + חרדים", bloc22, bloc)}
+    ${swingRow("השמאל", "שמאל + ערבים", left22, left)}
   </div>`;
 
   $("#demo-share-chart").innerHTML = `<div class="share-head">
       <div><p class="kicker" style="margin:0">מודל מול מודל</p><h3>2022 מול 2026</h3></div>
-      <p>גוש הימין: <b>${r1(bloc)}%</b> <span dir="ltr" class="${dRight >= 0 ? "pos" : "neg"}" style="font-weight:800">${dRight >= 0 ? "+" : "−"}${r1(Math.abs(dRight))}</span></p>
+      <p>גוש הימין: <b>${r1(bloc22)}% → ${r1(bloc)}%</b></p>
     </div>
     ${blocSwing}
     <div class="compare-stacks" role="img" aria-label="השוואת אחוזי תמיכה לפי גוש בין 2022 ל-2026">
@@ -883,7 +884,7 @@ function renderDemography() {
       ${shares.map(x => `<div class="share-row" style="--c:${x.color};--w:${x.s1.toFixed(3)}%">
         <span><i></i>${esc(x.label)}</span>
         <b class="num">${r1(x.s1)}%</b>
-        <em>${deltaTag(x.d)} נק׳ מ־2022</em>
+        <em>ב־2022: ${r1(x.s0)}% · ${deltaTag(x.d)}</em>
         <strong><i></i></strong>
       </div>`).join("")}
     </div>`;
@@ -900,7 +901,7 @@ function renderDemography() {
         <th style="text-align:start;padding:4px 2px">גוש</th>
         <th style="text-align:end;padding:4px 2px">2022</th>
         <th style="text-align:end;padding:4px 2px">2026</th>
-        <th style="text-align:end;padding:4px 2px">שינוי, נק׳</th></tr></thead>
+        <th style="text-align:end;padding:4px 2px">שינוי (נק׳ אחוז)</th></tr></thead>
       <tbody>${order.map(c => {
         const s0 = share(base, c), s1 = share(now, c), d = s1 - s0;
         const dtag = (t, val) => `<span dir="ltr" style="color:${t > 0.049 ? "#1F6349" : t < -0.049 ? "#8E241A" : "var(--ink-3)"}">${t > 0.049 ? "+" : t < -0.049 ? "−" : "±"}${val}</span>`;
@@ -1248,8 +1249,8 @@ function wire() {
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
 
-  $("#anec-next").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); });
-  $("#anec-prev").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) - 1; renderAnecdote(); });
+  $("#anec-next").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); scheduleAnec(); });
+  $("#anec-prev").addEventListener("click", () => { S.anecIdx = (S.anecIdx ?? 0) - 1; renderAnecdote(); scheduleAnec(); });
 
   $("#bloclegend").addEventListener("click", e => {
     const b = e.target.closest("[data-bloc]"); if (!b) return;
@@ -1304,8 +1305,9 @@ async function boot() {
     wire();
     await refreshLiveResults(true);
     renderElectionTimer();
-    S.countdownTimer = setInterval(renderElectionTimer, 30000);
+    S.countdownTimer = setInterval(() => { if (!document.hidden) renderElectionTimer(); }, 1000);
     S.liveTimer = setInterval(refreshLiveResults, 60000);
+    scheduleAnec();
     routeFromHash();
   } catch (err) {
     console.error(err);
@@ -1449,6 +1451,13 @@ function buildAnecdotes() {
     "מקור: תוצאות 2022 מול התחזית הנוכחית");
 
   return A;
+}
+
+function scheduleAnec() {
+  clearInterval(S.anecTimer);
+  S.anecTimer = setInterval(() => {
+    if (S.view === "home" && !document.hidden) { S.anecIdx = (S.anecIdx ?? 0) + 1; renderAnecdote(); }
+  }, 10000);
 }
 
 function renderAnecdote() {

@@ -114,11 +114,12 @@
     "balad": 138093,
     "total": 288789,
     "meretzGap": 4124,
-    "blocNetanyahu": 2303964,
-    "blocChange": 2330464,
-    "blocGap": 30293,
+    "blocNetanyahu": 2304000,
+    "blocChange": 2330771,
+    "blocGap": 26771,
+    "blocNote": "גוש נתניהו = ליכוד + הציונות הדתית + ש״ס + יהדות התורה. הגוש השני = 8 מפלגות האנטי־נתניהו כולל מרצ ובל״ד. מחושב מתוצאות ועדת הבחירות (regions.national.parties). Times of Israel נקבה בפער של ~30 אלף לפי חתך מעט שונה.",
     "source": {
-      "name": "Times of Israel — ניתוח פערי הקולות",
+      "name": "מחושב מתוצאות ועדת הבחירות · רקע: Times of Israel",
       "url": "https://www.timesofisrael.com/netanyahu-won-8-seat-majority-over-his-opponents-despite-near-parity-in-raw-votes/"
     }
   },

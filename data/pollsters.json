@@ -42,13 +42,13 @@
       "id": "Kantar",
       "he": "קנטר",
       "short": "K",
-      "lead": "צוות המחקר של קנטר ישראל",
+      "lead": "דודי חסיד · צוות קנטר ישראל",
       "calibrated": true,
       "outlets": [
         "כאן 11"
       ],
       "logo": "https://kantar.wd3.myworkdayjobs.com/KANTAR/assets/logo",
-      "about": "זרוע ישראלית של חברת מחקר בינלאומית; ספק הסקרים של תאגיד השידור."
+      "about": "זרוע ישראלית של חברת מחקר בינלאומית; ספק הסקרים של תאגיד השידור (כאן 11). הסוקר הוא דודי חסיד."
     },
     {
       "id": "Camil Fuchs",
@@ -68,11 +68,10 @@
       "lead": "רפי סמית",
       "calibrated": true,
       "outlets": [
-        "גלי ישראל",
-        "כאן 11"
+        "גלי ישראל"
       ],
       "logo": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fsmith.PNG?alt=media&token=3a1e97a6-f3e6-45cc-bf52-fa0065c06687",
-      "about": "מכון ותיק בשוק הישראלי, מפרסם בעיקר ברדיו האזורי ובכאן."
+      "about": "מכון ותיק בשוק הישראלי בניהול רפי סמית; מפרסם בעיקר ברדיו האזורי."
     },
     {
       "id": "Maagar Mochot",
@@ -85,18 +84,6 @@
         "ערוץ 16"
       ],
       "about": "מכון ותיק בניהולו של פרופ׳ יצחק כ״ץ; מפרסם בישראל היום ולאחרונה גם בערוץ 16."
-    },
-    {
-      "id": "Dudi Hasid",
-      "he": "דודי חסיד",
-      "short": "ד״ח",
-      "lead": "דודי חסיד",
-      "calibrated": true,
-      "calibrationFirm": "Kantar",
-      "outlets": [
-        "כאן 11"
-      ],
-      "about": "דודי חסיד עבד במסגרת קנטר ופרסם תחזיות ב־2022. לכן בתחזית הנוכחית הוא מקבל את ציון האמינות ההיסטורי של קנטר."
     },
     {
       "id": "Yossi Tatika",
@@ -155,7 +142,7 @@
       "outlet": "ערוץ 16"
     },
     "kan_news": {
-      "firm": "Dudi Hasid",
+      "firm": "Kantar",
       "outlet": "כאן 11"
     },
     "zman_israel": {

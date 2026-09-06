@@ -93,7 +93,7 @@
         },
         {
           "id": "zionut_datit",
-          "name": "הציונות הדתית",
+          "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
           "mandates": 4,
           "alignment": "Coalition"
@@ -244,7 +244,7 @@
         },
         {
           "id": "zionut_datit",
-          "name": "הציונות הדתית",
+          "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
           "mandates": 0,
           "alignment": "Coalition"
@@ -367,7 +367,7 @@
         },
         {
           "id": "zionut_datit",
-          "name": "הציונות הדתית",
+          "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
           "mandates": 0,
           "alignment": "Coalition"
@@ -462,7 +462,7 @@
         },
         {
           "id": "zionut_datit",
-          "name": "הציונות הדתית",
+          "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
           "mandates": 4,
           "alignment": "Coalition"
@@ -585,7 +585,7 @@
         },
         {
           "id": "zionut_datit",
-          "name": "הציונות הדתית",
+          "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
           "mandates": 5,
           "alignment": "Coalition"
@@ -743,7 +743,7 @@
         },
         {
           "id": "zionut_datit",
-          "name": "הציונות הדתית",
+          "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fsmotrich%2Fimg_2025_04_19_09_17_10.png?alt=media&token=8cd55b99-ac70-4917-a644-6fbf113a53eb",
           "mandates": 0,
           "alignment": "Coalition"
@@ -830,7 +830,7 @@
           "alignment": "Coalition"
         },
         {
-          "id": "zionut_datit_zehut",
+          "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
           "mandates": 5,
@@ -953,7 +953,7 @@
           "alignment": "Coalition"
         },
         {
-          "id": "zionut_datit_zehut",
+          "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
           "mandates": 6,
@@ -1097,7 +1097,7 @@
           "alignment": "Coalition"
         },
         {
-          "id": "zionut_datit_zehut",
+          "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
           "mandates": 6,
@@ -1220,7 +1220,7 @@
           "alignment": "Arabs"
         },
         {
-          "id": "zionut_datit_zehut",
+          "id": "zionut_datit",
           "name": "הציונות הדתית וזהות",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fzionut_datit_zehut_1788330675620_zionut_datit_zehut.png?alt=media&token=0254495b-b0c4-4351-a0ba-4a376ec15e58",
           "mandates": 5,

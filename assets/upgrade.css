@@ -30,6 +30,18 @@
 /* רשימות מתחת לאחוז החסימה — 0 מנדטים ואחוז תמיכה, מעומעמות בתוך שורת הגוש */
 #party-rows .rcard.is-below{opacity:.6}
 .forecast-bar.is-below{opacity:.68}
+/* בורר "תחזית הברומטר / משוקלל אמינות" מקביל לכותרת הקטע */
+.hero-parties .sec-head .switch{align-self:center}
+
+/* דף סקרים והשוואה */
+#view-polls .page-head h2{font-size:3rem;letter-spacing:-.03em}
+@media(max-width:760px){#view-polls .page-head h2{font-size:2rem}}
+/* הבורר כרטיסים / השוואת מכונים בקצה השמאלי של שורת הסינון */
+#view-polls .controls{justify-content:space-between}
+#view-polls .controls .controls-view{margin:0;order:3}
+#view-polls .controls .count{margin:0;order:1;padding-bottom:0}
+/* מחיקת פס הגושים הכחול מכרטיסי הסקר */
+.poll-result-card .poll-blocbar{display:none}
 
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #a67820;outline-offset:4px}
 @media(max-width:700px){.tabsbar .tab{font-size:.77rem;padding:10px 8px}.hero .hero-in{min-height:230px}.focus-summary{gap:15px;padding:16px}.profile-portrait{width:100px;height:150px}.focus-summary h2{font-size:2.4rem}.focus-summary h2 span{font-size:1rem}.profile-count{font-size:1rem}.filter-icons{gap:8px}.filter-icons button{width:calc(25% - 6px);font-size:.72rem;min-height:98px}.year-comparison{gap:16px}.year-column+.year-column{padding-inline-start:16px}.year-column h3{font-size:2.3rem}.year-column .kicker{font-size:.7rem}#view-haredi .split{grid-template-columns:1fr}}

@@ -14,12 +14,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=93341c63">
-<link rel="stylesheet" href="assets/upgrade.css?v=a3add704">
-<script src="assets/scenario.js?v=0494daaa" defer></script>
+<link rel="stylesheet" href="assets/upgrade.css?v=abd57583">
+<script src="assets/scenario.js?v=bf9215f5" defer></script>
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
 <script src="assets/explore.js?v=52c59201" defer></script>
-<script src="assets/app.js?v=c6861cd9" defer></script>
+<script src="assets/app.js?v=78457619" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -66,11 +66,11 @@
   <div class="hero"><div class="hero-art" aria-hidden="true" id="hero-art"></div>
     <div class="wrap hero-in"><div><p class="eyebrow">ברומטר · נתונים לבחירות 2026</p><h1>תמונת המנדטים.</h1><p class="lede">המפלגות, הסקרים והמקורות — עם שיטת חישוב גלויה.</p></div><div class="hero-cta"><a class="btn" href="#/polls">השוואת סקרים ←</a><a class="btn ghost" href="#/method">איך זה מחושב</a></div></div>
     <div class="wrap hero-parties">
-      <section class="sec"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="party-updated"></span></p><h2>המפלגות במבט קרוב</h2></div><p class="sec-note">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="result-grid" id="party-rows"></div></section>
+      <section class="sec"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="party-updated"></span></p><h2 id="party-rows-title">תחזית הברומטר</h2><p class="sec-note" id="party-rows-params">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button><button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button></div></div><div class="result-grid" id="party-rows"></div></section>
     </div>
   </div><div class="wrap">
     <section class="home-stats-sec"><div class="stats" id="home-stats"></div></section>
-    <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="forecast-updated"></span></p><h2>המנדטים לפי מפלגה</h2></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button><button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button></div></div>
+    <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="forecast-updated"></span></p><h2>המנדטים לפי מפלגה</h2></div></div>
       <p class="data-explainer">תחזית הברומטר משקללת את הסקרים לפי דיוק היסטורי ומחילה את הנחות המודל: 11 לש״ס, 8 ליהדות התורה, עוגן גושים ותיקון דמוגרפי גלויים. "משוקלל אמינות" מציג את ממוצע הסקרים המשוקלל בלבד. <a href="#/method">שיטת החישוב</a></p>
       <div id="scenario-panel" class="card pad" hidden></div><div class="switch forecast-views" role="group" aria-label="תצוגת התחזית"><button type="button" data-homeview="bars" aria-pressed="true">מפלגות</button><button type="button" data-homeview="seats" aria-pressed="false">מפת הכנסת</button><button type="button" data-homeview="blocs" aria-pressed="false">גושים ושיוך</button><button type="button" data-homeview="table" aria-pressed="false">טבלת נתונים</button></div>
       <div id="forecast-bars" data-homepanel="bars"></div><div id="forecast-table" data-homepanel="table" class="tablewrap" tabindex="0" role="region" aria-label="נתוני התחזית" hidden></div>

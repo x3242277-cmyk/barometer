@@ -464,6 +464,11 @@ function renderHome() {
   $("#hemi-updated").textContent = `עדכון אחרון: ${heDate(S.cur.generatedAt)}`;
   const updTxt = `· מעודכן ${humanUpdate(S.cur.generatedAt)}`;
   ["#forecast-updated", "#party-updated"].forEach(sel => { const el = $(sel); if (el) el.textContent = updTxt; });
+  const titleEl = $("#party-rows-title"), paramsEl = $("#party-rows-params");
+  if (titleEl) titleEl.textContent = S.mode === "scenario" ? "תחזית הברומטר" : "משוקלל אמינות";
+  if (paramsEl) paramsEl.textContent = S.mode === "scenario"
+    ? "פרמטרים: ממוצע הסקרים המשוקלל בדיוק היסטורי · קיבוע ש״ס 11 ויהדות התורה 8 · חצי הדרך למאזן הגושים של 2022 (נטו מהקיבוע) · תיקון דמוגרפי +2 לימין · אחוז חסימה 3.25%."
+    : "פרמטרים: ממוצע הסקרים בלבד, משוקלל לפי דיוק היסטורי של כל מכון · ללא קיבועים או תיקוני גושים · אחוז חסימה 3.25%.";
   $("#blocbar").innerHTML = blocBarHTML(order.map(k => ({ count: blocSeats[k], color: BLOCS[k].color, label: `${BLOCS[k].he}: ${blocSeats[k]}` })));
   $("#bloclegend").innerHTML = order.map(k =>
     `<button type="button" data-bloc="${k}" aria-pressed="false" style="--c:${BLOCS[k].color}"><i></i><b class="num">${blocSeats[k]}</b> ${esc(BLOCS[k].he)} <span style="color:var(--ink-3)">· ${r1(est.blocs[k])} גולמי</span></button>`).join("");

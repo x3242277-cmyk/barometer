@@ -28,6 +28,7 @@
         <span>מדד הסקרים והאמינות</span>
       </span>
     </a>
+    <div class="election-countdown header-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     <div class="masthead-side">
       <span class="stamp"><span class="pulse" aria-hidden="true"></span><span id="stamp-updated">טוען נתונים…</span></span>
       <span class="stamp" id="stamp-window">—</span>
@@ -61,12 +62,11 @@
       <div>
         <p class="eyebrow">ממוצע נע · 14 יום · משוקלל אמינות</p>
         <h1>הסקרים אומרים הרבה.<br><em>אנחנו מודדים כמה מהם צדקו.</em></h1>
-        <p class="lede">ברומטר מדרג כל מכון סקרים לפי הדיוק שלו בבחירות 2022, ואז בונה תחזית שבה מכון מדויק שוקל יותר ממכון שפספס. לתחזית מתווספים שני תיקוני מודל גלויים לגוש החרדי — ההטיה היחידה שחזרה על עצמה כמעט בכל סקר.</p>
+        <p class="lede">סקרי הבחירות, המקורות ושיטת החישוב במקום אחד. השוו בין המפלגות ובין המכונים, עיינו בנתונים והסיקו את המסקנות שלכם.</p>
         <div class="hero-cta">
           <a class="btn" href="#/method">איך זה מחושב</a>
           <a class="btn ghost" href="#/2022">מי דייק ב־2022 <span aria-hidden="true">←</span></a>
         </div>
-        <div class="election-countdown" id="election-countdown" aria-live="polite"></div>
       </div>
       <div class="gauge">
         <div class="gauge-head">
@@ -89,7 +89,7 @@
       <article class="anecdote" id="anecdote">
         <div class="anecdote-side">
           <span class="anecdote-mark" aria-hidden="true">?!</span>
-          <p class="kicker" style="color:#fff;opacity:.75">מספר שנתקע לנו בראש</p>
+          <p class="kicker" style="color:#fff;opacity:.75">טווחי המנדטים בסקרים</p>
         </div>
         <div class="anecdote-body">
           <h3 id="anec-title"></h3>
@@ -134,8 +134,8 @@
             <a class="btn ghost" style="margin-top:14px" href="#/2022">כל הדירוג <span aria-hidden="true">←</span></a>
           </div>
           <div class="card pad">
-            <p class="kicker">תיקוני המודל</p>
-            <h3 style="margin:4px 0 10px">הגוש החרדי</h3>
+            <p class="kicker">שקיפות החישוב</p>
+            <h3 style="margin:4px 0 10px">כלל זהה לכל המפלגות</h3>
             <div id="fix-box"></div>
           </div>
         </div>
@@ -165,10 +165,10 @@
 
     <section class="sec">
       <div class="sec-head">
-        <div><p class="kicker">טבלת המנדטים</p><h2>מפלגה מול מפלגה, סקר מול סקר</h2></div>
+        <div><p class="kicker">השוואת סקרים</p><h2>כל סקר, כל המפלגות</h2></div>
         <div class="switch gold" role="group" aria-label="תצוגה">
-          <button type="button" data-pollview="table" aria-pressed="true">טבלה</button>
-          <button type="button" data-pollview="cards" aria-pressed="false">כרטיסים</button>
+          <button type="button" data-pollview="table" aria-pressed="false">טבלה</button>
+          <button type="button" data-pollview="cards" aria-pressed="true">כרטיסים</button>
         </div>
       </div>
       <div class="controls">
@@ -176,13 +176,13 @@
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
         <div class="count" id="poll-count"></div>
       </div>
-      <div id="polls-table-wrap" class="tablewrap"><table id="polls-table"></table></div>
-      <div id="polls-cards" class="pollcards" hidden></div>
+      <p class="poll-data-note">מנדטים כפי שנשמרו במאגר, ללא תיקוני מודל. 0 = אפס מנדטים; — = אין נתון במאגר. בטבלה ניתן לגלול לצדדים להשוואת כל הרשימות.</p><div id="polls-table-wrap" class="tablewrap" tabindex="0" role="region" aria-label="טבלת השוואת סקרים, ניתנת לגלילה" hidden><table id="polls-table"></table></div>
+      <div id="polls-cards" class="pollcards"></div>
     </section>
 
     <section class="sec">
       <div class="sec-head"><div><p class="kicker">מגמה</p><h2>איך זזו הגושים בשבועיים</h2></div>
-      <p class="sec-note">כל נקודה היא סקר בודד; הקו הוא הממוצע הנע של הבארומטר.</p></div>
+      <p class="sec-note">כל נקודה היא סקר בודד; הקווים מחברים את הסקרים לפי תאריך ואינם ממוצע נע. החלוקה לפי השיוך במאגר, ולא לפי קואליציה אפשרית.</p></div>
       <div class="card pad" id="trend-box"></div>
     </section>
 
@@ -195,7 +195,7 @@
     <section class="sec">
       <div class="notice warm"><span class="ic">↻</span><div>
         <p style="margin:0 0 6px"><b>העמוד הזה מתעדכן אוטומטית.</b></p>
-        <p style="margin:0">חלון 14 הימים מחושב מחדש בכל טעינה מול תאריך היום, וסקרים שיצאו מהחלון נושרים מעצמם. משיכת הסקרים החדשים נעשית על ידי <code>scripts/update-polls.mjs</code> — הרצה מתוזמנת אחת ליום מספיקה. פירוט בקובץ <code>README.md</code>.</p>
+        <p style="margin:0">העמוד מציג את הסקרים שבמאגר בחלון הזמן הנוכחי. תאריך הפרסום והמכון מוצגים לצד כל סקר.</p>
       </div></div>
     </section>
   </div>
@@ -239,7 +239,7 @@
 
     <section class="sec">
       <div class="sec-head"><div><p class="kicker">ההטיה שחזרה על עצמה</p><h2>מה כל הסקרים פספסו יחד</h2></div>
-      <p class="sec-note">ממוצע כל 39 הסקרים מול התוצאה בפועל. זהו הבסיס האמפירי לתיקוני המודל בעמוד התחזית.</p></div>
+      <p class="sec-note">ממוצע כל 39 הסקרים מול התוצאה בפועל. השוואה היסטורית בלבד; אינה משנה את נתוני הסקרים הנוכחיים.</p></div>
       <div class="tablewrap"><table id="bias-table"></table></div>
     </section>
 
@@ -360,27 +360,27 @@
     <div class="page-intro">
       <p class="kicker">הנחת המודל היחידה, במלואה</p>
       <h2>בנק הקולות שכמעט לא זז</h2>
-      <p>ש״ס ויהדות התורה הן המפלגות היחידות בישראל שאפשר לחשב את התוצאה שלהן מראש כמעט בלי סקר. הן נשענות על אוכלוסייה שגודלה ידוע, שיעור ההצבעה שלה ידוע, ושיעור הנאמנות שלה ידוע — ושלושת המספרים האלה זזים לאט מאוד. העמוד הזה מראה את החשבון במלואו, ואת הסיבה שהאתר קובע להן רצפה.</p>
+      <p>תרחיש דמוגרפי לש״ס וליהדות התורה לפי הנחות אוכלוסייה, השתתפות ונאמנות. זהו כלי לבחינת הנחות בלבד, והוא אינו משנה את ממוצע הסקרים או מבטיח תוצאת בחירות.</p>
     </div>
 
     <section class="sec">
       <div class="grid g2">
         <div class="floorcard" style="--c:#4A4A4A">
-          <p class="kicker">רצפת מודל</p>
+          <p class="kicker">הנחת תרחיש היסטורית</p>
           <div class="floornum"><b>10.4</b><span>ש״ס</span></div>
           <p>לא ירדה מ־7 מנדטים מאז 1984. בשלוש המערכות האחרונות: 9, 9, 11.</p>
         </div>
         <div class="floorcard" style="--c:#5B4B8A">
-          <p class="kicker">רצפת מודל</p>
+          <p class="kicker">הנחת תרחיש היסטורית</p>
           <div class="floornum"><b>7.8</b><span>יהדות התורה</span></div>
           <p>7 מנדטים בדיוק בארבע מערכות רצופות — בזמן שמספר הקולות עלה ב־33%.</p>
         </div>
       </div>
-      <div class="notice warm" style="margin-top:16px"><span class="ic">=</span><p style="margin:0">‎10.4 ‎+ 7.8 = <b>18.2 מנדטים</b>. הגוש החרדי קיבל בפועל <b>18</b> ב־2022. במילים אחרות: האתר לא מנבא לו צמיחה — הוא רק מסרב להניח שאוכלוסייה שגדלה ב־4.2% בשנה תיתן פחות מנדטים מאשר לפני ארבע שנים.</p></div>
+      <div class="notice warm" style="margin-top:16px"><span class="ic">=</span><p style="margin:0">ערכי התרחיש אינם נתוני סקר ואינם מוחלים על התחזית הראשית. צמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור.</p></div>
     </section>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">שלושת המספרים</p><h2>למה זה כמעט לא זז</h2></div>
+      <div class="sec-head"><div><p class="kicker">שלושת המספרים</p><h2>הנחות החישוב</h2></div>
       <p class="sec-note">כל אחד משלושת המספרים האלה נמדד בנפרד על ידי גוף מחקר חיצוני. הכפלה שלהם נותנת את גודל הבנק.</p></div>
       <div class="grid g3" id="haredi-pillars"></div>
     </section>
@@ -410,7 +410,7 @@
             <p class="kicker">הפער שנמדד ב־2022</p>
             <div class="lbars" style="margin-top:12px" id="haredi-gap"></div>
           </div>
-          <div class="notice"><span class="ic">i</span><p style="margin:0">הרצפות אינן טענה שמכון כלשהו מטה את נתוניו. הן טענה על <b>מגבלה מבנית של דגימה</b>: אותה מגבלה בדיוק שגורמת לסקרים לפספס גם בוחרים ערבים ועולים מברית המועצות לשעבר.</p></div>
+          <div class="notice"><span class="ic">i</span><p style="margin:0">זהו תרחיש לבחינת הנחות. הנתונים הדמוגרפיים לבדם אינם קובעים תוצאות בחירות ואינם מצדיקים תוספת מנדטים אוטומטית.</p></div>
         </div>
       </div>
     </section>
@@ -499,9 +499,9 @@
           <div id="demo-delta"></div>
         </div>
       </div>
-      <div class="sec-head" style="margin-top:26px"><div><p class="kicker">המנועים</p><h2 style="font-size:1.4rem">כמה כל מגזר גדל</h2></div>
-      <p class="sec-note">הגידול הטבעי של כל קבוצת אוכלוסייה לאורך ארבע שנים — זה כל מה שמזיז את המודל. הערכים לקוחים ממרכז טאוב ומהמכון הישראלי לדמוקרטיה.</p></div>
-      <div class="parties" id="demo-sectors" style="margin-top:4px"></div>
+      <div class="sec-head" style="margin-top:26px"><div><p class="kicker">המגזרים</p><h2 style="font-size:1.4rem">גודל, הצבעה וכוח פוליטי</h2></div>
+      <p class="sec-note">רוחב הפס = חלקו של המגזר בכלל המצביעים ב־2026. מתחת לכל שם: מספר בעלי זכות הבחירה, אחוז ההצבעה שלהם וקצב הגידול השנתי. הערכים ממרכז טאוב ומהמכון הישראלי לדמוקרטיה.</p></div>
+      <div id="demo-sectors" style="margin-top:4px"></div>
     </section>
 
     <section class="sec">
@@ -540,32 +540,11 @@
         <div class="step"><em>04</em><h3>בודקים גם כל מפלגה</h3><p>שגיאה מוחלטת ממוצעת ב־11 הרשימות המרכזיות, 30% מהציון. מעבר מנדט בתוך אותו גוש נענש פחות מהחמצת גוש.</p></div>
         <div class="step"><em>05</em><h3>מתגמלים עקביות, לא הברקה</h3><p>10% נוספים לעקביות: יציבות תחזית הגוש לאורך החודש, ורציפות הפרסום. מכון שקלע פעם אחת אחרי שהתנדנד בעשרה מנדטים לא מקבל את אותו קרדיט כמו מי שהחזיק קו יציב ומדויק.</p></div>
         <div class="step"><em>06</em><h3>בונים ממוצע נע של 14 יום</h3><p>קודם ממצעים את כל סקרי אותו מכון, ורק אחר כך ממזגים בין המכונים לפי ציון האמינות. מכון ללא כיול מ־2022 מקבל משקל ניטרלי של 70.</p></div>
-        <div class="step"><em>07</em><h3>מתקנים את הגוש החרדי ומאזנים ל־120</h3><p>שני תיקונים גלויים שיפורטו למטה, ואז עיגול בשיטת השארית הגדולה כך שהסכום נשאר 120 בדיוק.</p></div>
+        <div class="step"><em>07</em><h3>מעגלים ל־120 מנדטים</h3><p>עיגול בשיטת השארית הגדולה לכל המפלגות, ללא רצפות מנדטים וללא תיקון ייעודי למפלגה.</p></div>
       </div>
     </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">הנחת המודל היחידה</p><h2>למה ש״ס וג׳ מקבלות רצפה</h2></div></div>
-      <div class="split">
-        <div class="card pad">
-          <h3>מה קרה ב־2022</h3>
-          <p style="color:var(--ink-2);font-size:.93rem">בממוצע 39 סקרי חודש הכיול, שתי המפלגות החרדיות יחד קיבלו <b id="m-har-poll">—</b> מנדטים. בפועל הן קיבלו <b>18</b>. זו לא הייתה טעות של מכון בודד — זו הטיה שחזרה כמעט בכל סקר, בכל מכון, לאורך כל החודש.</p>
-          <div class="tablewrap" style="margin-top:14px"><table id="method-bias"></table></div>
-          <p class="sec-note" style="margin-top:12px">הסיבה המקובלת: קושי מובנה בדגימת מצביעים חרדים — שיעור השתתפות נמוך בסקרים טלפוניים ואינטרנטיים, ומשמעת הצבעה גבוהה במיוחד ביום הבחירות.</p>
-        </div>
-        <div class="grid" style="gap:14px">
-          <div class="card pad" style="border-top:4px solid var(--gold)">
-            <p class="kicker">רצפה 1</p><h3 style="margin:4px 0 8px">ש״ס: לא פחות מ־10.4</h3>
-            <p style="margin:0;color:var(--ink-2);font-size:.9rem">ש״ס לא ירדה מ־7 מנדטים מאז 1984, ובשלוש מערכות הבחירות האחרונות עמדה על 9, 9 ו־11. הרצפה נמוכה מתוצאת 2022 — ולא גבוהה ממנה.</p>
-          </div>
-          <div class="card pad" style="border-top:4px solid var(--gold)">
-            <p class="kicker">רצפה 2</p><h3 style="margin:4px 0 8px">יהדות התורה: לא פחות מ־7.8</h3>
-            <p style="margin:0;color:var(--ink-2);font-size:.9rem">ג׳ קיבלה 7 מנדטים בדיוק בארבע מערכות רצופות, בזמן שמספר הקולות שלה טיפס מ־210 אלף ל־280 אלף. הרצפה מתמחרת את הגידול הזה, לא יותר.</p>
-          </div>
-          <div class="notice warm"><span class="ic">=</span><p style="margin:0">‎10.4 ‎+ 7.8 = <b>18.2</b> — כלומר בדיוק 18 המנדטים שהגוש החרדי קיבל בפועל ב־2022. האתר אינו מנבא לו צמיחה; הוא רק מסרב לנבא לו קריסה. ההסבר המלא, כולל החישוב מאחוזי ההצבעה, נמצא בכרטיסיית <a href="#/haredi" style="color:var(--navy);font-weight:700">בנק הקולות החרדי</a>.</p></div>
-        </div>
-      </div>
-    </section>
+    <section class="sec"><div class="sec-head"><div><p class="kicker">בדיקה היסטורית</p><h2>סקרים מול תוצאות 2022</h2></div></div><p class="sec-note">הטבלה מציגה את הפער בכל מפלגה. פער בעבר אינו מבטיח פער דומה בעתיד; לא מוחל תיקון ייעודי על אף מפלגה.</p><div class="tablewrap"><table id="method-bias"></table></div><span id="m-har-poll" hidden></span></section>
 
     <section class="sec">
       <div class="sec-head"><div><p class="kicker">אמינות המקור</p><h2>מי נכנס פנימה, ומי לא</h2></div></div>

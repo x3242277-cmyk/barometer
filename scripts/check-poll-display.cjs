@@ -1,0 +1,25 @@
+const fs = require('fs'), vm = require('vm'), assert = require('assert/strict');
+const elements = new Map();
+const element = id => {
+  if (!elements.has(id)) elements.set(id,{innerHTML:'',textContent:'',value:'all',options:[{},{}],insertAdjacentHTML(){}});
+  return elements.get(id);
+};
+const context = vm.createContext({console, Intl, Date, setInterval(){}, clearInterval(){}});
+vm.runInContext(fs.readFileSync('assets/app.js','utf8'),context);
+context.document = {querySelector:element};
+context.fixtures = Object.fromEntries(['current-polls','historical-polls','pollsters'].map(f=>[f,JSON.parse(fs.readFileSync('data/'+f+'.json','utf8'))]));
+vm.runInContext(`S.cur=fixtures['current-polls'];S.hist=fixtures['historical-polls'];S.firms=fixtures.pollsters;S.stats=scoreFirms(S.hist);S.series=buildSeries(S.cur.polls);renderFirmCards=()=>{};renderPolls();`,context);
+assert.equal((element('#polls-cards').innerHTML.match(/class="poll-result-card"/g)||[]).length,context.fixtures['current-polls'].polls.length);
+assert(!element('#polls-table').innerHTML.includes('ימין+חרדים'));
+assert(element('#polls-table-wrap').hidden);
+assert(!element('#polls-cards').hidden);
+vm.runInContext(`for(const mode of ['weighted','simple']) {const f=forecast(mode);if(JSON.stringify(f.raw)!==JSON.stringify(f.parties))throw Error('Party-specific adjustment');if(Object.values(largestRemainder(f.parties)).reduce((a,b)=>a+b,0)!==120)throw Error('Seat total');}`,context);
+element('#poll-firm').value='missing';
+vm.runInContext('renderPolls()',context);
+assert(element('#polls-table').innerHTML.includes('לא נמצאו'));
+assert(element('#trend-box').innerHTML.includes('אין סקרים'));
+element('#poll-firm').value='all';
+vm.runInContext(`S.cur.polls=[{...S.cur.polls[0],parties:[{id:'likud',name:'הליכוד',mandates:0,alignment:'Coalition'}]},{...S.cur.polls[1],parties:[{id:'shas',name:'ש״ס',mandates:5,alignment:'Coalition'}]}];renderPolls();`,context);
+assert(element('#polls-table').innerHTML.includes('>0</span>'));
+assert(element('#polls-table').innerHTML.includes('אין נתון במאגר'));
+console.log('Passed: complete poll cards, neutral table, both forecast modes total 120 without floors, empty filters, zero versus missing.');

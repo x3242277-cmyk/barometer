@@ -579,18 +579,19 @@ footer a{color:#EBD9AE}
 .poll-result-card h3{font-family:var(--sans);font-size:1.1rem;margin:0}
 .poll-result-card header p{margin:4px 0 0;font-size:.82rem;color:var(--ink-3)}
 .poll-result-card time{font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--ink-2);white-space:nowrap;background:#f3f5f2;padding:6px 10px;border-radius:6px}
-.poll-blocs{display:flex;flex-wrap:wrap;gap:8px;padding:16px 24px 6px}
-.poll-blocs span{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;color:var(--ink-2);font-weight:600}
-.poll-blocs span::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--c)}
-.poll-blocs b{font-family:var(--serif);font-size:1rem;color:var(--c);font-variant-numeric:tabular-nums}
-.poll-bars{display:grid;gap:10px;padding:8px 24px 22px}
-.poll-bar{display:grid;grid-template-columns:minmax(100px,1.05fr) minmax(56px,1.5fr) 52px;align-items:center;gap:12px;min-height:25px}
-.poll-bar>span{font-size:.84rem;line-height:1.35}
-.poll-bar>i{height:8px;background:#eef1ee;border-radius:2px;overflow:hidden}
-.poll-bar i b{display:block;height:100%;background:var(--c,#527174);border-radius:2px}
-.poll-bar>strong{font-size:1rem;font-variant-numeric:tabular-nums;text-align:end;color:#263b40;display:inline-flex;align-items:baseline;gap:4px;justify-content:flex-end}
-.poll-bar>strong em{font-style:normal;font-size:.68rem;font-weight:700}
-.poll-bar>strong em.up{color:#1F6349}.poll-bar>strong em.down{color:#8E241A}
+.poll-seatbar{position:relative;display:flex;height:24px;margin:18px 24px 0;border-radius:6px;overflow:hidden;background:var(--rule-2)}
+.poll-seatbar span{min-width:2px;transition:flex-basis .3s}
+.poll-seatbar .poll-61{position:absolute;top:-4px;bottom:-4px;inset-inline-start:calc(50% - 1px);width:2px;background:var(--ink);border-radius:2px}
+.poll-seatbar .poll-61::after{content:"61";position:absolute;top:-16px;inset-inline-start:50%;transform:translateX(50%);font-size:.6rem;font-weight:800;color:var(--ink)}
+.poll-blocs{display:flex;flex-wrap:wrap;gap:14px;padding:16px 24px 4px}
+.poll-blocs span{display:inline-flex;align-items:baseline;gap:6px;font-size:.76rem;color:var(--ink-3);font-weight:600}
+.poll-blocs b{font-family:var(--serif);font-size:1.15rem;font-weight:800;color:var(--c);font-variant-numeric:tabular-nums}
+.poll-list{list-style:none;margin:0;padding:10px 24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:2px 26px}
+.poll-list li{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px solid var(--rule-2)}
+.poll-list li>span{font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poll-list li>b{font-family:var(--serif);font-size:1.3rem;font-weight:800;color:var(--c);font-variant-numeric:tabular-nums;line-height:1}
+.poll-list li>em{font-style:normal;font-size:.72rem;font-weight:800;min-width:26px;text-align:end}
+.poll-list li>em.up{color:#1F6349}.poll-list li>em.down{color:#8E241A}.poll-list li>em.flat{color:var(--rule)}
 .poll-result-card footer{display:flex;justify-content:space-between;gap:10px;background:#f8f9f6;border-top:1px solid #edf0ec;padding:13px 24px;font-size:.72rem;color:var(--ink-3)}
 #polls-table-wrap{max-height:none;box-shadow:none;border-radius:14px;scrollbar-width:thin}
 #polls-table{min-width:1120px;width:100%;border-collapse:separate;border-spacing:0}
@@ -610,8 +611,10 @@ footer a{color:#EBD9AE}
  #view-polls .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
  #view-polls .field{min-width:0}#view-polls .field select{min-width:0;width:100%}
  #view-polls .count{grid-column:1/-1}
- .poll-result-card header{padding:18px 16px}.poll-bars{padding:4px 16px 20px}.poll-chart-label{padding-inline:16px}
- .poll-result-card footer{padding:12px 16px}.poll-bar{gap:9px}
+ .poll-result-card header{padding:18px 16px}
+ .poll-seatbar{margin-inline:16px}.poll-blocs{padding-inline:16px;gap:10px}
+ .poll-list{grid-template-columns:1fr;padding:8px 16px 16px}
+ .poll-result-card footer{padding:12px 16px;flex-direction:column;gap:4px;align-items:flex-start}
  #polls-table tr>th:first-child{min-width:165px;max-width:165px}
  #polls-table .orgcell{gap:7px}#polls-table .orglogo{display:none}
 }

@@ -19,6 +19,20 @@ const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/hist
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 
+// הטמעת תמונות מנהיגים מקומיות כ-data URI כדי שהקובץ היחיד יעבוד בלי שרת
+const MIME = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", svg: "image/svg+xml" };
+if (data["data/leaders.json"]?.photos) {
+  const photos = data["data/leaders.json"].photos;
+  for (const [id, src] of Object.entries(photos)) {
+    if (!src || !src.startsWith("assets/")) continue;
+    try {
+      const buf = await readFile(path.join(ROOT, src));
+      const ext = src.split(".").pop().toLowerCase();
+      photos[id] = `data:${MIME[ext] || "image/jpeg"};base64,${buf.toString("base64")}`;
+    } catch { photos[id] = ""; }
+  }
+}
+
 const logo = (await rd("assets/logo.svg")).replace(/\s+/g, " ").trim();
 const logoDataUri = "data:image/svg+xml;utf8," + encodeURIComponent(logo);
 

@@ -458,28 +458,34 @@ function renderPolls() {
     }).join("")}</tr>`;
   }).join("") || `<tr><td colspan="${ids.length+1}" class="empty">לא נמצאו סקרים לפי הסינון.</td></tr>`;
   $("#polls-table").innerHTML = head + `<tbody>${body}</tbody>`;
-  const blocColor = x => { const al = alignOf(x); return al === "Haredi" || al === "Right" ? "#17457F" : al === "Left" ? "#C0392B" : al === "Arabs" ? "#2E8467" : "#96A0AB"; };
+  const BLOC_C = { right: "#17457F", left: "#C0392B", arab: "#2E8467", other: "#96A0AB" };
+  const BLOC_RANK = { right: 0, left: 1, arab: 2, other: 3 };
+  const blocKey = x => { const al = alignOf(x); return al === "Right" || al === "Haredi" ? "right" : al === "Left" ? "left" : al === "Arabs" ? "arab" : "other"; };
   $("#polls-cards").innerHTML = rows.map(p => {
     const f = firmOf(p.sourceId);
     const prev = polls.filter(q => q.channelHebrewName === p.channelHebrewName && parsePollDate(q) < parsePollDate(p))
       .sort((a, b) => parsePollDate(b) - parsePollDate(a))[0];
     const prevVal = id => prev ? prev.parties.filter(x => normId(x.id) === normId(id)).reduce((n, x) => n + x.mandates, 0) : null;
-    const parties = [...p.parties].sort((a, b) => b.mandates - a.mandates || a.name.localeCompare(b.name, 'he'));
-    const shown = parties.filter(x => x.mandates > 0);
-    const max = Math.max(1, ...shown.map(x => x.mandates));
-    const bloc = { right: 0, left: 0, arab: 0 };
-    p.parties.forEach(x => { const al = alignOf(x); if (al === "Right" || al === "Haredi") bloc.right += x.mandates; else if (al === "Left") bloc.left += x.mandates; else if (al === "Arabs") bloc.arab += x.mandates; });
+    const passing = p.parties.filter(x => x.mandates > 0);
+    const failed = p.parties.length - passing.length;
+    const bloc = { right: 0, left: 0, arab: 0, other: 0 };
+    passing.forEach(x => { bloc[blocKey(x)] += x.mandates; });
+    const seatSeq = [...passing].sort((a, b) => BLOC_RANK[blocKey(a)] - BLOC_RANK[blocKey(b)] || b.mandates - a.mandates);
+    const seatBar = seatSeq.map(x => `<span style="flex:${x.mandates};background:${BLOC_C[blocKey(x)]}" title="${esc(x.name)} · ${x.mandates}"></span>`).join("");
+    const list = [...passing].sort((a, b) => b.mandates - a.mandates || a.name.localeCompare(b.name, 'he'));
     return `<article class="poll-result-card"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div><time>${esc(p.date)}</time></header>
+      <div class="poll-seatbar" role="img" aria-label="חלוקת 120 המנדטים בסקר לפי גוש">${seatBar}<i class="poll-61" title="רוב — 61"></i></div>
       <div class="poll-blocs">
-        <span style="--c:#17457F"><b>${bloc.right}</b> ימין וחרדים</span>
-        <span style="--c:#C0392B"><b>${bloc.left}</b> מרכז–שמאל</span>
-        <span style="--c:#2E8467"><b>${bloc.arab}</b> ערביות</span>
+        <span style="--c:${BLOC_C.right}"><b>${bloc.right}</b> ימין וחרדים</span>
+        <span style="--c:${BLOC_C.left}"><b>${bloc.left}</b> מרכז–שמאל</span>
+        <span style="--c:${BLOC_C.arab}"><b>${bloc.arab}</b> ערביות</span>
       </div>
-      <div class="poll-bars">${shown.map(x => {
+      <ol class="poll-list">${list.map(x => {
         const pv = prevVal(x.id), d = pv == null ? null : x.mandates - pv;
-        return `<div class="poll-bar" style="--c:${blocColor(x)}"><span title="${esc(x.name)}">${esc(x.name)}</span><i aria-hidden="true"><b style="width:${100 * x.mandates / max}%"></b></i><strong>${x.mandates}${d ? `<em class="${d > 0 ? "up" : "down"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</em>` : ""}</strong></div>`;
-      }).join("")}</div>
-      <footer><span>סה״כ ${p.parties.reduce((n, x) => n + x.mandates, 0)} מנדטים</span><span>${prev ? `המספרים הקטנים: שינוי מול סקר ${esc(p.channelHebrewName)} הקודם (${esc(prev.date)})` : `סקר ${esc(p.channelHebrewName)} הראשון בחלון`}</span></footer></article>`;
+        const dHtml = !prev ? "" : d ? `<em class="${d > 0 ? "up" : "down"}">${d > 0 ? "▲" : "▼"}${Math.abs(d)}</em>` : `<em class="flat">•</em>`;
+        return `<li style="--c:${BLOC_C[blocKey(x)]}"><span title="${esc(x.name)}">${esc(x.name)}</span><b>${x.mandates}</b>${dHtml}</li>`;
+      }).join("")}</ol>
+      <footer><span>${p.parties.reduce((n, x) => n + x.mandates, 0)} מנדטים${failed ? ` · ${failed} מתחת לאחוז החסימה` : ""}</span><span>${prev ? `▲▼ שינוי מול ${esc(p.channelHebrewName)} · ${esc(prev.date)}` : `סקר ${esc(p.channelHebrewName)} ראשון בחלון`}</span></footer></article>`;
   }).join("") || '<p class="empty">לא נמצאו סקרים לפי הסינון. נסו לבחור את כל המכונים וכל הפרסומים.</p>';
   $("#polls-table-wrap").hidden = S.pollView !== "table";
   $("#polls-cards").hidden = S.pollView !== "cards";

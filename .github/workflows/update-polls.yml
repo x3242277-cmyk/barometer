@@ -2,10 +2,14 @@ name: עדכון סקרים
 
 on:
   schedule:
-    # 09:00 ו-21:00 שעון ישראל. GitHub מריץ ב-UTC ובלי מעבר שעון —
-    # הערכים כאן מכוונים לשעון קיץ (IDT, UTC+3). בחורף (UTC+2) זה יוצא 08:00 ו-20:00.
-    - cron: "0 6 * * *"
-    - cron: "0 18 * * *"
+    # היעד: 09:00 ו-21:00 שעון ישראל בדיוק, כל השנה.
+    # ל-GitHub אין אזור זמן ב-cron, והוא לא יודע על מעבר שעון — לכן מוגדרות
+    # כאן ארבע הרצות שמכסות גם קיץ (UTC+3) וגם חורף (UTC+2), והשלב הראשון
+    # בג'וב מפיל את ההרצות שנופלות על שעה לא נכונה בשעון ישראל.
+    - cron: "0 6 * * *"    # 09:00 בקיץ
+    - cron: "0 7 * * *"    # 09:00 בחורף
+    - cron: "0 18 * * *"   # 21:00 בקיץ
+    - cron: "0 19 * * *"   # 21:00 בחורף
   workflow_dispatch:            # הרצה ידנית מלשונית Actions
 
 permissions:
@@ -19,15 +23,37 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - name: להריץ רק ב-09:00 או ב-21:00 שעון ישראל
+        id: gate
+        run: |
+          hour=$(TZ=Asia/Jerusalem date +%H)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$hour" = "09" ] || [ "$hour" = "21" ]; then
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+            echo "רץ — השעה בישראל $hour"
+          else
+            echo "run=no" >> "$GITHUB_OUTPUT"
+            echo "מדלג — השעה בישראל $hour, לא 09 ולא 21"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'yes'
       - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run == 'yes'
         with: { node-version: "22" }
+
       - name: שליפת סקרים חדשים מ-skarim.org
+        if: steps.gate.outputs.run == 'yes'
         run: node scripts/update-polls.mjs
+
+      - name: בנייה מחדש של הקובץ היחיד ב-dist
+        if: steps.gate.outputs.run == 'yes'
+        run: node scripts/build-single-file.mjs
+
       - name: קומיט אם השתנה משהו
+        if: steps.gate.outputs.run == 'yes'
         run: |
           git config user.name  "barometer-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/current-polls.json data/polls-archive.json
+          git add data/current-polls.json data/polls-archive.json dist/index.html dist/artifact.html
           git diff --staged --quiet || git commit -m "עדכון אוטומטי של הסקרים ($(date -u +%d.%m.%Y\ %H:%M) UTC)"
           git push

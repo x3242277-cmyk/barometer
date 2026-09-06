@@ -81,14 +81,16 @@ function renderPollCards(rows, polls) {
     const rowHTML = id => {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
-      return `<li class="${selected===id ? 'party-highlight' : ''}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}">${esc(partyMeta(id).name)}</button><b>${v===null ? '—' : v}</b>${delta}</li>`;
+      const meta = partyMeta(id), col = BLOCS[meta.alignment].color;
+      const face = (S.leaders && S.leaders[id]) || LEADER_PLACEHOLDER;
+      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pface"><img src="${esc(face)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}';this.parentNode.classList.add('is-blank')"></span><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* פס הגושים יושב מעל התוצאות, בלי מספרים ובלי פתיחה. גוש שעבר 61 מקבל וי. */
     const shown = BLOC_ORDER.filter(k => bloc[k] > 0);
     const winner = shown.find(k => bloc[k] >= 61);
     const seatbar = `<div class="poll-blocbar" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
-      shown.map(k => `<span style="flex:${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)} ${bloc[k]}">${
+      shown.map(k => `<span style="flex:${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}">${
         k === winner ? `<b aria-hidden="true" style="color:${BLOCS[k].color}">✓</b>` : ''}</span>`).join('')
     }${total === 120 ? '<i class="poll-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="poll-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
@@ -97,7 +99,10 @@ function renderPollCards(rows, polls) {
           }</select></label>`
         : `<time>${esc(p.date)}</time>`}</header>
       ${seatbar}
-      <ol class="poll-list">${displayIds.map(rowHTML).join('')}</ol>
+      <div class="poll-cols">
+        <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment === 'Right').map(rowHTML).join('')}</ol>
+        <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
+      </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(x.name)).join(' · ')}</p></details>` : ''}
       <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול ${esc(f.meta.he)} · ${esc(prev.channelHebrewName)} · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';

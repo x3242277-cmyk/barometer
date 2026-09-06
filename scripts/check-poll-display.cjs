@@ -46,9 +46,16 @@ if(barScale(24)!==25||barScale(25)!==30||barScale(0)!==25)throw Error('Bar scale
 `,context);
 const cards = element('#polls-cards').innerHTML.split('<article').slice(1);
 for (const card of cards) {
-  const seats = [...card.matchAll(/<\/button><b>(\d+|—)<\/b>/g)].map(m => m[1] === '—' ? -1 : +m[1]);
-  assert(seats.length, 'poll card listed no parties');
-  assert.deepEqual(seats, [...seats].sort((a,b) => b-a), 'poll card not ordered by mandates, high to low');
+  /* הכרטיס מחולק לשתי עמודות גוש — הסדר היורד נבדק בכל עמודה בנפרד. */
+  const columns = card.split('<ol class="poll-list">').slice(1);
+  assert.equal(columns.length, 2, 'poll card is not split into two bloc columns');
+  const all = [];
+  for (const col of columns) {
+    const seats = [...col.matchAll(/<\/button><b>(\d+|—)<\/b>/g)].map(m => m[1] === '—' ? -1 : +m[1]);
+    assert.deepEqual(seats, [...seats].sort((a,b) => b-a), 'bloc column not ordered by mandates, high to low');
+    all.push(...seats);
+  }
+  assert(all.length, 'poll card listed no parties');
 }
 vm.runInContext(`S.pollView='compare';S.compareIds=null;renderPolls();`, context);
 const compared = [...element('#compare-table').innerHTML.matchAll(/<td>(\d+|—)<\/td>/g)].map(m => m[1] === '—' ? 0 : +m[1]);

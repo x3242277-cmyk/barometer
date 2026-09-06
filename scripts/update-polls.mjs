@@ -24,47 +24,58 @@ const FILE = argOf("--file");
 const log = (...a) => console.log("·", ...a);
 const die = m => { console.error("✗", m); process.exit(1); };
 
-/* ---------- 1. שליפה ---------- */
+/* ---------- 1. שליפה ----------
+   skarim.org הוא אתר Next.js. הנתונים יושבים ב-<script id="__NEXT_DATA__">
+   שבתוך ה-HTML, תחת props.pageProps.landing.initialPolls — עשרת הסקרים
+   האחרונים. שולפים בקשה אחת של דף הבית ומחלצים אותם. אין תלות ב-buildId. */
 async function fetchRaw() {
   if (FILE) { log("קורא מקובץ מקומי:", FILE); return JSON.parse(await readFile(FILE, "utf8")); }
   log("שולף מ:", cfg.sourceUrl);
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), cfg.requestTimeoutMs ?? 20000);
   try {
-    const res = await fetch(cfg.sourceUrl, { signal: ctl.signal, headers: { "User-Agent": cfg.userAgent, Accept: "application/json" } });
+    const res = await fetch(cfg.sourceUrl, { signal: ctl.signal, headers: { "User-Agent": cfg.userAgent, Accept: "text/html" } });
     if (!res.ok) die(`המקור החזיר ${res.status} ${res.statusText}`);
-    return await res.json();
+    const html = await res.text();
+    const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (!m) die("לא נמצא __NEXT_DATA__ בעמוד skarim.org — ייתכן שהמבנה השתנה.");
+    return JSON.parse(m[1]);
   } catch (e) {
     die(`השליפה נכשלה: ${e.message}\n   בדקו את sourceUrl ב-scripts/config.json, או הריצו עם --file.`);
   } finally { clearTimeout(t); }
 }
 
-/* ---------- 2. נרמול ----------
-   מצפה למערך סקרים. אם המקור שלכם עוטף אותם (למשל {data:[...]}) — התאימו כאן.  */
+/* ---------- 2. נרמול ---------- */
 function pickArray(raw) {
   if (Array.isArray(raw)) return raw;
+  const nested = raw?.props?.pageProps?.landing?.initialPolls;
+  if (Array.isArray(nested)) return nested;
   for (const k of ["polls", "data", "items", "results"]) if (Array.isArray(raw?.[k])) return raw[k];
-  die("לא נמצא מערך סקרים בתשובת המקור. התאימו את pickArray().");
+  die("לא נמצא מערך סקרים בתשובת המקור (props.pageProps.landing.initialPolls).");
 }
 
 const ALIGNMENTS = new Set(["Coalition", "Opposition", "Arabs", "Unknown"]);
+/* מיזוג מזהים לצורת קנון אחת (הרשימה שרצה משתנה שם לפי מערכת בחירות) */
+const ID_ALIAS = { zionut_datit_zehut: "zionut_datit" };
+const canonId = id => ID_ALIAS[id] || id;
+const parseHeDate = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(String(s || "")); return m ? Date.parse(`${m[3]}-${m[2]}-${m[1]}`) : 0; };
 
 function normalize(p) {
   const parties = (p.parties ?? p.results ?? []).map(x => ({
-    id: String(x.id ?? x.partyId ?? "").trim(),
+    id: canonId(String(x.id ?? x.partyId ?? "").trim()),
     name: String(x.name ?? x.hebrewName ?? x.id ?? "").trim(),
-    logoUrl: x.logoUrl ?? x.logo ?? "",
+    logoUrl: x.imageUrl ?? x.logoUrl ?? x.logo ?? "",
     mandates: Number(x.mandates ?? x.seats ?? 0) || 0,
     alignment: ALIGNMENTS.has(x.alignment) ? x.alignment : "Unknown"
   })).filter(x => x.id);
 
-  const ts = Number(p.dateTimestamp) || Date.parse(p.date) || 0;
+  const ts = Number(p.dateTimestamp) || parseHeDate(p.date) || Date.parse(p.date) || 0;
   return {
     id: String(p.id ?? `${ts}`),
     date: p.date ?? new Date(ts).toLocaleDateString("he-IL"),
     dateTimestamp: ts,
     publishedAt: Number(p.publishedAt) || ts,
-    channel: p.channel ?? p.channelLogo ?? "",
+    channel: p.channel ?? p.channelLogoUrl ?? p.channelLogo ?? "",
     channelHebrewName: p.channelHebrewName ?? p.channelName ?? "",
     sourceId: p.sourceId ?? p.source ?? "",
     parties

@@ -1,6 +1,6 @@
 {
-  "//": "הגדרות שליפת הסקרים. sourceUrl חייב להחזיר JSON. אם המקור שלכם מחזיר מבנה אחר — התאימו את normalize() בקובץ update-polls.mjs.",
-  "sourceUrl": "https://skarim.org/api/polls",
+  "//": "שליפת הסקרים מ-skarim.org. sourceUrl הוא דף הבית — הסקריפט מחלץ את __NEXT_DATA__ ומשם את עשרת הסקרים האחרונים. אין תלות ב-buildId.",
+  "sourceUrl": "https://www.skarim.org/",
   "windowDays": 14,
   "outFile": "data/current-polls.json",
   "requestTimeoutMs": 20000,

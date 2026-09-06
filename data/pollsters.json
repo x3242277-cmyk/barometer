@@ -156,6 +156,10 @@
     "channel_13": {
       "firm": "Channel 13 composite",
       "outlet": "חדשות 13"
+    },
+    "israel_hayom": {
+      "firm": "Maagar Mochot",
+      "outlet": "ישראל היום"
     }
   },
   "outletLogos": {

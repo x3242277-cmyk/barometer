@@ -459,8 +459,9 @@ function renderPolls() {
   }).join("") || `<tr><td colspan="${ids.length+1}" class="empty">לא נמצאו סקרים לפי הסינון.</td></tr>`;
   $("#polls-table").innerHTML = head + `<tbody>${body}</tbody>`;
   const BLOC_C = { right: "#17457F", left: "#C0392B", arab: "#2E8467", other: "#96A0AB" };
-  const BLOC_RANK = { right: 0, left: 1, arab: 2, other: 3 };
+  const BLOC_RANK = { right: 0, arab: 1, left: 2, other: 3 };   // ערבים באמצע, בין הגושים
   const blocKey = x => { const al = alignOf(x); return al === "Right" || al === "Haredi" ? "right" : al === "Left" ? "left" : al === "Arabs" ? "arab" : "other"; };
+  const leaderImg = id => (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
   $("#polls-cards").innerHTML = rows.map(p => {
     const f = firmOf(p.sourceId);
     const prev = polls.filter(q => q.channelHebrewName === p.channelHebrewName && parsePollDate(q) < parsePollDate(p))
@@ -483,7 +484,8 @@ function renderPolls() {
       <ol class="poll-list">${list.map(x => {
         const pv = prevVal(x.id), d = pv == null ? null : x.mandates - pv;
         const dHtml = !prev ? "" : d ? `<em class="${d > 0 ? "up" : "down"}">${d > 0 ? "▲" : "▼"}${Math.abs(d)}</em>` : `<em class="flat">•</em>`;
-        return `<li style="--c:${BLOC_C[blocKey(x)]}"><span title="${esc(x.name)}">${esc(x.name)}</span><b>${x.mandates}</b>${dHtml}</li>`;
+        const ph = S.leaders && S.leaders[normId(x.id)];
+        return `<li style="--c:${BLOC_C[blocKey(x)]}"><img class="poll-face${ph ? "" : " ph"}" src="${esc(leaderImg(x.id))}" alt="" loading="lazy"><span title="${esc(x.name)}">${esc(x.name)}</span><b>${x.mandates}</b>${dHtml}</li>`;
       }).join("")}</ol>
       <footer><span>${p.parties.reduce((n, x) => n + x.mandates, 0)} מנדטים${failed ? ` · ${failed} מתחת לאחוז החסימה` : ""}</span><span>${prev ? `▲▼ שינוי מול ${esc(p.channelHebrewName)} · ${esc(prev.date)}` : `סקר ${esc(p.channelHebrewName)} ראשון בחלון`}</span></footer></article>`;
   }).join("") || '<p class="empty">לא נמצאו סקרים לפי הסינון. נסו לבחור את כל המכונים וכל הפרסומים.</p>';

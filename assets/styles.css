@@ -587,8 +587,10 @@ footer a{color:#EBD9AE}
 .poll-blocs span{display:inline-flex;align-items:baseline;gap:6px;font-size:.76rem;color:var(--ink-3);font-weight:600}
 .poll-blocs b{font-family:var(--serif);font-size:1.15rem;font-weight:800;color:var(--c);font-variant-numeric:tabular-nums}
 .poll-list{list-style:none;margin:0;padding:10px 24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:2px 26px}
-.poll-list li{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px solid var(--rule-2)}
-.poll-list li>span{font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poll-list li{display:grid;grid-template-columns:26px 1fr auto auto;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--rule-2)}
+.poll-face{width:26px;height:26px;border-radius:50%;object-fit:cover;background:var(--paper-3);border:1.5px solid var(--c)}
+.poll-face.ph{object-fit:contain;padding:3px;border-style:dashed;border-color:var(--rule)}
+.poll-list li>span{font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:baseline}
 .poll-list li>b{font-family:var(--serif);font-size:1.3rem;font-weight:800;color:var(--c);font-variant-numeric:tabular-nums;line-height:1}
 .poll-list li>em{font-style:normal;font-size:.72rem;font-weight:800;min-width:26px;text-align:end}
 .poll-list li>em.up{color:#1F6349}.poll-list li>em.down{color:#8E241A}.poll-list li>em.flat{color:var(--rule)}

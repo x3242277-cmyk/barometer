@@ -16,15 +16,19 @@
 #view-haredi .floorcard{padding:22px}#view-haredi .floornum b{font-size:3.5rem}#view-haredi .split{grid-template-columns:1fr 1fr}.submitted-research{white-space:pre-wrap;line-height:1.85;max-width:900px;margin:24px auto;padding:24px;background:#f8f6f1;border-radius:12px}#research-review li{margin:12px 0}#view-demography .share-panel{min-width:0}#demo-controls input{width:100%;min-height:30px}
 /* תמונת מצב: קטע "המפלגות במבט קרוב" יושב על רקע הכנסת בראש העמוד */
 .hero .hero-in{min-height:auto;padding-bottom:18px}
+.hero .hero-art{opacity:.22}
 .hero-parties{position:relative;z-index:2;padding-bottom:46px}
 .hero-parties .sec{padding-top:6px}
 .hero-parties .sec-head{margin-bottom:16px}
-/* ראשי המפלגות: הגדלה של 10% בתוך אותו חלון, כדי לחתוך את מסגרת הבז' של המקור */
+/* הכרטיסים צרים ב-10% וממורכזים, כדי שאיור הכנסת יציץ מאחוריהם בצדדים */
+.hero-parties .result-grid{max-width:90%;margin-inline:auto}
+/* ראשי המפלגות: הגדלה של ~21% בתוך אותו חלון, כדי לחתוך את מסגרת הבז' של המקור */
 #party-rows .rcard.has-photo .rcard-face{background:none;overflow:hidden}
-#party-rows .rcard.has-photo .rcard-face img{object-fit:cover!important;transform:scale(1.1)}
-/* רשימות מתחת לאחוז החסימה — 0 מנדטים ואחוז תמיכה, מופרדות ומעומעמות */
-#party-rows .party-row.below-threshold{margin-top:12px;padding-top:16px;border-top:1px dashed var(--rule)}
-#party-rows .below-threshold .rcard{opacity:.7}
+#party-rows .rcard.has-photo .rcard-face img{object-fit:cover!important;transform:scale(1.21)}
+/* ביחד — תמונה של שני אנשים, נשארת ללא ההגדלה הנוספת */
+#party-rows .rcard[data-focus-party="beyahad"].has-photo .rcard-face img{transform:scale(1.1)}
+/* רשימות מתחת לאחוז החסימה — 0 מנדטים ואחוז תמיכה, מעומעמות בתוך שורת הגוש */
+#party-rows .rcard.is-below{opacity:.6}
 .forecast-bar.is-below{opacity:.68}
 
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #a67820;outline-offset:4px}

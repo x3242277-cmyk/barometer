@@ -250,17 +250,19 @@ const THRESHOLD_MANDATES = 120 * 0.0325;
    מעל הסף הזה. מתחתיו — היא נשמטת מהתצוגה. */
 const SHOW_BELOW_MIN = 1;
 
-/* "מעודכן היום 09:00" / "אתמול 21:00" / "04.09.2026" — לפי מה שיש ב-generatedAt. */
+/* "היום 09:00" / "אתמול 21:00" / "04.09.2026" — לפי מה שיש ב-generatedAt.
+   הקובץ מתעדכן בכל הרצה של סקריפט הסקרים, ואיתו התחזית. */
 const humanUpdate = iso => {
   const d = new Date(iso);
   if (isNaN(d)) return String(iso || "");
+  const hasTime = /T\d\d:/.test(String(iso));
+  if (!hasTime) return heDate(iso);
   const now = new Date(), yest = new Date(now); yest.setDate(yest.getDate() - 1);
   const day = x => x.toDateString();
-  const hasTime = /T\d\d:/.test(String(iso));
-  const t = hasTime ? d.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" }) : "";
-  if (day(d) === day(now)) return hasTime ? `היום ${t}` : "היום";
-  if (day(d) === day(yest)) return hasTime ? `אתמול ${t}` : "אתמול";
-  return heDate(iso) + (hasTime ? ` ${t}` : "");
+  const t = d.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" });
+  if (day(d) === day(now)) return `היום ${t}`;
+  if (day(d) === day(yest)) return `אתמול ${t}`;
+  return `${heDate(iso)} ${t}`;
 };
 
 /* שיוך גוש שנקבע ידנית באתר, מעל למה שמופיע בנתוני הסקר הגולמיים */
@@ -460,7 +462,8 @@ function renderHome() {
   });
   $("#hemi-svg").innerHTML = hemicycleSVG(items, { aria: "מפת 120 המנדטים לפי גוש" });
   $("#hemi-updated").textContent = `עדכון אחרון: ${heDate(S.cur.generatedAt)}`;
-  const upd = $("#forecast-updated"); if (upd) upd.textContent = `· מעודכן ${humanUpdate(S.cur.generatedAt)}`;
+  const updTxt = `· מעודכן ${humanUpdate(S.cur.generatedAt)}`;
+  ["#forecast-updated", "#party-updated"].forEach(sel => { const el = $(sel); if (el) el.textContent = updTxt; });
   $("#blocbar").innerHTML = blocBarHTML(order.map(k => ({ count: blocSeats[k], color: BLOCS[k].color, label: `${BLOCS[k].he}: ${blocSeats[k]}` })));
   $("#bloclegend").innerHTML = order.map(k =>
     `<button type="button" data-bloc="${k}" aria-pressed="false" style="--c:${BLOCS[k].color}"><i></i><b class="num">${blocSeats[k]}</b> ${esc(BLOCS[k].he)} <span style="color:var(--ink-3)">· ${r1(est.blocs[k])} גולמי</span></button>`).join("");
@@ -481,28 +484,27 @@ function renderHome() {
   /* שורה עליונה: ימין וחרדים. שורה תחתונה: מרכז–שמאל וערבים. בתוך כל שורה —
      מהמנדטים הרבים למעטים. */
   const TOP_ROW = ["Right"];
+  const preRound = id => est.parties[id] != null ? est.parties[id] : (est.rawFull ? est.rawFull[id] || 0 : 0);
+  /* רשימות שמתחת לאחוז החסימה משתלבות בשורת הגוש שלהן, בסופה, עם 0 מנדטים. */
   const rows = Object.entries(seats).filter(([, n]) => n > 0)
-    .map(([id, n]) => ({ id, n, meta: partyMeta(id) }))
-    .sort((a, b) => b.n - a.n || est.parties[b.id] - est.parties[a.id]);
+    .map(([id, n]) => ({ id, n, meta: partyMeta(id), share: null }))
+    .concat(belowEntries.map(([id, share]) => ({ id, n: 0, meta: partyMeta(id), share })))
+    .sort((a, b) => b.n - a.n || (b.share || 0) - (a.share || 0) || preRound(b.id) - preRound(a.id));
   const rowOf = r => (TOP_ROW.includes(r.meta.alignment) ? 0 : 1);
   const grouped = [0, 1].map(i => rows.filter(r => rowOf(r) === i)).filter(g => g.length);
   /* שתי השורות חולקות את אותו מספר עמודות, כדי שכרטיס בשורה העליונה ובתחתונה
      יהיו באותו רוחב גם כששורה אחת ארוכה יותר. */
-  const cols = Math.max(...grouped.map(g => g.length), belowEntries.length);
+  const cols = Math.max(...grouped.map(g => g.length));
   $("#party-rows").style.setProperty("--n", cols);
-  let partyHTML = grouped
+  $("#party-rows").innerHTML = grouped
     .map(g => `<div class="party-row">${
-      g.map(r => resultRowHTML({ meta: r.meta, value: r.n, color: BLOCS[r.meta.alignment].color, id: r.id })).join("")
-    }</div>`).join("");
-  if (belowEntries.length) {
-    partyHTML += `<div class="party-row below-threshold" role="group" aria-label="מתחת לאחוז החסימה">${
-      belowEntries.map(([id, share]) => resultRowHTML({
-        meta: partyMeta(id), value: 0, color: "var(--ink-3)",
-        sub: `כ־${r1(share)}% · מתחת לאחוז החסימה`, id
+      g.map(r => resultRowHTML({
+        meta: r.meta, value: r.n, id: r.id,
+        color: r.share != null ? "var(--ink-3)" : BLOCS[r.meta.alignment].color,
+        sub: r.share != null ? `כ־${r1(r.share)}% · מתחת לאחוז החסימה` : "",
+        cls: r.share != null ? "is-below" : ""
       })).join("")
-    }</div>`;
-  }
-  $("#party-rows").innerHTML = partyHTML;
+    }</div>`).join("");
 }
 
 const initials = n => String(n || "").replace(/^ה/, "").replace(/["'׳״!.]/g, "").trim().slice(0, 2);
@@ -530,11 +532,11 @@ function outletIconStrip(outlets = []) {
 const LEADER_PLACEHOLDER = "data:image/svg+xml," + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><g fill="none" stroke="#94A0AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="48" cy="34" r="16.5"/><path d="M18.5 84c1.8-15.6 12.8-24.6 29.5-24.6S75.7 68.4 77.5 84"/><path d="M39 75c2.6 3.6 6 5.4 9 5.4s6.4-1.8 9-5.4" opacity=".5"/></g></svg>`);
 
-function resultRowHTML({ meta, value, color, sub = "", tag = "", id = "" }) {
+function resultRowHTML({ meta, value, color, sub = "", tag = "", id = "", cls = "" }) {
   const photo = (S.leaders && S.leaders[normId(id)]) || "";
   const img = photo || LEADER_PLACEHOLDER;
   /* הכרטיס כולו הוא הכפתור — לחיצה עליו עוברת לנתוני המפלגה בסקרים. */
-  return `<button type="button" class="rcard ${photo ? "has-photo" : "is-placeholder"}" style="--c:${color}" data-focus-party="${esc(id)}" aria-label="${esc(meta.name)}, ${r1(value)} מנדטים. מעבר לנתוני המפלגה בסקרים">
+  return `<button type="button" class="rcard ${photo ? "has-photo" : "is-placeholder"}${cls ? " " + cls : ""}" style="--c:${color}" data-focus-party="${esc(id)}" aria-label="${esc(meta.name)}, ${r1(value)} מנדטים. מעבר לנתוני המפלגה בסקרים">
     <span class="rcard-face" style="--c:${color}"><img src="${esc(img)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}';this.closest('.rcard').classList.replace('has-photo','is-placeholder')"><b>${esc(initials(meta.name))}</b></span>
     <b class="rcard-num num">${r1(value)}</b>
     <strong title="${esc(meta.name)}">${esc(meta.name)}</strong>

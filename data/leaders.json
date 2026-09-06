@@ -1,10 +1,10 @@
 {
   "//": "תמונות מנהיגי המפלגות לכרטיסי התוצאה. מפתח = מזהה המפלגה בנתוני הסקר, ערך = כתובת URL של תמונה (רצוי מרובעת, ~200px). מפלגה בלי כתובת כאן — הכרטיס יציג את הלוגו שלה במקום. מקורות מומלצים: ויקישיתוף (upload.wikimedia.org), אתרי המפלגות.",
   "photos": {
-    "likud": "",
-    "yashar": "",
+    "likud": "assets/leaders/likud.jpg",
+    "yashar": "assets/leaders/yashar.jpg",
+    "hademokratim": "assets/leaders/hademokratim.jpg",
     "shas": "",
-    "hademokratim": "",
     "beyahad": "",
     "ozma_yehudit": "",
     "reshima_meshutefet": "",

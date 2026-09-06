@@ -926,6 +926,19 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 .year-comparison{display:grid;grid-template-columns:1fr 1fr;gap:26px;direction:rtl}.year-column h3{font-size:3rem;color:var(--navy);margin:6px 0 24px}.year-column+.year-column{border-inline-start:1px solid var(--rule);padding-inline-start:26px}.year-row{display:grid;grid-template-columns:1fr auto;gap:9px;margin:18px 0}.year-row b{font-variant-numeric:tabular-nums;font-size:1.25rem}.year-row i{grid-column:1/-1;height:8px;background:linear-gradient(to left,var(--c) var(--w),#eeeae2 var(--w));border-radius:6px}.annual-chart{margin-top:24px}.annual-chart svg{display:block;width:100%;max-height:380px}.annual-chart table{min-width:520px}.legend-dot{display:inline-block;width:10px;height:10px;margin-inline-end:7px;border-radius:50%}
 #scenario-panel{margin:20px 0;border-inline-start:4px solid var(--gold)}#scenario-panel input{display:block;width:100%;margin:14px 0}#scenario-panel label{font-weight:700;padding:15px;background:#f7f5f0;border-radius:10px}#scenario-panel p{max-width:1000px}
 #view-haredi .floorcard{padding:22px}#view-haredi .floornum b{font-size:3.5rem}#view-haredi .split{grid-template-columns:1fr 1fr}.submitted-research{white-space:pre-wrap;line-height:1.85;max-width:900px;margin:24px auto;padding:24px;background:#f8f6f1;border-radius:12px}#research-review li{margin:12px 0}#view-demography .share-panel{min-width:0}#demo-controls input{width:100%;min-height:30px}
+/* תמונת מצב: קטע "המפלגות במבט קרוב" יושב על רקע הכנסת בראש העמוד */
+.hero .hero-in{min-height:auto;padding-bottom:18px}
+.hero-parties{position:relative;z-index:2;padding-bottom:46px}
+.hero-parties .sec{padding-top:6px}
+.hero-parties .sec-head{margin-bottom:16px}
+/* ראשי המפלגות: הגדלה של 10% בתוך אותו חלון, כדי לחתוך את מסגרת הבז' של המקור */
+#party-rows .rcard.has-photo .rcard-face{background:none;overflow:hidden}
+#party-rows .rcard.has-photo .rcard-face img{object-fit:cover!important;transform:scale(1.1)}
+/* רשימות מתחת לאחוז החסימה — 0 מנדטים ואחוז תמיכה, מופרדות ומעומעמות */
+#party-rows .party-row.below-threshold{margin-top:12px;padding-top:16px;border-top:1px dashed var(--rule)}
+#party-rows .below-threshold .rcard{opacity:.7}
+.forecast-bar.is-below{opacity:.68}
+
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #a67820;outline-offset:4px}
 @media(max-width:700px){.tabsbar .tab{font-size:.77rem;padding:10px 8px}.hero .hero-in{min-height:230px}.focus-summary{gap:15px;padding:16px}.profile-portrait{width:100px;height:150px}.focus-summary h2{font-size:2.4rem}.focus-summary h2 span{font-size:1rem}.profile-count{font-size:1rem}.filter-icons{gap:8px}.filter-icons button{width:calc(25% - 6px);font-size:.72rem;min-height:98px}.year-comparison{gap:16px}.year-column+.year-column{padding-inline-start:16px}.year-column h3{font-size:2.3rem}.year-column .kicker{font-size:.7rem}#view-haredi .split{grid-template-columns:1fr}}
 
@@ -975,17 +988,19 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #a678
 <section class="view" id="view-home" aria-label="תמונת מצב">
   <div class="hero"><div class="hero-art" aria-hidden="true" id="hero-art"></div>
     <div class="wrap hero-in"><div><p class="eyebrow">ברומטר · נתונים לבחירות 2026</p><h1>תמונת המנדטים.<br><em>המסקנות שלכם.</em></h1><p class="lede">המפלגות, הסקרים והמקורות — עם שיטת חישוב גלויה.</p></div><div class="hero-cta"><a class="btn" href="#/polls">השוואת סקרים ←</a><a class="btn ghost" href="#/method">איך זה מחושב</a></div></div>
+    <div class="wrap hero-parties">
+      <section class="sec"><div class="sec-head"><div><p class="kicker">תחזית הברומטר · מנדטים לפי מפלגה</p><h2>המפלגות במבט קרוב</h2></div><p class="sec-note">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="result-grid" id="party-rows"></div></section>
+    </div>
   </div><div class="wrap">
     <section class="home-stats-sec"><div class="stats" id="home-stats"></div></section>
-    <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">הסקרים בחלון הנתונים הנוכחי</p><h2>המנדטים לפי מפלגה</h2></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="false">תרחיש 8 + 11</button><button type="button" data-mode="weighted" aria-pressed="true">משוקלל אמינות</button><button type="button" data-mode="simple" aria-pressed="false">ממוצע פשוט</button></div></div>
-      <p class="data-explainer">ממוצע סקרים או תרחיש הנחות לבחירתכם. בתרחיש בלבד: 11 לש״ס, 8 ליהדות התורה ותיקוני גושים גלויים. <a href="#/method">שיטת החישוב</a></p>
+    <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="forecast-updated"></span></p><h2>המנדטים לפי מפלגה</h2></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button><button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button></div></div>
+      <p class="data-explainer">תחזית הברומטר משקללת את הסקרים לפי דיוק היסטורי ומחילה את הנחות המודל: 11 לש״ס, 8 ליהדות התורה, עוגן גושים ותיקון דמוגרפי גלויים. "משוקלל אמינות" מציג את ממוצע הסקרים המשוקלל בלבד. <a href="#/method">שיטת החישוב</a></p>
       <div id="scenario-panel" class="card pad" hidden></div><div class="switch forecast-views" role="group" aria-label="תצוגת התחזית"><button type="button" data-homeview="bars" aria-pressed="true">מפלגות</button><button type="button" data-homeview="seats" aria-pressed="false">מפת הכנסת</button><button type="button" data-homeview="blocs" aria-pressed="false">גושים ושיוך</button><button type="button" data-homeview="table" aria-pressed="false">טבלת נתונים</button></div>
       <div id="forecast-bars" data-homepanel="bars"></div><div id="forecast-table" data-homepanel="table" class="tablewrap" tabindex="0" role="region" aria-label="נתוני התחזית" hidden></div>
       <div class="hemi" id="hemi-box" data-homepanel="seats" hidden><div class="sec-head"><h3>מפת 120 המושבים</h3><p id="hemi-updated"></p></div><div id="hemi-svg"></div><div class="blocbar" id="blocbar"></div><div class="legend" id="bloclegend"></div><p class="data-explainer">לערכים ולשמות הרשימות עברו לטבלת הנתונים.</p></div>
       <div class="gauge" data-homepanel="blocs" hidden><div class="gauge-head"><p>חלוקה לפי השיוך במאגר</p><p id="gauge-mode"></p></div><div id="gauge-svg"></div><div class="gauge-read" id="gauge-read"></div><p class="gauge-verdict" id="gauge-verdict"></p><div id="bloc-members"></div></div>
     </section>
-    <section class="sec"><div class="sec-head"><div><p class="kicker">להכיר את הנתונים</p><h2>המפלגות במבט קרוב</h2></div><p class="sec-note">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="result-grid" id="party-rows"></div></section>
-    <section class="sec methodology-cards"><div class="grid g2"><div class="card pad"><p class="kicker">הדיוק ההיסטורי במדד</p><div id="top-firm"></div><a class="btn ghost" href="#/2022">כל המכונים והמדדים ←</a></div><div class="card pad"><p class="kicker">שקיפות החישוב</p><h3>הממוצע והנחות התרחיש</h3><div id="fix-box"></div></div></div></section>
+    <section class="sec methodology-cards"><div class="grid g2"><div class="card pad"><p class="kicker">הדיוק ההיסטורי במדד</p><div id="top-firm"></div><a class="btn ghost" href="#/2022">כל המכונים והמדדים ←</a></div><div class="card pad"><p class="kicker">שקיפות החישוב</p><h3>הממוצע ותחזית הברומטר</h3><div id="fix-box"></div></div></div></section>
     <section class="sec anecdote-sec"><article class="anecdote" id="anecdote"><div class="anecdote-side"><p class="kicker">טווחי המנדטים בסקרים</p></div><div class="anecdote-body"><h3 id="anec-title"></h3><p id="anec-text"></p><div class="anecdote-foot"><span id="anec-meta"></span><div class="anecdote-nav"><button type="button" id="anec-prev" aria-label="המפלגה הקודמת">‹</button><span id="anec-count"></span><button type="button" id="anec-next" aria-label="המפלגה הבאה">›</button></div></div></div></article></section>
   </div>
 </section>
@@ -1199,17 +1214,17 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #a678
     <section class="sec">
       <div class="grid g2">
         <div class="floorcard" style="--c:#4A4A4A">
-          <p class="kicker">הנחה קבועה בתרחיש 8 + 11</p>
+          <p class="kicker">הנחה קבועה בתחזית הברומטר</p>
           <div class="floornum"><b>11</b><span>ש״ס</span></div>
           <p>תוצאת 2022: 11 מנדטים. 11 כאן הם הנחת התרחיש, לא מינימום היסטורי.</p>
         </div>
         <div class="floorcard" style="--c:#5B4B8A">
-          <p class="kicker">הנחה קבועה בתרחיש 8 + 11</p>
+          <p class="kicker">הנחה קבועה בתחזית הברומטר</p>
           <div class="floornum"><b>8</b><span>יהדות התורה</span></div>
           <p>תוצאת 2022: 7 מנדטים. התרחיש קובע 8; ההפרש הוא הנחה לעתיד.</p>
         </div>
       </div>
-      <div class="notice warm" style="margin-top:16px"><span class="ic">=</span><p style="margin:0">הערכים חלים רק בבחירת תרחיש 8 + 11 בעמוד הראשי. צמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור.</p></div>
+      <div class="notice warm" style="margin-top:16px"><span class="ic">=</span><p style="margin:0">הערכים חלים רק בבחירת תחזית הברומטר בעמוד הראשי. צמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור.</p></div>
     </section>
 
     <section class="sec">
@@ -1843,10 +1858,14 @@ function comparablePartyValue(current, previous, id) {
   return previous && partySignature(current,id) && partySignature(current,id)===partySignature(previous,id) ? pollValue(previous,id) : null;
 }
 function renderForecastOverview(est, seats) {
-  const entries = Object.entries(seats).sort((a,b)=>b[1]-a[1] || partyMeta(a[0]).name.localeCompare(partyMeta(b[0]).name,'he'));
+  const below = Object.entries(est.below || {});
+  const entries = Object.entries(seats).sort((a,b)=>b[1]-a[1] || partyMeta(a[0]).name.localeCompare(partyMeta(b[0]).name,'he'))
+    .concat(below.map(([id]) => [id, 0]));
+  const preRound = id => est.parties[id] != null ? est.parties[id] : (est.rawFull ? est.rawFull[id] : 0);
   const scale = barScale(Math.max(0,...entries.map(([,v])=>v)));
-  $('#forecast-bars').innerHTML = '<div class="chart-caption"><span>מפלגה</span><span>מנדטים · מהגדול לקטן · קנה מידה אחיד 0–'+scale+'</span></div><div class="forecast-bar-grid" style="--rows:'+Math.ceil(entries.length/2)+'">'+entries.map(([id,n]) => `<button type="button" class="forecast-bar" data-focus-party="${esc(id)}" aria-label="${esc(partyMeta(id).name)}, ${n} מנדטים. לצפייה בסקרים"><span>${esc(partyMeta(id).name)}</span><i aria-hidden="true"><b style="width:${100*n/scale}%"></b></i><strong>${n}</strong></button>`).join('')+'</div>';
-  $('#forecast-table').innerHTML = '<table><caption>אומדן מנדטים לפי מפלגה — לפני ואחרי עיגול ל־120</caption><thead><tr><th scope="col">מפלגה</th><th scope="col">ממוצע לפני עיגול</th><th scope="col">מנדטים מעוגלים</th></tr></thead><tbody>'+entries.map(([id,n])=>`<tr><th scope="row">${esc(partyMeta(id).name)}</th><td>${r1(est.parties[id])}</td><td>${n}</td></tr>`).join('')+'</tbody></table>';
+  const belowPct = id => est.below && est.below[id] ? r1(est.below[id]) : null;
+  $('#forecast-bars').innerHTML = '<div class="chart-caption"><span>מפלגה</span><span>מנדטים · מהגדול לקטן · קנה מידה אחיד 0–'+scale+'</span></div><div class="forecast-bar-grid" style="--rows:'+Math.ceil(entries.length/2)+'">'+entries.map(([id,n]) => `<button type="button" class="forecast-bar${n===0&&belowPct(id)?' is-below':''}" data-focus-party="${esc(id)}" aria-label="${esc(partyMeta(id).name)}, ${n} מנדטים${n===0&&belowPct(id)?` (כ־${belowPct(id)}% — מתחת לאחוז החסימה)`:''}. לצפייה בסקרים"><span>${esc(partyMeta(id).name)}${n===0&&belowPct(id)?` · כ־${belowPct(id)}%`:''}</span><i aria-hidden="true"><b style="width:${100*n/scale}%"></b></i><strong>${n}</strong></button>`).join('')+'</div>';
+  $('#forecast-table').innerHTML = '<table><caption>אומדן מנדטים לפי מפלגה — לפני ואחרי עיגול ל־120</caption><thead><tr><th scope="col">מפלגה</th><th scope="col">ממוצע לפני עיגול</th><th scope="col">מנדטים מעוגלים</th></tr></thead><tbody>'+entries.map(([id,n])=>`<tr><th scope="row">${esc(partyMeta(id).name)}</th><td>${r1(preRound(id))}</td><td>${n}</td></tr>`).join('')+'</tbody></table>';
 }
 /* ההשוואה היא בין מכוני סקרים, לא בין סקרים בודדים: לכל מכון נלקח הסקר
    האחרון שלו בסינון הנוכחי, כדי שהעמודות יתארו את המצב העדכני של כל מכון. */
@@ -2031,7 +2050,7 @@ const ELECTION_TIMELINE = {
 };
 
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
-            stats:[], counterStats:[], series:[], mode:"weighted", scen:"actual",
+            stats:[], counterStats:[], series:[], mode:"scenario", scen:"actual",
             homeView:"bars", focusParty:"", compareIds:null, trendParty:"", pollView:"cards", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
             calibrations:[], elections:[], calibYear:2022, leaders:{}, anecTimer:null };
 
@@ -2221,6 +2240,28 @@ function combineCalibrations(elections) {
    ============================================================ */
 const normId = id => id === "zionut_datit_zehut" ? "zionut_datit" : id;
 
+/* רשימות שאינן מוצגות כלל בתמונת המצב הראשית (למשל רשימה שאינה רצה כמקשה אחת). */
+const HIDE_FROM_HOME = new Set(["hadash_taal"]);
+/* אחוז החסימה — 3.25% מהקולות הכשרים ≈ 3.9 מנדטים. רשימה מתחתיו אינה נכנסת
+   לחלוקת המושבים; קולותיה אינם משוקללים לתחזית. */
+const THRESHOLD_MANDATES = 120 * 0.0325;
+/* רשימה שמתחת לאחוז החסימה תוצג עם 0 מנדטים ואחוז התמיכה שלה, אם היא נמדדת
+   מעל הסף הזה. מתחתיו — היא נשמטת מהתצוגה. */
+const SHOW_BELOW_MIN = 1;
+
+/* "מעודכן היום 09:00" / "אתמול 21:00" / "04.09.2026" — לפי מה שיש ב-generatedAt. */
+const humanUpdate = iso => {
+  const d = new Date(iso);
+  if (isNaN(d)) return String(iso || "");
+  const now = new Date(), yest = new Date(now); yest.setDate(yest.getDate() - 1);
+  const day = x => x.toDateString();
+  const hasTime = /T\d\d:/.test(String(iso));
+  const t = hasTime ? d.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" }) : "";
+  if (day(d) === day(now)) return hasTime ? `היום ${t}` : "היום";
+  if (day(d) === day(yest)) return hasTime ? `אתמול ${t}` : "אתמול";
+  return heDate(iso) + (hasTime ? ` ${t}` : "");
+};
+
 /* שיוך גוש שנקבע ידנית באתר, מעל למה שמופיע בנתוני הסקר הגולמיים */
 /* שיוך גוש שנקבע ידנית באתר, מעל למה שמופיע בנתוני הסקר הגולמיים.
    רע״ם נספרת בגוש השמאל; המפלגות החרדיות נספרות בגוש הימין. הפילוח הפנימי
@@ -2305,18 +2346,32 @@ function structuralFix(raw) {
   return { parties: p, shasBefore, utjBefore, added, donors };
 }
 
-function forecast(mode) {
-  const ids = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
+function forecast(mode, exclude) {
+  const skip = exclude || new Set();
+  const allIds = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
   const w = s => mode !== "simple" ? firmScore(s.meta) / 100 : 1;
   const W = S.series.reduce((sum, s) => sum + w(s), 0);
-  const raw = Object.fromEntries(ids.map(id => [id, S.series.reduce((sum, s) => sum + (s.parties[id] || 0) * w(s), 0) / W]));
+  const rawFull = Object.fromEntries(allIds.map(id => [id, S.series.reduce((sum, s) => sum + (s.parties[id] || 0) * w(s), 0) / W]));
+  const visible = allIds.filter(id => !skip.has(id));
+  /* אחוז החסימה: רשימה מתחת ל-3.25% אינה משוקללת לחלוקת המושבים. */
+  const below = visible.filter(id => rawFull[id] > 0 && rawFull[id] < THRESHOLD_MANDATES);
+  const eligible = visible.filter(id => rawFull[id] >= THRESHOLD_MANDATES);
+  const raw = Object.fromEntries(eligible.map(id => [id, rawFull[id]]));
+  const belowShare = Object.fromEntries(below
+    .filter(id => rawFull[id] >= SHOW_BELOW_MIN)
+    .sort((a, b) => rawFull[b] - rawFull[a])
+    .map(id => [id, rawFull[id] / 120 * 100]));
   const fix = { parties: { ...raw }, added: 0 };
   const blocs = Object.fromEntries(Object.keys(BLOCS).map(al => [al, S.series.reduce((sum, s) => sum + s.blocs[al] * w(s), 0) / W]));
+  [...skip, ...below].forEach(id => {
+    const al = partyMeta(id).alignment;
+    if (blocs[al] != null) blocs[al] = Math.max(0, blocs[al] - (rawFull[id] || 0));
+  });
   if (mode === 'scenario') {
     const scenario = scenarioForecast(raw, S.scenarioOptions);
-    return { raw, parties: scenario.parties, blocs, fix, scenario };
+    return { raw, rawFull, parties: scenario.parties, blocs, fix, scenario, below: belowShare };
   }
-  return { raw, parties: fix.parties, blocs, fix };
+  return { raw, rawFull, parties: fix.parties, blocs, fix, below: belowShare };
 }
 
 function partyMeta(id) {
@@ -2369,15 +2424,16 @@ function renderElectionTimer() {
 function renderHome() {
   renderAnecdote();
   renderElectionTimer();
-  const est = forecast(S.mode);
+  const est = forecast(S.mode, HIDE_FROM_HOME);
   const seats = largestRemainder(est.parties);
+  const belowEntries = Object.entries(est.below || {});
   const blocSeats = Object.fromEntries(Object.keys(BLOCS).map(k => [k, 0]));
   Object.entries(seats).forEach(([id, n]) => { blocSeats[partyMeta(id).alignment] += n; });
   const order = BLOC_ORDER.filter(k => blocSeats[k] > 0);
 
 
   $("#gauge-svg").innerHTML = "";
-  $("#gauge-mode").textContent = S.mode === 'scenario' ? 'תרחיש 8 + 11' : S.mode === "weighted" ? "ממוצע משוקלל" : "ממוצע פשוט";
+  $("#gauge-mode").textContent = S.mode === 'scenario' ? 'תחזית הברומטר' : S.mode === "weighted" ? "משוקלל אמינות" : "ממוצע פשוט";
   $("#gauge-read").innerHTML = order.map(k =>
     `<div><b style="color:${BLOCS[k].color}">${blocSeats[k]}</b><span>${esc(BLOCS[k].he)}</span></div>`).join("");
   $("#gauge-verdict").textContent = "החלוקה היא לפי שיוך הרשימות במאגר; היא אינה תחזית להרכב קואליציה. רוב בכנסת דורש 61 מושבים.";
@@ -2403,6 +2459,7 @@ function renderHome() {
   });
   $("#hemi-svg").innerHTML = hemicycleSVG(items, { aria: "מפת 120 המנדטים לפי גוש" });
   $("#hemi-updated").textContent = `עדכון אחרון: ${heDate(S.cur.generatedAt)}`;
+  const upd = $("#forecast-updated"); if (upd) upd.textContent = `· מעודכן ${humanUpdate(S.cur.generatedAt)}`;
   $("#blocbar").innerHTML = blocBarHTML(order.map(k => ({ count: blocSeats[k], color: BLOCS[k].color, label: `${BLOCS[k].he}: ${blocSeats[k]}` })));
   $("#bloclegend").innerHTML = order.map(k =>
     `<button type="button" data-bloc="${k}" aria-pressed="false" style="--c:${BLOCS[k].color}"><i></i><b class="num">${blocSeats[k]}</b> ${esc(BLOCS[k].he)} <span style="color:var(--ink-3)">· ${r1(est.blocs[k])} גולמי</span></button>`).join("");
@@ -2417,7 +2474,7 @@ function renderHome() {
       <div style="color:var(--ink-3);font-size:.68rem">מתוך 100</div></div></div>
     <p style="margin:12px 0 0;color:var(--ink-2);font-size:.85rem">מפרסם ב־${esc(tm.outlets.join(", "))}.</p>`;
 
-  $("#fix-box").innerHTML = (est.scenario ? '<p>נבחר תרחיש: ש״ס 11 ויהדות התורה 8, עם תיקוני גושים. אלה הנחות מפעיל האתר. הממוצע המקורי זמין בכפתור משוקלל אמינות.</p>' : '<p>הממוצע מבוסס על הסקרים שבחלון הזמן. במצב זה אין רצפת מנדטים או תיקונים ייעודיים למפלגות.</p>') + '<a class="src" href="#/method">שיטת החישוב וההנחות ←</a>';
+  $("#fix-box").innerHTML = (est.scenario ? '<p>תחזית הברומטר: ש״ס 11 ויהדות התורה 8, עם עוגן גושים ותיקון דמוגרפי גלויים. אלה הנחות מפעיל האתר. הממוצע המשוקלל בלבד זמין בכפתור "משוקלל אמינות".</p>' : '<p>ממוצע הסקרים בחלון הזמן, משוקלל לפי דיוק היסטורי. אין רצפת מנדטים או תיקונים ייעודיים למפלגות.</p>') + (belowEntries.length ? `<p class="sec-note">רשימות מתחת לאחוז החסימה (3.25%) מוצגות עם 0 מנדטים ואינן משוקללות בחלוקת המושבים.</p>` : '') + '<a class="src" href="#/method">שיטת החישוב וההנחות ←</a>';
 
   // party rows
   /* שורה עליונה: ימין וחרדים. שורה תחתונה: מרכז–שמאל וערבים. בתוך כל שורה —
@@ -2430,12 +2487,21 @@ function renderHome() {
   const grouped = [0, 1].map(i => rows.filter(r => rowOf(r) === i)).filter(g => g.length);
   /* שתי השורות חולקות את אותו מספר עמודות, כדי שכרטיס בשורה העליונה ובתחתונה
      יהיו באותו רוחב גם כששורה אחת ארוכה יותר. */
-  const cols = Math.max(...grouped.map(g => g.length));
+  const cols = Math.max(...grouped.map(g => g.length), belowEntries.length);
   $("#party-rows").style.setProperty("--n", cols);
-  $("#party-rows").innerHTML = grouped
+  let partyHTML = grouped
     .map(g => `<div class="party-row">${
       g.map(r => resultRowHTML({ meta: r.meta, value: r.n, color: BLOCS[r.meta.alignment].color, id: r.id })).join("")
     }</div>`).join("");
+  if (belowEntries.length) {
+    partyHTML += `<div class="party-row below-threshold" role="group" aria-label="מתחת לאחוז החסימה">${
+      belowEntries.map(([id, share]) => resultRowHTML({
+        meta: partyMeta(id), value: 0, color: "var(--ink-3)",
+        sub: `כ־${r1(share)}% · מתחת לאחוז החסימה`, id
+      })).join("")
+    }</div>`;
+  }
+  $("#party-rows").innerHTML = partyHTML;
 }
 
 const initials = n => String(n || "").replace(/^ה/, "").replace(/["'׳״!.]/g, "").trim().slice(0, 2);
@@ -3409,7 +3475,7 @@ function renderHaredi() {
   const needLoyalty = 100 * (needSector * st.cost) / (st.eligible2026 * st.turnout);
   const floors = H.meta.floors.shas + H.meta.floors.utj;
   const modelSum = (st.model.seats.shas || 0) + (st.model.seats.utj || 0);
-  $("#haredi-verdict").innerHTML = `<p class="kicker">השוואת הנחות</p><h3>תרחיש דמוגרפי מול ממוצע הסקרים</h3><p>ממוצע הסקרים לש״ס וליהדות התורה: <b>${r1(pollSum)}</b> מנדטים. התרחיש לפי ההנחות שנבחרו: <b>${r1(st.total)}</b> מנדטים.</p><p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. תרחיש 8 + 11 בעמוד הראשי הוא הנחה נפרדת; המחשבון כאן אינו מוכיח רצפת מנדטים.</p>`;
+  $("#haredi-verdict").innerHTML = `<p class="kicker">השוואת הנחות</p><h3>תרחיש דמוגרפי מול ממוצע הסקרים</h3><p>ממוצע הסקרים לש״ס וליהדות התורה: <b>${r1(pollSum)}</b> מנדטים. התרחיש לפי ההנחות שנבחרו: <b>${r1(st.total)}</b> מנדטים.</p><p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. תחזית הברומטר בעמוד הראשי היא הנחה נפרדת; המחשבון כאן אינו מוכיח רצפת מנדטים.</p>`;
 
   /* היסטוריה */
   renderHaredHistory();

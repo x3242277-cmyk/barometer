@@ -196,7 +196,7 @@ async function main() {
   if (!shown.length) die("אין סקרים לתצוגה — לא נכתב קובץ. בדקו את המקור.");
 
   const out = {
-    generatedAt: new Date().toISOString().slice(0, 10),
+    generatedAt: new Date().toISOString(),
     selection: { from: cfg.from || null, year: YEAR, maxPerOutlet: MAX_PER_OUTLET, outlets: outlets.size },
     polls: shown
   };

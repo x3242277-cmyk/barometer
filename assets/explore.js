@@ -21,10 +21,14 @@ function comparablePartyValue(current, previous, id) {
   return previous && partySignature(current,id) && partySignature(current,id)===partySignature(previous,id) ? pollValue(previous,id) : null;
 }
 function renderForecastOverview(est, seats) {
-  const entries = Object.entries(seats).sort((a,b)=>b[1]-a[1] || partyMeta(a[0]).name.localeCompare(partyMeta(b[0]).name,'he'));
+  const below = Object.entries(est.below || {});
+  const entries = Object.entries(seats).sort((a,b)=>b[1]-a[1] || partyMeta(a[0]).name.localeCompare(partyMeta(b[0]).name,'he'))
+    .concat(below.map(([id]) => [id, 0]));
+  const preRound = id => est.parties[id] != null ? est.parties[id] : (est.rawFull ? est.rawFull[id] : 0);
   const scale = barScale(Math.max(0,...entries.map(([,v])=>v)));
-  $('#forecast-bars').innerHTML = '<div class="chart-caption"><span>מפלגה</span><span>מנדטים · מהגדול לקטן · קנה מידה אחיד 0–'+scale+'</span></div><div class="forecast-bar-grid" style="--rows:'+Math.ceil(entries.length/2)+'">'+entries.map(([id,n]) => `<button type="button" class="forecast-bar" data-focus-party="${esc(id)}" aria-label="${esc(partyMeta(id).name)}, ${n} מנדטים. לצפייה בסקרים"><span>${esc(partyMeta(id).name)}</span><i aria-hidden="true"><b style="width:${100*n/scale}%"></b></i><strong>${n}</strong></button>`).join('')+'</div>';
-  $('#forecast-table').innerHTML = '<table><caption>אומדן מנדטים לפי מפלגה — לפני ואחרי עיגול ל־120</caption><thead><tr><th scope="col">מפלגה</th><th scope="col">ממוצע לפני עיגול</th><th scope="col">מנדטים מעוגלים</th></tr></thead><tbody>'+entries.map(([id,n])=>`<tr><th scope="row">${esc(partyMeta(id).name)}</th><td>${r1(est.parties[id])}</td><td>${n}</td></tr>`).join('')+'</tbody></table>';
+  const belowPct = id => est.below && est.below[id] ? r1(est.below[id]) : null;
+  $('#forecast-bars').innerHTML = '<div class="chart-caption"><span>מפלגה</span><span>מנדטים · מהגדול לקטן · קנה מידה אחיד 0–'+scale+'</span></div><div class="forecast-bar-grid" style="--rows:'+Math.ceil(entries.length/2)+'">'+entries.map(([id,n]) => `<button type="button" class="forecast-bar${n===0&&belowPct(id)?' is-below':''}" data-focus-party="${esc(id)}" aria-label="${esc(partyMeta(id).name)}, ${n} מנדטים${n===0&&belowPct(id)?` (כ־${belowPct(id)}% — מתחת לאחוז החסימה)`:''}. לצפייה בסקרים"><span>${esc(partyMeta(id).name)}${n===0&&belowPct(id)?` · כ־${belowPct(id)}%`:''}</span><i aria-hidden="true"><b style="width:${100*n/scale}%"></b></i><strong>${n}</strong></button>`).join('')+'</div>';
+  $('#forecast-table').innerHTML = '<table><caption>אומדן מנדטים לפי מפלגה — לפני ואחרי עיגול ל־120</caption><thead><tr><th scope="col">מפלגה</th><th scope="col">ממוצע לפני עיגול</th><th scope="col">מנדטים מעוגלים</th></tr></thead><tbody>'+entries.map(([id,n])=>`<tr><th scope="row">${esc(partyMeta(id).name)}</th><td>${r1(preRound(id))}</td><td>${n}</td></tr>`).join('')+'</tbody></table>';
 }
 /* ההשוואה היא בין מכוני סקרים, לא בין סקרים בודדים: לכל מכון נלקח הסקר
    האחרון שלו בסינון הנוכחי, כדי שהעמודות יתארו את המצב העדכני של כל מכון. */

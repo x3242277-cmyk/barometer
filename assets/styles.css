@@ -217,6 +217,16 @@ h1,h2,h3,h4{font-family:var(--serif); font-weight:700; line-height:1.16; letter-
 .share-row>b{text-align:end; color:var(--ink); font-size:.95rem}
 .share-row>em{font-style:normal; color:var(--ink-3); font-size:.74rem; white-space:nowrap}
 .share-row .pos{color:#1F6349}.share-row .neg{color:#8E241A}.share-row .flat{color:var(--ink-3)}
+.pos{color:#1F6349}.neg{color:#8E241A}
+.bloc-swing{display:grid; gap:8px; margin-top:4px}
+.bloc-swing-row{display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--rule-2); border-inline-start:4px solid var(--c); border-radius:10px; background:var(--paper-2)}
+.bloc-swing-row>span{font-weight:800; font-size:.9rem}
+.bloc-swing-row>span em{font-style:normal; color:var(--ink-3); font-weight:600; font-size:.82rem}
+.bloc-swing-row>b{font-size:1.35rem; color:var(--c)}
+.bloc-swing-row>strong{font-size:.86rem; font-weight:800; white-space:nowrap}
+.delta-heads{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px}
+.delta-heads b{display:block; font-family:var(--serif); font-size:2rem; font-weight:900; line-height:1}
+.delta-heads span{display:block; margin-top:4px; color:var(--ink-3); font-size:.78rem; font-weight:600}
 .share-row>strong{display:block; height:9px; border-radius:5px; background:var(--rule-2); overflow:hidden}
 .share-row>strong i{display:block; width:var(--w); height:100%; background:var(--c); border-radius:5px}
 
@@ -258,17 +268,19 @@ td.n,th.n{text-align:end; font-variant-numeric:tabular-nums}
 .outlet-icons img{width:100%; height:100%; object-fit:contain; padding:3px}
 
 /* ---------- result grid: תמונה ומספר ---------- */
-.result-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px}
-.rcard{display:grid; justify-items:center; align-content:start; gap:6px; padding:18px 12px 14px; text-align:center;
+.result-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+.rcard{display:grid; justify-items:center; align-content:start; gap:7px; padding:16px 12px 14px; text-align:center;
   background:var(--paper-2); border:1px solid var(--rule); border-top:3px solid var(--c); border-radius:14px; box-shadow:var(--shadow-s)}
 .rcard:hover{background:var(--paper-3)}
-.rcard-logo{width:54px; height:54px; border-radius:13px; background:#fff; border:1px solid var(--rule-2); display:grid; place-items:center; overflow:hidden}
-.rcard-logo img{width:100%; height:100%; object-fit:contain; padding:5px}
-.rcard-logo b{display:none}
-.rcard-logo.nologo{background:var(--c); border-color:var(--c)}
-.rcard-logo.nologo b{display:block; color:#fff; font-weight:800; font-size:.92rem}
-.rcard-num{font-family:var(--serif); font-size:2.35rem; font-weight:900; line-height:1; color:var(--c)}
-.rcard strong{font-size:.9rem; font-weight:800; line-height:1.22}
+.rcard-face{width:66px; height:66px; border-radius:14px; background:#fff; border:1px solid var(--rule-2); display:grid; place-items:center; overflow:hidden}
+.rcard-face img{width:100%; height:100%; object-fit:contain; padding:6px}
+.rcard.has-photo .rcard-face{border-radius:50%; border:2px solid var(--c)}
+.rcard.has-photo .rcard-face img{object-fit:cover; padding:0}
+.rcard-face b{display:none}
+.rcard-face.nologo{background:var(--c); border-color:var(--c)}
+.rcard-face.nologo b{display:block; color:#fff; font-weight:800; font-size:1rem}
+.rcard-num{font-family:var(--serif); font-size:2.3rem; font-weight:900; line-height:1; color:var(--c)}
+.rcard strong{font-size:.86rem; font-weight:800; line-height:1.2}
 .rcard small{color:var(--ink-3); font-size:.68rem; font-weight:600; line-height:1.3}
 
 /* ---------- rank cards ---------- */
@@ -473,9 +485,11 @@ footer a{color:#EBD9AE}
   .steps{grid-template-columns:1fr}
   .prow{grid-template-columns:34px minmax(0,1fr) 52px; gap:10px}
   .prow .pbar{grid-column:2/3; grid-row:2}
-  .result-grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px}
-  .rcard{padding:14px 8px 11px}
-  .rcard-num{font-size:2rem}
+  .result-grid{grid-template-columns:repeat(3,1fr); gap:8px}
+  .rcard{padding:13px 7px 11px; gap:5px}
+  .rcard-face{width:52px; height:52px}
+  .rcard-num{font-size:1.9rem}
+  .rcard strong{font-size:.76rem}
   .rank{grid-template-columns:24px 42px 1fr 60px; gap:10px; padding:13px 11px}
   .rank .meters{grid-column:1/-1; grid-template-columns:repeat(2,1fr); gap:8px; padding-top:6px}
   .rank .final b{font-size:1.6rem}

@@ -15,7 +15,9 @@ const html = await rd("index.html");
 const css = await rd("assets/styles.css");
 const js = await rd("assets/app.js");
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
+const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
+for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 
 const logo = (await rd("assets/logo.svg")).replace(/\s+/g, " ").trim();
 const logoDataUri = "data:image/svg+xml;utf8," + encodeURIComponent(logo);

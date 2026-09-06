@@ -1,0 +1,27 @@
+{
+  "//": "תמונות מנהיגי המפלגות לכרטיסי התוצאה. מפתח = מזהה המפלגה בנתוני הסקר, ערך = כתובת URL של תמונה (רצוי מרובעת, ~200px). מפלגה בלי כתובת כאן — הכרטיס יציג את הלוגו שלה במקום. מקורות מומלצים: ויקישיתוף (upload.wikimedia.org), אתרי המפלגות.",
+  "photos": {
+    "likud": "",
+    "yashar": "",
+    "shas": "",
+    "hademokratim": "",
+    "beyahad": "",
+    "ozma_yehudit": "",
+    "reshima_meshutefet": "",
+    "yahadut_hatora": "",
+    "ndi": "",
+    "raam": "",
+    "ofer_vinter_party": "",
+    "zionut_datit": "",
+    "zionut_datit_zehut": "",
+    "ahdut_party": "",
+    "bait_zioni": "",
+    "kahollavan": "",
+    "noam": "",
+    "zehut": "",
+    "hakalkalit": "",
+    "mifleget_hazibur_haharedi": "",
+    "israel_thila": "",
+    "makom_lekulanu": ""
+  }
+}

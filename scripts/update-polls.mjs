@@ -2,8 +2,8 @@
 /**
  * הבארומטר — עדכון סקרי שנת הבחירות
  * ----------------------------------
- *   node scripts/update-polls.mjs                  # שליפה מהמקור שב-config.json
- *   node scripts/update-polls.mjs --full           # סריקה מלאה של כל סקרי השנה מהסייטמאפ
+ *   node scripts/update-polls.mjs                  # דף הבית + סייטמאפ של RECENT_DAYS האחרונים
+ *   node scripts/update-polls.mjs --full           # דף הבית + סייטמאפ של כל סקרי השנה
  *   node scripts/update-polls.mjs --file raw.json  # מקובץ מקומי (לבדיקה)
  *   node scripts/update-polls.mjs --dry            # בלי לכתוב, רק דיווח
  *
@@ -48,11 +48,17 @@ const nextData = html => {
   return JSON.parse(m[1]);
 };
 
+/* חלון ברירת המחדל לסריקת הסייטמאפ בריצה יומית. מספיק גדול כדי לכסות
+   כמה ימים של תקלות בוט ברצף, קטן מספיק שהסריקה תישאר זולה. --full מתעלם
+   ממנו וסורק את כל השנה. */
+const RECENT_DAYS = Number(cfg.recentDays) || 21;
+
 /* ---------- 1. שליפה ----------
-   דף הבית מחזיק את עשרת הסקרים האחרונים תחת props.pageProps.landing.initialPolls.
-   זה מספיק לריצה היומית. --full סורק בנוסף את סייטמאפ הסקרים, בוחר לכל ערוץ
-   את maxPerOutlet הכתובות האחרונות של שנת הבחירות, ומוריד רק אותן — כך
-   שהמילוי לאחור עולה עשרות בקשות ולא מאות. */
+   דף הבית (props.pageProps.landing.initialPolls) מחזיר סקר אחד בלבד לכל
+   ערוץ. אם ערוץ פרסם שני סקרים מאז הריצה הקודמת, הישן נופל ממנו ואבוד —
+   ולכן זה לא מקור אמת. הסייטמאפ הוא כן: הוא מונה כל דף סקר. הריצה היומית
+   מושכת את שניהם — דף הבית לזריזות, והסייטמאפ (חלון RECENT_DAYS) כרשת
+   ביטחון שתופסת כל מה שדף הבית פספס. */
 async function fetchLatest() {
   if (FILE) { log("קורא מקובץ מקומי:", FILE); return JSON.parse(await readFile(FILE, "utf8")); }
   log("שולף מ:", cfg.sourceUrl);
@@ -66,20 +72,22 @@ const parseSlug = url => {
   return m ? { url, outlet: m[1], year: +m[2], ts: Date.parse(`${m[2]}-${m[3]}-${m[4]}`) } : null;
 };
 
-async function fetchYearFromSitemap(knownUrls) {
+async function fetchFromSitemap(knownUrls, recentDays) {
   log("סורק את סייטמאפ הסקרים:", cfg.sitemapUrl);
   const xml = await get(cfg.sitemapUrl, "application/xml");
-  const all = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => parseSlug(m[1])).filter(x => x && x.year === YEAR);
-  log(`בסייטמאפ ${all.length} סקרים משנת ${YEAR}`);
+  let all = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => parseSlug(m[1])).filter(x => x && x.year === YEAR);
+  if (recentDays != null) {
+    const floor = Date.now() - recentDays * 864e5;
+    all = all.filter(x => x.ts >= floor);
+  }
+  all.sort((a, b) => b.ts - a.ts);
+  log(`בסייטמאפ ${all.length} סקרים ${recentDays != null ? `מ-${recentDays} הימים האחרונים` : `משנת ${YEAR}`}`);
 
-  const byOutlet = new Map();
-  all.sort((a, b) => b.ts - a.ts).forEach(x => {
-    const list = byOutlet.get(x.outlet) || [];
-    if (list.length < MAX_PER_OUTLET) { list.push(x); byOutlet.set(x.outlet, list); }
-  });
-  const wanted = [...byOutlet.values()].flat();
-  const todo = wanted.filter(x => !knownUrls.has(x.url));
-  log(`${byOutlet.size} כלי תקשורת · ${wanted.length} סקרים בתצוגה · ${todo.length} עוד לא במאגר`);
+  /* כל דף שעדיין לא במאגר. סקרים ישנים נשמרו בלי sourceUrl, ולכן בריצה
+     הראשונה אחרי המעבר לסייטמאפ הם ייסרקו שוב — המיזוג לפי id מבטיח שזה
+     לא יוצר כפילות, וזו עלות חד-פעמית. */
+  const todo = all.filter(x => !knownUrls.has(x.url));
+  log(`${todo.length} עדיין לא במאגר`);
 
   const out = [];
   for (const [i, x] of todo.entries()) {
@@ -170,12 +178,10 @@ async function main() {
   const incoming = pickArray(await fetchLatest()).map(normalize);
   log(`נשלפו ${incoming.length} סקרים מדף הבית`);
 
-  if (FULL) {
-    const known = new Set(archive.polls.map(p => p.sourceUrl).filter(Boolean));
-    const extra = (await fetchYearFromSitemap(known)).map(normalize);
-    log(`נשלפו עוד ${extra.length} סקרים מדפי הארכיון`);
-    incoming.push(...extra);
-  }
+  const known = new Set(archive.polls.map(p => p.sourceUrl).filter(Boolean));
+  const fromSitemap = (await fetchFromSitemap(known, FULL ? null : RECENT_DAYS)).map(normalize);
+  log(`נשלפו ${fromSitemap.length} סקרים מהסייטמאפ`);
+  incoming.push(...fromSitemap);
 
   let added = 0;
   incoming.forEach(p => {

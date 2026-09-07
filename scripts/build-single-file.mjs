@@ -23,18 +23,24 @@ const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/hist
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 
-// הטמעת תמונות מנהיגים מקומיות כ-data URI כדי שהקובץ היחיד יעבוד בלי שרת
+// הטמעת תמונות מקומיות כ-data URI כדי שהקובץ היחיד יעבוד בלי שרת
 const MIME = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", svg: "image/svg+xml" };
+const embedLocal = async (src, fallbackMime = "image/jpeg") => {
+  if (typeof src !== "string" || !src.startsWith("assets/")) return src;
+  try {
+    const buf = await readFile(path.join(ROOT, src));
+    return `data:${MIME[src.split(".").pop().toLowerCase()] || fallbackMime};base64,${buf.toString("base64")}`;
+  } catch { return ""; }
+};
 if (data["data/leaders.json"]?.photos) {
   const photos = data["data/leaders.json"].photos;
-  for (const [id, src] of Object.entries(photos)) {
-    if (!src || !src.startsWith("assets/")) continue;
-    try {
-      const buf = await readFile(path.join(ROOT, src));
-      const ext = src.split(".").pop().toLowerCase();
-      photos[id] = `data:${MIME[ext] || "image/jpeg"};base64,${buf.toString("base64")}`;
-    } catch { photos[id] = ""; }
-  }
+  for (const id of Object.keys(photos)) photos[id] = await embedLocal(photos[id]);
+}
+// לוגואים מקומיים של מכוני הסקרים והערוצים ב-pollsters.json
+if (data["data/pollsters.json"]) {
+  const p = data["data/pollsters.json"];
+  for (const f of p.firms || []) if (f.logo) f.logo = await embedLocal(f.logo, "image/png");
+  for (const k of Object.keys(p.outletLogos || {})) p.outletLogos[k] = await embedLocal(p.outletLogos[k], "image/png");
 }
 
 const logo = (await rd("assets/logo.svg")).replace(/\s+/g, " ").trim();

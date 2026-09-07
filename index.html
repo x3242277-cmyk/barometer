@@ -14,12 +14,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=93341c63">
-<link rel="stylesheet" href="assets/upgrade.css?v=abd57583">
+<link rel="stylesheet" href="assets/upgrade.css?v=9be165e3">
 <script src="assets/scenario.js?v=bf9215f5" defer></script>
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
 <script src="assets/explore.js?v=52c59201" defer></script>
-<script src="assets/app.js?v=78457619" defer></script>
+<script src="assets/app.js?v=1533d3c2" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -36,7 +36,6 @@
     <div class="election-countdown header-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     <div class="masthead-side">
       <span class="stamp"><span class="pulse" aria-hidden="true"></span><span id="stamp-updated">טוען נתונים…</span></span>
-      <span class="stamp" id="stamp-window">—</span>
     </div>
   </div>
 </header>
@@ -47,6 +46,7 @@
       <a class="tab" href="#/" data-view="home">תמונת מצב</a>
       <a class="tab" href="#/polls" data-view="polls">סקרים והשוואה</a>
       <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
+      <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
       <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
       
         <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
@@ -66,12 +66,12 @@
   <div class="hero"><div class="hero-art" aria-hidden="true" id="hero-art"></div>
     <div class="wrap hero-in"><div><p class="eyebrow">ברומטר · נתונים לבחירות 2026</p><h1>תמונת המנדטים.</h1><p class="lede">המפלגות, הסקרים והמקורות — עם שיטת חישוב גלויה.</p></div><div class="hero-cta"><a class="btn" href="#/polls">השוואת סקרים ←</a><a class="btn ghost" href="#/method">איך זה מחושב</a></div></div>
     <div class="wrap hero-parties">
-      <section class="sec"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="party-updated"></span></p><h2 id="party-rows-title">תחזית הברומטר</h2><p class="sec-note" id="party-rows-params">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button><button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button></div></div><div class="result-grid" id="party-rows"></div></section>
+      <section class="sec"><div class="sec-head"><div class="party-rows-head"><h2 id="party-rows-title">תחזית הברומטר</h2><span id="party-updated"></span><p class="sec-note" id="party-rows-params">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button><button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button></div></div><div class="result-grid" id="party-rows"></div></section>
     </div>
   </div><div class="wrap">
     <section class="home-stats-sec"><div class="stats" id="home-stats"></div></section>
     <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="forecast-updated"></span></p><h2>המנדטים לפי מפלגה</h2></div></div>
-      <p class="data-explainer">תחזית הברומטר משקללת את הסקרים לפי דיוק היסטורי ומחילה את הנחות המודל: 11 לש״ס, 8 ליהדות התורה, עוגן גושים ותיקון דמוגרפי גלויים. "משוקלל אמינות" מציג את ממוצע הסקרים המשוקלל בלבד. <a href="#/method">שיטת החישוב</a></p>
+      <p class="data-explainer">תחזית הברומטר משקללת את סקרי השבועיים האחרונים לפי דיוק היסטורי ומחילה את הנחות המודל: 11 לש״ס, 8 ליהדות התורה, עוגן גושים ותיקון דמוגרפי גלויים. "משוקלל אמינות" מציג את אותו ממוצע משוקלל בלי ההנחות. עמוד הסקרים מציג את כל החלון. <a href="#/method">שיטת החישוב</a></p>
       <div id="scenario-panel" class="card pad" hidden></div><div class="switch forecast-views" role="group" aria-label="תצוגת התחזית"><button type="button" data-homeview="bars" aria-pressed="true">מפלגות</button><button type="button" data-homeview="seats" aria-pressed="false">מפת הכנסת</button><button type="button" data-homeview="blocs" aria-pressed="false">גושים ושיוך</button><button type="button" data-homeview="table" aria-pressed="false">טבלת נתונים</button></div>
       <div id="forecast-bars" data-homepanel="bars"></div><div id="forecast-table" data-homepanel="table" class="tablewrap" tabindex="0" role="region" aria-label="נתוני התחזית" hidden></div>
       <div class="hemi" id="hemi-box" data-homepanel="seats" hidden><div class="sec-head"><h3>מפת 120 המושבים</h3><p id="hemi-updated"></p></div><div id="hemi-svg"></div><div class="blocbar" id="blocbar"></div><div class="legend" id="bloclegend"></div><p class="data-explainer">לערכים ולשמות הרשימות עברו לטבלת הנתונים.</p></div>
@@ -177,6 +177,27 @@
       </div>
       <div class="tablewrap"><table id="arch-table"></table></div>
     </section>
+  </div>
+</section>
+
+
+<!-- ==================== כמה עברו צד ==================== -->
+<section class="view" id="view-crossover" aria-label="כמה עברו צד">
+  <div class="wrap">
+    <div class="page-head"><div class="page-head-main">
+      <h2>כמה עברו צד?</h2>
+    </div></div>
+    <p class="data-explainer" id="crossover-intro"></p>
+    <section class="sec">
+      <div class="sec-head"><div><p class="kicker">מאזן הפתיחה</p><h2>איפה עמדו הגושים ב־2022</h2></div></div>
+      <div id="crossover-baseline"></div>
+    </section>
+    <section class="sec">
+      <div class="sec-head"><div><p class="kicker">לשיטת כל מכון</p><h2>כמה מנדטים עברו את קו הגוש מאז 2022</h2></div>
+        <p class="sec-note" id="crossover-note"></p></div>
+      <div id="crossover-chart" class="crosschart"></div>
+    </section>
+    <div class="notice warm" style="margin-top:16px"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
   </div>
 </section>
 

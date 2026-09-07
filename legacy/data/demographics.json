@@ -1,0 +1,281 @@
+{
+  "meta": {
+    "title": "התחזית היבשה — מודל דמוגרפי ללא סקרים",
+    "baseYear": 2022,
+    "targetYear": 2026,
+    "years": 4,
+    "principle": "המודל אינו משתמש בשום סקר. הוא לוקח את תוצאות האמת של 2022, מניח שהרגלי ההצבעה בכל קבוצת אוכלוסייה נשארו כשהיו, ומשנה רק דבר אחד: את גודלה של כל קבוצה. שיטת חלוקת המנדטים היא בדר־עופר עם הסכמי העודפים שנחתמו ב־2022 — וכשמציבים גידול אפס, המודל משחזר את תוצאות 2022 מנדט במנדט.",
+    "validVotes2022": 4763694,
+    "otherVotes2022": 77657,
+    "threshold": 0.0325
+  },
+  "sectors": [
+    {
+      "id": "haredi",
+      "name": "חרדים",
+      "color": "#5B4B8A",
+      "eligible2022": 672092,
+      "turnout": 0.824,
+      "growth": 0.042,
+      "turnoutNote": "82.4% בערים החרדיות ב־2022 (אלעד, ביתר עילית, מודיעין עילית) — המקור לנתון זה.",
+      "growthNote": "פריון של כ־4.3 ילדים לאישה; הלמ״ס צופה כי החרדים יהוו כ־20% מהאוכלוסייה ב־2040 ו־24.4% ב־2050. ב־2025 הם כבר 23.5% מבני מחזור הגיוס.",
+      "src": "idi_haredi"
+    },
+    {
+      "id": "dati",
+      "name": "דתיים לאומיים",
+      "color": "#3E3A6E",
+      "eligible2022": 616084,
+      "turnout": 0.85,
+      "growth": 0.02,
+      "growthNote": "פריון של כ־2.3 ילדים לאישה בקרב נשים דתיות ומסורתיות־דתיות.",
+      "src": "taub"
+    },
+    {
+      "id": "mesorati",
+      "name": "מסורתיים",
+      "color": "#B8862B",
+      "eligible2022": 1904259,
+      "turnout": 0.72,
+      "growth": 0.013,
+      "growthNote": "קבוצת הביניים הגדולה ביותר; גידול קרוב לריבוי הטבעי של יהודים ואחרים (1.2%).",
+      "src": "taub"
+    },
+    {
+      "id": "hiloni",
+      "name": "חילונים",
+      "color": "#2AA5C9",
+      "eligible2022": 2408328,
+      "turnout": 0.74,
+      "growth": 0.006,
+      "growthNote": "פריון של כ־1.7; ומאזן ההגירה התהפך — 26 אלף יוצאים עודפים ב־2024 וצפי ל־37 אלף ב־2025. זהו הגורם שמושך את הקבוצה הזו כלפי מטה.",
+      "src": "taub"
+    },
+    {
+      "id": "arab",
+      "name": "אזרחים ערבים",
+      "color": "#2E8467",
+      "eligible2022": 1188041,
+      "turnout": 0.532,
+      "turnoutNote": "53.2% ב־2022, לעומת 44.6% ב־2021 ו־55.9% בממוצע העשור — הפרמטר התנודתי ביותר במודל.",
+      "growth": 0.019,
+      "growthNote": "הריבוי הטבעי ירד מ־2.1% ל־1.6% בעשור, אך אוכלוסיית גיל ההצבעה עדיין גדלה מהר יותר בשל מבנה הגילים הצעיר.",
+      "src": "taub"
+    }
+  ],
+  "parties2022": [
+    {
+      "id": "likud",
+      "name": "הליכוד",
+      "votes": 1115085,
+      "seats": 32,
+      "camp": "right",
+      "mix": {
+        "haredi": 0.03,
+        "dati": 0.1,
+        "mesorati": 0.55,
+        "hiloni": 0.31,
+        "arab": 0.01
+      }
+    },
+    {
+      "id": "yesh_atid",
+      "name": "יש עתיד",
+      "votes": 847145,
+      "seats": 24,
+      "camp": "center",
+      "mix": {
+        "mesorati": 0.16,
+        "hiloni": 0.82,
+        "arab": 0.02
+      }
+    },
+    {
+      "id": "religious_zionism",
+      "name": "הציונות הדתית–עוצמה",
+      "votes": 516146,
+      "seats": 14,
+      "camp": "right",
+      "mix": {
+        "haredi": 0.1,
+        "dati": 0.42,
+        "mesorati": 0.36,
+        "hiloni": 0.12
+      }
+    },
+    {
+      "id": "national_unity",
+      "name": "המחנה הממלכתי",
+      "votes": 432376,
+      "seats": 12,
+      "camp": "center",
+      "mix": {
+        "dati": 0.06,
+        "mesorati": 0.22,
+        "hiloni": 0.68,
+        "arab": 0.04
+      }
+    },
+    {
+      "id": "shas",
+      "name": "ש״ס",
+      "votes": 392644,
+      "seats": 11,
+      "camp": "haredi",
+      "mix": {
+        "haredi": 0.55,
+        "dati": 0.08,
+        "mesorati": 0.35,
+        "hiloni": 0.02
+      }
+    },
+    {
+      "id": "utj",
+      "name": "יהדות התורה",
+      "votes": 280125,
+      "seats": 7,
+      "camp": "haredi",
+      "mix": {
+        "haredi": 0.94,
+        "dati": 0.04,
+        "mesorati": 0.02
+      }
+    },
+    {
+      "id": "yisrael_beiteinu",
+      "name": "ישראל ביתנו",
+      "votes": 213687,
+      "seats": 6,
+      "camp": "center",
+      "mix": {
+        "mesorati": 0.18,
+        "hiloni": 0.82
+      }
+    },
+    {
+      "id": "raam",
+      "name": "רע״מ",
+      "votes": 194047,
+      "seats": 5,
+      "camp": "arab",
+      "mix": {
+        "arab": 1
+      }
+    },
+    {
+      "id": "hadash_taal",
+      "name": "חד״ש–תע״ל",
+      "votes": 178735,
+      "seats": 5,
+      "camp": "arab",
+      "mix": {
+        "arab": 0.97,
+        "hiloni": 0.03
+      }
+    },
+    {
+      "id": "labor",
+      "name": "העבודה",
+      "votes": 175992,
+      "seats": 4,
+      "camp": "center",
+      "mix": {
+        "mesorati": 0.08,
+        "hiloni": 0.9,
+        "arab": 0.02
+      }
+    },
+    {
+      "id": "meretz",
+      "name": "מרצ",
+      "votes": 150696,
+      "seats": 0,
+      "camp": "center",
+      "mix": {
+        "mesorati": 0.05,
+        "hiloni": 0.87,
+        "arab": 0.08
+      }
+    },
+    {
+      "id": "balad",
+      "name": "בל״ד",
+      "votes": 138093,
+      "seats": 0,
+      "camp": "arab",
+      "mix": {
+        "arab": 1
+      }
+    },
+    {
+      "id": "jewish_home",
+      "name": "הבית היהודי",
+      "votes": 51266,
+      "seats": 0,
+      "camp": "right",
+      "mix": {
+        "dati": 0.7,
+        "mesorati": 0.2,
+        "hiloni": 0.1
+      }
+    }
+  ],
+  "surplusAgreements": [
+    [
+      "likud",
+      "religious_zionism"
+    ],
+    [
+      "yesh_atid",
+      "labor"
+    ],
+    [
+      "shas",
+      "utj"
+    ],
+    [
+      "national_unity",
+      "yisrael_beiteinu"
+    ],
+    [
+      "raam",
+      "hadash_taal"
+    ]
+  ],
+  "camps": {
+    "right": {
+      "name": "ימין ודתי־לאומי",
+      "color": "#17457F"
+    },
+    "haredi": {
+      "name": "המפלגות החרדיות",
+      "color": "#5B4B8A"
+    },
+    "center": {
+      "name": "מרכז–שמאל",
+      "color": "#C0392B"
+    },
+    "arab": {
+      "name": "המפלגות הערביות",
+      "color": "#2E8467"
+    }
+  },
+  "sources": {
+    "taub": {
+      "name": "מרכז טאוב — ישראל 2025: צומת דמוגרפי",
+      "url": "https://www.taubcenter.org.il/en/research/snr-2025-demography/"
+    },
+    "idi_haredi": {
+      "name": "המכון הישראלי לדמוקרטיה — חרדים בישראל 2050",
+      "url": "https://en.idi.org.il/articles/63385"
+    },
+    "idi_arab": {
+      "name": "המכון הישראלי לדמוקרטיה — המגזר הערבי בבחירות 2022",
+      "url": "https://en.idi.org.il/articles/47986"
+    },
+    "idi_religion": {
+      "name": "המכון הישראלי לדמוקרטיה — הצבעה לפי הגדרה דתית",
+      "url": "https://www.idi.org.il/articles/64803"
+    }
+  }
+}

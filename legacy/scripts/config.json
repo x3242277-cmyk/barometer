@@ -1,0 +1,13 @@
+{
+  "//": "שליפת הסקרים מ-skarim.org. sourceUrl הוא דף הבית; sitemapUrl הוא מפת כל דפי הסקרים. התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
+  "sourceUrl": "https://www.skarim.org/",
+  "sitemapUrl": "https://www.skarim.org/api/static/sitemap-polls",
+  "pollPageBase": "https://www.skarim.org",
+  "year": 2026,
+  "maxPerOutlet": 4,
+  "outFile": "data/current-polls.json",
+  "requestTimeoutMs": 20000,
+  "requestDelayMs": 250,
+  "userAgent": "Barometer-PollFetcher/1.0 (+static site updater)",
+  "from": "2026-08-01"
+}

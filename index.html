@@ -15,11 +15,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=93341c63">
 <link rel="stylesheet" href="assets/upgrade.css?v=9be165e3">
+<link rel="stylesheet" href="assets/home.css?v=12d32299">
 <script src="assets/scenario.js?v=bf9215f5" defer></script>
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
 <script src="assets/explore.js?v=52c59201" defer></script>
-<script src="assets/app.js?v=1533d3c2" defer></script>
+<script src="assets/app.js?v=c4da7f4a" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -36,6 +37,10 @@
     <div class="election-countdown header-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     <div class="masthead-side">
       <span class="stamp"><span class="pulse" aria-hidden="true"></span><span id="stamp-updated">טוען נתונים…</span></span>
+      <button type="button" class="print-btn" id="print-btn" aria-label="הדפסת נתוני התחזית">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>
+        <span>הדפסה</span>
+      </button>
     </div>
   </div>
 </header>
@@ -44,17 +49,20 @@
   <div class="wrap">
     <div class="tabs">
       <a class="tab" href="#/" data-view="home">תמונת מצב</a>
-      <a class="tab" href="#/polls" data-view="polls">סקרים והשוואה</a>
+      <a class="tab" href="#/polls" data-view="polls">הסקרים</a>
       <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-      <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
       <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
-      
-        <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
-        <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-        <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
-        <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
-        <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
-      
+      <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
+      <details class="nav-more">
+        <summary>עוד</summary>
+        <div class="nav-menu">
+          <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+          <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+          <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
+          <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
+          <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
+        </div>
+      </details>
     </div>
   </div>
 </nav>
@@ -63,22 +71,33 @@
 
 <!-- ==================== התחזית ==================== -->
 <section class="view" id="view-home" aria-label="תמונת מצב">
-  <div class="hero"><div class="hero-art" aria-hidden="true" id="hero-art"></div>
-    <div class="wrap hero-in"><div><p class="eyebrow">ברומטר · נתונים לבחירות 2026</p><h1>תמונת המנדטים.</h1><p class="lede">המפלגות, הסקרים והמקורות — עם שיטת חישוב גלויה.</p></div><div class="hero-cta"><a class="btn" href="#/polls">השוואת סקרים ←</a><a class="btn ghost" href="#/method">איך זה מחושב</a></div></div>
-    <div class="wrap hero-parties">
-      <section class="sec"><div class="sec-head"><div class="party-rows-head"><h2 id="party-rows-title">תחזית הברומטר</h2><span id="party-updated"></span><p class="sec-note" id="party-rows-params">בחרו מפלגה כדי לראות את תוצאותיה בסקרים.</p></div><div class="switch" role="group" aria-label="אופן חישוב"><button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button><button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button></div></div><div class="result-grid" id="party-rows"></div></section>
+  <div class="verdict">
+    <div class="verdict-knesset" aria-hidden="true" id="hero-art"></div>
+    <div class="wrap verdict-in">
+      <p class="eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
+      <h1 id="verdict-head">טוען נתונים…</h1>
+      <p class="lede" id="verdict-lede"></p>
+      <div class="switch home-switch" role="group" aria-label="אופן החישוב">
+        <button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button>
+        <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
+      </div>
+      <div class="readout" id="home-readout"></div>
     </div>
-  </div><div class="wrap">
-    <section class="home-stats-sec"><div class="stats" id="home-stats"></div></section>
-    <section class="sec forecast-section"><div class="sec-head"><div><p class="kicker">תחזית הברומטר <span id="forecast-updated"></span></p><h2>המנדטים לפי מפלגה</h2></div></div>
-      <p class="data-explainer">תחזית הברומטר משקללת את סקרי השבועיים האחרונים לפי דיוק היסטורי ומחילה את הנחות המודל: 11 לש״ס, 8 ליהדות התורה, עוגן גושים ותיקון דמוגרפי גלויים. "משוקלל אמינות" מציג את אותו ממוצע משוקלל בלי ההנחות. עמוד הסקרים מציג את כל החלון. <a href="#/method">שיטת החישוב</a></p>
-      <div id="scenario-panel" class="card pad" hidden></div><div class="switch forecast-views" role="group" aria-label="תצוגת התחזית"><button type="button" data-homeview="bars" aria-pressed="true">מפלגות</button><button type="button" data-homeview="seats" aria-pressed="false">מפת הכנסת</button><button type="button" data-homeview="blocs" aria-pressed="false">גושים ושיוך</button><button type="button" data-homeview="table" aria-pressed="false">טבלת נתונים</button></div>
-      <div id="forecast-bars" data-homepanel="bars"></div><div id="forecast-table" data-homepanel="table" class="tablewrap" tabindex="0" role="region" aria-label="נתוני התחזית" hidden></div>
-      <div class="hemi" id="hemi-box" data-homepanel="seats" hidden><div class="sec-head"><h3>מפת 120 המושבים</h3><p id="hemi-updated"></p></div><div id="hemi-svg"></div><div class="blocbar" id="blocbar"></div><div class="legend" id="bloclegend"></div><p class="data-explainer">לערכים ולשמות הרשימות עברו לטבלת הנתונים.</p></div>
-      <div class="gauge" data-homepanel="blocs" hidden><div class="gauge-head"><p>חלוקה לפי השיוך במאגר</p><p id="gauge-mode"></p></div><div id="gauge-svg"></div><div class="gauge-read" id="gauge-read"></div><p class="gauge-verdict" id="gauge-verdict"></p><div id="bloc-members"></div></div>
+  </div>
+  <div class="wrap board">
+    <section class="bloc" id="bloc-right">
+      <div class="bloc-head"><h2>גוש הימין והחרדים</h2><span class="tally num" data-tally="Right"></span></div>
+      <div class="cards" id="cards-right"></div>
     </section>
-    <section class="sec methodology-cards"><div class="grid g2"><div class="card pad"><p class="kicker">הדיוק ההיסטורי במדד</p><div id="top-firm"></div><a class="btn ghost" href="#/2022">כל המכונים והמדדים ←</a></div><div class="card pad"><p class="kicker">שקיפות החישוב</p><h3>הממוצע ותחזית הברומטר</h3><div id="fix-box"></div></div></div></section>
-    <section class="sec anecdote-sec"><article class="anecdote" id="anecdote"><div class="anecdote-side"><p class="kicker">טווחי המנדטים בסקרים</p></div><div class="anecdote-body"><h3 id="anec-title"></h3><p id="anec-text"></p><div class="anecdote-foot"><span id="anec-meta"></span><div class="anecdote-nav"><button type="button" id="anec-prev" aria-label="המפלגה הקודמת">‹</button><span id="anec-count"></span><button type="button" id="anec-next" aria-label="המפלגה הבאה">›</button></div></div></div></article></section>
+    <section class="bloc" id="bloc-left">
+      <div class="bloc-head"><h2>מרכז־שמאל והרשימות הערביות</h2><span class="tally num" data-tally="LeftArabs"></span></div>
+      <div class="cards" id="cards-left"></div>
+    </section>
+    <section class="handoff">
+      <p>איך חושבו המספרים, מה נכנס לשקלול ומה ההנחות שמאחורי "תחזית הברומטר" — הכול בשיטת החישוב, עם גרף לכל מפלגה.</p>
+      <a class="btn" href="#/method">לשיטת החישוב ←</a>
+    </section>
+    <section class="printsheet" id="home-printsheet" aria-hidden="true"></section>
   </div>
 </section>
 
@@ -722,7 +741,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="step"><em>03</em><h3>נותנים קדימות לגושים</h3><p>שגיאת הגושים נמדדת בגוש נתניהו, בגוש הממשלה היוצאת ובחד״ש–תע״ל. רכיב זה שווה <b>60%</b> מהציון — כי זו השאלה היחידה שקובעת מי מרכיב ממשלה. מכון שמדייק בגושים ומחליף מנדט בין שתי מפלגות באותו גוש עשה עבודה טובה; מכון שפספס גוש לא.</p></div>
         <div class="step"><em>04</em><h3>בודקים גם כל מפלגה</h3><p>שגיאה מוחלטת ממוצעת ב־11 הרשימות המרכזיות, 30% מהציון. מעבר מנדט בתוך אותו גוש נענש פחות מהחמצת גוש.</p></div>
         <div class="step"><em>05</em><h3>מתגמלים עקביות, לא הברקה</h3><p>10% נוספים לעקביות: יציבות תחזית הגוש לאורך החודש, ורציפות הפרסום. מכון שקלע פעם אחת אחרי שהתנדנד בעשרה מנדטים לא מקבל את אותו קרדיט כמו מי שהחזיק קו יציב ומדויק.</p></div>
-        <div class="step"><em>06</em><h3>בונים ממוצע נע של 14 יום</h3><p>קודם ממצעים את כל סקרי אותו מכון, ורק אחר כך ממזגים בין המכונים לפי ציון האמינות. מכון ללא כיול מ־2022 מקבל משקל ניטרלי של 70.</p></div>
+        <div class="step"><em>06</em><h3>בונים ממוצע נע של 8 ימים</h3><p>קודם ממצעים את כל סקרי אותו מכון, ורק אחר כך ממזגים בין המכונים לפי ציון האמינות. חלון קצר מגיב מהר לאיחודי רשימות ולשינויי מגמה. מכון ללא כיול מ־2022 מקבל משקל ניטרלי של 70.</p></div>
         <div class="step"><em>07</em><h3>מעגלים ל־120 מנדטים</h3><p>עיגול בשיטת השארית הגדולה לכל המפלגות, ללא רצפות מנדטים וללא תיקון ייעודי למפלגה.</p></div>
       </div>
     </section>
@@ -738,7 +757,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
             <li>מכון סקרים מזוהה בשם, עם אחראי מחקר ידוע.</li>
             <li>פרסום בכלי תקשורת מזוהה, עם תאריך.</li>
             <li>סקר מנדטים ארצי — לא סקר נושאי ולא סקר מפלגתי פנימי.</li>
-            <li>נמצא בתוך חלון 14 הימים הנע.</li>
+            <li>נמצא בתוך חלון 8 הימים הנע.</li>
           </ul>
         </div>
         <div class="card pad">
@@ -747,7 +766,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
             <li>סקרים ללא מכון מזוהה או ללא מפרסם.</li>
             <li>סקרי רשת פתוחים והצבעות גולשים.</li>
             <li>סקרים שהוזמנו על ידי מפלגה ופורסמו על ידה.</li>
-            <li>סקרים ישנים מ־14 יום — הם נושרים אוטומטית.</li>
+            <li>סקרים ישנים מ־8 יום — הם נושרים אוטומטית.</li>
           </ul>
         </div>
       </div>

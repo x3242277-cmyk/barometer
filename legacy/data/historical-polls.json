@@ -1,0 +1,748 @@
+{
+  "meta": {
+    "election": "הכנסת ה־25",
+    "electionDate": "2022-11-01",
+    "note": "סקרי 30 הימים שלפני הבחירות.",
+    "source": "ארכיון האתר"
+  },
+  "window": {
+    "from": "2022-09-29",
+    "to": "2022-10-28"
+  },
+  "actual": {
+    "likud": 32,
+    "yesh_atid": 24,
+    "national_unity": 12,
+    "shas": 11,
+    "labor": 4,
+    "utj": 7,
+    "yisrael_beiteinu": 6,
+    "religious_zionism": 14,
+    "hadash_taal": 5,
+    "meretz": 0,
+    "raam": 5
+  },
+  "blocs": {
+    "netanyahu": [
+      "likud",
+      "shas",
+      "utj",
+      "religious_zionism"
+    ],
+    "outgoing": [
+      "yesh_atid",
+      "national_unity",
+      "labor",
+      "yisrael_beiteinu",
+      "meretz",
+      "raam"
+    ],
+    "outside": [
+      "hadash_taal"
+    ]
+  },
+  "polls": [
+    {
+      "date": "2022-10-28",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "likud": 30,
+        "yesh_atid": 27,
+        "national_unity": 10,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 15,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-28",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 25,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-27",
+      "firm": "Smith",
+      "publisher": "גלי ישראל",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 25,
+        "national_unity": 11,
+        "shas": 9,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-27",
+      "firm": "Direct Polls",
+      "publisher": "ערוץ 14",
+      "p": {
+        "likud": 34,
+        "yesh_atid": 23,
+        "national_unity": 13,
+        "shas": 9,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-27",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 24,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-27",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 25,
+        "national_unity": 12,
+        "shas": 9,
+        "labor": 4,
+        "utj": 6,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-26",
+      "firm": "Maagar Mochot",
+      "publisher": "ישראל היום",
+      "p": {
+        "likud": 30,
+        "yesh_atid": 25,
+        "national_unity": 11,
+        "shas": 9,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 15,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-25",
+      "firm": "Smith",
+      "publisher": "גלי ישראל",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 25,
+        "national_unity": 12,
+        "shas": 9,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-25",
+      "firm": "Midgam",
+      "publisher": "גל״צ",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 25,
+        "national_unity": 13,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-25",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 27,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-25",
+      "firm": "Panels Politics",
+      "publisher": "Mako / ערוץ הכנסת",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-24",
+      "firm": "Direct Polls",
+      "publisher": "ערוץ 14",
+      "p": {
+        "likud": 34,
+        "yesh_atid": 23,
+        "national_unity": 12,
+        "shas": 9,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-24",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 13,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-23",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 23,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-23",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 9,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-20",
+      "firm": "Direct Polls",
+      "publisher": "ערוץ 14",
+      "p": {
+        "likud": 34,
+        "yesh_atid": 23,
+        "national_unity": 13,
+        "shas": 9,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-20",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 26,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-20",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 23,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 7,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-19",
+      "firm": "Midgam",
+      "publisher": "חדשות 12 / קשת",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 24,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-19",
+      "firm": "Panels Politics",
+      "publisher": "Mako / ערוץ הכנסת",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 7,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-18",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "likud": 30,
+        "yesh_atid": 25,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-18",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 25,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 7,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-13",
+      "firm": "Direct Polls",
+      "publisher": "ערוץ 14",
+      "p": {
+        "likud": 34,
+        "yesh_atid": 23,
+        "national_unity": 12,
+        "shas": 9,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 7,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-13",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 26,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-13",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-12",
+      "firm": "Panels Politics",
+      "publisher": "Mako / ערוץ הכנסת",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 25,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-11",
+      "firm": "Panels Politics",
+      "publisher": "103FM",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 25,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-11",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-11",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-06",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 23,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-06",
+      "firm": "Direct Polls",
+      "publisher": "ערוץ 14",
+      "p": {
+        "likud": 35,
+        "yesh_atid": 23,
+        "national_unity": 11,
+        "shas": 9,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 11,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-04",
+      "firm": "Panels Politics",
+      "publisher": "Mako / ערוץ הכנסת",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-03",
+      "firm": "Maagar Mochot",
+      "publisher": "ישראל היום",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 11,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 6,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-02",
+      "firm": "Midgam",
+      "publisher": "גל״צ",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 6,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-02",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 25,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 5,
+        "religious_zionism": 14,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-10-01",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 25,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 12,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-09-29",
+      "firm": "Direct Polls",
+      "publisher": "ערוץ 14",
+      "p": {
+        "likud": 35,
+        "yesh_atid": 23,
+        "national_unity": 13,
+        "shas": 9,
+        "labor": 4,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 11,
+        "hadash_taal": 4,
+        "meretz": 4,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-09-29",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "likud": 31,
+        "yesh_atid": 24,
+        "national_unity": 13,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    },
+    {
+      "date": "2022-09-29",
+      "firm": "Panels Politics",
+      "publisher": "Mako / ערוץ הכנסת",
+      "p": {
+        "likud": 32,
+        "yesh_atid": 24,
+        "national_unity": 12,
+        "shas": 8,
+        "labor": 5,
+        "utj": 7,
+        "yisrael_beiteinu": 6,
+        "religious_zionism": 13,
+        "hadash_taal": 4,
+        "meretz": 5,
+        "raam": 4
+      }
+    }
+  ]
+}

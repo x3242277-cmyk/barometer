@@ -1,0 +1,29 @@
+{
+  "status": "waiting",
+  "statusText": "טרם חובר מקור נתונים חי. ביום הבחירות הקובץ הזה יכול להתעדכן ממדגם, מספירה חלקית ומתוצאות אמת.",
+  "sourceName": "מקור נתונים עתידי",
+  "updatedAt": "2026-10-27T06:30:00+02:00",
+  "sample": {
+    "publishedAt": null,
+    "parties": []
+  },
+  "actual": {
+    "updatedAt": null,
+    "countedPct": 0,
+    "validVotes": null,
+    "invalidVotes": null,
+    "parties": []
+  },
+  "traffic": {
+    "activeViewers": null,
+    "todayViews": null,
+    "sourceName": "אנליטיקה עתידית"
+  },
+  "events": [
+    {
+      "time": "לפני פתיחת הקלפיות",
+      "title": "הדף מוכן לחיבור נתונים",
+      "text": "ברגע שיוזנו נתוני מדגם או תוצאות אמת, התרשימים והטבלאות יתמלאו אוטומטית."
+    }
+  ]
+}

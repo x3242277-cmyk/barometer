@@ -1,0 +1,75 @@
+/* The existing cream, ink blue and line-art visual language. */
+.tabsbar .tabs{flex-wrap:wrap;overflow:visible;gap:0}.tabsbar .tab{font-size:.85rem;padding:15px 12px;flex:none}
+.view{position:relative;isolation:isolate}.view::before{content:'';position:absolute;inset:0 0 auto;height:420px;z-index:-1;pointer-events:none;background:var(--page-art) no-repeat left top/650px auto;opacity:.045}
+#view-polls,#view-e2022{--page-art:url('background-polls.svg')}
+#view-haredi{--page-art:url('background-community.svg')}
+#view-demography,#view-regions{--page-art:url('background-growth.svg')}
+#view-method,#view-live,#view-results{--page-art:url('background-ballot.svg')}
+.hero .hero-in{min-height:260px;align-items:center}.hero h1{font-size:clamp(2.6rem,4.5vw,4.8rem);letter-spacing:-.035em;line-height:1.07}.hero .hero-art{opacity:.15}.hero{border-bottom:1px solid var(--rule)}
+.forecast-section{padding-top:22px}.forecast-section>.sec-head h2{font-size:2rem}.home-stats-sec{margin-top:20px}
+.rcard .rcard-face{aspect-ratio:3/4;background:#faf8f2}.rcard .rcard-face img,.poll-party-name .pface img{object-fit:contain!important;object-position:center!important;width:100%;height:100%}.rcard{overflow:hidden}
+.polls-sec>.controls>.field{display:none}.filter-modes{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.filter-modes button{border:1px solid var(--rule);padding:11px 18px;background:#fff;border-radius:24px;color:var(--navy);font:inherit;cursor:pointer}.filter-modes [aria-pressed=true]{background:var(--navy);color:#fff}
+.filter-icons{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 25px}.filter-icons button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:104px;min-height:104px;padding:9px 5px;border:1px solid var(--rule);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:.8rem;cursor:pointer}.filter-icons button[aria-pressed=true]{outline:2px solid var(--navy);background:#edf1f6}.filter-icons img{width:48px;height:48px;object-fit:contain}.letter-icon{display:grid;place-items:center;border-radius:50%;background:#f0eee8;width:46px;height:46px;color:var(--navy);font-weight:800;font-size:1.1rem}
+.focus-summary{display:flex;align-items:center;gap:32px;padding:24px;background:#fff;border:1px solid var(--rule);border-radius:18px;margin-bottom:26px}.focus-summary[hidden]{display:none}.profile-portrait{width:190px;height:250px;object-fit:contain;background:#faf8f2;border-radius:9px}.focus-summary h2{font-size:3.5rem;color:var(--navy);margin:4px 0}.focus-summary h2 span{font-size:1.35rem}.profile-count{font-size:1.3rem;font-weight:700}.focus-summary p{max-width:640px}
+.year-comparison{display:grid;grid-template-columns:1fr 1fr;gap:26px;direction:rtl}.year-column h3{font-size:3rem;color:var(--navy);margin:6px 0 24px}.year-column+.year-column{border-inline-start:1px solid var(--rule);padding-inline-start:26px}.year-row{display:grid;grid-template-columns:1fr auto;gap:9px;margin:18px 0}.year-row b{font-variant-numeric:tabular-nums;font-size:1.25rem}.year-row i{grid-column:1/-1;height:8px;background:linear-gradient(to left,var(--c) var(--w),#eeeae2 var(--w));border-radius:6px}.annual-chart{margin-top:24px}.annual-chart svg{display:block;width:100%;max-height:380px}.annual-chart table{min-width:520px}.legend-dot{display:inline-block;width:10px;height:10px;margin-inline-end:7px;border-radius:50%}
+#scenario-panel{margin:20px 0;border-inline-start:4px solid var(--gold)}#scenario-panel input{display:block;width:100%;margin:14px 0}#scenario-panel label{font-weight:700;padding:15px;background:#f7f5f0;border-radius:10px}#scenario-panel p{max-width:1000px}
+#view-haredi .floorcard{padding:22px}#view-haredi .floornum b{font-size:3.5rem}#view-haredi .split{grid-template-columns:1fr 1fr}.submitted-research{white-space:pre-wrap;line-height:1.85;max-width:900px;margin:24px auto;padding:24px;background:#f8f6f1;border-radius:12px}#research-review li{margin:12px 0}#view-demography .share-panel{min-width:0}#demo-controls input{width:100%;min-height:30px}
+/* תמונת מצב: רשימת המנדטים היא התוכן העיקרי וצריכה להיראות בלי גלילה —
+   לכן הכותרת בראש העמוד מצומצמת: כותרת אחת (בלי כפילות), לוגו קטן,
+   ותת-כותרת קצרה. */
+.hero .hero-in{min-height:auto;padding:16px 0 10px;gap:18px}
+.hero .eyebrow{margin-bottom:8px}
+.hero h1{font-size:clamp(1.85rem,2.7vw,2.6rem);letter-spacing:-.02em;line-height:1.08;margin:4px 0}
+.hero .lede{font-size:.95rem;margin-top:6px}
+.hero .hero-art{opacity:.2}
+.hero-parties{position:relative;z-index:2;padding-bottom:22px}
+.hero-parties .sec{padding:0}
+.hero-parties .sec-head{margin-bottom:10px;align-items:center}
+.party-rows-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.party-rows-head h2{font-size:clamp(1.3rem,2vw,1.6rem)}
+.party-rows-head #party-updated{color:var(--ink-3);font-size:.8rem;font-weight:600}
+.party-rows-head #party-rows-params{flex-basis:100%;margin-top:4px;font-size:.8rem;max-width:none}
+@media(max-width:700px){.hero .hero-in{min-height:0;padding:12px 0 8px}.hero-parties .result-grid{max-width:100%}}
+/* הכרטיסים צרים ב-10% וממורכזים, כדי שאיור הכנסת יציץ מאחוריהם בצדדים */
+.hero-parties .result-grid{max-width:90%;margin-inline:auto}
+/* ראשי המפלגות: הגדלה של ~21% בתוך אותו חלון, כדי לחתוך את מסגרת הבז' של המקור */
+#party-rows .rcard.has-photo .rcard-face{background:none;overflow:hidden}
+#party-rows .rcard.has-photo .rcard-face img{object-fit:cover!important;transform:scale(1.21)}
+/* ביחד — תמונה של שני אנשים, נשארת ללא ההגדלה הנוספת */
+#party-rows .rcard[data-focus-party="beyahad"].has-photo .rcard-face img{transform:scale(1.1)}
+/* רשימות מתחת לאחוז החסימה — 0 מנדטים ואחוז תמיכה, מעומעמות בתוך שורת הגוש */
+#party-rows .rcard.is-below{opacity:.6}
+.forecast-bar.is-below{opacity:.68}
+/* בורר "תחזית הברומטר / משוקלל אמינות" מקביל לכותרת הקטע */
+.hero-parties .sec-head .switch{align-self:center}
+
+/* "איך נמדד מכון" — מכונים ללא סדרת כיול משלהם */
+.rank.rank-nocalib{grid-template-columns:34px 52px minmax(140px,1fr) 90px;opacity:.9}
+.rank.rank-nocalib::before{content:"·";color:var(--ink-3)}
+
+/* כמה עברו צד */
+#view-crossover .page-head h2{font-size:3rem;letter-spacing:-.03em}
+@media(max-width:760px){#view-crossover .page-head h2{font-size:2rem}}
+.crossbar{display:flex;height:46px;border-radius:10px;overflow:hidden;font-size:.9rem;font-weight:700}
+.crossbar span{display:flex;align-items:center;justify-content:center;color:#fff;padding:0 10px;text-align:center;min-width:0}
+.crosschart{display:flex;flex-direction:column;gap:2px;border:1px solid var(--rule);border-radius:14px;padding:14px 18px;background:var(--paper-2)}
+.crossrow{display:grid;grid-template-columns:190px minmax(0,1fr) 62px;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule-2)}
+.crossrow:last-child{border-bottom:0}
+.crossrow-firm{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600;min-width:0}
+.crossrow-firm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crossrow-firm em{font-style:normal;font-size:.66rem;color:var(--ink-3);font-weight:600;white-space:nowrap}
+.crossrow-track{position:relative;height:16px;background:var(--paper-3);border-radius:4px}
+.crossrow-track::before{content:"";position:absolute;inset-block:-4px;inset-inline-start:50%;width:2px;background:var(--ink-3);transform:translateX(-50%)}
+.crossrow-fill{position:absolute;inset-block:0;border-radius:4px;min-width:2px}
+.crossrow-num{font-family:var(--serif,serif);font-weight:900;font-size:1.05rem;text-align:end;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:640px){.crossrow{grid-template-columns:110px minmax(0,1fr) 54px;gap:9px}.crossrow-firm{font-size:.8rem}.crossrow-firm .orglogo{display:none}.crossrow-num{font-size:.95rem}}
+@media(max-width:760px){#view-polls .page-head h2{font-size:2rem}}
+/* הבורר כרטיסים / השוואת מכונים בקצה השמאלי של שורת הסינון */
+#view-polls .controls{justify-content:space-between}
+#view-polls .controls .controls-view{margin:0;order:3}
+#view-polls .controls .count{margin:0;order:1;padding-bottom:0}
+/* מחיקת פס הגושים הכחול מכרטיסי הסקר */
+.poll-result-card .poll-blocbar{display:none}
+
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #a67820;outline-offset:4px}
+@media(max-width:700px){.tabsbar .tab{font-size:.77rem;padding:10px 8px}.hero .hero-in{min-height:0}.focus-summary{gap:15px;padding:16px}.profile-portrait{width:100px;height:150px}.focus-summary h2{font-size:2.4rem}.focus-summary h2 span{font-size:1rem}.profile-count{font-size:1rem}.filter-icons{gap:8px}.filter-icons button{width:calc(25% - 6px);font-size:.72rem;min-height:98px}.year-comparison{gap:16px}.year-column+.year-column{padding-inline-start:16px}.year-column h3{font-size:2.3rem}.year-column .kicker{font-size:.7rem}#view-haredi .split{grid-template-columns:1fr}}

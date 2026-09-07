@@ -1,0 +1,68 @@
+{
+  "snapshots": [
+    {
+      "updatedAt": "2026-09-07T08:18:11.220Z",
+      "recordedAt": "2026-09-07T13:56:43.876Z",
+      "scenario": {
+        "yashar": 21,
+        "likud": 26,
+        "beyahad": 12,
+        "hademokratim": 9,
+        "ndi": 7,
+        "ozma_yehudit": 8,
+        "reshima_meshutefet": 7,
+        "raam": 5,
+        "zionut_datit": 6,
+        "shas": 11,
+        "yahadut_hatora": 8
+      },
+      "weighted": {
+        "yashar": 23,
+        "likud": 24,
+        "beyahad": 13,
+        "hademokratim": 10,
+        "yahadut_hatora": 8,
+        "ndi": 8,
+        "ozma_yehudit": 8,
+        "reshima_meshutefet": 8,
+        "shas": 8,
+        "raam": 5,
+        "zionut_datit": 5
+      },
+      "polls": 10,
+      "firms": 8
+    },
+    {
+      "updatedAt": "2026-09-07T08:29:58.654Z",
+      "recordedAt": "2026-09-07T14:12:17.952Z",
+      "scenario": {
+        "yashar": 21,
+        "likud": 26,
+        "beyahad": 12,
+        "hademokratim": 9,
+        "ndi": 7,
+        "ozma_yehudit": 8,
+        "reshima_meshutefet": 7,
+        "raam": 5,
+        "zionut_datit": 6,
+        "shas": 11,
+        "yahadut_hatora": 8
+      },
+      "weighted": {
+        "yashar": 23,
+        "likud": 24,
+        "beyahad": 13,
+        "hademokratim": 10,
+        "yahadut_hatora": 8,
+        "ndi": 8,
+        "ozma_yehudit": 8,
+        "reshima_meshutefet": 8,
+        "shas": 8,
+        "raam": 5,
+        "zionut_datit": 5
+      },
+      "polls": 10,
+      "firms": 8
+    }
+  ]
+}

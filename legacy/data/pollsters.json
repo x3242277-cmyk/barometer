@@ -1,0 +1,214 @@
+{
+  "firms": [
+    {
+      "id": "Direct Polls",
+      "he": "דירקט פולס",
+      "short": "DP",
+      "lead": "שלמה פילבר",
+      "calibrated": true,
+      "outlets": [],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fdirect_polls.PNG?alt=media&token=ceb3f812-bc77-4720-af04-e1575f4cb76a",
+      "about": "מכון פרטי שנוסד ב־2019, פרסם בערוץ 14 עד 2024. שימש כאן לכיול על כנסת ה־25. שלמה פילבר ממשיך כיום בנקסט דאטה (ערוץ 14) וצוריאל שרון ב-i24NEWS — שניהם מקבלים את ציון האמינות של דירקט פולס.",
+      "color": "#3F6C8E"
+    },
+    {
+      "id": "Panels Politics",
+      "he": "פאנלס פוליטיקס",
+      "short": "PP",
+      "lead": "ד״ר מנחם לזר",
+      "calibrated": true,
+      "outlets": [
+        "מעריב",
+        "וואלה",
+        "Mako / ערוץ הכנסת",
+        "103FM"
+      ],
+      "logo": "assets/logos/panels-politics.png",
+      "about": "המכון הפורה ביותר בשוק הישראלי — 12 מתוך 39 סקרי חודש הכיול של 2022. עובד מול כמה כלי תקשורת במקביל.",
+      "color": "#A6763F"
+    },
+    {
+      "id": "Midgam",
+      "he": "מדגם",
+      "short": "מ",
+      "lead": "מנו גבע",
+      "calibrated": true,
+      "outlets": [
+        "חדשות 12",
+        "גלי צה״ל"
+      ],
+      "logo": "assets/logos/midgam.png",
+      "about": "אחד ממכוני הסקרים הוותיקים; ספק הסקרים המסורתי של חדשות 12 ושל גלי צה״ל.",
+      "color": "#5E8C61"
+    },
+    {
+      "id": "Kantar",
+      "he": "קנטר",
+      "short": "K",
+      "lead": "דודי חסיד · צוות קנטר ישראל",
+      "calibrated": true,
+      "outlets": [
+        "כאן 11"
+      ],
+      "logo": "https://kantar.wd3.myworkdayjobs.com/KANTAR/assets/logo",
+      "about": "זרוע ישראלית של חברת מחקר בינלאומית; ספק הסקרים של תאגיד השידור (כאן 11). הסוקר הוא דודי חסיד.",
+      "color": "#6C5B8C"
+    },
+    {
+      "id": "Camil Fuchs",
+      "he": "קמיל פוקס",
+      "short": "ק״פ",
+      "lead": "פרופ׳ קמיל פוקס",
+      "calibrated": true,
+      "outlets": [],
+      "about": "סטטיסטיקאי, פרופסור אמריטוס באוניברסיטת תל אביב. סקר עבור חדשות 13 עד 2024 ושימש כאן לכיול על כנסת ה־25. הסקרים של חדשות 13 כיום הם של מכון המדד — ואין קשר בין השניים.",
+      "color": "#9A5A62"
+    },
+    {
+      "id": "Smith",
+      "he": "סמית",
+      "short": "S",
+      "lead": "רפי סמית",
+      "calibrated": true,
+      "outlets": [
+        "גלי ישראל"
+      ],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fsmith.PNG?alt=media&token=3a1e97a6-f3e6-45cc-bf52-fa0065c06687",
+      "about": "מכון ותיק בשוק הישראלי בניהול רפי סמית; מפרסם בעיקר ברדיו האזורי.",
+      "color": "#2F7D77"
+    },
+    {
+      "id": "Maagar Mochot",
+      "he": "מאגר מוחות",
+      "short": "מ״מ",
+      "lead": "פרופ׳ יצחק כ״ץ",
+      "calibrated": true,
+      "outlets": [
+        "ישראל היום",
+        "ערוץ 16"
+      ],
+      "logo": "assets/logos/maagar-mochot.png",
+      "about": "מכון ותיק בניהולו של פרופ׳ יצחק כ״ץ; מפרסם בישראל היום ולאחרונה גם בערוץ 16.",
+      "color": "#8C7B3F"
+    },
+    {
+      "id": "Yossi Tatika",
+      "he": "יוסי טאטיקה",
+      "short": "י״ט",
+      "lead": "יוסי טאטיקה",
+      "calibrated": false,
+      "outlets": [
+        "זמן ישראל"
+      ],
+      "about": "סוקר ללא סדרת כיול מ־2022 באתר. מקבל משקל ניטרלי.",
+      "color": "#7A5C4B"
+    },
+    {
+      "id": "Tzuriel Sharon",
+      "he": "צוריאל שרון",
+      "short": "צ״ש",
+      "lead": "צוריאל שרון",
+      "calibrated": true,
+      "calibrationFirm": "Direct Polls",
+      "outlets": [
+        "i24NEWS"
+      ],
+      "about": "פעל בשותפות עם שלמה פילבר ודירקט פולס ב־2022, וכיום סוקר עבור i24NEWS — לשם עברה למעשה השיטה של דירקט פולס. לכן הוא מקבל את ציון האמינות ההיסטורי של דירקט פולס.",
+      "color": "#B0724E"
+    },
+    {
+      "id": "Next Data",
+      "he": "נקסט דאטה",
+      "short": "נ״ד",
+      "lead": "שלמה פילבר",
+      "calibrated": true,
+      "calibrationFirm": "Direct Polls",
+      "outlets": [
+        "ערוץ 14"
+      ],
+      "about": "המכון של שלמה פילבר, ספק הסקרים של ערוץ 14 כיום — ממשיך הפעילות של דירקט פולס, ומקבל את ציון האמינות ההיסטורי שלה.",
+      "color": "#3F6C8E"
+    },
+    {
+      "id": "HaMadad",
+      "he": "המדד",
+      "short": "מד",
+      "lead": "מכון המדד",
+      "calibrated": false,
+      "outlets": [
+        "חדשות 13"
+      ],
+      "logo": "assets/logos/hamadad.png",
+      "about": "ספק הסקרים של חדשות 13 כיום. אין לו סדרת כיול מ־2022 באתר, ולכן הוא מקבל משקל ניטרלי. אין קשר בינו לבין קמיל פוקס, שסקר עבור חדשות 13 בעבר.",
+      "color": "#2C6E8F"
+    },
+    {
+      "id": "Channel 13 composite",
+      "he": "מדגם משולב 13",
+      "short": "13",
+      "lead": "מדגם משולב",
+      "calibrated": false,
+      "outlets": [],
+      "about": "תווית לסדרת סקרים משולבת של חדשות 13 בכנסת ה־24, ששיוכה שנוי במחלוקת. נשמרת כאן לצורך תצוגת הארכיון בלבד.",
+      "color": "#64707C"
+    }
+  ],
+  "sourceMap": {
+    "channel_14": {
+      "firm": "Next Data",
+      "outlet": "ערוץ 14"
+    },
+    "maariv": {
+      "firm": "Panels Politics",
+      "outlet": "מעריב"
+    },
+    "walla": {
+      "firm": "Panels Politics",
+      "outlet": "וואלה"
+    },
+    "channel_12": {
+      "firm": "Midgam",
+      "outlet": "חדשות 12"
+    },
+    "channel_16": {
+      "firm": "Maagar Mochot",
+      "outlet": "ערוץ 16"
+    },
+    "kan_news": {
+      "firm": "Kantar",
+      "outlet": "כאן 11"
+    },
+    "zman_israel": {
+      "firm": "Yossi Tatika",
+      "outlet": "זמן ישראל"
+    },
+    "i24news": {
+      "firm": "Tzuriel Sharon",
+      "outlet": "i24NEWS"
+    },
+    "channel_13": {
+      "firm": "HaMadad",
+      "outlet": "חדשות 13"
+    },
+    "israel_hayom": {
+      "firm": "Maagar Mochot",
+      "outlet": "ישראל היום"
+    }
+  },
+  "outletLogos": {
+    "וואלה": "assets/logos/walla.png",
+    "ערוץ 16": "assets/logos/channel-16.png",
+    "זמן ישראל": "assets/logos/zman-israel.png",
+    "i24NEWS": "assets/logos/i24news.png",
+    "חדשות 13": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Channel_13_%28Israel%29_logo.svg",
+    "חדשות 12": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Keshet12_2018.svg",
+    "חדשות 12 / קשת": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Keshet12_2018.svg",
+    "ערוץ 14": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Noamperetz-now14logo.png",
+    "כאן 11": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Kan11Logo.svg",
+    "מעריב": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Maariv_logo.svg",
+    "ישראל היום": "https://upload.wikimedia.org/wikipedia/commons/7/74/Israel_Hayom.svg",
+    "Mako / ערוץ הכנסת": "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/8f/73/aa/8f73aa01-2a3a-4b2a-6bb4-9a49655345f1/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
+    "103FM": "https://is1-ssl.mzstatic.com/image/thumb/Purple112/v4/e8/91/43/e89143ab-f36f-5950-bbfb-28b752680330/AppIcon-0-0-1x_U007emarketing-0-0-0-1-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
+    "גלי ישראל": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/bb/98/6ebb986d-64d4-59c3-7fe9-c8d705268e1e/AppIcon-galiisrael-0-0-1x_U007emarketing-0-11-0-85-220.png/1200x630wa.png"
+  }
+}

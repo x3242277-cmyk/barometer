@@ -1,0 +1,31 @@
+{
+  "//": "תמונות מנהיגי המפלגות לכרטיסי התוצאה. מפתח = מזהה המפלגה בנתוני הסקר. ערך = נתיב מקומי (assets/leaders/<id>.jpg) או כתובת URL. הבנייה מטמיעה נתיבים מקומיים כ-data URI. מפלגה עם ערך ריק — מוצג איור המילואים.",
+  "photos": {
+    "likud": "assets/leaders/likud-full.jpg",
+    "yashar": "assets/leaders/yashar-full.jpg",
+    "hademokratim": "assets/leaders/hademokratim-full.jpg",
+    "shas": "assets/leaders/shas-full.jpg",
+    "yahadut_hatora": "assets/leaders/yahadut_hatora-full.jpg",
+    "beyahad": "assets/leaders/beyahad-full.jpg",
+    "ndi": "assets/leaders/ndi-full.jpg",
+    "ozma_yehudit": "assets/leaders/ozma_yehudit-full.jpg",
+    "reshima_meshutefet": "assets/leaders/reshima_meshutefet-full.jpg",
+    "raam": "assets/leaders/raam-full.jpg",
+    "zionut_datit": "assets/leaders/zionut_datit-full.jpg",
+    "zionut_datit_zehut": "assets/leaders/zionut_datit-full.jpg",
+    "ofer_vinter_party": "assets/leaders/ofer_vinter_party-full.jpg",
+    "ahdut_party": "",
+    "bait_zioni": "",
+    "kahollavan": "",
+    "noam": "",
+    "zehut": "",
+    "hakalkalit": "",
+    "mifleget_hazibur_haharedi": "",
+    "israel_thila": "",
+    "makom_lekulanu": "",
+    "hadash_taal": "assets/leaders/hadash_taal.jpg",
+    "balad": "",
+    "miluimnikim_party": ""
+  },
+  "mappingNote": "שיוך לפי שמות הקבצים שסופקו בתיקיית תמונות; המקור המלא נשמר ללא חיתוך."
+}

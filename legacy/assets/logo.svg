@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 76" role="img" aria-label="ברומטר">
+  <g fill="none" stroke="#12345C" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter">
+    <!-- outer dial arc: left side up and over, broken where the arrow passes -->
+    <path d="M8 68 A44 44 0 0 1 74.5 30.2"/>
+    <!-- outer arc, right shoulder descending to the baseline -->
+    <path d="M84.2 41.6 A44 44 0 0 1 96 68"/>
+    <!-- inner dial arc -->
+    <path d="M17.5 68 A34.5 34.5 0 0 1 68.6 37.8"/>
+    <path d="M80.6 50.4 A34.5 34.5 0 0 1 86.5 68"/>
+    <!-- baseline -->
+    <path d="M8 68h88"/>
+    <!-- columns, ascending -->
+    <path d="M20 68V60h9v8"/>
+    <path d="M33 68V52h9v16"/>
+    <path d="M46 68V43h10v25"/>
+    <path d="M60 68V56"/>
+    <path d="M66 68V50"/>
+    <path d="M72 68V45"/>
+    <path d="M78 68V38"/>
+    <path d="M86 68V33h10v35"/>
+    <!-- rising arrow, open outline -->
+    <path d="M50.5 58.5 78 24.5"/>
+    <path d="M56.5 63 84 29"/>
+    <path d="M73.5 22.5 89.5 15.5 85 32.5"/>
+  </g>
+</svg>

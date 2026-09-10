@@ -1511,7 +1511,7 @@ function show(view) {
     } catch (e) { console.error(e); }
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
-  const t = { home:"התחזית", polls:"סקרי 2026", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
+  const t = { home:"התחזית", polls:"הסקרים האחרונים", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
   document.title = `${t} · ברומטר`;
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
 }

@@ -1381,6 +1381,10 @@ footer p{ font-size:.77rem; line-height:1.55; margin:8px 0 }
 /* עמוד הסקרים */
 #view-polls .page-head{ padding:10px 0 8px }
 #view-polls .page-head .stats{ gap:6px 18px }
+/* הכותרת והמונים גדולים ב-50% */
+#view-polls .page-head h2{ font-size:2.2rem }
+#view-polls .page-head .stats b{ font-size:1.8rem }
+#view-polls .page-head .stats span{ font-size:1.25rem }
 #view-polls .controls{ background:none; border:0; padding:0; margin:0 0 4px; min-height:0 }
 #view-polls .controls .count{ padding:0 }
 .poll-data-note{ margin:0 0 10px }
@@ -1589,11 +1593,11 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 </section>
 
 <!-- ==================== סקרי 2026 ==================== -->
-<section class="view" id="view-polls" aria-label="סקרי 2026">
+<section class="view" id="view-polls" aria-label="הסקרים האחרונים">
   <div class="wrap">
     <div class="page-head">
       <div class="page-head-main">
-        <h2>סקרי 2026</h2>
+        <h2>הסקרים האחרונים</h2>
         <div class="stats" id="polls-stats"></div>
       </div>
       <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
@@ -4170,7 +4174,7 @@ function show(view) {
     } catch (e) { console.error(e); }
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
-  const t = { home:"התחזית", polls:"סקרי 2026", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
+  const t = { home:"התחזית", polls:"הסקרים האחרונים", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
   document.title = `${t} · ברומטר`;
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
 }

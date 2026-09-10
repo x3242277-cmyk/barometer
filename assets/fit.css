@@ -76,6 +76,10 @@ footer p{ font-size:.77rem; line-height:1.55; margin:8px 0 }
 /* עמוד הסקרים */
 #view-polls .page-head{ padding:10px 0 8px }
 #view-polls .page-head .stats{ gap:6px 18px }
+/* הכותרת והמונים גדולים ב-50% */
+#view-polls .page-head h2{ font-size:2.2rem }
+#view-polls .page-head .stats b{ font-size:1.8rem }
+#view-polls .page-head .stats span{ font-size:1.25rem }
 #view-polls .controls{ background:none; border:0; padding:0; margin:0 0 4px; min-height:0 }
 #view-polls .controls .count{ padding:0 }
 .poll-data-note{ margin:0 0 10px }

@@ -50,19 +50,52 @@
 /* כמה עברו צד */
 #view-crossover .page-head h2{font-size:3rem;letter-spacing:-.03em}
 @media(max-width:760px){#view-crossover .page-head h2{font-size:2rem}}
-.crossbar{display:flex;height:46px;border-radius:10px;overflow:hidden;font-size:.9rem;font-weight:700}
-.crossbar span{display:flex;align-items:center;justify-content:center;color:#fff;padding:0 10px;text-align:center;min-width:0}
-.crosschart{display:flex;flex-direction:column;gap:2px;border:1px solid var(--rule);border-radius:14px;padding:14px 18px;background:var(--paper-2)}
-.crossrow{display:grid;grid-template-columns:190px minmax(0,1fr) 62px;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule-2)}
+.crossbar{display:flex;height:42px;border-radius:10px;overflow:hidden;font-size:.86rem;font-weight:700}
+.crossbar span{display:flex;align-items:center;justify-content:center;color:#fff;padding:0 10px;text-align:center;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* --- כמה עברו צד: סיכום → מקרא → ציר וסרגלים --- */
+.crosschart{border:1px solid var(--rule);border-radius:14px;padding:16px 20px 18px;background:var(--paper-2);box-shadow:var(--shadow-s)}
+.cross-summary{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;padding:0 0 14px;margin-bottom:12px;border-bottom:1px solid var(--rule-2)}
+.cross-summary>div{display:grid;gap:2px}
+.cross-summary span{font-size:.74rem;font-weight:700;color:var(--ink-3)}
+.cross-summary b{font-family:var(--serif);font-size:1.7rem;font-weight:800;line-height:1;color:var(--navy)}
+.cross-summary .arrow{font-size:1.3rem;color:var(--ink-3);align-self:end;padding-bottom:4px}
+.cross-summary-out{margin-inline-start:auto;padding:8px 14px;border-radius:10px;border:1px solid var(--rule);background:var(--paper-3);text-align:end}
+.cross-summary-out.left b{color:var(--opposition)}.cross-summary-out.join b{color:var(--coalition)}
+.cross-summary-out em{font-style:normal;font-size:.72rem;color:var(--ink-3);font-weight:600}
+.cross-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 6px;font-size:.76rem;font-weight:600;color:var(--ink-2)}
+.cross-legend span{display:inline-flex;align-items:center;gap:6px}
+.cross-legend i{width:12px;height:12px;border-radius:3px}
+.cross-legend i.avg{width:0;height:14px;border-radius:0;border-inline-start:2px dashed var(--ink-2)}
+.cross-legend-share{margin-inline-start:auto;color:var(--ink-3)}
+.cross-grid{display:grid;gap:0}
+.cross-axis{position:relative;height:22px;margin-inline-start:200px;margin-inline-end:74px;border-bottom:1px solid var(--rule)}
+.cross-axis span{position:absolute;bottom:4px;transform:translateX(50%);font-size:.68rem;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cross-axis span.zero{color:var(--ink);font-weight:800}
+.crossrow{display:grid;grid-template-columns:186px minmax(0,1fr) 60px;align-items:center;gap:14px;padding:7px 0;border-bottom:1px solid var(--rule-2)}
 .crossrow:last-child{border-bottom:0}
-.crossrow-firm{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600;min-width:0}
-.crossrow-firm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.crossrow-firm em{font-style:normal;font-size:.66rem;color:var(--ink-3);font-weight:600;white-space:nowrap}
-.crossrow-track{position:relative;height:16px;background:var(--paper-3);border-radius:4px}
-.crossrow-track::before{content:"";position:absolute;inset-block:-4px;inset-inline-start:50%;width:2px;background:var(--ink-3);transform:translateX(-50%)}
-.crossrow-fill{position:absolute;inset-block:0;border-radius:4px;min-width:2px}
-.crossrow-num{font-family:var(--serif,serif);font-weight:900;font-size:1.05rem;text-align:end;font-variant-numeric:tabular-nums;white-space:nowrap}
-@media(max-width:640px){.crossrow{grid-template-columns:110px minmax(0,1fr) 54px;gap:9px}.crossrow-firm{font-size:.8rem}.crossrow-firm .orglogo{display:none}.crossrow-num{font-size:.95rem}}
+.crossrow-firm{display:flex;align-items:center;gap:9px;min-width:0}
+.crossrow-firm>span{display:grid;min-width:0}
+.crossrow-firm b{font-size:.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crossrow-firm em{font-style:normal;font-size:.68rem;color:var(--ink-3);font-weight:600;white-space:nowrap}
+.crossrow-track{position:relative;height:26px;border-radius:4px;
+  background:linear-gradient(90deg,transparent calc(50% - 1px),var(--ink) calc(50% - 1px),var(--ink) calc(50% + 1px),transparent calc(50% + 1px))}
+.crossrow-fill{position:absolute;inset-block:3px;min-width:2px;border-radius:3px;z-index:1}
+.crossrow-fill.shrank{inset-inline-start:50%;border-start-start-radius:0;border-end-start-radius:0}
+.crossrow-fill.grew{inset-inline-end:50%;border-start-end-radius:0;border-end-end-radius:0}
+.crossrow-fill b{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--serif,serif);font-size:.86rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.crossrow-fill.shrank b{inset-inline-end:calc(100% + 7px)}
+.crossrow-fill.grew b{inset-inline-start:calc(100% + 7px)}
+.crossrow-avg{position:absolute;inset-block:-3px;width:0;border-inline-start:2px dashed var(--ink-2);opacity:.65;z-index:2}
+.crossrow-share{display:grid;text-align:end;font-size:.92rem;font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.crossrow-share small{display:none;font-size:.8rem;font-weight:800;color:var(--ink)}
+@media(max-width:640px){
+  .crossrow{grid-template-columns:minmax(0,1fr) 72px;grid-template-rows:auto auto;gap:4px 10px;padding:9px 0}
+  .crossrow-firm{grid-column:1/-1}.crossrow-firm>span{display:flex;gap:8px;align-items:baseline}
+  .crossrow-track{grid-row:2}.crossrow-share{grid-row:2;font-size:.78rem;color:var(--ink-3)}.crossrow-share small{display:block}
+  .crossrow-fill b{display:none}
+  .cross-axis{margin-inline-start:0;margin-inline-end:82px}
+  .cross-summary b{font-size:1.35rem}.cross-summary-out{margin-inline-start:0;width:100%;text-align:start}.cross-legend-share{display:none}
+}
 @media(max-width:760px){#view-polls .page-head h2{font-size:2rem}}
 /* הבורר כרטיסים / השוואת מכונים בקצה השמאלי של שורת הסינון */
 #view-polls .controls{justify-content:space-between}

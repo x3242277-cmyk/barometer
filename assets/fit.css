@@ -1,0 +1,166 @@
+/* ============================================================
+   התאמה למסך — נטען אחרון, אחרי styles.css / upgrade.css / home.css.
+   שתי מטרות: (1) התוכן העיקרי של כל עמוד נכנס למסך מחשב בלי גלילה —
+   כותרות עמוד ומרווחי קטעים קומפקטיים; בעמוד הבית פאנל התחזית וקיר
+   המנדטים זה לצד זה. (2) סולם אחיד לכל הכפתורים, הבוררים והשדות:
+   גובה 36px, גופן .84rem, רדיוס אחיד — בלי כפתורי ענק.
+   ============================================================ */
+:root{
+  --ctl-h:36px;        /* גובה אחיד לכפתור / בורר / שדה */
+  --ctl-fs:.84rem;
+  --ctl-px:14px;
+  --ctl-r:9px;
+}
+
+/* ---------- 1. סולם אחיד לפקדים ---------- */
+.btn{ min-height:var(--ctl-h); padding:6px 16px; font-size:var(--ctl-fs); line-height:1.2 }
+.switch{ padding:3px; gap:2px }
+.switch button,
+.calib-switch button,
+.controls-view button{ min-height:30px; padding:5px var(--ctl-px); font-size:var(--ctl-fs); line-height:1.2 }
+.forecast-views button,
+.party-inspect,
+.outlet-toggle,
+.average-days button,
+.filter-modes button,
+.masthead-side .print-btn,
+.average-source-popover summary,
+.legend button{ min-height:var(--ctl-h); font-size:var(--ctl-fs); line-height:1.2 }
+.average-days button{ padding:5px var(--ctl-px) }
+.filter-modes button{ padding:5px var(--ctl-px); border-radius:var(--ctl-r) }
+.outlet-toggle{ min-width:var(--ctl-h) }
+.average-source-popover summary{ padding:5px 12px; border-radius:var(--ctl-r) }
+.masthead-side .print-btn{ padding:5px 11px; border-radius:var(--ctl-r) }
+.stamp{ min-height:var(--ctl-h); padding:5px 12px }
+select,input[type=search],
+.home-history-pick select,
+.poll-date-pick select,
+.trend-field select,
+#view-polls .field select{ min-height:var(--ctl-h); padding-block:4px; font-size:var(--ctl-fs); border-radius:var(--ctl-r) }
+#bloc-members summary,.zero-results summary,.poll-bloc-details summary,.trend-data summary{ min-height:var(--ctl-h); padding:6px 0 }
+.anecdote-nav button{ width:30px; height:30px }
+
+/* בורר תצוגת הסקרים: היה שלושה מלבנים בגובה 58px לרוחב כל העמוד —
+   עכשיו בורר מקטעים קטן בשורת הכותרת, כמו שאר המתגים באתר. */
+.poll-view-tabs{ display:inline-flex; grid-template-columns:none; gap:2px; margin:0; padding:3px;
+  background:var(--paper-3); border:1px solid var(--rule); border-radius:100px; box-shadow:none }
+.poll-view-tabs button{ min-height:30px; padding:5px 13px; gap:7px; border:0; border-radius:100px; background:transparent;
+  color:var(--ink-2); font-size:var(--ctl-fs); font-weight:700; box-shadow:none; transform:none }
+.poll-view-tabs button:hover{ transform:none; box-shadow:none; color:var(--navy); background:rgba(18,52,92,.05) }
+.poll-view-tabs button[aria-pressed="true"]{ background:var(--navy); color:#fff; box-shadow:none }
+.poll-view-tabs .view-icon{ width:auto; height:auto; background:none; color:inherit; font-size:.95em; opacity:.75 }
+.poll-view-tabs button[aria-pressed="true"] .view-icon{ background:none; color:#F1C15D }
+
+/* ---------- 2. צפיפות: כותרות עמוד וקטעים ---------- */
+.page-intro{ padding:20px 0 12px }
+.page-intro h2{ font-size:clamp(1.45rem,2.2vw,1.9rem) }
+.page-intro p{ margin-top:6px; font-size:.95rem; line-height:1.55; max-width:78ch }
+.page-head{ padding:12px 0 10px; margin-bottom:2px }
+.page-head h2{ font-size:1.45rem }
+.kicker{ margin-bottom:5px; padding-bottom:3px }
+.sec{ padding:24px 0 }
+.sec-head{ margin-bottom:14px; gap:14px 22px }
+.sec h2{ font-size:clamp(1.2rem,1.9vw,1.55rem) }
+.sec h3{ font-size:1.12rem }
+.sec-note{ font-size:.85rem }
+.data-explainer{ margin:6px 0 12px }
+.pad{ padding:18px }
+.hemi{ padding:18px }
+.stats>div{ padding:14px 18px }
+.stats b{ font-size:1.7rem }
+.notice{ padding:11px 14px }
+footer{ margin-top:26px; padding:30px 0 22px }
+footer .wrap{ gap:28px }
+footer p{ font-size:.77rem; line-height:1.55; margin:8px 0 }
+
+/* עמוד הסקרים */
+#view-polls .page-head{ padding:10px 0 8px }
+#view-polls .page-head .stats{ gap:6px 18px }
+#view-polls .controls{ background:none; border:0; padding:0; margin:0 0 4px; min-height:0 }
+#view-polls .controls .count{ padding:0 }
+.poll-data-note{ margin:0 0 10px }
+.poll-data-note summary{ min-height:30px }
+#polls-cards{ grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:12px }
+.poll-result-card header{ padding:14px 18px 6px }
+.poll-result-card footer{ padding:9px 18px; margin-top:auto }
+.poll-blocbar{ margin-inline:18px }
+.average-toolbar{ padding:10px 14px; gap:14px 18px }
+.average-status{ margin:10px 2px }
+.average-results{ padding:16px; gap:18px }
+.average-party{ min-height:42px }
+#compare-picker label{ padding:6px 10px }
+#compare-table td{ padding:6px 12px }
+@media(max-width:900px){ #polls-cards{ grid-template-columns:1fr } }
+
+/* עמוד דיוק המכונים: הכותרת הראשית כבר אומרת הכול — הכותרת הכפולה
+   "הדירוג / המכונים וציוני האמינות" רק דחפה את הכרטיסים מתחת לקו המסך. */
+#view-e2022 .reliability-ranking{ padding-top:4px }
+#view-e2022 .reliability-ranking>.sec-head{ display:none }
+#view-e2022 .ranks{ grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px }
+#view-e2022 .rank{ min-height:0; aspect-ratio:auto; padding:14px; gap:10px }
+#view-e2022 .rank>.final b{ font-size:1.8rem }
+.calibration-strip article{ padding:12px 16px }
+.fstrip{ margin-bottom:16px }
+.fblock{ padding:14px 16px }
+
+/* כמה עברו צד: כותרת ענקית ופסקה שנמתחה על כל רוחב המסך */
+#view-crossover .page-head h2{ font-size:1.6rem; letter-spacing:0 }
+#crossover-intro{ max-width:80ch }
+
+/* ---------- 3. עמוד הבית: פאנל התחזית + קיר המנדטים על מסך אחד ---------- */
+#view-home .verdict-in{ padding:26px 0 30px; gap:14px }
+#view-home .verdict h1{ font-size:clamp(1.6rem,3vw,2.3rem) }
+#view-home .board{ padding:22px 0 8px }
+#view-home .bloc + .bloc{ margin-top:16px }
+#view-home .bloc-head{ margin-bottom:10px; padding-bottom:6px }
+#view-home .cards{ gap:12px }
+.hcard-body{ padding:7px 8px 9px; gap:0 }
+.hcard-seatline{ min-height:1.9rem; gap:6px }
+.hcard-seat{ font-size:1.8rem }
+.hcard-name{ font-size:.9rem }
+.hcard-leader{ font-size:.72rem }
+/* אחוז התמיכה של רשימה מתחת לסף יושב ליד ה-0, לא בשורה נוספת — כך כל
+   הכרטיסים באותו גובה ושתי השורות נכנסות למסך */
+.hcard-pct{ margin:0; padding:2px 6px; border-radius:6px; background:var(--paper-3); border:1px solid var(--rule); font-size:.7rem; line-height:1 }
+#view-home .handoff{ margin:18px 0 8px; padding:12px 16px; gap:14px; border-radius:12px }
+#view-home .handoff p{ font-size:.9rem; flex-basis:280px }
+
+@media (min-width:1100px){
+  /* עמודת התחזית מימין (כ-350px), קיר 12 המנדטים משמאל — שתי שורות של שישה
+     כרטיסים שנכנסות לגובה המסך. רוחב הכרטיס נגזר מגובה החלון כדי ששתי
+     השורות ייכנסו גם ב-768px, ומוגבל ל-230px כדי לא להתנפח במסך גבוה. */
+  #view-home.on{
+    --hcard-w:clamp(100px, calc((100vh - 410px) / 2.5), 230px);
+    display:grid; grid-template-columns:clamp(300px,24vw,420px) minmax(0,1fr); gap:20px; align-items:start;
+    width:min(1780px, calc(100% - 40px)); margin-inline:auto; padding:12px 0 12px;
+  }
+  #view-home .wrap{ width:100% }
+  #view-home .verdict{ border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:var(--shadow-m) }
+  #view-home .verdict-in{ padding:20px 20px 22px; gap:12px }
+  .verdict-knesset{ height:80px; opacity:.16 }
+  #view-home .verdict .eyebrow{ font-size:.68rem; letter-spacing:.1em }
+  #view-home .verdict h1{ font-size:clamp(1.35rem,1.5vw,1.75rem); max-width:none; line-height:1.2 }
+  #view-home .verdict .lede{ font-size:.9rem; line-height:1.5 }
+  .home-forecast-controls{ flex-direction:column; align-items:stretch; gap:8px }
+  .home-switch{ align-self:stretch; display:grid; grid-template-columns:1fr 1fr }
+  .home-history-pick select{ min-width:0; width:100% }
+  .readout{ grid-template-columns:1fr 1fr; gap:10px 14px; padding:12px 14px }
+  .readout .rd{ padding:0; border:0 }
+  .readout .rd:nth-child(2){ border-inline-start:1px solid rgba(255,255,255,.12); padding-inline-start:14px }
+  .readout .rd b{ font-size:1.9rem }
+  .readout .rd-need{ justify-self:start; text-align:start; border-inline-start:1px solid rgba(255,255,255,.12); padding-inline-start:14px; width:100% }
+  .readout .rd-need b{ font-size:1.2rem }
+  #view-home .board{ padding:0 }
+  #view-home .bloc-head{ margin-bottom:8px; padding-bottom:5px }
+  #view-home .bloc-head h2{ font-size:1rem }
+  #view-home .cards{ grid-template-columns:repeat(6, minmax(0, var(--hcard-w))); gap:12px; justify-content:start }
+  #view-home .bloc + .bloc{ margin-top:14px }
+  #view-home .handoff{ margin:14px 0 0; padding:10px 14px; flex-wrap:nowrap }
+  #view-home .handoff p{ flex:1 1 auto; font-size:.86rem }
+  #view-home .handoff .btn{ flex:none }
+}
+@media (min-width:1100px) and (max-height:700px){
+  /* מסכים נמוכים: הקיר ראשון, פסקת ההמשך נשארת מתחת לקו */
+  #view-home .handoff{ margin-top:10px }
+}
+@media print{ #view-home.on{ display:block } }

@@ -190,22 +190,23 @@ function scoreFirms(data, actual = data.actual) {
   /* סקר בלי שם מכון במקור אינו נכנס לציון — אי אפשר לזקוף אותו לאיש. */
   const scored = data.polls.filter(p => p.firm);
   const grouped = scored.reduce((m, p) => { (m[p.firm] ||= []).push(p); return m; }, {});
-  const allT = scored.map(p => Date.parse(p.date.slice(0, 10)));
-  const fullSpan = Math.max(...allT) - Math.min(...allT);
   return Object.entries(grouped).map(([firm, polls]) => {
     const blocs = polls.map(p => histBlocs(p.p, defs));
     const bm = { netanyahu: avg(blocs.map(b => b.netanyahu)), outgoing: avg(blocs.map(b => b.outgoing)), outside: avg(blocs.map(b => b.outside)) };
     const blocAbs = Object.keys(aB).reduce((s, k) => s + Math.abs(bm[k] - aB[k]), 0);
     const partyMae = avg(polls.flatMap(p => keys.map(k => Math.abs(p.p[k] - actual[k]))));
+    /* עקביות: 65% יציבות גוש נתניהו לאורך החודש, 35% יציבות המפלגות (ממוצע
+       סטיות התקן של כל רשימה בסקרי המכון). סטיית תקן של מפלגה בודדת קטנה
+       בערך פי שניים מזו של הגוש, ולכן המקדם כפול — כך שני המדדים באותו סולם. */
     const consSd = sd(blocs.map(b => b.netanyahu));
-    const t = polls.map(p => Date.parse(p.date.slice(0, 10)));
-    const continuity = fullSpan ? clamp(100 * (Math.max(...t) - Math.min(...t)) / fullSpan) : 100;
+    const partySd = avg(keys.map(k => sd(polls.map(p => p.p[k] || 0))));
     const blocScore = clamp(100 - 10 * (blocAbs / 3));
     const partyScore = clamp(100 - 15 * partyMae);
     const stability = clamp(100 - 25 * consSd);
-    const consistencyScore = .7 * stability + .3 * continuity;
+    const partyStability = clamp(100 - 50 * partySd);
+    const consistencyScore = .65 * stability + .35 * partyStability;
     const score = .6 * blocScore + .3 * partyScore + .1 * consistencyScore;
-    return { firm, polls, n: polls.length, blocMean: bm, blocAbs, partyMae, blocScore, partyScore, consistencyScore, stability, continuity, score };
+    return { firm, polls, n: polls.length, blocMean: bm, blocAbs, partyMae, blocScore, partyScore, consistencyScore, stability, partyStability, score };
   }).sort((a, b) => b.score - a.score);
 }
 
@@ -230,7 +231,7 @@ function combineCalibrations(elections) {
       n: runs.reduce((t, r) => t + r.n, 0),
       blocScore: mean("blocScore"), partyScore: mean("partyScore"),
       consistencyScore: mean("consistencyScore"), stability: mean("stability"),
-      continuity: mean("continuity"), blocAbs: mean("blocAbs"), partyMae: mean("partyMae"),
+      partyStability: mean("partyStability"), blocAbs: mean("blocAbs"), partyMae: mean("partyMae"),
       score: mean("score")
     };
   }).sort((a, b) => b.score - a.score);
@@ -504,10 +505,9 @@ function homeCard(id, seats, est) {
   return `<button type="button" class="hcard${isBelow ? " is-below" : ""}" style="--bc:${color}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
     <span class="hcard-photo"><img src="${esc(photo)}" alt="" width="720" height="900" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}'"></span>
     <span class="hcard-body">
-      <span class="hcard-seatline"><span class="hcard-seat num">${isBelow ? 0 : (seats[id] || 0)}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}</span>
+      <span class="hcard-seatline"><span class="hcard-seat num">${isBelow ? 0 : (seats[id] || 0)}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}${isBelow ? `<span class="hcard-pct num" title="מתחת לאחוז החסימה">${r1(belowPct)}%</span>` : ""}</span>
       <span class="hcard-name">${esc(m.name)}</span>
       ${leader ? `<span class="hcard-leader">${esc(leader)}</span>` : ""}
-      ${isBelow ? `<span class="hcard-pct num">${r1(belowPct)}%</span>` : ""}
     </span>
   </button>`;
 }
@@ -884,33 +884,47 @@ function openPoll(i) {
 /* ============================================================
    6.5 כמה עברו צד — תזוזת הגושים מול תוצאת 2022
    ============================================================ */
+/* המדידה נעשית בחלקי קולות, לא במנדטים: מפלגה שלא עברה את אחוז החסימה אבל
+   קיבלה לפחות 1.5% (מרצ ובל״ד ב-2022; רשימה קטנה בסקרים של היום) עדיין
+   מייצגת מצביעים ששייכים לגוש — הם רק לא תורגמו למנדטים. רשימה מתחת
+   ל-1.5% מוצאת מהחישוב משני הצדדים. */
+const CROSS_MIN_SHARE = 1.5;
 function renderCrossover() {
-  const right0 = histBlocs(S.hist.actual).netanyahu;   // גוש נתניהו בפועל, נוב׳ 2022
-  const rest0 = 120 - right0;
-  const perSeat = seatCost();                            // קולות כשרים 2022 / 120
-  const valid = S.regions.national.valid;
-  const voters = seats => Math.abs(seats) * perSeat;     // מנדטים → מצביעים
-  const kv = v => `${fmt(Math.round(v / 1000) * 1000)}`; // עיגול לאלף הקרוב
+  const nat = S.regions.national, valid = nat.valid;
+  const defs = S.hist.blocs || BLOCS_2022;
+  const rightIds2022 = new Set(defs.netanyahu);
+  const counted2022 = nat.parties.filter(p => p.pct >= CROSS_MIN_SHARE);
+  const tot2022 = counted2022.reduce((t, p) => t + p.votes, 0);
+  const right2022 = counted2022.filter(p => rightIds2022.has(p.id)).reduce((t, p) => t + p.votes, 0);
+  const rightShare0 = 100 * right2022 / tot2022;
+  const below2022 = counted2022.filter(p => !p.seats);
+  const kv = v => fmt(Math.round(Math.abs(v) / 1000) * 1000);
+  const votersOf = pp => Math.abs(pp) / 100 * tot2022;               // נקודות אחוז → מצביעים (על בסיס 2022)
 
+  /* חלק הימין בכל מכון: כל רשימה עם ממוצע של 1.5% ומעלה נספרת, גם מתחת לסף. */
+  const shareOf = s => {
+    const ids = Object.keys(s.parties).filter(id => 100 * s.parties[id] / 120 >= CROSS_MIN_SHARE);
+    const tot = ids.reduce((t, id) => t + s.parties[id], 0) || 1;
+    const right = ids.filter(id => partyMeta(id).alignment === "Right").reduce((t, id) => t + s.parties[id], 0);
+    const below = ids.filter(id => s.parties[id] < THRESHOLD_MANDATES);
+    return { share: 100 * right / tot, below };
+  };
   const wOf = s => firmScore(s.meta) / 100;
-  const rightOf = s => s.blocs.Right || 0;
-  const rows = S.series
-    .map(s => ({ meta: s.meta, now: rightOf(s), moved: right0 - rightOf(s), n: s.polls.length }))
-    .sort((a, b) => Math.abs(b.moved) - Math.abs(a.moved));
-
-  const signed = m => Math.abs(m) < 0.05 ? "כמעט בלי שינוי"
-    : `כ־${kv(voters(m))} ${m > 0 ? "עזבו את גוש הימין" : "הצטרפו לגוש הימין"}`;
-  const pctTxt = m => `${r1(100 * voters(m) / valid)}% מהמצביעים ב־2022`;
+  const rows = S.series.map(s => {
+    const x = shareOf(s);
+    const delta = x.share - rightShare0;                              // נקודות אחוז; שלילי = הימין הצטמק
+    return { meta: s.meta, series: s, share: x.share, delta, voters: votersOf(delta), n: s.polls.length, below: x.below };
+  }).sort((a, b) => a.delta - b.delta);
 
   $("#crossover-intro").textContent =
-    "בבחירות 2022 קם גוש ברור. מאז, כל מכון מצייר חלוקת מנדטים אחרת — וכל חלוקה כזאת אומרת שכמות מסוימת של מצביעים עברה מצד לצד. כאן מתורגם כל מכון למספר אחד: כמה מצביעים, נטו, חצו את קו הגוש מאז 2022. מנדט שווה ל־" + kv(perSeat) + " קולות בקירוב.";
+    "בבחירות 2022 קיבל גוש הימין " + r1(rightShare0) + "% מהקולות (בספירה שכוללת גם רשימות שלא עברו את אחוז החסימה אך קיבלו 1.5% ומעלה). כל מכון מצייר היום חלוקה אחרת, וכל חלוקה כזאת אומרת שכמות מסוימת של מצביעים עברה מצד לצד. כאן מתורגם כל מכון למספר אחד: כמה מצביעים, נטו, חצו את קו הגוש מאז 2022.";
 
   $("#crossover-baseline").innerHTML =
     `<div class="crossbar">` +
-    `<span style="flex:0 0 ${(100 * right0 / 120).toFixed(1)}%;background:${BLOCS.Right.color}">גוש נתניהו · ${right0} מנדטים · כ־${kv(right0 * perSeat)} קולות</span>` +
-    `<span style="flex:1 1 auto;background:${BLOCS.Left.color}">כל השאר · ${rest0} · כ־${kv(rest0 * perSeat)}</span>` +
+    `<span style="flex:0 0 ${rightShare0.toFixed(1)}%;background:${BLOCS.Right.color}">גוש הימין · ${r1(rightShare0)}% · ${fmt(right2022)} קולות</span>` +
+    `<span style="flex:1 1 auto;background:${BLOCS.Left.color}">כל השאר · ${r1(100 - rightShare0)}% · ${fmt(tot2022 - right2022)} קולות</span>` +
     `</div>` +
-    `<p class="sec-note" style="margin-top:8px">גוש נתניהו = הליכוד, ש״ס, יהדות התורה והציונות הדתית (כולל מה שפוצל מאז לעוצמה יהודית). התוצאה בפועל, נובמבר 2022 — ${fmt(valid)} קולות כשרים.</p>`;
+    `<p class="sec-note" style="margin-top:8px;max-width:none">גוש הימין 2022 = הליכוד, ש״ס, יהדות התורה והציונות הדתית (כולל עוצמה יהודית). בצד השני נספרות גם ${below2022.map(p => `${p.name} (${p.pct}%)`).join(" ו")} שלא עברו את אחוז החסימה — ${fmt(below2022.reduce((t, p) => t + p.votes, 0))} קולות. רשימות מתחת ל־1.5% אינן נספרות. סה״כ ${fmt(tot2022)} קולות נספרים מתוך ${fmt(valid)} כשרים.</p>`;
 
   if (!rows.length) {
     $("#crossover-note").textContent = "אין סקרים בחלון הנוכחי.";
@@ -920,38 +934,62 @@ function renderCrossover() {
   }
 
   const totW = S.series.reduce((t, s) => t + wOf(s), 0) || 1;
-  const rightAvg = S.series.reduce((t, s) => t + rightOf(s) * wOf(s), 0) / totW;
-  const avgMoved = right0 - rightAvg;
-  const maxV = Math.max(perSeat * 3, ...rows.map(r => voters(r.moved)));
+  const shareAvg = S.series.reduce((t, s) => t + shareOf(s).share * wOf(s), 0) / totW;
+  const deltaAvg = shareAvg - rightShare0;
+  const votersAvg = votersOf(deltaAvg);
 
   $("#crossover-note").textContent =
-    `ממוצע המכונים כיום: כ־${kv(voters(avgMoved))} מצביעים (${pctTxt(avgMoved)}) ${avgMoved >= 0 ? "עזבו" : "הצטרפו ל"}גוש הימין נטו. הבר מציג את קו 2022 (0) במרכז — שמאלה = הימין הצטמק, ימינה = גדל. המספרים באלפי מצביעים.`;
+    `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}% — כ־${kv(votersAvg)} מצביעים ${deltaAvg <= 0 ? "עזבו את" : "הצטרפו ל"}גוש הימין נטו. רשימה שממוצע המכון נותן לה 1.5% ומעלה נספרת לגוש שלה גם אם היא מתחת לאחוז החסימה.`;
 
-  $("#crossover-chart").innerHTML = `<div class="chart-caption"><span>מכון</span><span>אלפי מצביעים שחצו גוש · <span dir="ltr">−</span> עזבו את הימין · <span dir="ltr">+</span> הצטרפו</span></div>` + rows.map(r => {
-    const width = 50 * voters(r.moved) / maxV;
-    const shrank = r.moved >= 0;
-    const col = shrank ? BLOCS.Left.color : BLOCS.Right.color;
-    const k = Math.round(voters(r.moved) / 1000);
-    return `<div class="crossrow">
-      <span class="crossrow-firm">${logoBox(r.meta, 26)}<b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b>${r.meta.calibrated ? "" : '<em>משקל ניטרלי</em>'}</span>
-      <span class="crossrow-track">
-        <i class="crossrow-fill" style="${shrank ? "right" : "left"}:50%;width:${width.toFixed(1)}%;background:${col}"></i>
-      </span>
-      <span class="crossrow-num" dir="ltr" title="שווה ערך ל־${r1(Math.abs(r.moved))} מנדטים">${Math.abs(r.moved) < 0.05 ? "0" : (r.moved > 0 ? "−" : "+") + fmt(k)}</span>
+  /* ציר: עיגול לכפולה נוחה של 100 אלף */
+  const maxV = Math.max(...rows.map(r => r.voters), votersAvg, 100000);
+  const axisMax = Math.ceil(maxV * 1.28 / 100000) * 100000;          // מרווח לתווית מעבר לקצה הסרגל
+  const step = axisMax >= 800000 ? 200000 : 100000;
+  const ticks = [];
+  for (let v = -axisMax; v <= axisMax; v += step) ticks.push(v);
+  /* כיוון הציר תואם לפס 2022 שמעליו: הימין בצד ימין, כל השאר משמאל — מי
+     שעזב את הימין נע שמאלה, מי שהצטרף נע ימינה. */
+  const pos = v => 50 - 50 * v / axisMax;                            // אחוז מהקצה הימני
+  const tickHtml = ticks.map(v => `<span dir="ltr" style="inset-inline-start:${pos(v).toFixed(2)}%" class="${v ? "" : "zero"}">${v ? (v > 0 ? "+" : "−") + Math.abs(v) / 1000 + "K" : "2022"}</span>`).join("");
+
+  $("#crossover-chart").innerHTML =
+    `<div class="cross-summary">
+      <div><span>גוש הימין ב־2022</span><b class="num">${r1(rightShare0)}%</b></div>
+      <div class="arrow" aria-hidden="true">←</div>
+      <div><span>ממוצע המכונים היום</span><b class="num">${r1(shareAvg)}%</b></div>
+      <div class="cross-summary-out ${deltaAvg <= 0 ? "left" : "join"}"><span>${deltaAvg <= 0 ? "עזבו את גוש הימין" : "הצטרפו לגוש הימין"}</span><b class="num">≈ ${kv(votersAvg)}</b><em>${r1(Math.abs(deltaAvg))} נקודות אחוז</em></div>
+    </div>
+    <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>עזבו את הימין</span><span><i style="background:${BLOCS.Right.color}"></i>הצטרפו לימין</span><span><i class="avg"></i>ממוצע המכונים</span><span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
+    <div class="cross-grid">
+      <div class="cross-axis" aria-hidden="true">${tickHtml}</div>
+      ${rows.map(r => {
+        const shrank = r.delta <= 0;
+        const w = 50 * r.voters / axisMax;
+        const belowNote = r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`);
+        return `<div class="crossrow" title="${esc(r.meta.he)}: הימין ב־${r1(r.share)}% היום מול ${r1(rightShare0)}% ב־2022${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}">
+          <span class="crossrow-firm">${logoBox(r.meta, 26)}<span><b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b><em>${r.n} סקרים${r.meta.calibrated ? "" : " · משקל ניטרלי"}</em></span></span>
+          <span class="crossrow-track">
+            <i class="crossrow-avg" style="inset-inline-start:${pos(deltaAvg <= 0 ? -votersAvg : votersAvg).toFixed(2)}%"></i>
+            <i class="crossrow-fill ${shrank ? "shrank" : "grew"}" style="width:${w.toFixed(2)}%;background:${shrank ? BLOCS.Left.color : BLOCS.Right.color}"><b dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</b></i>
+          </span>
+          <span class="crossrow-share num"><span dir="ltr">${r1(r.share)}%</span><small dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</small></span>
+        </div>`;
+      }).join("")}
     </div>`;
-  }).join("");
 
-  const wild = rows[0], calm = rows[rows.length - 1];
-  const signedV = rows.map(r => voters(r.moved) * Math.sign(r.moved || 1));
-  const spanV = Math.max(...signedV) - Math.min(...signedV);
-  const wildScale = scaleOf(voters(wild.moved));
-  const closer = spanV >= 6 * perSeat
-    ? `פער של כ־<b>${kv(spanV)}</b> מצביעים בין המכונים — על אותה אוכלוסייה, באותו שבוע. הם לא יכולים כולם לצדוק, ורק הבחירות יגידו מי הפריז.`
-    : `הפער בין המכונים צר (כ־${kv(spanV)} מצביעים): גם הזהירים מסכימים שמאזן הגושים זז מ־2022.`;
+  const wild = rows.reduce((a, b) => Math.abs(b.delta) > Math.abs(a.delta) ? b : a);
+  const calm = rows.reduce((a, b) => Math.abs(b.delta) < Math.abs(a.delta) ? b : a);
+  const spanV = Math.max(...rows.map(r => r.delta)) - Math.min(...rows.map(r => r.delta));
+  const signed = r => Math.abs(r.delta) < 0.05 ? "כמעט בלי שינוי"
+    : `כ־${kv(r.voters)} ${r.delta < 0 ? "עזבו את גוש הימין" : "הצטרפו לגוש הימין"}`;
+  const wildScale = scaleOf(wild.voters);
+  const closer = spanV >= 5
+    ? `פער של כ־<b>${kv(votersOf(spanV))}</b> מצביעים בין המכונים — על אותה אוכלוסייה, באותו שבוע. הם לא יכולים כולם לצדוק, ורק הבחירות יגידו מי הפריז.`
+    : `הפער בין המכונים צר (כ־${kv(votersOf(spanV))} מצביעים): גם הזהירים מסכימים שמאזן הגושים זז מ־2022.`;
   $("#crossover-verdict").innerHTML =
-    `ההערכה הדרמטית ביותר היא של <b>${esc(wild.meta.he || wild.meta.firm)}</b> — ${signed(wild.moved)} ` +
-    `(${wildScale ? wildScale + ", " : ""}${pctTxt(wild.moved)}). ` +
-    `הרגועה ביותר, <b>${esc(calm.meta.he || calm.meta.firm)}</b> — ${signed(calm.moved)}. ` +
+    `ההערכה הדרמטית ביותר היא של <b>${esc(wild.meta.he || wild.meta.firm)}</b> — ${signed(wild)} ` +
+    `(${wildScale ? wildScale + ", " : ""}${r1(Math.abs(wild.delta))} נקודות אחוז). ` +
+    `הרגועה ביותר, <b>${esc(calm.meta.he || calm.meta.firm)}</b> — ${signed(calm)}. ` +
     `${closer} מספר כזה של בני אדם שמחליפים גוש בתוך קדנציה אחת הוא טלטלה נדירה — ולא לכל מכון שמצייר אותה יש אותה סבירות.`;
 }
 

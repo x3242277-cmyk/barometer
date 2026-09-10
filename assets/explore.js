@@ -144,7 +144,7 @@ function renderPollAverage(rows) {
   const start = new Date(Math.min(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const end = new Date(newest).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const sources = included.slice().sort((a,b)=>parsePollDate(b)-parsePollDate(a)).map(p => `<li>${esc(p.date)} · ${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)}</li>`).join('');
-  status.innerHTML = `<span><b>${included.length} סקרים</b> בין ${start} ל־${end}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון אמינות גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
+  status.innerHTML = `<span><b>${included.length} סקרים</b> ${start === end ? `מ־${end}` : `בין ${start} ל־${end}`}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון אמינות גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
   const donutStyle = `background:conic-gradient(${BLOCS.Right.color} 0 ${right}%,${BLOCS.Left.color} ${right}% ${right+left}%,${BLOCS.Arabs.color} ${right+left}% ${right+left+arabs}%,#87919A ${right+left+arabs}% 100%)`;
   const max = Math.max(1, ...averages.map(x => x.seats));
   box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות']].map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${blocSeats[k]}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {

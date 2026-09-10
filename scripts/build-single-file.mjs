@@ -12,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css")) + "\n" + (await rd("assets/home.css"));
+let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css")) + "\n" + (await rd("assets/home.css")) + "\n" + (await rd("assets/fit.css"));
 for (const motif of ['polls','community','growth','ballot']) {
   const file = `background-${motif}.svg`;
   css = css.replaceAll(file, 'data:image/svg+xml;base64,' + Buffer.from(await rd('assets/'+file)).toString('base64'));

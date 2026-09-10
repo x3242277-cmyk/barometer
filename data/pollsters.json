@@ -4,11 +4,13 @@
       "id": "Direct Polls",
       "he": "דירקט פולס",
       "short": "DP",
-      "lead": "שלמה פילבר",
+      "lead": "צוריאל שרון · שלמה פילבר",
       "calibrated": true,
-      "outlets": [],
+      "outlets": [
+        "i24NEWS"
+      ],
       "logo": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fdirect_polls.PNG?alt=media&token=ceb3f812-bc77-4720-af04-e1575f4cb76a",
-      "about": "מכון פרטי שנוסד ב־2019, פרסם בערוץ 14 עד 2024. שימש כאן לכיול על כנסת ה־25. שלמה פילבר ממשיך כיום בנקסט דאטה (ערוץ 14) וצוריאל שרון ב-i24NEWS — שניהם מקבלים את ציון האמינות של דירקט פולס.",
+      "about": "מכון פרטי שנוסד ב־2019 בהובלת צוריאל שרון ושלמה פילבר; פרסם בערוץ 14 עד 2024, וכיום צוריאל שרון סוקר בשמו עבור i24NEWS. סדרת הכיול על הכנסת ה־24 וה־25 היא שלו. שלמה פילבר ממשיך בנפרד בנקסט דאטה (ערוץ 14), שיורשת את ציון האמינות הזה.",
       "color": "#3F6C8E"
     },
     {
@@ -104,19 +106,6 @@
       "color": "#7A5C4B"
     },
     {
-      "id": "Tzuriel Sharon",
-      "he": "צוריאל שרון",
-      "short": "צ״ש",
-      "lead": "צוריאל שרון",
-      "calibrated": true,
-      "calibrationFirm": "Direct Polls",
-      "outlets": [
-        "i24NEWS"
-      ],
-      "about": "פעל בשותפות עם שלמה פילבר ודירקט פולס ב־2022, וכיום סוקר עבור i24NEWS — לשם עברה למעשה השיטה של דירקט פולס. לכן הוא מקבל את ציון האמינות ההיסטורי של דירקט פולס.",
-      "color": "#B0724E"
-    },
-    {
       "id": "Next Data",
       "he": "נקסט דאטה",
       "short": "נ״ד",
@@ -183,7 +172,7 @@
       "outlet": "זמן ישראל"
     },
     "i24news": {
-      "firm": "Tzuriel Sharon",
+      "firm": "Direct Polls",
       "outlet": "i24NEWS"
     },
     "channel_13": {

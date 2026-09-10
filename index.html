@@ -14,13 +14,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=68d7707e">
-<link rel="stylesheet" href="assets/upgrade.css?v=9be165e3">
+<link rel="stylesheet" href="assets/upgrade.css?v=2900bdd2">
 <link rel="stylesheet" href="assets/home.css?v=9bcfc9eb">
+<link rel="stylesheet" href="assets/fit.css?v=1ca10e68">
 <script src="assets/scenario.js?v=bf9215f5" defer></script>
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
-<script src="assets/explore.js?v=7f578e91" defer></script>
-<script src="assets/app.js?v=b97bb246" defer></script>
+<script src="assets/explore.js?v=92866412" defer></script>
+<script src="assets/app.js?v=307b4d6f" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -112,21 +113,21 @@
         <h2>סקרי 2026</h2>
         <div class="stats" id="polls-stats"></div>
       </div>
-    </div>
-
-    <section class="sec polls-sec">
-      <div class="poll-view-tabs" role="group" aria-label="תצוגת הסקרים">
+      <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
         <button type="button" data-pollview="cards" aria-pressed="true"><span class="view-icon" aria-hidden="true">▦</span><span>כל הסקרים</span></button>
         <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
         <button type="button" data-pollview="average" aria-pressed="false"><span class="view-icon" aria-hidden="true">∿</span><span>ממוצע סקרים</span></button>
       </div>
+    </div>
+
+    <section class="sec polls-sec">
       <div class="controls">
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
         <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label><div class="count" id="poll-count" aria-live="polite"></div>
       </div>
       <details class="poll-data-note"><summary>איך לקרוא את הנתונים</summary><p>מנדטים כפי שנשמרו במאגר, ללא תיקוני מודל. הרשימות מסודרות בכל תצוגה מהמנדטים הרבים למעטים. 0 = אפס מנדטים; — = אין נתון במאגר. כל כרטיס מציג את הסקר האחרון של כלי התקשורת, ובורר התאריך שבו מחליף לסקר קודם שלו. הפס בראש כל כרטיס הוא חלוקת הגושים, והוי מסמן גוש שהגיע ל־61.</p></details>
-      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
+      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 
     <section class="sec">
@@ -185,7 +186,7 @@
       <div class="fstrip three">
         <div class="fblock" style="--c:#17457F"><b>60%</b><span>דיוק בגושים — השאלה שקובעת מי מרכיב ממשלה</span></div>
         <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — שגיאה מוחלטת ממוצעת בכל הרשימות</span></div>
-        <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות ורציפות לאורך חודש הכיול</span></div>
+        <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות לאורך חודש הכיול — 65% יציבות הגושים, 35% יציבות המפלגות</span></div>
       </div>
       <div class="notice warm" style="margin:16px 0"><span class="ic">+</span><p style="margin:0"><b>הציון משתי מערכות:</b> כל מערכת נספרת במשקל שווה, כך שמכון עם הרבה סקרים באחת מהן אינו מקבל יתרון על כמות. ליד כל מכון מופיע הפירוט לפי כנסת, ומכון שהופיע רק באחת מהן מסומן ככזה.</p></div>
     </section>
@@ -221,7 +222,7 @@
       <div id="crossover-baseline"></div>
     </section>
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">לשיטת כל מכון</p><h2>כמה מנדטים עברו את קו הגוש מאז 2022</h2></div>
+      <div class="sec-head"><div><p class="kicker">לשיטת כל מכון</p><h2>כמה מצביעים עברו את קו הגוש מאז 2022</h2></div>
         <p class="sec-note" id="crossover-note"></p></div>
       <div id="crossover-chart" class="crosschart"></div>
     </section>
@@ -749,7 +750,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="step"><em>02</em><h3>מכיילים על חודש שלם</h3><p>לכל מכון מחושבים ממוצעי כל הסקרים שפרסם בחודש האחרון של 2022 — לא רק הסקר האחרון, שבו קל להיראות מדויק. ההשוואה היא לתוצאת האמת.</p></div>
         <div class="step"><em>03</em><h3>נותנים קדימות לגושים</h3><p>שגיאת הגושים נמדדת בגוש נתניהו, בגוש הממשלה היוצאת ובחד״ש–תע״ל. רכיב זה שווה <b>60%</b> מהציון — כי זו השאלה היחידה שקובעת מי מרכיב ממשלה. מכון שמדייק בגושים ומחליף מנדט בין שתי מפלגות באותו גוש עשה עבודה טובה; מכון שפספס גוש לא.</p></div>
         <div class="step"><em>04</em><h3>בודקים גם כל מפלגה</h3><p>שגיאה מוחלטת ממוצעת ב־11 הרשימות המרכזיות, 30% מהציון. מעבר מנדט בתוך אותו גוש נענש פחות מהחמצת גוש.</p></div>
-        <div class="step"><em>05</em><h3>מתגמלים עקביות, לא הברקה</h3><p>10% נוספים לעקביות: יציבות תחזית הגוש לאורך החודש, ורציפות הפרסום. מכון שקלע פעם אחת אחרי שהתנדנד בעשרה מנדטים לא מקבל את אותו קרדיט כמו מי שהחזיק קו יציב ומדויק.</p></div>
+        <div class="step"><em>05</em><h3>מתגמלים עקביות, לא הברקה</h3><p>10% נוספים לעקביות לאורך חודש הכיול: 65% יציבות תחזית הגוש ו־35% יציבות המנדטים של כל מפלגה בנפרד. מכון שקלע פעם אחת אחרי שהתנדנד בעשרה מנדטים לא מקבל את אותו קרדיט כמו מי שהחזיק קו יציב ומדויק.</p></div>
         <div class="step"><em>06</em><h3>בונים ממוצע נע של 8 ימים</h3><p>קודם ממצעים את כל סקרי אותו מכון, ורק אחר כך ממזגים בין המכונים לפי ציון האמינות. חלון קצר מגיב מהר לאיחודי רשימות ולשינויי מגמה. מכון ללא כיול מ־2022 מקבל משקל ניטרלי של 70.</p></div>
         <div class="step"><em>07</em><h3>מעגלים ל־120 מנדטים</h3><p>עיגול בשיטת השארית הגדולה לכל המפלגות, ללא רצפות מנדטים וללא תיקון ייעודי למפלגה.</p></div>
       </div>
@@ -790,8 +791,8 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
           <span class="formula">blocScore    = clamp(100 − 10 × (Σ|blocError| / 3))</span>
           <span class="formula">partyScore   = clamp(100 − 15 × MAE_parties)</span>
           <span class="formula">stability    = clamp(100 − 25 × SD(netanyahuBloc))</span>
-          <span class="formula">continuity   = 100 × (firmSpan / fullSpan)</span>
-          <span class="formula">consistency  = 0.7 × stability + 0.3 × continuity</span>
+          <span class="formula">partyStab    = clamp(100 − 50 × mean SD(party seats))</span>
+          <span class="formula">consistency  = 0.65 × stability + 0.35 × partyStab</span>
           <span class="formula">SCORE = 0.60×bloc + 0.30×party + 0.10×consistency</span>
         </div>
       </details>

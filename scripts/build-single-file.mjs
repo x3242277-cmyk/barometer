@@ -12,12 +12,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css")) + "\n" + (await rd("assets/home.css")) + "\n" + (await rd("assets/fit.css"));
+let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css")) + "\n" + (await rd("assets/home.css")) + "\n" + (await rd("assets/fit.css")) + "\n" + (await rd("assets/intro.css"));
 for (const motif of ['polls','community','growth','ballot']) {
   const file = `background-${motif}.svg`;
   css = css.replaceAll(file, 'data:image/svg+xml;base64,' + Buffer.from(await rd('assets/'+file)).toString('base64'));
 }
-const js = (await rd("assets/scenario.js")) + "\n" + (await rd("assets/upgrade.js")) + "\n" + (await rd("assets/analytics.js")) + "\n" + (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js"));
+const js = (await rd("assets/scenario.js")) + "\n" + (await rd("assets/upgrade.js")) + "\n" + (await rd("assets/analytics.js")) + "\n" + (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js")) + "\n" + (await rd("assets/intro.js"));
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
 const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/forecast-history.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));

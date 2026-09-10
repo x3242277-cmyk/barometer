@@ -1517,6 +1517,7 @@ function show(view) {
   if (view === "live" || view === "results") refreshLiveResults(true);
   const t = { home:"התחזית", polls:"הסקרים האחרונים", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
   document.title = `${t} · ברומטר`;
+  document.dispatchEvent(new Event("barometer:view"));
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
 }
 

@@ -1512,6 +1512,35 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 .fd-tables caption b{ color:#8A6318 }
 @media(max-width:760px){ .fd-comps{ grid-template-columns:1fr 1fr } .fd-tables{ grid-template-columns:1fr } .fd-head{ flex-wrap:wrap } }
 
+/* Home presentation: scoped so other routes retain their layout. */
+#home-intro,#intro-running{display:none}
+#view-home[data-stage="intro"]>.verdict,#view-home[data-stage="intro"]>.board,#view-home[data-stage="running"]>.verdict{display:none}
+#view-home[data-stage="intro"] #home-intro,#view-home[data-stage="running"] #intro-running{display:block}
+#view-home.on{display:block;width:min(1780px,calc(100% - 40px));margin:0 auto;padding:14px 0;--hcard-w:clamp(100px,calc((100vh - 360px)/2.5),250px)}
+#view-home .handoff{display:none}
+.intro-shell{position:relative;isolation:isolate;overflow:hidden;background:#091d30;color:#ecf1f5;border-radius:22px;padding:clamp(24px,3vw,52px);box-shadow:0 16px 50px #102a4320}
+#view-home[data-stage="intro"] #home-intro{display:grid;grid-template-columns:1fr 1fr;gap:18px 7%}
+.intro-grid{position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 15% 20%,#24587966,transparent 65%),linear-gradient(#ffffff04 1px,transparent 1px),linear-gradient(90deg,#ffffff04 1px,transparent 1px);background-size:auto,44px 44px,44px 44px}
+.intro-kicker{color:#a5c0ce;font-size:.8rem;letter-spacing:.06em;margin:0 0 16px}.intro-kicker i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#dfb967;margin-left:8px;box-shadow:0 0 18px #dfb967}
+.intro-copy h1{font-size:clamp(2.6rem,4.6vw,5rem);line-height:1.07;letter-spacing:-.045em;margin:0 0 20px;font-weight:800}.intro-copy h1 em{font-style:normal;color:#e6bf76}.intro-lead{font-size:1.12rem;line-height:1.65;max-width:38ch;color:#c0d1dd;margin:0 0 24px}
+.intro-start{background:#edc786;color:#10293b;border:0;border-radius:9px;padding:14px 24px;font:700 1.1rem inherit;cursor:pointer;display:inline-flex;gap:42px;align-items:center;box-shadow:0 5px 28px #dfb96720}.intro-start:hover{background:#f8d9a6;transform:translateY(-2px)}.intro-start span{font-size:1.5rem}.intro-duration{display:block;color:#bacbd7;font-size:.8rem;margin-top:10px}.intro-disclosure{font-size:.75rem;color:#9db4c3;max-width:44ch;margin-top:18px}
+.intro-visual{align-self:center}.intro-chart-top{display:flex;justify-content:space-between;color:#97afbd;font-size:.72rem}.intro-visual svg{width:100%;height:150px;margin:12px 0;overflow:visible}.chart-line{fill:none;stroke:#e6bf76;stroke-width:2.5;stroke-dasharray:900;animation:intro-draw 7s ease-in-out infinite}.chart-line.second{stroke:#70b3c0;animation-delay:-3s;opacity:.6}@keyframes intro-draw{0%{stroke-dashoffset:900;opacity:.2}45%,80%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-900;opacity:.2}}
+.intro-method article{display:flex;gap:20px;border-top:1px solid #ffffff19;padding:16px 0}.intro-method article>b{font:400 1.15rem monospace;color:#d5b67c}.intro-method h2{font-size:1.05rem;margin:0 0 4px}.intro-method p{font-size:.85rem;color:#aabecb;margin:0}.intro-bottom{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #ffffff20;padding-top:16px;font-size:.78rem;color:#a5bac9}.intro-skip{background:transparent;color:inherit;border:0;text-decoration:underline;text-underline-offset:5px;padding:8px;cursor:pointer;font:inherit}
+#intro-running{background:#0b2439;color:white;border-radius:16px;padding:20px 28px;margin-bottom:16px}.run-top,.run-main{display:flex;justify-content:space-between;gap:25px;align-items:center}.run-top .intro-kicker{margin:0}.run-main h2{font-size:1.6rem;margin:8px 0}.run-main p{color:#b9cdda;font-size:.95rem;margin:0;max-width:110ch;min-height:2.6em}.run-main>b{color:#e6bf76;font-size:2.8rem;font-variant-numeric:tabular-nums;direction:ltr}.run-track{height:3px;background:#ffffff20;margin-top:18px}.run-track i{display:block;height:100%;background:#e6bf76}.run-note{font-size:.72rem;color:#a5bac9;margin:8px 0 0}
+#view-home[data-stage="running"] .hcard-delta,#view-home[data-stage="running"] .hcard-pct,#view-home[data-stage="running"] .tally{visibility:hidden}#view-home[data-stage="running"] .hcard{opacity:1;cursor:default}#view-home[data-stage="running"] .hcard-seat{color:var(--bc)}.intro-result-links{display:flex;gap:18px;font-size:.75rem}.intro-result-links button{color:inherit;background:none;border:0;cursor:pointer;font:inherit;text-decoration:underline}
+@media(min-width:1100px){#view-home .verdict-in{display:grid;grid-template-columns:1.15fr 1fr 1fr;padding:16px 22px;gap:5px 24px}#view-home .verdict .eyebrow{grid-column:1;grid-row:1}#view-home .verdict h1{grid-column:1;grid-row:2}#view-home .verdict .lede{grid-column:1;grid-row:3;font-size:.8rem}#view-home .home-forecast-controls{grid-column:3;grid-row:1/4;gap:5px}#view-home .readout{grid-column:2;grid-row:1/4;align-self:center;grid-template-columns:repeat(4,1fr);padding:10px;gap:12px}#view-home .readout .rd{border:0;padding:0}#view-home .readout .rd b{font-size:1.8rem}#view-home .readout .rd .rd-lbl{font-size:.65rem}#view-home .readout .rd-need{border:0;padding:0}#view-home .board{padding-top:14px}#view-home .cards{justify-content:center;grid-template-columns:repeat(6,minmax(0,var(--hcard-w)))}.verdict-knesset{display:none}}
+@media(max-width:1099px){#view-home.on{width:calc(100% - 24px)}#view-home[data-stage="intro"] #home-intro{gap:24px}.intro-copy h1{font-size:3rem}.intro-visual svg{height:100px}}
+@media(max-width:700px){#view-home[data-stage="intro"] #home-intro{grid-template-columns:1fr;padding:26px}.intro-copy h1{font-size:2.8rem}.intro-visual svg{height:90px}.intro-bottom{align-items:start;gap:12px}.intro-method article{padding:12px 0}.run-main{align-items:start}.run-main>b{font-size:1.7rem}.run-main h2{font-size:1.3rem}#intro-running{padding:18px}.run-main p{font-size:.85rem}#view-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.chart-line{animation:none} .intro-start{transition:none}}
+@media print{#home-intro,#intro-running,.intro-result-links{display:none!important}}
+
+.run-data{display:flex;gap:8px;overflow:auto;max-height:78px;margin-top:12px;padding-bottom:5px;scrollbar-width:thin;scrollbar-color:#66899d #16374d}.run-data>div{flex:0 0 230px;background:#ffffff08;border:1px solid #ffffff15;border-radius:7px;padding:8px 12px;font-size:.73rem}.run-data b{display:block;color:#e6bf76;margin-bottom:4px}.run-data span{display:block;color:#c4d3df;line-height:1.45}.intro-start{font-family:inherit;font-size:1.1rem;font-weight:700}
+#view-home[data-stage="running"]{--hcard-w:clamp(90px,calc((100vh - 450px)/2.5),220px)}
+@media(min-width:1100px){
+#view-home .verdict-in{min-height:0;padding:12px 20px;gap:3px 20px}#view-home .verdict .lede{line-height:1.25;margin:0}#view-home .verdict h1{font-size:1.3rem;margin:0}#view-home .verdict .eyebrow{margin:0}#view-home .home-history-pick{gap:5px}#view-home .home-history-pick select{padding:5px 8px}#view-home .home-switch button{padding:6px 10px}#view-home .readout{margin:0}#view-home .cards{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}#view-home .hcard-photo{height:clamp(85px,calc((100vh - 565px)/2),270px);aspect-ratio:auto}#view-home .hcard-photo img{object-position:center 28%}#view-home .hcard-body{padding:5px 6px;gap:0}#view-home .hcard-seatline{min-height:1.8rem}#view-home .hcard-name{font-size:.85rem}#view-home .hcard-leader{font-size:.68rem}#view-home .bloc+.bloc{margin-top:10px}#view-home .bloc-head{margin-bottom:6px;padding-bottom:4px}#view-home .board{padding-top:10px}#view-home[data-stage="running"] .hcard-photo{height:clamp(65px,calc((100vh - 635px)/2),200px)}
+
+@media(min-width:1100px){#view-home .hcard-photo{background:linear-gradient(120deg,#e4eaf0,#f8f7f3)}#view-home .hcard-photo img{object-fit:contain;object-position:center}}
+
 </style>
 <div dir="rtl" lang="he" id="barometer-root">
 
@@ -4184,6 +4213,7 @@ function show(view) {
   if (view === "live" || view === "results") refreshLiveResults(true);
   const t = { home:"התחזית", polls:"הסקרים האחרונים", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
   document.title = `${t} · ברומטר`;
+  document.dispatchEvent(new Event("barometer:view"));
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
 }
 
@@ -4536,6 +4566,93 @@ function renderHaredHistory() {
       <td class="n">${fmt(r.utjV)}</td><td class="n"><span class="chip">${r.utjS}</span></td>
       <td class="n"><span class="chip ${r.shasS + r.utjS >= 16 ? "good" : ""}">${r.shasS + r.utjS}</span></td></tr>`).join("")}</tbody>`;
 }
+
+/* Presentation only: forecasts and their source data are never mutated. */
+(() => {
+  let frame = 0, token = 0;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const home = document.querySelector('#view-home');
+  home.dataset.stage = 'intro';
+  home.insertAdjacentHTML('afterbegin', `<section id="home-intro" class="intro-shell" aria-labelledby="intro-title">
+    <div class="intro-grid" aria-hidden="true"></div>
+    <div class="intro-copy"><p class="intro-kicker"><i></i> ברומטר / מאחורי המספרים</p>
+    <h1 id="intro-title">מהסקרים.<br>דרך הנתונים.<br><em>לתמונה הגדולה.</em></h1>
+    <p class="intro-lead">כמה מנדטים יקבל כל גוש? בואו לראות איך הנתונים הופכים לתחזית — צעד אחר צעד.</p>
+    <button class="intro-start" type="button">חשבו את התחזית <span>←</span></button>
+    <span class="intro-duration">כ־30 שניות · אפשר לדלג בכל רגע</span>
+    <p class="intro-disclosure">הנתונים, המשקלים וההנחות — הכול פתוח, שלב אחר שלב.</p></div>
+    <div class="intro-visual"><div class="intro-chart-top"><span>מסקר בודד לתחזית משוקללת</span><span dir="ltr">DATA → INSIGHT</span></div>
+    <svg viewBox="0 0 600 200" role="img" aria-label="איור של קווי נתונים, ללא ערכים מספריים"><path class="chart-line" d="M0 160L40 145 80 160 120 100 160 120 200 85 240 105 280 65 320 85 360 45 400 68 440 40 480 55 530 25 600 38"/><path class="chart-line second" d="M0 50L40 65 80 55 120 90 160 70 200 115 240 92 280 130 320 110 360 145 400 122 440 148 480 135 530 163 600 150"/></svg>
+    <div class="intro-method"><article><b>01</b><div><h2>מודדים את המודדים</h2><p>כיול אמינות המכונים מול תוצאות האמת של 2022.</p></div></article><article><b>02</b><div><h2>נותנים לכל סקר משקל</h2><p>ממוצע לכל מכון, חלון עדכני ושקלול לפי אמינות.</p></div></article><article><b>03</b><div><h2>מרכיבים את התמונה</h2><p>הנחות תרחיש, אחוז חסימה וחלוקה ל־120 מושבים.</p></div></article></div></div>
+    <div class="intro-bottom"><span id="intro-data">טוען נתונים…</span><button class="intro-skip" type="button">ישר לתוצאה ↗</button></div></section>
+    <section id="intro-running" aria-label="שלבי החישוב"><div class="run-top"><span class="intro-kicker">בתוך החישוב <span id="run-step"></span></span><button class="intro-skip" type="button">דלג לתוצאה ←</button></div><div class="run-main"><div aria-live="polite" aria-atomic="true"><h2 id="run-title"></h2><p id="run-detail"></p></div><b id="run-percent" aria-hidden="true">0%</b></div><div id="run-data" class="run-data" aria-label="נתונים בשלב הנוכחי" tabindex="0"></div><div class="run-track"><i></i></div><p class="run-note">ערכי ביניים · המספרים מתעדכנים עד להשלמת החישוב</p></section>`);
+  const finish = (focus = true) => { token++; cancelAnimationFrame(frame); renderHome(); home.dataset.stage = S.homeStage = 'result'; window.scrollTo({top:0,behavior:'instant'}); if(focus) { $('#verdict-head').tabIndex=-1; $('#verdict-head').focus({preventScroll:true}); } };
+  const enter = () => {
+    token++; cancelAnimationFrame(frame);
+    if (S.view !== 'home') return;
+    S.homeHistory='current'; renderHome(); window.scrollTo({top:0,behavior:'instant'});
+    $('#intro-data').textContent=`עודכן ${new Date(S.cur.generatedAt).toLocaleString('he-IL')} · ${S.cur.polls.length} סקרים · ${S.series.length} מכונים בחישוב`;
+    home.dataset.stage = S.homeStage = reduced.matches ? 'result' : 'intro';
+  };
+  function stages() {
+    const simple=forecast('simple',HIDE_FROM_HOME), weighted=forecast('weighted',HIDE_FROM_HOME), final=forecast(S.mode,HIDE_FROM_HOME);
+    const nat=S.regions.national;
+    const counted=nat.parties.filter(p=>p.pct>=CROSS_MIN_SHARE), total=counted.reduce((n,p)=>n+p.votes,0);
+    const rightIds=new Set((S.hist.blocs||BLOCS_2022).netanyahu);
+    const base=100*counted.filter(p=>rightIds.has(p.id)).reduce((n,p)=>n+p.votes,0)/total;
+    const shifts=S.series.map(s=>{const ids=Object.keys(s.parties).filter(id=>100*s.parties[id]/120>=CROSS_MIN_SHARE);const sum=ids.reduce((n,id)=>n+s.parties[id],0)||1;const share=100*ids.filter(id=>partyMeta(id).alignment==='Right').reduce((n,id)=>n+s.parties[id],0)/sum;return {name:s.meta.he,delta:share-base,voters:Math.abs(share-base)*total/100};}).sort((a,b)=>b.voters-a.voters);
+    const wild=shifts[0];
+    const dataRows = [
+      S.cur.polls.map(p=>[`${p.channelHebrewName || p.sourceId} · ${heDate(parsePollDate(p))}`,p.parties.map(x=>`${x.name}: ${x.mandates}`).join(' · ')]),
+      [['בעלי זכות בחירה',fmt(nat.eligible)],['מצביעים',fmt(nat.voted)],['קולות כשרים',fmt(nat.valid)],['קולות פסולים',fmt(nat.invalid)],...nat.parties.map(p=>[p.name,`${fmt(p.votes)} קולות · ${p.pct}%`])],
+      S.series.map(s=>[s.meta.he,`${r1(firmScore(s.meta))} נקודות · משקל ${(firmScore(s.meta)/100).toFixed(3)}${s.meta.calibrated?'':' · ניטרלי'}`]),
+      S.forecastPolls.map(p=>[p.channelHebrewName || p.sourceId,heDate(parsePollDate(p))]),
+      Object.entries(simple.rawFull).map(([id,v])=>[partyMeta(id).name,`${r1(v)} מנדטים לפני חסימה`]),
+      Object.entries(weighted.rawFull).map(([id,v])=>[partyMeta(id).name,`${r1(v)} מנדטים לפני חסימה`]),
+      shifts.map(x=>[x.name,`${r1(x.delta)} נקודות אחוז · כ־${fmt(x.voters)} מצביעים במונחי 2022`]),
+      [...S.demo.sectors.map(x=>[x.name,`${r1(x.growth*100)}% גידול שנתי · הנחת המודל הדמוגרפי הנפרד`]),['התוספת בתרחיש הראשי',final.scenario?`${r1(final.scenario.demographic)} מנדטים`:'ללא תוספת']],
+      Object.entries(largestRemainder(final.parties)).map(([id,v])=>[partyMeta(id).name,`${v} מנדטים`])
+    ];
+    const steps = [
+      ['טוענים את נתוני הסקרים',`${S.cur.polls.length} סקרים · skarim.org · ${[...new Set(S.cur.polls.map(p=>p.channelHebrewName).filter(Boolean))].join(' · ')}`,null],
+      ['חוזרים לתוצאות האמת',`${fmt(nat.valid)} קולות כשרים · ${nat.turnout}% הצבעה · ${nat.source.name}`,null],
+      ['מכיילים את אמינות המכונים',S.series.map(s=>`${s.meta.he}: ${r1(firmScore(s.meta))}${s.meta.calibrated?'':' (משקל ניטרלי)'}`).join(' · '),null],
+      ['בוחרים את חלון הנתונים',`${S.forecastPolls.length} מתוך ${S.cur.polls.length} סקרים · ${S.series.length} מכונים. חלון של ${FORECAST_MAX_AGE_DAYS} ימים; כשאין שלושה מכונים, משתמשים בחלון המלא.`,null],
+      ['מתחילים מממוצע פשוט','משקל שווה לכל מכון, לאחר מיצוע הסקרים שלו. המספרים מציגים תמיכה במונחי מנדטים לפני חסימה ועיגול.',simple.rawFull],
+      ['משקללים לפי אמינות','ציון האמינות של כל מכון קובע את משקלו. ערכי הביניים יכולים לעלות וגם לרדת.',weighted.rawFull],
+      ['בוחנים את הפער בין הגושים',wild?`${wild.name}: פער שקול לכ־${fmt(wild.voters)} מצביעים מול 2022 (${r1(Math.abs(wild.delta))} נקודות אחוז). זו השוואה חשבונית, לא מדידה של מעבר מצביעים ולא הוכחה לטעות בסקר.`:'אין נתונים להשוואה.',weighted.rawFull],
+      ['מוסיפים את הנחות התרחיש',final.scenario?`תוספת דמוגרפית במודל: ${r1(final.scenario.demographic)} מנדטים · עוגן 2022: ${r1(final.scenario.anchor)} · ש״ס ${final.parties.shas}, יהדות התורה ${final.parties.yahadut_hatora}. אלה הנחות התרחיש המשמשות בתחזית.`:'במצב משוקלל אמינות לא מופעלות הנחות התרחיש.',final.parties],
+      ['אחוז החסימה. התמונה הסופית.',`סף של ${nat.threshold}% וחלוקה ל־120 מושבים. ${Object.entries(final.below).map(([id,v])=>`${partyMeta(id).name}: ${r1(v)}%`).join(' · ')}`,largestRemainder(final.parties)]
+    ];
+    return steps.map((step,i)=>[...step,dataRows[i]]);
+  }
+  $('.intro-start').addEventListener('click',()=>{
+    if(reduced.matches) return finish();
+    const steps=stages(), mine=++token, start=performance.now(); let active=-1, previous={}, transition=0;
+    home.dataset.stage=S.homeStage='running';
+    const cards=$$('.hcard',home); cards.forEach(c=>{$('.hcard-seat',c).textContent='—';c.disabled=true;c.setAttribute('aria-label',partyMeta(c.dataset.focusParty).name+' — ערך ביניים');});
+    $('#intro-running .intro-skip').focus({preventScroll:true});
+    function tick(now){
+      if(mine!==token)return;
+      const elapsed=now-start, idx=Math.min(steps.length-1,Math.floor(elapsed/(30000/steps.length)));
+      if(elapsed>=30000)return finish();
+      if(idx!==active){ previous=Object.fromEntries(cards.map(c=>[c.dataset.focusParty,parseFloat($('.hcard-seat',c).textContent)||0]));active=idx;transition=now;$('#run-title').textContent=steps[idx][0];$('#run-detail').textContent=steps[idx][1];$('#run-data').innerHTML=steps[idx][3].map(([name,value])=>'<div><b>'+esc(name)+'</b><span>'+esc(value)+'</span></div>').join('');$('#run-step').textContent=`/ ${idx+1} מתוך ${steps.length}`; }
+      const progress=elapsed/30000*100;$('#run-percent').textContent=`${Math.floor(progress)}%`;$('.run-track i').style.width=`${progress}%`;
+      const values=steps[idx][2], t=Math.min(1,(now-transition)/900), eased=1-Math.pow(1-t,3);
+      if(values)cards.forEach(c=>{const id=c.dataset.focusParty;$('.hcard-seat',c).textContent=(previous[id]+((values[id]||0)-previous[id])*eased).toFixed(idx===steps.length-1&&t===1?0:1);});
+      frame=requestAnimationFrame(tick);
+    }
+    frame=requestAnimationFrame(tick);
+  });
+  $$('.intro-skip').forEach(b=>b.addEventListener('click',()=>finish()));
+  document.addEventListener('barometer:view',enter);
+  document.addEventListener('click',e=>{const a=e.target.closest('a[href="#/"]');if(a&&S.cur&&S.view==='home')enter();});
+  reduced.addEventListener('change',()=>{if(reduced.matches&&S.cur&&S.view==='home')finish(false);});
+  window.addEventListener('beforeprint',()=>{if(S.cur&&S.view==='home')finish(false);});
+  const controls=$('.home-forecast-controls');
+  controls.insertAdjacentHTML('beforeend','<div class="intro-result-links"><a href="#/method">לשיטת החישוב</a><button type="button" id="intro-replay">חישוב מחדש ↻</button></div>');
+  $('#intro-replay').addEventListener('click',enter);
+})();
 
 </script>
 <style>#barometer-root{text-align:start}</style>

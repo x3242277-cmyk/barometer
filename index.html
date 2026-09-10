@@ -13,14 +13,14 @@
 <link rel="apple-touch-icon" href="assets/logo.svg?v=f63c3e11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="assets/styles.css?v=93341c63">
+<link rel="stylesheet" href="assets/styles.css?v=27ec716f">
 <link rel="stylesheet" href="assets/upgrade.css?v=9be165e3">
-<link rel="stylesheet" href="assets/home.css?v=12d32299">
+<link rel="stylesheet" href="assets/home.css?v=8c9b3e82">
 <script src="assets/scenario.js?v=bf9215f5" defer></script>
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
-<script src="assets/explore.js?v=52c59201" defer></script>
-<script src="assets/app.js?v=c4da7f4a" defer></script>
+<script src="assets/explore.js?v=878ccde0" defer></script>
+<script src="assets/app.js?v=fcf29fb8" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -74,12 +74,15 @@
   <div class="verdict">
     <div class="verdict-knesset" aria-hidden="true" id="hero-art"></div>
     <div class="wrap verdict-in">
-      <p class="eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
+      <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
       <h1 id="verdict-head">טוען נתונים…</h1>
       <p class="lede" id="verdict-lede"></p>
-      <div class="switch home-switch" role="group" aria-label="אופן החישוב">
-        <button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button>
-        <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
+      <div class="home-forecast-controls">
+        <div class="switch home-switch" role="group" aria-label="אופן החישוב">
+          <button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button>
+          <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
+        </div>
+        <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
       </div>
       <div class="readout" id="home-readout"></div>
     </div>
@@ -112,13 +115,18 @@
     </div>
 
     <section class="sec polls-sec">
+      <div class="poll-view-tabs" role="group" aria-label="תצוגת הסקרים">
+        <button type="button" data-pollview="cards" aria-pressed="true"><span class="view-icon" aria-hidden="true">▦</span><span>כל הסקרים</span></button>
+        <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
+        <button type="button" data-pollview="average" aria-pressed="false"><span class="view-icon" aria-hidden="true">∿</span><span>ממוצע סקרים</span></button>
+      </div>
       <div class="controls">
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
-        <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label><div class="switch gold controls-view" role="group" aria-label="תצוגה"><button type="button" data-pollview="cards" aria-pressed="true">כרטיסים</button><button type="button" data-pollview="compare" aria-pressed="false">השוואת מכונים</button></div><div class="count" id="poll-count" aria-live="polite"></div>
+        <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label><div class="count" id="poll-count" aria-live="polite"></div>
       </div>
       <details class="poll-data-note"><summary>איך לקרוא את הנתונים</summary><p>מנדטים כפי שנשמרו במאגר, ללא תיקוני מודל. הרשימות מסודרות בכל תצוגה מהמנדטים הרבים למעטים. 0 = אפס מנדטים; — = אין נתון במאגר. כל כרטיס מציג את הסקר האחרון של כלי התקשורת, ובורר התאריך שבו מחליף לסקר קודם שלו. הפס בראש כל כרטיס הוא חלוקת הגושים, והוי מסמן גוש שהגיע ל־61.</p></details>
-      <div id="icon-filters"></div><section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div>
+      <div id="icon-filters"></div><section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 
     <section class="sec">
@@ -144,13 +152,21 @@
 
 <!-- ==================== מדד אמינות המכונים ==================== -->
 <section class="view" id="view-e2022" aria-label="מדד אמינות מכוני הסקרים">
-  <div class="wrap"><p class="notice">ארכיון 2021 מוצג ממקור משני וטרם אומת מול מסמכי ועדת הבחירות. עד השלמת הבדיקה הוא אינו משתתף במשקלי התחזית הראשית. ציוני 2021 בעמוד הם חישוב זמני על המאגר הקיים.</p></div>
   <div class="wrap">
     <div class="page-intro">
       <p class="kicker">כיול אמינות · כנסת 24 וכנסת 25</p>
       <h2>מדד אמינות מכוני הסקרים</h2>
-      <p>כאן נבדוק אילו מכוני סקרים היו קרובים לתוצאות האמת, ואילו נטו להחמיץ את התמונה הרחבה. המדד מכויל על שתי מערכות בחירות — הכנסת ה־24 והכנסת ה־25 — כל אחת בחלון של 30 הימים שלפני יום הבחירות. מכון שהופיע בשתיהן מקבל את ממוצע שני הציונים במשקל שווה.</p>
     </div>
+
+    <section class="sec reliability-ranking">
+      <div class="sec-head"><div><p class="kicker">הדירוג</p><h2>המכונים וציוני האמינות</h2></div></div>
+      <div class="ranks" id="rank-list"></div>
+    </section>
+
+    <section class="sec reliability-explanation">
+      <div class="sec-head"><div><p class="kicker">איך לקרוא את המדד</p><h2>למה כל מכון קיבל את הציון שלו</h2></div></div>
+      <p class="data-explainer">המדד בודק אילו מכוני סקרים היו קרובים לתוצאות האמת ואילו נטו להחמיץ את התמונה הרחבה. הוא מכויל על שתי מערכות בחירות — הכנסת ה־24 והכנסת ה־25 — בכל אחת מ־30 הימים שלפני יום הבחירות. מכון שהופיע בשתיהן מקבל את ממוצע שני הציונים במשקל שווה.</p>
+    </section>
 
     <section class="sec calibration-sec">
       <div class="calibration-strip" id="calibration-strip"></div>
@@ -178,7 +194,6 @@
         <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות ורציפות לאורך חודש הכיול</span></div>
       </div>
       <div class="notice warm" style="margin:16px 0"><span class="ic">+</span><p style="margin:0"><b>הציון משתי מערכות:</b> כל מערכת נספרת במשקל שווה, כך שמכון עם הרבה סקרים באחת מהן אינו מקבל יתרון על כמות. ליד כל מכון מופיע הפירוט לפי כנסת, ומכון שהופיע רק באחת מהן מסומן ככזה.</p></div>
-      <div class="ranks" id="rank-list"></div>
     </section>
 
     <section class="sec">

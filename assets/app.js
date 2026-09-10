@@ -670,7 +670,6 @@ function renderPolls() {
     [new Set(polls.map(p => p.channelHebrewName)).size, "כלי תקשורת"],
     [days, "ימים מכוסים"]
   ].map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
-  $("#poll-count").textContent = `${new Set(rows.map(outletKey)).size} כלי תקשורת · ${rows.length} סקרים בסינון`;
 
   renderPollCards(rows, polls);
   renderPartyProfile(rows);
@@ -683,7 +682,7 @@ function renderFirmCards() {
   const active = [...new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm))];
   $("#firm-cards").innerHTML = S.firms.firms.filter(f => active.includes(f.id)).map(f => {
     const st = S.stats.find(s => s.firm === f.id);
-    return `<article class="card pad" style="border-top:4px solid ${f.calibrated ? "#17457F" : "#5B4B8A"}">
+    return `<article class="card pad firm-card" data-firm="${esc(f.id)}" role="button" tabindex="0" style="border-top:4px solid ${f.calibrated ? "#17457F" : "#5B4B8A"}">
       <div style="display:flex;align-items:center;gap:12px">
         ${logoBox(f, 46)}
         <div style="min-width:0"><h3 style="font-size:1.05rem">${esc(f.he)}</h3>
@@ -773,7 +772,7 @@ function render2022() {
   const comps = [["blocScore", "דיוק בגושים", "#17457F"], ["partyScore", "דיוק במפלגות", "#B8862B"], ["consistencyScore", "עקביות", "#5B4B8A"]];
   $("#rank-list").innerHTML = stats.map(it => {
     const m = S.firms.firms.find(f => f.id === it.firm) || { he: it.firm, short: "?" };
-    return `<article class="rank">
+    return `<article class="rank" data-firm="${esc(it.firm)}" role="button" tabindex="0" aria-label="${esc(m.he)} — פירוט הציון">
       ${logoBox(m, 52)}
       <div style="min-width:0"><strong style="display:block">${esc(m.he)}</strong>
         <span style="color:var(--ink-3);font-size:.75rem">${it.n} סקרי כיול</span>
@@ -799,7 +798,7 @@ function render2022() {
       const src = f.calibrationFirm && rankedIds.has(f.calibrationFirm)
         ? `יורש את ציון ${esc(S.firms.firms.find(x => x.id === f.calibrationFirm)?.he || f.calibrationFirm)}`
         : "אין סדרת כיול · משקל ניטרלי";
-      return `<article class="rank rank-nocalib">
+      return `<article class="rank rank-nocalib" data-firm="${esc(f.id)}" role="button" tabindex="0" aria-label="${esc(f.he)} — פירוט הציון">
         ${logoBox(f, 52)}
         <div style="min-width:0"><strong style="display:block">${esc(f.he)}</strong>
           <span style="color:var(--ink-3);font-size:.75rem">${src}</span>
@@ -868,10 +867,97 @@ function renderArchive() {
     }).join("") || `<tr><td colspan="${blocCols.length + 4}" class="empty">לא נמצאו סקרים.</td></tr>`}</tbody>`;
 }
 
+/* באנר פירוט למכון: מה הוא חזה בחודש הכיול, מה יצא בפועל, ולמה הציון. */
+function openFirm(firmId) {
+  const meta = S.firms.firms.find(f => f.id === firmId) || { id: firmId, he: firmId, short: "?" };
+  const calibId = calibrationId(meta);
+  const st = S.stats.find(x => x.firm === calibId);
+  const heir = meta.calibrationFirm && meta.calibrationFirm !== meta.id
+    ? S.firms.firms.find(f => f.id === meta.calibrationFirm) : null;
+  const dlg = $("#dlg");
+  dlg.classList.add("wide");
+
+  const head = `<div class="fd-head">${logoBox(meta, 56)}
+      <div><h2>${esc(meta.he)}</h2><p>${esc(meta.lead || "")}${meta.outlets?.length ? " · מפרסם ב־" + esc(meta.outlets.join(", ")) : ""}</p></div>
+      <div class="fd-score"><b class="num">${r1(firmScore(meta))}</b><span>${meta.calibrated ? "ציון אמינות" : "משקל ניטרלי"}</span></div>
+    </div>
+    <p class="fd-about">${esc(meta.about || "")}</p>`;
+
+  if (!meta.calibrated || !st) {
+    $("#dlg-body").innerHTML = head + `<div class="notice" style="margin-top:14px"><span class="ic">i</span><p style="margin:0">
+      למכון הזה אין סדרת סקרים בחודש הכיול של הכנסת ה־25, ולכן אי אפשר למדוד אותו מול תוצאות האמת. הוא נכנס לתחזית במשקל ניטרלי של 70 מתוך 100 — לא עונש ולא פרס, פשוט חוסר נתונים. ברגע שתהיה תוצאת בחירות חדשה, הוא יכויל כמו כולם.</p></div>`;
+    dlg.showModal();
+    return;
+  }
+
+  const heirNote = heir ? `<div class="notice warm" style="margin-top:12px"><span class="ic">↻</span><p style="margin:0">
+      <b>${esc(meta.he)}</b> נמדד לפי סדרת הכיול של <b>${esc(heir.he)}</b> — אותו סוקר ואותה שיטה, תחת שם חדש. הפירוט למטה הוא של ${esc(heir.he)} ב־2022.</p></div>` : "";
+
+  const comps = [
+    ["blocScore", "דיוק בגושים", "60%", "#17457F"],
+    ["partyScore", "דיוק במפלגות", "30%", "#B8862B"],
+    ["consistencyScore", "עקביות", "10%", "#5B4B8A"]
+  ];
+  const scoreStrip = `<div class="fd-comps">${comps.map(([k, l, w, c]) =>
+      `<div style="--c:${c}"><span>${l} <em>${w}</em></span><b class="num">${r1(st[k])}</b><i><u style="width:${clamp(st[k])}%"></u></i></div>`).join("")}
+    <div class="fd-final"><span>ציון סופי</span><b class="num">${r1(st.score)}</b><small>0.6×${r1(st.blocScore)} + 0.3×${r1(st.partyScore)} + 0.1×${r1(st.consistencyScore)}</small></div>
+  </div>`;
+
+  /* פירוט לכל מערכת בחירות שהמכון כויל עליה (כיום: הכנסת ה־25 בלבד) */
+  const runs = (st.elections || []).filter(r => S.elections.some(e => e.year === r.year));
+  const sections = runs.map(run => {
+    const el = S.elections.find(e => e.year === run.year);
+    const actual = el.data.actual, defs = el.data.blocs || BLOCS_2022, aB = histBlocs(actual, defs);
+    const polls = run.polls.slice().sort((a, b) => a.date.localeCompare(b.date));
+    const keys = Object.keys(actual);
+    const pAvg = Object.fromEntries(keys.map(k => [k, avg(polls.map(p => p.p[k]))]));
+    const blocRows = Object.entries(defs).map(([k, ids]) => {
+      const d = run.blocMean[k] - aB[k];
+      return `<tr class="fd-bloc"><th>${esc(blocLabel(k, ids))}</th><td class="n">${r1(run.blocMean[k])}</td><td class="n">${aB[k]}</td>
+        <td class="n"><span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= 3 ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span></td></tr>`;
+    }).join("");
+    const partyRows = keys.sort((a, b) => actual[b] - actual[a]).map(k => {
+      const d = pAvg[k] - actual[k];
+      return `<tr><th>${esc(HIST_PARTY_HE[k] || k)}</th><td class="n">${r1(pAvg[k])}</td><td class="n">${actual[k]}</td>
+        <td class="n"><span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= 2 ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span></td></tr>`;
+    }).join("");
+    const worst = keys.map(k => ({ k, d: pAvg[k] - actual[k] })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d))[0];
+    const nb = run.blocMean.netanyahu - aB.netanyahu;
+    const why = [
+      `<b>גושים (${r1(run.blocScore)}):</b> סכום הפערים המוחלטים בשלושת הגושים הוא ${r1(run.blocAbs)} מנדטים — ${nb === 0 ? "גוש נתניהו נחזה במדויק" : `גוש נתניהו ${nb > 0 ? "הוערך ביתר" : "הוערך בחסר"} ב־${r1(Math.abs(nb))} מנדטים בממוצע`}. כל מנדט פער ממוצע לגוש מוריד 10 נקודות.`,
+      `<b>מפלגות (${r1(run.partyScore)}):</b> הטעות הממוצעת לרשימה היא ${r1(run.partyMae)} מנדטים (15 נקודות לכל מנדט). הפספוס הגדול ביותר: ${esc(HIST_PARTY_HE[worst.k] || worst.k)}, ${worst.d > 0 ? "יותר מדי" : "פחות מדי"} ב־${r1(Math.abs(worst.d))}.`,
+      `<b>עקביות (${r1(run.consistencyScore)}):</b> גוש נתניהו זז בין הסקרים בסטיית תקן של ${r1(100 - run.stability > 0 ? (100 - run.stability) / 25 : 0)} מנדטים (יציבות ${r1(run.stability)}), והרשימות בממוצע ${r1(run.partyStability != null ? (100 - run.partyStability) / 50 : 0)} מנדטים (יציבות ${r1(run.partyStability ?? 0)}). 65% לגוש, 35% למפלגות.`
+    ];
+    const pollList = polls.map(p => {
+      const b = histBlocs(p.p, defs), dev = Math.abs(b.netanyahu - aB.netanyahu);
+      const mae = avg(keys.map(k => Math.abs(p.p[k] - actual[k])));
+      return `<tr><td style="white-space:nowrap">${esc(p.date.slice(5))}</td><td>${esc(p.publisher || "")}</td>
+        <td class="n"><span class="chip ${dev <= 1 ? "good" : dev >= 3 ? "bad" : ""}">${b.netanyahu}</span></td><td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td></tr>`;
+    }).join("");
+    return `<section class="fd-sec">
+      <h3>${esc(el.election)} · ${run.n} סקרים בחודש שלפני הבחירות · ציון ${r1(run.score)}</h3>
+      <div class="fd-why">${why.map(t => `<p>${t}</p>`).join("")}</div>
+      <div class="fd-tables">
+        <div class="tablewrap"><table><caption>ממוצע הסקרים של המכון מול התוצאה</caption>
+          <thead><tr><th>רשימה / גוש</th><th class="n">המכון</th><th class="n">בפועל</th><th class="n">פער</th></tr></thead>
+          <tbody>${blocRows}${partyRows}</tbody></table></div>
+        <div class="tablewrap"><table><caption>הסקרים, אחד־אחד</caption>
+          <thead><tr><th>תאריך</th><th>פרסום</th><th class="n">גוש נתניהו (${aB.netanyahu})</th><th class="n">טעות/רשימה</th></tr></thead>
+          <tbody>${pollList}</tbody></table></div>
+      </div>
+    </section>`;
+  }).join("");
+
+  $("#dlg-body").innerHTML = head + heirNote + scoreStrip + sections;
+  dlg.showModal();
+  dlg.scrollTop = 0;
+}
+
 function openPoll(i) {
   const el = curElection();
   const p = el.data.polls[i], m = S.firms.firms.find(f => f.id === p.firm) || { he: p.firm || "ללא שיוך מכון" };
   const target = scenActual();
+  $("#dlg").classList.remove("wide");
   $("#dlg-body").innerHTML = `<h2 style="font-size:1.6rem">${esc(m.he)} · ${esc(p.publisher)}</h2>
     <p style="color:var(--ink-3);font-size:.82rem;margin:6px 0 0">${esc(p.date)} · ${esc(el.election)} · מול ${(S.scen === "counterfactual" && counterfactualAvailable()) ? "תרחיש מרצ עוברת" : "תוצאת האמת"}${p.source ? ` · <a href="${esc(p.source)}" target="_blank" rel="noopener">המקור</a>` : ""}</p>
     <div class="dgrid">${Object.keys(target).map(k => {
@@ -1486,6 +1572,14 @@ function wire() {
 
   $("#arch-table").addEventListener("click", e => {
     const b = e.target.closest("[data-poll]"); if (b) openPoll(Number(b.dataset.poll));
+  });
+  document.addEventListener("click", e => {
+    const f = e.target.closest("[data-firm]");
+    if (f && !e.target.closest("a")) openFirm(f.dataset.firm);
+  });
+  document.addEventListener("keydown", e => {
+    const f = e.target.closest?.("[data-firm][role=button]");
+    if (f && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openFirm(f.dataset.firm); }
   });
   $("#dlg .dclose").addEventListener("click", () => $("#dlg").close());
   $("#dlg").addEventListener("click", e => { if (e.target === $("#dlg")) $("#dlg").close(); });

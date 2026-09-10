@@ -164,3 +164,37 @@ footer p{ font-size:.77rem; line-height:1.55; margin:8px 0 }
   #view-home .handoff{ margin-top:10px }
 }
 @media print{ #view-home.on{ display:block } }
+
+/* ---------- 4. באנר פירוט למכון (לחיצה על כרטיס מכון) ---------- */
+[data-firm][role="button"]{ cursor:pointer; transition:transform .12s, box-shadow .12s, border-color .12s }
+[data-firm][role="button"]:hover{ transform:translateY(-2px); box-shadow:var(--shadow-m); border-color:var(--navy) }
+dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
+.fd-head{ display:flex; align-items:center; gap:14px; padding-inline-end:44px }
+.fd-head h2{ font-size:1.45rem; margin:0 }
+.fd-head p{ margin:3px 0 0; color:var(--ink-3); font-size:.82rem }
+.fd-score{ margin-inline-start:auto; text-align:center; padding:8px 16px; border:1px solid var(--rule); border-radius:12px; background:var(--paper-3) }
+.fd-score b{ display:block; font-family:var(--serif); font-size:2rem; font-weight:800; line-height:1; color:var(--navy) }
+.fd-score span{ font-size:.7rem; color:var(--ink-3); font-weight:700 }
+.fd-about{ margin:12px 0 0; color:var(--ink-2); font-size:.9rem; line-height:1.6 }
+.fd-comps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) minmax(150px,auto); gap:10px; margin-top:16px }
+.fd-comps>div{ padding:10px 12px; border:1px solid var(--rule); border-radius:10px; background:var(--paper-2) }
+.fd-comps>div>span{ display:block; font-size:.74rem; font-weight:700; color:var(--ink-3) }
+.fd-comps>div>span em{ font-style:normal; color:var(--c); }
+.fd-comps>div>b{ display:block; font-family:var(--serif); font-size:1.5rem; font-weight:800; line-height:1.1; color:var(--ink) }
+.fd-comps i{ display:block; height:5px; margin-top:6px; border-radius:5px; background:var(--rule-2); overflow:hidden }
+.fd-comps i u{ display:block; height:100%; background:var(--c); border-radius:5px }
+.fd-final{ background:var(--navy)!important; border-color:var(--navy)!important; color:#fff }
+.fd-final span{ color:#C7D3E0!important } .fd-final b{ color:#fff!important; font-size:1.8rem!important }
+.fd-final small{ display:block; margin-top:4px; font-size:.68rem; color:#C7D3E0; font-variant-numeric:tabular-nums; direction:ltr; text-align:end }
+.fd-sec{ margin-top:18px; padding-top:14px; border-top:1px solid var(--rule) }
+.fd-sec h3{ font-size:1.05rem; margin:0 0 8px }
+.fd-why{ display:grid; gap:4px; padding:10px 14px; border-radius:10px; background:var(--paper-3); border:1px solid var(--rule-2) }
+.fd-why p{ margin:0; font-size:.86rem; line-height:1.6; color:var(--ink-2) }
+.fd-why b{ color:var(--ink) }
+.fd-tables{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:12px; margin-top:12px; align-items:start }
+.fd-tables .tablewrap{ max-height:none; box-shadow:none }
+.fd-tables table{ min-width:0 }
+.fd-tables th,.fd-tables td{ padding:6px 10px; font-size:.82rem }
+.fd-tables tr.fd-bloc th{ font-weight:800; color:var(--navy) }
+.fd-tables tr.fd-bloc td{ background:rgba(18,52,92,.04) }
+@media(max-width:760px){ .fd-comps{ grid-template-columns:1fr 1fr } .fd-tables{ grid-template-columns:1fr } .fd-head{ flex-wrap:wrap } }

@@ -16,12 +16,12 @@
 <link rel="stylesheet" href="assets/styles.css?v=68d7707e">
 <link rel="stylesheet" href="assets/upgrade.css?v=2900bdd2">
 <link rel="stylesheet" href="assets/home.css?v=9bcfc9eb">
-<link rel="stylesheet" href="assets/fit.css?v=1ca10e68">
+<link rel="stylesheet" href="assets/fit.css?v=c5915756">
 <script src="assets/scenario.js?v=bf9215f5" defer></script>
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
 <script src="assets/explore.js?v=92866412" defer></script>
-<script src="assets/app.js?v=307b4d6f" defer></script>
+<script src="assets/app.js?v=661b08b3" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -121,12 +121,11 @@
     </div>
 
     <section class="sec polls-sec">
-      <div class="controls">
+      <div class="controls" hidden>
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
-        <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label><div class="count" id="poll-count" aria-live="polite"></div>
+        <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label>
       </div>
-      <details class="poll-data-note"><summary>איך לקרוא את הנתונים</summary><p>מנדטים כפי שנשמרו במאגר, ללא תיקוני מודל. הרשימות מסודרות בכל תצוגה מהמנדטים הרבים למעטים. 0 = אפס מנדטים; — = אין נתון במאגר. כל כרטיס מציג את הסקר האחרון של כלי התקשורת, ובורר התאריך שבו מחליף לסקר קודם שלו. הפס בראש כל כרטיס הוא חלוקת הגושים, והוי מסמן גוש שהגיע ל־61.</p></details>
       <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 

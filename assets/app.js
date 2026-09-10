@@ -52,7 +52,7 @@ const ELECTION_TIMELINE = {
 
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"scenario", scen:"actual",
-            homeView:"bars", focusParty:"", compareIds:null, trendParty:"", pollView:"cards", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
+            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"cards", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
             calibrations:[], elections:[], calibYear:2022, leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */
@@ -477,6 +477,7 @@ function homeHeadline(est, seats, blocTot) {
 
 /* שינוי מול העדכון הקודם ששמור ב-forecast-history.json. */
 function homeDelta(id) {
+  if (S.homeHistory !== "current") return null;
   const hist = S.forecastHistory;
   if (!hist || !Array.isArray(hist.snapshots) || hist.snapshots.length < 2) return null;
   const snaps = hist.snapshots.slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
@@ -520,7 +521,8 @@ function buildHomePrintSheet(est, seats, blocTot) {
     .filter(r => (r.seats || 0) > 0 || r.below != null)
     .sort((a, b) => (b.seats || 0) - (a.seats || 0) || (b.below || 0) - (a.below || 0));
   const LA = (blocTot.Left || 0) + (blocTot.Arabs || 0) + (blocTot.Unknown || 0);
-  box.innerHTML = `<h2>לוח המנדטים · ${S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר"} · ${heDate(S.cur.generatedAt)}</h2>
+  const shownAt = S.homeHistory === "current" ? S.cur.generatedAt : S.homeHistory;
+  box.innerHTML = `<h2>לוח המנדטים · ${S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר"} · ${heDate(shownAt)}</h2>
     <table><thead><tr><th>מפלגה</th><th>מנהיג/ה</th><th>גוש</th><th class="n">מנדטים</th></tr></thead><tbody>${
       rows.map(r => `<tr><th scope="row">${esc(partyMeta(r.id).name)}</th><td>${esc(PARTY_LEADER[normId(r.id)] || "—")}</td><td>${esc(bl[partyMeta(r.id).alignment] || "—")}</td><td class="n">${r.below != null ? `0 (כ־${r1(r.below)}%)` : r.seats}</td></tr>`).join("")
     }</tbody></table>
@@ -529,9 +531,30 @@ function buildHomePrintSheet(est, seats, blocTot) {
 
 function renderHome() {
   renderElectionTimer();
-  const est = forecast(S.mode, HIDE_FROM_HOME);
-  const seats = largestRemainder(est.parties);
+  const history = (S.forecastHistory?.snapshots || []).slice().sort((a,b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  const dayKey = value => new Date(value).toLocaleDateString('en-CA', {timeZone:'Asia/Jerusalem'});
+  const currentDay = dayKey(S.cur.generatedAt);
+  const byDay = new Map();
+  history.forEach(s => {
+    const key = dayKey(s.updatedAt), age = Math.round((Date.parse(currentDay) - Date.parse(key)) / 864e5);
+    if (age >= 1 && age <= 10 && !byDay.has(key)) byDay.set(key, s);
+  });
+  const historySelect = $('#home-history'), choices = [...byDay.values()];
+  historySelect.innerHTML = `<option value="current">העדכון הנוכחי</option>` + choices.map(s => {
+    const daysAgo = Math.round((Date.parse(currentDay) - Date.parse(dayKey(s.updatedAt))) / 864e5);
+    const label = daysAgo === 1 ? 'אתמול' : daysAgo === 2 ? 'שלשום' : new Date(s.updatedAt).toLocaleDateString('he-IL',{timeZone:'Asia/Jerusalem',day:'numeric',month:'numeric'});
+    return `<option value="${esc(s.updatedAt)}">${label} · ${new Date(s.updatedAt).toLocaleTimeString('he-IL',{timeZone:'Asia/Jerusalem',hour:'2-digit',minute:'2-digit'})}</option>`;
+  }).join('');
+  if (S.homeHistory !== 'current' && !history.some(s => s.updatedAt === S.homeHistory)) S.homeHistory = 'current';
+  historySelect.value = S.homeHistory;
+  const snapshot = S.homeHistory === 'current' ? null : history.find(s => s.updatedAt === S.homeHistory);
+  const snapshotSeats = snapshot?.[S.mode === 'weighted' ? 'weighted' : 'scenario'];
+  const est = snapshotSeats ? { parties:{...snapshotSeats}, rawFull:{...snapshotSeats}, below:{} } : forecast(S.mode, HIDE_FROM_HOME);
+  const seats = snapshotSeats ? {...snapshotSeats} : largestRemainder(est.parties);
   const belowEntries = Object.entries(est.below || {});
+  $('#home-eyebrow').textContent = snapshot
+    ? `תחזית ארכיון · ${heDate(snapshot.updatedAt)} · ${snapshot.polls || '—'} סקרים`
+    : 'תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר';
 
   const blocTot = {};
   Object.entries(seats).forEach(([id, n]) => {
@@ -1398,6 +1421,7 @@ function wire() {
     $$("[data-mode]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     renderHome();
   }));
+  $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
 
   $$("[data-scen]").forEach(b => b.addEventListener("click", () => {
     S.scen = b.dataset.scen;
@@ -1410,6 +1434,7 @@ function wire() {
     $$("[data-pollview]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     $("#polls-cards").hidden = S.pollView !== "cards";
     $("#polls-compare").hidden = S.pollView !== "compare";
+    $("#polls-average").hidden = S.pollView !== "average";
   }));
 
   ["#poll-firm", "#poll-outlet"].forEach(s => $(s).addEventListener("change", renderPolls));

@@ -86,8 +86,8 @@ function renderPollCards(rows, polls) {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
       const meta = partyMeta(id), col = BLOCS[meta.alignment].color;
-      const face = (S.leaders && S.leaders[id]) || LEADER_PLACEHOLDER;
-      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pface"><img src="${esc(face)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}';this.parentNode.classList.add('is-blank')"></span><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
+      const logo = meta.logo || '';
+      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pface party-logo${logo ? '' : ' is-blank'}">${logo ? `<img src="${esc(logo)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.classList.add('is-blank');this.parentNode.textContent='${esc(initials(meta.name))}'">` : esc(initials(meta.name))}</span><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* פס הגושים יושב מעל התוצאות, בלי מספרים ובלי פתיחה. גוש שעבר 61 מקבל וי. */
@@ -112,13 +112,55 @@ function renderPollCards(rows, polls) {
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
   $('#polls-compare').hidden = S.pollView !== 'compare';
+  $('#polls-average').hidden = S.pollView !== 'average';
   renderComparison(rows, stableIds);
+  renderPollAverage(rows);
   const trendIds = topPartyIds(Infinity).filter(id => rows.some(p => pollValue(p,id) !== null))
     .concat(stableIds.filter(id => rows.some(p => pollValue(p,id) !== null)));
   if (!trendIds.includes(S.trendParty)) S.trendParty = trendIds[0] || '';
   $('#trend-party').innerHTML = [...new Set(trendIds)].map(id=>`<option value="${esc(id)}">${esc(partyMeta(id).name)}</option>`).join('');
   $('#trend-party').value = S.trendParty;
 }
+function renderPollAverage(rows) {
+  const box = $('#average-results'), status = $('#average-status'), firmsBox = $('#average-firms');
+  if (!box || !status || !firmsBox) return;
+  const newest = Math.max(0, ...rows.map(parsePollDate));
+  const cutoff = newest - (S.avgDays - 1) * 864e5;
+  const included = rows.filter(p => parsePollDate(p) >= cutoff);
+  if (!included.length) {
+    status.textContent = 'אין סקרים בחלון הזמן שנבחר.';
+    box.innerHTML = firmsBox.innerHTML = '';
+    return;
+  }
+  const weightOf = p => S.avgWeight === 'reliability' ? firmScore(firmOf(p.sourceId).meta) / 100 : 1;
+  const ids = [...new Set(included.flatMap(p => p.parties.map(x => normId(x.id))))];
+  const averages = ids.map(id => {
+    const values = included.map(p => ({ p, v: pollValue(p, id) })).filter(x => x.v !== null);
+    const totalW = values.reduce((n, x) => n + weightOf(x.p), 0) || 1;
+    return { id, value: values.reduce((n, x) => n + x.v * weightOf(x.p), 0) / totalW, values };
+  }).filter(x => x.value > .25).sort((a, b) => b.value - a.value);
+  const blocSeats = { Right:0, Left:0, Arabs:0, Unknown:0 };
+  averages.forEach(x => { const al = partyMeta(x.id).alignment; blocSeats[al] = (blocSeats[al] || 0) + x.value; });
+  const total = Object.values(blocSeats).reduce((n, x) => n + x, 0) || 120;
+  const right = 100 * blocSeats.Right / total, left = 100 * blocSeats.Left / total, arabs = 100 * blocSeats.Arabs / total;
+  const start = new Date(Math.min(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
+  const end = new Date(newest).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
+  const sources = included.slice().sort((a,b)=>parsePollDate(b)-parsePollDate(a)).map(p => `<li>${esc(p.date)} · ${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)}</li>`).join('');
+  status.innerHTML = `<span><b>${included.length} סקרים</b> בין ${start} ל־${end}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון אמינות גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
+  const donutStyle = `background:conic-gradient(${BLOCS.Right.color} 0 ${right}%,${BLOCS.Left.color} ${right}% ${right+left}%,${BLOCS.Arabs.color} ${right+left}% ${right+left+arabs}%,#87919A ${right+left+arabs}% 100%)`;
+  const max = Math.max(1, ...averages.map(x => x.value));
+  box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות']].map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${r1(blocSeats[k])}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {
+    const meta=partyMeta(x.id), col=BLOCS[meta.alignment]?.color || '#87919A';
+    const detail=x.values.slice().sort((a,b)=>parsePollDate(b.p)-parsePollDate(a.p)).map(({p,v})=>`<li><span>${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)} · ${esc(p.date)}</span><b>${v}</b></li>`).join('');
+    return `<article class="average-party" tabindex="0" style="--c:${col}"><span class="average-logo">${meta.logo?`<img src="${esc(meta.logo)}" alt="" onerror="this.remove()">`:esc(initials(meta.name))}</span><strong>${esc(meta.name)}</strong><span class="average-bar"><i style="width:${100*x.value/max}%"></i></span><b class="average-number">${r1(x.value)}</b><div class="average-tooltip"><b>הסקרים שמרכיבים את הממוצע</b><ul>${detail}</ul></div></article>`;
+  }).join('')}</div>`;
+  const firmRows = [...new Set(included.map(p => firmOf(p.sourceId).firm))].map(id => {
+    const sample = included.find(p => firmOf(p.sourceId).firm === id), meta = firmOf(sample.sourceId).meta;
+    return { meta, score:firmScore(meta), n:included.filter(p => firmOf(p.sourceId).firm === id).length };
+  }).sort((a,b)=>b.score-a.score);
+  firmsBox.innerHTML = `<h3>המכונים בחלון לפי רמת אמינות</h3><div>${firmRows.map((f,i)=>`<span style="--firm:${esc(f.meta.color||'#64707C')}"><b>${i+1}</b>${logoBox(f.meta,30)}<strong>${esc(f.meta.he)}</strong><em>${r1(f.score)}</em><small>${f.n} סקרים</small></span>`).join('')}</div>`;
+}
+
 function renderPartyTrend(polls) {
   const id=S.trendParty, rows=polls.filter(p=>pollValue(p,id)!==null).sort((a,b)=>parsePollDate(a)-parsePollDate(b));
   if(!rows.length){$('#trend-box').innerHTML='<p class="empty">אין סקרים להצגת מגמה בסינון הנוכחי.</p>';return;}
@@ -150,6 +192,8 @@ function wireExploration() {
     $(`[data-card-outlet="${CSS.escape(sel.dataset.cardOutlet)}"]`)?.focus();
   });
   $('#compare-picker').addEventListener('change',e=>{const id=e.target.dataset.compareId;if(!id)return;S.compareIds=e.target.checked?[...S.compareIds,id].slice(0,3):S.compareIds.filter(x=>x!==id);renderPolls();$$('[data-compare-id]').find(x=>x.dataset.compareId===id)?.focus();});
+  $$('.average-days [data-avg-days]').forEach(b=>b.addEventListener('click',()=>{S.avgDays=Number(b.dataset.avgDays);$$('[data-avg-days]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderPolls();}));
+  $('#average-weight').addEventListener('change',e=>{S.avgWeight=e.target.value;renderPolls();});
   document.addEventListener('click',e=>{
     const select=e.target.closest('[data-select-party]');
     if(select){S.focusParty=S.focusParty===select.dataset.selectParty?'':select.dataset.selectParty;renderPolls();$('#poll-party').focus();}

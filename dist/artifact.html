@@ -1625,7 +1625,7 @@ html.show-open{ overflow:hidden }
 .show-now .now-k{ grid-row:1/3; font-size:.66rem; font-weight:800; letter-spacing:.08em; color:var(--s-gold); white-space:nowrap; text-align:center; padding-inline-end:12px; border-inline-end:1px solid rgba(221,170,66,.3); align-self:stretch; display:grid; place-items:center; max-width:110px; line-height:1.3 }
 .show-now .now-main{ font-size:1rem; font-weight:800; color:#fff; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
 .show-now .now-main b{ color:var(--s-gold) }
-.show-now .now-sub{ font-size:.8rem; color:#C9D6E2; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.show-now .now-sub{ font-size:.8rem; color:#C9D6E2; line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2 }
 .show-now .now-sub b{ color:#fff; font-family:var(--serif); font-variant-numeric:tabular-nums }
 .show-now.flash{ animation:show-flash .5s ease-out }
 @keyframes show-flash{ from{ background:rgba(221,170,66,.38); box-shadow:0 0 0 2px var(--s-gold) } to{ background:rgba(221,170,66,.07); box-shadow:none } }
@@ -1809,15 +1809,26 @@ html.show-open{ overflow:hidden }
   .show-grid{ grid-template-columns:minmax(200px,240px) minmax(0,1fr) minmax(200px,240px); gap:12px 16px; padding-inline:16px }
 }
 @media (max-width:900px){
-  .show-grid{ grid-template-columns:1fr 1fr; overflow:auto; align-content:start }
-  .show-center{ grid-column:1/-1; grid-row:1 }
-  .show-chart{ min-height:220px }
+  /* מסך צר: הכול בטור אחד שנגלל — המנוע, לוח "נטען עכשיו", הגרף, היומן, ואז המאגרים.
+     הקישורים והמילים הנוסעות נשענים על מיקומים קבועים ולכן מוסתרים כאן. */
+  .show-grid{ display:flex; flex-direction:column; gap:12px; overflow:auto; padding:4px 12px 16px }
+  .show-center{ flex:none; order:-1 }
+  .show-chart{ flex:none; height:250px }
+  .show-col{ display:grid; gap:10px; flex:none; min-height:auto }
+  .show-links, .show-word{ display:none }
   .show-steps{ display:none }
+  .show-top{ padding:9px 12px; gap:10px }
+  .show-title{ grid-template-columns:1fr; padding:8px 12px 2px; min-height:0 }
+  .show-title h2{ font-size:1.15rem; text-wrap:balance }
+  .show-title .sub{ font-size:.78rem }
+  .show-start>div{ padding:24px 20px 22px }
+  .show-start .lead{ font-size:.9rem }
   .show-lineup{ padding:48px 12px 14px }
   .lineup-row{ flex-wrap:wrap; gap:8px; justify-content:center }
   .lineup-blocs{ grid-template-columns:1fr 1fr; gap:10px }
   .lineup-track{ grid-column:1/-1; width:100%; grid-row:1 }
   .lb b{ font-size:1.5rem }
+  .lb span{ font-size:.72rem }
 }
 @media (prefers-reduced-motion:reduce){ #show{ display:none } }
 
@@ -5213,8 +5224,10 @@ function renderHaredHistory() {
   let slots = [], maxSeat = 1;
   function buildLineup(d) {
     const row = q('.lineup-row'), sr = stage.getBoundingClientRect();
-    const n = d.order.length, gap = 10;
-    const lw = Math.max(52, Math.min(150, Math.floor((sr.width - 64 - gap * (n - 1)) / n)));
+    const n = d.order.length, narrow = sr.width < 900, gap = narrow ? 8 : 10, pad = narrow ? 24 : 64;
+    /* מסך צר: שתי שורות של כרטיסים במקום שורה אחת ארוכה */
+    const perRow = narrow ? Math.ceil(n / 2) : n, rows = Math.ceil(n / perRow);
+    const lw = Math.max(40, Math.min(150, Math.floor((sr.width - pad - gap * (perRow - 1)) / perRow)));
     clones = d.order.map(id => {
       const real = home.querySelector(`.hcard[data-focus-party="${CSS.escape(id)}"]`), tr = real.getBoundingClientRect();
       const c = real.cloneNode(true);
@@ -5232,8 +5245,8 @@ function renderHaredHistory() {
     row.innerHTML = clones.map(c => `<div class="lineup-slot" style="--bc:${c.style.getPropertyValue('--bc')}"><div class="lineup-bar"><b class="num">0</b><i></i></div><div class="lineup-anchor" style="height:${c._h.toFixed(1)}px"></div></div>`).join('');
     const hd = lineupHeadline(d);
     q('.lineup-head h2').innerHTML = hd.h; q('.lineup-head .sub').innerHTML = hd.sub || '';
-    const used = q('.show-top').offsetHeight + q('.lineup-head').offsetHeight + q('.lineup-blocs').offsetHeight + anchorH + 100;
-    const barH = Math.max(110, Math.min(sr.height * .34, sr.height - used));
+    const avail = sr.height - q('.show-top').offsetHeight - q('.lineup-head').offsetHeight - q('.lineup-blocs').offsetHeight - 70;
+    const barH = Math.max(60, Math.min(sr.height * .34, avail / rows - anchorH - 24));
     row.style.setProperty('--bar-h', barH + 'px');
     slots = $$('.lineup-slot', row).map((s, i) => ({ el:s, bar:$('.lineup-bar i', s), num:$('.lineup-bar b', s), anchor:$('.lineup-anchor', s), clone:clones[i] }));
     slots.forEach(s => { const ar = s.anchor.getBoundingClientRect(); s.clone.style.transform = `translate(${ar.left}px,${ar.top}px) scale(${s.clone._scale})`; stage.appendChild(s.clone); });

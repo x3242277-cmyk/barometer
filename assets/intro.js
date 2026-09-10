@@ -364,8 +364,10 @@
   let slots = [], maxSeat = 1;
   function buildLineup(d) {
     const row = q('.lineup-row'), sr = stage.getBoundingClientRect();
-    const n = d.order.length, gap = 10;
-    const lw = Math.max(52, Math.min(150, Math.floor((sr.width - 64 - gap * (n - 1)) / n)));
+    const n = d.order.length, narrow = sr.width < 900, gap = narrow ? 8 : 10, pad = narrow ? 24 : 64;
+    /* מסך צר: שתי שורות של כרטיסים במקום שורה אחת ארוכה */
+    const perRow = narrow ? Math.ceil(n / 2) : n, rows = Math.ceil(n / perRow);
+    const lw = Math.max(40, Math.min(150, Math.floor((sr.width - pad - gap * (perRow - 1)) / perRow)));
     clones = d.order.map(id => {
       const real = home.querySelector(`.hcard[data-focus-party="${CSS.escape(id)}"]`), tr = real.getBoundingClientRect();
       const c = real.cloneNode(true);
@@ -383,8 +385,8 @@
     row.innerHTML = clones.map(c => `<div class="lineup-slot" style="--bc:${c.style.getPropertyValue('--bc')}"><div class="lineup-bar"><b class="num">0</b><i></i></div><div class="lineup-anchor" style="height:${c._h.toFixed(1)}px"></div></div>`).join('');
     const hd = lineupHeadline(d);
     q('.lineup-head h2').innerHTML = hd.h; q('.lineup-head .sub').innerHTML = hd.sub || '';
-    const used = q('.show-top').offsetHeight + q('.lineup-head').offsetHeight + q('.lineup-blocs').offsetHeight + anchorH + 100;
-    const barH = Math.max(110, Math.min(sr.height * .34, sr.height - used));
+    const avail = sr.height - q('.show-top').offsetHeight - q('.lineup-head').offsetHeight - q('.lineup-blocs').offsetHeight - 70;
+    const barH = Math.max(60, Math.min(sr.height * .34, avail / rows - anchorH - 24));
     row.style.setProperty('--bar-h', barH + 'px');
     slots = $$('.lineup-slot', row).map((s, i) => ({ el:s, bar:$('.lineup-bar i', s), num:$('.lineup-bar b', s), anchor:$('.lineup-anchor', s), clone:clones[i] }));
     slots.forEach(s => { const ar = s.anchor.getBoundingClientRect(); s.clone.style.transform = `translate(${ar.left}px,${ar.top}px) scale(${s.clone._scale})`; stage.appendChild(s.clone); });

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """חיתוך אחיד של דיוקנאות המנהיגים מהמקור ברזולוציה מלאה שבתיקיית תמונות/.
-הפלט: assets/leaders/<id>-full.jpg — יחס 4:5, ממורכז על הפנים, ~760px, איכות גבוהה.
+הפלט: assets/leaders/<id>-full.jpg — יחס 4:5, ממורכז על הפנים, 720px, איכות גבוהה.
 תמונות/ אינה נכנסת ל-Git; רק הפלט המעובד נשמר במאגר.
 
     python scripts/crop-leaders.py
@@ -28,7 +28,7 @@ MAP = {
     "הרשימה המשותפת.jpg": "reshima_meshutefet",
 }
 
-TARGET_W = 620
+TARGET_W = 720
 ASPECT = 4 / 5          # רוחב/גובה של הכרטיס
 SIDE = 0.092           # חיתוך המסגרת המעוטרת: ~9% מכל צד
 TOP = 0.055            # ~5.5% מלמעלה — בלי פינת המסגרת המעוגלת
@@ -55,7 +55,9 @@ def process(src_path, out_path, party):
 
     im = im.crop((x0, y0, x1, y1))
     im = im.resize((TARGET_W, int(round(TARGET_W / ASPECT))), Image.LANCZOS)
-    im.save(out_path, "JPEG", quality=82, optimize=True, progressive=True)
+    # באיורים יש הרבה קווים דקים. דחיסת JPEG רגילה והפחתת צבע יוצרות סביבם
+    # רעש וטשטוש ב-DPI גבוה, לכן שומרים ברזולוציה גדולה ובדגימת צבע מלאה.
+    im.save(out_path, "JPEG", quality=94, subsampling=0, optimize=True, progressive=True)
     return im.size, os.path.getsize(out_path)
 
 def main():

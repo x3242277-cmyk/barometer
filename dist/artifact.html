@@ -1506,6 +1506,10 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 .fd-tables th,.fd-tables td{ padding:6px 10px; font-size:.82rem }
 .fd-tables tr.fd-bloc th{ font-weight:800; color:var(--navy) }
 .fd-tables tr.fd-bloc td{ background:rgba(18,52,92,.04) }
+.fd-tables .fd-cf{ background:rgba(184,134,43,.07); border-inline-start:1px solid var(--rule) }
+.fd-tables thead th.fd-cf{ color:#8A6318 }
+.fd-tables thead th.fd-cf + th.fd-cf, .fd-tables td.fd-cf + td.fd-cf{ border-inline-start:0 }
+.fd-tables caption b{ color:#8A6318 }
 @media(max-width:760px){ .fd-comps{ grid-template-columns:1fr 1fr } .fd-tables{ grid-template-columns:1fr } .fd-head{ flex-wrap:wrap } }
 
 </style>
@@ -3574,16 +3578,20 @@ function openFirm(firmId) {
     const polls = run.polls.slice().sort((a, b) => a.date.localeCompare(b.date));
     const keys = Object.keys(actual);
     const pAvg = Object.fromEntries(keys.map(k => [k, avg(polls.map(p => p.p[k]))]));
+    /* לכנסת ה-25 נוספת עמודה "אילו מרצ עברה": כמה מהפער הוא בכלל אחוז החסימה */
+    const cf = run.year === 2022 ? COUNTERFACTUAL : null, cfB = cf ? histBlocs(cf, defs) : null;
+    const gap = (d, bad) => `<span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= bad ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span>`;
     const blocRows = Object.entries(defs).map(([k, ids]) => {
       const d = run.blocMean[k] - aB[k];
-      return `<tr class="fd-bloc"><th>${esc(blocLabel(k, ids))}</th><td class="n">${r1(run.blocMean[k])}</td><td class="n">${aB[k]}</td>
-        <td class="n"><span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= 3 ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span></td></tr>`;
+      return `<tr class="fd-bloc"><th>${esc(blocLabel(k, ids))}</th><td class="n">${r1(run.blocMean[k])}</td><td class="n">${aB[k]}</td><td class="n">${gap(d, 3)}</td>${
+        cf ? `<td class="n fd-cf">${cfB[k]}</td><td class="n fd-cf">${gap(run.blocMean[k] - cfB[k], 3)}</td>` : ""}</tr>`;
     }).join("");
     const partyRows = keys.sort((a, b) => actual[b] - actual[a]).map(k => {
       const d = pAvg[k] - actual[k];
-      return `<tr><th>${esc(HIST_PARTY_HE[k] || k)}</th><td class="n">${r1(pAvg[k])}</td><td class="n">${actual[k]}</td>
-        <td class="n"><span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= 2 ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span></td></tr>`;
+      return `<tr><th>${esc(HIST_PARTY_HE[k] || k)}</th><td class="n">${r1(pAvg[k])}</td><td class="n">${actual[k]}</td><td class="n">${gap(d, 2)}</td>${
+        cf ? `<td class="n fd-cf">${cf[k]}</td><td class="n fd-cf">${gap(pAvg[k] - cf[k], 2)}</td>` : ""}</tr>`;
     }).join("");
+    const cfStat = cf ? S.counterStats.find(x => x.firm === run.firm) : null;
     const worst = keys.map(k => ({ k, d: pAvg[k] - actual[k] })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d))[0];
     const nb = run.blocMean.netanyahu - aB.netanyahu;
     const why = [
@@ -3601,8 +3609,8 @@ function openFirm(firmId) {
       <h3>${esc(el.election)} · ${run.n} סקרים בחודש שלפני הבחירות · ציון ${r1(run.score)}</h3>
       <div class="fd-why">${why.map(t => `<p>${t}</p>`).join("")}</div>
       <div class="fd-tables">
-        <div class="tablewrap"><table><caption>ממוצע הסקרים של המכון מול התוצאה</caption>
-          <thead><tr><th>רשימה / גוש</th><th class="n">המכון</th><th class="n">בפועל</th><th class="n">פער</th></tr></thead>
+        <div class="tablewrap"><table><caption>ממוצע הסקרים של המכון מול התוצאה${cfStat ? ` · אילו מרצ הייתה עוברת, ציון המכון היה <b>${r1(cfStat.score)}</b> במקום ${r1(run.score)}` : ""}</caption>
+          <thead><tr><th>רשימה / גוש</th><th class="n">המכון</th><th class="n">בפועל</th><th class="n">פער</th>${cf ? `<th class="n fd-cf">אילו מרצ עברה</th><th class="n fd-cf">פער</th>` : ""}</tr></thead>
           <tbody>${blocRows}${partyRows}</tbody></table></div>
         <div class="tablewrap"><table><caption>הסקרים, אחד־אחד</caption>
           <thead><tr><th>תאריך</th><th>פרסום</th><th class="n">גוש נתניהו (${aB.netanyahu})</th><th class="n">טעות/רשימה</th></tr></thead>

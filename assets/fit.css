@@ -201,4 +201,8 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 .fd-tables th,.fd-tables td{ padding:6px 10px; font-size:.82rem }
 .fd-tables tr.fd-bloc th{ font-weight:800; color:var(--navy) }
 .fd-tables tr.fd-bloc td{ background:rgba(18,52,92,.04) }
+.fd-tables .fd-cf{ background:rgba(184,134,43,.07); border-inline-start:1px solid var(--rule) }
+.fd-tables thead th.fd-cf{ color:#8A6318 }
+.fd-tables thead th.fd-cf + th.fd-cf, .fd-tables td.fd-cf + td.fd-cf{ border-inline-start:0 }
+.fd-tables caption b{ color:#8A6318 }
 @media(max-width:760px){ .fd-comps{ grid-template-columns:1fr 1fr } .fd-tables{ grid-template-columns:1fr } .fd-head{ flex-wrap:wrap } }

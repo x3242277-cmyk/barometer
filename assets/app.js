@@ -502,7 +502,7 @@ function homeCard(id, seats, est) {
     ? `${m.name}, מתחת לאחוז החסימה, כ־${r1(belowPct)}%`
     : `${m.name}, ${seats[id] || 0} מנדטים${d ? `, ${d.cls === "up" ? "עלייה" : "ירידה"} של ${Math.abs(seats[id] - d.prev)} מהעדכון הקודם` : ""}`;
   return `<button type="button" class="hcard${isBelow ? " is-below" : ""}" style="--bc:${color}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
-    <span class="hcard-photo"><img src="${esc(photo)}" alt="" width="620" height="775" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}'"></span>
+    <span class="hcard-photo"><img src="${esc(photo)}" alt="" width="720" height="900" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}'"></span>
     <span class="hcard-body">
       <span class="hcard-seatline"><span class="hcard-seat num">${isBelow ? 0 : (seats[id] || 0)}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}</span>
       <span class="hcard-name">${esc(m.name)}</span>
@@ -673,9 +673,7 @@ function renderPolls() {
   $("#poll-count").textContent = `${new Set(rows.map(outletKey)).size} כלי תקשורת · ${rows.length} סקרים בסינון`;
 
   renderPollCards(rows, polls);
-  renderIconFilters();
   renderPartyProfile(rows);
-  renderPartyTrend(rows);
   renderFirmCards();
 }
 

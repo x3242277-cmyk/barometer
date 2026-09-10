@@ -115,11 +115,6 @@ function renderPollCards(rows, polls) {
   $('#polls-average').hidden = S.pollView !== 'average';
   renderComparison(rows, stableIds);
   renderPollAverage(rows);
-  const trendIds = topPartyIds(Infinity).filter(id => rows.some(p => pollValue(p,id) !== null))
-    .concat(stableIds.filter(id => rows.some(p => pollValue(p,id) !== null)));
-  if (!trendIds.includes(S.trendParty)) S.trendParty = trendIds[0] || '';
-  $('#trend-party').innerHTML = [...new Set(trendIds)].map(id=>`<option value="${esc(id)}">${esc(partyMeta(id).name)}</option>`).join('');
-  $('#trend-party').value = S.trendParty;
 }
 function renderPollAverage(rows) {
   const box = $('#average-results'), status = $('#average-status'), firmsBox = $('#average-firms');
@@ -134,25 +129,28 @@ function renderPollAverage(rows) {
   }
   const weightOf = p => S.avgWeight === 'reliability' ? firmScore(firmOf(p.sourceId).meta) / 100 : 1;
   const ids = [...new Set(included.flatMap(p => p.parties.map(x => normId(x.id))))];
-  const averages = ids.map(id => {
+  let averages = ids.map(id => {
     const values = included.map(p => ({ p, v: pollValue(p, id) })).filter(x => x.v !== null);
     const totalW = values.reduce((n, x) => n + weightOf(x.p), 0) || 1;
     return { id, value: values.reduce((n, x) => n + x.v * weightOf(x.p), 0) / totalW, values };
-  }).filter(x => x.value > .25).sort((a, b) => b.value - a.value);
+  }).filter(x => x.value > .25);
+  const rawTotal = averages.reduce((n, x) => n + x.value, 0) || 120;
+  const wholeSeats = largestRemainder(Object.fromEntries(averages.map(x => [x.id, x.value * 120 / rawTotal])), 120);
+  averages = averages.map(x => ({...x, seats:wholeSeats[x.id] || 0})).filter(x => x.seats > 0).sort((a, b) => b.seats - a.seats || b.value - a.value);
   const blocSeats = { Right:0, Left:0, Arabs:0, Unknown:0 };
-  averages.forEach(x => { const al = partyMeta(x.id).alignment; blocSeats[al] = (blocSeats[al] || 0) + x.value; });
-  const total = Object.values(blocSeats).reduce((n, x) => n + x, 0) || 120;
+  averages.forEach(x => { const al = partyMeta(x.id).alignment; blocSeats[al] = (blocSeats[al] || 0) + x.seats; });
+  const total = 120;
   const right = 100 * blocSeats.Right / total, left = 100 * blocSeats.Left / total, arabs = 100 * blocSeats.Arabs / total;
   const start = new Date(Math.min(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const end = new Date(newest).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const sources = included.slice().sort((a,b)=>parsePollDate(b)-parsePollDate(a)).map(p => `<li>${esc(p.date)} · ${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)}</li>`).join('');
   status.innerHTML = `<span><b>${included.length} סקרים</b> בין ${start} ל־${end}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון אמינות גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
   const donutStyle = `background:conic-gradient(${BLOCS.Right.color} 0 ${right}%,${BLOCS.Left.color} ${right}% ${right+left}%,${BLOCS.Arabs.color} ${right+left}% ${right+left+arabs}%,#87919A ${right+left+arabs}% 100%)`;
-  const max = Math.max(1, ...averages.map(x => x.value));
-  box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות']].map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${r1(blocSeats[k])}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {
+  const max = Math.max(1, ...averages.map(x => x.seats));
+  box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות']].map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${blocSeats[k]}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {
     const meta=partyMeta(x.id), col=BLOCS[meta.alignment]?.color || '#87919A';
     const detail=x.values.slice().sort((a,b)=>parsePollDate(b.p)-parsePollDate(a.p)).map(({p,v})=>`<li><span>${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)} · ${esc(p.date)}</span><b>${v}</b></li>`).join('');
-    return `<article class="average-party" tabindex="0" style="--c:${col}"><span class="average-logo">${meta.logo?`<img src="${esc(meta.logo)}" alt="" onerror="this.remove()">`:esc(initials(meta.name))}</span><strong>${esc(meta.name)}</strong><span class="average-bar"><i style="width:${100*x.value/max}%"></i></span><b class="average-number">${r1(x.value)}</b><div class="average-tooltip"><b>הסקרים שמרכיבים את הממוצע</b><ul>${detail}</ul></div></article>`;
+    return `<article class="average-party" tabindex="0" style="--c:${col}"><span class="average-logo">${meta.logo?`<img src="${esc(meta.logo)}" alt="" onerror="this.remove()">`:esc(initials(meta.name))}</span><strong>${esc(meta.name)}</strong><span class="average-bar"><i style="width:${100*x.seats/max}%"></i></span><b class="average-number">${x.seats}</b><div class="average-tooltip"><b>הסקרים שמרכיבים את הממוצע</b><ul>${detail}</ul></div></article>`;
   }).join('')}</div>`;
   const firmRows = [...new Set(included.map(p => firmOf(p.sourceId).firm))].map(id => {
     const sample = included.find(p => firmOf(p.sourceId).firm === id), meta = firmOf(sample.sourceId).meta;
@@ -183,7 +181,6 @@ function renderPartyTrend(polls) {
 function wireExploration() {
   $$('[data-homeview]').forEach(b=>b.addEventListener('click',()=>{S.homeView=b.dataset.homeview;$$('[data-homeview]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$$('[data-homepanel]').forEach(x=>x.hidden=x.dataset.homepanel!==S.homeView);}));
   $('#poll-party').addEventListener('change',e=>{S.focusParty=e.target.value;renderPolls();});
-  $('#trend-party').addEventListener('change',e=>{S.trendParty=e.target.value;renderPolls();});
   $('#polls-cards').addEventListener('change', e => {
     const sel = e.target.closest('[data-card-outlet]');
     if (!sel) return;

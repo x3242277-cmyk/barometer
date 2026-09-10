@@ -514,9 +514,21 @@ footer a{color:#EBD9AE}
   *,*::before,*::after{animation:none!important; transition:none!important}
 }
 @media print{
-  .tabsbar,.hero-art,.masthead-side{display:none}
-  .view{display:block!important}
-  body{background:#fff}
+  @page{size:A4;margin:10mm}
+  .tabsbar,.hero-art,.masthead-side,.controls,.poll-view-tabs,.btn,#print-btn,footer{display:none!important}
+  .view{display:none!important}
+  .view.on{display:block!important}
+  body{background:#fff;color:#111;font-size:9pt}
+  .wrap{width:100%;max-width:none;padding:0}
+  section{padding-block:8pt}
+  .card,.tablewrap,#compare-picker{box-shadow:none!important;break-inside:avoid}
+  .tablewrap{overflow:visible;max-height:none;border-color:#999}
+  table{min-width:0!important}
+  th,td,#compare-table th,#compare-table td{padding:4pt 6pt!important;font-size:8.5pt!important;min-width:0!important;line-height:1.2}
+  thead th{position:static}
+  #compare-table button{min-height:0;font-size:8.5pt;padding:0}
+  #compare-picker{grid-template-columns:repeat(3,1fr);gap:5pt;padding:6pt}
+  #compare-picker label{padding:5pt}
 }
 
 /* ---------- anecdote ---------- */
@@ -730,19 +742,19 @@ footer a{color:#EBD9AE}
 .poll-seatbar .poll-61{inset-inline-start:calc(100% * 61 / 120);top:0;bottom:0;width:2px;background:#17212D;box-shadow:0 0 0 1px #fff}
 .poll-seatbar .poll-61::after{display:none}
 .majority-note{font-size:.8rem;margin:7px 0;color:var(--ink-3)}
-#compare-picker{border:1px solid var(--rule);border-radius:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px;margin:0}
+#compare-picker{border:1px solid var(--rule);border-radius:12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px;margin:0}
 #compare-picker legend{padding:0 8px;font-weight:700;color:var(--navy)}
-#compare-picker label{display:grid;grid-template-columns:22px 1fr;align-items:center;gap:3px 8px;border:1px solid var(--rule);border-radius:8px;padding:12px;font-size:.88rem;cursor:pointer;background:var(--paper-2)}
+#compare-picker label{display:grid;grid-template-columns:20px 1fr;align-items:center;gap:2px 7px;border:1px solid var(--rule);border-radius:8px;padding:8px 10px;font-size:.84rem;cursor:pointer;background:var(--paper-2)}
 #compare-picker small{grid-column:2;font-size:.8rem;color:var(--ink-3)}
 #compare-picker input{width:18px;height:18px;accent-color:var(--navy)}
 #compare-picker label:has(input:disabled){opacity:.55}
 #compare-status{font-size:.85rem;color:var(--ink-3)}
 #compare-table{max-height:none}
 #compare-table table{width:100%;min-width:570px}
-#compare-table td{text-align:center;font-size:1.15rem;font-variant-numeric:tabular-nums}
+#compare-table td{text-align:center;font-size:1rem;font-variant-numeric:tabular-nums;padding:7px 12px}
 #compare-table th{text-align:center;white-space:normal;min-width:130px}
 #compare-table th:first-child{text-align:start}
-#compare-table button{min-height:44px;border:0;background:none;text-align:start;color:var(--navy);font-size:.9rem}
+#compare-table button{min-height:32px;border:0;background:none;text-align:start;color:var(--navy);font-size:.86rem;padding-block:3px}
 table caption{padding:14px;text-align:start;font-size:.84rem;color:var(--ink-3)}
 .trend-field{display:block;max-width:300px;margin-bottom:16px}
 .trend-field select{width:100%;min-height:44px}
@@ -849,6 +861,15 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 #compare-picker label{border-inline-start:4px solid var(--firm,var(--rule))}
 #compare-table th[style*="--firm"]{border-top:3px solid var(--firm,var(--rule))}
 
+/* כרטיסי המכונים: יותר מידע בכל מסך, בלי שטחים ריקים גדולים. */
+#firm-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#firm-cards .card{padding:14px;min-height:0}
+#firm-cards .card>p{margin-block:8px!important;font-size:.8rem!important;line-height:1.45}
+#firm-cards .card h3{margin:0}
+#firm-cards .orglogo{flex:none}
+@media(max-width:1100px){#firm-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){#firm-cards{grid-template-columns:1fr}}
+
 /* --- שלוש תצוגות הסקרים --- */
 .poll-view-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
 .poll-view-tabs button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:10px 16px;
@@ -915,6 +936,18 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
   #view-e2022 .ranks{grid-template-columns:repeat(2,minmax(0,1fr))}#view-e2022 .rank{aspect-ratio:auto;min-height:230px}
 }
 @media(max-width:500px){#view-e2022 .ranks{grid-template-columns:1fr}#view-e2022 .rank{min-height:0}}
+
+/* נשמר בסוף הקובץ כדי שעיצובי המסך לא יגברו על ההדפסה. */
+@media print{
+  #compare-picker{grid-template-columns:repeat(3,1fr)!important;gap:5pt!important;padding:6pt!important}
+  #compare-picker label{padding:5pt!important}
+  #firm-cards{grid-template-columns:repeat(2,1fr)!important;gap:6pt!important}
+  #firm-cards .card{padding:7pt!important}
+  .pollcards{grid-template-columns:repeat(2,1fr)!important;gap:7pt!important}
+  .poll-result-card header,.poll-result-card footer{padding:6pt 8pt!important}
+  .poll-list{padding:4pt 8pt!important}
+  .poll-list li{min-height:24pt!important}
+}
 
 
 /* --- כותרת עמוד קומפקטית: שורה אחת של כותרת, מונים ומתג תצוגה --- */

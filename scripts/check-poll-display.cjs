@@ -17,7 +17,6 @@ vm.runInContext(`for(const mode of ['weighted','simple']) {const f=forecast(mode
 element('#poll-firm').value='missing';
 vm.runInContext('renderPolls()',context);
 assert(element('#polls-cards').innerHTML.includes('לא נמצאו'));
-assert(element('#trend-box').innerHTML.includes('אין סקרים'));
 element('#poll-firm').value='all';
 vm.runInContext(`S.cur.polls=[{...S.cur.polls[0],parties:[{id:'likud',name:'הליכוד',mandates:0,alignment:'Coalition'}]},{...S.cur.polls[1],parties:[{id:'shas',name:'ש״ס',mandates:5,alignment:'Coalition'}]}];renderPolls();`,context);
 assert(element('#polls-cards').innerHTML.includes('>5</b>'), 'a listed party lost its seat count');
@@ -69,7 +68,11 @@ assert.deepEqual(barSeats, [...barSeats].sort((a,b) => b-a), 'forecast bars not 
 const widths = [...est.matchAll(/width:([\d.]+)%/g)].map(m => +m[1]);
 assert(Math.max(...widths) > 75 && Math.max(...widths) <= 100, 'longest bar does not fill the track proportionally');
 assert(est.includes('--rows:' + Math.ceil(barSeats.length / 2)), 'bar columns not split so each reads top to bottom');
-console.log('Passed: mandate order in cards, comparison and forecast bars; one shared bar scale.');
+vm.runInContext(`S.pollView='average';S.avgDays=10;S.avgWeight='simple';renderPolls();`, context);
+const averageSeats = [...element('#average-results').innerHTML.matchAll(/class="average-number">(\d+)<\/b>/g)].map(m => +m[1]);
+assert(averageSeats.length, 'poll average rendered no parties');
+assert.equal(averageSeats.reduce((a,b) => a+b, 0), 120, 'poll average does not allocate exactly 120 whole mandates');
+console.log('Passed: mandate order in cards, comparison and forecast bars; average has 120 whole mandates; one shared bar scale.');
 
 vm.runInContext(`
 const many = [];

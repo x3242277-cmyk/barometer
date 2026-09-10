@@ -105,7 +105,12 @@ jobs:
     if: needs.gate.outputs.proceed == 'yes'
     runs-on: ubuntu-latest
     steps:
+      # אירוע מתוזמן עלול להמתין שעות בתור, ולכן github.sha עשוי כבר להיות
+      # ישן כשהוא מתחיל. תמיד מתחילים מה-master העדכני בפועל.
       - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
 
@@ -118,19 +123,40 @@ jobs:
       - name: בנייה מחדש של הקובץ היחיד ב-dist
         run: node scripts/build-single-file.mjs
 
-      - name: קומיט אם השתנה משהו
+      - name: שמירה בטוחה גם אם master השתנה במקביל
         run: |
           git config user.name  "barometer-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/current-polls.json data/polls-archive.json data/forecast-history.json dist/index.html dist/artifact.html
-          if git diff --staged --quiet; then
-            echo "אין שינוי בסקרים — אין מה לקמט"
-            exit 0
-          fi
-          git commit -m "עדכון אוטומטי של הסקרים ($(TZ=Asia/Jerusalem date '+%d.%m.%Y %H:%M'))"
-          # master יכול היה לזוז מאז ה-checkout — למשוך לפני הדחיפה
-          git pull --rebase origin master
-          git push
+
+          for attempt in 1 2 3; do
+            git fetch origin master
+
+            # אם תהליך אחר הספיק לעדכן את master, לא מנסים למזג קובצי JSON
+            # שנוצרו אוטומטית. מתחילים מהגרסה החדשה ומייצרים אותם שוב.
+            if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/master)" ]; then
+              echo "master השתנה בזמן ההרצה — טוען את הגרסה החדשה ובונה שוב (ניסיון $attempt/3)"
+              git reset --hard origin/master
+              node scripts/update-polls.mjs
+              node scripts/record-forecast.mjs || echo "צילום התחזית דולג הפעם — לא חוסם את עדכון הסקרים"
+              node scripts/build-single-file.mjs
+            fi
+
+            git add data/current-polls.json data/polls-archive.json data/forecast-history.json dist/index.html dist/artifact.html
+            if git diff --staged --quiet; then
+              echo "אין שינוי בסקרים — אין מה לקמט"
+              exit 0
+            fi
+
+            git commit -m "עדכון אוטומטי של הסקרים ($(TZ=Asia/Jerusalem date '+%d.%m.%Y %H:%M'))"
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+
+            echo "עדכון מקביל הקדים את הדחיפה — מנסה מחדש"
+          done
+
+          echo "לא ניתן היה לשמור אחרי 3 ניסיונות"
+          exit 1
 
       # רק אחרי הצלחה. אם משהו קרס — המשבצת נשארת פתוחה והניסיון הבא,
       # בעוד 20 דקות, ינסה שוב.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T09:00:34.737Z",
+  "generatedAt": "2026-09-10T09:48:40.975Z",
   "selection": {
     "from": "2026-08-01",
     "year": 2026,
@@ -11,11 +11,11 @@
       "id": "20260909221942",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fkan.png?alt=media&token=18bf45ab-c3e9-46a1-acb2-4a779ea726e8",
       "channelHebrewName": "כאן 11",
       "sourceId": "kan_news",
-      "sourceUrl": "https://www.skarim.org/polls/kan-news-2026-09-09",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "yashar",
@@ -142,11 +142,11 @@
       "id": "20260909210720",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fhadashot2.png?alt=media&token=1d6a689b-5187-44b5-bb02-d0eb38544ae0",
       "channelHebrewName": "חדשות 12",
       "sourceId": "channel_12",
-      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-09-09",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "yashar",
@@ -259,11 +259,11 @@
       "id": "20260909205613",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fnews13.png?alt=media&token=ac6fb50f-bd06-44b4-948d-e50c9d5e5ae4",
       "channelHebrewName": "חדשות 13",
       "sourceId": "channel_13",
-      "sourceUrl": "https://www.skarim.org/polls/channel-13-2026-09-09",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "yashar",
@@ -376,11 +376,11 @@
       "id": "20260909204714",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FLOGO_i24NEWS.png?alt=media&token=9d581dfc-1f17-48b1-a564-774ba94a76f0",
       "channelHebrewName": "i24NEWS",
       "sourceId": "i24news",
-      "sourceUrl": "https://www.skarim.org/polls/i24news-2026-09-09",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "likud",
@@ -500,11 +500,11 @@
       "id": "20260909165725",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fic_walla.png?alt=media&token=b5fc3482-05c7-4b70-a6d3-a0bdee341593",
       "channelHebrewName": "וואלה",
       "sourceId": "walla",
-      "sourceUrl": "https://www.skarim.org/polls/walla-2026-09-09",
+      "sourceUrl": "https://news.walla.co.il/item/3866713",
       "parties": [
         {
           "id": "yashar",
@@ -624,11 +624,11 @@
       "id": "20260909080539",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fnews16_flag_1786459946331_Channel16_Logo.svg.jpg?alt=media&token=c06f9b58-97f3-44af-a434-cfedcbfaf287",
       "channelHebrewName": "ערוץ 16",
       "sourceId": "channel_16",
-      "sourceUrl": "https://www.skarim.org/polls/channel-16-2026-09-09",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "yashar",
@@ -741,11 +741,11 @@
       "id": "20260909075636",
       "date": "09.09.2026",
       "dateTimestamp": 1788912000000,
-      "publishedAt": 1788962040000,
+      "publishedAt": 1788912000000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FCh14IL.svg.png?alt=media&token=8891f536-88ed-477d-8e03-801651ccb944",
       "channelHebrewName": "ערוץ 14",
       "sourceId": "channel_14",
-      "sourceUrl": "https://www.skarim.org/polls/channel-14-2026-09-09",
+      "sourceUrl": "https://www.c14.co.il/article/1697000",
       "parties": [
         {
           "id": "likud",
@@ -872,11 +872,11 @@
       "id": "20260908201231",
       "date": "08.09.2026",
       "dateTimestamp": 1788825600000,
-      "publishedAt": 1788887340000,
+      "publishedAt": 1788825600000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fmaariv.png?alt=media&token=31804b8b-7b8a-4c43-9154-0bb23b677ab3",
       "channelHebrewName": "מעריב",
       "sourceId": "maariv",
-      "sourceUrl": "https://www.skarim.org/polls/maariv-2026-09-08",
+      "sourceUrl": "https://www.maariv.co.il/news/politics/article-1364250",
       "parties": [
         {
           "id": "yashar",
@@ -996,11 +996,11 @@
       "id": "20260907211248",
       "date": "07.09.2026",
       "dateTimestamp": 1788739200000,
-      "publishedAt": 1788801840000,
+      "publishedAt": 1788739200000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fhadashot2.png?alt=media&token=1d6a689b-5187-44b5-bb02-d0eb38544ae0",
       "channelHebrewName": "חדשות 12",
       "sourceId": "channel_12",
-      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-09-07",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "yashar",
@@ -1120,11 +1120,11 @@
       "id": "20260907202855",
       "date": "07.09.2026",
       "dateTimestamp": 1788739200000,
-      "publishedAt": 1788801840000,
+      "publishedAt": 1788739200000,
       "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FCh14IL.svg.png?alt=media&token=8891f536-88ed-477d-8e03-801651ccb944",
       "channelHebrewName": "ערוץ 14",
       "sourceId": "channel_14",
-      "sourceUrl": "https://www.skarim.org/polls/channel-14-2026-09-07",
+      "sourceUrl": "",
       "parties": [
         {
           "id": "likud",

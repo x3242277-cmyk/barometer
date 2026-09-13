@@ -1,0 +1,197 @@
+/* ============================================================
+   שכבת המבנה — נטענת אחרונה. מבנה בסגנון Linear (כותרת בשורה אחת,
+   מכולה צרה וממורכזת, פתיח עם כותרת גדולה וכרטיס תוצאה, מרווחים
+   נדיבים) על גבי פלטת הצבעים המקורית של האתר.
+   ============================================================ */
+:root{
+  --rule-strong:#D3CCBD;
+  --page-w:1200px;
+  --gutter:48px;
+}
+
+/* ---------- מכולה ---------- */
+.wrap{ width:min(var(--page-w), calc(100% - var(--gutter))) }
+#view-home .wrap{ width:min(var(--page-w), calc(100% - var(--gutter))) }
+#view-home.on{ display:block; width:100%; margin:0; padding:0 }
+@media (max-width:1099px){ #view-home.on{ width:100% } }
+
+/* ---------- כותרת עליונה: שורה אחת ---------- */
+.masthead{ background:rgba(255,255,255,.86); backdrop-filter:blur(14px) saturate(1.2); border-bottom:1px solid var(--rule) }
+.masthead-in{ display:flex; align-items:center; gap:24px; min-height:64px; padding:0; flex-wrap:nowrap; text-align:start }
+.brand{ gap:10px; flex:none }
+.brand img{ width:34px; height:34px }
+.brand-txt strong{ font-size:1.12rem; font-weight:700; letter-spacing:-.01em }
+.brand-txt span{ display:none }
+
+.mainnav{ flex:1 1 auto; min-width:0; display:flex; justify-content:center }
+.mainnav .tabs{ display:flex; align-items:center; gap:2px; overflow:visible; padding:0; flex-wrap:nowrap }
+.mainnav .tab{
+  padding:8px 12px; min-height:0; border:0; border-bottom:0; border-radius:8px;
+  font-size:.9rem; font-weight:600; line-height:1.2; color:var(--ink-2); white-space:nowrap;
+}
+.mainnav .tab:hover{ color:var(--navy); background:rgba(18,52,92,.06) }
+.mainnav .tab[aria-current="page"]{ color:var(--navy); background:rgba(18,52,92,.09); font-weight:700; border-bottom:0 }
+.mainnav .nav-more{ margin:0 }
+.mainnav .nav-more>summary{ padding:8px 12px; min-height:0; border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink-2); gap:5px }
+.mainnav .nav-more>summary:hover,.mainnav .nav-more[open]>summary{ color:var(--navy); background:rgba(18,52,92,.06) }
+.mainnav .nav-menu{ top:calc(100% + 8px); width:240px; padding:6px; border-radius:12px }
+.mainnav .nav-menu .tab{ display:block; padding:9px 12px; border-radius:7px; font-size:.88rem }
+
+.masthead-side{ margin-inline-start:auto; flex:none; gap:8px; width:auto }
+.stamp{ min-height:34px; font-size:.74rem }
+.masthead-side .print-btn{ border-radius:100px }
+
+@media (max-width:1000px){
+  .masthead-in{ flex-wrap:wrap; gap:8px 16px; padding:8px 0 0 }
+  .mainnav{ order:3; width:100%; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; margin:0 calc(var(--gutter) / -2); padding:0 calc(var(--gutter) / 2) 6px }
+  .mainnav::-webkit-scrollbar{ display:none }
+  .mainnav .tabs{ display:flex; flex-wrap:nowrap; padding:0 }
+  .mainnav .tab,.mainnav .nav-more>summary{ padding:8px 10px; font-size:.86rem; min-height:0 }
+  .mainnav .nav-more{ margin-inline-start:0 }
+  .mainnav .nav-menu{ position:fixed; top:calc(var(--masthead-h,104px) + 6px); inset-inline-end:12px; width:min(280px, calc(100vw - 24px)) }
+}
+@media (max-width:560px){
+  .brand img{ width:30px; height:30px }
+  .masthead-in{ gap:6px 10px }
+}
+@media print{ .mainnav{ display:none!important } }
+
+/* ---------- דף הבית: פתיח ---------- */
+#view-home .verdict{
+  position:relative; overflow:hidden; margin:0; border:0; border-radius:0; box-shadow:none;
+  border-bottom:1px solid var(--rule); color:var(--ink);
+  background:
+    radial-gradient(70% 60% at 50% -10%, rgba(18,52,92,.09), transparent 70%),
+    radial-gradient(40% 40% at 88% 10%, rgba(184,134,43,.10), transparent 65%),
+    linear-gradient(180deg, #FFFDF8 0%, var(--paper) 85%);
+}
+#view-home .verdict::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background-image:linear-gradient(rgba(18,52,92,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(18,52,92,.05) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
+}
+#view-home .verdict-knesset{ display:block; height:150px; color:var(--navy); opacity:.09; z-index:1 }
+#view-home .verdict-in{
+  position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; text-align:center;
+  gap:18px; padding:56px 0 52px; min-height:0; max-width:900px; margin-inline:auto;
+}
+.verdict-top{ display:flex; flex-direction:column; align-items:center; gap:14px }
+#view-home .verdict .eyebrow{
+  margin:0; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px;
+  background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.1em;
+}
+#view-home .verdict h1{
+  margin:0; font-family:var(--serif); font-weight:800; color:var(--ink);
+  font-size:clamp(2.1rem, 5vw, 3.5rem); line-height:1.1; letter-spacing:-.02em; max-width:22ch;
+}
+#view-home .verdict h1 em{ font-style:normal; color:var(--navy) }
+#verdict-head:focus{ outline:0 }
+#view-home .verdict .lede{ margin:0; max-width:60ch; color:var(--ink-2); font-size:1.08rem; line-height:1.65 }
+
+/* שעון הבחירות — גלולה קטנה מתחת לתווית */
+.hero-countdown{
+  display:inline-flex; align-items:center; gap:14px; padding:6px 8px 6px 16px;
+  border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); box-shadow:var(--shadow-s);
+  color:var(--ink-2); font-size:.78rem; max-width:100%;
+}
+.hero-countdown .cd-head{ display:flex; align-items:center; gap:8px }
+.hero-countdown .cd-head .kicker{ display:none; margin:0; padding:0; border:0 }
+.hero-countdown.is-live .cd-head .kicker{ display:inline-flex; font-size:0 }
+.hero-countdown h3{ margin:0; font-family:var(--sans); font-size:.78rem; font-weight:600; color:var(--ink-3); white-space:nowrap }
+.hero-countdown .cd-head>span{ display:none }
+.hero-countdown .countdown-cells{ display:flex; align-items:center; gap:2px }
+.hero-countdown .countdown-cells b{ display:grid; place-items:center; min-width:34px; padding:0; background:none; border:0; border-radius:0 }
+.hero-countdown .countdown-cells .num{ font-family:var(--serif); font-size:1.05rem; font-weight:700; line-height:1; color:var(--navy) }
+.hero-countdown .countdown-cells em{ margin-top:2px; font-style:normal; font-size:.55rem; letter-spacing:.02em; color:var(--ink-3) }
+.hero-countdown .cd-sep{ display:block; padding:0 0 10px; color:var(--rule-strong); font-size:.9rem }
+
+/* מתג ובוררים */
+#view-home .home-forecast-controls{ display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px 14px; margin-top:4px }
+.home-switch,#view-home .home-switch{ display:inline-flex; align-self:auto; grid-template-columns:none; background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
+.home-switch button,#view-home .home-switch button{ color:var(--ink-2); font-weight:700; padding:6px 14px }
+.home-switch button:hover{ color:var(--navy) }
+.home-switch button[aria-pressed="true"],#view-home .home-switch button[aria-pressed="true"]{ background:var(--navy); color:#fff }
+.home-history-pick,#view-home .home-history-pick{ display:flex; align-items:center; gap:8px; color:var(--ink-3); font-size:.74rem; font-weight:700 }
+.home-history-pick select,#view-home .home-history-pick select{
+  min-width:190px; width:auto; min-height:36px; padding:5px 12px; border:1px solid var(--rule); border-radius:100px;
+  background:var(--paper-2); color:var(--ink); box-shadow:var(--shadow-s);
+}
+.home-history-pick select:focus{ outline:3px solid var(--gold); outline-offset:2px }
+.intro-result-links{ width:100%; justify-content:center; gap:20px; font-size:.8rem; color:var(--ink-3) }
+.intro-result-links a{ color:var(--navy); font-weight:600 }
+.intro-result-links button{ color:var(--ink-3) }
+
+/* כרטיס התוצאה — שלושת הגושים + 61 */
+#view-home .readout{
+  display:grid; grid-template-columns:repeat(3,1fr) auto; gap:0 24px; align-items:center; align-self:center;
+  width:100%; max-width:840px; margin:12px 0 0; padding:22px 28px; text-align:start;
+  background:var(--paper-2); border:1px solid var(--rule); border-radius:18px; box-shadow:var(--shadow-m);
+}
+#view-home .readout .rd{ display:grid; gap:4px; padding:0 0 0 24px; border:0; border-inline-end:1px solid var(--rule-2) }
+#view-home .readout .rd:nth-child(2){ border-inline-start:0; padding-inline-start:0 }
+#view-home .readout .rd:nth-child(3){ border-inline-end:0 }
+#view-home .readout .rd .rd-lbl{ font-size:.78rem; font-weight:700; color:var(--ink-3) }
+#view-home .readout .rd b{ font-size:2.4rem; font-weight:800; color:var(--ink) }
+#view-home .readout .rd.lead b{ color:var(--navy) }
+#view-home .readout .rd-need{ justify-self:end; text-align:end; display:grid; gap:2px; border:0; padding:0; width:auto }
+#view-home .readout .rd-need b{ font-size:1.4rem; color:var(--ink) }
+#view-home .readout .rd-need span{ font-size:.76rem; color:var(--ink-3) }
+@media (max-width:640px){
+  #view-home .readout{ grid-template-columns:1fr 1fr; gap:14px 16px; padding:16px 18px }
+  #view-home .readout .rd{ padding:0; border:0 }
+  #view-home .readout .rd b{ font-size:1.8rem }
+  #view-home .readout .rd-need{ justify-self:start; text-align:start }
+}
+@media (max-width:760px){
+  #view-home .verdict-in{ padding:36px 0 34px; gap:14px }
+  #view-home .verdict .eyebrow{ font-size:.66rem; letter-spacing:.06em; line-height:1.4 }
+  #view-home .verdict h1{ font-size:clamp(1.8rem, 8vw, 2.4rem) }
+  #view-home .verdict .lede{ font-size:1rem }
+  .hero-countdown{ gap:10px; padding:5px 6px 5px 12px }
+  .hero-countdown h3{ display:none }
+}
+
+/* ---------- דף הבית: קיר המנדטים ---------- */
+#view-home .board{ padding:44px 0 24px }
+#view-home .bloc + .bloc{ margin-top:36px }
+#view-home .bloc-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--rule) }
+#view-home .bloc-head h2{ font-size:1.05rem; font-weight:700; letter-spacing:-.01em }
+#view-home .bloc-head .tally{ font-size:1rem; margin-inline-start:auto }
+#view-home .cards{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:16px; justify-content:stretch }
+@media (max-width:1000px){ #view-home .cards{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
+@media (max-width:700px){ #view-home .cards{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px } }
+.hcard{ border-radius:14px; box-shadow:var(--shadow-s) }
+.hcard:hover{ box-shadow:var(--shadow-m); border-color:var(--rule-strong) }
+#view-home .hcard-photo{ aspect-ratio:4/5; height:auto; background:linear-gradient(160deg,#EEF2F6,#F8F7F3) }
+#view-home .hcard-body{ padding:10px 10px 12px; gap:2px }
+#view-home .hcard-seatline{ min-height:2.2rem }
+#view-home .hcard-name{ font-size:.92rem }
+#view-home .hcard-leader{ font-size:.74rem }
+
+/* ---------- קצב הקטעים בשאר העמודים ---------- */
+.page-intro{ padding:44px 0 20px }
+.page-intro h2{ font-size:clamp(1.8rem,3.2vw,2.6rem); letter-spacing:-.02em; line-height:1.12 }
+.page-intro p{ margin-top:12px; font-size:1.02rem; line-height:1.65; max-width:70ch; color:var(--ink-2) }
+.page-head{ padding:30px 0 18px; margin-bottom:8px }
+.page-head h2{ font-size:1.9rem; letter-spacing:-.02em }
+#view-polls .page-head h2{ font-size:2rem }
+.sec{ padding:40px 0 }
+.sec-head{ margin-bottom:22px; gap:14px 24px; align-items:flex-end }
+.sec h2{ font-size:clamp(1.35rem,2.2vw,1.8rem); letter-spacing:-.02em }
+.sec h3{ font-size:1.12rem }
+.kicker{ margin-bottom:8px; padding-bottom:0; border-bottom:0; color:var(--gold); font-size:.7rem; letter-spacing:.12em }
+.sec-note{ font-size:.88rem; line-height:1.6 }
+.card,.rank,.pollcard,.poll-result-card,.step,.sector,.floorcard,.pillar,.tablewrap,.hemi,.mapbox,.gauge,.stats,.average-results,.crosschart,#forecast-bars{ border-radius:16px }
+.notice{ border-radius:12px }
+
+/* ---------- כותרת תחתונה ---------- */
+footer{ margin-top:72px; padding:56px 0 40px }
+footer .wrap{ grid-template-columns:minmax(0,1fr) minmax(0,1.7fr); gap:56px }
+footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
+.fbrand img{ width:32px; height:32px }
+@media (max-width:760px){
+  footer{ margin-top:48px; padding:40px 0 30px }
+  footer .wrap{ grid-template-columns:1fr; gap:28px }
+}

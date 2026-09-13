@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ברומטר · מדד הסקרים והאמינות</title>
-<link rel="icon" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20104%2076%22%20role%3D%22img%22%20aria-label%3D%22%D7%91%D7%A8%D7%95%D7%9E%D7%98%D7%A8%22%3E%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%2312345C%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22butt%22%20stroke-linejoin%3D%22miter%22%3E%20%3C!--%20outer%20dial%20arc%3A%20left%20side%20up%20and%20over%2C%20broken%20where%20the%20arrow%20passes%20--%3E%20%3Cpath%20d%3D%22M8%2068%20A44%2044%200%200%201%2074.5%2030.2%22%2F%3E%20%3C!--%20outer%20arc%2C%20right%20shoulder%20descending%20to%20the%20baseline%20--%3E%20%3Cpath%20d%3D%22M84.2%2041.6%20A44%2044%200%200%201%2096%2068%22%2F%3E%20%3C!--%20inner%20dial%20arc%20--%3E%20%3Cpath%20d%3D%22M17.5%2068%20A34.5%2034.5%200%200%201%2068.6%2037.8%22%2F%3E%20%3Cpath%20d%3D%22M80.6%2050.4%20A34.5%2034.5%200%200%201%2086.5%2068%22%2F%3E%20%3C!--%20baseline%20--%3E%20%3Cpath%20d%3D%22M8%2068h88%22%2F%3E%20%3C!--%20columns%2C%20ascending%20--%3E%20%3Cpath%20d%3D%22M20%2068V60h9v8%22%2F%3E%20%3Cpath%20d%3D%22M33%2068V52h9v16%22%2F%3E%20%3Cpath%20d%3D%22M46%2068V43h10v25%22%2F%3E%20%3Cpath%20d%3D%22M60%2068V56%22%2F%3E%20%3Cpath%20d%3D%22M66%2068V50%22%2F%3E%20%3Cpath%20d%3D%22M72%2068V45%22%2F%3E%20%3Cpath%20d%3D%22M78%2068V38%22%2F%3E%20%3Cpath%20d%3D%22M86%2068V33h10v35%22%2F%3E%20%3C!--%20rising%20arrow%2C%20open%20outline%20--%3E%20%3Cpath%20d%3D%22M50.5%2058.5%2078%2024.5%22%2F%3E%20%3Cpath%20d%3D%22M56.5%2063%2084%2029%22%2F%3E%20%3Cpath%20d%3D%22M73.5%2022.5%2089.5%2015.5%2085%2032.5%22%2F%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E">
+<link rel="icon" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%20role%3D%22img%22%20aria-label%3D%22%D7%91%D7%A8%D7%95%D7%9E%D7%98%D7%A8%22%3E%20%3Cpath%20d%3D%22M11.7%2033.6%20A15%2015%200%201%201%2036.3%2033.6%22%20fill%3D%22none%22%20stroke%3D%22%2312345C%22%20stroke-width%3D%223.6%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M24%2025%2030.5%2014.5%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223.6%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Ccircle%20cx%3D%2224%22%20cy%3D%2225%22%20r%3D%223.2%22%20fill%3D%22%2312345C%22%2F%3E%20%3C%2Fsvg%3E">
 <style>
 /* ============================================================
    הבארומטר — מערכת עיצוב
@@ -1514,15 +1514,7 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 .fd-tables caption b{ color:#8A6318 }
 @media(max-width:760px){ .fd-comps{ grid-template-columns:1fr 1fr } .fd-tables{ grid-template-columns:1fr } .fd-head{ flex-wrap:wrap } }
 
-/* ============================================================
-   הצגת החישוב — עמוד הבית.
-   שכבה 1: פריסת קיר המנדטים אחרי ההצגה (התוצאה).
-   שכבה 2: הבמה — מסך מלא של 15 שניות: מקורות מתחברים, מאגרים
-   מתמלאים, מילים וקישורים זורמים למנוע, ואז מסדר המפלגות, עמודות
-   שעולות מעל הפורטרטים, וטיסה של הכרטיסים למקומם בקיר.
-   ============================================================ */
-
-/* ---------- 1. פריסת התוצאה ---------- */
+/* Existing result layout is kept; the opening is an independent visual layer. */
 #view-home.on{ display:block; width:min(1780px,calc(100% - 40px)); margin:0 auto; padding:14px 0;
   --hcard-w:clamp(100px,calc((100vh - 360px)/2.5),250px) }
 #view-home .handoff{ display:none }
@@ -1547,7 +1539,7 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
   #view-home .bloc + .bloc{ margin-top:10px }
   #view-home .bloc-head{ margin-bottom:6px; padding-bottom:4px }
   .verdict-knesset{ display:none }
-  /* הכרטיס עצמו — אותם כללים גם לעותקים שטסים בבמה (#show), כדי שהנחיתה תהיה מדויקת */
+  /* Result cards */
   #view-home .hcard-photo, #show .hcard-photo{ height:clamp(85px,calc((100vh - 565px)/2),270px); aspect-ratio:auto; background:linear-gradient(120deg,#e4eaf0,#f8f7f3) }
   #view-home .hcard-photo img, #show .hcard-photo img{ object-fit:contain; object-position:center }
   #view-home .hcard-body, #show .hcard-body{ padding:5px 6px; gap:0 }
@@ -1559,280 +1551,305 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 @media (max-width:700px){ #view-home .cards{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
 @media print{ .intro-result-links, #show{ display:none!important } }
 
-/* ---------- 2. הבמה ---------- */
-html.show-open{ overflow:hidden }
-#show{
-  --s-gold:#DDAA42; --s-teal:#5FB7C9; --s-ok:#3EC98A; --s-red:#E0533F;
-  --s-ink:#E8EEF4; --s-mute:#9FB2C4; --s-line:rgba(255,255,255,.09);
-  position:fixed; inset:0; z-index:500; display:grid; grid-template-rows:auto auto minmax(0,1fr);
-  color:var(--s-ink); font-family:var(--sans); overflow:hidden; isolation:isolate; background:transparent;
-}
-#show::before{
-  content:""; position:absolute; inset:0; z-index:-2; transition:opacity .9s ease;
+/* ---------- הפתיח: אותה שפה כמו האתר — נייר, נייבי, זהב ---------- */
+html.show-open { overflow:hidden }
+#show {
+  --signal-progress:0;
+  position:fixed; inset:0; z-index:500; overflow:auto; isolation:isolate;
+  display:flex; flex-direction:column; min-height:100%;
   background:
-    radial-gradient(ellipse 55% 45% at 50% 40%, rgba(37,84,130,.5), transparent 70%),
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(180deg, #071629, #0B2440);
-  background-size:auto, 48px 48px, 48px 48px, auto;
+    radial-gradient(70% 55% at 50% -10%, rgba(18,52,92,.10), transparent 70%),
+    radial-gradient(40% 40% at 90% 15%, rgba(184,134,43,.10), transparent 65%),
+    linear-gradient(180deg,#FFFDF8 0%, var(--paper) 70%);
+  color:var(--ink); color-scheme:light;
+  font-family:var(--sans);
+  opacity:1; transition:opacity .6s ease;
 }
-#show.is-leaving::before{ opacity:0 }
-#show.is-leaving .show-top{ opacity:0; transition:opacity .5s }
-
-/* שורת המצב העליונה */
-.show-top{ position:relative; z-index:2; display:flex; align-items:center; gap:16px; padding:11px 24px; border-bottom:1px solid var(--s-line); font-size:.78rem; color:var(--s-mute); background:rgba(7,22,41,.55) }
-.show-brand{ display:flex; align-items:center; gap:9px; font-weight:800; color:#fff; white-space:nowrap }
-.show-brand i{ width:8px; height:8px; border-radius:50%; background:var(--s-gold); box-shadow:0 0 14px var(--s-gold); animation:show-blink 1.2s infinite }
-.show-clock{ font-family:var(--mono); font-size:.84rem; color:#C9D6E2; letter-spacing:.05em; min-width:6.5ch }
-.show-steps{ display:flex; gap:6px; margin-inline-start:auto; flex-wrap:wrap; justify-content:flex-end }
-.show-steps span{ padding:4px 11px; border:1px solid rgba(255,255,255,.14); border-radius:100px; font-size:.7rem; font-weight:700; color:#8EA2B5; white-space:nowrap; transition:all .35s }
-.show-steps span.on{ background:var(--s-gold); color:#1B1300; border-color:var(--s-gold); box-shadow:0 0 18px rgba(221,170,66,.35) }
-.show-steps span.done{ color:var(--s-ok); border-color:rgba(62,201,138,.5) }
-.show-steps span.ph{ border:0; padding-inline:4px 0; color:#6F8496; letter-spacing:.06em }
-.show-steps span b{ font-family:var(--serif); font-variant-numeric:tabular-nums; margin-inline-start:4px }
-.show-skip{ background:transparent; border:1px solid rgba(255,255,255,.24); color:#fff; border-radius:100px; padding:6px 14px; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; white-space:nowrap; min-height:32px }
-.show-skip:hover{ background:rgba(255,255,255,.1) }
-.show-skip:focus-visible{ outline:3px solid var(--s-gold); outline-offset:2px }
-
-/* כותרת המערכה: תווית השלב, הכותרת, ושורת המשנה */
-.show-title{ position:relative; z-index:2; padding:10px 28px 4px; display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto; align-items:baseline; gap:2px 18px; min-height:70px; transition:opacity .4s }
-.show-title .ph{ grid-column:1/-1; margin:0; font-size:.68rem; font-weight:800; letter-spacing:.14em; color:var(--s-gold) }
-.show-title h2{ font-family:var(--serif); font-size:clamp(1.3rem,2.3vw,1.95rem); color:#fff; margin:0; font-weight:800; letter-spacing:0; text-wrap:nowrap }
-.show-title .sub{ margin:0; color:var(--s-mute); font-size:.88rem; font-weight:600 }
-.show-title .t-in{ animation:show-reveal .55s cubic-bezier(.2,.7,.2,1) both }
-.show-title .sub.t-in{ animation-delay:.25s }
-#show.stage-ready .show-title{ opacity:0 }
-
-/* מסך הפתיחה: כפתור הטעינה */
-.show-start{ position:absolute; inset:0; z-index:6; display:grid; place-items:center; padding:24px; transition:opacity .5s }
-.show-start.out{ opacity:0; pointer-events:none }
-.show-start>div{ max-width:660px; text-align:center; background:rgba(6,21,41,.86); border:1px solid rgba(221,170,66,.4); border-radius:22px; padding:34px 40px 30px; box-shadow:0 30px 90px rgba(0,0,0,.55); backdrop-filter:blur(8px) }
-.show-start .k{ font-size:.7rem; font-weight:800; letter-spacing:.16em; color:var(--s-gold); margin:0 0 10px }
-.show-start h2{ font-family:var(--serif); font-size:clamp(1.6rem,3vw,2.5rem); color:#fff; margin:0 0 12px; font-weight:800 }
-.show-start .lead{ color:#C9D6E2; font-size:1rem; line-height:1.65; margin:0 auto 20px; max-width:56ch }
-.start-stats{ display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:24px }
-.start-stats span{ display:inline-flex; align-items:baseline; gap:7px; padding:6px 14px; border:1px solid rgba(255,255,255,.14); border-radius:100px; font-size:.78rem; color:var(--s-mute); font-weight:700 }
-.start-stats b{ font-family:var(--serif); font-size:1.05rem; color:#fff; font-weight:800 }
-.show-go{ background:var(--s-gold); color:#1B1300; border:0; border-radius:12px; padding:14px 30px; font:800 1.15rem var(--sans); cursor:pointer; box-shadow:0 8px 30px rgba(221,170,66,.4); transition:transform .15s, box-shadow .15s; display:inline-flex; align-items:center; gap:14px }
-.show-go span{ font-size:1.3rem }
-.show-go:hover{ transform:translateY(-2px); box-shadow:0 12px 36px rgba(221,170,66,.55) }
-.show-go:focus-visible{ outline:3px solid #fff; outline-offset:3px }
-.show-start .alt{ display:block; margin:16px auto 0; background:none; border:0; color:var(--s-mute); text-decoration:underline; text-underline-offset:4px; cursor:pointer; font:inherit; font-size:.85rem }
-.show-start .alt:hover{ color:#fff }
-#show.stage-ready .show-grid{ opacity:.3; filter:blur(1.5px); transition:opacity .5s, filter .5s }
-#show.stage-ready .show-links{ opacity:.3 }
-
-/* לוח "נטען עכשיו" — ההדגשה של הרשומה שנטענת ברגע זה */
-.show-now{ flex:none; display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto; gap:1px 14px; align-items:center; padding:9px 14px; border:1px solid rgba(221,170,66,.35); border-inline-start:4px solid var(--s-gold); border-radius:12px; background:rgba(221,170,66,.07); min-height:62px }
-.show-now .now-k{ grid-row:1/3; font-size:.66rem; font-weight:800; letter-spacing:.08em; color:var(--s-gold); white-space:nowrap; text-align:center; padding-inline-end:12px; border-inline-end:1px solid rgba(221,170,66,.3); align-self:stretch; display:grid; place-items:center; max-width:110px; line-height:1.3 }
-.show-now .now-main{ font-size:1rem; font-weight:800; color:#fff; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.show-now .now-main b{ color:var(--s-gold) }
-.show-now .now-sub{ font-size:.8rem; color:#C9D6E2; line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2 }
-.show-now .now-sub b{ color:#fff; font-family:var(--serif); font-variant-numeric:tabular-nums }
-.show-now.flash{ animation:show-flash .5s ease-out }
-@keyframes show-flash{ from{ background:rgba(221,170,66,.38); box-shadow:0 0 0 2px var(--s-gold) } to{ background:rgba(221,170,66,.07); box-shadow:none } }
-
-/* הרשת: מאגרים מימין, המנוע במרכז, מאגרי ייחוס משמאל */
-.show-grid{ position:relative; z-index:1; display:grid; grid-template-columns:minmax(230px,300px) minmax(0,1fr) minmax(230px,300px); gap:16px 26px; padding:4px 28px 16px; min-height:0; transition:opacity .4s }
-#show.is-fading .show-grid, #show.is-fading .show-title, #show.is-fading .show-links{ opacity:0 }
-.show-col{ display:grid; gap:12px; align-content:start; min-height:0 }
-.show-center{ display:flex; flex-direction:column; gap:12px; min-height:0 }
-
-/* מאגר נתונים */
-.show-node{ position:relative; display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto auto; gap:2px 12px; align-items:start; padding:12px 14px; border:1px solid var(--s-line); border-radius:14px; background:rgba(255,255,255,.04);
-  opacity:0; transform:translateY(12px) scale(.96); transition:opacity .45s, transform .45s cubic-bezier(.2,.7,.2,1), border-color .4s, box-shadow .4s, background .4s }
-.show-node.in{ opacity:1; transform:none }
-.show-node.ok{ border-color:rgba(62,201,138,.45); background:rgba(255,255,255,.05) }
-.show-node.live{ border-color:var(--s-gold); box-shadow:0 0 0 1px rgba(221,170,66,.35), 0 0 34px rgba(221,170,66,.18), 0 12px 34px rgba(0,0,0,.28); background:rgba(221,170,66,.08); transform:scale(1.02) }
-.node-ico{ grid-row:1/4; width:42px; height:54px; color:#C9D6E2 }
-.node-ico svg{ width:100%; height:100%; overflow:visible }
-.node-ico .db-fill{ fill:var(--s-gold); opacity:.85; transform:scaleY(0); transform-origin:50% 100%; transition:transform 1.7s cubic-bezier(.2,.7,.2,1) }
-.show-node.loading .db-fill, .show-node.ok .db-fill{ transform:scaleY(var(--fill,.85)) }
-.node-ico .db-glyph circle{ fill:#0B2440; stroke:var(--s-gold); stroke-width:1.4 }
-.node-ico .db-glyph g{ stroke:var(--s-gold) }
-.node-title{ font-weight:800; font-size:.88rem; color:#fff; line-height:1.25 }
-.node-status{ font-size:.7rem; color:var(--s-mute); display:flex; align-items:center; gap:6px; min-height:1.2em }
-.node-status::before{ content:""; width:7px; height:7px; border-radius:50%; background:#5C6F82; flex:none; transition:background .3s, box-shadow .3s }
-.show-node.ok .node-status::before{ background:var(--s-ok); box-shadow:0 0 8px var(--s-ok); animation:none }
-.show-node.live .node-status::before{ background:var(--s-gold); box-shadow:0 0 8px var(--s-gold); animation:show-blink .7s infinite }
-.node-count{ font-family:var(--serif); font-size:1.3rem; font-weight:800; color:var(--s-gold); line-height:1.15; font-variant-numeric:tabular-nums }
-.node-count small{ font-family:var(--sans); font-size:.68rem; color:var(--s-mute); font-weight:600; margin-inline-start:6px }
-.node-chips{ grid-column:1/-1; display:flex; flex-wrap:wrap; gap:5px; margin-top:7px }
-.node-chip{ display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border-radius:100px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); font-size:.67rem; font-weight:600; color:var(--s-mute); line-height:1.3;
-  opacity:0; transform:scale(.8); transition:opacity .3s, transform .3s cubic-bezier(.2,.8,.2,1.3), background .25s, color .25s, border-color .25s }
-.node-chip.in{ opacity:1; transform:none }
-.node-chip.hot{ background:rgba(221,170,66,.22); border-color:var(--s-gold); color:#fff; transform:scale(1.06) }
-.node-chip img{ width:14px; height:14px; object-fit:contain; border-radius:3px; background:#fff; flex:none }
-.node-chip i{ width:8px; height:8px; border-radius:2px; background:var(--c,#9FB2C4); display:inline-block; flex:none }
-.node-chip b{ font-family:var(--serif); color:var(--s-gold); font-weight:800; font-variant-numeric:tabular-nums; margin-inline-start:2px }
-.node-chip b:empty{ display:none }
-
-/* המנוע */
-.engine-wrap{ position:relative; flex:none }
-.show-engine{ position:relative; width:clamp(150px,23vh,215px); aspect-ratio:1; margin:0 auto; display:grid; place-items:center }
-.show-engine svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible }
-.show-engine .ring{ fill:none; stroke:rgba(255,255,255,.18); stroke-width:1.2; transform-origin:50% 50% }
-.ring.r1{ stroke-dasharray:6 10; animation:show-spin 28s linear infinite }
-.ring.r2{ stroke-dasharray:2 8; stroke:rgba(221,170,66,.55); animation:show-spin 15s linear infinite reverse }
-.ring.r3{ stroke-dasharray:44 18; stroke:rgba(95,183,201,.65); stroke-width:2; animation:show-spin 9s linear infinite }
-.show-engine.fast .ring{ animation-duration:1.4s }
-.engine-prog-bg{ fill:none; stroke:rgba(255,255,255,.08); stroke-width:3 }
-.engine-prog{ fill:none; stroke:var(--s-gold); stroke-width:3; stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50% }
-.engine-text{ position:relative; z-index:1; text-align:center }
-.engine-text b{ display:block; font-family:var(--serif); font-size:clamp(1.7rem,4.4vh,2.7rem); font-weight:800; color:#fff; line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.01em }
-.engine-text span{ display:block; font-size:.7rem; color:var(--s-mute); margin-top:5px; font-weight:700 }
-.show-engine::after{ content:""; position:absolute; inset:16%; border-radius:50%; background:radial-gradient(circle, rgba(221,170,66,.26), transparent 70%); animation:show-pulse 2.4s ease-in-out infinite; z-index:0 }
-.show-engine.burst::after{ animation:show-burst .95s ease-out forwards }
-.engine-tags{ position:absolute; inset:0; pointer-events:none; z-index:2 }
-.engine-tag{ position:absolute; padding:5px 12px; border-radius:100px; background:rgba(6,21,41,.9); border:1px solid rgba(221,170,66,.55); color:#fff; font-size:.74rem; font-weight:700; white-space:nowrap; box-shadow:0 6px 22px rgba(0,0,0,.35);
-  opacity:0; transform:translate(-50%,-50%) scale(.7); transition:opacity .4s, transform .45s cubic-bezier(.2,.8,.2,1.25) }
-.engine-tag.in{ opacity:1; transform:translate(-50%,-50%) scale(1) }
-.engine-tag em{ font-style:normal; color:var(--s-gold); font-family:var(--serif); font-weight:800 }
-
-/* לוח הגרפים */
-.show-chart{ position:relative; flex:1 1 auto; min-height:120px; border:1px solid var(--s-line); border-radius:14px; background:rgba(255,255,255,.03); padding:10px 14px 8px; display:grid }
-.show-chart>div{ grid-area:1/1; display:grid; grid-template-rows:auto minmax(0,1fr); gap:6px; min-height:0; opacity:0; visibility:hidden; transition:opacity .5s, visibility .5s }
-.show-chart>div.on{ opacity:1; visibility:visible }
-.chart-head{ display:flex; justify-content:space-between; gap:12px; font-size:.72rem; color:var(--s-mute); font-weight:700; flex-wrap:wrap }
-.chart-head b{ color:#fff; transition:opacity .3s }
-.show-chart svg{ width:100%; height:100%; overflow:visible; font-family:var(--sans); direction:ltr }
-.show-chart text{ fill:#C9D6E2 }
-.show-chart .axis{ stroke:rgba(255,255,255,.1) }
-.show-chart .dot{ transform-box:fill-box; transform-origin:center; transform:scale(0); opacity:0; transition:transform .35s cubic-bezier(.2,.9,.3,1.5), opacity .35s }
-.show-chart .dot.in{ transform:scale(1); opacity:.9 }
-.show-chart.dim .dot.in{ opacity:.3 }
-.show-chart .lbl{ opacity:0; transition:opacity .45s }
-.show-chart .lbl.in{ opacity:1 }
-.show-chart .mark{ opacity:0; transition:transform 1s cubic-bezier(.2,.7,.2,1), opacity .4s }
-.show-chart .mark.in{ opacity:1 }
-.show-chart .thr{ opacity:0; transition:opacity .5s }
-.show-chart .thr.in{ opacity:1 }
-.show-chart .thr line{ stroke:var(--s-red); stroke-dasharray:4 4 }
-.show-chart .row.below .lbl{ opacity:.35 }
-.show-chart .row.below .mark line{ stroke:var(--s-red) }
-.show-chart .fbar{ transform-box:fill-box; transform-origin:100% 50%; transform:scaleX(0); transition:transform 1.1s cubic-bezier(.2,.7,.2,1) }
-.show-chart .fbar.in{ transform:scaleX(var(--k,1)) }
-.show-chart .fval{ opacity:0; transition:opacity .4s .8s }
-.show-chart .fval.in{ opacity:1 }
-
-/* יומן החישוב */
-.show-log{ flex:none; font-family:var(--mono); font-size:.72rem; line-height:1.55; color:#B7C6D3; height:calc(6 * 1.55em + 18px); overflow:hidden; padding:8px 12px; border:1px solid var(--s-line); border-radius:12px; background:rgba(0,0,0,.28); display:flex; flex-direction:column; justify-content:flex-end }
-.show-log p{ margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; animation:show-rise .35s ease both; transition:opacity .4s }
-.show-log p b{ color:var(--s-gold); font-weight:600 }
-.show-log p em{ color:var(--s-teal); font-style:normal }
-.show-log p::before{ content:"›"; color:var(--s-ok); margin-inline-end:8px }
-.show-log p:nth-last-child(n+4){ opacity:.55 }
-.show-log p:nth-last-child(n+6){ opacity:.3 }
-
-/* קישורים בין המקומות */
-.show-links{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; transition:opacity .4s }
-.show-links .link{ fill:none; stroke:rgba(159,178,196,.32); stroke-width:1.4; transition:stroke-dashoffset .9s ease, stroke .4s }
-.show-links .link.x{ stroke:rgba(95,183,201,.45) }
-.show-links .flow{ fill:none; stroke:var(--s-gold); stroke-width:2; stroke-dasharray:5 15; stroke-linecap:round; opacity:0; transition:opacity .4s }
-.show-links .flow.on{ opacity:.95; animation:show-flow 1s linear infinite }
-.show-links .flow.x{ stroke:var(--s-teal) }
-.show-word{ position:absolute; left:0; top:0; z-index:3; padding:3px 10px; border-radius:100px; background:var(--s-gold); color:#1B1300; font-size:.7rem; font-weight:800; white-space:nowrap; pointer-events:none; box-shadow:0 4px 18px rgba(221,170,66,.45); offset-rotate:0deg; will-change:transform }
-.show-word.dot{ width:9px; height:9px; padding:0; border-radius:50%; background:#fff; box-shadow:0 0 12px var(--s-gold) }
-
-/* מסדר המפלגות */
-.show-lineup{ position:absolute; inset:0; z-index:2; display:none; grid-template-rows:auto minmax(0,1fr) auto; padding:52px 28px 22px; gap:10px }
-#show.stage-lineup .show-lineup{ display:grid }
-#show.stage-lineup .show-grid, #show.stage-lineup .show-title, #show.stage-lineup .show-links{ display:none }
-.lineup-head{ text-align:center; min-height:64px }
-.lineup-head .k{ font-size:.72rem; font-weight:800; letter-spacing:.14em; color:var(--s-gold); margin:0 0 6px; opacity:0; transition:opacity .5s }
-.lineup-head .k.in{ opacity:1 }
-.lineup-head h2{ font-family:var(--serif); font-size:clamp(1.3rem,2.5vw,2.2rem); color:#fff; margin:0; opacity:0; transform:translateY(8px); transition:opacity .6s, transform .6s }
-.lineup-head h2.in{ opacity:1; transform:none }
-.lineup-head h2 em{ font-style:normal; color:var(--s-gold) }
-.lineup-head .sub{ margin:6px 0 0; color:var(--s-mute); font-size:.92rem; font-weight:600; opacity:0; transition:opacity .6s .2s }
-.lineup-head .sub.in{ opacity:1 }
-.lineup-head .sub b{ color:#fff; font-family:var(--serif) }
-.up{ color:var(--s-ok,#3EC98A); font-weight:800; font-family:var(--serif) }
-.down{ color:#F08A7A; font-weight:800; font-family:var(--serif) }
-.same{ color:#8EA2B5; font-weight:600; font-size:.85em }
-
-/* ההערה הקופצת: מי עלה ומי ירד מאתמול */
-.show-toast{ position:fixed; z-index:600; left:18px; bottom:18px; width:min(400px,calc(100% - 36px)); background:#0B2440; color:#fff; border:1px solid rgba(221,170,66,.55); border-radius:16px; padding:14px 18px 14px 44px; box-shadow:0 22px 60px rgba(0,0,0,.45); font-family:var(--sans); transform:translateY(24px); opacity:0; transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s }
-.show-toast.in{ transform:none; opacity:1 }
-.show-toast .k{ font-size:.66rem; font-weight:800; letter-spacing:.12em; color:#DDAA42; margin:0 0 6px }
-.show-toast h3{ font-family:var(--serif); font-size:1.05rem; margin:0 0 8px; color:#fff; line-height:1.3 }
-.show-toast p{ margin:0; font-size:.82rem; color:#C9D6E2; line-height:1.5 }
-.show-toast p b{ color:#fff; font-family:var(--serif) }
-.show-toast .movers{ list-style:none; margin:0 0 8px; padding:0; display:flex; flex-wrap:wrap; gap:6px }
-.show-toast .movers li{ display:inline-flex; align-items:baseline; gap:6px; padding:4px 10px; border-radius:100px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); font-size:.8rem }
-.show-toast .movers li b{ color:#fff }
-.show-toast .movers .num{ color:#9FB2C4; font-size:.74rem }
-.show-toast .toast-x{ position:absolute; left:8px; top:8px; width:28px; height:28px; border-radius:50%; background:none; border:0; color:#9FB2C4; font-size:1.2rem; line-height:1; cursor:pointer }
-.show-toast .toast-x:hover{ background:rgba(255,255,255,.1); color:#fff }
-@media print{ .show-toast{ display:none!important } }
-.lineup-row{ display:flex; justify-content:center; align-items:flex-end; gap:10px; min-height:0; align-self:end }
-.lineup-slot{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; width:var(--lw); flex:none }
-.lineup-bar{ display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:var(--bar-h); width:100% }
-.lineup-bar b{ font-family:var(--serif); font-size:clamp(1rem,2.3vw,1.85rem); font-weight:800; color:#fff; line-height:1; margin-bottom:7px; opacity:0; font-variant-numeric:tabular-nums; transition:opacity .3s }
-.lineup-bar i{ display:block; width:60%; height:0; border-radius:7px 7px 2px 2px; background:linear-gradient(180deg, color-mix(in srgb, var(--bc) 80%, #fff), var(--bc)); box-shadow:0 0 26px color-mix(in srgb, var(--bc) 55%, transparent) }
-.lineup-anchor{ width:100%; margin-top:10px }
-.lineup-blocs{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:22px; opacity:0; transition:opacity .6s; padding-top:6px }
-.lineup-blocs.in{ opacity:1 }
-.lb{ display:flex; align-items:baseline; gap:10px }
-.lb span{ font-size:.85rem; color:var(--s-mute); font-weight:700 }
-.lb b{ font-family:var(--serif); font-size:2rem; color:#fff; font-weight:800; font-variant-numeric:tabular-nums; line-height:1 }
-.lb.left{ justify-content:flex-end }
-.lineup-track{ position:relative; width:min(560px,42vw); height:12px; border-radius:100px; background:rgba(255,255,255,.1) }
-.lineup-track span{ position:absolute; top:0; bottom:0; width:0 }
-.lineup-track .r{ right:0; background:var(--coalition); border-radius:0 100px 100px 0 }
-.lineup-track .l{ left:0; background:var(--opposition); border-radius:100px 0 0 100px }
-.lineup-track .m61{ position:absolute; top:-6px; bottom:-6px; width:2px; background:#fff; right:calc(61 / 120 * 100%) }
-.lineup-track .m61::after{ content:"61"; position:absolute; top:-17px; left:50%; transform:translateX(-50%); font-family:var(--serif); font-size:.68rem; font-weight:800; color:#fff }
-
-/* העותקים שטסים למקומם */
-#show .hcard.clone{ position:absolute; left:0; top:0; z-index:4; margin:0; transform-origin:0 0; pointer-events:none; transition:none; box-shadow:0 22px 54px rgba(0,0,0,.5), var(--shadow-s) }
-#show.is-leaving .hcard.clone{ box-shadow:var(--shadow-s); transition:box-shadow .9s }
-#show .clone .hcard-delta, #show .clone .hcard-pct{ visibility:hidden }
-#show .clone.final .hcard-delta, #show .clone.final .hcard-pct{ visibility:visible }
-#show.is-leaving .lineup-head, #show.is-leaving .lineup-blocs, #show.is-leaving .lineup-bar{ opacity:0!important; transition:opacity .45s }
-#view-home.show-landing .hcard{ visibility:hidden }
-
-@keyframes show-blink{ 50%{ opacity:.2 } }
-@keyframes show-spin{ to{ transform:rotate(360deg) } }
-@keyframes show-pulse{ 50%{ transform:scale(1.18); opacity:.55 } }
-@keyframes show-burst{ to{ transform:scale(7); opacity:0 } }
-@keyframes show-rise{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
-@keyframes show-reveal{ from{ opacity:0; transform:translateY(6px) } to{ opacity:1; transform:none } }
-@keyframes show-flow{ to{ stroke-dashoffset:-200 } }
-
-/* מסכים נמוכים וצרים */
-@media (max-height:760px){
-  .show-log{ height:calc(4 * 1.55em + 18px) }
-  .show-title{ min-height:52px; padding-top:8px }
-  .show-node{ padding:9px 12px }
-  .node-chips{ margin-top:4px }
+#show::before {
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:-1;
+  background-image:linear-gradient(rgba(18,52,92,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(18,52,92,.05) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 80%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 80%);
 }
-@media (max-width:1100px){
-  .show-grid{ grid-template-columns:minmax(200px,240px) minmax(0,1fr) minmax(200px,240px); gap:12px 16px; padding-inline:16px }
+#show.signal-leaving { opacity:0 }
+#show button { font:inherit; cursor:pointer; min-height:36px; border:0; border-radius:100px; box-shadow:none }
+#show button:focus-visible { outline:3px solid var(--gold); outline-offset:3px }
+#show svg.ic { width:1em; height:1em; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round }
+
+.signal-top { display:flex; align-items:center; justify-content:space-between; gap:20px; min-height:64px; padding:0 4.2vw; border-bottom:1px solid var(--rule); background:rgba(255,255,255,.6); backdrop-filter:blur(10px) }
+.signal-brand { display:flex; align-items:center; gap:10px; font-family:var(--serif); font-size:1.12rem; font-weight:700; letter-spacing:-.01em; color:var(--ink) }
+.signal-brand img { width:34px; height:34px }
+.signal-brand [lang=en] { font:10px var(--mono); letter-spacing:.18em; color:var(--ink-3) }
+.signal-divider { height:17px; width:1px; background:var(--rule-strong) }
+#show .signal-skip { display:inline-flex; gap:8px; align-items:center; padding:6px 16px; font-size:.86rem; font-weight:700; color:var(--navy); background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
+#show .signal-skip:hover { border-color:var(--navy) }
+
+.signal-body { width:min(980px,calc(100% - 72px)); margin:auto; padding:40px 0 30px; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center }
+.signal-caption { display:inline-flex; align-items:center; gap:9px; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px; background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.1em }
+.signal-caption .ic { font-size:15px }
+.signal-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--red); box-shadow:0 0 0 0 rgba(176,48,36,.5); animation:pulse 2.4s infinite }
+#show .signal-title { margin:18px 0 0; min-height:1.2em; font:800 clamp(1.9rem,4.4vw,3.2rem)/1.12 var(--serif); letter-spacing:-.02em; color:var(--ink) }
+.signal-icons { display:flex; gap:10px; margin-top:16px }
+.signal-icons span { display:grid; place-items:center; width:44px; height:44px; border:1px solid var(--rule); border-radius:12px; background:var(--paper-2); color:var(--navy); box-shadow:var(--shadow-s); font-size:24px; transition:transform .4s, border-color .4s, color .4s }
+.signal-icons span.gold { color:var(--gold) }
+#show[data-phase="3"] .signal-icons span { transform:translateY(-3px); border-color:rgba(184,134,43,.5) }
+
+.signal-field { position:relative; width:100%; height:clamp(240px,38vh,400px); margin:22px 0 18px; border:1px solid var(--rule); border-radius:18px; background:var(--paper-2); box-shadow:var(--shadow-m); overflow:hidden }
+.signal-field canvas { display:block; width:100%; height:100% }
+.signal-sources { position:absolute; inset:16px 18px; font-size:12px; font-weight:700; color:var(--ink-2); transition:opacity .8s }
+.signal-sources span { position:absolute; display:inline-flex; align-items:center; gap:7px; padding:5px 10px 5px 8px; border:1px solid var(--rule); border-radius:100px; background:var(--paper) }
+.signal-sources span .ic { font-size:16px; color:var(--navy) }
+.signal-sources span:nth-child(1) { top:0; right:0 }
+.signal-sources span:nth-child(2) { top:0; left:0 }
+.signal-sources span:nth-child(3) { bottom:0; right:0 }
+.signal-sources span:nth-child(4) { bottom:0; left:0 }
+#show:not([data-phase="0"]) .signal-sources { opacity:0 }
+.signal-meta { position:absolute; bottom:14px; left:0; right:0; display:flex; justify-content:center; gap:28px; font:10px var(--mono); letter-spacing:.10em; color:var(--ink-3); transition:opacity .7s }
+.signal-lockup { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; opacity:0; transform:translateY(8px); transition:opacity 1s,transform 1s; pointer-events:none }
+.signal-lockup .lockup-icons { display:flex; align-items:center; gap:16px; color:var(--navy); margin-bottom:10px }
+.signal-lockup .lockup-icons .ic { font-size:34px }
+.signal-lockup .lockup-icons .ic.flag { font-size:40px }
+.signal-lockup img { width:56px; height:56px }
+.signal-lockup strong { font-family:var(--serif); color:var(--ink); font-size:2.2rem; font-weight:800; letter-spacing:-.02em; line-height:1 }
+.signal-lockup>span { margin-top:6px; color:var(--ink-3); font-size:.9rem }
+#show[data-phase="3"] .signal-lockup { opacity:1; transform:none }
+#show[data-phase="3"] .signal-meta { opacity:0 }
+
+.signal-bottom { width:100%; display:flex; align-items:center; justify-content:space-between; gap:24px }
+.signal-steps { display:flex; gap:8px; flex-wrap:wrap }
+.signal-step { display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); color:var(--ink-3); font-size:.8rem; font-weight:700; transition:color .4s, border-color .4s, background .4s }
+.signal-step .ic { font-size:16px }
+.signal-step b { font:11px var(--mono); color:var(--ink-3); transition:color .4s }
+.signal-step.active { color:#fff; background:var(--navy); border-color:var(--navy) }
+.signal-step.active b { color:rgba(255,255,255,.75) }
+.signal-step.done { color:var(--navy); border-color:rgba(18,52,92,.3) }
+#show .signal-pause { flex-shrink:0; background:transparent; color:var(--ink-3); font-size:.8rem; font-weight:700; padding:4px 10px; display:flex; gap:8px; align-items:center }
+#show .signal-pause:hover { color:var(--navy) }
+.signal-footer { display:flex; justify-content:space-between; gap:14px; padding:16px 4.2vw; border-top:1px solid var(--rule); color:var(--ink-3); font-size:12px }
+.signal-progress { position:fixed; bottom:0; right:0; left:0; height:3px; background:var(--navy); transform:scaleX(var(--signal-progress)); transform-origin:right }
+
+@media(max-width:650px) {
+  .signal-top { padding:0 18px; min-height:56px }
+  .signal-brand [lang=en], .signal-divider { display:none }
+  .signal-body { width:calc(100% - 32px); padding:28px 0 22px }
+  #show .signal-title { font-size:1.75rem }
+  .signal-icons span { width:38px; height:38px; font-size:20px }
+  .signal-field { height:clamp(220px,34vh,340px) }
+  .signal-sources { inset:10px; font-size:11px }
+  .signal-sources span { padding:4px 8px 4px 6px }
+  .signal-meta { bottom:10px; font-size:9px; letter-spacing:0 }
+  .signal-meta span:last-child { display:none }
+  .signal-bottom { gap:12px; align-items:flex-start }
+  .signal-steps { display:grid; grid-template-columns:1fr 1fr; gap:8px }
+  .signal-footer { padding:14px 18px; flex-wrap:wrap }
 }
-@media (max-width:900px){
-  /* מסך צר: הכול בטור אחד שנגלל — המנוע, לוח "נטען עכשיו", הגרף, היומן, ואז המאגרים.
-     הקישורים והמילים הנוסעות נשענים על מיקומים קבועים ולכן מוסתרים כאן. */
-  .show-grid{ display:flex; flex-direction:column; gap:12px; overflow:auto; padding:4px 12px 16px }
-  .show-center{ flex:none; order:-1 }
-  .show-chart{ flex:none; height:250px }
-  .show-col{ display:grid; gap:10px; flex:none; min-height:auto }
-  .show-links, .show-word{ display:none }
-  .show-steps{ display:none }
-  .show-top{ padding:9px 12px; gap:10px }
-  .show-title{ grid-template-columns:1fr; padding:8px 12px 2px; min-height:0 }
-  .show-title h2{ font-size:1.15rem; text-wrap:balance }
-  .show-title .sub{ font-size:.78rem }
-  .show-start>div{ padding:24px 20px 22px }
-  .show-start .lead{ font-size:.9rem }
-  .show-lineup{ padding:48px 12px 14px }
-  .lineup-row{ flex-wrap:wrap; gap:8px; justify-content:center }
-  .lineup-blocs{ grid-template-columns:1fr 1fr; gap:10px }
-  .lineup-track{ grid-column:1/-1; width:100%; grid-row:1 }
-  .lb b{ font-size:1.5rem }
-  .lb span{ font-size:.72rem }
+@media(max-height:600px) and (min-width:651px) {
+  .signal-body { padding-block:14px }
+  .signal-field { height:200px; margin-block:10px }
+  .signal-icons { margin-top:8px }
+  #show .signal-title { font-size:1.8rem; margin-top:8px }
+  .signal-footer { padding-block:8px }
 }
-@media (prefers-reduced-motion:reduce){ #show{ display:none } }
+@media(prefers-reduced-motion:reduce) { #show { display:none } }
+
+/* ============================================================
+   שכבת המבנה — נטענת אחרונה. מבנה בסגנון Linear (כותרת בשורה אחת,
+   מכולה צרה וממורכזת, פתיח עם כותרת גדולה וכרטיס תוצאה, מרווחים
+   נדיבים) על גבי פלטת הצבעים המקורית של האתר.
+   ============================================================ */
+:root{
+  --rule-strong:#D3CCBD;
+  --page-w:1200px;
+  --gutter:48px;
+}
+
+/* ---------- מכולה ---------- */
+.wrap{ width:min(var(--page-w), calc(100% - var(--gutter))) }
+#view-home .wrap{ width:min(var(--page-w), calc(100% - var(--gutter))) }
+#view-home.on{ display:block; width:100%; margin:0; padding:0 }
+@media (max-width:1099px){ #view-home.on{ width:100% } }
+
+/* ---------- כותרת עליונה: שורה אחת ---------- */
+.masthead{ background:rgba(255,255,255,.86); backdrop-filter:blur(14px) saturate(1.2); border-bottom:1px solid var(--rule) }
+.masthead-in{ display:flex; align-items:center; gap:24px; min-height:64px; padding:0; flex-wrap:nowrap; text-align:start }
+.brand{ gap:10px; flex:none }
+.brand img{ width:34px; height:34px }
+.brand-txt strong{ font-size:1.12rem; font-weight:700; letter-spacing:-.01em }
+.brand-txt span{ display:none }
+
+.mainnav{ flex:1 1 auto; min-width:0; display:flex; justify-content:center }
+.mainnav .tabs{ display:flex; align-items:center; gap:2px; overflow:visible; padding:0; flex-wrap:nowrap }
+.mainnav .tab{
+  padding:8px 12px; min-height:0; border:0; border-bottom:0; border-radius:8px;
+  font-size:.9rem; font-weight:600; line-height:1.2; color:var(--ink-2); white-space:nowrap;
+}
+.mainnav .tab:hover{ color:var(--navy); background:rgba(18,52,92,.06) }
+.mainnav .tab[aria-current="page"]{ color:var(--navy); background:rgba(18,52,92,.09); font-weight:700; border-bottom:0 }
+.mainnav .nav-more{ margin:0 }
+.mainnav .nav-more>summary{ padding:8px 12px; min-height:0; border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink-2); gap:5px }
+.mainnav .nav-more>summary:hover,.mainnav .nav-more[open]>summary{ color:var(--navy); background:rgba(18,52,92,.06) }
+.mainnav .nav-menu{ top:calc(100% + 8px); width:240px; padding:6px; border-radius:12px }
+.mainnav .nav-menu .tab{ display:block; padding:9px 12px; border-radius:7px; font-size:.88rem }
+
+.masthead-side{ margin-inline-start:auto; flex:none; gap:8px; width:auto }
+.stamp{ min-height:34px; font-size:.74rem }
+.masthead-side .print-btn{ border-radius:100px }
+
+@media (max-width:1000px){
+  .masthead-in{ flex-wrap:wrap; gap:8px 16px; padding:8px 0 0 }
+  .mainnav{ order:3; width:100%; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; margin:0 calc(var(--gutter) / -2); padding:0 calc(var(--gutter) / 2) 6px }
+  .mainnav::-webkit-scrollbar{ display:none }
+  .mainnav .tabs{ display:flex; flex-wrap:nowrap; padding:0 }
+  .mainnav .tab,.mainnav .nav-more>summary{ padding:8px 10px; font-size:.86rem; min-height:0 }
+  .mainnav .nav-more{ margin-inline-start:0 }
+  .mainnav .nav-menu{ position:fixed; top:calc(var(--masthead-h,104px) + 6px); inset-inline-end:12px; width:min(280px, calc(100vw - 24px)) }
+}
+@media (max-width:560px){
+  .brand img{ width:30px; height:30px }
+  .masthead-in{ gap:6px 10px }
+}
+@media print{ .mainnav{ display:none!important } }
+
+/* ---------- דף הבית: פתיח ---------- */
+#view-home .verdict{
+  position:relative; overflow:hidden; margin:0; border:0; border-radius:0; box-shadow:none;
+  border-bottom:1px solid var(--rule); color:var(--ink);
+  background:
+    radial-gradient(70% 60% at 50% -10%, rgba(18,52,92,.09), transparent 70%),
+    radial-gradient(40% 40% at 88% 10%, rgba(184,134,43,.10), transparent 65%),
+    linear-gradient(180deg, #FFFDF8 0%, var(--paper) 85%);
+}
+#view-home .verdict::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background-image:linear-gradient(rgba(18,52,92,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(18,52,92,.05) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
+}
+#view-home .verdict-knesset{ display:block; height:150px; color:var(--navy); opacity:.09; z-index:1 }
+#view-home .verdict-in{
+  position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; text-align:center;
+  gap:18px; padding:56px 0 52px; min-height:0; max-width:900px; margin-inline:auto;
+}
+.verdict-top{ display:flex; flex-direction:column; align-items:center; gap:14px }
+#view-home .verdict .eyebrow{
+  margin:0; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px;
+  background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.1em;
+}
+#view-home .verdict h1{
+  margin:0; font-family:var(--serif); font-weight:800; color:var(--ink);
+  font-size:clamp(2.1rem, 5vw, 3.5rem); line-height:1.1; letter-spacing:-.02em; max-width:22ch;
+}
+#view-home .verdict h1 em{ font-style:normal; color:var(--navy) }
+#verdict-head:focus{ outline:0 }
+#view-home .verdict .lede{ margin:0; max-width:60ch; color:var(--ink-2); font-size:1.08rem; line-height:1.65 }
+
+/* שעון הבחירות — גלולה קטנה מתחת לתווית */
+.hero-countdown{
+  display:inline-flex; align-items:center; gap:14px; padding:6px 8px 6px 16px;
+  border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); box-shadow:var(--shadow-s);
+  color:var(--ink-2); font-size:.78rem; max-width:100%;
+}
+.hero-countdown .cd-head{ display:flex; align-items:center; gap:8px }
+.hero-countdown .cd-head .kicker{ display:none; margin:0; padding:0; border:0 }
+.hero-countdown.is-live .cd-head .kicker{ display:inline-flex; font-size:0 }
+.hero-countdown h3{ margin:0; font-family:var(--sans); font-size:.78rem; font-weight:600; color:var(--ink-3); white-space:nowrap }
+.hero-countdown .cd-head>span{ display:none }
+.hero-countdown .countdown-cells{ display:flex; align-items:center; gap:2px }
+.hero-countdown .countdown-cells b{ display:grid; place-items:center; min-width:34px; padding:0; background:none; border:0; border-radius:0 }
+.hero-countdown .countdown-cells .num{ font-family:var(--serif); font-size:1.05rem; font-weight:700; line-height:1; color:var(--navy) }
+.hero-countdown .countdown-cells em{ margin-top:2px; font-style:normal; font-size:.55rem; letter-spacing:.02em; color:var(--ink-3) }
+.hero-countdown .cd-sep{ display:block; padding:0 0 10px; color:var(--rule-strong); font-size:.9rem }
+
+/* מתג ובוררים */
+#view-home .home-forecast-controls{ display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px 14px; margin-top:4px }
+.home-switch,#view-home .home-switch{ display:inline-flex; align-self:auto; grid-template-columns:none; background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
+.home-switch button,#view-home .home-switch button{ color:var(--ink-2); font-weight:700; padding:6px 14px }
+.home-switch button:hover{ color:var(--navy) }
+.home-switch button[aria-pressed="true"],#view-home .home-switch button[aria-pressed="true"]{ background:var(--navy); color:#fff }
+.home-history-pick,#view-home .home-history-pick{ display:flex; align-items:center; gap:8px; color:var(--ink-3); font-size:.74rem; font-weight:700 }
+.home-history-pick select,#view-home .home-history-pick select{
+  min-width:190px; width:auto; min-height:36px; padding:5px 12px; border:1px solid var(--rule); border-radius:100px;
+  background:var(--paper-2); color:var(--ink); box-shadow:var(--shadow-s);
+}
+.home-history-pick select:focus{ outline:3px solid var(--gold); outline-offset:2px }
+.intro-result-links{ width:100%; justify-content:center; gap:20px; font-size:.8rem; color:var(--ink-3) }
+.intro-result-links a{ color:var(--navy); font-weight:600 }
+.intro-result-links button{ color:var(--ink-3) }
+
+/* כרטיס התוצאה — שלושת הגושים + 61 */
+#view-home .readout{
+  display:grid; grid-template-columns:repeat(3,1fr) auto; gap:0 24px; align-items:center; align-self:center;
+  width:100%; max-width:840px; margin:12px 0 0; padding:22px 28px; text-align:start;
+  background:var(--paper-2); border:1px solid var(--rule); border-radius:18px; box-shadow:var(--shadow-m);
+}
+#view-home .readout .rd{ display:grid; gap:4px; padding:0 0 0 24px; border:0; border-inline-end:1px solid var(--rule-2) }
+#view-home .readout .rd:nth-child(2){ border-inline-start:0; padding-inline-start:0 }
+#view-home .readout .rd:nth-child(3){ border-inline-end:0 }
+#view-home .readout .rd .rd-lbl{ font-size:.78rem; font-weight:700; color:var(--ink-3) }
+#view-home .readout .rd b{ font-size:2.4rem; font-weight:800; color:var(--ink) }
+#view-home .readout .rd.lead b{ color:var(--navy) }
+#view-home .readout .rd-need{ justify-self:end; text-align:end; display:grid; gap:2px; border:0; padding:0; width:auto }
+#view-home .readout .rd-need b{ font-size:1.4rem; color:var(--ink) }
+#view-home .readout .rd-need span{ font-size:.76rem; color:var(--ink-3) }
+@media (max-width:640px){
+  #view-home .readout{ grid-template-columns:1fr 1fr; gap:14px 16px; padding:16px 18px }
+  #view-home .readout .rd{ padding:0; border:0 }
+  #view-home .readout .rd b{ font-size:1.8rem }
+  #view-home .readout .rd-need{ justify-self:start; text-align:start }
+}
+@media (max-width:760px){
+  #view-home .verdict-in{ padding:36px 0 34px; gap:14px }
+  #view-home .verdict .eyebrow{ font-size:.66rem; letter-spacing:.06em; line-height:1.4 }
+  #view-home .verdict h1{ font-size:clamp(1.8rem, 8vw, 2.4rem) }
+  #view-home .verdict .lede{ font-size:1rem }
+  .hero-countdown{ gap:10px; padding:5px 6px 5px 12px }
+  .hero-countdown h3{ display:none }
+}
+
+/* ---------- דף הבית: קיר המנדטים ---------- */
+#view-home .board{ padding:44px 0 24px }
+#view-home .bloc + .bloc{ margin-top:36px }
+#view-home .bloc-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--rule) }
+#view-home .bloc-head h2{ font-size:1.05rem; font-weight:700; letter-spacing:-.01em }
+#view-home .bloc-head .tally{ font-size:1rem; margin-inline-start:auto }
+#view-home .cards{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:16px; justify-content:stretch }
+@media (max-width:1000px){ #view-home .cards{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
+@media (max-width:700px){ #view-home .cards{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px } }
+.hcard{ border-radius:14px; box-shadow:var(--shadow-s) }
+.hcard:hover{ box-shadow:var(--shadow-m); border-color:var(--rule-strong) }
+#view-home .hcard-photo{ aspect-ratio:4/5; height:auto; background:linear-gradient(160deg,#EEF2F6,#F8F7F3) }
+#view-home .hcard-body{ padding:10px 10px 12px; gap:2px }
+#view-home .hcard-seatline{ min-height:2.2rem }
+#view-home .hcard-name{ font-size:.92rem }
+#view-home .hcard-leader{ font-size:.74rem }
+
+/* ---------- קצב הקטעים בשאר העמודים ---------- */
+.page-intro{ padding:44px 0 20px }
+.page-intro h2{ font-size:clamp(1.8rem,3.2vw,2.6rem); letter-spacing:-.02em; line-height:1.12 }
+.page-intro p{ margin-top:12px; font-size:1.02rem; line-height:1.65; max-width:70ch; color:var(--ink-2) }
+.page-head{ padding:30px 0 18px; margin-bottom:8px }
+.page-head h2{ font-size:1.9rem; letter-spacing:-.02em }
+#view-polls .page-head h2{ font-size:2rem }
+.sec{ padding:40px 0 }
+.sec-head{ margin-bottom:22px; gap:14px 24px; align-items:flex-end }
+.sec h2{ font-size:clamp(1.35rem,2.2vw,1.8rem); letter-spacing:-.02em }
+.sec h3{ font-size:1.12rem }
+.kicker{ margin-bottom:8px; padding-bottom:0; border-bottom:0; color:var(--gold); font-size:.7rem; letter-spacing:.12em }
+.sec-note{ font-size:.88rem; line-height:1.6 }
+.card,.rank,.pollcard,.poll-result-card,.step,.sector,.floorcard,.pillar,.tablewrap,.hemi,.mapbox,.gauge,.stats,.average-results,.crosschart,#forecast-bars{ border-radius:16px }
+.notice{ border-radius:12px }
+
+/* ---------- כותרת תחתונה ---------- */
+footer{ margin-top:72px; padding:56px 0 40px }
+footer .wrap{ grid-template-columns:minmax(0,1fr) minmax(0,1.7fr); gap:56px }
+footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
+.fbrand img{ width:32px; height:32px }
+@media (max-width:760px){
+  footer{ margin-top:48px; padding:40px 0 30px }
+  footer .wrap{ grid-template-columns:1fr; gap:28px }
+}
 
 </style>
 </head><body>
@@ -1842,13 +1859,31 @@ html.show-open{ overflow:hidden }
 <header class="masthead">
   <div class="wrap masthead-in">
     <a class="brand" href="#/" aria-label="ברומטר — דף הבית">
-      <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20104%2076%22%20role%3D%22img%22%20aria-label%3D%22%D7%91%D7%A8%D7%95%D7%9E%D7%98%D7%A8%22%3E%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%2312345C%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22butt%22%20stroke-linejoin%3D%22miter%22%3E%20%3C!--%20outer%20dial%20arc%3A%20left%20side%20up%20and%20over%2C%20broken%20where%20the%20arrow%20passes%20--%3E%20%3Cpath%20d%3D%22M8%2068%20A44%2044%200%200%201%2074.5%2030.2%22%2F%3E%20%3C!--%20outer%20arc%2C%20right%20shoulder%20descending%20to%20the%20baseline%20--%3E%20%3Cpath%20d%3D%22M84.2%2041.6%20A44%2044%200%200%201%2096%2068%22%2F%3E%20%3C!--%20inner%20dial%20arc%20--%3E%20%3Cpath%20d%3D%22M17.5%2068%20A34.5%2034.5%200%200%201%2068.6%2037.8%22%2F%3E%20%3Cpath%20d%3D%22M80.6%2050.4%20A34.5%2034.5%200%200%201%2086.5%2068%22%2F%3E%20%3C!--%20baseline%20--%3E%20%3Cpath%20d%3D%22M8%2068h88%22%2F%3E%20%3C!--%20columns%2C%20ascending%20--%3E%20%3Cpath%20d%3D%22M20%2068V60h9v8%22%2F%3E%20%3Cpath%20d%3D%22M33%2068V52h9v16%22%2F%3E%20%3Cpath%20d%3D%22M46%2068V43h10v25%22%2F%3E%20%3Cpath%20d%3D%22M60%2068V56%22%2F%3E%20%3Cpath%20d%3D%22M66%2068V50%22%2F%3E%20%3Cpath%20d%3D%22M72%2068V45%22%2F%3E%20%3Cpath%20d%3D%22M78%2068V38%22%2F%3E%20%3Cpath%20d%3D%22M86%2068V33h10v35%22%2F%3E%20%3C!--%20rising%20arrow%2C%20open%20outline%20--%3E%20%3Cpath%20d%3D%22M50.5%2058.5%2078%2024.5%22%2F%3E%20%3Cpath%20d%3D%22M56.5%2063%2084%2029%22%2F%3E%20%3Cpath%20d%3D%22M73.5%2022.5%2089.5%2015.5%2085%2032.5%22%2F%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E" alt="">
+      <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%20role%3D%22img%22%20aria-label%3D%22%D7%91%D7%A8%D7%95%D7%9E%D7%98%D7%A8%22%3E%20%3Cpath%20d%3D%22M11.7%2033.6%20A15%2015%200%201%201%2036.3%2033.6%22%20fill%3D%22none%22%20stroke%3D%22%2312345C%22%20stroke-width%3D%223.6%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M24%2025%2030.5%2014.5%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223.6%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Ccircle%20cx%3D%2224%22%20cy%3D%2225%22%20r%3D%223.2%22%20fill%3D%22%2312345C%22%2F%3E%20%3C%2Fsvg%3E" alt="">
       <span class="brand-txt">
         <strong>ברומטר</strong>
         <span>מדד הסקרים והאמינות</span>
       </span>
     </a>
-    <div class="election-countdown header-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+    <nav class="mainnav" aria-label="ניווט ראשי">
+      <div class="tabs">
+        <a class="tab" href="#/" data-view="home">תמונת מצב</a>
+        <a class="tab" href="#/polls" data-view="polls">הסקרים</a>
+        <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
+        <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
+        <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
+        <details class="nav-more">
+          <summary>עוד</summary>
+          <div class="nav-menu">
+            <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+            <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+            <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
+            <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
+            <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
+          </div>
+        </details>
+      </div>
+    </nav>
     <div class="masthead-side">
       <span class="stamp"><span class="pulse" aria-hidden="true"></span><span id="stamp-updated">טוען נתונים…</span></span>
       <button type="button" class="print-btn" id="print-btn" aria-label="הדפסת נתוני התחזית">
@@ -1859,28 +1894,6 @@ html.show-open{ overflow:hidden }
   </div>
 </header>
 
-<nav class="tabsbar" aria-label="ניווט ראשי">
-  <div class="wrap">
-    <div class="tabs">
-      <a class="tab" href="#/" data-view="home">תמונת מצב</a>
-      <a class="tab" href="#/polls" data-view="polls">הסקרים</a>
-      <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-      <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
-      <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
-      <details class="nav-more">
-        <summary>עוד</summary>
-        <div class="nav-menu">
-          <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
-          <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-          <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
-          <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
-          <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
-        </div>
-      </details>
-    </div>
-  </div>
-</nav>
-
 <main id="main">
 
 <!-- ==================== התחזית ==================== -->
@@ -1888,7 +1901,10 @@ html.show-open{ overflow:hidden }
   <div class="verdict">
     <div class="verdict-knesset" aria-hidden="true" id="hero-art"></div>
     <div class="wrap verdict-in">
-      <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
+      <div class="verdict-top">
+        <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
+        <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+      </div>
       <h1 id="verdict-head">טוען נתונים…</h1>
       <p class="lede" id="verdict-lede"></p>
       <div class="home-forecast-controls">
@@ -2644,7 +2660,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 <footer>
   <div class="wrap">
     <div>
-      <div class="fbrand"><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20104%2076%22%20role%3D%22img%22%20aria-label%3D%22%D7%91%D7%A8%D7%95%D7%9E%D7%98%D7%A8%22%3E%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%2312345C%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22butt%22%20stroke-linejoin%3D%22miter%22%3E%20%3C!--%20outer%20dial%20arc%3A%20left%20side%20up%20and%20over%2C%20broken%20where%20the%20arrow%20passes%20--%3E%20%3Cpath%20d%3D%22M8%2068%20A44%2044%200%200%201%2074.5%2030.2%22%2F%3E%20%3C!--%20outer%20arc%2C%20right%20shoulder%20descending%20to%20the%20baseline%20--%3E%20%3Cpath%20d%3D%22M84.2%2041.6%20A44%2044%200%200%201%2096%2068%22%2F%3E%20%3C!--%20inner%20dial%20arc%20--%3E%20%3Cpath%20d%3D%22M17.5%2068%20A34.5%2034.5%200%200%201%2068.6%2037.8%22%2F%3E%20%3Cpath%20d%3D%22M80.6%2050.4%20A34.5%2034.5%200%200%201%2086.5%2068%22%2F%3E%20%3C!--%20baseline%20--%3E%20%3Cpath%20d%3D%22M8%2068h88%22%2F%3E%20%3C!--%20columns%2C%20ascending%20--%3E%20%3Cpath%20d%3D%22M20%2068V60h9v8%22%2F%3E%20%3Cpath%20d%3D%22M33%2068V52h9v16%22%2F%3E%20%3Cpath%20d%3D%22M46%2068V43h10v25%22%2F%3E%20%3Cpath%20d%3D%22M60%2068V56%22%2F%3E%20%3Cpath%20d%3D%22M66%2068V50%22%2F%3E%20%3Cpath%20d%3D%22M72%2068V45%22%2F%3E%20%3Cpath%20d%3D%22M78%2068V38%22%2F%3E%20%3Cpath%20d%3D%22M86%2068V33h10v35%22%2F%3E%20%3C!--%20rising%20arrow%2C%20open%20outline%20--%3E%20%3Cpath%20d%3D%22M50.5%2058.5%2078%2024.5%22%2F%3E%20%3Cpath%20d%3D%22M56.5%2063%2084%2029%22%2F%3E%20%3Cpath%20d%3D%22M73.5%2022.5%2089.5%2015.5%2085%2032.5%22%2F%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E" alt=""><strong>ברומטר</strong></div>
+      <div class="fbrand"><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%20role%3D%22img%22%20aria-label%3D%22%D7%91%D7%A8%D7%95%D7%9E%D7%98%D7%A8%22%3E%20%3Cpath%20d%3D%22M11.7%2033.6%20A15%2015%200%201%201%2036.3%2033.6%22%20fill%3D%22none%22%20stroke%3D%22%2312345C%22%20stroke-width%3D%223.6%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M24%2025%2030.5%2014.5%22%20fill%3D%22none%22%20stroke%3D%22%23B8862B%22%20stroke-width%3D%223.6%22%20stroke-linecap%3D%22round%22%2F%3E%20%3Ccircle%20cx%3D%2224%22%20cy%3D%2225%22%20r%3D%223.2%22%20fill%3D%22%2312345C%22%2F%3E%20%3C%2Fsvg%3E" alt=""><strong>ברומטר</strong></div>
       <p>מדד עצמאי לסקרי הבחירות בישראל. מדידה, לא ניחוש.</p>
       <div class="srclist" id="footer-sources"></div>
     </div>
@@ -4859,654 +4875,214 @@ function renderHaredHistory() {
       <td class="n"><span class="chip ${r.shasS + r.utjS >= 16 ? "good" : ""}">${r.shasS + r.utjS}</span></td></tr>`).join("")}</tbody>`;
 }
 
-/* ============================================================
-   הצגת החישוב — עמוד הבית.
-   שכבת תצוגה בלבד: כל מספר על הבמה נגזר מפונקציות החישוב הקיימות
-   (forecast, largestRemainder, firmScore, homeHeadline). שום נתון
-   אינו משתנה, ובסוף ההצגה נשאר הקיר הרגיל שמצייר renderHome.
 
-   הבמה נפתחת עם כפתור "טענו את הנתונים". ציר הזמן (שניות) מהלחיצה:
-   שלב 1 · טעינת הנתונים ממאגרי המידע — מאגר אחד בכל פעם, בלי מקביל:
-     לכל מאגר: מתחבר → טוען רשומות (מונה, מאגר מתמלא) → שולח למנוע
-     (מילים נוסעות לאורך הקישור) → נקלט. ואז המאגר הבא.
-     0–22      תוצאות האמת 2022 → ארכיון הכיול → דמוגרפיה → ערוצים → מכונים
-     22–33.6   ארכיון הסקרים: הסקרים נשלחים אחד־אחד, כל סקר מודגש
-               בלוח "נטען עכשיו" ונרשם כנקודות בגרף
-     33.6–35   הנתונים נטענו — מעבר לניתוח
-   שלב 2 · הניתוח
-     35–41     מכיילים כל מכון מול 2022 — עמודות אמינות
-     41–47.2   משקללים, אחוז חסימה, 120 מושבים — הסמנים זזים
-   התוצאה
-     47.2–54.8 מסדר המפלגות: פורטרטים, עמודות שעולות, המספרים עולים,
-               כותרת: מי עלה ומי ירד מאתמול, והערה קופצת עם הפירוט
-     54.8–56.3 הכרטיסים טסים למקומם בקיר
-   ============================================================ */
+/* A short visual interpretation of the loaded data, not a simulated network request.
+   The forecast remains owned by app.js. No timers change application data. */
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const home = $('#view-home');
-  const root = document.documentElement;
-  const NS = 'http://www.w3.org/2000/svg';
-  const OFFSET_OK = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('offset-path', 'path("M0 0L1 1")');
-  const easeOut = t => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
-  const pname = id => partyMeta(id).name.replace(/!.*$/, '').trim();
-  const dayKey = v => new Date(v).toLocaleDateString('en-CA', { timeZone:'Asia/Jerusalem' });
-  const SRC = 4400, POLL = 265;           /* משך טעינת מאגר אחד · משך סקר אחד בזרם */
-  const T = { fetch:5 * SRC, loaded:33600, calib:35000, weigh:41000, lineup:47200, bars:49000, blocs:52100, note:53000, fly:54800, end:56300 };
-
-  let token = 0, raf = 0, played = false, stage = null, timers = [], links = {}, clones = [], counters = [], visHandlers = [], noteShown = false, current = null;
-
-  /* ---------- אייקונים ---------- */
-  const GLYPH = {
-    globe:  '<circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2c2.2 2 2.2 10 0 12M8 2c-2.2 2-2.2 10 0 12"/>',
-    tv:     '<rect x="1.5" y="4" width="13" height="8.5" rx="1.5"/><path d="M5 15h6M8 12.5V15M5 1l3 2.5L11 1"/>',
-    bars:   '<path d="M3 13V8M7 13V4M11 13V9.5M1 14.5h14"/>',
-    ballot: '<rect x="1.5" y="7" width="13" height="7.5" rx="1"/><path d="M5 7V2.5h6V7M6.3 4.8h3.4M1.5 10.5h13"/>',
-    clock:  '<circle cx="8" cy="8" r="6.2"/><path d="M8 4.5V8l2.6 1.6"/>',
-    people: '<circle cx="5.5" cy="5" r="2.3"/><circle cx="11.2" cy="6" r="1.9"/><path d="M1.2 13.5c.4-3.2 2-4.8 4.3-4.8s3.9 1.6 4.3 4.8M9.6 13.5c.2-2.2 1-3.4 1.6-3.4s1.7 1 2.2 3.4"/>'
+  const duration = 11200;
+  const phases = [
+    { at: 0, title: 'אוספים את התמונה.', label: 'איסוף נתונים' },
+    { at: 3500, title: 'מצליבים. מכיילים.', label: 'כיול היסטורי' },
+    { at: 6500, title: 'נותנים לדיוק משקל.', label: 'שקלול' },
+    { at: 9200, title: 'התמונה מתבהרת.', label: 'התחזית' }
+  ];
+  let stage = null, frame = 0, played = false, elapsed = 0, previous = null;
+  let paused = false, phase = -1, particles = [], ctx, width = 0, height = 0;
+  let observer, restoreFocus, inertElements = [];
+  const ICON = {
+    flag: '<svg class="ic flag" viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="10" width="40" height="28" rx="3"/><path d="M4 16h40M4 32h40"/><path d="M24 19l5.2 9H18.8zM24 29l-5.2-9h10.4z"/></svg>',
+    ballot: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 22h32v17a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3z"/><path d="M8 29h32"/><path d="M17 22V10a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12"/><path d="M20 15l3 3 5-6"/></svg>',
+    knesset: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40V19M16 40h16"/><path d="M24 30c-3.5 0-6.5-2.5-6.5-6V16M24 30c3.5 0 6.5-2.5 6.5-6V16"/><path d="M24 34c-6.5 0-11.5-3.5-11.5-10V16M24 34c6.5 0 11.5-3.5 11.5-10V16"/><path d="M24 38c-9.5 0-16.5-4.5-16.5-14V16M24 38c9.5 0 16.5-4.5 16.5-14V16"/><path d="M7.5 12v1.5M12.5 12v1.5M17.5 12v1.5M24 14v1.5M30.5 12v1.5M35.5 12v1.5M40.5 12v1.5"/></svg>',
+    polls: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 40h32"/><rect x="11" y="24" width="7" height="12" rx="1.5"/><rect x="20.5" y="15" width="7" height="21" rx="1.5"/><rect x="30" y="8" width="7" height="28" rx="1.5"/></svg>',
+    people: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="16" r="5"/><circle cx="31" cy="16" r="5"/><path d="M7 38c0-6.5 4.5-11 10-11s10 4.5 10 11M21 38c0-6.5 4.5-11 10-11s10 4.5 10 11"/></svg>',
+    gauge: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M11.7 33.6A15 15 0 1 1 36.3 33.6"/><path d="M24 25l6.5-10.5"/><circle cx="24" cy="25" r="2.5" fill="currentColor"/></svg>',
+    scale: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8v32M14 40h20M8 16h32"/><path d="M8 16l-5 12h10zM40 16l-5 12h10z"/></svg>',
+    check: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M16 24l6 6 11-12"/></svg>'
   };
-  const dbIcon = (glyph, uid) => `<svg viewBox="0 0 44 56" aria-hidden="true"><defs><clipPath id="${uid}"><path d="M4 9v37c0 3.3 8.1 6 18 6s18-2.7 18-6V9z"/></clipPath></defs>
-    <g clip-path="url(#${uid})"><rect class="db-fill" x="4" y="9" width="36" height="44"/></g>
-    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><ellipse cx="22" cy="9" rx="18" ry="6"/><path d="M4 9v37c0 3.3 8.1 6 18 6s18-2.7 18-6V9"/><path d="M4 21.5c0 3.3 8.1 6 18 6s18-2.7 18-6M4 34c0 3.3 8.1 6 18 6s18-2.7 18-6" opacity=".55"/></g>
-    <g class="db-glyph" transform="translate(29 40)"><circle r="10.5"/><g transform="translate(-8 -8)" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${GLYPH[glyph]}</g></g></svg>`;
+  const STEP_ICON = [ICON.polls, ICON.gauge, ICON.scale, ICON.ballot];
+  const ease = t => { t = Math.min(1, Math.max(0, t)); return t * t * (3 - 2 * t); };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const noise = i => { const n = Math.sin(i * 127.1 + 311.7) * 43758.5453; return n - Math.floor(n); };
 
-  /* ---------- הנתונים — הכול מהחישוב הקיים ---------- */
   function prepare() {
-    const simple = forecast('simple', HIDE_FROM_HOME), weighted = forecast('weighted', HIDE_FROM_HOME), final = forecast(S.mode, HIDE_FROM_HOME);
-    const seats = largestRemainder(final.parties);
-    const nat = S.regions.national;
-    const polls = [...S.cur.polls].sort((a, b) => parsePollDate(a) - parsePollDate(b) || (a.publishedAt || 0) - (b.publishedAt || 0));
-    const outlets = [...new Set(polls.map(outletKey))];
-    const firms = [...new Set(polls.map(p => firmOf(p.sourceId).firm))]
-      .map(id => firmOf(polls.find(p => firmOf(p.sourceId).firm === id).sourceId).meta)
-      .map(meta => ({ meta, score: firmScore(meta), stat: meta.calibrated ? S.stats.find(s => s.firm === calibrationId(meta)) : null }))
-      .sort((a, b) => b.score - a.score);
-    const ids = $$('.hcard', home).map(c => c.dataset.focusParty);
-    const val = id => final.parties[id] != null ? final.parties[id] : (final.rawFull[id] || 0);
-    const order = ids.slice().sort((a, b) => (seats[b] || 0) - (seats[a] || 0) || val(b) - val(a));
-    const blocs = map => { const t = {}; Object.entries(map).forEach(([id, n]) => { const al = partyMeta(id).alignment; t[al] = (t[al] || 0) + n; }); return t; };
-    const blocTot = blocs(seats);
-    const R = blocTot.Right || 0, LA = (blocTot.Left || 0) + (blocTot.Arabs || 0) + (blocTot.Unknown || 0);
-    const maxVal = Math.max(10, ...polls.flatMap(p => p.parties.map(x => x.mandates || 0)));
-    const pollVal = (p, id) => p.parties.filter(x => normId(x.id) === id).reduce((s, x) => s + (x.mandates || 0), 0);
-    const d = { simple, weighted, final, seats, nat, polls, outlets, firms, ids, order, blocTot, R, LA, maxVal, pollVal, blocs,
-      headline: homeHeadline(final, seats, blocTot), calib: S.elections[0], days: new Set(polls.map(p => heDate(parsePollDate(p)))).size };
-    d.change = dayChange(d);
-    return d;
+    const polls = S.forecastPolls || S.cur.polls;
+    const records = polls.flatMap((p, pi) => p.parties.map((v, vi) => ({
+      value: Number(v.mandates) || 0, weight: firmScore(firmOf(p.sourceId).meta) / 100,
+      seed: pi * 37 + vi, lane: pi % 4
+    })));
+    // Bound canvas work on large archives; every particle still comes from a real record.
+    particles = records.filter((_, i) => i % Math.max(1, Math.ceil(records.length / 240)) === 0)
+      .map((r, i) => ({ ...r, i, x: noise(r.seed + 1), y: noise(r.seed + 10) }));
+    return polls.length;
   }
 
-  /* מי עלה ומי ירד מאתמול: השוואה לתמונת המצב האחרונה של היום הקודם
-     ב-forecast-history.json (ואם אין — לעדכון הקודם). */
-  function dayChange(d) {
-    const snaps = (S.forecastHistory?.snapshots || []).slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
-    const today = dayKey(S.cur.generatedAt), key = S.mode === 'weighted' ? 'weighted' : 'scenario';
-    const prev = snaps.find(s => s[key] && dayKey(s.updatedAt) < today) || snaps.find(s => s[key] && Date.parse(s.updatedAt) < Date.parse(S.cur.generatedAt));
-    if (!prev) return null;
-    const was = prev[key], pt = d.blocs(was);
-    const pR = pt.Right || 0, pLA = (pt.Left || 0) + (pt.Arabs || 0) + (pt.Unknown || 0);
-    const movers = [...new Set([...Object.keys(was), ...Object.keys(d.seats)])]
-      .map(id => ({ id, from: was[id] || 0, to: d.seats[id] || 0, delta: (d.seats[id] || 0) - (was[id] || 0) }))
-      .filter(x => x.delta).sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta) || b.to - a.to);
-    const daysAgo = Math.round((Date.parse(today) - Date.parse(dayKey(prev.updatedAt))) / 864e5);
-    const when = daysAgo === 1 ? 'אתמול' : daysAgo === 2 ? 'שלשום' : daysAgo > 2 ? heDate(prev.updatedAt) : `העדכון הקודם (${humanUpdate(prev.updatedAt)})`;
-    return { dR: d.R - pR, dLA: d.LA - pLA, pR, pLA, movers, when, daysAgo };
-  }
-  const moveText = m => `${pname(m.id)} ${m.delta > 0 ? 'עולה' : 'יורדת'} ${Math.abs(m.delta) === 1 ? 'מנדט' : Math.abs(m.delta) + ' מנדטים'}`;
-  const deltaTag = n => n ? `<span class="${n > 0 ? 'up' : 'down'}">${n > 0 ? '▲' : '▼'}${Math.abs(n)}</span>` : '<span class="same">ללא שינוי</span>';
-  const blocLine = (d, c) => `גוש הימין <b>${d.R}</b> ${deltaTag(c.dR)} · מרכז־שמאל והרשימות הערביות <b>${d.LA}</b> ${deltaTag(c.dLA)}`;
-  /* כותרת מסדר המפלגות: מי זז מאתמול; בלי היסטוריה — כותרת הבית הרגילה */
-  function lineupHeadline(d) {
-    const c = d.change;
-    if (!c) return { h: d.headline.h, sub: d.headline.s };
-    if (!c.movers.length) return { h: `אין שינוי מ${esc(c.when)} — <em>אף רשימה לא זזה</em>`, sub: blocLine(d, c) };
-    const lead = c.movers.slice(0, 2).map(m => `<em>${esc(pname(m.id))}</em> ${esc(moveText(m).slice(pname(m.id).length + 1))}`);
-    const rest = c.movers.slice(2).map(m => `${esc(pname(m.id))} ${deltaTag(m.delta)}`).join(' · ');
-    return { h: `${lead.join(', ')} מ${esc(c.when)}`, sub: (rest ? rest + ' · ' : '') + blocLine(d, c) };
-  }
-  function noteHTML(d) {
-    const c = d.change;
-    const head = c.movers.length ? c.movers.slice(0, 2).map(moveText).join(', ') : `אף רשימה לא שינתה מנדט מ${c.when}`;
-    return `<p class="k">מה השתנה מ${esc(c.when)}</p><h3>${esc(head)}</h3>
-      ${c.movers.length ? `<ul class="movers">${c.movers.map(m => `<li><b>${esc(pname(m.id))}</b> ${deltaTag(m.delta)} <span class="num">${m.from} → ${m.to}</span></li>`).join('')}</ul>` : ''}
-      <p>${blocLine(d, c)}</p>`;
-  }
-  function toast(d) {
-    if (noteShown || !d.change) return;
-    noteShown = true;
-    const el = document.createElement('aside');
-    el.className = 'show-toast'; el.setAttribute('role', 'status'); el.dir = 'rtl';
-    el.innerHTML = `<button type="button" class="toast-x" aria-label="סגירה">×</button>` + noteHTML(d);
-    document.body.appendChild(el);
-    requestAnimationFrame(() => el.classList.add('in'));
-    const close = () => { el.classList.remove('in'); setTimeout(() => el.remove(), 500); };
-    $('.toast-x', el).addEventListener('click', close);
-    setTimeout(close, 16000);
+  function resize() {
+    if (!stage) return;
+    const canvas = stage.querySelector('canvas'), box = canvas.getBoundingClientRect();
+    width = box.width; height = box.height;
+    const ratio = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    draw(elapsed);
   }
 
-  /* ---------- הבמה ---------- */
-  function mount(d) {
-    const uid = 'show' + Date.now().toString(36);
-    const sectors = (S.demo?.sectors || []).slice(0, 4);
-    const nodes = [
-      { id:'archive', side:'a', glyph:'globe',  title:'skarim.org · ארכיון הסקרים', to:d.polls.length, unit:'סקרים בחלון התצוגה', fill:.9,
-        chips:[{ label:`${d.days} ימי פרסום` }, { label:`עודכן ${humanUpdate(S.cur.generatedAt)}` }] },
-      { id:'outlets', side:'a', glyph:'tv',     title:'ערוצי הפרסום', to:d.outlets.length, unit:'כלי תקשורת', fill:.8,
-        chips:d.outlets.map(o => ({ key:o, label:o, img:S.firms.outletLogos?.[o] })) },
-      { id:'firms',   side:'a', glyph:'bars',   title:'מכוני הסקרים', to:d.firms.length, unit:'מכונים', fill:.75,
-        chips:d.firms.map(f => ({ key:f.meta.id, label:f.meta.he, color:f.meta.color, score:true })) },
-      { id:'truth',   side:'b', glyph:'ballot', title:'ועדת הבחירות · תוצאות האמת 2022', to:d.nat.valid, unit:'קולות כשרים', fill:1,
-        chips:[{ label:`${d.nat.turnout}% הצבעה` }, { label:`${d.nat.parties.length} רשימות` }, { label:`${fmt(d.nat.eligible)} בעלי זכות בחירה` }] },
-      { id:'calib',   side:'b', glyph:'clock',  title:'ארכיון סקרי 2022 · כיול המכונים', to:d.calib.data.polls.length, unit:'סקרים ב־30 הימים שלפני הבחירות', fill:.85,
-        chips:[{ label:`${d.calib.stats.length} מכונים מכוילים` }, { label:'גושים · מפלגות · עקביות' }] },
-      { id:'demo',    side:'b', glyph:'people', title:'הלמ״ס · מרכז טאוב · המכון לדמוקרטיה', to:sectors.reduce((s, x) => s + (x.eligible2022 || 0), 0) || d.nat.eligible, unit:'בעלי זכות בחירה במגזרים הנמדדים', fill:.7,
-        chips:sectors.map(s => ({ label:`${s.name} ‎+${r1(s.growth * 100)}%‎ בשנה` })) }
-    ];
-    const nodeHTML = (n, i) => `<article class="show-node" data-node="${n.id}" style="--fill:${n.fill}">
-      <div class="node-ico">${dbIcon(n.glyph, uid + i)}</div>
-      <div class="node-title">${esc(n.title)}</div>
-      <div class="node-status">ממתין לחיבור</div>
-      <div class="node-count"><b class="num" data-to="${n.to}">0</b><small>${esc(n.unit)}</small></div>
-      ${n.chips.length ? `<div class="node-chips">${n.chips.map(c => `<span class="node-chip"${c.key ? ` data-key="${esc(c.key)}"` : ''}${c.color ? ` style="--c:${esc(c.color)}"` : ''}>${c.img ? `<img src="${esc(c.img)}" alt="" onerror="this.remove()">` : c.color ? '<i></i>' : ''}${esc(c.label)}${c.score ? '<b></b>' : ''}</span>`).join('')}</div>` : ''}
-    </article>`;
-    const el = document.createElement('div');
-    el.id = 'show'; el.dir = 'rtl'; el.className = 'stage-ready'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'חישוב התחזית');
-    el.innerHTML = `<svg class="show-links" aria-hidden="true"></svg>
-      <header class="show-top">
-        <div class="show-brand"><i></i>ברומטר · מנוע התחזית</div>
-        <div class="show-clock num" dir="ltr">00:00.0</div>
-        <div class="show-steps" aria-hidden="true"><span class="ph">שלב 1</span><span data-step="load">טעינת המאגרים <b>0/6</b></span><span class="ph">שלב 2</span><span data-step="calib">כיול</span><span data-step="weigh">שקלול</span><span class="ph">שלב 3</span><span data-step="result">התוצאה</span></div>
-        <button type="button" class="show-skip">דלג לתוצאה ←</button>
-      </header>
-      <div class="show-title" aria-live="polite" aria-atomic="true"><p class="ph"></p><h2></h2><p class="sub"></p></div>
-      <div class="show-grid">
-        <aside class="show-col col-a">${nodes.filter(n => n.side === 'a').map(nodeHTML).join('')}</aside>
-        <div class="show-center">
-          <div class="engine-wrap"><div class="engine-tags" aria-hidden="true"></div>
-            <div class="show-engine" aria-hidden="true"><svg viewBox="0 0 200 200"><circle class="ring r1" cx="100" cy="100" r="96"/><circle class="ring r2" cx="100" cy="100" r="82"/><circle class="ring r3" cx="100" cy="100" r="66"/><circle class="engine-prog-bg" cx="100" cy="100" r="90"/><circle class="engine-prog" cx="100" cy="100" r="90" stroke-dasharray="565.5" stroke-dashoffset="565.5"/></svg><div class="engine-text"><b class="num">0</b><span>מקורות מחוברים</span></div></div>
-          </div>
-          <div class="show-now" aria-live="off"><span class="now-k">נטען עכשיו</span><div class="now-main">ממתין להפעלה</div><div class="now-sub"></div></div>
-          <div class="show-chart" aria-hidden="true">
-            <div class="chart-parties"><div class="chart-head"><b>כל מדידה של כל רשימה</b><span>מנדטים בסקר · נקודה = סקר, צבע = מכון</span></div><svg></svg></div>
-            <div class="chart-firms"><div class="chart-head"><b>ציון האמינות של כל מכון</b><span>מול תוצאות האמת 2022 · 0–100</span></div><svg></svg></div>
-          </div>
-          <div class="show-log" aria-hidden="true"></div>
-        </div>
-        <aside class="show-col col-b">${nodes.filter(n => n.side === 'b').map(nodeHTML).join('')}</aside>
-      </div>
-      <section class="show-lineup" aria-label="התחזית">
-        <div class="lineup-head"><p class="k">תחזית הברומטר · הכנסת ה־26</p><h2></h2><p class="sub"></p></div>
-        <div class="lineup-row"></div>
-        <div class="lineup-blocs"><div class="lb right"><span>גוש הימין</span><b class="num">0</b></div><div class="lineup-track"><span class="r"></span><span class="l"></span><i class="m61"></i></div><div class="lb left"><span>מרכז־שמאל והרשימות הערביות</span><b class="num">0</b></div></div>
-      </section>
-      <div class="show-start"><div>
-        <p class="k">ברומטר · מנוע התחזית</p>
-        <h2>מהסקרים לתחזית — לנגד עיניכם</h2>
-        <p class="lead">קודם טוענים את הנתונים ממאגרי המידע: ${d.polls.length} סקרים מ־${d.outlets.length} ערוצים ו־${d.firms.length} מכונים, תוצאות האמת של 2022 והמודל הדמוגרפי. אחר כך הניתוח — כיול, שקלול ואחוז חסימה — ובסוף 120 מנדטים.</p>
-        <div class="start-stats"><span><b class="num">${d.polls.length}</b>סקרים</span><span><b class="num">${d.outlets.length}</b>ערוצים</span><span><b class="num">${d.firms.length}</b>מכונים</span><span><b class="num">${fmt(d.nat.valid)}</b>קולות אמת 2022</span></div>
-        <button type="button" class="show-go">טענו את הנתונים <span>←</span></button>
-        <button type="button" class="alt">ישר לתוצאה, בלי ההצגה</button>
-      </div></div>`;
-    document.body.appendChild(el);
-    stage = el;
-    $('.show-skip', el).addEventListener('click', () => finish());
-    $('.show-start .alt', el).addEventListener('click', () => finish());
-    $('.show-go', el).addEventListener('click', () => begin(d));
-    buildPartyChart(d);
-    buildFirmChart(d);
-    buildLinks();
-  }
+  function draw(t) {
+    if (!ctx || !width || !height) return;
+    ctx.clearRect(0, 0, width, height);
+    const cx = width / 2, cy = height * .5;
+    const span = Math.min(width * .78, 730), tall = Math.min(height * .64, 240);
+    const collect = ease(t / 3500), align = ease((t - 3500) / 2200);
+    const weigh = ease((t - 6500) / 2200), resolve = ease((t - 9200) / 1200);
 
-  /* ---------- קישורים: מכל מאגר אל המנוע ---------- */
-  const center = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
-  function pathBetween(a, b, bulge = 0) {
-    const [ax, ay] = a, [bx, by] = b, mx = (ax + bx) / 2;
-    return `M${ax.toFixed(1)} ${ay.toFixed(1)}C${mx.toFixed(1)} ${(ay + bulge).toFixed(1)},${mx.toFixed(1)} ${(by + bulge).toFixed(1)},${bx.toFixed(1)} ${by.toFixed(1)}`;
-  }
-  function anchorOf(node) {
-    const r = node.getBoundingClientRect(), a = node.closest('.col-a');
-    return [a ? r.left : r.right, r.top + r.height / 2];
-  }
-  function engineEdge(from) {
-    const eng = $('.show-engine', stage), [cx, cy] = center(eng), rad = eng.getBoundingClientRect().width * .5;
-    const dx = from[0] - cx, dy = from[1] - cy, len = Math.hypot(dx, dy) || 1;
-    return [cx + dx / len * rad, cy + dy / len * rad];
-  }
-  function makeLink(id, from, to, cls = '') {
-    const svg = $('.show-links', stage);
-    const base = document.createElementNS(NS, 'path'), flow = document.createElementNS(NS, 'path');
-    base.setAttribute('class', 'link ' + cls); flow.setAttribute('class', 'flow ' + cls);
-    svg.append(base, flow);
-    links[id] = { base, flow, from, to, d:'', drawn:false };
-    layoutLink(id);
-  }
-  function layoutLink(id) {
-    const L = links[id], a = L.from(), b = L.to(a);
-    L.a = a; L.b = b;
-    L.d = pathBetween(a, b, L.bulge || 0);
-    L.base.setAttribute('d', L.d); L.flow.setAttribute('d', L.d);
-    const len = L.base.getTotalLength();
-    L.base.style.transition = 'none';
-    L.base.style.strokeDasharray = L.drawn ? 'none' : len;
-    L.base.style.strokeDashoffset = L.drawn ? 0 : len;
-    void L.base.getBoundingClientRect();
-    L.base.style.transition = '';
-  }
-  function drawLink(id) { const L = links[id]; if (!L || L.drawn) return; L.drawn = true; L.base.style.strokeDashoffset = 0; timers.push(setTimeout(() => { L.base.style.strokeDasharray = 'none'; }, 950)); }
-  function flow(ids, on) { ids.forEach(id => links[id] && links[id].flow.classList.toggle('on', on)); }
-  function buildLinks() {
-    $$('.show-node', stage).forEach(n => makeLink(n.dataset.node, () => anchorOf(n), engineEdge));
-  }
-  function crossLinks() {
-    const firms = $('[data-node="firms"]', stage);
-    ['truth', 'calib'].forEach(id => {
-      const n = $(`[data-node="${id}"]`, stage);
-      makeLink('x-' + id, () => { const r = n.getBoundingClientRect(); return [r.right, r.top + r.height * .7]; }, () => { const r = firms.getBoundingClientRect(); return [r.left, r.top + r.height * .7]; }, 'x');
-      links['x-' + id].bulge = Math.round(stage.clientHeight * .28);
-      layoutLink('x-' + id);
-      drawLink('x-' + id);
-    });
-  }
-  function relayout() { Object.keys(links).forEach(layoutLink); }
-
-  /* מילה (או נקודת אור) שנוסעת לאורך קישור */
-  function flyWord(id, text, o = {}) {
-    const L = links[id]; if (!L || !stage) return;
-    const el = document.createElement('span');
-    el.className = 'show-word' + (text ? '' : ' dot');
-    el.textContent = text || '';
-    if (o.color) { el.style.background = o.color; el.style.color = '#fff'; el.style.boxShadow = `0 4px 18px ${o.color}80`; }
-    stage.appendChild(el);
-    const dur = o.dur || 800, ease = 'cubic-bezier(.35,.05,.25,1)';
-    let anim;
-    if (OFFSET_OK) {
-      el.style.offsetPath = `path("${L.d}")`;
-      anim = el.animate([
-        { offsetDistance:'0%', opacity:0, transform:'scale(.5)' },
-        { offsetDistance:'10%', opacity:1, transform:'scale(1)', offset:.12 },
-        { offsetDistance:'90%', opacity:1, transform:'scale(1)', offset:.88 },
-        { offsetDistance:'100%', opacity:0, transform:'scale(.4)' }
-      ], { duration:dur, easing:ease });
-    } else {
-      const [ax, ay] = L.a, [bx, by] = L.b;
-      anim = el.animate([
-        { transform:`translate(${ax}px,${ay}px) translate(-50%,-50%) scale(.5)`, opacity:0 },
-        { transform:`translate(${ax + (bx - ax) * .1}px,${ay + (by - ay) * .1}px) translate(-50%,-50%) scale(1)`, opacity:1, offset:.12 },
-        { transform:`translate(${bx}px,${by}px) translate(-50%,-50%) scale(.4)`, opacity:0 }
-      ], { duration:dur, easing:ease });
+    // A quiet drafting field becomes visible as the incoming observations align.
+    ctx.strokeStyle = `rgba(18,52,92,${.10 * (1 - resolve)})`;
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 7; i++) {
+      const y = cy - tall / 2 + tall * i / 6;
+      ctx.beginPath(); ctx.moveTo(cx - span / 2, y); ctx.lineTo(cx + span / 2, y); ctx.stroke();
     }
-    anim.onfinish = () => el.remove();
-  }
-
-  /* ---------- גרף המפלגות: נקודה לכל מדידה, סמן לממוצע ---------- */
-  let chart = null;
-  function buildPartyChart(d) {
-    const svg = $('.chart-parties svg', stage);
-    const rowH = 22, W = 632, top = 20, labelX = 612, axisR = 468, axisL = 26;
-    const H = top + d.order.length * rowH + 22;
-    const x = v => axisR - (axisR - axisL) * v / d.maxVal;
-    const ys = Object.fromEntries(d.order.map((id, i) => [id, top + i * rowH + rowH / 2]));
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    const ticks = []; for (let v = 0; v <= d.maxVal; v += 5) ticks.push(v);
-    svg.innerHTML = ticks.map(v => `<line class="axis" x1="${x(v)}" x2="${x(v)}" y1="${top - 5}" y2="${H - 14}"/><text x="${x(v)}" y="${top - 9}" text-anchor="middle" font-size="9" fill="#7F93A6">${v}</text>`).join('')
-      + d.order.map(id => {
-        const y = ys[id], m = partyMeta(id), col = BLOCS[m.alignment]?.color || '#96A0AB';
-        return `<g class="row" data-id="${esc(id)}"><rect class="lbl" x="${labelX + 6}" y="${y - 5}" width="4" height="10" rx="1" fill="${col}"/><text class="lbl" x="${labelX}" y="${y + 4}" text-anchor="end" font-weight="700" font-size="11.5">${esc(pname(id))}</text><line class="axis" x1="${axisL}" x2="${axisR}" y1="${y}" y2="${y}"/><g class="dots"></g><g class="mark" style="transform:translate(${x(0)}px,${y}px)"><line x1="0" x2="0" y1="-8" y2="8" stroke="#DDAA42" stroke-width="2.5" stroke-linecap="round"/><text x="-7" y="4" text-anchor="end" fill="#fff" font-weight="800" font-size="10.5"></text></g></g>`;
-      }).join('')
-      + `<g class="thr"><line x1="${x(THRESHOLD_MANDATES)}" x2="${x(THRESHOLD_MANDATES)}" y1="${top - 5}" y2="${H - 14}" stroke-width="1.5"/><text x="${x(THRESHOLD_MANDATES)}" y="${H - 2}" text-anchor="middle" fill="#E0533F" font-size="9.5" font-weight="700">אחוז החסימה ${d.nat.threshold}% · ${r1(THRESHOLD_MANDATES)} מנדטים</text></g>`;
-    const count = {};
-    chart = {
-      x, ys,
-      row: id => svg.querySelector(`.row[data-id="${CSS.escape(id)}"]`),
-      dot(id, v, color) {
-        const row = chart.row(id); if (!row) return;
-        const k = count[id] = (count[id] || 0) + 1;
-        const c = document.createElementNS(NS, 'circle');
-        c.setAttribute('class', 'dot'); c.setAttribute('r', '3.4'); c.setAttribute('fill', color || '#9FB2C4');
-        c.setAttribute('cx', x(v)); c.setAttribute('cy', ys[id] + ((k % 3) - 1) * 4.2);
-        $('.dots', row).appendChild(c);
-        requestAnimationFrame(() => c.classList.add('in'));
-        if (k === 1) $$('.lbl', row).forEach(l => l.classList.add('in'));
-      },
-      marks(map, f) {
-        d.order.forEach(id => {
-          const row = chart.row(id), v = map[id] || 0, m = $('.mark', row);
-          m.style.transform = `translate(${x(v)}px,${ys[id]}px)`;
-          $('text', m).textContent = f(v);
-          m.classList.add('in');
-        });
-      },
-      head: t => { $('.chart-parties .chart-head b', stage).textContent = t; },
-      threshold() { $('.thr', svg).classList.add('in'); }
-    };
-  }
-
-  /* ---------- גרף המכונים: עמודת אמינות לכל מכון ---------- */
-  function buildFirmChart(d) {
-    const svg = $('.chart-firms svg', stage);
-    const rowH = 25, W = 632, top = 8, labelX = 612, barR = 468, barL = 26;
-    const H = top + d.firms.length * rowH + 6;
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    svg.innerHTML = d.firms.map((f, i) => {
-      const y = top + i * rowH + rowH / 2, col = f.meta.calibrated ? (f.meta.color || '#5FB7C9') : '#7F93A6';
-      return `<g class="frow" data-firm="${esc(f.meta.id)}"><text x="${labelX}" y="${y + 4}" text-anchor="end" font-weight="700" font-size="11.5">${esc(f.meta.he)}</text><rect x="${barL}" y="${y - 7}" width="${barR - barL}" height="14" rx="4" fill="rgba(255,255,255,.06)"/><rect class="fbar" x="${barL}" y="${y - 7}" width="${barR - barL}" height="14" rx="4" fill="${col}" style="--k:${(f.score / 100).toFixed(3)}"${f.meta.calibrated ? '' : ' opacity=".5"'}/><text class="fval" x="${barR - (barR - barL) * f.score / 100 - 7}" y="${y + 4}" text-anchor="end" fill="#fff" font-weight="800" font-size="10.5">${r1(f.score)}${f.meta.calibrated ? '' : ' · ניטרלי'}</text></g>`;
-    }).join('');
-  }
-
-  /* ---------- עזרי במה ---------- */
-  const q = s => $(s, stage);
-  const nodeEl = id => q(`[data-node="${id}"]`);
-  const chipEl = (node, key) => nodeEl(node)?.querySelector(`.node-chip[data-key="${CSS.escape(key)}"]`);
-  function status(n, t) { $('.node-status', n).textContent = t; }
-  function title(phase, h, p) { const box = q('.show-title'); box.innerHTML = `<p class="ph t-in">${phase}</p><h2 class="t-in">${h}</h2><p class="sub t-in">${p}</p>`; }
-  const STEPS = ['load', 'calib', 'weigh', 'result'];
-  function step(name) { const i = STEPS.indexOf(name); $$('.show-steps span[data-step]', stage).forEach((s, k) => { s.classList.toggle('on', k === i); s.classList.toggle('done', k < i); }); }
-  function loadCount(k, n) { const b = q('.show-steps [data-step="load"] b'); if (b) b.textContent = `${k}/${n}`; }
-  function log(html) { const box = q('.show-log'); const p = document.createElement('p'); p.innerHTML = html; box.appendChild(p); while (box.children.length > 8) box.firstChild.remove(); }
-  function engine(num, label) { const t = q('.engine-text'); if (num != null) $('b', t).textContent = num; if (label) $('span', t).textContent = label; }
-  function hot(el) { if (!el) return; el.classList.add('hot'); timers.push(setTimeout(() => el.classList.remove('hot'), 620)); }
-  function live(ids) { $$('.show-node', stage).forEach(n => n.classList.toggle('live', ids.includes(n.dataset.node))); }
-  function chartOn(which) { $$('.show-chart>div', stage).forEach(p => p.classList.toggle('on', p.classList.contains('chart-' + which))); }
-  function counter(el, at, dur = 1500) { counters.push({ el, to:+el.dataset.to, at, dur }); }
-  /* לוח "נטען עכשיו" — ההדגשה של הרשומה שנטענת ברגע זה */
-  function now(k, main, sub = '') {
-    const box = q('.show-now');
-    $('.now-k', box).textContent = k; $('.now-main', box).innerHTML = main; $('.now-sub', box).innerHTML = sub;
-    box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash');
-  }
-  function tag(text, xPct, yPct) {
-    const t = document.createElement('span'); t.className = 'engine-tag'; t.innerHTML = text;
-    t.style.left = xPct + '%'; t.style.top = yPct + '%';
-    q('.engine-tags').appendChild(t); requestAnimationFrame(() => t.classList.add('in'));
-  }
-  const partyLine = p => [...p.parties].filter(x => x.mandates > 0).sort((a, b) => b.mandates - a.mandates).map(x => `${esc(x.name.replace(/!.*$/, '').trim())} <b>${x.mandates}</b>`).join(' · ');
-  const topParties = p => [...p.parties].sort((a, b) => b.mandates - a.mandates).slice(0, 5).map(x => `${esc(x.name.replace(/!.*$/, '').trim())} ${x.mandates}`).join(' · ');
-  const topN = (map, n = 5) => Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, n).map(([id, v]) => `${esc(pname(id))} <b>${r1(v)}</b>`).join(' · ');
-
-  /* ---------- מסדר המפלגות ---------- */
-  let slots = [], maxSeat = 1;
-  function buildLineup(d) {
-    const row = q('.lineup-row'), sr = stage.getBoundingClientRect();
-    const n = d.order.length, narrow = sr.width < 900, gap = narrow ? 8 : 10, pad = narrow ? 24 : 64;
-    /* מסך צר: שתי שורות של כרטיסים במקום שורה אחת ארוכה */
-    const perRow = narrow ? Math.ceil(n / 2) : n, rows = Math.ceil(n / perRow);
-    const lw = Math.max(40, Math.min(150, Math.floor((sr.width - pad - gap * (perRow - 1)) / perRow)));
-    clones = d.order.map(id => {
-      const real = home.querySelector(`.hcard[data-focus-party="${CSS.escape(id)}"]`), tr = real.getBoundingClientRect();
-      const c = real.cloneNode(true);
-      c.classList.add('clone'); c.removeAttribute('aria-label'); c.tabIndex = -1;
-      c.style.width = tr.width + 'px';
-      c.style.setProperty('--bc', getComputedStyle(real).getPropertyValue('--bc').trim() || '#17457F');
-      c.dataset.seats = d.seats[id] || 0;
-      c._scale = lw / tr.width; c._h = tr.height * c._scale; c._id = id;
-      $('.hcard-seat', c).textContent = '0';
-      c.style.opacity = '0';
-      return c;
-    });
-    const anchorH = Math.max(...clones.map(c => c._h));
-    row.style.setProperty('--lw', lw + 'px');
-    row.innerHTML = clones.map(c => `<div class="lineup-slot" style="--bc:${c.style.getPropertyValue('--bc')}"><div class="lineup-bar"><b class="num">0</b><i></i></div><div class="lineup-anchor" style="height:${c._h.toFixed(1)}px"></div></div>`).join('');
-    const hd = lineupHeadline(d);
-    q('.lineup-head h2').innerHTML = hd.h; q('.lineup-head .sub').innerHTML = hd.sub || '';
-    const avail = sr.height - q('.show-top').offsetHeight - q('.lineup-head').offsetHeight - q('.lineup-blocs').offsetHeight - 70;
-    const barH = Math.max(60, Math.min(sr.height * .34, avail / rows - anchorH - 24));
-    row.style.setProperty('--bar-h', barH + 'px');
-    slots = $$('.lineup-slot', row).map((s, i) => ({ el:s, bar:$('.lineup-bar i', s), num:$('.lineup-bar b', s), anchor:$('.lineup-anchor', s), clone:clones[i] }));
-    slots.forEach(s => { const ar = s.anchor.getBoundingClientRect(); s.clone.style.transform = `translate(${ar.left}px,${ar.top}px) scale(${s.clone._scale})`; stage.appendChild(s.clone); });
-    maxSeat = Math.max(1, ...clones.map(c => +c.dataset.seats));
-    q('.lineup-head .k').classList.add('in');
-  }
-  function popClone(i) {
-    const s = slots[i]; if (!s) return;
-    const ar = s.anchor.getBoundingClientRect(), k = s.clone._scale;
-    s.clone.style.opacity = '1';
-    s.clone.animate([
-      { transform:`translate(${ar.left}px,${ar.top + 34}px) scale(${k})`, opacity:0 },
-      { transform:`translate(${ar.left}px,${ar.top}px) scale(${k})`, opacity:1 }
-    ], { duration:520, easing:'cubic-bezier(.2,.8,.2,1)' });
-  }
-  function fly() {
-    home.classList.add('show-landing');
-    stage.classList.add('is-leaving');
-    slots.forEach((s, i) => {
-      const real = home.querySelector(`.hcard[data-focus-party="${CSS.escape(s.clone._id)}"]`), tr = real.getBoundingClientRect();
-      s.clone.animate([{ transform:s.clone.style.transform }, { transform:`translate(${tr.left}px,${tr.top}px) scale(1)` }],
-        { duration:950, delay:i * 35, easing:'cubic-bezier(.55,0,.15,1)', fill:'forwards' });
-    });
-  }
-
-  /* ---------- ההצגה ---------- */
-  function begin(d) {
-    if (!stage || !stage.classList.contains('stage-ready')) return;
-    stage.classList.remove('stage-ready');
-    const startBox = q('.show-start'); startBox.classList.add('out'); timers.push(setTimeout(() => startBox.remove(), 600));
-    q('.show-skip').focus({ preventScroll:true });
-    run(d);
-  }
-
-  function run(d) {
-    let t0 = performance.now(), hiddenAt = 0;
-    const mine = ++token;
-    /* לשונית שעברה לרקע: ההצגה נעצרת וממשיכה מאותה נקודה, במקום לקפוץ לסוף */
-    const onVis = () => { if (document.hidden) hiddenAt = performance.now(); else if (hiddenAt) { t0 += performance.now() - hiddenAt; hiddenAt = 0; } };
-    document.addEventListener('visibilitychange', onVis); visHandlers.push(onVis);
-    const cues = [], cue = (at, fn) => cues.push({ at, fn });
-    let barsOn = false, connected = 0;
-    const PH1 = 'שלב 1 · טעינת הנתונים ממאגרי המידע', PH2 = 'שלב 2 · הניתוח', PH3 = 'התוצאה';
-
-    /* 1. טעינת המאגרים — אחד אחרי השני. לכל מאגר: מתחבר → טוען → שולח למנוע → נקלט */
-    const order = ['truth', 'calib', 'demo', 'outlets', 'firms'];
-    const items = {
-      truth:   [...d.nat.parties].sort((a, b) => b.seats - a.seats).slice(0, 6).map(p => `${p.name} ${p.seats}`),
-      calib:   d.calib.stats.slice(0, 6).map(st => `${(S.firms.firms.find(f => f.id === st.firm) || { he: st.firm }).he} · ${st.n} סקרים`),
-      demo:    (S.demo?.sectors || []).slice(0, 4).map(x => `${x.name} +${r1(x.growth * 100)}%`),
-      outlets: d.outlets.slice(0, 6),
-      firms:   d.firms.slice(0, 6).map(f => f.meta.he)
-    };
-    const sends = {
-      truth: `${fmt(d.nat.valid)} קולות כשרים · ${d.nat.parties.length} רשימות · ${d.nat.turnout}% הצבעה`,
-      calib: `${d.calib.data.polls.length} סקרים מ־30 הימים שלפני בחירות 2022 · ${d.calib.stats.length} מכונים`,
-      demo: `${(S.demo?.sectors || []).slice(0, 4).map(x => x.name).join(' · ')} — קצב גידול שנתי`,
-      outlets: d.outlets.join(' · '),
-      firms: d.firms.map(f => f.meta.he).join(' · ')
-    };
-    cue(0, () => { step('load'); log(`<em>מנוע התחזית</em> הופעל · ${esc(humanUpdate(S.cur.generatedAt))} · ${S.mode === 'weighted' ? 'משוקלל אמינות' : 'תחזית הברומטר'}`); });
-    order.forEach((id, i) => {
-      const n = nodeEl(id), at = i * SRC, name = $('.node-title', n).textContent, unit = $('.node-count small', n).textContent, total = +$('.node-count b', n).dataset.to;
-      cue(at, () => {
-        title(PH1, `טוענים: ${esc(name)}`, `מאגר ${i + 1} מתוך 6 · ${esc(unit)}`);
-        n.classList.add('in', 'live'); status(n, 'מתחבר…'); live([id]);
-        now('מתחבר אל', esc(name), 'פותחים חיבור ומבקשים את הרשומות');
-      });
-      cue(at + 350, () => drawLink(id));
-      cue(at + 900, () => {
-        n.classList.add('loading'); status(n, 'טוען רשומות…'); counter($('.node-count b', n), at + 900, 1600);
-        now('טוען', `<b>${esc(name)}</b>`, `<b>${fmt(total)}</b> ${esc(unit)}`);
-      });
-      $$('.node-chip', n).forEach((c, k) => cue(at + 1100 + k * 140, () => c.classList.add('in')));
-      cue(at + 2700, () => {
-        status(n, 'שולח למנוע…'); flow([id], true);
-        now('שולח לשקלול', `<b>${esc(name)}</b>`, esc(sends[id]));
-        engine(null, 'קולט…');
-      });
-      items[id].forEach((w, k) => cue(at + 2750 + k * 230, () => flyWord(id, w, { dur:1000 })));
-      cue(at + 4100, () => {
-        n.classList.remove('live'); n.classList.add('ok'); status(n, 'נקלט במנוע ✓'); flow([id], false); live([]);
-        engine(++connected, 'מאגרים נקלטו'); loadCount(connected, 6);
-        log(`✓ <b>${esc(name)}</b> · ${fmt(total)} ${esc(unit)} — נשלחו לשקלול`);
-      });
-    });
-
-    /* 2. ארכיון הסקרים — הסקרים נשלחים למנוע אחד־אחד */
-    {
-      const id = 'archive', n = nodeEl(id), at = T.fetch, name = $('.node-title', n).textContent;
-      cue(at, () => {
-        title(PH1, `טוענים: ${esc(name)}`, `מאגר 6 מתוך 6 · ${d.polls.length} סקרים · ${d.outlets.length} כלי תקשורת · ${d.firms.length} מכונים`);
-        n.classList.add('in', 'live'); status(n, 'מתחבר…'); live([id]);
-        now('מתחבר אל', esc(name), 'פותחים חיבור ומבקשים את הסקרים');
-      });
-      cue(at + 350, () => drawLink(id));
-      cue(at + 900, () => {
-        title(PH1, 'שולפים את הסקרים, סקר אחר סקר', `${d.polls.length} סקרים · ${d.outlets.length} כלי תקשורת · ${d.firms.length} מכונים — כל מדידה של כל רשימה נשלחת למנוע`);
-        n.classList.add('loading'); status(n, 'שולף סקרים…'); chartOn('parties'); engine(0, 'סקרים נקלטו'); flow([id], true);
-      });
-      $$('.node-chip', n).forEach((c, k) => cue(at + 1000 + k * 140, () => c.classList.add('in')));
-      d.polls.forEach((p, i) => cue(at + 1000 + i * POLL, () => {
-        const f = firmOf(p.sourceId), outlet = outletKey(p), date = heDate(parsePollDate(p));
-        flyWord(id, `${outlet} · ${date.slice(0, 5)}`, { dur:1000 });
-        hot(chipEl('outlets', outlet)); hot(chipEl('firms', f.firm));
-        engine(i + 1); $('.node-count b', n).textContent = i + 1;
-        now(`סקר ${i + 1} מתוך ${d.polls.length}`, `<b>${esc(outlet)}</b> · ${esc(f.meta.he)} · <span class="num">${esc(date)}</span>`, partyLine(p));
-        log(`<em>${esc(date.slice(0, 5))}</em> · <b>${esc(outlet)}</b> · ${esc(f.meta.he)} — ${topParties(p)}`);
-        d.ids.forEach(pid => { const v = d.pollVal(p, pid); if (v > 0) chart.dot(pid, v, f.meta.color); });
-      }));
-      cue(at + 1000 + d.polls.length * POLL + 150, () => {
-        n.classList.remove('live'); n.classList.add('ok'); status(n, 'נקלט במנוע ✓'); flow([id], false); live([]);
-        engine(++connected, 'מאגרים נקלטו'); loadCount(connected, 6);
-        log(`✓ <b>${esc(name)}</b> · ${d.polls.length} סקרים — נשלחו לשקלול`);
-      });
+    for (let i = 0; i < 5; i++) {
+      const x = cx - span / 2 + span * i / 4;
+      ctx.beginPath(); ctx.moveTo(x, cy - tall / 2); ctx.lineTo(x, cy + tall / 2); ctx.stroke();
     }
 
-    /* הנתונים נטענו — מעבר לניתוח */
-    cue(T.loaded, () => {
-      title(PH1, 'כל הנתונים נטענו', `${d.polls.length} סקרים · ${d.ids.length} רשימות · ${fmt(d.nat.valid)} קולות אמת · ${d.calib.data.polls.length} סקרי כיול — עוברים לניתוח`);
-      live([]); flow(Object.keys(links), true); engine('✓', 'הנתונים נטענו');
-      now('הושלם', `<b>${d.polls.length}</b> סקרים נטענו מ־<b>${connected}</b> מאגרים`, `${d.ids.length} רשימות · ${d.days} ימי פרסום · ${d.firms.length} מכונים · עכשיו: כיול, שקלול ואחוז חסימה`);
-      log(`נטענו <b>${d.polls.length}</b> סקרים · ${d.ids.length} רשימות · ${d.days} ימי פרסום ✓ · <em>עוברים לניתוח</em>`);
-    });
-
-    /* 3. כיול המכונים */
-    cue(T.calib, () => {
-      title(PH2, 'מכיילים את אמינות המכונים', 'כל מכון מול תוצאות האמת של 2022 — דיוק בגושים (60%), במפלגות (30%) ועקביות (10%)');
-      step('calib'); chartOn('firms'); flow(Object.keys(links), false); flow(['truth', 'calib'], true); live(['truth', 'calib', 'firms']); crossLinks(); engine(0, 'מכונים כוילו');
-    });
-    const perF = (T.weigh - 500 - (T.calib + 350)) / d.firms.length;
-    d.firms.forEach((f, j) => {
-      const at = T.calib + 350 + j * perF;
-      cue(at, () => {
-        flyWord('x-calib', `${f.meta.he} ${r1(f.score)}`, { color:f.meta.calibrated ? f.meta.color : '#5C6F82', dur:950 }); flyWord('x-truth', '', { dur:950 });
-        now(`מכייל ${j + 1} מתוך ${d.firms.length}`, `<b>${esc(f.meta.he)}</b>` + (f.stat ? ` · ${f.stat.n} סקרים ב־30 הימים שלפני בחירות 2022` : ' · לא פרסם סקרים ב־2022'), f.stat ? 'משווים כל סקר לתוצאה בפועל…' : 'בלי כיול אין ציון — מקבל משקל ניטרלי');
-      });
-      cue(at + 900, () => {
-        const row = q(`.frow[data-firm="${CSS.escape(f.meta.id)}"]`);
-        if (row) { $('.fbar', row).classList.add('in'); $('.fval', row).classList.add('in'); }
-        const chip = chipEl('firms', f.meta.id); if (chip) { $('b', chip).textContent = r1(f.score); hot(chip); }
-        engine(j + 1);
-        now('ציון האמינות', `<b>${esc(f.meta.he)}</b> → <b class="num">${r1(f.score)}</b>`, f.stat ? `גושים <b>${r1(f.stat.blocScore)}</b> · מפלגות <b>${r1(f.stat.partyScore)}</b> · עקביות <b>${r1(f.stat.consistencyScore)}</b> · משקל בתחזית <b>${(f.score / 100).toFixed(2)}</b>` : `משקל ניטרלי <b>${(f.score / 100).toFixed(2)}</b>`);
-        log(f.stat ? `<b>${esc(f.meta.he)}</b> · ${f.stat.n} סקרים ב־2022 · גושים ${r1(f.stat.blocScore)} · מפלגות ${r1(f.stat.partyScore)} · עקביות ${r1(f.stat.consistencyScore)} → <em>${r1(f.score)}</em>`
-                     : `<b>${esc(f.meta.he)}</b> · ללא כיול על 2022 → משקל ניטרלי <em>${r1(f.score)}</em>`);
-      });
-    });
-    cue(T.weigh - 350, () => log(`המשקלים מוכנים: ${d.firms.slice(0, 4).map(f => `${esc(f.meta.he)} ${(f.score / 100).toFixed(2)}`).join(' · ')} …`));
-
-    /* 4. שקלול, אחוז חסימה, 120 מושבים */
-    const seatsMap = Object.fromEntries(d.order.map(id => [id, d.seats[id] || 0]));
-    cue(T.weigh, () => {
-      title(PH2, 'משקללים לפי אמינות', `חלון ${FORECAST_MAX_AGE_DAYS} ימים · ${S.forecastPolls.length} סקרים מ־${S.series.length} מכונים · אחוז חסימה ${d.nat.threshold}% · 120 מושבים`);
-      step('weigh'); chartOn('parties'); q('.show-chart').classList.add('dim'); flow(Object.keys(links), true); live([]); q('.show-engine').classList.add('fast'); engine('0%', 'מהחישוב');
-      now('חלון הנתונים', `<b>${S.forecastPolls.length}</b> סקרים מ־<b>${FORECAST_MAX_AGE_DAYS}</b> הימים האחרונים · <b>${S.series.length}</b> מכונים`, 'קודם ממוצע לכל מכון, ואז ממוצע בין המכונים');
-    });
-    cue(T.weigh + 300, () => tag(`חלון <em>${FORECAST_MAX_AGE_DAYS}</em> ימים · <em>${S.forecastPolls.length}</em> סקרים`, 18, 22));
-    cue(T.weigh + 700, () => { chart.marks(d.simple.rawFull, v => r1(v)); chart.head('ממוצע פשוט — משקל שווה לכל מכון'); now('ממוצע פשוט', 'משקל שווה לכל מכון', topN(d.simple.rawFull)); log('ממוצע פשוט: ' + topN(d.simple.rawFull, 4)); });
-    cue(T.weigh + 1500, () => tag('משקל לפי <em>ציון האמינות</em>', 82, 30));
-    cue(T.weigh + 2000, () => { chart.marks(d.weighted.rawFull, v => r1(v)); chart.head('משוקלל לפי ציון האמינות של כל מכון'); now('משוקלל אמינות', 'מכון מדויק יותר — משקל גדול יותר', topN(d.weighted.rawFull)); log('משוקלל אמינות: ' + topN(d.weighted.rawFull, 4)); });
-    cue(T.weigh + 2700, () => tag(`אחוז חסימה <em>${d.nat.threshold}%</em> = ${r1(THRESHOLD_MANDATES)} מנדטים`, 20, 76));
-    cue(T.weigh + 3200, () => {
-      chart.threshold();
-      const below = Object.entries(d.final.below || {});
-      below.forEach(([id]) => chart.row(id)?.classList.add('below'));
-      const txt = below.length ? below.map(([id, p]) => `${esc(pname(id))} <b>${r1(p)}%</b> — מתחת לסף`).join(' · ') : 'כל הרשימות עוברות את הסף';
-      now('אחוז החסימה', `<b>${d.nat.threshold}%</b> מהקולות הכשרים = <b>${r1(THRESHOLD_MANDATES)}</b> מנדטים`, txt);
-      log(`אחוז החסימה ${d.nat.threshold}%: ` + (below.length ? below.map(([id, p]) => `<b>${esc(pname(id))}</b> ${r1(p)}% מתחת לסף`).join(' · ') : 'כל הרשימות עוברות'));
-    });
-    if (S.mode === 'scenario' && d.final.scenario) cue(T.weigh + 3900, () => {
-      chart.marks(d.final.parties, v => r1(v)); chart.head('הנחות התרחיש — עוגן 2022 ותוספת דמוגרפית');
-      now('הנחות התרחיש', `תוספת דמוגרפית <b>${r1(d.final.scenario.demographic)}</b> · עוגן 2022 <b>${r1(d.final.scenario.anchor)}</b>`, topN(d.final.parties));
-      log(`הנחות התרחיש: תוספת דמוגרפית ${r1(d.final.scenario.demographic)} · עוגן 2022 ${r1(d.final.scenario.anchor)}`);
-    });
-    cue(T.weigh + 4200, () => tag('<em>120</em> מושבים · שיטת השארית הגדולה', 80, 78));
-    cue(T.weigh + 4600, () => { chart.marks(seatsMap, v => v); chart.head('אחרי אחוז החסימה ועיגול ל־120 מושבים'); now('120 מושבים', `גוש הימין <b>${d.R}</b> · מרכז־שמאל והרשימות הערביות <b>${d.LA}</b>`, Object.entries(seatsMap).filter(([, v]) => v).map(([id, v]) => `${esc(pname(id))} <b>${v}</b>`).join(' · ')); log(`חלוקה ל־<b>120</b> מושבים ✓ · ימין ${d.R} · מרכז־שמאל והרשימות הערביות ${d.LA}`); });
-    cue(T.weigh + 5100, () => { q('.show-engine').classList.add('burst'); engine('120', 'מושבים'); title(PH3, 'התחזית מוכנה', 'הרשימות, המנדטים, הגושים — ומי עלה ומי ירד מאתמול'); });
-    cue(T.lineup - 380, () => stage.classList.add('is-fading'));
-
-    /* 5. מסדר המפלגות, ההערה על השינוי מאתמול, ואז טיסה למקום */
-    cue(T.lineup, () => { stage.classList.remove('is-fading'); stage.classList.add('stage-lineup'); step('result'); buildLineup(d); });
-    d.order.forEach((id, i) => cue(T.lineup + 140 + i * 105, () => popClone(i)));
-    cue(T.bars, () => { barsOn = true; });
-    cue(T.blocs, () => { q('.lineup-head h2').classList.add('in'); q('.lineup-head .sub').classList.add('in'); q('.lineup-blocs').classList.add('in'); clones.forEach(c => c.classList.add('final')); });
-    cue(T.note, () => toast(d));
-    cue(T.fly, fly);
-
-    cues.sort((a, b) => a.at - b.at);
-    let ci = 0;
-    const clock = q('.show-clock'), prog = q('.engine-prog'), eng = q('.engine-text b');
-    const lbR = q('.lb.right b'), lbL = q('.lb.left b'), trR = q('.lineup-track .r'), trL = q('.lineup-track .l');
-    function frame(t) {
-      const s = t / 1000;
-      clock.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}.${Math.floor((s % 1) * 10)}`;
-      if (t <= T.lineup) prog.style.strokeDashoffset = (565.5 * (1 - t / T.lineup)).toFixed(1);
-      counters = counters.filter(c => { const k = easeOut((t - c.at) / c.dur); c.el.textContent = fmt(c.to * k); return k < 1; });
-      if (t >= T.weigh && t < T.weigh + 5000) eng.textContent = Math.round(100 * (t - T.weigh) / 5000) + '%';
-      if (barsOn) {
-        const e = easeOut((t - T.bars) / 2700);
-        slots.forEach(s => {
-          const n = +s.clone.dataset.seats, v = Math.round(e * n);
-          s.bar.style.height = (100 * e * n / maxSeat).toFixed(2) + '%';
-          s.num.textContent = v; if (e > .02) s.num.style.opacity = 1;
-          $('.hcard-seat', s.clone).textContent = v;
-        });
-        lbR.textContent = Math.round(e * d.R); lbL.textContent = Math.round(e * d.LA);
-        trR.style.width = (100 * e * d.R / 120).toFixed(2) + '%'; trL.style.width = (100 * e * d.LA / 120).toFixed(2) + '%';
+    // Four source streams, a calibrated matrix, then a compact signal.
+    const columns = Math.max(1, Math.ceil(particles.length / 8));
+    particles.forEach((p, i) => {
+      const arrival = ease((collect - p.x * .40) / .60);
+      const side = p.lane % 2 ? 1 : -1;
+      const startX = cx + side * (span * .55 + p.x * span * .27);
+      const startY = cy + (p.lane < 2 ? -1 : 1) * tall * (.30 + p.y * .38);
+      const sampleX = cx + (p.x - .5) * span * .86;
+      const sampleY = cy + (p.y - .5) * tall;
+      const gridX = cx + ((Math.floor(i / 8) + .5) / columns - .5) * span * .82;
+      const gridY = cy + ((i % 8) - 3.5) * tall / 9;
+      let x = lerp(lerp(startX, sampleX, arrival), gridX, align);
+      let y = lerp(lerp(startY, sampleY, arrival), gridY, align);
+      const signalX = cx + ((i % 36) / 35 - .5) * span * .69;
+      const signalY = cy + Math.sin(i % 36 / 35 * Math.PI * 2) * tall * .12
+        + (p.y - .5) * tall * .19 * (1 - p.weight);
+      x = lerp(x, signalX, weigh); y = lerp(y, signalY, weigh);
+      const opacity = Math.min(1, t / 500) * (1 - resolve) * (.23 + p.weight * .65);
+      // Short horizontal trails give collection a direction without flying labels.
+      if (align < 1) {
+        ctx.strokeStyle = `rgba(18,52,92,${opacity * .35 * (1 - align)})`;
+        ctx.beginPath(); ctx.moveTo(x + side * (12 + 23 * (1 - arrival)), y); ctx.lineTo(x, y); ctx.stroke();
       }
+      ctx.fillStyle = `rgba(${i % 7 === 0 ? '184,134,43' : '18,52,92'},${opacity})`;
+      const size = lerp(1.5, 1.5 + Math.min(p.value, 35) / 30, align) * (1 - weigh * .22);
+      ctx.fillRect(x - size / 2, y - size / 2, size, size);
+    });
+
+    // One restrained scan line passes across the aligned observations.
+    if (t > 3500 && t < 6500) {
+      const x = cx - span * .45 + span * .90 * ((t - 3500) / 3000);
+      const gradient = ctx.createLinearGradient(x - 35, 0, x, 0);
+      gradient.addColorStop(0, 'rgba(184,134,43,0)'); gradient.addColorStop(1, 'rgba(184,134,43,.14)');
+      ctx.fillStyle = gradient; ctx.fillRect(x - 35, cy - tall * .58, 35, tall * 1.16);
+      ctx.fillStyle = 'rgba(184,134,43,.6)'; ctx.fillRect(x, cy - tall * .58, 1, tall * 1.16);
     }
-    function tick(nowTs) {
-      if (mine !== token) return;
-      const t = nowTs - t0;
-      while (ci < cues.length && cues[ci].at <= t) cues[ci++].fn(t);
-      frame(t);
-      if (t >= T.end) return finish();
-      raf = requestAnimationFrame(tick);
-    }
-    raf = requestAnimationFrame(tick);
   }
 
-  /* ---------- כניסה ויציאה ---------- */
-  const onKey = e => { if (e.key === 'Escape' && stage) finish(); };
-  let resizeRaf = 0;
-  const onResize = () => { if (!stage) return; cancelAnimationFrame(resizeRaf); resizeRaf = requestAnimationFrame(relayout); };
+  function setPhase(index) {
+    if (!stage || phase === index) return;
+    phase = index;
+    stage.dataset.phase = index;
+    stage.querySelector('.signal-title').textContent = phases[index].title;
+    stage.querySelectorAll('.signal-step').forEach((el, i) => {
+      el.classList.toggle('active', i === index); el.classList.toggle('done', i < index);
+    });
+  }
+
+  function tick(now) {
+    if (!stage) return;
+    if (previous !== null && !paused && !document.hidden) elapsed += Math.min(now - previous, 100);
+    previous = now;
+    setPhase(phases.reduce((last, p, i) => elapsed >= p.at ? i : last, 0));
+    stage.style.setProperty('--signal-progress', Math.min(1, elapsed / duration));
+    stage.classList.toggle('signal-leaving', elapsed > duration - 650);
+    draw(elapsed);
+    if (elapsed >= duration) { finish(); return; }
+    frame = requestAnimationFrame(tick);
+  }
+
+  function onKey(e) {
+    if (!stage) return;
+    if (e.key === 'Escape') { e.preventDefault(); finish(); }
+    if (e.key === 'Tab') {
+      const buttons = [...stage.querySelectorAll('button')];
+      const first = buttons[0], last = buttons.at(-1);
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
 
   function finish(focus = true) {
-    token++; cancelAnimationFrame(raf);
-    timers.forEach(clearTimeout); timers = []; counters = []; links = {}; clones = []; slots = [];
-    visHandlers.forEach(h => document.removeEventListener('visibilitychange', h)); visHandlers = [];
-    const data = current; current = null;
-    if (stage) { stage.remove(); stage = null; }
-    root.classList.remove('show-open'); home.classList.remove('show-landing');
-    document.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize);
-    if (focus && S.cur) {
-      const h = $('#verdict-head'); h.tabIndex = -1; h.focus({ preventScroll:true });
-      if (data) toast(data);
+    cancelAnimationFrame(frame); observer?.disconnect(); observer = null;
+    document.removeEventListener('keydown', onKey);
+    stage?.remove(); stage = null; ctx = null;
+    document.documentElement.classList.remove('show-open');
+    inertElements.forEach(([el, wasInert]) => { el.inert = wasInert; }); inertElements = [];
+    if (focus) {
+      const target = restoreFocus?.isConnected && restoreFocus !== document.body ? restoreFocus : $('#verdict-head');
+      if (target) { if (!target.matches('button,a,input,select')) target.tabIndex = -1; target.focus({ preventScroll: true }); }
     }
   }
+
   function enter(force = false) {
     if (!S.cur || S.view !== 'home' || reduced.matches || (played && !force)) return;
-    played = true;
     finish(false);
-    noteShown = false;
-    S.homeHistory = 'current'; $('#home-history').value = 'current'; renderHome();
-    window.scrollTo({ top:0, behavior:'instant' });
-    root.classList.add('show-open');
-    document.addEventListener('keydown', onKey); window.addEventListener('resize', onResize);
-    current = prepare();
-    mount(current);
-    $('.show-go', stage).focus({ preventScroll:true });
+    const count = prepare();
+    if (!particles.length) return;
+    played = true; elapsed = 0; previous = null; paused = false; phase = -1;
+    restoreFocus = document.activeElement;
+    const logoSrc = document.querySelector(".brand img")?.getAttribute("src") || "assets/logo.svg";
+    stage = document.createElement('div'); stage.id = 'show'; stage.dir = 'rtl';
+    stage.setAttribute('role', 'dialog'); stage.setAttribute('aria-modal', 'true');
+    stage.setAttribute('aria-label', 'פתיח ברומטר — המחשת עיבוד הנתונים');
+    stage.innerHTML = `
+      <header class="signal-top"><span class="signal-brand"><img src="${logoSrc}" alt="">ברומטר<span class="signal-divider"></span><span lang="en" dir="ltr">BAROMETER</span></span><button class="signal-skip" type="button">לדלג לתחזית <span aria-hidden="true">↙</span></button></header>
+      <main class="signal-body">
+        <div class="signal-caption" aria-hidden="true"><span class="signal-dot"></span>${ICON.ballot} בחירות 2026 · מהנתונים לתמונה המלאה</div>
+        <h2 class="signal-title" aria-live="polite" aria-atomic="true"></h2>
+        <div class="signal-icons" aria-hidden="true"><span>${ICON.flag}</span><span class="gold">${ICON.knesset}</span><span>${ICON.ballot}</span><span class="gold">${ICON.polls}</span><span>${ICON.people}</span></div>
+        <div class="signal-field" aria-hidden="true"><canvas></canvas>
+          <div class="signal-sources"><span>${ICON.polls}סקרים</span><span>${ICON.ballot}תוצאות אמת</span><span>${ICON.gauge}מכוני מחקר</span><span>${ICON.people}דמוגרפיה</span></div>
+          <div class="signal-lockup"><div class="lockup-icons">${ICON.knesset}<img src="${logoSrc}" alt="">${ICON.flag}</div><strong>ברומטר</strong><span>מדידה. ניתוח. תמונת מצב.</span></div>
+          <div class="signal-meta" dir="ltr"><span>${String(count).padStart(2, '0')} POLLS</span><span>CALIBRATE / WEIGHT / RESOLVE</span></div>
+        </div>
+        <div class="signal-bottom"><div class="signal-steps" aria-hidden="true">${phases.map((p, i) => `<span class="signal-step">${STEP_ICON[i]}<b dir="ltr">0${i + 1}</b>${p.label}</span>`).join('')}</div><button class="signal-pause" type="button" aria-label="השהיית הפתיח">השהיה <span aria-hidden="true">Ⅱ</span></button></div>
+      </main>
+      <footer class="signal-footer"><span>המחשת עיבוד הנתונים</span><span>נתונים מעודכנים ל־${esc(heDate(S.cur.generatedAt))}</span></footer>
+      <div class="signal-progress" aria-hidden="true"></div>`;
+    document.body.appendChild(stage);
+    inertElements = [...document.body.children].filter(el => el !== stage && !['SCRIPT','STYLE','LINK'].includes(el.tagName)).map(el => [el, el.inert]);
+    inertElements.forEach(([el]) => { el.inert = true; });
+    document.documentElement.classList.add('show-open');
+    stage.querySelector('.signal-skip').addEventListener('click', () => finish());
+    stage.querySelector('.signal-pause').addEventListener('click', e => {
+      paused = !paused;
+      e.currentTarget.innerHTML = paused ? 'המשך <span aria-hidden="true">▷</span>' : 'השהיה <span aria-hidden="true">Ⅱ</span>';
+      e.currentTarget.setAttribute('aria-label', paused ? 'המשך הפתיח' : 'השהיית הפתיח');
+    });
+    document.addEventListener('keydown', onKey);
+    ctx = stage.querySelector('canvas').getContext('2d');
+    if (!ctx) { finish(); return; }
+    setPhase(0); observer = new ResizeObserver(resize); observer.observe(stage.querySelector('.signal-field')); resize();
+    stage.querySelector('.signal-skip').focus({ preventScroll: true });
+    frame = requestAnimationFrame(tick);
   }
 
-  document.addEventListener('barometer:view', () => { if (S.view === 'home') enter(); else if (stage) finish(false); });
-  reduced.addEventListener('change', () => { if (reduced.matches && stage) finish(false); });
-  window.addEventListener('beforeprint', () => { if (stage) finish(false); });
-
+  document.addEventListener('barometer:view', () => { if (S.view === 'home') enter(); else finish(false); });
+  document.addEventListener('visibilitychange', () => { previous = null; });
+  reduced.addEventListener('change', () => { if (reduced.matches) finish(); });
+  window.addEventListener('beforeprint', () => finish(false));
   const controls = $('.home-forecast-controls');
-  controls.insertAdjacentHTML('beforeend', '<div class="intro-result-links"><a href="#/method">לשיטת החישוב</a><button type="button" id="intro-replay">ההצגה מחדש ↻</button></div>');
-  $('#intro-replay').addEventListener('click', () => enter(true));
+  if (controls) {
+    controls.insertAdjacentHTML('beforeend', '<div class="intro-result-links"><a href="#/method">לשיטת החישוב</a><button type="button" id="intro-replay">לצפייה בפתיח ↻</button></div>');
+    $('#intro-replay').addEventListener('click', () => enter(true));
+  }
 })();
 
 </script>

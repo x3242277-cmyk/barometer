@@ -9,8 +9,8 @@
 <meta property="og:title" content="ברומטר · מדד הסקרים והאמינות">
 <meta property="og:description" content="מדידה, לא ניחוש. תחזית מנדטים משוקללת לפי דיוק היסטורי, פילוח אזורי של תוצאות האמת ומודל דמוגרפי שלא נשען על סקרים כלל.">
 <meta property="og:type" content="website">
-<link rel="icon" href="assets/logo.svg?v=f63c3e11">
-<link rel="apple-touch-icon" href="assets/logo.svg?v=f63c3e11">
+<link rel="icon" href="assets/logo.svg?v=e893fa44">
+<link rel="apple-touch-icon" href="assets/logo.svg?v=e893fa44">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=68d7707e">
@@ -21,9 +21,10 @@
 <script src="assets/upgrade.js?v=b456cfd4" defer></script>
 <script src="assets/analytics.js?v=8e35ed22" defer></script>
 <script src="assets/explore.js?v=92866412" defer></script>
-<link rel="stylesheet" href="assets/intro.css?v=b6e1f13e">
+<link rel="stylesheet" href="assets/intro.css?v=4aa71245">
 <script src="assets/app.js?v=e1e171e5" defer></script>
-<script src="assets/intro.js?v=60ba33aa" defer></script>
+<script src="assets/intro.js?v=ca4d148b" defer></script>
+<link rel="stylesheet" href="assets/layout.css?v=d30f9613">
 </head>
 <body>
 <a class="skip" href="#main">דלגו לתוכן</a>
@@ -31,13 +32,31 @@
 <header class="masthead">
   <div class="wrap masthead-in">
     <a class="brand" href="#/" aria-label="ברומטר — דף הבית">
-      <img src="assets/logo.svg?v=f63c3e11" alt="">
+      <img src="assets/logo.svg?v=e893fa44" alt="">
       <span class="brand-txt">
         <strong>ברומטר</strong>
         <span>מדד הסקרים והאמינות</span>
       </span>
     </a>
-    <div class="election-countdown header-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+    <nav class="mainnav" aria-label="ניווט ראשי">
+      <div class="tabs">
+        <a class="tab" href="#/" data-view="home">תמונת מצב</a>
+        <a class="tab" href="#/polls" data-view="polls">הסקרים</a>
+        <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
+        <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
+        <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
+        <details class="nav-more">
+          <summary>עוד</summary>
+          <div class="nav-menu">
+            <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+            <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+            <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
+            <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
+            <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
+          </div>
+        </details>
+      </div>
+    </nav>
     <div class="masthead-side">
       <span class="stamp"><span class="pulse" aria-hidden="true"></span><span id="stamp-updated">טוען נתונים…</span></span>
       <button type="button" class="print-btn" id="print-btn" aria-label="הדפסת נתוני התחזית">
@@ -48,28 +67,6 @@
   </div>
 </header>
 
-<nav class="tabsbar" aria-label="ניווט ראשי">
-  <div class="wrap">
-    <div class="tabs">
-      <a class="tab" href="#/" data-view="home">תמונת מצב</a>
-      <a class="tab" href="#/polls" data-view="polls">הסקרים</a>
-      <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-      <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
-      <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
-      <details class="nav-more">
-        <summary>עוד</summary>
-        <div class="nav-menu">
-          <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
-          <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-          <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
-          <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
-          <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
-        </div>
-      </details>
-    </div>
-  </div>
-</nav>
-
 <main id="main">
 
 <!-- ==================== התחזית ==================== -->
@@ -77,7 +74,10 @@
   <div class="verdict">
     <div class="verdict-knesset" aria-hidden="true" id="hero-art"></div>
     <div class="wrap verdict-in">
-      <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
+      <div class="verdict-top">
+        <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
+        <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+      </div>
       <h1 id="verdict-head">טוען נתונים…</h1>
       <p class="lede" id="verdict-lede"></p>
       <div class="home-forecast-controls">
@@ -833,7 +833,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 <footer>
   <div class="wrap">
     <div>
-      <div class="fbrand"><img src="assets/logo.svg?v=f63c3e11" alt=""><strong>ברומטר</strong></div>
+      <div class="fbrand"><img src="assets/logo.svg?v=e893fa44" alt=""><strong>ברומטר</strong></div>
       <p>מדד עצמאי לסקרי הבחירות בישראל. מדידה, לא ניחוש.</p>
       <div class="srclist" id="footer-sources"></div>
     </div>

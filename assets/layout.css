@@ -170,6 +170,23 @@
 #view-home .hcard-name{ font-size:.92rem }
 #view-home .hcard-leader{ font-size:.74rem }
 
+/* ---------- דף הבית במסך מחשב: שתי שורות הכרטיסים נכנסות למסך אחד ---------- */
+/* כשגוללים לקיר המנדטים, מהכרטיס הראשון עד האחרון הכול בגובה חלון אחד
+   (בניכוי שורת הכותרת הדביקה). גובה התמונה נגזר מגובה החלון. */
+@media (min-width:1100px){
+  #view-home .board{ padding:16px 0 14px }
+  #view-home .bloc + .bloc{ margin-top:14px }
+  #view-home .bloc-head{ margin-bottom:10px; padding-bottom:6px }
+  #view-home .cards{ gap:12px }
+  #view-home .hcard-photo{ aspect-ratio:auto; height:clamp(110px, calc((100vh - 372px) / 2), 250px) }
+  #view-home .hcard-photo img{ object-fit:contain; object-position:center bottom }
+  #view-home .hcard-body{ padding:6px 8px 8px; gap:0 }
+  #view-home .hcard-seatline{ min-height:1.8rem }
+  #view-home .hcard-seat{ font-size:1.75rem }
+  #view-home .hcard-name{ font-size:.88rem }
+  #view-home .hcard-leader{ font-size:.7rem; line-height:1.2 }
+}
+
 /* ---------- קצב הקטעים בשאר העמודים ---------- */
 .page-intro{ padding:44px 0 20px }
 .page-intro h2{ font-size:clamp(1.8rem,3.2vw,2.6rem); letter-spacing:-.02em; line-height:1.12 }

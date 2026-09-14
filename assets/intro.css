@@ -35,7 +35,8 @@
 @media (max-width:700px){ #view-home .cards{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
 @media print{ .intro-result-links, #show{ display:none!important } }
 
-/* ---------- הפתיח: אותה שפה כמו האתר — נייר, נייבי, זהב ---------- */
+
+/* ---------- הפתיח: קלפי → 120 מנדטים → מנהיגים → תמונת מצב ---------- */
 html.show-open { overflow:hidden }
 #show {
   --signal-progress:0;
@@ -45,8 +46,7 @@ html.show-open { overflow:hidden }
     radial-gradient(70% 55% at 50% -10%, rgba(18,52,92,.10), transparent 70%),
     radial-gradient(40% 40% at 90% 15%, rgba(184,134,43,.10), transparent 65%),
     linear-gradient(180deg,#FFFDF8 0%, var(--paper) 70%);
-  color:var(--ink); color-scheme:light;
-  font-family:var(--sans);
+  color:var(--ink); color-scheme:light; font-family:var(--sans);
   opacity:1; transition:opacity .6s ease;
 }
 #show::before {
@@ -57,6 +57,7 @@ html.show-open { overflow:hidden }
   -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 80%);
 }
 #show.signal-leaving { opacity:0 }
+#show.paused .env, #show.paused .lead, #show.paused .fin, #show.paused .ballot-big { animation-play-state:paused }
 #show button { font:inherit; cursor:pointer; min-height:36px; border:0; border-radius:100px; box-shadow:none }
 #show button:focus-visible { outline:3px solid var(--gold); outline-offset:3px }
 #show svg.ic { width:1em; height:1em; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round }
@@ -69,37 +70,91 @@ html.show-open { overflow:hidden }
 #show .signal-skip { display:inline-flex; gap:8px; align-items:center; padding:6px 16px; font-size:.86rem; font-weight:700; color:var(--navy); background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
 #show .signal-skip:hover { border-color:var(--navy) }
 
-.signal-body { width:min(980px,calc(100% - 72px)); margin:auto; padding:40px 0 30px; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center }
-.signal-caption { display:inline-flex; align-items:center; gap:9px; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px; background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.1em }
-.signal-caption .ic { font-size:15px }
+.signal-body { width:min(1040px,calc(100% - 72px)); margin:auto; padding:22px 0 18px; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center }
+.signal-caption { display:inline-flex; align-items:center; gap:9px; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px; background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.08em }
+.signal-caption .ic { font-size:17px }
 .signal-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--red); box-shadow:0 0 0 0 rgba(176,48,36,.5); animation:pulse 2.4s infinite }
-#show .signal-title { margin:18px 0 0; min-height:1.2em; font:800 clamp(1.9rem,4.4vw,3.2rem)/1.12 var(--serif); letter-spacing:-.02em; color:var(--ink) }
-.signal-icons { display:flex; gap:10px; margin-top:16px }
-.signal-icons span { display:grid; place-items:center; width:44px; height:44px; border:1px solid var(--rule); border-radius:12px; background:var(--paper-2); color:var(--navy); box-shadow:var(--shadow-s); font-size:24px; transition:transform .4s, border-color .4s, color .4s }
-.signal-icons span.gold { color:var(--gold) }
-#show[data-phase="3"] .signal-icons span { transform:translateY(-3px); border-color:rgba(184,134,43,.5) }
+#show .signal-title { margin:14px 0 0; min-height:1.15em; max-width:24ch; font:800 clamp(1.7rem,3.8vw,2.7rem)/1.12 var(--serif); letter-spacing:-.02em; color:var(--ink); text-wrap:balance }
+#show .signal-title em { font-style:normal; color:var(--navy) }
 
-.signal-field { position:relative; width:100%; height:clamp(240px,38vh,400px); margin:22px 0 18px; border:1px solid var(--rule); border-radius:18px; background:var(--paper-2); box-shadow:var(--shadow-m); overflow:hidden }
-.signal-field canvas { display:block; width:100%; height:100% }
-.signal-sources { position:absolute; inset:16px 18px; font-size:12px; font-weight:700; color:var(--ink-2); transition:opacity .8s }
-.signal-sources span { position:absolute; display:inline-flex; align-items:center; gap:7px; padding:5px 10px 5px 8px; border:1px solid var(--rule); border-radius:100px; background:var(--paper) }
-.signal-sources span .ic { font-size:16px; color:var(--navy) }
-.signal-sources span:nth-child(1) { top:0; right:0 }
-.signal-sources span:nth-child(2) { top:0; left:0 }
-.signal-sources span:nth-child(3) { bottom:0; right:0 }
-.signal-sources span:nth-child(4) { bottom:0; left:0 }
-#show:not([data-phase="0"]) .signal-sources { opacity:0 }
-.signal-meta { position:absolute; bottom:14px; left:0; right:0; display:flex; justify-content:center; gap:28px; font:10px var(--mono); letter-spacing:.10em; color:var(--ink-3); transition:opacity .7s }
-.signal-lockup { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; opacity:0; transform:translateY(8px); transition:opacity 1s,transform 1s; pointer-events:none }
-.signal-lockup .lockup-icons { display:flex; align-items:center; gap:16px; color:var(--navy); margin-bottom:10px }
-.signal-lockup .lockup-icons .ic { font-size:34px }
-.signal-lockup .lockup-icons .ic.flag { font-size:40px }
-.signal-lockup img { width:56px; height:56px }
-.signal-lockup strong { font-family:var(--serif); color:var(--ink); font-size:2.2rem; font-weight:800; letter-spacing:-.02em; line-height:1 }
-.signal-lockup>span { margin-top:6px; color:var(--ink-3); font-size:.9rem }
-#show[data-phase="3"] .signal-lockup { opacity:1; transform:none }
-#show[data-phase="3"] .signal-meta { opacity:0 }
+/* ---- הבמה ---- */
+.stage { position:relative; width:100%; height:clamp(300px, 52vh, 460px); margin:14px 0 14px }
+.sc { position:absolute; inset:0; opacity:0; transition:opacity .7s ease, transform .9s cubic-bezier(.2,.7,.2,1); pointer-events:none }
 
+/* 1. הקלפי והמעטפות */
+.sc-box { display:grid; place-items:center; align-content:center; gap:14px }
+#show[data-phase="0"] .sc-box { opacity:1 }
+#show:not([data-phase="0"]) .sc-box { transform:scale(.7) translateY(-30px) }
+.ballot-big { width:clamp(150px, 22vh, 210px); height:auto; overflow:visible; animation:ballot-in .8s cubic-bezier(.2,.7,.2,1) both }
+.ballot-big .bb-body { fill:var(--paper-2); stroke:var(--navy); stroke-width:3; stroke-linejoin:round }
+.ballot-big .bb-lid { fill:var(--navy); stroke:var(--navy); stroke-width:3; stroke-linejoin:round }
+.ballot-big .bb-slot { stroke:var(--paper); stroke-width:5; stroke-linecap:round }
+.ballot-big .bb-line { stroke:var(--rule); stroke-width:2 }
+.ballot-big .bb-star { fill:none; stroke:var(--gold); stroke-width:3; stroke-linejoin:round }
+@keyframes ballot-in { from { opacity:0; transform:translateY(16px) scale(.94) } to { opacity:1; transform:none } }
+.envs { position:absolute; inset:0; pointer-events:none }
+.env {
+  position:absolute; left:50%; top:calc(50% - 74px); width:172px; margin-left:-86px;
+  display:flex; align-items:center; gap:9px; padding:7px 10px;
+  background:var(--paper-2); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow-m);
+  text-align:start; opacity:0; transform:translate(var(--sx), var(--sy)) rotate(var(--rot));
+  animation:env-in 1.15s cubic-bezier(.3,.6,.25,1) both; animation-delay:calc(var(--i) * 240ms + 250ms);
+}
+.env-logo { flex:none; width:30px; height:30px; border-radius:8px; background:#fff; border:1px solid var(--rule-2); display:grid; place-items:center; overflow:hidden }
+.env-logo img { width:100%; height:100%; object-fit:contain; padding:3px }
+.env-txt { display:grid; min-width:0 }
+.env-txt b { font-size:.82rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.env-txt small { font-size:.68rem; color:var(--ink-3); font-variant-numeric:tabular-nums }
+@keyframes env-in {
+  0%   { opacity:0; transform:translate(var(--sx), var(--sy)) rotate(var(--rot)) scale(.9) }
+  12%  { opacity:1 }
+  62%  { opacity:1; transform:translate(0, -20px) rotate(0) scale(1) }
+  100% { opacity:0; transform:translate(0, 34px) rotate(0) scale(.28) }
+}
+.box-count { display:inline-flex; align-items:baseline; gap:6px; padding:7px 16px; border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); box-shadow:var(--shadow-s); font-size:.85rem; font-weight:700; color:var(--ink-2) }
+.box-count b { font-family:var(--serif); font-size:1.25rem; color:var(--navy) }
+.box-count i { color:var(--rule-strong); font-style:normal }
+
+/* 2. חצי הגורן */
+.sc-hemi { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; transform:translateY(24px) }
+#show[data-phase="1"] .sc-hemi, #show[data-phase="2"] .sc-hemi, #show[data-phase="3"] .sc-hemi { opacity:1; transform:none }
+#show[data-phase="2"] .sc-hemi, #show[data-phase="3"] .sc-hemi { transform:translateY(-14px) scale(.86) }
+.hemi { width:min(100%, 620px); height:auto; max-height:calc(100% - 40px); overflow:visible }
+.hemi .seat { fill:#E6E1D6; transition:fill .45s ease; transition-delay:var(--d) }
+.hemi.filled .seat { fill:var(--c) }
+.hemi-61 { stroke:var(--ink); stroke-width:1.5; stroke-dasharray:4 4; opacity:0; transition:opacity .6s 1.3s }
+.hemi-61-t { fill:var(--ink); font:800 13px var(--serif); text-anchor:middle; opacity:0; transition:opacity .6s 1.3s }
+.hemi.filled .hemi-61, .hemi.filled .hemi-61-t { opacity:.7 }
+.hemi-tot { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 12px }
+.hemi-tot span { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); box-shadow:var(--shadow-s); font-size:.82rem; font-weight:700; color:var(--ink-2) }
+.hemi-tot i { width:10px; height:10px; border-radius:3px; background:var(--c) }
+.hemi-tot b { font-family:var(--serif); font-size:1.15rem; color:var(--c); min-width:2ch; text-align:center }
+#show[data-phase="2"] .hemi-tot, #show[data-phase="3"] .hemi-tot { opacity:0; transition:opacity .4s }
+
+/* 3. ראשי הרשימות */
+.sc-leaders { top:auto; height:118px; display:flex; justify-content:center; align-items:flex-end; gap:10px }
+#show[data-phase="2"] .sc-leaders, #show[data-phase="3"] .sc-leaders { opacity:1 }
+.lead { display:grid; justify-items:center; gap:2px; width:74px; opacity:0; transform:translateY(30px) }
+#show[data-phase="2"] .lead, #show[data-phase="3"] .lead { animation:lead-in .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--i) * 90ms) }
+@keyframes lead-in { to { opacity:1; transform:none } }
+.lead-photo { width:64px; height:64px; border-radius:50%; overflow:hidden; background:linear-gradient(120deg,#e4eaf0,#f8f7f3); border:3px solid var(--c); box-shadow:var(--shadow-s) }
+.lead-photo img { width:100%; height:100%; object-fit:cover; object-position:center 15% }
+.lead b { font-family:var(--serif); font-size:1.2rem; line-height:1; color:var(--c) }
+.lead-name { font-size:.68rem; font-weight:700; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:74px }
+
+/* 4. תמונת המצב */
+.sc-final { inset:auto 0 0 0; height:0; overflow:visible }
+#show[data-phase="3"] .sc-final { opacity:1 }
+.fin { position:absolute; bottom:150px; width:76px; height:76px; display:grid; place-items:center; border-radius:20px; background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-m); color:var(--navy); font-size:44px; opacity:0; transform:scale(.6) }
+.fin-a { right:6% }
+.fin-b { left:6%; color:var(--navy) }
+#show[data-phase="3"] .fin { animation:fin-in .7s cubic-bezier(.2,.9,.3,1.3) both }
+#show[data-phase="3"] .fin-b { animation-delay:.18s }
+@keyframes fin-in { to { opacity:1; transform:none } }
+.fin .ic.flag { color:var(--navy) }
+.fin-a .ic { color:var(--gold) }
+
+/* ---- שלבים ותחתית ---- */
 .signal-bottom { width:100%; display:flex; align-items:center; justify-content:space-between; gap:24px }
 .signal-steps { display:flex; gap:8px; flex-wrap:wrap }
 .signal-step { display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); color:var(--ink-3); font-size:.8rem; font-weight:700; transition:color .4s, border-color .4s, background .4s }
@@ -110,29 +165,30 @@ html.show-open { overflow:hidden }
 .signal-step.done { color:var(--navy); border-color:rgba(18,52,92,.3) }
 #show .signal-pause { flex-shrink:0; background:transparent; color:var(--ink-3); font-size:.8rem; font-weight:700; padding:4px 10px; display:flex; gap:8px; align-items:center }
 #show .signal-pause:hover { color:var(--navy) }
-.signal-footer { display:flex; justify-content:space-between; gap:14px; padding:16px 4.2vw; border-top:1px solid var(--rule); color:var(--ink-3); font-size:12px }
+.signal-footer { display:flex; justify-content:space-between; gap:14px; padding:14px 4.2vw; border-top:1px solid var(--rule); color:var(--ink-3); font-size:12px }
 .signal-progress { position:fixed; bottom:0; right:0; left:0; height:3px; background:var(--navy); transform:scaleX(var(--signal-progress)); transform-origin:right }
 
 @media(max-width:650px) {
   .signal-top { padding:0 18px; min-height:56px }
   .signal-brand [lang=en], .signal-divider { display:none }
-  .signal-body { width:calc(100% - 32px); padding:28px 0 22px }
-  #show .signal-title { font-size:1.75rem }
-  .signal-icons span { width:38px; height:38px; font-size:20px }
-  .signal-field { height:clamp(220px,34vh,340px) }
-  .signal-sources { inset:10px; font-size:11px }
-  .signal-sources span { padding:4px 8px 4px 6px }
-  .signal-meta { bottom:10px; font-size:9px; letter-spacing:0 }
-  .signal-meta span:last-child { display:none }
+  .signal-body { width:calc(100% - 28px); padding:18px 0 16px }
+  #show .signal-title { font-size:1.5rem }
+  .stage { height:clamp(260px, 46vh, 380px) }
+  .env { width:150px; margin-left:-75px }
+  .ballot-big { width:130px }
+  .sc-leaders { height:96px; gap:4px; flex-wrap:wrap; align-content:flex-end }
+  .lead { width:56px } .lead-photo { width:46px; height:46px } .lead b { font-size:1rem } .lead-name { max-width:56px; font-size:.6rem }
+  .fin { width:56px; height:56px; font-size:32px; bottom:auto; top:0; border-radius:14px }
   .signal-bottom { gap:12px; align-items:flex-start }
-  .signal-steps { display:grid; grid-template-columns:1fr 1fr; gap:8px }
-  .signal-footer { padding:14px 18px; flex-wrap:wrap }
+  .signal-steps { display:grid; grid-template-columns:1fr 1fr; gap:6px }
+  .signal-step { font-size:.72rem; padding:5px 10px }
+  .signal-footer { padding:12px 18px; flex-wrap:wrap }
 }
-@media(max-height:600px) and (min-width:651px) {
-  .signal-body { padding-block:14px }
-  .signal-field { height:200px; margin-block:10px }
-  .signal-icons { margin-top:8px }
-  #show .signal-title { font-size:1.8rem; margin-top:8px }
+@media(max-height:640px) and (min-width:651px) {
+  .signal-body { padding-block:10px }
+  .stage { height:clamp(220px, 44vh, 320px); margin-block:8px }
+  #show .signal-title { font-size:1.6rem; margin-top:8px }
+  .ballot-big { width:140px }
   .signal-footer { padding-block:8px }
 }
 @media(prefers-reduced-motion:reduce) { #show { display:none } }

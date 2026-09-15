@@ -113,10 +113,11 @@ log(`עובדו ${localities.length} יישובים · סה״כ ${localities.red
 /* עדכון regions.json: מילוי הנקודות שכבר יש להן קואורדינטות + טבלה מלאה */
 const rp = path.join(ROOT, "data/regions.json");
 const regions = JSON.parse(await readFile(rp, "utf8"));
-const byName = new Map(localities.map(l => [l.name.replace(/[\s–—-]/g, ""), l]));
+const nkey = n => String(n).replace(/[\s–—\-־"״׳']/g, "");
+const byName = new Map(localities.map(l => [nkey(l.name), l]));
 let matched = 0;
 regions.localities.forEach(loc => {
-  const hit = byName.get(loc.name.replace(/[\s–—-]/g, ""));
+  const hit = byName.get(nkey(loc.name));
   if (!hit) return;
   matched += 1;
   loc.parties = hit.parties.slice(0, 6).map(p => ({ id: p.id, name: p.name, pct: p.pct }));
@@ -125,10 +126,21 @@ regions.localities.forEach(loc => {
   loc.src = "official";
 });
 regions.sources.official = { name: "ועדת הבחירות המרכזית — תוצאות אמת לפי יישובים", url: "https://votes25.bechirot.gov.il/cityresults" };
-regions.localitiesFull = localities.map(l => ({
-  name: l.name, valid: l.valid, turnout: l.turnout,
-  top: l.parties.slice(0, 4).map(p => ({ id: p.id, name: p.name, pct: p.pct }))
-}));
+/* קואורדינטות למפה: data/locality-coords.json (שם יישוב → [lon, lat], מוויקינתונים).
+   יישוב בלי קואורדינטות נשאר בטבלה אבל לא מצויר על המפה. */
+let coords = {};
+try { coords = JSON.parse(await readFile(path.join(ROOT, "data/locality-coords.json"), "utf8")); } catch { log("אין data/locality-coords.json — המפה תציג רק יישובים עם קואורדינטות קיימות"); }
+let placed = 0;
+regions.localitiesFull = localities.map(l => {
+  const c = coords[l.name] || coords[nkey(l.name)];
+  if (c) placed += 1;
+  return {
+    name: l.name, valid: l.valid, turnout: l.turnout,
+    top: l.parties.slice(0, 4).map(p => ({ id: p.id, name: p.name, pct: p.pct })),
+    ...(c ? { lon: c[0], lat: c[1] } : {})
+  };
+});
+log(`${placed} יישובים עם קואורדינטות למפה`);
 regions.meta.importedAt = new Date().toISOString().slice(0, 10);
 await writeFile(rp, JSON.stringify(regions, null, 2), "utf8");
 log(`עודכנו ${matched} נקודות על המפה, ונוספה טבלה מלאה של ${localities.length} יישובים ✓`);

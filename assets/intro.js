@@ -36,14 +36,14 @@
   function prepare() {
     const polls = (S.forecastPolls || S.cur.polls).slice(0, 16);
     const est = forecast(S.mode, HIDE_FROM_HOME);
-    const seats = largestRemainder(est.parties);
+    const seats = allocateSeats(est.parties);
     const blocTot = {};
     Object.entries(seats).forEach(([id, n]) => { const al = partyMeta(id).alignment; blocTot[al] = (blocTot[al] || 0) + n; });
     const firms = new Set(polls.map(p => firmOf(p.sourceId).firm)).size;
     const leaders = Object.entries(seats).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 12)
       .map(([id, n]) => {
         const m = partyMeta(id);
-        return { id, n, name: m.name, color: (BLOCS[m.alignment] || BLOCS.Unknown).color,
+        return { id, n, name: m.name, color: partyColor(id, m.alignment),
           photo: (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER, leader: PARTY_LEADER[normId(id)] || '' };
       });
     return { polls, seats, blocTot, firms, leaders, headline: homeHeadline(est, seats, blocTot) };
@@ -192,13 +192,14 @@
     frame = requestAnimationFrame(tick);
   }
 
-  document.addEventListener('barometer:view', () => { if (S.view === 'home') enter(); else finish(false); });
+  /* ההצגה אינה נפתחת מעצמה: הפתיח של הבית הוא "חמש בדיקות, תחזית אחת"; ההצגה זמינה בלחיצה. */
+  document.addEventListener('barometer:view', () => { if (S.view !== 'home') finish(false); });
   document.addEventListener('visibilitychange', () => { previous = null; });
   reduced.addEventListener('change', () => { if (reduced.matches) finish(); });
   window.addEventListener('beforeprint', () => finish(false));
   const controls = $('.home-forecast-controls');
   if (controls) {
-    controls.insertAdjacentHTML('beforeend', '<div class="intro-result-links"><a href="#/method">לשיטת החישוב</a><button type="button" id="intro-replay">לצפייה בפתיח ↻</button></div>');
-    $('#intro-replay').addEventListener('click', () => enter(true));
+    controls.insertAdjacentHTML('beforeend', '<div class="intro-result-links"><a href="#/method">לשיטת החישוב</a><button type="button" id="intro-replay">להצגת החישוב ▷</button></div>');
+    $('#intro-replay').addEventListener('click', () => window.openPipelineShow ? window.openPipelineShow() : enter(true));
   }
 })();

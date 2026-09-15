@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """חיתוך אחיד של דיוקנאות המנהיגים מהמקור ברזולוציה מלאה שבתיקיית תמונות/.
-הפלט: assets/leaders/<id>-full.jpg — יחס 4:5, ממורכז על הפנים, 720px, איכות גבוהה.
+הפלט: assets/leaders/<id>-full.jpg — יחס 4:5, ממורכז על הפנים, 720px, איכות גבוהה,
+ולצדו <id>-64/96/128/192/256/384.jpg לכרטיסים הקטנים (srcset).
 תמונות/ אינה נכנסת ל-Git; רק הפלט המעובד נשמר במאגר.
 
     python scripts/crop-leaders.py
@@ -26,6 +27,7 @@ MAP = {
     "ישראל ביתנו.jpg": "ndi",
     "רעמ.jpg": "raam",
     "הרשימה המשותפת.jpg": "reshima_meshutefet",
+    "זליכה.jpg": "hendel_zeliha_party",
 }
 
 TARGET_W = 720
@@ -33,7 +35,12 @@ ASPECT = 4 / 5          # רוחב/גובה של הכרטיס
 SIDE = 0.092           # חיתוך המסגרת המעוטרת: ~9% מכל צד
 TOP = 0.055            # ~5.5% מלמעלה — בלי פינת המסגרת המעוגלת
 # ביחד הוא דיוקן של שני אנשים — פחות זום פנימה כדי לא לחתוך אף אחד
-OVERRIDE = {"beyahad": dict(side=0.06, top=0.07)}
+OVERRIDE = {"beyahad": dict(side=0.06, top=0.07), "hendel_zeliha_party": dict(side=0.06, top=0.07)}
+# גרסאות מוקטנות (LANCZOS) לכרטיסים הקטנים: הדפדפן מקטין איור קווים דקים
+# (הצללה בקווים מקבילים) במסנן מהיר, והקווים הופכים למוארה — במיוחד כשהדף
+# מוקטן (zoom-out). עם srcset צפוף הדפדפן תמיד מקבל גרסה שגודלה קרוב לגודל
+# התצוגה בפיקסלים אמיתיים, וההקטנה שנותרה היא ≤1.5:1 — נקייה בכל זום.
+SMALL = [64, 96, 128, 192, 256, 384]
 
 def process(src_path, out_path, party):
     im = Image.open(src_path)
@@ -58,6 +65,9 @@ def process(src_path, out_path, party):
     # באיורים יש הרבה קווים דקים. דחיסת JPEG רגילה והפחתת צבע יוצרות סביבם
     # רעש וטשטוש ב-DPI גבוה, לכן שומרים ברזולוציה גדולה ובדגימת צבע מלאה.
     im.save(out_path, "JPEG", quality=94, subsampling=0, optimize=True, progressive=True)
+    for w in SMALL:
+        small = im.resize((w, int(round(w / ASPECT))), Image.LANCZOS)
+        small.save(out_path.replace("-full.jpg", f"-{w}.jpg"), "JPEG", quality=90, subsampling=0, optimize=True)
     return im.size, os.path.getsize(out_path)
 
 def main():

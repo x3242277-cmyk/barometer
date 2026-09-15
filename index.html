@@ -17,16 +17,23 @@
 <link rel="stylesheet" href="assets/upgrade.css?v=2900bdd2">
 <link rel="stylesheet" href="assets/home.css?v=9bcfc9eb">
 <link rel="stylesheet" href="assets/fit.css?v=445476c1">
-<script src="assets/scenario.js?v=bf9215f5" defer></script>
-<script src="assets/upgrade.js?v=b456cfd4" defer></script>
-<script src="assets/analytics.js?v=8e35ed22" defer></script>
-<script src="assets/explore.js?v=92866412" defer></script>
-<link rel="stylesheet" href="assets/intro.css?v=029beaba">
-<script src="assets/app.js?v=e1e171e5" defer></script>
-<script src="assets/intro.js?v=a6cb7bb2" defer></script>
-<link rel="stylesheet" href="assets/layout.css?v=56128335">
+<script src="assets/scenario.js?v=ceba1aa5" defer></script>
+<script src="assets/upgrade.js?v=c3f5bc20" defer></script>
+<script src="assets/analytics.js?v=6076f79f" defer></script>
+<script src="assets/explore.js?v=59cfcbc0" defer></script>
+<link rel="stylesheet" href="assets/intro.css?v=82dcb329">
+<script src="assets/app.js?v=d4599c26" defer></script>
+<script src="assets/intro.js?v=da50cbf0" defer></script>
+<link rel="stylesheet" href="assets/layout.css?v=d0304b10">
+<link rel="stylesheet" href="assets/editorial.css?v=374d99fa">
+<link rel="stylesheet" href="assets/experience.css?v=d56aafc7">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
+<link rel="stylesheet" href="assets/pipeline.css?v=d464504f">
+<script src="assets/pipeline.js?v=7f37c84e" defer></script>
 </head>
 <body>
+
 <a class="skip" href="#main">דלגו לתוכן</a>
 
 <header class="masthead">
@@ -35,26 +42,17 @@
       <img src="assets/logo.svg?v=e893fa44" alt="">
       <span class="brand-txt">
         <strong>ברומטר</strong>
-        <span>מדד הסקרים והאמינות</span>
+        <span>בחירות. נתונים. תמונת מצב.</span>
       </span>
     </a>
     <nav class="mainnav" aria-label="ניווט ראשי">
       <div class="tabs">
         <a class="tab" href="#/" data-view="home">תמונת מצב</a>
-        <a class="tab" href="#/polls" data-view="polls">הסקרים</a>
+        <a class="tab" href="#/polls" data-view="polls">כל הסקרים</a>
         <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-        <a class="tab" href="#/regions" data-view="regions">מפת ההצבעה</a>
-        <a class="tab" href="#/live" data-view="live">ליל הבחירות</a>
-        <details class="nav-more">
-          <summary>עוד</summary>
-          <div class="nav-menu">
-            <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
-            <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-            <a class="tab" href="#/haredi" data-view="haredi">תרחיש דמוגרפי חרדי</a>
-            <a class="tab" href="#/method" data-view="method">שיטת החישוב</a>
-            <a class="tab" href="#/results" data-view="results">תוצאות אמת</a>
-          </div>
-        </details>
+        <a class="tab" href="#/map" data-view="map">בחירות 2022</a>
+        <a class="tab" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
+        <a class="tab" href="#/method" data-view="method" data-group="method demography haredi crossover">שיטת החישוב</a>
       </div>
     </nav>
     <div class="masthead-side">
@@ -72,14 +70,27 @@
 <!-- ==================== התחזית ==================== -->
 <section class="view" id="view-home" aria-label="תמונת מצב">
   <div class="verdict">
-    <div class="verdict-knesset" aria-hidden="true" id="hero-art"></div>
+    <div id="hero-art" hidden aria-hidden="true"></div>
     <div class="wrap verdict-in">
       <div class="verdict-top">
-        <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר</p>
-        <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+        <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26</p>
+        <span class="edition-label" lang="en" dir="ltr">ISRAEL / ELECTIONS 2026</span>
       </div>
-      <h1 id="verdict-head">טוען נתונים…</h1>
-      <p class="lede" id="verdict-lede"></p>
+      <div class="election-hero">
+        <div class="election-copy">
+          <p class="hero-overline">תמונת המצב הפוליטית</p>
+          <h1 id="verdict-head" tabindex="-1">הבחירות,<br><em>במספרים.</em></h1>
+          <p class="hero-description">מי מוביל, כמה רחוק הרוב, ומה עומד מאחורי כל מנדט. תמונת מצב המבוססת על הסקרים ועל הדיוק ההיסטורי שלהם.</p>
+          <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
+          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> הצגת החישוב · בדיקת סקרים חדשים</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
+        </div>
+        <div class="election-visual">
+          <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
+          <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
+          <div class="readout" id="home-readout"></div>
+          <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
+        </div>
+      </div>
       <div class="home-forecast-controls">
         <div class="switch home-switch" role="group" aria-label="אופן החישוב">
           <button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button>
@@ -87,24 +98,36 @@
         </div>
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
       </div>
-      <div class="readout" id="home-readout"></div>
     </div>
   </div>
   <div class="wrap board">
-    <section class="bloc" id="bloc-right">
-      <div class="bloc-head"><h2>גוש הימין והחרדים</h2><span class="tally num" data-tally="Right"></span></div>
-      <div class="cards" id="cards-right"></div>
-    </section>
-    <section class="bloc" id="bloc-left">
-      <div class="bloc-head"><h2>מרכז־שמאל והרשימות הערביות</h2><span class="tally num" data-tally="LeftArabs"></span></div>
-      <div class="cards" id="cards-left"></div>
-    </section>
-    <section class="handoff">
-      <p>איך חושבו המספרים, מה נכנס לשקלול ומה ההנחות שמאחורי "תחזית הברומטר" — הכול בשיטת החישוב, עם גרף לכל מפלגה.</p>
-      <a class="btn" href="#/method">לשיטת החישוב ←</a>
-    </section>
+    <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
+      <div class="wall-toggle" role="group" aria-label="פריסת הלוח"><button type="button" data-wall-layout="blocs" aria-pressed="true">לפי גושים</button><button type="button" data-wall-layout="size" aria-pressed="false">לפי גודל</button></div></div>
+    <div class="wall-poster" id="wall-poster"></div>
+    <div class="wall">
+      <section class="bloc bloc-right" style="--bc:#17457F">
+        <div class="bloc-head"><div><p class="kicker">גוש הימין והחרדים</p><h3>מנדטים לגוש</h3></div><b class="tally num" data-tally="Right"></b></div>
+        <div class="wall-rows" id="cards-right"></div>
+      </section>
+      <section class="bloc bloc-mid" style="--bc:#6B7684">
+        <div class="bloc-head"><div><p class="kicker">לא משויכות לגוש</p><h3>מנדטים</h3></div><b class="tally num" data-tally="Mid"></b></div>
+        <div class="wall-rows" id="cards-mid"></div>
+      </section>
+      <section class="bloc bloc-left" style="--bc:#C0392B">
+        <div class="bloc-head"><div><p class="kicker">מרכז־שמאל והרשימות הערביות</p><h3>מנדטים לגוש</h3></div><b class="tally num" data-tally="LeftArabs"></b></div>
+        <div class="wall-rows" id="cards-left"></div>
+      </section>
+    </div>
+    <p class="board-note">המספרים מציגים את המודל שנבחר למעלה. שיוך לגוש אינו תחזית להרכב קואליציה.</p>
     <section class="printsheet" id="home-printsheet" aria-hidden="true"></section>
   </div>
+  <section class="home-method">
+    <div class="wrap">
+      <div class="method-intro"><div><p class="kicker">מאחורי המספרים</p><h2>לכל תחזית יש בסיס.<br>כאן אפשר לבדוק אותו.</h2></div><a class="btn" href="#/method">איך אנחנו מחשבים <span aria-hidden="true">↙</span></a></div>
+      <div class="pipeline" id="home-pipeline" aria-label="הנתונים והבדיקות שמאחורי התחזית"></div>
+      <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+    </div>
+  </section>
 </section>
 
 <!-- ==================== סקרי 2026 ==================== -->
@@ -150,62 +173,59 @@
 <section class="view" id="view-e2022" aria-label="מדד אמינות מכוני הסקרים">
   <div class="wrap">
     <div class="page-intro">
-      <p class="kicker">כיול אמינות · כנסת 24 וכנסת 25</p>
-      <h2>מדד אמינות מכוני הסקרים</h2>
+      <p class="kicker">כיול מול תוצאות האמת · 2020 · 2021 · 2022</p>
+      <h2>מדד אמינות הסקרים בישראל</h2>
+      <p>כל מכון נמדד על כל הסקרים שפרסם ב־30 הימים שלפני כל אחת משלוש הבחירות האחרונות (2020, 2021, 2022), מול התוצאה הסופית של ועדת הבחירות. הציון קובע כמה משקל מקבל המכון בתחזית.</p>
+      <div class="page-facts" id="acc-facts"></div>
     </div>
 
     <section class="sec reliability-ranking">
-      <div class="sec-head"><div><p class="kicker">הדירוג</p><h2>המכונים וציוני האמינות</h2></div></div>
+      <div class="sec-head"><div><p class="kicker">1 · הדירוג</p><h2>המכונים, מהמדויק לפחות מדויק</h2></div>
+        <div class="grade-legend" aria-label="מפתח דרגות האמינות"><span class="grade high">אמינות גבוהה · 80 ומעלה</span><span class="grade mid">אמינות טובה · 75 עד פחות מ־80</span><span class="grade low">אמינות בינונית · מתחת ל־75</span></div></div>
       <div class="ranks" id="rank-list"></div>
     </section>
 
-    <section class="sec reliability-explanation">
-      <div class="sec-head"><div><p class="kicker">איך לקרוא את המדד</p><h2>למה כל מכון קיבל את הציון שלו</h2></div></div>
-      <p class="data-explainer">המדד בודק אילו מכוני סקרים היו קרובים לתוצאות האמת ואילו נטו להחמיץ את התמונה הרחבה. הוא מכויל על שתי מערכות בחירות — הכנסת ה־24 והכנסת ה־25 — בכל אחת מ־30 הימים שלפני יום הבחירות. מכון שהופיע בשתיהן מקבל את ממוצע שני הציונים במשקל שווה.</p>
-    </section>
-
-    <section class="sec calibration-sec">
-      <div class="calibration-strip" id="calibration-strip"></div>
-      <div class="switch calib-switch" id="calib-switch" role="group" aria-label="מערכת הבחירות שמוצגת בעמוד"></div>
-      <p class="data-explainer" id="calib-note"></p>
-    </section>
-
     <section class="sec">
-      <div class="sec-head">
-        <div><p class="kicker">התוצאה</p><h2 id="scen-title">התוצאה שהייתה, והתוצאה שכמעט הייתה</h2></div>
-        <div class="switch gold" id="scen-switch" role="group" aria-label="תרחיש">
-          <button type="button" data-scen="actual" aria-pressed="true">תוצאות האמת</button>
-          <button type="button" data-scen="counterfactual" aria-pressed="false">אילו מרצ עברה</button>
-        </div>
-      </div>
-      <div class="grid g3" id="scen-cards"></div>
-      <div class="notice red" style="margin-top:16px"><span class="ic">!</span><div id="scen-explain"></div></div>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">נוסחת הציון</p><h2>איך נמדד מכון</h2></div></div>
+      <div class="sec-head"><div><p class="kicker">2 · הנוסחה</p><h2>איך נמדד מכון</h2></div>
+        <p class="sec-note">כל מערכת בחירות נותנת למכון ציון 0–100; הציון הסופי הוא ממוצע שווה־משקל של המערכות שבהן פרסם. מכון שלא פרסם באף אחת מהמערכות מקבל משקל ניטרלי של 70.</p></div>
       <div class="fstrip three">
-        <div class="fblock" style="--c:#17457F"><b>60%</b><span>דיוק בגושים — השאלה שקובעת מי מרכיב ממשלה</span></div>
-        <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — שגיאה מוחלטת ממוצעת בכל הרשימות</span></div>
-        <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות לאורך חודש הכיול — 65% יציבות הגושים, 35% יציבות המפלגות</span></div>
+        <div class="fblock" style="--c:#17457F"><b>60%</b><span>דיוק בגושים — הפער בין ממוצע סקרי המכון לתוצאה, בכל גוש</span></div>
+        <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — השגיאה המוחלטת הממוצעת בכל הרשימות</span></div>
+        <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות — כמה יציב היה המכון לאורך החודש</span></div>
       </div>
-      <div class="notice warm" style="margin:16px 0"><span class="ic">+</span><p style="margin:0"><b>הציון משתי מערכות:</b> כל מערכת נספרת במשקל שווה, כך שמכון עם הרבה סקרים באחת מהן אינו מקבל יתרון על כמות. ליד כל מכון מופיע הפירוט לפי כנסת, ומכון שהופיע רק באחת מהן מסומן ככזה.</p></div>
     </section>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">ההטיה שחזרה על עצמה</p><h2>מה כל הסקרים פספסו יחד</h2></div>
-      <p class="sec-note" id="bias-note">ממוצע כל הסקרים בחלון מול התוצאה בפועל. השוואה היסטורית בלבד; אינה משנה את נתוני הסקרים הנוכחיים.</p></div>
-      <div class="tablewrap"><table id="bias-table"></table></div>
-    </section>
+      <div class="sec-head"><div><p class="kicker">3 · מערכת אחר מערכת</p><h2 id="arch-title">כל הסקרים, כל הבחירות</h2></div>
+        <div class="switch calib-switch" id="calib-switch" role="group" aria-label="מערכת הבחירות שמוצגת"></div></div>
+      <div class="page-facts compact" id="calib-facts"></div>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">הארכיון המלא</p><h2 id="arch-title">הסקרים, אחד־אחד</h2></div></div>
+
       <div class="controls">
         <label class="field"><span>סינון לפי מכון</span><select id="arch-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>חיפוש</span><input id="arch-q" type="search" placeholder="מכון, ערוץ או תאריך"></label>
         <div class="count" id="arch-count"></div>
       </div>
-      <div class="tablewrap"><table id="arch-table"></table></div>
+      <div class="tablewrap arch-wrap"><table id="arch-table" class="arch"></table></div>
+      <button type="button" class="btn ghost arch-more" id="arch-more" hidden></button>
+      <p class="sec-note arch-key"><span class="cell-key ok">מדויק</span><span class="cell-key near">±1</span><span class="cell-key off">±2</span><span class="cell-key far">3 ומעלה</span> — הצבע בכל תא הוא הפער בין הסקר לתוצאת האמת (השורה האחרונה).</p>
+
+      <p class="takeaway sec-takeaway" id="bias-note"></p>
+      <p class="sec-note" id="calib-source"></p>
+
+      <div class="scen-block" id="scen-block" hidden style="margin-top:34px">
+        <div class="scen-head"><div><p class="kicker">התחשיב · 2022</p><h3>אילו מרצ הייתה עוברת את אחוז החסימה</h3></div>
+          <div class="switch gold" id="scen-switch" role="group" aria-label="מול מה נמדדים הסקרים">
+            <button type="button" data-scen="actual" aria-pressed="true">מול תוצאות האמת</button>
+            <button type="button" data-scen="counterfactual" aria-pressed="false">מול התרחיש: מרצ עוברת</button>
+          </div></div>
+        <div class="scen-grid">
+          <div class="scen-cards" id="scen-cards"></div>
+          <div class="scen-text" id="scen-explain"></div>
+        </div>
+        <div class="tablewrap"><table id="scen-firms"></table></div>
+      </div>
+
     </section>
   </div>
 </section>
@@ -214,6 +234,12 @@
 <!-- ==================== כמה עברו צד ==================== -->
 <section class="view" id="view-crossover" aria-label="כמה עברו צד">
   <div class="wrap">
+    <nav class="subtabs" aria-label="שיטת החישוב">
+      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
+      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
+      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+    </nav>
     <div class="page-head"><div class="page-head-main">
       <h2>כמה עברו צד?</h2>
     </div></div>
@@ -235,6 +261,10 @@
 <!-- ==================== ליל הבחירות ==================== -->
 <section class="view" id="view-live" aria-label="ליל הבחירות">
   <div class="wrap">
+    <nav class="subtabs" aria-label="ליל הבחירות">
+      <a class="subtab" href="#/live" data-view="live">המדגמים</a>
+      <a class="subtab" href="#/results" data-view="results">תוצאות האמת</a>
+    </nav>
     <div class="page-intro live-intro">
       <p class="kicker">מדגם ← ספירת אמת</p>
       <h2>ליל הבחירות, בזמן אמת</h2>
@@ -292,6 +322,10 @@
 <!-- ==================== תוצאות אמת ==================== -->
 <section class="view" id="view-results" aria-label="תוצאות אמת">
   <div class="wrap">
+    <nav class="subtabs" aria-label="ליל הבחירות">
+      <a class="subtab" href="#/live" data-view="live">המדגמים</a>
+      <a class="subtab" href="#/results" data-view="results">תוצאות האמת</a>
+    </nav>
     <div class="page-intro">
       <p class="kicker">ספירה רשמית</p>
       <h2>תוצאות האמת</h2>
@@ -333,6 +367,12 @@
 <!-- ==================== בנק הקולות החרדי ==================== -->
 <section class="view" id="view-haredi" aria-label="בנק הקולות החרדי">
   <div class="wrap">
+    <nav class="subtabs" aria-label="שיטת החישוב">
+      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
+      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
+      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+    </nav>
     <div class="page-intro">
       <p class="kicker">היסטוריה · אוכלוסייה · הנחות</p>
       <h2>ש״ס ויהדות התורה: מהנתונים לתרחיש</h2>
@@ -343,13 +383,13 @@
       <div class="grid g2">
         <div class="floorcard" style="--c:#4A4A4A">
           <p class="kicker">הנחה קבועה בתחזית הברומטר</p>
-          <div class="floornum"><b>11</b><span>ש״ס</span></div>
-          <p>תוצאת 2022: 11 מנדטים. 11 כאן הם הנחת התרחיש, לא מינימום היסטורי.</p>
+          <div class="floornum"><b>10.5</b><span>ש״ס</span></div>
+          <p>תוצאת 2022: 11 מנדטים. 10.5 כאן הם הנחת התרחיש (בשברי מנדטים, לפני העיגול בבאדר-עופר), לא מינימום היסטורי.</p>
         </div>
         <div class="floorcard" style="--c:#5B4B8A">
           <p class="kicker">הנחה קבועה בתחזית הברומטר</p>
-          <div class="floornum"><b>8</b><span>יהדות התורה</span></div>
-          <p>תוצאת 2022: 7 מנדטים. התרחיש קובע 8; ההפרש הוא הנחה לעתיד.</p>
+          <div class="floornum"><b>7.8</b><span>יהדות התורה</span></div>
+          <p>תוצאת 2022: 7 מנדטים. התרחיש קובע 7.8; ההפרש הוא הנחה לעתיד.</p>
         </div>
       </div>
       <div class="notice warm" style="margin-top:16px"><span class="ic">=</span><p style="margin:0">הערכים חלים רק בבחירת תחזית הברומטר בעמוד הראשי. צמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור.</p></div>
@@ -635,198 +675,278 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 תיקוף צולב: השוו תחזיות המודל עם תחזיות &quot;המדד&quot;, &quot;ברומטר&quot; וסקרי מכוני מחקר אקדמיים לתיקוף רציף.</div></details></section>  </div>
 </section>
 
-<!-- ==================== פילוח אזורי ==================== -->
-<section class="view" id="view-regions" aria-label="פילוח אזורי">
+<!-- ==================== המודל הדמוגרפי ==================== -->
+<section class="view" id="view-demography" aria-label="המודל הדמוגרפי">
   <div class="wrap">
+    <nav class="subtabs" aria-label="שיטת החישוב">
+      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
+      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
+      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+    </nav>
     <div class="page-intro">
-      <p class="kicker">תוצאות אמת · הכנסת ה־25</p>
-      <h2>איפה בדיוק הוכרעו הבחירות</h2>
-      <p>ממוצע ארצי מסתיר יותר משהוא מגלה. העמוד הזה מפרק את תוצאות 2022 לאזורים, למגזרים ולאשכולות חברתיים־כלכליים — רק נתוני אמת שפורסמו, עם מקור לצד כל מספר.</p>
+      <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
+      <h2>מה הדמוגרפיה לבדה אומרת על 2026</h2>
+      <p>חמישה שלבים, מלמעלה למטה. מתחילים ממה שקרה באמת ב־2022, מפרקים את ציבור הבוחרים לחמש קבוצות זהות, מניחים כמה כל קבוצה תגדל וכמה ממנה תצביע — ומקבלים תחזית לגודל הגושים שלא נשענת על שום סקר. איך אותן קבוצות נראות על המפה, יישוב־יישוב — בכרטיסייה <a href="#/map">בחירות 2022</a>.</p>
     </div>
 
-    <section class="sec">
-      <div class="stats" id="nat-stats"></div>
-    </section>
+    <div class="demo-layout">
+    <div class="demo-main" id="demo-main">
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">המפה</p><h2>המפלגה המובילה בכל יישוב</h2></div>
-      <p class="sec-note">לחצו על נקודה כדי לראות את הפילוח המלא שלה. גודל הנקודה משקף את מספר הבוחרים; הצבע — המפלגה המובילה.</p></div>
-      <div class="mapgrid">
-        <div class="mapbox"><div id="map-svg"></div><div class="maplegend" id="map-legend"></div></div>
-        <div class="mapside">
-          <div class="card pad locdetail" id="loc-detail"></div>
-          <div class="notice warm"><span class="ic">↻</span><p style="margin:0">מוצגים כאן היישובים שנתוניהם אומתו מול מקור מפורסם. להשלמת כל ~1,200 היישובים מקובץ ועדת הבחירות הרשמי — הריצו את <code>scripts/import-official-results.mjs</code>.</p></div>
+      <section class="dstep" id="dstep-1">
+        <div class="dstep-num" aria-hidden="true">1</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">נקודת המוצא · נתוני אמת</p><h2>מה קרה ב־2022</h2></div>
+          <div class="stats" id="nat-stats"></div>
+          <div id="base-blocs"></div>
+          <p class="takeaway sec-takeaway" id="map-takeaway"></p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">מגזרים</p><h2>שני המגזרים שנמדדו במלואם</h2></div></div>
-      <div class="grid g2" id="sector-cards"></div>
-    </section>
+      <section class="dstep" id="dstep-2">
+        <div class="dstep-num" aria-hidden="true">2</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">מי הצביע · נתוני אמת 2022</p><h2>חמש קבוצות זהות, ואיך כל אחת הצביעה</h2>
+            <p class="sec-note">החלוקה החזקה ביותר בפוליטיקה הישראלית אינה גיאוגרפית אלא זהותית. כל שורה היא קבוצה: כמה בעלי זכות בחירה, כמה מהם הצביעו, לאילו ארבע רשימות הלכו רוב הקולות — וכמה מהם לכל גוש. המספרים לרשימות הם אומדן: קולות האמת של כל רשימה לפי הרכב המצביעים שלה.</p></div>
+          <div id="electorate-bar"></div>
+          <div class="tablewrap dtable-wrap" id="identity-table"></div>
+          <p class="sec-note" id="relig-source"></p>
+          <p class="takeaway sec-takeaway" id="identity-takeaway"></p>
+        </div>
+      </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">מעמד וכלכלה</p><h2 id="clusters-title"></h2></div>
-      <p class="sec-note" id="clusters-desc"></p></div>
-      <div class="grid g3" id="cluster-cards"></div>
-      <p class="sec-note" style="margin-top:14px" id="clusters-note"></p>
-    </section>
+      <section class="dstep" id="dstep-3">
+        <div class="dstep-num" aria-hidden="true">3</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">ההנחות · מה משתנה עד 2026</p><h2>כמה כל קבוצה גדלה, וכמה ממנה תצביע</h2>
+            <p class="sec-note">שני דברים בלבד משתנים במודל: גודל הקבוצה (גידול טבעי שנתי בבעלי זכות הבחירה) ושיעור ההצבעה שלה. הרגלי ההצבעה של 2022 נשארים כפי שהיו. ברירות המחדל מהמקורות; גררו את הידיות לתרחישים אחרים.</p></div>
+          <div class="tablewrap dtable-wrap" id="demo-controls"></div>
+          <div class="identity-foot"><button class="btn ghost" type="button" id="demo-reset">איפוס לערכי הבסיס</button><p class="sec-note" id="assump-note"></p></div>
+        </div>
+      </section>
 
-    <section class="sec" id="full-localities" hidden>
-      <div class="sec-head"><div><p class="kicker">הנתונים המלאים</p><h2>כל היישובים בישראל</h2></div>
-      <p class="sec-note">הטבלה הזו נוצרה מקובץ ועדת הבחירות הרשמי.</p></div>
-      <div class="controls">
-        <label class="field"><span>חיפוש יישוב</span><input id="loc-q" type="search" placeholder="שם היישוב"></label>
-        <div class="count" id="loc-count"></div>
-      </div>
-      <div class="tablewrap"><table id="loc-table"></table></div>
-    </section>
+      <section class="dstep" id="dstep-4">
+        <div class="dstep-num" aria-hidden="true">4</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">התוצאה · תחזית 2026</p><h2>כמה יצביעו, ולאן זה הולך</h2>
+            <p class="sec-note">קודם לכל קבוצה: כמה מצביעים צפויים ב־2026 לעומת 2022, ומה ההפרש שווה במנדטים. אחר כך הסכום — ארבעה גושים, באחוזי תמיכה, בלי מפלגות ובלי חלוקת מנדטים.</p></div>
+          <div class="tablewrap dtable-wrap" id="result-table"></div>
+          <div class="split" style="margin-top:22px">
+            <div class="hemi share-panel">
+              <div id="demo-share-chart"></div>
+              <div class="legend" id="demo-legend"></div>
+            </div>
+            <div class="card pad">
+              <p class="kicker">2022 → 2026 → אחוזים</p>
+              <div id="demo-delta"></div>
+            </div>
+          </div>
+          <p class="takeaway sec-takeaway" id="demo-takeaway"></p>
+        </div>
+      </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">זהות</p><h2 id="relig-title"></h2></div>
-      <p class="sec-note">החלוקה החזקה ביותר בפוליטיקה הישראלית אינה גיאוגרפית אלא זהותית: ככל שמתקדמים מהקצה החרדי אל הקצה החילוני, כך עולה הסיכוי להצביע לגוש שאינו של נתניהו.</p></div>
-      <div class="grid g4" id="relig-cards"></div>
-    </section>
+      <section class="dstep" id="dstep-5">
+        <div class="dstep-num" aria-hidden="true">5</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">מה המודל לא יודע</p><h2>מגבלות, בגלוי</h2></div>
+          <div class="grid g3">
+            <div class="step"><em>01</em><h3>מפלגות חדשות</h3><p>המודל עובד עם רשימות 2022. מפלגה שנולדה מאז — ויש כאלה בסקרים היום — אינה קיימת בו. לכן הוא מודד גושים וכיוונים, לא שמות.</p></div>
+            <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה בדיוק מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
+            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. הידית בשלב 3 מראה עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    </div>
   </div>
 </section>
 
-<!-- ==================== התחזית היבשה ==================== -->
-<section class="view" id="view-demography" aria-label="התחזית היבשה">
+<!-- ==================== בחירות 2022 ==================== -->
+<section class="view" id="view-map" aria-label="בחירות 2022">
   <div class="wrap">
     <div class="page-intro">
-      <p class="kicker">מודל ללא סקרים</p>
-      <h2>התחזית היבשה</h2>
-      <p>המודל הזה לא מסתכל על אף סקר. הוא לוקח את תוצאות האמת של 2022, מניח שהרגלי ההצבעה בכל קבוצת אוכלוסייה נשארו בדיוק כפי שהיו, ומאפשר לשנות את הגידול השנתי בבעלי זכות הבחירה ואת שיעור ההשתתפות של כל קבוצה ב־2026. אם הדמוגרפיה לבדה קובעת — זו התוצאה.</p>
+      <p class="kicker">תוצאות האמת · ועדת הבחירות המרכזית · 1.11.2022</p>
+      <h2>בחירות 2022: כל יישוב, כל קול</h2>
+      <p>המספרים הסופיים של ועדת הבחירות, מלמעלה למטה: קודם התוצאה הארצית, אחר כך המפה של כל היישובים, ואז הפילוחים. זו נקודת המוצא של כל חישוב באתר.</p>
     </div>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">התוצאה</p><h2>ארבעה גושים, אחוזי תמיכה</h2></div>
-      <p class="sec-note">בלי מפלגות ובלי חלוקת מנדטים. הקולות של 2022 מקובצים לארבעה גושים — ימין, שמאל, חרדים, ערבים — ומגודלים לפי הגידול הטבעי של כל קבוצה. התוצאה מוצגת כאחוזי תמיכה בלבד.</p></div>
-      <div class="split">
-        <div class="hemi share-panel">
-          <div id="demo-share-chart"></div>
-          <div class="legend" id="demo-legend"></div>
+    <div class="demo-main">
+      <section class="dstep" id="mp-1">
+        <div class="dstep-num" aria-hidden="true">1</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">התוצאה הארצית</p><h2>מי קיבל כמה</h2></div>
+          <div class="stats" id="r22-stats"></div>
+          <div id="r22-blocs" style="margin-top:18px"></div>
         </div>
-        <div class="card pad">
-          <p class="kicker">2022 → 2026 → אחוזים</p>
-          <div id="demo-delta"></div>
+      </section>
+
+      <section class="dstep" id="mp-2">
+        <div class="dstep-num" aria-hidden="true">2</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">המפה</p><h2>פילוח ההצבעות בכל יישוב</h2>
+            <p class="sec-note">מפה אמיתית (OpenStreetMap) — אפשר להתקרב, לגרור ולרחף. כל נקודה היא יישוב: גודלה — מספר הקולות הכשרים, צבעה — הרשימה שקיבלה בו הכי הרבה קולות. לחצו על נקודה, או חפשו יישוב ברשימה, כדי לראות את הפילוח המלא שלו. <span id="map-count"></span></p></div>
+          <div class="maplegend map-legend-top" id="map-legend"></div>
+          <div class="map-layout">
+            <div class="mapbox map-main"><div id="map-svg"></div></div>
+            <div class="map-side">
+              <div class="map-panel">
+                <label class="map-search"><span class="map-panel-title">חיפוש יישוב</span><input id="map-q" type="search" placeholder="הקלידו שם יישוב…" autocomplete="off"></label>
+                <p class="map-list-count" id="map-list-count"></p>
+                <div class="map-list" id="map-list"></div>
+              </div>
+              <div class="map-panel">
+                <p class="map-panel-title">היישוב הנבחר</p>
+                <div class="card pad locdetail" id="loc-detail"></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="sec-head" style="margin-top:26px"><div><p class="kicker">המגזרים</p><h2 style="font-size:1.4rem">גודל, הצבעה וכוח פוליטי</h2></div>
-      <p class="sec-note">הטבלה מציגה את בסיס האוכלוסייה ואת ההנחות שנבחרו. קצב גידול האוכלוסייה אינו בהכרח קצב גידול בעלי זכות הבחירה; כאן הוא משמש הנחת עבודה לשינוי.</p></div>
-      <div id="demo-sectors" style="margin-top:4px"></div>
-    </section>
+      </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">תרחישים</p><h2>מה אם הגידול או ההצבעה משתנים</h2></div>
-      <p class="sec-note">גררו את הידיות כדי לבדוק תרחישים אחרים — קצב גידול שונה, או שיעור הצבעה שונה בכל מגזר.</p></div>
-      <div class="grid g2" id="demo-controls"></div>
-      <button class="btn ghost" type="button" id="demo-reset" style="margin-top:16px">איפוס לערכי הבסיס</button>
-    </section>
+      <section class="dstep" id="mp-3">
+        <div class="dstep-num" aria-hidden="true">3</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">פילוחים</p><h2>מגזרים, מעמד וכלכלה</h2>
+            <p class="sec-note">שני המגזרים שנמדדו במלואם מקובץ ועדת הבחירות, ואחריהם ההצבעה לפי האשכול החברתי־כלכלי של היישוב.</p></div>
+          <div class="grid g2" id="sector-cards"></div>
+          <p class="takeaway sec-takeaway" id="sectors-takeaway"></p>
+          <h3 class="sub-h" id="clusters-title"></h3>
+          <p class="sec-note" id="clusters-desc"></p>
+          <div class="grid g3" id="cluster-cards"></div>
+          <p class="sec-note" style="margin-top:14px" id="clusters-note"></p>
+          <p class="takeaway sec-takeaway" id="clusters-takeaway"></p>
+        </div>
+      </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">מה המודל לא יודע</p><h2>מגבלות, בגלוי</h2></div></div>
-      <div class="grid g3">
-        <div class="step"><em>01</em><h3>מפלגות חדשות</h3><p>המודל עובד עם רשימות 2022. מפלגה שנולדה מאז — ויש כאלה בסקרים היום — אינה קיימת בו. לכן הוא מודד גושים וכיוונים, לא שמות.</p></div>
-        <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה בדיוק מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
-        <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. הידית בעמוד הזה מראה עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
-      </div>
-    </section>
+      <section class="dstep" id="mp-4">
+        <div class="dstep-num" aria-hidden="true">4</div>
+        <div class="dstep-body" id="full-localities" hidden>
+          <div class="dstep-head"><p class="kicker">הנתונים המלאים</p><h2>כל היישובים בישראל</h2>
+            <p class="sec-note">הטבלה נוצרה מקובץ ועדת הבחירות הרשמי. גם היישובים שאין להם נקודה על המפה (שבטים בדואים ויישובים זעירים) נמצאים כאן.</p></div>
+          <div class="controls">
+            <label class="field"><span>חיפוש יישוב</span><input id="loc-q" type="search" placeholder="שם היישוב"></label>
+            <div class="count" id="loc-count"></div>
+          </div>
+          <div class="tablewrap"><table id="loc-table"></table></div>
+        </div>
+      </section>
+    </div>
   </div>
 </section>
 
 <!-- ==================== מתודולוגיה ==================== -->
-<section class="view" id="view-method" aria-label="מתודולוגיה">
+<section class="view" id="view-method" aria-label="שיטת החישוב">
   <div class="wrap">
+    <nav class="subtabs" aria-label="שיטת החישוב">
+      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
+      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
+      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
+    </nav>
     <div class="page-intro">
-      <p class="kicker">בלי קופסה שחורה</p>
-      <h2>איך אנחנו מגיעים למספר</h2>
-      <p>כל שלב בחישוב מתועד כאן, כולל הנוסחאות המדויקות ושתי הנחות המודל שאינן נובעות מהסקרים. אם משהו כאן נראה לכם שגוי — זה בדיוק מה שהעמוד הזה נועד לאפשר.</p>
+      <p class="kicker">שיטת החישוב · בפשטות</p>
+      <h2>איך באמת מחשבים את התחזית</h2>
+      <p>שישה שלבים. ליד כל שלב — המספר האמיתי של היום, וקישור למקום שבו אפשר לבדוק אותו בעצמכם.</p>
+    </div>
+
+    <div class="method-steps" id="method-steps">
+
+      <section class="mstep" id="mstep-1">
+        <div class="mstep-num" aria-hidden="true">1</div>
+        <div class="mstep-body">
+          <div class="mstep-head"><h2>אוספים את כל הסקרים</h2><a class="mstep-link" href="#/polls">לכל הסקרים ↙</a></div>
+          <p>כל סקר שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה — לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 8 הימים האחרונים.</p>
+          <div class="mlive" id="m-live-polls"></div>
+          <div class="outlet-icons mstep-outlets" id="m-outlets" aria-label="כלי התקשורת שמהם נאספים הסקרים"></div>
+        </div>
+      </section>
+
+      <section class="mstep" id="mstep-2">
+        <div class="mstep-num" aria-hidden="true">2</div>
+        <div class="mstep-body">
+          <div class="mstep-head"><h2>נותנים לכל מכון ציון</h2><a class="mstep-link" href="#/2022">לדיוק המכונים ↙</a></div>
+          <p>הציון (0–100) נקבע רק לפי העבר: לוקחים את כל הסקרים שהמכון פרסם ב־30 הימים שלפני כל אחת משלוש מערכות הבחירות האחרונות — 2020, 2021 ו־2022 — ומשווים אותם לתוצאה הסופית של ועדת הבחירות המרכזית. ההשוואה נעשית בשלוש רמות:</p>
+          <ul class="mlist">
+            <li><b>דיוק בגושים — 60% מהציון.</b> ממצעים את סקרי המכון באותו חודש, ובודקים בכמה מנדטים הממוצע טעה בגודל גוש נתניהו, הגוש היריב והרשימות שמחוץ לגושים. כל 3 מנדטי טעות (במצטבר) מורידים 10 נקודות.</li>
+            <li><b>דיוק במפלגות — 30%.</b> הטעות הממוצעת במנדטים לכל מפלגה, בכל סקר בנפרד. כל מנדט טעות ממוצע מוריד 15 נקודות.</li>
+            <li><b>עקביות — 10%.</b> כמה סקרי המכון קפצו במהלך החודש (סטיית התקן של גוש נתניהו ושל כל מפלגה). מכון שנע עם המגמה במקום לקפוץ הלוך ושוב — לא נענש.</li>
+          </ul>
+          <p>לכל מערכת בחירות מחשבים ציון נפרד, והציון הסופי הוא הממוצע של המערכות שבהן המכון פרסם — כך שמערכת אחת מוצלחת או כושלת לא קובעת לבד. <b>דוגמה:</b> מכון שטעה בסך הכול ב־6 מנדטים בגושים (80 נק׳), ב־1.2 מנדט בממוצע למפלגה (82) והיה יציב (95) מקבל 0.6×80 + 0.3×82 + 0.1×95 = <b>82</b>. מכון חדש, בלי סקרים באף אחת משלוש המערכות, מקבל ציון ניטרלי של <b>70</b> — כדי שייכנס לחישוב, אבל לא ישפיע יותר ממכון שהוכיח את עצמו.</p>
+          <div class="tablewrap"><table class="mtable" id="m-firms"></table></div>
+        </div>
+      </section>
+
+      <section class="mstep" id="mstep-3">
+        <div class="mstep-num" aria-hidden="true">3</div>
+        <div class="mstep-body">
+          <div class="mstep-head"><h2>ממצעים — ואז משקללים</h2><a class="mstep-link" href="#/">לתמונת המצב ↙</a></div>
+          <p>קודם ממצעים את כל הסקרים של אותו מכון לתוצאה אחת (כדי שמכון שמפרסם הרבה לא ישלוט בממוצע). אחר כך ממצעים בין המכונים, כשכל מכון שוקל לפי הציון שלו: מכון עם 82 משפיע יותר ממכון עם 70. זה ״משוקלל אמינות״.</p>
+          <div class="tablewrap"><table class="mtable" id="m-average"></table></div>
+        </div>
+      </section>
+
+      <section class="mstep" id="mstep-4">
+        <div class="mstep-num" aria-hidden="true">4</div>
+        <div class="mstep-body">
+          <div class="mstep-head"><h2>מוסיפים את ההנחות של ״תחזית הברומטר״</h2><a class="mstep-link" href="#/haredi">להנחות ↙</a></div>
+          <p>שלוש הנחות, שקופות, שאפשר לכבות במתג בתמונת המצב: <b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8</b> קבועות (הסקרים מפחיתים להן בעקביות — ראו הערת טעות הדגימה בדיוק המכונים; העיגול למנדטים שלמים נעשה בשלב 6); <b>קירוב למאזן 2022</b> — חצי מהפער בין הסקרים לתוצאה הקודמת; ו<b>תוספת דמוגרפית</b> לימין. אלה הנחות, לא מדידות.</p>
+          <div class="mlive" id="m-live-scenario"></div>
+        </div>
+      </section>
+
+      <section class="mstep" id="mstep-5">
+        <div class="mstep-num" aria-hidden="true">5</div>
+        <div class="mstep-body">
+          <div class="mstep-head"><h2>בודקים מול הדמוגרפיה</h2><a class="mstep-link" href="#/demography">למודל הדמוגרפי ↙</a></div>
+          <p>מודל נפרד לגמרי, בלי אף סקר: תוצאות 2022 של כל קבוצת אוכלוסייה, כפול הגידול שלה עד 2026. הוא בודק את ההנחה הדמוגרפית שבשלב 4: כל עוד ההנחה בטווח של מנדט אחד מאומדן המודל — היא נשארת; אם היא רחוקה יותר, התחזית מחליפה אותה באומדן המודל.</p>
+          <div class="mlive" id="m-live-demo"></div>
+        </div>
+      </section>
+
+      <section class="mstep" id="mstep-6">
+        <div class="mstep-num" aria-hidden="true">6</div>
+        <div class="mstep-body">
+          <div class="mstep-head"><h2>מחלקים 120 מנדטים לפי כללי הבחירות</h2><a class="mstep-link" href="#/">לתמונת המצב ↙</a></div>
+          <p>בדיוק כמו ועדת הבחירות: <b>אחוז החסימה</b> — רשימה שמתחת ל־3.25% לא מקבלת מנדטים וקולותיה לא נספרים. <b>שיטת באדר-עופר</b> — 120 המנדטים מחולקים אחד־אחד; בכל סיבוב המנדט הבא הולך לרשימה שקולותיה חלקי (מנדטיה עד כה + 1) הם הגבוהים ביותר. <b>הסכמי עודפים</b> — שתי רשימות עם הסכם נחשבות לרשימה אחת בחלוקה, ואז מתחלקות ביניהן באותה שיטה. השיטה מעדיפה מעט את הרשימות הגדולות, ולכן אומדן של 10.5 יכול להסתיים ב־10 ולא ב־11.</p>
+          <div class="mlive" id="m-live-result"></div>
+          <p class="sec-note" id="m-rules"></p>
+        </div>
+      </section>
     </div>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">שבעה שלבים</p><h2>מסקר בודד עד מנדט</h2></div></div>
-      <div class="steps">
-        <div class="step"><em>01</em><h3>מסתמכים רק על מכונים מזוהים</h3><p>סקר נכנס לחישוב רק אם ידוע מי ביצע אותו ומי פרסם אותו. סקרים אנונימיים, סקרי רשתות חברתיות וסקרים ללא מכון מזוהה אינם נכנסים כלל.</p></div>
-        <div class="step"><em>02</em><h3>מכיילים על חודש שלם</h3><p>לכל מכון מחושבים ממוצעי כל הסקרים שפרסם בחודש האחרון של 2022 — לא רק הסקר האחרון, שבו קל להיראות מדויק. ההשוואה היא לתוצאת האמת.</p></div>
-        <div class="step"><em>03</em><h3>נותנים קדימות לגושים</h3><p>שגיאת הגושים נמדדת בגוש נתניהו, בגוש הממשלה היוצאת ובחד״ש–תע״ל. רכיב זה שווה <b>60%</b> מהציון — כי זו השאלה היחידה שקובעת מי מרכיב ממשלה. מכון שמדייק בגושים ומחליף מנדט בין שתי מפלגות באותו גוש עשה עבודה טובה; מכון שפספס גוש לא.</p></div>
-        <div class="step"><em>04</em><h3>בודקים גם כל מפלגה</h3><p>שגיאה מוחלטת ממוצעת ב־11 הרשימות המרכזיות, 30% מהציון. מעבר מנדט בתוך אותו גוש נענש פחות מהחמצת גוש.</p></div>
-        <div class="step"><em>05</em><h3>מתגמלים עקביות, לא הברקה</h3><p>10% נוספים לעקביות לאורך חודש הכיול: 65% יציבות תחזית הגוש ו־35% יציבות המנדטים של כל מפלגה בנפרד. מכון שקלע פעם אחת אחרי שהתנדנד בעשרה מנדטים לא מקבל את אותו קרדיט כמו מי שהחזיק קו יציב ומדויק.</p></div>
-        <div class="step"><em>06</em><h3>בונים ממוצע נע של 8 ימים</h3><p>קודם ממצעים את כל סקרי אותו מכון, ורק אחר כך ממזגים בין המכונים לפי ציון האמינות. חלון קצר מגיב מהר לאיחודי רשימות ולשינויי מגמה. מכון ללא כיול מ־2022 מקבל משקל ניטרלי של 70.</p></div>
-        <div class="step"><em>07</em><h3>מעגלים ל־120 מנדטים</h3><p>עיגול בשיטת השארית הגדולה לכל המפלגות, ללא רצפות מנדטים וללא תיקון ייעודי למפלגה.</p></div>
-      </div>
-    </section>
-
-    <section class="sec"><div class="sec-head"><div><p class="kicker">בדיקה היסטורית</p><h2>סקרים מול תוצאות 2022</h2></div></div><p class="sec-note">הטבלה מציגה את הפער בכל מפלגה. פער בעבר אינו מבטיח פער דומה בעתיד; לא מוחל תיקון ייעודי על אף מפלגה.</p><div class="tablewrap"><table id="method-bias"></table></div><span id="m-har-poll" hidden></span></section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">אמינות המקור</p><h2>מי נכנס פנימה, ומי לא</h2></div></div>
-      <div class="grid g2">
-        <div class="card pad">
-          <h3>נכנס לחישוב</h3>
-          <ul style="color:var(--ink-2);font-size:.92rem;padding-inline-start:18px">
-            <li>מכון סקרים מזוהה בשם, עם אחראי מחקר ידוע.</li>
-            <li>פרסום בכלי תקשורת מזוהה, עם תאריך.</li>
-            <li>סקר מנדטים ארצי — לא סקר נושאי ולא סקר מפלגתי פנימי.</li>
-            <li>נמצא בתוך חלון 8 הימים הנע.</li>
-          </ul>
-        </div>
-        <div class="card pad">
-          <h3>לא נכנס</h3>
-          <ul style="color:var(--ink-2);font-size:.92rem;padding-inline-start:18px">
-            <li>סקרים ללא מכון מזוהה או ללא מפרסם.</li>
-            <li>סקרי רשת פתוחים והצבעות גולשים.</li>
-            <li>סקרים שהוזמנו על ידי מפלגה ופורסמו על ידה.</li>
-            <li>סקרים ישנים מ־8 יום — הם נושרים אוטומטית.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="notice" style="margin-top:16px"><span class="ic">i</span><p style="margin:0">מכון בלי סדרת כיול מ־2022 <b>אינו נפסל</b> — הוא נכנס במשקל ניטרלי של 70 מתוך 100, ומסומן ככזה בכל מקום. אנחנו לא מתיימרים לדעת שהוא גרוע, רק שאין לנו עליו נתונים.</p></div>
+      <div class="sec-head"><div><p class="kicker">שקיפות</p><h2>מקורות הנתונים</h2></div>
+        <p class="sec-note">כל מספר באתר מגיע מאחד המקורות האלה. ליד כל מקור — למה הוא משמש.</p></div>
+      <div class="sources-groups" id="method-sources"></div>
     </section>
 
     <section class="sec">
-      <div class="sec-head"><div><p class="kicker">המספרים המדויקים</p><h2>הנוסחאות</h2></div></div>
-      <details class="math" open>
-        <summary>ציון האמינות של מכון</summary>
+      <details class="math">
+        <summary>הנוסחאות המדויקות, למי שרוצה</summary>
         <div class="body">
+          <p class="kicker">ציון האמינות של מכון</p>
           <span class="formula">blocScore    = clamp(100 − 10 × (Σ|blocError| / 3))</span>
           <span class="formula">partyScore   = clamp(100 − 15 × MAE_parties)</span>
           <span class="formula">stability    = clamp(100 − 25 × SD(netanyahuBloc))</span>
           <span class="formula">partyStab    = clamp(100 − 50 × mean SD(party seats))</span>
           <span class="formula">consistency  = 0.65 × stability + 0.35 × partyStab</span>
-          <span class="formula">SCORE = 0.60×bloc + 0.30×party + 0.10×consistency</span>
-        </div>
-      </details>
-      <details class="math">
-        <summary>התחזית המשוקללת</summary>
-        <div class="body">
-          <span class="formula">seriesAvg(f)  = mean(all polls by firm f in window)</span>
+          <span class="formula">SCORE(e)     = 0.60×bloc + 0.30×party + 0.10×consistency &nbsp;·&nbsp; SCORE = mean over elections 2020–2022</span>
+          <p class="kicker" style="margin-top:14px">התחזית המשוקללת</p>
+          <span class="formula">seriesAvg(f)  = mean(all polls by firm f in the last 8 days)</span>
           <span class="formula">w(f)          = calibrated(f) ? SCORE(f)/100 : 0.70</span>
           <span class="formula">raw(party)    = Σ seriesAvg(f).party × w(f) / Σ w(f)</span>
-          <span class="formula">shas          = max(raw.shas, 10.4)</span>
-          <span class="formula">utj           = max(raw.utj,  7.8)</span>
-          <span class="formula">donors        = likud, ozma_yehudit, zionut_datit, amcha, noam  (pro-rata)</span>
-          <span class="formula">seats         = largestRemainder(adjusted, 120)</span>
+          <span class="formula">seats         = BaderOfer(raw ≥ 3.25%, surplus agreements 2026, 120)</span>
+          <p class="kicker" style="margin-top:14px">המודל הדמוגרפי</p>
+          <span class="formula">votes2026(party) = Σ_sector votes2022(party) × mix[sector] × (1 + growth[sector])^4 × turnout2026[sector] / turnout2022[sector]</span>
+          <span class="formula">seats            = BaderOfer(passing parties ≥ 3.25%, surplus agreements, 120)</span>
         </div>
       </details>
-      <details class="math">
-        <summary>המודל הדמוגרפי (התחזית היבשה)</summary>
-        <div class="body">
-          <span class="formula">growthFactor(party) = Σ mix[sector] × (1 + growth[sector])^4 × (1 + turnoutShift[sector])</span>
-          <span class="formula">votes2026(party)    = votes2022(party) × growthFactor(party)</span>
-          <span class="formula">threshold           = 3.25% × totalValid</span>
-          <span class="formula">seats               = BaderOfer(passing parties, surplus agreements, 120)</span>
-          <p style="margin-top:10px">בדר־עופר מיושמת כאן במלואה: זוגות הסכם עודפים מטופלים כרשימה אחת בחלוקה הראשית ואז מתחלקים ביניהם בשיטת המנה הגדולה. זה מה שמאפשר למודל לשחזר את 2022 במדויק.</p>
-        </div>
-      </details>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">שקיפות</p><h2>מקורות הנתונים</h2></div></div>
-      <div class="grid g2" id="method-sources"></div>
     </section>
   </div>
 </section>
+
 
 </main>
 
@@ -834,20 +954,25 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
   <div class="wrap">
     <div>
       <div class="fbrand"><img src="assets/logo.svg?v=e893fa44" alt=""><strong>ברומטר</strong></div>
-      <p>מדד עצמאי לסקרי הבחירות בישראל. מדידה, לא ניחוש.</p>
-      <div class="srclist" id="footer-sources"></div>
+      <p>תמונת מצב עצמאית של סקרי הבחירות בישראל.</p>
+      <nav class="footer-nav" aria-label="ניווט בתחתית האתר"><a href="#/polls">כל הסקרים</a><a href="#/2022">דיוק המכונים</a><a href="#/map">בחירות 2022</a><a href="#/method">שיטת החישוב</a></nav>
+      <details class="footer-details"><summary>מקורות הנתונים</summary><div class="srclist" id="footer-sources"></div></details>
     </div>
     <div>
-      <h4>הבהרה חשובה</h4>
+      <details class="footer-details"><summary>על הנתונים, השימוש והנגישות</summary>
       <p>האתר מציג ניתוח עצמאי וחוות דעת המבוססים על נתוני צד שלישי שלא אומתו כאן באופן עצמאי. הוא אינו סקר, אינו תחזית רשמית ואינו ערובה לתוצאה כלשהי. הציונים מודדים התאמה היסטורית למתודולוגיה המוצהרת בלבד; אין בהם טענה למרמה, להטיה מכוונת או לאיכות מקצועית כוללת של מכון כלשהו. ייתכנו טעויות, חוסרים, שינויי שיטה ושינויי שיוך.</p>
       <p>שמות, סמלים וסימני מסחר מוצגים לצורכי זיהוי ומידע בלבד. איורי הרקע הם איורים וקטוריים מקוריים. כששרת המדידה פעיל נאספים ביקורים, פתיחות דפים וזמן פעילות, ללא שמות או כתובות IP. <a href="privacy.html">על מדידת השימוש</a> · <a href="analytics.html">לוח ניהול</a></p>
       <p>לפני פרסום ציבורי בתקופת בחירות מומלץ לקבל ייעוץ משפטי ישראלי פרטני ולוודא עמידה בהוראות פרסום סקרי בחירות. נוסח זה אינו ייעוץ משפטי.</p>
       <p>נגישות: האתר מותאם לניווט מקלדת, לקוראי מסך ולתצוגה במכשירים ניידים. לדיווח על טעות בנתונים יש לפנות למפעיל האתר בצירוף המקור.</p>
+      </details>
+      <p>הציונים מציגים דיוק היסטורי לפי שיטת החישוב המפורסמת באתר. התחזית אינה תוצאת בחירות.</p>
+      <p><a href="privacy.html">פרטיות ומדידת שימוש</a> · <a href="analytics.html">לוח ניהול</a></p>
     </div>
   </div>
 </footer>
 
 <dialog id="dlg"><button class="dclose" type="button" aria-label="סגירה">×</button><div id="dlg-body"></div></dialog>
 <noscript><p style="margin:20px;padding:16px;background:#B03024;color:#fff;border-radius:10px">כדי לחשב ולהציג את הנתונים יש להפעיל JavaScript בדפדפן.</p></noscript>
+
 </body>
 </html>

@@ -103,6 +103,7 @@
         "זמן ישראל"
       ],
       "about": "סוקר ללא סדרת כיול מ־2022 באתר. מקבל משקל ניטרלי.",
+      "logo": "assets/logos/zman-israel.png",
       "color": "#7A5C4B"
     },
     {
@@ -116,6 +117,7 @@
         "ערוץ 14"
       ],
       "about": "המכון של שלמה פילבר, ספק הסקרים של ערוץ 14 כיום — ממשיך הפעילות של דירקט פולס, ומקבל את ציון האמינות ההיסטורי שלה.",
+      "logo": "assets/logos/next-data.png",
       "color": "#3F6C8E"
     },
     {
@@ -198,6 +200,11 @@
     "ישראל היום": "https://upload.wikimedia.org/wikipedia/commons/7/74/Israel_Hayom.svg",
     "Mako / ערוץ הכנסת": "https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/8f/73/aa/8f73aa01-2a3a-4b2a-6bb4-9a49655345f1/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
     "103FM": "https://is1-ssl.mzstatic.com/image/thumb/Purple112/v4/e8/91/43/e89143ab-f36f-5950-bbfb-28b752680330/AppIcon-0-0-1x_U007emarketing-0-0-0-1-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png",
-    "גלי ישראל": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/bb/98/6ebb986d-64d4-59c3-7fe9-c8d705268e1e/AppIcon-galiisrael-0-0-1x_U007emarketing-0-11-0-85-220.png/1200x630wa.png"
+    "גלי ישראל": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6e/bb/98/6ebb986d-64d4-59c3-7fe9-c8d705268e1e/AppIcon-galiisrael-0-0-1x_U007emarketing-0-11-0-85-220.png/1200x630wa.png",
+    "גלי צה״ל": "assets/logos/galatz.png",
+    "גל״צ": "assets/logos/galatz.png",
+    "ערוץ 20": "assets/logos/channel-20.png",
+    "דיירקט פולס": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fdirect_polls.PNG?alt=media&token=ceb3f812-bc77-4720-af04-e1575f4cb76a",
+    "דירקט פולס": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fdirect_polls.PNG?alt=media&token=ceb3f812-bc77-4720-af04-e1575f4cb76a"
   }
 }

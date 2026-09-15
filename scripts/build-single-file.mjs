@@ -12,14 +12,19 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css")) + "\n" + (await rd("assets/home.css")) + "\n" + (await rd("assets/fit.css")) + "\n" + (await rd("assets/intro.css")) + "\n" + (await rd("assets/layout.css"));
+let css = (await rd("assets/styles.css")) + "\n" + (await rd("assets/upgrade.css")) + "\n" + (await rd("assets/home.css")) + "\n" + (await rd("assets/fit.css")) + "\n" + (await rd("assets/intro.css")) + "\n" + (await rd("assets/layout.css")) + "\n" + (await rd("assets/editorial.css")) + "\n" + (await rd("assets/experience.css")) + "\n" + (await rd("assets/pipeline.css"));
+// Imports must precede CSS rules, including imports from the final design layer.
+// Font URLs themselves contain semicolons (weight lists), so keep each whole line.
+const importLine = /^@import[^\r\n]*;/gm;
+const fontImports = [...css.matchAll(importLine)].map(match => match[0]);
+css = fontImports.join("\n") + "\n" + css.replace(importLine, "");
 for (const motif of ['polls','community','growth','ballot']) {
   const file = `background-${motif}.svg`;
   css = css.replaceAll(file, 'data:image/svg+xml;base64,' + Buffer.from(await rd('assets/'+file)).toString('base64'));
 }
-const js = (await rd("assets/scenario.js")) + "\n" + (await rd("assets/upgrade.js")) + "\n" + (await rd("assets/analytics.js")) + "\n" + (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js")) + "\n" + (await rd("assets/intro.js"));
+const js = (await rd("assets/scenario.js")) + "\n" + (await rd("assets/upgrade.js")) + "\n" + (await rd("assets/analytics.js")) + "\n" + (await rd("assets/explore.js")) + "\n" + (await rd("assets/app.js")) + "\n" + (await rd("assets/intro.js")) + "\n" + (await rd("assets/pipeline.js"));
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
-const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/forecast-history.json"];
+const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 
@@ -47,6 +52,7 @@ const logo = (await rd("assets/logo.svg")).replace(/\s+/g, " ").trim();
 const logoDataUri = "data:image/svg+xml;utf8," + encodeURIComponent(logo);
 
 const inlineData = `<script>window.__BAROMETER_DATA__=${JSON.stringify(data).replace(/</g, "\\u003c")};<\/script>`;
+const leafletTags = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"><\/script>`;
 const styleTag = `<style>\n${css}\n</style>`;
 const scriptTag = `<script>\n${js}\n<\/script>`;
 
@@ -62,6 +68,7 @@ const fontLink = `<link rel="stylesheet" href="https://fonts.googleapis.com/css2
 const artifact = `<title>${title}</title>
 <meta name="description" content="ברומטר — ניתוח עצמאי של סקרי הבחירות בישראל.">
 ${fontLink}
+${leafletTags}
 ${styleTag}
 <div dir="rtl" lang="he" id="barometer-root">
 ${body}
@@ -75,6 +82,7 @@ const standalone = `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${fullTitle}</title>
 <link rel="icon" href="${logoDataUri}">
+${leafletTags}
 ${styleTag}
 </head><body>
 ${body}

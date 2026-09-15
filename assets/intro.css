@@ -134,13 +134,13 @@ html.show-open { overflow:hidden }
 /* 3. ראשי הרשימות */
 .sc-leaders { top:auto; height:118px; display:flex; justify-content:center; align-items:flex-end; gap:10px }
 #show[data-phase="2"] .sc-leaders, #show[data-phase="3"] .sc-leaders { opacity:1 }
-.lead { display:grid; justify-items:center; gap:2px; width:74px; opacity:0; transform:translateY(30px) }
+#show .lead { display:grid; justify-items:center; gap:2px; width:74px; opacity:0; transform:translateY(30px) }
 #show[data-phase="2"] .lead, #show[data-phase="3"] .lead { animation:lead-in .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--i) * 90ms) }
 @keyframes lead-in { to { opacity:1; transform:none } }
-.lead-photo { width:64px; height:64px; border-radius:50%; overflow:hidden; background:linear-gradient(120deg,#e4eaf0,#f8f7f3); border:3px solid var(--c); box-shadow:var(--shadow-s) }
-.lead-photo img { width:100%; height:100%; object-fit:cover; object-position:center 15% }
-.lead b { font-family:var(--serif); font-size:1.2rem; line-height:1; color:var(--c) }
-.lead-name { font-size:.68rem; font-weight:700; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:74px }
+#show .lead-photo { width:64px; height:64px; border-radius:50%; overflow:hidden; background:linear-gradient(120deg,#e4eaf0,#f8f7f3); border:3px solid var(--c); box-shadow:var(--shadow-s) }
+#show .lead-photo img { width:100%; height:100%; object-fit:cover; object-position:center 15% }
+#show .lead b { font-family:var(--serif); font-size:1.2rem; line-height:1; color:var(--c) }
+#show .lead-name { font-size:.68rem; font-weight:700; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:74px }
 
 /* 4. תמונת המצב */
 .sc-final { inset:auto 0 0 0; height:0; overflow:visible }
@@ -177,7 +177,7 @@ html.show-open { overflow:hidden }
   .env { width:150px; margin-left:-75px }
   .ballot-big { width:130px }
   .sc-leaders { height:96px; gap:4px; flex-wrap:wrap; align-content:flex-end }
-  .lead { width:56px } .lead-photo { width:46px; height:46px } .lead b { font-size:1rem } .lead-name { max-width:56px; font-size:.6rem }
+  #show .lead { width:56px } #show .lead-photo { width:46px; height:46px } #show .lead b { font-size:1rem } #show .lead-name { max-width:56px; font-size:.6rem }
   .fin { width:56px; height:56px; font-size:32px; bottom:auto; top:0; border-radius:14px }
   .signal-bottom { gap:12px; align-items:flex-start }
   .signal-steps { display:grid; grid-template-columns:1fr 1fr; gap:6px }

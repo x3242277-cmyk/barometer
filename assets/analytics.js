@@ -1,7 +1,7 @@
 /* Anonymous visit metrics. No IP, referrer, party selection or persistent visitor identifier. */
 (() => {
   if(typeof window==='undefined'||location.protocol==='file:')return;
-  const pages=new Set(['home','polls','2022','haredi','regions','demography','method','live','results']);
+  const pages=new Set(['home','polls','2022','map','haredi','regions','demography','method','live','results','crossover']);
   const current=()=>{const p=location.hash.replace(/^#\/?/,'')||'home';return pages.has(p)?p:'home';};
   const endpoint='/api/analytics/event';
   let enabled=false, page=current(), view=crypto.randomUUID(), seq=0, seconds=0, last=performance.now(), activity=last;

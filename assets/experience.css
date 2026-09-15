@@ -1,0 +1,136 @@
+/* Clear, source-led working surfaces. */
+
+/* ---------- לוח המנדטים: שתי עמודות גוש, דיוקנאות גדולים ---------- */
+#view-home .board{display:block}
+.wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
+.wall .bloc{padding:18px 20px 10px;background:#fff;border:1px solid var(--rule);border-top:5px solid var(--bc);border-radius:18px}
+.wall .bloc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:0 0 12px;margin-bottom:6px;border-bottom:1px solid var(--rule-2)}
+.wall .bloc-head .kicker{margin:0 0 2px;color:var(--bc)}
+.wall .bloc-head h3{margin:0;font-size:.95rem;color:var(--ink-3);font-weight:600}
+.wall .tally{font-size:2.6rem;font-weight:900;line-height:1;color:var(--bc);letter-spacing:-.03em}
+.wall-rows{display:grid}
+#view-home .wall .hcard{display:grid;grid-template-columns:64px minmax(0,1fr) 72px;align-items:center;gap:16px;width:100%;min-width:0;padding:12px 0;border:0;border-bottom:1px solid var(--rule-2);border-radius:0;background:none;box-shadow:none;text-align:start;cursor:pointer;transition:background .15s}
+#view-home .wall .hcard:last-child{border-bottom:0}
+#view-home .wall .hcard:hover{background:var(--paper)}
+#view-home .wall .hcard-photo{display:block;width:64px;height:80px;border-radius:12px;overflow:hidden;background:var(--paper-3);border:1px solid var(--rule-2)}
+#view-home .wall .hcard-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
+#view-home .wall .hcard-body{display:grid;gap:4px;padding:0;min-width:0;text-align:start}
+#view-home .wall .hcard-name{font-size:1.02rem;font-weight:800;line-height:1.3;white-space:normal;letter-spacing:-.01em}
+#view-home .wall .hcard-leader{font-size:.78rem;color:var(--ink-3);line-height:1.4;white-space:normal}
+#view-home .wall .hcard-track{display:block;height:7px;margin-top:4px;border-radius:4px;background:var(--rule-2);overflow:hidden}
+#view-home .wall .hcard-track>span{display:block;height:100%;background:var(--bc);border-radius:4px}
+#view-home .wall .hcard-seatline{display:grid;justify-items:end;gap:2px;padding:0;min-height:0}
+#view-home .wall .hcard-seat{font-size:2.3rem;font-weight:900;line-height:1;color:var(--bc);letter-spacing:-.03em}
+#view-home .wall .hcard-delta{font-size:.7rem}
+#view-home .wall .hcard-pct{font-size:.7rem;color:var(--ink-3)}
+#view-home .wall .is-below{opacity:.7}
+#view-home .wall .is-below .hcard-seat{color:var(--ink-3)}
+@media(max-width:900px){.wall{grid-template-columns:1fr;gap:16px}}
+@media(max-width:520px){#view-home .wall .hcard{grid-template-columns:52px minmax(0,1fr) 56px;gap:12px}#view-home .wall .hcard-photo{width:52px;height:64px}#view-home .wall .hcard-seat{font-size:1.9rem}}
+@media print{.wall{display:none!important}}
+
+/* ---------- הפתיח: פנים, כפתור ההצגה ורקע נתונים ---------- */
+.hero-faces{display:flex;margin:18px 0 0;padding-inline-start:10px}
+.hero-faces .face{display:block;width:52px;height:52px;margin-inline-start:-10px;border-radius:50%;overflow:hidden;border:3px solid #fff;background:var(--paper-3);box-shadow:0 0 0 2px var(--bc);transition:transform .15s}
+.hero-faces .face:hover{transform:translateY(-4px) scale(1.06);z-index:2;position:relative}
+.hero-faces .face img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:18px}
+.show-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:100px;background:var(--navy);color:#fff;font-weight:800;box-shadow:0 8px 24px #1023462E}
+.show-btn .play{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#FFAB4B;color:#0E1B33;font-size:.7rem}
+.show-btn:hover{background:var(--accent)}
+.election-visual{overflow:hidden}
+.election-visual::before{content:"";position:absolute;inset:auto -10% -18% -10%;height:55%;pointer-events:none;opacity:.55;
+  background:
+    linear-gradient(to top, rgba(49,85,245,.10), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(16,35,70,.08) 0 3px, transparent 3px 22px);
+  mask-image:linear-gradient(to top, #000 20%, transparent 100%);-webkit-mask-image:linear-gradient(to top, #000 20%, transparent 100%)}
+
+/* ---------- מפת המנדטים ---------- */
+#view-home .election-visual .readout{display:none}
+.seatmap{display:grid;gap:10px}
+.sm-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.sm-bloc{display:grid;gap:2px}
+.sm-bloc.left{text-align:left;justify-items:end}
+.sm-bloc.mid{text-align:center;justify-items:center}
+.sm-bloc b{font-size:2rem;font-weight:800;line-height:1;letter-spacing:-.03em}
+.sm-bloc.right b{color:#17457F}.sm-bloc.left b{color:#C0392B}.sm-bloc.mid b{color:#6B7684;font-size:1.5rem}
+.sm-bloc span{font-size:.72rem;font-weight:700;color:var(--ink-3)}
+.sm-bar{position:relative;display:flex;height:8px;border-radius:5px;overflow:visible;background:var(--rule-2)}
+.sm-bar span{display:block;height:100%}
+.sm-bar span:first-child{border-start-start-radius:5px;border-end-start-radius:5px}.sm-bar span:last-of-type{border-start-end-radius:5px;border-end-end-radius:5px}
+.sm-bar.thin{height:10px;flex:1}
+.sm-61{position:absolute;top:-4px;bottom:-4px;width:2px;background:#102346;box-shadow:0 0 0 1px #fff}
+.seatmap svg{display:block;width:100%;height:auto}
+.seatmap .seat{transition:opacity .15s}
+.seatmap svg:hover .seat{opacity:.35}.seatmap svg .seat:hover{opacity:1}
+.seatmap .hemicycle-total{font-size:44px;font-weight:800;fill:var(--ink);letter-spacing:-.03em}
+.seatmap .hemicycle-caption{font-size:13px;font-weight:700;fill:var(--ink-3)}
+.sm-parties{display:flex;justify-content:space-between;gap:14px;padding-top:2px}
+.sm-side{display:flex;gap:14px;flex-wrap:wrap;align-content:flex-start}
+.sm-side:last-child{justify-content:flex-end}
+.sm-side.mid{justify-content:center;padding:0 10px;border-inline:1px solid var(--rule-2)}
+.sm-party{display:grid;justify-items:center;gap:3px;min-width:52px}
+.sm-party b{font-size:1.05rem;font-weight:800;line-height:1;color:var(--ink)}
+.sm-swatch{display:block;width:100%;height:4px;border-radius:2px;background:var(--c)}
+.sm-name{font-size:.66rem;font-weight:700;color:var(--ink-2);text-align:center;line-height:1.2;max-width:72px}
+.sm-party small{font-size:.64rem;font-weight:700;color:var(--ink-3);min-height:.9em}
+.sm-party small.up{color:#1F6349}.sm-party small.down{color:#8E241A}
+.sm-votes{display:grid;gap:6px;padding-top:10px;border-top:1px solid var(--rule-2)}
+.sm-votes-head{font-size:.72rem;font-weight:700;color:var(--ink-3)}
+.sm-votes-row{display:flex;align-items:center;gap:10px}
+.sm-votes-row b{font-size:1.05rem;font-weight:800;min-width:52px;text-align:center}
+.sm-votes-mid{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.7rem;font-weight:700;color:var(--ink-3)}
+.sm-votes-mid i{display:inline-block;width:10px;height:10px;border-radius:3px}
+@media(max-width:560px){.sm-bloc b{font-size:1.5rem}.sm-party{min-width:44px}.sm-name{max-width:60px}}
+/* עמודה אמצעית בלוח המנדטים לרשימות שאינן משויכות לגוש */
+.wall .bloc-mid{display:none}
+.wall.has-mid{grid-template-columns:1fr .72fr 1fr}
+.wall.has-mid .bloc-mid{display:block}
+@media(max-width:900px){.wall.has-mid{grid-template-columns:1fr}}
+
+/* ---------- לוח המנדטים: פוסטר לפי גודל (בסגנון גרפיקת הסקרים בטלוויזיה) ---------- */
+.wall-toggle{display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:var(--paper-3);border:1px solid var(--rule-2)}
+.wall-toggle button{padding:6px 12px;border:0;border-radius:8px;background:transparent;color:var(--ink-3);font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.wall-toggle button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(16,35,70,.12)}
+.wall-poster{display:none;padding:20px 20px 16px;background:#fff;border:1px solid var(--rule);border-radius:18px}
+.board.layout-size .wall-poster{display:block}
+.board.layout-size .wall{display:none}
+.ptiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:18px 12px}
+.ptile{display:grid;justify-items:center;align-content:start;gap:3px;padding:0;border:0;background:none;cursor:pointer;text-align:center;font:inherit;color:var(--ink)}
+.ptile-photo{display:block;width:100%;aspect-ratio:4/5;border-radius:10px;overflow:hidden;border:1px solid var(--rule-2);background:var(--paper-3)}
+.ptile-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
+.ptile-num{margin-top:-20px;min-width:58px;padding:5px 10px;border-radius:8px;background:var(--c);color:#fff;font-size:1.55rem;font-weight:800;line-height:1;letter-spacing:-.02em;box-shadow:0 0 0 3px #fff}
+.ptile-name{font-weight:800;font-size:.84rem;line-height:1.2;margin-top:2px}
+.ptile-leader{font-size:.7rem;color:var(--ink-3);line-height:1.2}
+.ptile-delta{font-size:.68rem;font-weight:700;color:var(--ink-3)}
+.ptile-delta.up{color:#1F6349}.ptile-delta.down{color:#8E241A}
+.ptile.is-below{opacity:.75}
+.ptile.is-below .ptile-num{background:#6B7684;font-size:1rem;padding:8px 10px}
+.ptile:hover .ptile-photo{border-color:var(--c)}
+.pstrip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid var(--rule-2)}
+.pstrip-lbl{font-weight:800;font-size:.9rem;margin-inline-end:4px}
+.pgroup{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;background:var(--paper);border-inline-start:5px solid var(--c);font-weight:700;font-size:.84rem}
+.pgroup b{font-size:1.3rem;line-height:1;color:var(--c)}
+.pstrip-note{margin-inline-start:auto;font-size:.76rem;color:var(--ink-3)}
+@media(max-width:520px){.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 8px}.ptile-num{font-size:1.25rem;min-width:48px}.wall-poster{padding:14px}}
+@media print{.wall-poster,.wall-toggle{display:none!important}}
+
+/* Large originals keep the engraved portraits legible, including on mobile. */
+.ptiles{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px 16px}
+.ptile-photo{border-radius:12px}
+.ptile-name{font-size:.95rem}.ptile-leader{font-size:.8rem}
+.mandate-estimate{margin:20px 0 28px;padding:24px;background:#edf2f7;border:1px solid #cbd6e3;border-radius:16px;color:var(--ink)}
+.mandate-estimate h4{font-size:clamp(1.5rem,3vw,2rem);margin:8px 0 16px;line-height:1.25}
+.mandate-estimate p{line-height:1.7;max-width:78ch}
+.mandate-estimate .slider{margin:20px 0}
+@media(max-width:520px){.ptiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}.mandate-estimate{padding:18px}.mandate-estimate .slider span{flex-wrap:wrap}}
+
+/* Large originals keep the engraved portraits legible, including on mobile. */
+.ptiles{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px 16px}
+.ptile-photo{border-radius:12px}
+.ptile-name{font-size:.95rem}.ptile-leader{font-size:.8rem}
+.mandate-estimate{margin:20px 0 28px;padding:24px;background:#edf2f7;border:1px solid #cbd6e3;border-radius:16px;color:var(--ink)}
+.mandate-estimate h4{font-size:clamp(1.5rem,3vw,2rem);margin:8px 0 16px;line-height:1.25}
+.mandate-estimate p{line-height:1.7;max-width:78ch}
+.mandate-estimate .slider{margin:20px 0}
+@media(max-width:520px){.ptiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}.mandate-estimate{padding:18px}.mandate-estimate .slider span{flex-wrap:wrap}}

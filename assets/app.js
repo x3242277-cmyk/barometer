@@ -30,11 +30,15 @@ const HIST_PARTY_HE = {
   likud:"הליכוד", yesh_atid:"יש עתיד", national_unity:"המחנה הממלכתי", shas:"ש״ס", labor:"העבודה",
   utj:"יהדות התורה", yisrael_beiteinu:"ישראל ביתנו", religious_zionism:"הציונות הדתית",
   hadash_taal:"חד״ש–תע״ל", meretz:"מרצ", raam:"רע״מ",
-  /* הכנסת ה־24 — מזהי המפלגות שונים, ולכן הם נפרדים */
-  yeshatid:"יש עתיד", saar:"תקווה חדשה", yamina:"ימינה", reshima:"הרשימה המשותפת",
-  ndi:"ישראל ביתנו", yahadut:"יהדות התורה", haavoda:"העבודה", kahollavan:"כחול לבן",
-  zionut_datit:"הציונות הדתית", zelica:"הכלכלית"
+  /* הכנסת ה־22–24 (מוויקיפדיה העברית) */
+  yamina:"ימינה", new_hope:"תקווה חדשה", joint_list:"הרשימה המשותפת", blue_white:"כחול לבן",
+  otzma:"עוצמה יהודית", labor_gesher_meretz:"העבודה–גשר–מרצ"
 };
+/* דרגת אמינות לפי הציון המשוקלל של כל המערכות */
+/* מכונים שמופיעים בארכיון הכיול אך אינם רשומים ב-pollsters.json */
+const FIRM_HE_FALLBACK = {};
+const GRADES = [["high", "אמינות גבוהה", 80], ["mid", "אמינות טובה", 75], ["low", "אמינות בינונית", -1]];
+const gradeOf = score => { const g = GRADES.find(([, , min]) => score >= min); return { key: g[0], label: g[1] }; };
 const COUNTERFACTUAL = { likud:31, yesh_atid:23, national_unity:12, shas:11, labor:5, utj:7,
   yisrael_beiteinu:5, religious_zionism:13, hadash_taal:4, meretz:4, raam:5 };
 /* כלל התצוגה: כל סקרי שנת הבחירות, אך לכל היותר MAX_PER_OUTLET האחרונים לכל
@@ -53,7 +57,7 @@ const ELECTION_TIMELINE = {
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"scenario", scen:"actual",
             homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"cards", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
-            calibrations:[], elections:[], calibYear:2022, leaders:{}, anecTimer:null };
+            calibrations:[], elections:[], calibKey:"2022", leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */
 function hemicycleLayout(total, rows = 4) {
@@ -145,7 +149,7 @@ function largestRemainder(values, target = 120) {
 function baderOfer(votes, pairs, seats = 120) {
   const groups = {}, member = {}, used = new Set();
   pairs.forEach(([a, b], i) => {
-    if (votes[a] == null || votes[b] == null) return;
+    if (votes[a] == null || votes[b] == null || used.has(a) || used.has(b)) return;
     groups["g" + i] = votes[a] + votes[b]; member["g" + i] = [a, b]; used.add(a); used.add(b);
   });
   Object.keys(votes).forEach(k => { if (!used.has(k)) { groups[k] = votes[k]; member[k] = [k]; } });
@@ -165,6 +169,31 @@ function baderOfer(votes, pairs, seats = 120) {
     else Object.assign(final, dhondt({ [ms[0]]: votes[ms[0]], [ms[1]]: votes[ms[1]] }, s));
   });
   return final;
+}
+
+/* כללי הבחירות שמופעלים על התחזית בשלב האחרון: אחוז החסימה, 120 מנדטים
+   בשיטת באדר-עופר, והסכמי העודפים. ההסכמים ל־2026 טרם נחתמו — עד הגשת
+   הרשימות מניחים את הזוגות שחזרו על עצמם במערכות האחרונות. */
+const ELECTION_RULES = {
+  threshold: 0.0325, seats: 120,
+  surplusAgreements: [["likud", "zionut_datit"], ["shas", "yahadut_hatora"], ["raam", "hadash_taal"]],
+  agreementsStatus: "הנחה עד הגשת הרשימות — הזוגות שחתמו לקראת בחירות 2022; הסכם חדש יתווסף כשייחתם"
+};
+/* values = אומדני מנדטים (או קולות) לכל רשימה; ההקצאה אינה תלויה בסולם.
+   רשימה מתחת לאחוז החסימה מושמטת וקולותיה לא נספרים; השאר — באדר-עופר. */
+function allocateSeats(values, total = ELECTION_RULES.seats) {
+  const votes = Object.fromEntries(Object.entries(values).filter(([, v]) => Number.isFinite(v) && v > 0.001));
+  const sum = Object.values(votes).reduce((a, b) => a + b, 0);
+  if (!sum) return {};
+  const passing = Object.fromEntries(Object.entries(votes).filter(([, v]) => v / sum >= ELECTION_RULES.threshold));
+  if (!Object.keys(passing).length) return {};
+  const pairs = ELECTION_RULES.surplusAgreements.filter(([a, b]) => passing[a] != null && passing[b] != null);
+  return baderOfer(passing, pairs, total);
+}
+/* ההסכמים שבאמת פועלים בתחזית הנוכחית (שני הצדדים עוברים את הסף) */
+function activeAgreements(values) {
+  const ids = new Set(Object.keys(values || {}));
+  return ELECTION_RULES.surplusAgreements.filter(([a, b]) => ids.has(a) && ids.has(b));
 }
 
 /* ============================================================
@@ -217,9 +246,9 @@ function scoreFirms(data, actual = data.actual) {
    הציון שלה, ומסומן ככזה. */
 function combineCalibrations(elections) {
   const byFirm = new Map();
-  elections.forEach(({ year, election, stats }) => stats.forEach(st => {
+  elections.forEach(({ year, key, short, election, stats }) => stats.forEach(st => {
     if (!byFirm.has(st.firm)) byFirm.set(st.firm, []);
-    byFirm.get(st.firm).push({ year, election, ...st });
+    byFirm.get(st.firm).push({ year, key, short, election, ...st });
   }));
   return [...byFirm.entries()].map(([firm, runs]) => {
     const mean = k => avg(runs.map(r => r[k]));
@@ -274,6 +303,10 @@ const humanUpdate = iso => {
    רע״ם נספרת בגוש השמאל; המפלגות החרדיות נספרות בגוש הימין. הפילוח הפנימי
    של גוש הימין נשאר רק במודל הדמוגרפי, שם הוא נגזר מ-HAREDI_PARTIES. */
 const ALIGN_OVERRIDE = { ofer_vinter_party: "Right", noam: "Right", raam: "Left", bait_zioni: "Left" };
+/* צבע לפי משפחת המפלגה, לא לפי הגוש: רע״מ היא מפלגה ערבית (ירוק) שנספרת בגוש
+   המרכז־שמאל לצורך חשבון הקואליציה. */
+const PARTY_COLOR_OVERRIDE = { raam: BLOCS.Arabs.color };
+const partyColor = (id, alignment) => PARTY_COLOR_OVERRIDE[normId(id)] || (BLOCS[alignment] ? BLOCS[alignment].color : "#64707C");
 function alignOf(party = {}) {
   const id = normId(party.id || "");
   if (HAREDI_PARTIES.has(id)) return "Right";
@@ -387,10 +420,23 @@ function forecast(mode, exclude) {
     if (blocs[al] != null) blocs[al] = Math.max(0, blocs[al] - (rawFull[id] || 0));
   });
   if (mode === 'scenario') {
-    const scenario = scenarioForecast(raw, S.scenarioOptions);
+    /* שלב 5: המודל הדמוגרפי מאשר או מתקן את ההנחה הדמוגרפית — אם ההנחה רחוקה
+       מאומדן המודל ביותר ממנדט אחד, התחזית משתמשת באומדן המודל במקומה. */
+    const opts = { ...(S.scenarioOptions || {}) };
+    const want = opts.demographic ?? 2, model = demoDriftSeats();
+    if (model != null && Math.abs(model - want) > DEMO_TOLERANCE) { opts.demographic = Math.round(model * 4) / 4; opts.demographicCorrected = { from: want, model, to: opts.demographic }; }
+    const scenario = scenarioForecast(raw, opts);
     return { raw, rawFull, parties: scenario.parties, blocs, fix, scenario, below: belowShare };
   }
   return { raw, rawFull, parties: fix.parties, blocs, fix, below: belowShare };
+}
+
+/* אומדן המודל הדמוגרפי (בלי סקרים) לשינוי כוח הימין והחרדים עד 2026, במנדטים */
+const DEMO_TOLERANCE = 1;
+function demoDriftSeats() {
+  if (!S.demo) return null;
+  const m0 = runDemoModel(0), m1 = runDemoModel(S.demo.meta.years), sh = (m, c) => 100 * (m.campVotes[c] || 0) / m.campTotal;
+  return ((sh(m1, "right") + sh(m1, "haredi")) - (sh(m0, "right") + sh(m0, "haredi"))) / 100 * 120;
 }
 
 function partyMeta(id) {
@@ -491,25 +537,88 @@ function homeDelta(id) {
   return { cls: d > 0 ? "up" : "down", txt: `${d > 0 ? "▲" : "▼"} ${Math.abs(d)}`, prev: Math.round(prev) };
 }
 
-function homeCard(id, seats, est) {
+function homeCard(id, seats, est, maxSeats = 30) {
   const m = partyMeta(id);
-  const color = BLOCS[m.alignment] ? BLOCS[m.alignment].color : "#64707C";
+  const color = partyColor(id, m.alignment);
   const photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
   const leader = PARTY_LEADER[normId(id)] || "";
   const belowPct = est.below && est.below[id];
   const isBelow = seats[id] == null && belowPct != null;
   const d = isBelow ? null : homeDelta(id);
+  const n = isBelow ? 0 : (seats[id] || 0);
   const aria = isBelow
     ? `${m.name}, מתחת לאחוז החסימה, כ־${r1(belowPct)}%`
-    : `${m.name}, ${seats[id] || 0} מנדטים${d ? `, ${d.cls === "up" ? "עלייה" : "ירידה"} של ${Math.abs(seats[id] - d.prev)} מהעדכון הקודם` : ""}`;
+    : `${m.name}, ${n} מנדטים${d ? `, ${d.cls === "up" ? "עלייה" : "ירידה"} של ${Math.abs(n - d.prev)} מהעדכון הקודם` : ""}`;
   return `<button type="button" class="hcard${isBelow ? " is-below" : ""}" style="--bc:${color}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
-    <span class="hcard-photo"><img src="${esc(photo)}" alt="" width="720" height="900" onerror="this.onerror=null;this.src='${LEADER_PLACEHOLDER}'"></span>
+    <span class="hcard-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "64px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
     <span class="hcard-body">
-      <span class="hcard-seatline"><span class="hcard-seat num">${isBelow ? 0 : (seats[id] || 0)}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}${isBelow ? `<span class="hcard-pct num" title="מתחת לאחוז החסימה">${r1(belowPct)}%</span>` : ""}</span>
       <span class="hcard-name">${esc(m.name)}</span>
       ${leader ? `<span class="hcard-leader">${esc(leader)}</span>` : ""}
+      <span class="hcard-track" aria-hidden="true"><span style="width:${isBelow ? 0 : Math.max(4, 100 * n / maxSeats)}%"></span></span>
     </span>
+    <span class="hcard-seatline"><span class="hcard-seat num">${n}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}${isBelow ? `<span class="hcard-pct num" title="מתחת לאחוז החסימה">${r1(belowPct)}%</span>` : ""}</span>
   </button>`;
+}
+
+/* Presentation only: the same rounded mandate totals used in the party rows. */
+/* צבע לכל מפלגה — ארבע משפחות בלבד: גוני כחול לימין, שחור/אפור־כהה לחרדים,
+   גוני אדום למרכז־שמאל, גוני ירוק לרשימות הערביות; אפור לרשימה שאינה משויכת. */
+const PARTY_COLORS = {
+  likud:"#1F4E8C", zionut_datit:"#0C2E5C", ozma_yehudit:"#3E5F8F", noam:"#6B84A8", ofer_vinter_party:"#8FA5C2", shas:"#1B1D21", yahadut_hatora:"#4A4F57",
+  hademokratim:"#8E1F17", yashar:"#B5362B", beyahad:"#C9584A", ndi:"#D97A6C", kahollavan:"#E39C90", bait_zioni:"#A8433A", hendel_zeliha_party:"#8A939C",
+  reshima_meshutefet:"#1F5A3F", hadash_taal:"#1F5A3F", raam:"#3F8A5E"
+};
+/* סדר על הקשת, מימין לשמאל: הימין והחרדים בקצה הימני, באמצע הרשימות שאינן
+   משויכות (אפור) והרשימות הערביות (ירוק), המרכז־שמאל בקצה השמאלי. */
+const SPECTRUM = ["ozma_yehudit", "noam", "zionut_datit", "likud", "ofer_vinter_party", "shas", "yahadut_hatora", "hendel_zeliha_party", "reshima_meshutefet", "hadash_taal", "raam", "ndi", "kahollavan", "bait_zioni", "yashar", "beyahad", "hademokratim"];
+const partyHue = id => PARTY_COLORS[normId(id)] || partyColor(id, partyMeta(id).alignment);
+/* צד בלוח המנדטים (לפי גוש): רע״מ נספרת במרכז־שמאל */
+const sideOf = id => { const al = partyMeta(id).alignment; return al === "Right" ? "right" : al === "Unknown" ? "mid" : "left"; };
+/* צד על הקשת (לפי משפחה): הרשימות הערביות — כולל רע״מ — והלא־משויכות באמצע */
+const ARAB_FAMILY = new Set(["raam", "hadash_taal", "reshima_meshutefet", "balad"]);
+const arcSideOf = id => { const al = partyMeta(id).alignment; return al === "Right" ? "right" : (al === "Unknown" || al === "Arabs" || ARAB_FAMILY.has(normId(id))) ? "mid" : "left"; };
+
+/* מפת המנדטים: קשת צפופה צבועה לפי מפלגה, סכומי הגושים מעל (רשימה שאינה
+   משויכת לגוש — באמצע), שורת המפלגות מתחת (מנדטים · שם · שינוי מהעדכון הקודם),
+   ופס שיעור הקולות. */
+function renderHomeHemicycle(seats, blocTot, est) {
+  const box = $("#home-hemicycle");
+  if (!box) return;
+  const ids = Object.keys(seats).filter(id => seats[id] > 0);
+  const rank = id => { const i = SPECTRUM.indexOf(normId(id)); if (i >= 0) return i; const sd = arcSideOf(id); return (sd === "right" ? 4 : sd === "mid" ? 9 : 13) + .5; };
+  ids.sort((a, b) => rank(a) - rank(b));
+  const items = ids.map(id => ({ key: id, color: partyHue(id), count: seats[id], label: `${partyMeta(id).name}: ${seats[id]}` }));
+  const R = blocTot.Right || 0, U = blocTot.Unknown || 0, LA = (blocTot.Left || 0) + (blocTot.Arabs || 0), total = R + U + LA;
+  const side = { right: ids.filter(id => arcSideOf(id) === "right"), mid: ids.filter(id => arcSideOf(id) === "mid"), left: ids.filter(id => arcSideOf(id) === "left") };
+  /* שיעור הקולות המשוער: אומדני התחזית (אחרי ההנחות) + הרשימות שמתחת לסף מהממוצע
+     הגולמי. ההבדל מחלוקת המנדטים הוא בדיוק הקולות שאובדים מתחת לאחוז החסימה. */
+  const parties = est?.parties || {}, rawFull = est?.rawFull || {};
+  const belowIds = Object.keys(rawFull).filter(id => parties[id] == null && rawFull[id] > 0);
+  const votes = { ...Object.fromEntries(belowIds.map(id => [id, rawFull[id]])), ...parties };
+  const sumV = Object.values(votes).reduce((t, v) => t + v, 0) || 1;
+  const shareOf = pred => 100 * Object.entries(votes).filter(([id]) => pred(sideOf(id))).reduce((t, [, v]) => t + v, 0) / sumV;
+  const shR = shareOf(sd => sd === "right"), shU = shareOf(sd => sd === "mid"), shL = shareOf(sd => sd === "left");
+  const wasted = belowIds.filter(id => 100 * rawFull[id] / sumV >= 0.5).sort((a, b) => rawFull[b] - rawFull[a]).map(id => `${partyMeta(id).name} ${r1(100 * rawFull[id] / sumV)}%`);
+  const rows = 5, pts = hemicycleLayout(total, rows);
+  const W = 640, H = 330, cx = W / 2, cy = H - 14, Rr = 300;
+  const seq = []; items.forEach(it => { for (let k = 0; k < it.count; k++) seq.push(it); });
+  const dots = pts.map((p, idx) => { const it = seq[idx] || { color: "#D9DFE9", label: "" }; const x = cx + Math.cos(p.ang) * Rr * p.r, y = cy - Math.sin(p.ang) * Rr * p.r;
+    return `<circle class="seat" data-k="${esc(it.key || "")}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" fill="${it.color}"><title>${esc(it.label)}</title></circle>`; }).join("");
+  const partyRow = list => list.map(id => { const d = homeDelta(id); return `<div class="sm-party" style="--c:${partyHue(id)}" title="${esc(partyMeta(id).name)}"><b class="num">${seats[id]}</b><i class="sm-swatch"></i><span class="sm-name">${esc(partyMeta(id).name)}</span><small class="${d ? d.cls : ""}">${d ? `${d.txt.startsWith("▲") ? "+" : "−"}${Math.abs(seats[id] - d.prev)}` : ""}</small></div>`; }).join("");
+  const midTop = U ? `<div class="sm-bloc mid"><b class="num">${U}</b><span>לא משויכות לגוש</span></div>` : "";
+  const midBar = U ? `<span style="width:${100 * U / total}%;background:${BLOCS.Unknown.color}"></span>` : "";
+  box.innerHTML = `<div class="seatmap">
+    <div class="sm-top"><div class="sm-bloc right"><b class="num">${R}</b><span>גוש הימין והחרדים</span></div>${midTop}<div class="sm-bloc left"><b class="num">${LA}</b><span>מרכז־שמאל והרשימות הערביות</span></div></div>
+    <div class="sm-bar" role="img" aria-label="גוש הימין ${R}${U ? `, לא משויכות ${U}` : ""}, מרכז־שמאל והרשימות הערביות ${LA}"><span style="width:${100 * R / total}%;background:${BLOCS.Right.color}"></span>${midBar}<span style="width:${100 * LA / total}%;background:${BLOCS.Left.color}"></span><i class="sm-61" style="inset-inline-start:${100 * 61 / 120}%" title="61 — רוב"></i><i class="sm-61 end" style="inset-inline-end:${100 * 61 / 120}%"></i></div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`חלוקת ${total} המנדטים. ${items.map(i => i.label).join("; ")}`)}">${dots}
+      <text x="${cx}" y="${cy - 38}" text-anchor="middle" class="hemicycle-total">${total}</text><text x="${cx}" y="${cy - 12}" text-anchor="middle" class="hemicycle-caption">מנדטים</text></svg>
+    <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>
+    <div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער לכל גוש · כולל רשימות שמתחת לאחוז החסימה, שקולותיהן אובדים${wasted.length ? ` (${esc(wasted.join(", "))})` : ""}</span></div>
+      <div class="sm-votes-row"><b class="num">${r1(shR)}%</b><div class="sm-bar thin"><span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shU > 0.05 ? `<span style="width:${shU}%;background:${BLOCS.Unknown.color}" title="לא משויכות ${r1(shU)}%"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span></div><b class="num">${r1(shL)}%</b></div>
+      ${shU > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Unknown.color}"></i>${r1(shU)}% לרשימות שאינן משויכות לגוש${side.mid.filter(id => partyMeta(id).alignment === "Unknown").length ? "" : " (מתחת לאחוז החסימה)"}</div>` : ""}</div>
+  </div>`;
+  const modeLabel = $("#home-model-label");
+  if (modeLabel) modeLabel.textContent = S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר";
 }
 
 function buildHomePrintSheet(est, seats, blocTot) {
@@ -550,7 +659,7 @@ function renderHome() {
   const snapshot = S.homeHistory === 'current' ? null : history.find(s => s.updatedAt === S.homeHistory);
   const snapshotSeats = snapshot?.[S.mode === 'weighted' ? 'weighted' : 'scenario'];
   const est = snapshotSeats ? { parties:{...snapshotSeats}, rawFull:{...snapshotSeats}, below:{} } : forecast(S.mode, HIDE_FROM_HOME);
-  const seats = snapshotSeats ? {...snapshotSeats} : largestRemainder(est.parties);
+  const seats = snapshotSeats ? {...snapshotSeats} : allocateSeats(est.parties);
   const belowEntries = Object.entries(est.below || {});
   $('#home-eyebrow').textContent = snapshot
     ? `תחזית ארכיון · ${heDate(snapshot.updatedAt)} · ${snapshot.polls || '—'} סקרים`
@@ -561,12 +670,11 @@ function renderHome() {
     const al = partyMeta(id).alignment;
     blocTot[al] = (blocTot[al] || 0) + n;
   });
-  const R = blocTot.Right || 0;
-  const LA = (blocTot.Left || 0) + (blocTot.Arabs || 0) + (blocTot.Unknown || 0);
+  const R = blocTot.Right || 0, U = blocTot.Unknown || 0;
+  const LA = (blocTot.Left || 0) + (blocTot.Arabs || 0);
 
-  const hd = homeHeadline(est, seats, blocTot);
-  $("#verdict-head").innerHTML = hd.h;
-  $("#verdict-lede").textContent = hd.s;
+  renderHomeHemicycle(seats, blocTot, est);
+  renderHomePipeline();
 
   const leadKey = R >= (blocTot.Left || 0) ? "Right" : "Left";
   const rd = [["Right", "גוש הימין"], ["Left", "מרכז־שמאל"], ["Arabs", "הרשימות הערביות"]];
@@ -574,20 +682,87 @@ function renderHome() {
     `<div class="rd${k === leadKey ? " lead" : ""}" style="--dot:${BLOCS[k].color}"><span class="rd-lbl"><i></i>${esc(label)}</span><b class="num">${blocTot[k] || 0}</b></div>`
   ).join("") + `<div class="rd-need"><b class="num">61</b><span>דרוש לרוב</span></div>`;
 
+  const faces = $("#hero-faces");
+  if (faces) faces.innerHTML = Object.entries(seats).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id]) => {
+    const m = partyMeta(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
+    return `<span class="face" style="--bc:${partyColor(id, m.alignment)}" title="${esc(m.name)}"><img src="${esc(photo)}"${leaderSrcset(photo, "52px")} alt=""></span>`;
+  }).join("");
   $('[data-tally="Right"]').textContent = R;
+  $('[data-tally="Mid"]').textContent = U;
   $('[data-tally="LeftArabs"]').textContent = LA;
 
   /* כל מפלגה בשורת הגוש שלה, מהמנדטים הרבים למעטים; רשימות מתחת לסף בסוף. */
   const preRound = id => est.parties[id] != null ? est.parties[id] : (est.rawFull ? est.rawFull[id] || 0 : 0);
   const entries = Object.entries(seats).filter(([, n]) => n > 0).map(([id, n]) => ({ id, key: n * 100 + preRound(id) }))
     .concat(belowEntries.map(([id, pct]) => ({ id, key: -1000 + pct })));
-  const rowOf = id => partyMeta(id).alignment === "Right" ? "right" : "left";
-  const byRow = { right: [], left: [] };
-  entries.sort((a, b) => b.key - a.key).forEach(e => byRow[rowOf(e.id)].push(e.id));
-  $("#cards-right").innerHTML = byRow.right.map(id => homeCard(id, seats, est)).join("");
-  $("#cards-left").innerHTML = byRow.left.map(id => homeCard(id, seats, est)).join("");
+  /* עמודות הגוש: כל מפלגה בעמודת הגוש שלה, מהמנדטים הרבים למעטים; רשימות מתחת לסף בסוף.
+     רשימה שאינה משויכת לגוש (למשל הנדל–זליכה) — בעמודה אמצעית משלה. */
+  const byRow = { right: [], mid: [], left: [] };
+  entries.sort((a, b) => b.key - a.key).forEach(e => byRow[sideOf(e.id)].push(e.id));
+  const maxSeats = Math.max(1, ...Object.values(seats));
+  $("#cards-right").innerHTML = byRow.right.map(id => homeCard(id, seats, est, maxSeats)).join("");
+  $("#cards-mid").innerHTML = byRow.mid.map(id => homeCard(id, seats, est, maxSeats)).join("");
+  $("#cards-left").innerHTML = byRow.left.map(id => homeCard(id, seats, est, maxSeats)).join("");
+  $(".wall").classList.toggle("has-mid", byRow.mid.length > 0);
 
+  renderWallPoster(seats, est, blocTot, belowEntries);
   buildHomePrintSheet(est, seats, blocTot);
+}
+
+/* פריסת "פוסטר" כמו בגרפיקת הסקרים בטלוויזיה (כאן חדשות): כל הרשימות ברצף
+   אחד לפי גודל, מספר גדול על הדיוקן, ורצועת ארבע הקבוצות למטה — ימין וחרדים ·
+   מרכז־שמאל · הרשימות הערביות (כולל רע״מ) · לא משויכות. */
+function renderWallPoster(seats, est, blocTot, belowEntries) {
+  const box = $("#wall-poster");
+  if (!box) return;
+  const ids = Object.keys(seats).filter(id => seats[id] > 0).sort((a, b) => seats[b] - seats[a] || (est.parties[b] || 0) - (est.parties[a] || 0));
+  const tile = (id, n, sub) => {
+    const m = partyMeta(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER, d = sub ? null : homeDelta(id);
+    return `<button type="button" class="ptile${sub ? " is-below" : ""}" style="--c:${partyHue(id)}" data-focus-party="${esc(id)}" aria-label="${esc(m.name)}, ${sub ? `מתחת לאחוז החסימה, כ־${sub}` : `${n} מנדטים`}. מעבר לסקרים">
+      <span class="ptile-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "140px")} alt="" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
+      <b class="ptile-num num">${sub ? sub : n}</b><span class="ptile-name">${esc(m.name)}</span><span class="ptile-leader">${esc(PARTY_LEADER[normId(id)] || "")}</span>${d ? `<small class="ptile-delta ${d.cls}">${esc(d.txt)}</small>` : ""}</button>`;
+  };
+  const arab = ids.filter(id => arcSideOf(id) === "mid" && partyMeta(id).alignment !== "Unknown").reduce((t, id) => t + seats[id], 0);
+  const groups = [["גוש הימין והחרדים", blocTot.Right || 0, BLOCS.Right.color], ["מרכז־שמאל", (blocTot.Left || 0) + (blocTot.Arabs || 0) - arab, BLOCS.Left.color], ["הרשימות הערביות", arab, BLOCS.Arabs.color], ["לא משויכות", blocTot.Unknown || 0, BLOCS.Unknown.color]].filter(g => g[1] > 0);
+  box.innerHTML = `<div class="ptiles">${ids.map(id => tile(id, seats[id])).join("")}${belowEntries.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
+    <div class="pstrip"><span class="pstrip-lbl">חלוקת הגושים</span>${groups.map(([l, n, c]) => `<span class="pgroup" style="--c:${c}"><b class="num">${n}</b>${esc(l)}</span>`).join("")}<span class="pstrip-note">61 דרושים לרוב</span></div>`;
+}
+
+/* הפתיח: חמשת המכלולים שנבדקים — כל אחד עם מספר חי מהנתונים — שמתנקזים לתחזית אחת */
+function renderHomePipeline() {
+  const box = $("#home-pipeline"); if (!box) return;
+  const nodes = [];
+  try {
+    /* 01 · תוצאות האמת של 2022 */
+    const defs = S.hist?.blocs || BLOCS_2022, act = S.hist?.actual || {};
+    const b22 = histBlocs(act, defs), r22 = b22.netanyahu || 0;
+    if (r22) nodes.push({ k: "תוצאות 2022", n: `${r22} : ${120 - r22}`, t: "גוש נתניהו מול גוש השינוי, מנדטים — נקודת המוצא לכל בדיקה", href: "#/demography" });
+    /* 02 · דיוק המכונים */
+    const active = S.series.map(s => s.meta), calib = active.filter(m => m.calibrated);
+    const best = calib.map(m => ({ m, sc: firmScore(m) })).sort((a, b) => b.sc - a.sc)[0];
+    nodes.push({ k: "דיוק המכונים", n: `${calib.length} מכונים`, t: best ? `נמדדו מול שלוש הבחירות האחרונות (2020–2022) וקיבלו ציון. המדויק ביותר בתחזית: ${best.m.he} (${r1(best.sc)})` : "נמדדו מול שלוש הבחירות האחרונות וקיבלו ציון", href: "#/2022" });
+    /* 03 · כמה עברו צד */
+    if (S.regions && S.hist) {
+      const c = crossoverBase();
+      if (c.rows.length) nodes.push({ k: "כמה עברו צד", n: `${c.deltaAvg < 0 ? "−" : "+"}${c.kv(c.votersAvg)}`, t: `מצביעים ${c.deltaAvg < 0 ? "עזבו את גוש הימין" : "הצטרפו לגוש הימין"} מאז 2022, לפי ממוצע המכונים המשוקלל`, href: "#/crossover" });
+    }
+    /* 04 · גידול טבעי */
+    if (S.demo) {
+      const m0 = runDemoModel(0), m1 = runDemoModel(S.demo.meta.years);
+      const sh = (m, c) => 100 * ((m.campVotes[c] || 0)) / m.campTotal;
+      const d = (sh(m1, "right") + sh(m1, "haredi")) - (sh(m0, "right") + sh(m0, "haredi"));
+      nodes.push({ k: "גידול טבעי", n: `${d < 0 ? "−" : "+"}${r1(Math.abs(d))} נק׳`, t: "לימין ולחרדים עד 2026 מהדמוגרפיה בלבד — תחזית עצמאית לגודל הגושים, בלי אף סקר", href: "#/demography" });
+    }
+    /* 05 · הסקרים */
+    const nPolls = S.series.reduce((t, s) => t + s.polls.length, 0);
+    nodes.push({ k: "הסקרים", n: `${nPolls} סקרים`, t: `${S.series.length} מכונים ב־${FORECAST_MAX_AGE_DAYS} הימים האחרונים, כל מכון לפי ציונו`, href: "#/polls" });
+  } catch (e) { console.error(e); }
+  box.innerHTML = nodes.map((x, i) => `<a class="pipe-node" href="${x.href}">
+      <span class="pipe-step">0${i + 1}</span>
+      <span class="pipe-k">${esc(x.k)}</span>
+      <b class="pipe-n num">${esc(x.n)}</b>
+      <span class="pipe-t">${esc(x.t)}</span>
+    </a>`).join("");
 }
 
 const initials = n => String(n || "").replace(/^ה/, "").replace(/["'׳״!.]/g, "").trim().slice(0, 2);
@@ -602,6 +777,14 @@ function outletLogo(name) {
            : `<span class="orglogo" title="${esc(name)}">${esc((name || "").slice(0, 3))}</span>`;
 }
 
+/* כותרת הציון בכרטיס המכון: המספר גדול, תג הדרגה, ופס 0–100 בצבע הדרגה */
+function scoreTop(score, label, gradeKey, gradeLabel, rankNo = "") {
+  return `<div class="score-top grade-${gradeKey}" role="img" aria-label="${esc(label)}: ${r1(score)} מתוך 100, ${esc(gradeLabel)}">
+    <div class="score-row">${rankNo ? `<em class="rank-no">${esc(rankNo)}</em>` : ""}<b class="num">${r1(score)}</b></div>
+    <i class="score-bar"><u style="--v:${clamp(score)}%"></u></i>
+    <div class="score-foot"><span class="grade ${gradeKey}">${esc(gradeLabel)}</span><small>${esc(label)} · מתוך 100</small></div></div>`;
+}
+
 function outletIconStrip(outlets = []) {
   return `<div class="outlet-icons" aria-label="ערוצי פרסום">${outlets.map(name => {
     const l = S.firms.outletLogos[name];
@@ -612,6 +795,12 @@ function outletIconStrip(outlets = []) {
 }
 
 /* איור מקום שמור לתמונת מנהיג — קווי עיפרון מינימליים, מוחלף בכל כרטיס שיש לו תמונה ב-data/leaders.json */
+/* דיוקן בכרטיס קטן: איור קווים דקים שמוקטן בדפדפן מ-720px ל-64px הופך לרעש
+   אפור. crop-leaders.py מפיק גרסאות 128/256 מוקטנות ב-LANCZOS, וה-srcset נותן
+   לדפדפן לבחור את הקרובה לגודל התצוגה. */
+const LEADER_WIDTHS = [64, 96, 128, 192, 256, 384];
+const leaderSrcset = (photo, sizes) => /-full[.]jpg$/.test(photo)
+  ? ` srcset="${LEADER_WIDTHS.map(w => `${esc(photo.replace(/-full[.]jpg$/, `-${w}.jpg`))} ${w}w`).join(", ")}, ${esc(photo)} 720w" sizes="${sizes}"` : "";
 const LEADER_PLACEHOLDER = "data:image/svg+xml," + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><g fill="none" stroke="#94A0AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="48" cy="34" r="16.5"/><path d="M18.5 84c1.8-15.6 12.8-24.6 29.5-24.6S75.7 68.4 77.5 84"/><path d="M39 75c2.6 3.6 6 5.4 9 5.4s6.4-1.8 9-5.4" opacity=".5"/></g></svg>`);
 
@@ -718,108 +907,92 @@ function renderCalibrationStrip() {
 /* ============================================================
    6. עמוד מדד אמינות המכונים
    ============================================================ */
-const curElection = () => S.elections.find(e => e.year === S.calibYear) || S.elections[0];
+const curElection = () => S.elections.find(e => e.key === S.calibKey) || S.elections[0];
 /* התרחיש ההיפותטי (מרצ עוברת את החסימה) שייך לכנסת ה־25 בלבד. */
-const counterfactualAvailable = () => S.calibYear === 2022;
+const counterfactualAvailable = () => S.calibKey === "2022";
 const scenActual = () => (S.scen === "counterfactual" && counterfactualAvailable())
   ? COUNTERFACTUAL : curElection().data.actual;
 const curBlocDefs = () => curElection().data.blocs || BLOCS_2022;
 /* שם הגוש: אם הוא רשימה אחת, מוצג שמה; אחרת התווית הכללית. */
-const blocLabel = (key, ids) => ids.length === 1 ? (HIST_PARTY_HE[ids[0]] || ids[0]) : BLOC_LABELS[key];
+const blocLabel = (key, ids) => ids.length === 1 ? (HIST_PARTY_HE[ids[0]] || ids[0]) : (key === "outgoing" && curElection().key === "2022" ? "גוש השינוי" : BLOC_LABELS[key]);
 
 function renderCalibSwitch() {
   $("#calib-switch").innerHTML = S.elections.map(e =>
-    `<button type="button" data-calib="${e.year}" aria-pressed="${e.year === S.calibYear}">${esc(e.election)} · ${e.year}</button>`).join("");
-  const e = curElection(), missing = e.data.polls.filter(p => !p.firm).length;
-  $("#calib-note").textContent = `${e.data.polls.length} סקרים בחלון ${e.data.window.from} – ${e.data.window.to}`
-    + (missing ? `, מהם ${missing} בלי שם מכון במקור — הם מוצגים בארכיון אך אינם נכנסים לציון.` : ".");
+    `<button type="button" data-calib="${esc(e.key)}" aria-pressed="${e.key === S.calibKey}">${esc(e.election)} · ${esc(e.short)}</button>`).join("");
+  const e = curElection(), heD = d => d.split("-").reverse().join(".");
+  const firms = new Set(e.data.polls.map(p => p.firm).filter(Boolean)).size;
+  $("#arch-title").textContent = `${e.election} · ${heD(e.data.meta?.electionDate || e.data.window.to)}`;
+  $("#calib-facts").innerHTML = [[e.data.polls.length, "סקרים בחלון"], [firms, "מכונים"], [`<span dir="ltr">${heD(e.data.window.from)} – ${heD(e.data.window.to)}</span>`, "30 הימים שלפני הבחירות"]]
+    .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+  const src = e.data.meta?.sourceUrl ? `<a href="${esc(e.data.meta.sourceUrl)}" target="_blank" rel="noopener">${esc(e.data.meta.source)} ↗</a>` : esc(e.data.meta?.source || "");
+  $("#calib-source").innerHTML = `מקור הסקרים: ${src} · תוצאות האמת: ועדת הבחירות המרכזית. ${esc(e.data.meta?.note || "")}`;
 }
 
 function render2022() {
-  const stats = (S.scen === "counterfactual" && counterfactualAvailable()) ? S.counterStats : S.stats;
-  const el = curElection(), defs = curBlocDefs();
-  const target = scenActual(), tb = histBlocs(target, defs);
-
-  renderCalibrationStrip();
+  const stats = S.stats, el = curElection(), defs = curBlocDefs(), target = scenActual();
   renderCalibSwitch();
+  renderCounterfactual();
 
-  /* מתג התרחיש ההיפותטי קיים רק לכנסת ה־25 */
-  $("#scen-switch").hidden = !counterfactualAvailable();
-  $("#scen-title").textContent = counterfactualAvailable()
-    ? "התוצאה שהייתה, והתוצאה שכמעט הייתה" : `תוצאות האמת · ${el.election}`;
-  $("#bias-note").textContent = `ממוצע ${el.data.polls.length} הסקרים בחלון מול התוצאה בפועל. השוואה היסטורית בלבד; אינה משנה את נתוני הסקרים הנוכחיים.`;
-  $("#arch-title").textContent = `${el.data.polls.length} הסקרים, אחד־אחד`;
-
-  const colors = { netanyahu: "#17457F", outgoing: "#C0392B", outside: "#2E8467" };
-  $("#scen-cards").innerHTML = Object.entries(defs).map(([k, ids]) =>
-    ({ t: blocLabel(k, ids), v: tb[k], c: colors[k] || "#96A0AB" })
-  ).map(x => `<div class="card pad" style="border-top:4px solid ${x.c}">
-      <p class="kicker" style="color:${x.c}">${esc(x.t)}</p>
-      <b style="display:block;font-family:var(--serif);font-size:3rem;font-weight:900;line-height:1;margin-top:6px">${x.v}</b>
-      <span style="color:var(--ink-3);font-size:.8rem">מנדטים</span></div>`).join("");
-
-  const w = S.regions.wasted;
-  $("#scen-explain").innerHTML = !counterfactualAvailable()
-    ? `<p style="margin:0 0 6px"><b>${esc(el.election)}, ${esc(el.data.meta?.electionDate || "")}.</b> ${esc(Object.entries(defs).map(([k, ids]) => `${blocLabel(k, ids)} ${tb[k]}`).join(" · "))}.</p>
-       <p style="margin:0">ימינה נספרת כאן בגוש היריב — שם היא הרכיבה בפועל את הממשלה שקמה אחרי הבחירות. הרשימה המשותפת ורע״ם עמדו מחוץ לשני הגושים בזמן הסקרים.</p>`
-    : S.scen === "counterfactual"
-    ? `<p style="margin:0 0 6px"><b>התרחיש שכמעט קרה.</b> מרצ קיבלה ${fmt(w.meretz)} קולות — ${fmt(w.meretzGap)} קולות בלבד מתחת לאחוז החסימה. אילו עברה, הדירוג כולו מחושב כאן מחדש מול התוצאה ההיפותטית.</p>
-       <p style="margin:0">שימו לב מה קורה לציונים: מכון שהראה למרצ 4–5 מנדטים ״טעה״ מול המציאות, אך היה מדויק מול התרחיש הזה. זה בדיוק ההבדל בין למדוד את מצב הרוח לבין לחזות את התוצאה.</p>`
-    : `<p style="margin:0 0 6px"><b>הפער בין הגושים היה ${fmt(w.blocGap)} קולות בלבד</b> — ${fmt(w.blocNetanyahu)} לגוש נתניהו מול ${fmt(w.blocChange)} לגוש השני. ובכל זאת נפער הפרש של 8 מנדטים.</p>
-       <p style="margin:0">הסיבה: ${fmt(w.total)} קולות ירדו לטמיון כשמרצ (${fmt(w.meretz)}) ובל״ד (${fmt(w.balad)}) לא עברו את אחוז החסימה — יותר משבעה מנדטים בחישוב גולמי. אף סקר לא ״טעה״ בגושים; הם פשוט לא יכלו לתמחר את אחוז החסימה.</p>`;
+  // facts strip under the title
+  const totalPolls = S.elections.reduce((t, e) => t + e.data.polls.length, 0);
+  const calibrated = stats.filter(st => S.firms.firms.find(f => f.id === st.firm)?.calibrated);
+  const best = calibrated[0], facts = $("#acc-facts");
+  if (facts) facts.innerHTML = [
+    [calibrated.length, "מכונים מכוילים"], [totalPolls, "סקרי כיול"], [`${S.elections.length} · <span dir="ltr">${Math.min(...S.elections.map(e => e.year))}–${Math.max(...S.elections.map(e => e.year))}</span>`, "מערכות בחירות"],
+    [best ? `${esc((S.firms.firms.find(f => f.id === best.firm) || { he: best.firm }).he)} · ${r1(best.score)}` : "—", "המדויק ביותר"]
+  ].map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
 
   // ranking
   const comps = [["blocScore", "דיוק בגושים", "#17457F"], ["partyScore", "דיוק במפלגות", "#B8862B"], ["consistencyScore", "עקביות", "#5B4B8A"]];
-  $("#rank-list").innerHTML = stats.map(it => {
-    const m = S.firms.firms.find(f => f.id === it.firm) || { he: it.firm, short: "?" };
-    return `<article class="rank" data-firm="${esc(it.firm)}" role="button" tabindex="0" aria-label="${esc(m.he)} — פירוט הציון">
+  const runsOf = S.elections.slice();
+  /* מכון שיורש ציון (נקסט דאטה ← דירקט פולס: אותו צוות סוקרים) מוצג ככרטיס רגיל, זהה
+     במבנהו לשאר, מיד אחרי המקור; הקשר בין השניים מוסבר בחלון הפירוט בלבד. */
+  const activeFirms = new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm));
+  const heirsOf = id => S.firms.firms.filter(f => f.calibrationFirm === id && f.id !== id && activeFirms.has(f.id));
+  const cardOf = (it, m, g, runs, rankNo, heirOf) => `<article class="rank grade-${g.key}" data-firm="${esc(m.id)}" role="button" tabindex="0" aria-label="${esc(m.he)} — פירוט הציון">
+      ${scoreTop(it.score, "ציון משוקלל", g.key, g.label, rankNo)}
       ${logoBox(m, 52)}
       <div style="min-width:0"><strong style="display:block">${esc(m.he)}</strong>
-        <span style="color:var(--ink-3);font-size:.75rem">${it.n} סקרי כיול</span>
-        <span class="calib-runs">${(it.elections || []).map(r =>
-          `<b title="${esc(r.election)}: ציון ${r1(r.score)} מתוך ${r.n} סקרים">${r.year}׳ <em>${r1(r.score)}</em></b>`).join("")}${
-          (it.elections || []).length === 1 ? '<i>מערכת אחת בלבד</i>' : ""}</span>
-        ${outletIconStrip(m.outlets || [])}</div>
+        <span style="color:var(--ink-3);font-size:.75rem">${it.n} סקרים ב־${it.elections.length} ${it.elections.length === 1 ? "מערכת" : "מערכות"}</span></div>
+      <div class="runs" aria-label="ציון לפי מערכת בחירות">${runs.map((r, i) => r
+        ? `<span title="${esc(r.election)}: ${r.n} סקרים"><small>${esc(runsOf[i].short)}</small><b>${r1(r.score)}</b></span>`
+        : `<span class="none" title="לא פרסם סקרים בחלון"><small>${esc(runsOf[i].short)}</small><b>—</b></span>`).join("")}</div>
       <div class="meters">${comps.map(([k, l, c]) => `<div class="meter" style="--c:${c}"><span>${l}<b>${r1(it[k])}</b></span><i style="--v:${clamp(it[k])}%"></i></div>`).join("")}</div>
-      <div class="final"><b class="num">${r1(it.score)}</b><span>ציון סופי</span></div>
+      <div class="final rank-outlets"><span>מפרסם ב־</span>${outletIconStrip(m.outlets || [])}</div>
     </article>`;
+  $("#rank-list").innerHTML = calibrated.map((it, idx) => {
+    const m = S.firms.firms.find(f => f.id === it.firm), g = gradeOf(it.score);
+    const runs = runsOf.map(e => it.elections.find(r => r.key === e.key));
+    const rankNo = String(idx + 1).padStart(2, "0");
+    return cardOf(it, m, g, runs, rankNo, null) + heirsOf(it.firm).map(h => cardOf(it, h, g, runs, rankNo, m)).join("");
   }).join("");
 
   /* מכונים פעילים בתחזית שאין להם סדרת כיול משלהם מ-2022 — כדי שהעמוד
      יכסה כל מכון שמזין את החישוב, לא רק את שבעת המכוילים. */
-  const rankedIds = new Set(stats.map(s => s.firm));
+  const rankedIds = new Set(calibrated.map(s => s.firm));
   const extras = [...new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm))]
     .map(id => S.firms.firms.find(f => f.id === id))
-    .filter(f => f && !rankedIds.has(f.id))
+    .filter(f => f && !rankedIds.has(f.id) && !(f.calibrationFirm && rankedIds.has(f.calibrationFirm)))
     .sort((a, b) => firmScore(b) - firmScore(a));
+  /* אותה משבצת כמו המכונים המכוילים, באותה שורה; ההסבר במקום המדדים. */
   if (extras.length) $("#rank-list").insertAdjacentHTML("beforeend",
-    `<p class="sec-note" style="margin:20px 0 6px">מכונים פעילים ללא סדרת כיול משלהם מ־2022:</p>` +
     extras.map(f => {
-      const src = f.calibrationFirm && rankedIds.has(f.calibrationFirm)
-        ? `יורש את ציון ${esc(S.firms.firms.find(x => x.id === f.calibrationFirm)?.he || f.calibrationFirm)}`
-        : "אין סדרת כיול · משקל ניטרלי";
+      const heir = f.calibrationFirm && rankedIds.has(f.calibrationFirm) ? S.firms.firms.find(x => x.id === f.calibrationFirm) : null;
+      const note = heir
+        ? `<b>ללא סדרת כיול משלו.</b> יורש את ציון ${esc(heir.he)} — אותו צוות סוקרים, ולכן אותו ציון.`
+        : `<b>ללא סדרת כיול.</b> לא פרסם סקרים בחודש שלפני אף אחת משלוש הבחירות, ולכן אין למה להשוות. עד שייבחן מול תוצאות אמת הוא נכנס לתחזית במשקל ניטרלי של 70.`;
       return `<article class="rank rank-nocalib" data-firm="${esc(f.id)}" role="button" tabindex="0" aria-label="${esc(f.he)} — פירוט הציון">
+        ${scoreTop(firmScore(f), heir ? "ציון בשימוש" : "משקל ניטרלי", "none", heir ? `יורש את ${esc(heir.he)}` : "ללא דירוג")}
         ${logoBox(f, 52)}
         <div style="min-width:0"><strong style="display:block">${esc(f.he)}</strong>
-          <span style="color:var(--ink-3);font-size:.75rem">${src}</span>
-          ${outletIconStrip(f.outlets || [])}</div>
-        <div class="final"><b class="num">${r1(firmScore(f))}</b><span>${f.calibrated ? "ציון בשימוש" : "משקל ניטרלי"}</span></div>
+          <span style="color:var(--ink-3);font-size:.75rem">${heir ? "יורש ציון" : "משקל ניטרלי"}</span></div>
+        <div class="meters nocalib-note"><p>${note}</p></div>
+        <div class="final rank-outlets"><span>מפרסם ב־</span>${outletIconStrip(f.outlets || [])}</div>
       </article>`;
     }).join(""));
 
-  // bias table
-  const keys = Object.keys(el.data.actual);
-  const biasRows = keys.map(k => {
-    const mean = avg(el.data.polls.map(p => p.p[k]));
-    return { k, mean, act: target[k], d: target[k] - mean };
-  }).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
-  const biasHTML = `<thead><tr><th>מפלגה</th><th class="n">ממוצע ${el.data.polls.length} הסקרים</th><th class="n">${S.scen === "counterfactual" ? "בתרחיש" : "בפועל"}</th><th class="n">פער</th></tr></thead><tbody>${
-    biasRows.map(r => `<tr><td>${esc(HIST_PARTY_HE[r.k])}</td><td class="n">${r1(r.mean)}</td><td class="n">${r.act}</td>
-      <td class="n"><span dir="ltr" class="chip ${Math.abs(r.d) >= 1 ? (r.d > 0 ? "good" : "bad") : ""}">${r.d > 0 ? "+" : ""}${r.d.toFixed(1)}</span></td></tr>`).join("")}</tbody>`;
-  $("#bias-table").innerHTML = biasHTML;
-  const mb = $("#method-bias"); if (mb) mb.innerHTML = biasHTML;
-  const har = $("#m-har-poll");
-  if (har) har.textContent = r1(avg(S.hist.polls.map(p => p.p.shas + p.p.utj)));
+  // the standing-sampling-error note
+  renderBiasNote();
 
   renderArchive();
 }
@@ -842,29 +1015,86 @@ function renderArchive() {
     sel.value = firmsHere.some(x => x.f === keep) ? keep : "all";
   }
   const ff = sel.value, q = $("#arch-q").value.trim().toLowerCase();
-  const target = scenActual(), keys = Object.keys(el.data.actual);
+  const target = scenActual(), keys = Object.keys(target).sort((a, b) => target[b] - target[a]);
   const rows = el.data.polls.map((p, i) => ({ p, i })).filter(({ p }) => {
     const m = S.firms.firms.find(f => f.id === p.firm);
     return (ff === "all" || p.firm === ff) && (!q || `${p.date} ${p.firm} ${m ? m.he : ""} ${p.publisher}`.toLowerCase().includes(q));
-  });
-  $("#arch-count").textContent = `${rows.length} מתוך ${el.data.polls.length} סקרים`;
-  const blocCols = Object.entries(defs);
-  $("#arch-table").innerHTML = `<thead><tr><th>תאריך</th><th>מכון ופרסום</th>${
-    blocCols.map(([k, ids]) => `<th class="n">${esc(blocLabel(k, ids))}</th>`).join("")
-  }<th class="n">שגיאת מפלגות</th><th></th></tr></thead><tbody>${
-    rows.map(({ p, i }) => {
-      const b = histBlocs(p.p, defs), tb = histBlocs(target, defs);
-      const mae = avg(keys.map(k => Math.abs(p.p[k] - target[k])));
-      const m = S.firms.firms.find(f => f.id === p.firm) || { he: p.firm || "ללא שיוך מכון", short: "?" };
-      const dev = Math.abs(b.netanyahu - tb.netanyahu);
-      return `<tr${p.firm ? "" : ' class="unattributed"'}><td style="white-space:nowrap">${esc(p.date.slice(5))}</td>
-        <td><div class="orgcell">${outletLogo(p.publisher)}<div><strong>${esc(m.he)}</strong><span>${esc(p.publisher)}${p.firm ? "" : " · לא נכנס לציון"}</span></div></div></td>
-        ${blocCols.map(([k]) => k === "netanyahu"
-          ? `<td class="n"><span class="chip ${dev <= 1 ? "good" : dev >= 3 ? "bad" : ""}">${b[k]}</span></td>`
-          : `<td class="n"><span class="chip">${b[k]}</span></td>`).join("")}
-        <td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td>
-        <td><button class="btn ghost" style="padding:5px 12px;font-size:.78rem" type="button" data-poll="${i}">מפלגות</button></td></tr>`;
-    }).join("") || `<tr><td colspan="${blocCols.length + 4}" class="empty">לא נמצאו סקרים.</td></tr>`}</tbody>`;
+  }).sort((a, b) => b.p.date.localeCompare(a.p.date));
+  /* ברירת המחדל: עשרת הסקרים האחרונים; כפתור פותח את כל החלון */
+  const LIMIT = 10, shown = S.archAll ? rows : rows.slice(0, LIMIT);
+  $("#arch-count").textContent = `${shown.length} מתוך ${el.data.polls.length} סקרים`;
+  const cellCls = d => d === 0 ? "ok" : d === 1 ? "near" : d === 2 ? "off" : "far";
+  const tbDefs = curBlocDefs(), tb = histBlocs(target, tbDefs);
+  const cf = S.scen === "counterfactual" && counterfactualAvailable();
+  const actualRow = `<tr class="actual${cf ? " cf" : ""}"><td class="date">${esc((el.data.meta?.electionDate || "").slice(5).split("-").reverse().join("."))}</td><td colspan="2"><strong>${cf ? "התרחיש: מרצ עוברת" : `תוצאות האמת · ${esc(el.election)}`}</strong></td>${
+      keys.map(k => `<td class="n"><b>${target[k]}</b></td>`).join("")}<td class="n"><b>${tb.netanyahu}</b></td><td></td></tr>`;
+  $("#arch-table").innerHTML = `<thead><tr><th>תאריך</th><th>מפרסם</th><th>מכון</th>${
+    keys.map(k => `<th class="n party-h">${esc(HIST_PARTY_HE[k] || k)}</th>`).join("")
+  }<th class="n">גוש נתניהו</th><th class="n">שגיאה ממוצעת</th></tr></thead><tbody>${actualRow}${
+    shown.map(({ p }) => {
+      const mae = avg(keys.map(k => Math.abs((p.p[k] || 0) - target[k])));
+      const m = S.firms.firms.find(f => f.id === p.firm) || { he: FIRM_HE_FALLBACK[p.firm] || p.firm || "ללא שיוך מכון" };
+      const bn = histBlocs(p.p, tbDefs).netanyahu, dev = Math.abs(bn - tb.netanyahu);
+      return `<tr${p.firm ? "" : ' class="unattributed"'}><td class="date">${esc(p.date.slice(5).split("-").reverse().join("."))}</td>
+        <td class="pub"><div class="orgcell">${outletLogo(p.publisher)}<span>${esc(p.publisher)}</span></div></td>
+        <td class="firm"><strong>${esc(m.he)}</strong></td>
+        ${keys.map(k => { const v = p.p[k] || 0, d = Math.abs(v - target[k]); return `<td class="n cell ${cellCls(d)}" title="${esc(HIST_PARTY_HE[k] || k)}: ${v} מול ${target[k]}">${v}</td>`; }).join("")}
+        <td class="n cell ${cellCls(dev)}"><b>${bn}</b></td>
+        <td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td></tr>`;
+    }).join("") || `<tr><td colspan="${keys.length + 5}" class="empty">לא נמצאו סקרים.</td></tr>`}</tbody>`;
+  const more = $("#arch-more");
+  if (more) {
+    more.hidden = rows.length <= LIMIT;
+    more.textContent = S.archAll ? `להציג רק את ${LIMIT} הסקרים האחרונים` : `להציג את כל ${rows.length} הסקרים`;
+  }
+}
+
+/* טעות דגימה קבועה: מפלגה שהסקרים החטיאו לאותו כיוון בכל המערכות שבהן רצה
+   (לפחות שתיים), במנדט אחד ומעלה בממוצע. מוצגות השתיים הבולטות. */
+function renderBiasNote() {
+  const box = $("#bias-note"); if (!box) return;
+  const byParty = {};
+  S.elections.forEach(e => Object.keys(e.data.actual).forEach(k => {
+    const mean = avg(e.data.polls.map(p => p.p[k] || 0));
+    (byParty[k] ||= []).push({ e, mean, actual: e.data.actual[k], d: e.data.actual[k] - mean });
+  }));
+  const latest = S.elections[0]?.data.actual || {};
+  const found = Object.entries(byParty)
+    .filter(([k, runs]) => k in latest && runs.length >= 2 && (runs.every(r => r.d >= 0.3) || runs.every(r => r.d <= -0.3)))
+    .map(([k, runs]) => ({ k, runs, mean: avg(runs.map(r => r.d)) }))
+    .filter(x => Math.abs(x.mean) >= 1)
+    .sort((a, b) => Math.abs(b.mean) - Math.abs(a.mean)).slice(0, 2);
+  if (!found.length) { box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = `<b>טעות דגימה קבועה:</b> ` + found.map(x => {
+    const dir = x.mean > 0 ? `הסקרים נותנים לה בממוצע ${seatsHe(x.mean)} פחות ממה שהיא מקבלת בקלפי` : `הסקרים נותנים לה בממוצע ${seatsHe(x.mean)} יותר ממה שהיא מקבלת בקלפי`;
+    const list = x.runs.slice().sort((a, b) => b.e.year - a.e.year).map(r => `${esc(r.e.short)}: ${r1(r.mean)} בסקרים מול ${r.actual} בפועל`).join(" · ");
+    return `<b>${esc(HIST_PARTY_HE[x.k] || x.k)}</b> — ${dir} (${list})`;
+  }).join("; ") + `. התחזית אינה מתקנת לפי זה.`;
+}
+
+/* התחשיב של 2022: מה היה קורה אילו מרצ הייתה עוברת את אחוז החסימה — במנדטים,
+   ובציוני המכונים (כל מכון נמדד מחדש מול התוצאה ההיפותטית). */
+function renderCounterfactual() {
+  const box = $("#scen-block"); if (!box) return;
+  box.hidden = !counterfactualAvailable();
+  if (box.hidden) return;
+  const el = curElection(), defs = curBlocDefs(), w = S.regions.wasted;
+  const actual = el.data.actual, cfB = histBlocs(COUNTERFACTUAL, defs), aB = histBlocs(actual, defs);
+  const colors = { netanyahu: BLOCS.Right.color, outgoing: BLOCS.Left.color, outside: BLOCS.Arabs.color };
+  $$("#scen-switch [data-scen]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.scen === S.scen)));
+  $("#scen-cards").innerHTML = Object.entries(defs).map(([k, ids]) => `<div class="scen-card" style="--c:${colors[k] || "#96A0AB"}">
+      <p class="kicker">${esc(blocLabel(k, ids))}</p>
+      <div class="scen-pair"><span><small>בפועל</small><b>${aB[k]}</b></span><i>→</i><span class="cf"><small>אילו מרצ עברה</small><b>${cfB[k]}</b></span></div>
+    </div>`).join("");
+  $("#scen-explain").innerHTML = `<p><b>מרצ קיבלה ${fmt(w.meretz)} קולות — ${fmt(w.meretzGap)} קולות בלבד מתחת לאחוז החסימה.</b> אילו עברה, היא הייתה מקבלת ${COUNTERFACTUAL.meretz} מנדטים, וחלוקת המנדטים כולה הייתה מחושבת מחדש: גוש נתניהו ${aB.netanyahu} → ${cfB.netanyahu}.</p>
+    <p>זה ההבדל בין למדוד את מצב הרוח לבין לחזות את התוצאה: מכון שהראה למרצ 4–5 מנדטים ״טעה״ מול המציאות, אבל היה מדויק מול התרחיש. המתג מודד את כל סקרי 2022 מחדש מול התוצאה ההיפותטית — הטבלה, ההטיה המשותפת וטבלת הציונים שלמטה מגיבות לו.</p>`;
+  const rows = S.elections.find(e => e.key === "2022").stats.map(a => {
+    const c = S.counterStats.find(x => x.firm === a.firm), m = S.firms.firms.find(f => f.id === a.firm) || { he: FIRM_HE_FALLBACK[a.firm] || a.firm };
+    return { he: m.he, a: a.score, c: c ? c.score : null, n: a.n };
+  }).sort((x, y) => (y.c ?? 0) - (x.c ?? 0));
+  $("#scen-firms").innerHTML = `<thead><tr><th>מכון · 2022</th><th class="n">סקרים</th><th class="n">ציון מול האמת</th><th class="n">ציון מול התרחיש</th><th class="n">הפרש</th></tr></thead><tbody>${
+    rows.map(r => { const d = r.c == null ? null : r.c - r.a; return `<tr><td><strong>${esc(r.he)}</strong></td><td class="n">${r.n}</td><td class="n">${r1(r.a)}</td><td class="n"><b>${r.c == null ? "—" : r1(r.c)}</b></td><td class="n"><span dir="ltr" class="chip ${d == null ? "" : d > 0.5 ? "good" : d < -0.5 ? "bad" : ""}">${d == null ? "—" : (d > 0 ? "+" : "") + d.toFixed(1)}</span></td></tr>`; }).join("")}</tbody>`;
 }
 
 /* באנר פירוט למכון: מה הוא חזה בחודש הכיול, מה יצא בפועל, ולמה הציון. */
@@ -904,15 +1134,15 @@ function openFirm(firmId) {
   </div>`;
 
   /* פירוט לכל מערכת בחירות שהמכון כויל עליה (כיום: הכנסת ה־25 בלבד) */
-  const runs = (st.elections || []).filter(r => S.elections.some(e => e.year === r.year));
+  const runs = (st.elections || []).filter(r => S.elections.some(e => e.key === r.key));
   const sections = runs.map(run => {
-    const el = S.elections.find(e => e.year === run.year);
+    const el = S.elections.find(e => e.key === run.key);
     const actual = el.data.actual, defs = el.data.blocs || BLOCS_2022, aB = histBlocs(actual, defs);
     const polls = run.polls.slice().sort((a, b) => a.date.localeCompare(b.date));
     const keys = Object.keys(actual);
     const pAvg = Object.fromEntries(keys.map(k => [k, avg(polls.map(p => p.p[k]))]));
     /* לכנסת ה-25 נוספת עמודה "אילו מרצ עברה": כמה מהפער הוא בכלל אחוז החסימה */
-    const cf = run.year === 2022 ? COUNTERFACTUAL : null, cfB = cf ? histBlocs(cf, defs) : null;
+    const cf = run.key === "2022" ? COUNTERFACTUAL : null, cfB = cf ? histBlocs(cf, defs) : null;
     const gap = (d, bad) => `<span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= bad ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span>`;
     const blocRows = Object.entries(defs).map(([k, ids]) => {
       const d = run.blocMean[k] - aB[k];
@@ -935,7 +1165,7 @@ function openFirm(firmId) {
     const pollList = polls.map(p => {
       const b = histBlocs(p.p, defs), dev = Math.abs(b.netanyahu - aB.netanyahu);
       const mae = avg(keys.map(k => Math.abs(p.p[k] - actual[k])));
-      return `<tr><td style="white-space:nowrap">${esc(p.date.slice(5))}</td><td>${esc(p.publisher || "")}</td>
+      return `<tr><td style="white-space:nowrap">${esc(p.date.slice(5).split("-").reverse().join("."))}</td><td>${esc(p.publisher || "")}</td>
         <td class="n"><span class="chip ${dev <= 1 ? "good" : dev >= 3 ? "bad" : ""}">${b.netanyahu}</span></td><td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td></tr>`;
     }).join("");
     return `<section class="fd-sec">
@@ -979,7 +1209,8 @@ function openPoll(i) {
    מייצגת מצביעים ששייכים לגוש — הם רק לא תורגמו למנדטים. רשימה מתחת
    ל-1.5% מוצאת מהחישוב משני הצדדים. */
 const CROSS_MIN_SHARE = 1.5;
-function renderCrossover() {
+/* החישוב המשותף לעמוד "כמה עברו צד" ולפתיח הבית */
+function crossoverBase() {
   const nat = S.regions.national, valid = nat.valid;
   const defs = S.hist.blocs || BLOCS_2022;
   const rightIds2022 = new Set(defs.netanyahu);
@@ -1005,6 +1236,15 @@ function renderCrossover() {
     const delta = x.share - rightShare0;                              // נקודות אחוז; שלילי = הימין הצטמק
     return { meta: s.meta, series: s, share: x.share, delta, voters: votersOf(delta), n: s.polls.length, below: x.below };
   }).sort((a, b) => a.delta - b.delta);
+  const totW = S.series.reduce((t, s) => t + wOf(s), 0) || 1;
+  const shareAvg = S.series.reduce((t, s) => t + shareOf(s).share * wOf(s), 0) / totW;
+  const deltaAvg = shareAvg - rightShare0;
+  const votersAvg = votersOf(deltaAvg);
+  return { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg };
+}
+
+function renderCrossover() {
+  const { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
 
   $("#crossover-intro").textContent =
     "בבחירות 2022 קיבל גוש הימין " + r1(rightShare0) + "% מהקולות (בספירה שכוללת גם רשימות שלא עברו את אחוז החסימה אך קיבלו 1.5% ומעלה). כל מכון מצייר היום חלוקה אחרת, וכל חלוקה כזאת אומרת שכמות מסוימת של מצביעים עברה מצד לצד. כאן מתורגם כל מכון למספר אחד: כמה מצביעים, נטו, חצו את קו הגוש מאז 2022.";
@@ -1012,7 +1252,7 @@ function renderCrossover() {
   $("#crossover-baseline").innerHTML =
     `<div class="crossbar">` +
     `<span style="flex:0 0 ${rightShare0.toFixed(1)}%;background:${BLOCS.Right.color}">גוש הימין · ${r1(rightShare0)}% · ${fmt(right2022)} קולות</span>` +
-    `<span style="flex:1 1 auto;background:${BLOCS.Left.color}">כל השאר · ${r1(100 - rightShare0)}% · ${fmt(tot2022 - right2022)} קולות</span>` +
+    `<span style="flex:1 1 auto;background:${BLOCS.Left.color}">גוש השינוי · ${r1(100 - rightShare0)}% · ${fmt(tot2022 - right2022)} קולות</span>` +
     `</div>` +
     `<p class="sec-note" style="margin-top:8px;max-width:none">גוש הימין 2022 = הליכוד, ש״ס, יהדות התורה והציונות הדתית (כולל עוצמה יהודית). בצד השני נספרות גם ${below2022.map(p => `${p.name} (${p.pct}%)`).join(" ו")} שלא עברו את אחוז החסימה — ${fmt(below2022.reduce((t, p) => t + p.votes, 0))} קולות. רשימות מתחת ל־1.5% אינן נספרות. סה״כ ${fmt(tot2022)} קולות נספרים מתוך ${fmt(valid)} כשרים.</p>`;
 
@@ -1023,10 +1263,6 @@ function renderCrossover() {
     return;
   }
 
-  const totW = S.series.reduce((t, s) => t + wOf(s), 0) || 1;
-  const shareAvg = S.series.reduce((t, s) => t + shareOf(s).share * wOf(s), 0) / totW;
-  const deltaAvg = shareAvg - rightShare0;
-  const votersAvg = votersOf(deltaAvg);
 
   $("#crossover-note").textContent =
     `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}% — כ־${kv(votersAvg)} מצביעים ${deltaAvg <= 0 ? "עזבו את" : "הצטרפו ל"}גוש הימין נטו. רשימה שממוצע המכון נותן לה 1.5% ומעלה נספרת לגוש שלה גם אם היא מתחת לאחוז החסימה.`;
@@ -1097,47 +1333,56 @@ function project(lon, lat, box) {
   return [x, y];
 }
 
-function renderRegions() {
-  const R = S.regions, N = R.national;
-  $("#nat-stats").innerHTML = [
-    [fmt(N.eligible), "בעלי זכות בחירה"],
-    [pct(N.turnout), "אחוז הצבעה ארצי"],
-    [fmt(N.valid), "קולות כשרים"],
-    [N.threshold + "%", "אחוז החסימה"]
-  ].map(([n, l]) => `<div><b class="num" style="font-size:1.7rem">${n}</b><span>${esc(l)}</span></div>`).join("");
+/* המספרים הלאומיים של 2022 — משמשים גם את עמוד "בחירות 2022" וגם את שלב 1 של המודל */
+function natStatsHTML() {
+  const N = S.regions.national;
+  return [[fmt(N.eligible), "בעלי זכות בחירה"], [pct(N.turnout), "אחוז הצבעה ארצי"], [fmt(N.valid), "קולות כשרים"], [N.threshold + "%", "אחוז החסימה"]]
+    .map(([n, l]) => `<div><b class="num" style="font-size:1.7rem">${n}</b><span>${esc(l)}</span></div>`).join("");
+}
+function baseBlocsHTML() {
+  const R = S.regions, N = R.national, w = R.wasted;
+  const r22 = S.hist ? histBlocs(S.hist.actual || {}, S.hist.blocs || BLOCS_2022).netanyahu : 64;
+  const nb = 120 - r22, vN = w.blocNetanyahu, vO = w.blocChange;
+  return `<div class="base-row"><span class="base-lbl">בקולות</span>
+      <div class="base-blocbar votes" role="img" aria-label="גוש נתניהו ${fmt(vN)} קולות, גוש השינוי ${fmt(vO)} קולות">
+        <span style="flex:${vN};background:${BLOCS.Right.color}"><b>${fmt(vN)}</b> גוש נתניהו · ${pct(100 * vN / (vN + vO))}</span>
+        <span style="flex:${vO};background:${BLOCS.Left.color}"><b>${fmt(vO)}</b> גוש השינוי · ${pct(100 * vO / (vN + vO))}</span></div></div>
+    <div class="base-row"><span class="base-lbl">במנדטים</span>
+      <div class="base-blocbar" role="img" aria-label="גוש נתניהו ${r22}, גוש השינוי ${nb}">
+        <span style="flex:${r22};background:${BLOCS.Right.color}"><b>${r22}</b></span>
+        <span style="flex:${nb};background:${BLOCS.Left.color}"><b>${nb}</b></span>
+        <i class="bc-61 from-start" title="61"></i><i class="bc-61 from-end" title="61"></i></div></div>
+    <div class="base-drama"><b>גוש השינוי קיבל ${fmt(w.blocGap)} קולות יותר מגוש נתניהו — ובכל זאת הפסיד 56 : 64.</b> ${fmt(w.total)} מקולותיו (מרצ ${fmt(w.meretz)}, בל״ד ${fmt(w.balad)}) נפלו מתחת לאחוז החסימה ולא הפכו למנדטים; מרצ החמיצה את הסף ב־${fmt(w.meretzGap)} קולות בלבד.</div>
+    <p class="sec-note base-note">גוש נתניהו = הליכוד, ש״ס, יהדות התורה והציונות הדתית. גוש השינוי = יש עתיד, המחנה הממלכתי, העבודה, ישראל ביתנו, מרצ, רע״מ, חד״ש–תע״ל ובל״ד. נספרות רשימות שקיבלו 1.5% ומעלה; הבית היהודי (${fmt(N.parties.find(p => p.id === "jewish_home")?.votes || 0)}, 1.19%) אינו נספר. מקור: <a href="${esc(w.source.url)}" target="_blank" rel="noopener">${esc(w.source.name)} ↗</a>.</p>`;
+}
 
-  // ---- map ----
-  const lats = R.geo.outline.map(p => p[1]), lons = R.geo.outline.map(p => p[0]);
-  const box = { minLon: Math.min(...lons), maxLon: Math.max(...lons), minLat: Math.min(...lats), maxLat: Math.max(...lats), W: 460, H: 690, pad: 22 };
-  const path = pts => pts.map((p, i) => { const [x, y] = project(p[0], p[1], box); return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`; }).join("") + "Z";
-  const lead = loc => loc.parties && loc.parties.length ? loc.parties[0] : null;
-  const dots = R.localities.map((loc, i) => {
-    const [x, y] = project(loc.lon, loc.lat, box);
-    const l = lead(loc);
-    const col = l ? (R.partyColors[l.id] || "#96A0AB") : "#96A0AB";
-    const rr = l ? 8.5 : 6.5;
-    const east = loc.side !== "w";                 // east = label to the right of the dot
-    const lx = x + (east ? rr + 6 : -(rr + 6));
-    const ly = y + 3 + (loc.ldy || 0);
-    return `<g class="locdot${i === S.selectedLoc ? " sel" : ""}" data-loc="${i}" tabindex="0" role="button" aria-label="${esc(loc.name)}">
-        <circle class="h" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15"/>
-        <circle class="core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr}" fill="${col}" fill-opacity="${l ? .92 : .42}" stroke="#fff" stroke-width="1.7"/>
-        <text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${east ? "start" : "end"}">${esc(loc.name)}</text>
-      </g>`;
-  }).join("");
-  $("#map-svg").innerHTML = `<svg viewBox="0 0 ${box.W} ${box.H}" role="img" aria-label="מפת יישובים עם תוצאות אמת">
-      <defs><filter id="mapShadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0B2740" flood-opacity=".18"/></filter></defs>
-      <rect width="${box.W}" height="${box.H}" fill="#DCE7EE" rx="12"/>
-      <path class="landmass" d="${path(R.geo.outline)}" filter="url(#mapShadow)"/>
-      <path class="greenline" d="${path(R.geo.greenline)}"/>
-      ${dots}
-    </svg>`;
-  const used = [...new Set(R.localities.map(l => lead(l)?.id).filter(Boolean))];
+/* שלב 1 של המודל הדמוגרפי + שורת המקור של שלב 2 */
+function renderResultsBase() {
+  const R = S.regions, r22 = S.hist ? histBlocs(S.hist.actual || {}, S.hist.blocs || BLOCS_2022).netanyahu : 64;
+  $("#nat-stats").innerHTML = natStatsHTML();
+  $("#base-blocs").innerHTML = baseBlocsHTML();
+  $("#map-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> זו נקודת המוצא של כל בדיקה באתר — וגם האזהרה שלה. רוב של ${r22} אינו ״בסיס״ מובטח: בקולות הגושים היו שקולים, וההכרעה נפלה על אחוז החסימה. לכן התחזית סופרת גם רשימות שמתחת לסף, ולא רק מנדטים, ולכן שינוי קטן בגודל הקבוצות (שלבים 2–4) יכול להכריע.`;
+  const votersSum = S.demo ? S.demo.sectors.reduce((t, x) => t + x.eligible2022 * x.turnout, 0) : 0;
+  const rs = R.religiosity.source, as = R.sectors.find(x => x.id === "arab")?.source;
+  $("#relig-source").innerHTML = `${votersSum ? `סכום המצביעים לפי הקבוצות (~${fmt(Math.round(votersSum / 1000) * 1000)}) גבוה מעט ממספר הקולות הכשרים (${fmt(R.national.valid)}): שיעורי ההצבעה של הקבוצות הם אומדנים ממקורות שונים, וכוללים גם קולות פסולים. ` : ""}${esc(R.religiosity.title)} — מקור: <a href="${esc(rs.url)}" target="_blank" rel="noopener">${esc(rs.name)} ↗</a>${as ? `. המגזר הערבי — מקור: <a href="${esc(as.url)}" target="_blank" rel="noopener">${esc(as.name)} ↗</a>` : ""}`;
+}
+
+/* עמוד "בחירות 2022": התוצאה הלאומית, המפה, רשימת היישובים ופילוחי המגזרים */
+function renderRegions() {
+  const R = S.regions;
+  $("#r22-stats").innerHTML = natStatsHTML();
+  $("#r22-blocs").innerHTML = baseBlocsHTML();
+
+  // ---- map: every locality from the official file that has coordinates ----
+  mapLocalities();
+  if (!renderLeafletMap()) $("#map-svg").innerHTML = mapSVG({ labelMin: 14000 });   // בלי Leaflet (למשל בקובץ היחיד) — מפת SVG
+  const used = [...new Set(S.mapLocs.map(l => l.top[0]?.id).filter(Boolean))].sort((a, b) => S.mapLocs.filter(l => l.top[0]?.id === b).length - S.mapLocs.filter(l => l.top[0]?.id === a).length);
   $("#map-legend").innerHTML = used.map(id => {
     const nm = R.national.parties.find(p => p.id === id)?.name || id;
     return `<span style="--c:${R.partyColors[id] || "#96A0AB"}"><i></i>${esc(nm)}</span>`;
-  }).join("") + `<span style="--c:#96A0AB"><i></i>אחוז הצבעה בלבד</span><span style="color:var(--ink-3)">— — הקו הירוק</span>`;
+  }).join("");
+  $("#map-count").textContent = `${fmt(S.mapLocs.length)} יישובים ו־${fmt(S.mapLocs.reduce((t, l) => t + l.valid, 0))} קולות על המפה (${pct(100 * S.mapLocs.reduce((t, l) => t + l.valid, 0) / R.national.valid)} מהקולות הכשרים).`;
+  renderMapList($("#map-q")?.value || "");
   renderLocDetail();
 
   // ---- sectors ----
@@ -1179,29 +1424,154 @@ function renderRegions() {
     draw();
   }
 
-  // ---- religiosity ----
-  $("#relig-title").textContent = R.religiosity.title;
-  $("#relig-cards").innerHTML = R.religiosity.rows.map(row => `<article class="sector" style="--c:${row.color}">
-      <h3 style="font-size:1.02rem">${esc(row.group)}</h3>
-      <div class="lbars" style="margin-top:12px">${row.items.map(it => `<div class="lbar" style="--c:${row.color}">
-        <span style="font-size:.78rem">${esc(it.name)}</span><i><b style="--w:${clamp(it.pct)}%"></b></i><span class="v">${pct(it.pct)}</span></div>`).join("")}</div>
-      ${row.note ? `<p style="margin:12px 0 0;color:var(--ink-3);font-size:.76rem">${esc(row.note)}</p>` : ""}
-    </article>`).join("");
+  // ---- what each section teaches about the 2026 forecast ----
+  const arabSec = S.demo?.sectors.find(x => x.id === "arab"), aSector = R.sectors.find(x => x.id === "arab");
+  const arabLists = aSector ? aSector.parties.filter(p => p.id !== "jewish").reduce((t, p) => t + p.pct, 0) / 100 : .857;
+  const per5 = arabSec ? arabSec.eligible2022 * 0.05 * arabLists / seatCost() : 0;
+  const yosh = R.sectors.find(x => x.id === "yosh");
+  $("#sectors-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> שיעור ההצבעה במגזר הערבי הוא המשתנה הגדול ביותר במפה: הוא נע בין ${pct(aSector?.turnoutPrev || 44.6)} ל־${pct(aSector?.turnoutDecadeAvg || 55.9)} בעשור האחרון, וכל 5 נקודות בו ≈ ${seatsHe(per5)} לרשימות הערביות — מנדטים שיוצאים בעיקר מגוש הימין. ${yosh ? `ביהודה ושומרון ההצבעה גבוהה ויציבה (${pct(yosh.turnout)}) ו־${pct(yosh.parties.slice(0, 2).reduce((t, p) => t + p.pct, 0))} מהקולות הולכים לשתי הרשימות הראשונות — בסיס קבוע שכמעט אינו זז בין סקר לסקר.` : ""}`;
+  $("#clusters-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> השסע המעמדי הוא שסע הגושים. ביישובים החלשים מובילות המפלגות החרדיות והערביות, במעמד הבינוני הליכוד, וביישובים החזקים יש עתיד. לכן מעבר קולות בין שתי מפלגות באותו אשכול כמעט לא משנה את מאזן הגושים — ואילו שינוי קטן בשיעור ההצבעה באשכולות 1–3 (החרדים והערבים גם יחד) מזיז אותו יותר מכל תנודה אחרת בסקרים.`;
+
 }
 
-function renderLocDetail() {
-  const R = S.regions, loc = R.localities[S.selectedLoc];
-  if (!loc) return;
-  const src = R.sources[loc.src] || { name: "—", url: "#" };
-  $("#loc-detail").innerHTML = `<p class="kicker">${esc(loc.region)} · ${esc(loc.sector)}</p>
+/* ---- הגשר בין המפה למודל ----
+   תיאור המגזר של כל יישוב במפה (טקסט חופשי בקובץ הנתונים) ממופה לקבוצות
+   הזהות של המודל הדמוגרפי, כדי שהמפה והכרטיסים יוכלו להצביע זה על זה. */
+const LOC_IDENTITY = { haredi:/חרדי/, dati:/דתי/, mesorati:/מסורתי|עיירת פיתוח|פריפריאל/, hiloni:/חילוני/, arab:/ערבי|דרוזי/ };
+const localityIdentities = loc => loc ? Object.keys(LOC_IDENTITY).filter(k => LOC_IDENTITY[k].test(loc.sector || "")) : [];
+
+/* תוצאת האמת של 2022 לכל קבוצת זהות במודל: ארבע הקבוצות היהודיות מסקר
+   ההגדרה הדתית, הקבוצה הערבית מתוצאות היישובים הערביים והדרוזיים. */
+function identityVote2022(secId) {
+  const R = S.regions, D = S.demo;
+  /* קולות 2022 של כל רשימה × חלקה של הקבוצה בקהל המצביעים שלה (הרכב המצביעים
+     במודל, מכויל על סקרי IDI) → כמה מקולות הקבוצה הלכו לכל רשימה. */
+  const rows = D.parties2022.map(p => ({ id: p.id, name: p.name, camp: p.camp, v: p.votes * (p.mix[secId] || 0) })).filter(x => x.v > 0);
+  const tot = rows.reduce((t, x) => t + x.v, 0);
+  if (!tot) return null;
+  rows.sort((a, b) => b.v - a.v);
+  const items = rows.slice(0, 4).map(x => ({ name: x.name, pct: 100 * x.v / tot, votes: x.v, color: R.partyColors[x.id] || "#96A0AB" }));
+  const campSum = c => rows.filter(x => c.includes(x.camp)).reduce((t, x) => t + x.v, 0);
+  const blocs = [
+    { k: "right", label: "ימין וחרדים", v: campSum(["right", "haredi"]), color: BLOCS.Right.color },
+    { k: "center", label: "מרכז–שמאל", v: campSum(["center"]), color: BLOCS.Left.color },
+    { k: "arab", label: "רשימות ערביות", v: campSum(["arab"]), color: BLOCS.Arabs.color }
+  ].filter(b => b.v / tot >= .005);
+  const rightShare = 100 * campSum(["right", "haredi"]) / tot;
+  const nm = { haredi:"חרדים", dati:"דתיים לאומיים", mesorati:"מסורתיים", hiloni:"חילונים" }[secId];
+  const note = secId === "arab" ? R.sectors.find(x => x.id === "arab")?.desc : R.religiosity.rows.find(r => r.group === nm)?.note;
+  return { items, blocs, note, rightShare, total: tot };
+}
+
+
+/* רשימת המפה: כל יישוב מהקובץ הרשמי שיש לו קואורדינטות; היישובים המסוקרים
+   (regions.localities) תורמים את התיאור, האזור וההערה שלהם. */
+function mapLocalities() {
+  if (S.mapLocs) return S.mapLocs;
+  const R = S.regions, key = n => String(n || "").replace(/[\s–—\-־"״׳']/g, "");
+  const curated = new Map(R.localities.map(l => [key(l.name), l]));
+  S.mapLocs = (R.localitiesFull || []).filter(l => l.lon != null && l.lat != null && l.name !== "מעטפות חיצוניות")
+    .map(l => { const c = curated.get(key(l.name)); return { ...l, region: c?.region, sector: c?.sector, note: c?.note, parties: c?.parties?.length >= 4 ? c.parties : null }; })
+    .sort((a, b) => b.valid - a.valid);
+  return S.mapLocs;
+}
+
+/* סיווג יישוב לקבוצות הזהות של המודל לפי דפוס ההצבעה שלו ב־2022 (ארבע הרשימות
+   המובילות), בתוספת מילות המפתח של היישובים המסוקרים. */
+function inferIdentities(loc) {
+  const p = Object.fromEntries((loc.top || []).map(t => [t.id, t.pct]));
+  const sum = (...ids) => ids.reduce((t, id) => t + (p[id] || 0), 0);
+  const out = new Set(localityIdentities(loc));
+  if (sum("utj", "shas") >= 45) out.add("haredi");
+  if (sum("raam", "hadash_taal", "balad") >= 45) out.add("arab");
+  if (sum("religious_zionism", "jewish_home") >= 30) out.add("dati");
+  if (sum("yesh_atid", "national_unity", "labor", "meretz", "yisrael_beiteinu") >= 45) out.add("hiloni");
+  if ((p.likud || 0) >= 38 && !out.has("haredi")) out.add("mesorati");
+  return [...out];
+}
+
+function mapSVG({ labelMin = 14000, big = true } = {}) {
+  const R = S.regions, locs = mapLocalities(), G = R.geo;
+  const [minLon, minLat, maxLon, maxLat] = G.bbox;
+  const box = { minLon, maxLon, minLat, maxLat, W: 520, H: 900, pad: 18 };
+  const path = pts => pts.map((p, i) => { const [x, y] = project(p[0], p[1], box); return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`; }).join("") + "Z";
+  const dots = locs.map((loc, i) => {
+    const [x, y] = project(loc.lon, loc.lat, box);
+    const l = loc.top[0], col = l ? (R.partyColors[l.id] || "#96A0AB") : "#96A0AB";
+    const rr = clamp(1.9 + Math.sqrt(loc.valid) / 28, 1.9, 11);
+    const label = loc.valid >= labelMin;
+    return `<g class="locdot${i === S.selectedLoc ? " sel" : ""}${label ? " lbl" : ""}" data-loc="${i}" tabindex="${label ? 0 : -1}" role="button" aria-label="${esc(loc.name)}"><title>${esc(loc.name)} · ${fmt(loc.valid)} קולות${l ? ` · ${esc(l.name)} ${pct(l.pct)}` : ""}</title>
+      <circle class="core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr.toFixed(1)}" fill="${col}" fill-opacity=".88" stroke="#fff" stroke-width="${rr > 4 ? 1.2 : .6}"/>
+      ${label ? `<text x="${(x + rr + 3).toFixed(1)}" y="${(y + 3).toFixed(1)}" text-anchor="start">${esc(loc.name)}</text>` : ""}</g>`;
+  }).join("");
+  return `<svg viewBox="0 0 ${box.W} ${box.H}" role="img" aria-label="מפת כל היישובים עם תוצאות האמת של 2022">
+      <defs><filter id="landShadow" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#0B2740" flood-opacity=".22"/></filter></defs>
+      <rect width="${box.W}" height="${box.H}" fill="#D6E4EC" rx="14"/>
+      <g filter="url(#landShadow)"><path class="landmass" d="${path(G.israel)}"/></g>
+      <path class="territory" d="${path(G.westbank)}"/>
+      <path class="territory" d="${path(G.gaza)}"/>
+      ${dots}
+    </svg>`;
+}
+
+function locDetailHTML(loc) {
+  const R = S.regions, ids = inferIdentities(loc);
+  const rows = loc.parties || loc.top;
+  return `<p class="kicker">${loc.region ? `${esc(loc.region)} · ${esc(loc.sector)}` : "תוצאות הכנסת ה־25"}</p>
     <h3>${esc(loc.name)}</h3>
-    <p class="lmeta">${loc.turnout ? `אחוז הצבעה ${pct(loc.turnout)}` : "תוצאות הכנסת ה־25"}</p>
-    ${loc.parties && loc.parties.length ? `<div class="lbars">${loc.parties.map(p => `<div class="lbar" style="--c:${R.partyColors[p.id] || "#96A0AB"}">
-        <span>${esc(p.name)}</span><i><b style="--w:${clamp(p.pct * 2.2)}%"></b></i><span class="v">${pct(p.pct)}</span></div>`).join("")}</div>`
-      : `<p style="color:var(--ink-2);font-size:.88rem;margin:0">למקור שברשותנו יש עבור יישוב זה נתון אחוז הצבעה בלבד, ולא פילוח מפלגתי. הפילוח יושלם אוטומטית בהרצת סקריפט הייבוא הרשמי.</p>`}
+    <p class="lmeta">${fmt(loc.valid)} קולות כשרים${loc.turnout ? ` · אחוז הצבעה ${pct(loc.turnout)}` : ""}</p>
+    <div class="lbars">${rows.map(p => `<div class="lbar" style="--c:${R.partyColors[p.id] || "#96A0AB"}">
+        <span>${esc(p.name)}</span><i><b style="--w:${clamp(p.pct * 2.2)}%"></b></i><span class="v">${pct(p.pct)}</span></div>`).join("")}</div>
     ${loc.note ? `<p style="margin:12px 0 0;color:var(--ink-3);font-size:.78rem">${esc(loc.note)}</p>` : ""}
-    <span class="src">מקור: <a href="${esc(src.url)}" target="_blank" rel="noopener">${esc(src.name)} ↗</a></span>`;
-  $$("#map-svg .locdot").forEach((g, i) => g.classList.toggle("sel", i === S.selectedLoc));
+    ${ids.length ? `<div class="loc-identity"><span>קבוצות הזהות במודל הדמוגרפי (לפי דפוס ההצבעה):</span>${ids.map(id => { const sec = S.demo.sectors.find(x => x.id === id); return `<a class="chip" href="#/demography" data-jump-sector="${id}" style="border-color:${sec?.color || "#ccc"}">${esc(sec?.name || id)}</a>`; }).join("")}</div>` : `<p class="loc-identity muted">דפוס הצבעה מעורב — ללא שיוך חד־משמעי לקבוצת זהות אחת.</p>`}
+    <span class="src">מקור: <a href="${esc(R.sources.official?.url || "#")}" target="_blank" rel="noopener">${esc(R.sources.official?.name || "ועדת הבחירות המרכזית")} ↗</a></span>`;
+}
+
+/* ---- מפה אמיתית (Leaflet + אריחי OpenStreetMap), אם הספרייה נטענה ---- */
+function renderLeafletMap() {
+  if (typeof L === "undefined" || !$("#map-svg")) return false;
+  const R = S.regions, locs = mapLocalities();
+  if (S.leaflet) { S.leaflet.map.invalidateSize(); return true; }
+  const box = $("#map-svg"); box.classList.add("leaflet-host"); box.innerHTML = "";
+  const map = L.map(box, { preferCanvas: true, zoomControl: true, scrollWheelZoom: true, attributionControl: true, minZoom: 6, maxZoom: 15 });
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 }).addTo(map);
+  map.attributionControl.setPrefix(false);
+  map.fitBounds([[29.45, 34.2], [33.35, 35.95]]);
+  const layer = L.layerGroup().addTo(map), markers = [];
+  const rOf = v => clamp(3 + Math.sqrt(v) / 22, 3, 22);
+  locs.forEach((loc, i) => {
+    const l = loc.top[0], col = l ? (R.partyColors[l.id] || "#96A0AB") : "#96A0AB";
+    const m = L.circleMarker([loc.lat, loc.lon], { radius: rOf(loc.valid), color: "#fff", weight: 1, fillColor: col, fillOpacity: .85 });
+    m.bindTooltip(`<b>${esc(loc.name)}</b><br>${fmt(loc.valid)} קולות${l ? ` · ${esc(l.name)} ${pct(l.pct)}` : ""}`, { direction: "top", sticky: true, className: "map-tip" });
+    m.on("click", () => { S.selectedLoc = i; S.locPicked = true; renderLocDetail(); $$("#map-list [data-loc]").forEach(b => b.classList.toggle("sel", Number(b.dataset.loc) === i)); });
+    m.addTo(layer); markers[i] = m;
+  });
+  S.leaflet = { map, markers, base: rOf };
+  return true;
+}
+function leafletSelect(i, fly) {
+  const lf = S.leaflet; if (!lf) return;
+  lf.markers.forEach((m, k) => m.setStyle({ color: k === i ? "#141A21" : "#fff", weight: k === i ? 3 : 1 }));
+  const m = lf.markers[i];
+  if (m) { m.bringToFront(); if (fly) lf.map.flyTo(m.getLatLng(), Math.max(lf.map.getZoom(), 10), { duration: .8 }); }
+}
+
+function renderLocDetail(fly = false) {
+  const loc = mapLocalities()[S.selectedLoc];
+  if (!loc) return;
+  const box = $("#loc-detail"); if (box) box.innerHTML = locDetailHTML(loc);
+  $$("#map-svg .locdot").forEach(g => g.classList.toggle("sel", Number(g.dataset.loc) === S.selectedLoc));
+  leafletSelect(S.selectedLoc, fly);
+  /* יישוב שהמשתמש בחר במפה מדגיש את שורות הקבוצות שמרכיבות אותו בטבלאות (לא בברירת המחדל) */
+  const ids = inferIdentities(loc);
+  $$("#demo-main [data-sector]").forEach(c => c.classList.toggle("is-linked", !!S.locPicked && ids.includes(c.dataset.sector)));
+}
+
+function renderMapList(q) {
+  const locs = mapLocalities(), qq = q.trim();
+  const rows = (qq ? locs.filter(l => l.name.includes(qq)) : locs).slice(0, 40);
+  $("#map-list").innerHTML = rows.map(l => { const i = locs.indexOf(l), t = l.top[0]; return `<button type="button" data-loc="${i}" class="${i === S.selectedLoc ? "sel" : ""}"><b>${esc(l.name)}</b><span>${fmt(l.valid)} קולות${t ? ` · <i style="background:${S.regions.partyColors[t.id] || "#96A0AB"}"></i>${esc(t.name)} ${pct(t.pct)}` : ""}</span></button>`; }).join("") || `<p class="empty">לא נמצא יישוב בשם הזה.</p>`;
+  $("#map-list-count").textContent = qq ? `${rows.length} תוצאות` : `${fmt(locs.length)} יישובים · הגדולים ראשונים · 40 מוצגים`;
 }
 
 /* ============================================================
@@ -1237,8 +1607,11 @@ function runDemoModel(years) {
   const pairs = D.surplusAgreements.filter(([a, b]) => passing[a] != null && passing[b] != null);
   const seats = baderOfer(passing, pairs, 120);
   const camp = Object.fromEntries(D.parties2022.map(p => [p.id, p.camp]));
+  /* חלקי הגושים נמדדים לפי הכלל האחיד באתר: רשימה נספרת רק אם קיבלה 1.5% ומעלה
+     ב־2022 (הבית היהודי, 1.19%, אינו נספר באף גוש). המנדטים מחושבים מכל הרשימות. */
+  const counted = new Set(D.parties2022.filter(p => 100 * p.votes / D.meta.validVotes2022 >= CROSS_MIN_SHARE).map(p => p.id));
   const campVotes = {};
-  Object.entries(votes).forEach(([id, v]) => { campVotes[camp[id]] = (campVotes[camp[id]] || 0) + v; });
+  Object.entries(votes).forEach(([id, v]) => { if (counted.has(id)) campVotes[camp[id]] = (campVotes[camp[id]] || 0) + v; });
   const campTotal = Object.values(campVotes).reduce((a, b) => a + b, 0);
   return { votes, totalValid, thr, passing, seats, campVotes, campTotal,
            failed: Object.keys(votes).filter(k => !(k in passing)) };
@@ -1250,32 +1623,124 @@ const blocSeats = m => largestRemainder(Object.fromEntries(
 
 const BLOC_LABEL = { right: "ימין", center: "שמאל", haredi: "חרדים", arab: "ערבים" };
 
+const seatsHe = n => Math.abs(Math.round(n * 10) / 10) === 1 ? "מנדט אחד" : `${r1(Math.abs(n))} מנדטים`;
+const pointsHe = n => Math.abs(Math.round(n * 10) / 10) === 1 ? "נקודת אחוז אחת" : `${r1(Math.abs(n))} נקודות אחוז`;
+const kfmt = v => fmt(Math.round(v / 1000) * 1000);          // עיגול לאלפים — מספרים מוערכים
+
 function renderDemography() {
-  renderDemoControls();
-  renderDemoComparison();
-  const P=demoParams();
-  $('#demo-sectors').innerHTML=`<div class="tablewrap card"><table><caption>בעלי זכות בחירה ושיעורי השתתפות · הנחות המודל</caption><tr><th>קבוצה</th><th>2022</th><th>2026 בתרחיש</th><th>גידול שנתי</th><th>הצבעה</th></tr>${S.demo.sectors.map(s=>`<tr><th>${esc(s.name)}</th><td>${fmt(s.eligible2022)}</td><td>${fmt(s.eligible2022*Math.pow(1+P[s.id].growth,S.demo.meta.years))}</td><td>${pct(P[s.id].growth*100)}</td><td>${pct(P[s.id].turnout*100)}</td></tr>`).join('')}</table></div>`;
+  renderIdentityTable();      // שלב 2 — מי הצביע ב־2022
+  renderDemoControls();       // שלב 3 — ההנחות
+  renderResultTable();        // שלב 4א — כמה יצביעו ב־2026
+  renderDemoComparison();     // שלב 4ב — רשימת השינוי והמסלול השנתי (upgrade.js)
+  renderBlocPies();           // שלב 4ב — שתי העוגות במקום עמודות האחוזים
+  const m0 = runDemoModel(0), m1 = runDemoModel(S.demo.meta.years);
+  const sh = (m, c) => 100 * (m.campVotes[c] || 0) / m.campTotal;
+  const d = (sh(m1, "right") + sh(m1, "haredi")) - (sh(m0, "right") + sh(m0, "haredi"));
+  const seats = d / 100 * 120;
+  const scen = S.scenarioOptions?.demographic ?? 2;
+  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים, וזה מה שעומד מאחורי ״התוספת הדמוגרפית״ של ${scen} מנדטים בתחזית הברומטר שבתמונת המצב: ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על תוספת גדולה יותר" : "המודל כאן מצביע על תוספת קטנה יותר"}. הזיזו את הידיות בשלב 3 כדי לראות כמה ההנחה הזו רגישה.`;
 }
 
+/* תא ראשון בכל טבלה: נקודת צבע + שם הקבוצה. אותו סדר שורות בכל שלב. */
+const groupCell = s => `<th scope="row" class="gcell"><i style="background:${s.color}"></i>${esc(s.name)}</th>`;
+/* אותו סדר בכל השלבים: מהקבוצה הגדולה לקטנה */
+const sectorsBySize = () => [...S.demo.sectors].sort((a, b) => b.eligible2022 - a.eligible2022);
+const linkedNow = () => S.locPicked ? localityIdentities(S.regions?.localities?.[S.selectedLoc]) : [];
+
+/* שלב 2 — מי הצביע ב־2022: גודל, הצבעה, ארבע הרשימות, גושים */
+function renderIdentityTable() {
+  const D = S.demo, linked = linkedNow(), secs = sectorsBySize();
+  const totalEl = D.sectors.reduce((t, s) => t + s.eligible2022, 0);
+  $("#electorate-bar").innerHTML = `<div class="elect-bar" role="img" aria-label="${esc(secs.map(s => `${s.name} ${pct(100 * s.eligible2022 / totalEl)}`).join(", "))}">${
+      secs.map(s => `<span style="flex:${s.eligible2022};background:${s.color}" title="${esc(s.name)}: ${fmt(s.eligible2022)} בעלי זכות בחירה">${100 * s.eligible2022 / totalEl >= 8 ? `${esc(s.name)} ${Math.round(100 * s.eligible2022 / totalEl)}%` : ""}</span>`).join("")
+    }</div><p class="elect-note">${fmt(totalEl)} בעלי זכות בחירה ב־2022, לפי חמש קבוצות זהות</p>`;
+  let rightTop = null, rightLow = null;
+  $("#identity-table").innerHTML = `<table class="dtable"><thead><tr><th>קבוצה</th><th class="n">בעלי זכות בחירה</th><th class="n">הצביעו</th><th class="n">מצביעים</th><th>לאילו רשימות · ארבע הגדולות</th><th>לאיזה גוש</th></tr></thead><tbody>${
+    secs.map(s => {
+      const v = S.regions ? identityVote2022(s.id) : null;
+      const voters = s.eligible2022 * s.turnout;
+      if (v) { if (!rightTop || v.rightShare > rightTop.v) rightTop = { n: s.name, v: v.rightShare }; if (!rightLow || v.rightShare < rightLow.v) rightLow = { n: s.name, v: v.rightShare }; }
+      return `<tr data-sector="${s.id}" class="${linked.includes(s.id) ? "is-linked" : ""}" style="--c:${s.color}">
+        ${groupCell(s)}
+        <td class="n">${fmt(s.eligible2022)}</td>
+        <td class="n">${pct(s.turnout * 100)}</td>
+        <td class="n">~${kfmt(voters)}</td>
+        <td>${v ? `<div class="pbar">${v.items.map(it => `<span style="flex:${it.pct};background:${it.color}" title="${esc(it.name)} ${pct(it.pct)}"></span>`).join("")}<span class="rest" style="flex:${Math.max(0, 100 - v.items.reduce((t, it) => t + it.pct, 0))}"></span></div>
+            <div class="plegend">${v.items.map(it => `<span><i style="background:${it.color}"></i>${esc(it.name)} <b>${pct(it.pct)}</b> <small>~${kfmt(it.votes)}</small></span>`).join("")}</div>` : "—"}</td>
+        <td>${v ? `<div class="pbar">${v.blocs.map(b => `<span style="flex:${b.v};background:${b.color}" title="${esc(b.label)}"></span>`).join("")}</div>
+            <div class="plegend">${v.blocs.map(b => `<span><i style="background:${b.color}"></i>${esc(b.label)} <b>${pct(100 * b.v / v.total)}</b> <small>~${kfmt(b.v)}</small></span>`).join("")}</div>` : "—"}</td>
+      </tr>`;
+    }).join("")}</tbody></table>`;
+  $("#identity-takeaway").innerHTML = rightTop ? `<b>מה לומדים מזה לתחזית:</b> הזהות מנבאת את ההצבעה כמעט לחלוטין: ${esc(rightTop.n)} נותנים ${Math.round(rightTop.v)}% לימין ולחרדים, ${esc(rightLow.n)} ${Math.round(rightLow.v)}%. לכן שינוי בגודל הקבוצות (שלב 3) מזיז את מאזן הגושים גם בלי שאף אחד ישנה את דעתו — וזה בדיוק מה שהמודל מודד. הפילוח הפנימי של החילונים — כ־${Math.round(identityVote2022("hiloni")?.rightShare || 0)}% ימין מול ${Math.round(100 - (identityVote2022("hiloni")?.rightShare || 0))}% מרכז־שמאל — נגזר מהצבעתם, לא ממדידה נפרדת.` : "";
+}
+
+/* שלב 3 — ההנחות: אחוז הצבעה וגידול, ידית לכל קבוצה */
 function renderDemoControls() {
-  const D = S.demo, P = demoParams();
-  $("#demo-controls").innerHTML = D.sectors.map(s => {
-    const g = P[s.id].growth, t = P[s.id].turnout;
-    const size2022 = s.eligible2022, size2026 = Math.round(size2022 * Math.pow(1 + g, D.meta.years));
-    return `<article class="card pad" style="border-top:4px solid ${s.color}">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
-        <h3 style="font-size:1.05rem">${esc(s.name)}</h3>
-        <span style="color:var(--ink-3);font-size:.76rem">${fmt(size2022)} → <b style="color:${s.color}">${fmt(size2026)}</b></span></div>
-      <label style="display:block;margin-top:14px">
-        <span style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-2);font-weight:600">גידול שנתי<b class="num">${(g * 100).toFixed(1)}%</b></span>
-        <input type="range" min="-1" max="6" step="0.1" value="${(g * 100).toFixed(1)}" data-sec="${s.id}" data-kind="growth" style="width:100%;accent-color:${s.color}"></label>
-      <label style="display:block;margin-top:10px">
-        <span style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-2);font-weight:600">אחוז הצבעה<b class="num">${(t * 100).toFixed(0)}%</b></span>
-        <input type="range" min="35" max="95" step="1" value="${(t * 100).toFixed(0)}" data-sec="${s.id}" data-kind="turnout" style="width:100%;accent-color:${s.color}"></label>
-      <p style="margin:12px 0 0;color:var(--ink-3);font-size:.78rem">${esc(s.turnoutNote ? s.turnoutNote + " " : "")}${esc(s.growthNote)}</p>
-      <span class="src">מקור: <a href="${esc(D.sources[s.src].url)}" target="_blank" rel="noopener">${esc(D.sources[s.src].name)} ↗</a></span>
-    </article>`;
+  const D = S.demo, P = demoParams(), linked = linkedNow();
+  $("#demo-controls").innerHTML = `<table class="dtable dtable-ctl"><thead><tr><th>קבוצה</th><th>אחוז הצבעה ב־2026 <small>(ב־2022)</small></th><th>גידול שנתי בבעלי זכות הבחירה</th><th>על מה זה מבוסס</th></tr></thead><tbody>${
+    sectorsBySize().map(s => {
+      const g = P[s.id].growth, t = P[s.id].turnout;
+      return `<tr data-sector="${s.id}" class="${linked.includes(s.id) ? "is-linked" : ""}" style="--c:${s.color}">
+        ${groupCell(s)}
+        <td><label><span class="identity-lbl"><b class="num">${(t * 100).toFixed(0)}%</b><small>ב־2022: ${pct(s.turnout * 100)}</small></span>
+          <input type="range" min="35" max="95" step="1" value="${(t * 100).toFixed(0)}" data-sec="${s.id}" data-kind="turnout" aria-label="אחוז הצבעה · ${esc(s.name)}"></label></td>
+        <td><label><span class="identity-lbl"><b class="num">${(g * 100).toFixed(1)}%</b><small>${fmt(s.eligible2022)} → ${fmt(s.eligible2022 * Math.pow(1 + g, D.meta.years))}</small></span>
+          <input type="range" min="-1" max="6" step="0.1" value="${(g * 100).toFixed(1)}" data-sec="${s.id}" data-kind="growth" aria-label="גידול שנתי · ${esc(s.name)}"></label></td>
+        <td class="why"><p><b>גידול אוכלוסייה:</b> ${pct(s.growth * 100)} בשנה. <b>הצבעה ב־2022:</b> ${pct(s.turnout * 100)}.</p><span class="src">מקור: <a href="${esc(D.sources[s.src].url)}" target="_blank" rel="noopener">${esc(D.sources[s.src].name)} ↗</a></span></td>
+      </tr>`;
+    }).join("")}</tbody></table>`;
+  const changed = Object.keys(S.demoOverrides).length;
+  $("#assump-note").textContent = changed ? "ההנחות שונו מערכי הבסיס — שלב 4 מחושב לפיהן." : "ההנחות הן ערכי הבסיס מהמקורות. הרגלי ההצבעה של 2022 אינם משתנים.";
+}
+
+/* שלב 4א — 120 מנדטים לא משתנים. מה שמשתנה הוא חלקה של כל קבוצה מכלל המצביעים,
+   ולפי דפוס ההצבעה שלה ב־2022 — כמה מנדטים עוברים בין הגושים. הסכום תמיד 0. */
+function renderResultTable() {
+  const D = S.demo, P = demoParams(), linked = linkedNow(), years = D.meta.years, secs = sectorsBySize();
+  const rows = secs.map(s => {
+    const g = P[s.id].growth, t = P[s.id].turnout, v = S.regions ? identityVote2022(s.id) : null;
+    const v22 = s.eligible2022 * s.turnout, v26 = s.eligible2022 * Math.pow(1 + g, years) * t;
+    return { s, v22, v26, right: v ? v.rightShare / 100 : 0 };
+  });
+  const T22 = rows.reduce((t, r) => t + r.v22, 0), T26 = rows.reduce((t, r) => t + r.v26, 0);
+  let netRight = 0;
+  const body = rows.map(r => {
+    const sh22 = r.v22 / T22, sh26 = r.v26 / T26, d = sh26 - sh22, seats = d * 120, toR = seats * r.right, toO = seats - toR;
+    netRight += toR;
+    const sg = x => Math.abs(x) < .05 ? "0" : `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+    return `<tr data-sector="${r.s.id}" class="${linked.includes(r.s.id) ? "is-linked" : ""}" style="--c:${r.s.color}">
+      ${groupCell(r.s)}
+      <td class="n">~${kfmt(r.v22)}<small>${pct(sh22 * 100)} מהמצביעים</small></td>
+      <td class="n"><b>~${kfmt(r.v26)}</b><small>${pct(sh26 * 100)} מהמצביעים</small></td>
+      <td class="n delta ${d >= 0 ? "up" : "down"}">${d >= 0 ? "+" : "−"}${r1(Math.abs(d * 100))} נק׳</td>
+      <td class="n"><b class="delta ${seats >= 0 ? "up" : "down"}">${sg(seats)}</b></td>
+      <td class="n">${sg(toR)}</td>
+      <td class="n">${sg(toO)}</td>
+    </tr>`;
   }).join("");
+  const sg = x => Math.abs(x) < .05 ? "0" : `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+  $("#result-table").innerHTML = `<table class="dtable"><thead><tr><th>קבוצה</th><th class="n">מצביעים 2022</th><th class="n">מצביעים צפויים 2026</th><th class="n">שינוי בחלק</th><th class="n">≈ מנדטים</th><th class="n">לימין ולחרדים</th><th class="n">למרכז־שמאל ולערבים</th></tr></thead><tbody>${body}</tbody>
+    <tfoot><tr><th scope="row">סך הכול</th><td class="n">~${kfmt(T22)}</td><td class="n"><b>~${kfmt(T26)}</b></td><td class="n">0</td><td class="n"><b>0</b> <small>120 נשארים 120</small></td><td class="n delta ${netRight >= 0 ? "up" : "down"}"><b>${sg(netRight)}</b></td><td class="n delta ${-netRight >= 0 ? "up" : "down"}"><b>${sg(-netRight)}</b></td></tr></tfoot></table>
+    <p class="sec-note" style="margin-top:8px">בכנסת יש 120 מנדטים, וזה לא משתנה. מה שמשתנה הוא חלקה של כל קבוצה מכלל המצביעים — קבוצה שגדלה מהר יותר מהאחרות ״לוקחת״ מנדטים מהן. ״≈ מנדטים״ = השינוי בחלק × 120; לאן הם הולכים — לפי דפוס ההצבעה של הקבוצה ב־2022. החלוקה המדויקת בבדר־עופר מוצגת בגושים שלמטה.</p>`;
+}
+
+/* שלב 4ב — שתי עוגות: יחסי הכוחות בין ארבעת הגושים ב־2022 ובתרחיש 2026 */
+function donutSVG(segs, centerBig, centerSmall) {
+  const R = 60, C = 2 * Math.PI * R; let off = 0;
+  const arcs = segs.map(sg => { const len = C * sg.share; const a = `<circle r="${R}" cx="100" cy="100" fill="none" stroke="${sg.color}" stroke-width="30" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 100 100)"><title>${esc(sg.label)} ${pct(sg.share * 100)}</title></circle>`; off += len; return a; }).join("");
+  return `<svg viewBox="0 0 200 200" class="donut" role="img" aria-label="${esc(segs.map(sg => `${sg.label} ${pct(sg.share * 100)}`).join(", "))}">${arcs}
+    <text x="100" y="96" text-anchor="middle" class="d-big">${esc(centerBig)}</text><text x="100" y="116" text-anchor="middle" class="d-small">${esc(centerSmall)}</text></svg>`;
+}
+function renderBlocPies() {
+  const D = S.demo, order = ["right", "haredi", "arab", "center"], labels = { right: "ימין", haredi: "חרדים", arab: "ערבים", center: "מרכז–שמאל" };
+  const m0 = runDemoModel(0), m1 = runDemoModel(D.meta.years);
+  const pie = (m, year, note) => {
+    const segs = order.map(c => ({ label: labels[c], color: D.camps[c].color, share: (m.campVotes[c] || 0) / m.campTotal }));
+    const rh = 100 * (segs[0].share + segs[1].share);
+    return `<article class="pie"><p class="kicker">${note}</p><h3>${year}</h3>${donutSVG(segs, pct(rh), "ימין וחרדים")}
+      <ul class="pie-legend">${segs.map(sg => `<li><i style="background:${sg.color}"></i>${esc(sg.label)}<b>${pct(sg.share * 100)}</b></li>`).join("")}</ul></article>`;
+  };
+  $("#demo-share-chart").innerHTML = `<div class="pies">${pie(m0, 2022, "בסיס קבוע · תוצאות 2022")}<div class="pie-arrow" aria-hidden="true">←</div>${pie(m1, 2026, "תרחיש · לפי ההנחות שנבחרו")}</div>`;
 }
 
 /* ============================================================
@@ -1296,24 +1761,87 @@ const KNESSET_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 4
 /* ============================================================
    10. מקורות
    ============================================================ */
+const SOURCES = [
+  { group: "תוצאות בחירות", items: [
+    ["ועדת הבחירות המרכזית — תוצאות הכנסת ה־25", "https://votes25.bechirot.gov.il/", "הקולות והמנדטים הסופיים של 2022, לכל רשימה ולכל יישוב"],
+    ["data.gov.il — קובץ התוצאות לפי יישובים", "https://data.gov.il/dataset/votes-knesset", "1,216 היישובים שעל המפה; המגזר החרדי ויהודה ושומרון מחושבים ממנו"],
+    ["ועדת הבחירות — הכנסת ה־24 (2021)", "https://votes24.bechirot.gov.il/", "תוצאות האמת שמולן נמדדים המכונים ב־2021"],
+    ["ועדת הבחירות — הכנסת ה־23 (2020)", "https://votes23.bechirot.gov.il/", "תוצאות האמת שמולן נמדדים המכונים ב־2020"]
+  ]},
+  { group: "סקרים", items: [
+    ["ויקיפדיה — הבחירות לכנסת ה־24: סקרים", "https://he.wikipedia.org/wiki/הבחירות_לכנסת_העשרים_וארבע#סקרים", "סקרי החודש שלפני בחירות 2021, לכיול המכונים"],
+    ["ויקיפדיה — הבחירות לכנסת ה־23: סקרים", "https://he.wikipedia.org/wiki/הבחירות_לכנסת_העשרים_ושלוש#סקרים", "סקרי החודש שלפני בחירות 2020, לכיול המכונים"],
+    ["ויקיפדיה — Opinion polling for the 2022 election", "https://en.wikipedia.org/wiki/Opinion_polling_for_the_2022_Israeli_legislative_election", "אימות סקר־סקר של ארכיון 2022 של האתר"],
+    ["הפרסומים עצמם — חדשות 12, חדשות 13, כאן 11, ערוץ 14, מעריב, ישראל היום, i24NEWS, זמן ישראל, וואלה, 103FM, גל״צ", "#/polls", "סקרי 2026 נאספים מהפרסום המקורי, עם תאריך, מכון וכלי תקשורת לצד כל סקר"]
+  ]},
+  { group: "דמוגרפיה ומגזרים", items: [
+    ["מרכז טאוב — ישראל 2025: צומת דמוגרפי", "https://www.taubcenter.org.il/en/research/snr-2025-demography/", "קצבי הגידול של הקבוצות במודל הדמוגרפי"],
+    ["המכון הישראלי לדמוקרטיה — הצבעה לפי הגדרה דתית", "https://www.idi.org.il/articles/64803", "איך הצביעה כל קבוצת זהות ב־2022; כיול הרכב המצביעים"],
+    ["המכון הישראלי לדמוקרטיה — המגזר הערבי בבחירות 2022", "https://en.idi.org.il/articles/47986", "שיעור ההצבעה והחלוקה בין הרשימות במגזר הערבי"],
+    ["המכון הישראלי לדמוקרטיה — חרדים בישראל 2050", "https://en.idi.org.il/articles/63385", "גודל האוכלוסייה החרדית וקצב גידולה"],
+    ["דבר — תוצאות הבחירות לפי מצב כלכלי", "https://www.davar1.co.il/407506/", "ההצבעה לפי אשכול חברתי־כלכלי"]
+  ]},
+  { group: "המפה", items: [
+    ["OpenStreetMap", "https://www.openstreetmap.org/", "גבולות ישראל, יהודה ושומרון ורצועת עזה במפה"],
+    ["ויקינתונים (Wikidata)", "https://www.wikidata.org/", "מיקום היישובים, לפי סמל היישוב הרשמי (מאפיין P3466)"]
+  ]},
+  { group: "רקע", items: [
+    ["Times of Israel — ניתוח פערי הקולות בין הגושים ב־2022", "https://www.timesofisrael.com/netanyahu-won-8-seat-majority-over-his-opponents-despite-near-parity-in-raw-votes/", "ההקשר ל״26,824 קולות״"],
+    ["IFES Election Guide", "https://www.electionguide.org/elections/id/3970/", "סיכום התוצאות הרשמיות באנגלית"]
+  ]}
+];
 function renderSources() {
-  const list = [
-    ["ועדת הבחירות המרכזית — תוצאות הכנסת ה־25", "https://votes25.bechirot.gov.il/"],
-    ["IFES Election Guide — התוצאות הרשמיות המלאות", "https://www.electionguide.org/elections/id/3970/"],
-    ["המכון הישראלי לדמוקרטיה — המגזר הערבי בבחירות 2022", "https://en.idi.org.il/articles/47986"],
-    ["המכון הישראלי לדמוקרטיה — הצבעה לפי הגדרה דתית", "https://www.idi.org.il/articles/64803"],
-    ["המכון הישראלי לדמוקרטיה — חרדים בישראל 2050", "https://en.idi.org.il/articles/63385"],
-    ["מרכז טאוב — ישראל 2025: צומת דמוגרפי", "https://www.taubcenter.org.il/en/research/snr-2025-demography/"],
-    ["מועצת יש״ע — תוצאות ביהודה, שומרון ובקעת הירדן", "https://myesha.org.il/?CategoryID=251&ArticleID=10295"],
-    ["דבר — תוצאות הבחירות לפי מצב כלכלי", "https://www.davar1.co.il/407506/"],
-    ["וואלה — תוצאות אמת לפי יישובים", "https://elections.walla.co.il/item/3538147"],
-    ["Times of Israel — ניתוח פערי הקולות בין הגושים", "https://www.timesofisrael.com/netanyahu-won-8-seat-majority-over-his-opponents-despite-near-parity-in-raw-votes/"]
-  ];
-  const html = list.map(([n, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener"><span>${esc(n)}</span><span aria-hidden="true">↗</span></a>`).join("");
-  $("#footer-sources").innerHTML = html;
-  $("#method-sources").innerHTML = list.map(([n, u]) =>
-    `<a class="card pad" href="${esc(u)}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;justify-content:space-between;gap:14px;align-items:center">
-      <span style="font-size:.9rem;font-weight:600">${esc(n)}</span><span aria-hidden="true" style="color:var(--navy)">↗</span></a>`).join("");
+  const flat = SOURCES.flatMap(g => g.items).filter(([, u]) => !u.startsWith("#"));
+  $("#footer-sources").innerHTML = flat.map(([n, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener"><span>${esc(n)}</span><span aria-hidden="true">↗</span></a>`).join("");
+  const box = $("#method-sources"); if (!box) return;
+  box.innerHTML = SOURCES.map(g => `<div class="sources-group"><h3>${esc(g.group)}</h3><ul>${g.items.map(([n, u, why]) =>
+    `<li><a href="${esc(u)}" ${u.startsWith("#") ? "" : 'target="_blank" rel="noopener"'}>${esc(n)}${u.startsWith("#") ? "" : ' <span aria-hidden="true">↗</span>'}</a><span>${esc(why)}</span></li>`).join("")}</ul></div>`).join("");
+}
+
+/* עמוד "איך מחשבים": כל שלב עם המספר החי של היום */
+function renderMethod() {
+  renderSources();
+  const cur = S.cur, polls = S.forecastPolls || [];
+  const firms = [...new Set(polls.map(p => firmOf(p.sourceId).firm))], outlets = [...new Set(polls.map(p => p.channelHebrewName))];
+  const heD = iso => new Date(iso).toLocaleDateString("he-IL", { timeZone: "Asia/Jerusalem", day: "2-digit", month: "2-digit", year: "numeric" });
+  $("#m-live-polls").innerHTML = [[polls.length, "סקרים ב־8 הימים האחרונים"], [firms.length, "מכונים"], [outlets.length, "כלי תקשורת"], [heD(cur.generatedAt), "עודכן לאחרונה"]]
+    .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+  $("#m-outlets").innerHTML = [...new Set(cur.polls.map(p => p.channelHebrewName))].map(name => {
+    const l = S.firms.outletLogos[name];
+    return `<span title="${esc(name)}">${l ? `<img src="${esc(l)}" alt="${esc(name)}" loading="lazy">` : esc(name.slice(0, 3))}</span>`;
+  }).join("");
+  // 2 · firms and their weight in the mix
+  const W = S.series.reduce((t, s) => t + firmScore(s.meta), 0) || 1;
+  $("#m-firms").innerHTML = `<thead><tr><th>מכון</th><th>דרגה</th><th class="n">ציון</th><th class="n">סקרים בחלון</th><th class="n">משקל בתחזית</th></tr></thead><tbody>${
+    S.series.slice().sort((a, b) => firmScore(b.meta) - firmScore(a.meta)).map(s => {
+      const sc = firmScore(s.meta), g = s.meta.calibrated ? gradeOf(sc) : { key: "none", label: "ללא דירוג · 70" };
+      return `<tr><td><strong>${esc(s.meta.he)}</strong></td><td><span class="grade ${g.key}">${esc(g.label)}</span></td><td class="n">${r1(sc)}</td><td class="n">${s.polls.length}</td><td class="n"><b>${r1(100 * sc / W)}%</b></td></tr>`;
+    }).join("")}</tbody>`;
+  // 3 · simple vs weighted, per party
+  const simple = forecast("simple", HIDE_FROM_HOME), weighted = forecast("weighted", HIDE_FROM_HOME);
+  const ss = allocateSeats(simple.parties), ws = allocateSeats(weighted.parties);
+  const ids = [...new Set([...Object.keys(ss), ...Object.keys(ws)])].sort((a, b) => (ws[b] || 0) - (ws[a] || 0));
+  $("#m-average").innerHTML = `<thead><tr><th>מפלגה</th><th class="n">ממוצע פשוט</th><th class="n">משוקלל אמינות</th><th class="n">הפרש</th></tr></thead><tbody>${
+    ids.map(id => { const d = (ws[id] || 0) - (ss[id] || 0); return `<tr><td><strong>${esc(partyMeta(id).name)}</strong></td><td class="n">${ss[id] || 0}</td><td class="n"><b>${ws[id] || 0}</b></td><td class="n"><span dir="ltr" class="chip ${d > 0 ? "good" : d < 0 ? "bad" : ""}">${d > 0 ? "+" : ""}${d}</span></td></tr>`; }).join("")
+  }<tr><th scope="row">סך הכול</th><td class="n">${Object.values(ss).reduce((t, v) => t + v, 0)}</td><td class="n"><b>${Object.values(ws).reduce((t, v) => t + v, 0)}</b></td><td></td></tr></tbody>`;
+  // 4 · scenario assumptions (live)
+  const sc = forecast("scenario", HIDE_FROM_HOME), o = S.scenarioOptions || {};
+  const fx = sc.scenario?.fixed || FIXED_SEATS;
+  $("#m-live-scenario").innerHTML = [[`${fx.shas} · ${fx.yahadut_hatora} · ${fx.raam}`, "ש״ס · יהדות התורה · רע״מ, קבועות"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${o.demographic ?? 2}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
+    .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+  // 5 · demography check
+  if (S.demo) {
+    const ms = demoDriftSeats(), d = ms / 120 * 100, corr = sc.scenario?.demographicCorrected, want = o.demographic ?? 2;
+    $("#m-live-demo").innerHTML = [[`${d >= 0 ? "+" : "−"}${r1(Math.abs(d))} נק׳`, "לימין ולחרדים עד 2026, מהדמוגרפיה בלבד"], [`≈ ${ms >= 0 ? "+" : "−"}${r1(Math.abs(ms))}`, "מנדטים"], [`${want}`, "ההנחה בשלב 4"], [corr ? `מתקן ל־${corr.to}` : "מאשר", corr ? "המודל החליף את ההנחה" : "המודל את ההנחה · הפער קטן ממנדט"]]
+      .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+  }
+  // 6 · result
+  const seats = allocateSeats(sc.parties), bt = {};
+  Object.entries(seats).forEach(([id, n]) => { const al = partyMeta(id).alignment; bt[al] = (bt[al] || 0) + n; });
+  $("#m-live-result").innerHTML = [[bt.Right || 0, "גוש הימין"], [bt.Left || 0, "מרכז־שמאל"], [bt.Arabs || 0, "הרשימות הערביות"], [Object.values(seats).reduce((t, v) => t + v, 0), "סך הכול מנדטים"]]
+    .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+  const pairs = activeAgreements(sc.parties), rules = $("#m-rules");
+  if (rules) rules.innerHTML = `<b>הסכמי עודפים בחישוב:</b> ${pairs.length ? pairs.map(([a, b]) => `${esc(partyMeta(a).name)}–${esc(partyMeta(b).name)}`).join(" · ") : "אין"}. ${esc(ELECTION_RULES.agreementsStatus)}.`;
 }
 
 /* ============================================================
@@ -1489,14 +2017,21 @@ function renderOfficialResults() {
 /* ============================================================
    12. ניתוב וכרטיסיות
    ============================================================ */
-const VIEWS = { home:"", polls:"polls", e2022:"2022", crossover:"crossover", live:"live", results:"results", haredi:"haredi", regions:"regions", demography:"demography", method:"method" };
+const VIEWS = { home:"", polls:"polls", e2022:"2022", map:"map", crossover:"crossover", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
+/* כתובות ישנות שעדיין עשויות להיות מקושרות מבחוץ */
+const VIEW_ALIASES = { regions:"map" };
 const rendered = {};
 
 function show(view) {
   if (!VIEWS.hasOwnProperty(view)) view = "home";
   S.view = view;
   $$(".view").forEach(v => v.classList.toggle("on", v.id === "view-" + view));
-  $$(".tab").forEach(t => t.setAttribute("aria-current", t.dataset.view === view ? "page" : "false"));
+  /* לשונית ראשית מסומנת גם כשמוצג אחד מתתי-הדפים שלה (data-group) */
+  $$(".tab").forEach(t => {
+    const grp = (t.dataset.group || "").split(/\s+/).filter(Boolean);
+    t.setAttribute("aria-current", t.dataset.view === view || grp.includes(view) ? "page" : "false");
+  });
+  $$(".subtab").forEach(t => t.setAttribute("aria-current", t.dataset.view === view ? "page" : "false"));
   if (view === "haredi" && rendered[view]) renderHaredi();
   if (view === "polls" && rendered[view]) renderPolls();
   if (!rendered[view]) {
@@ -1508,14 +2043,15 @@ function show(view) {
       if (view === "live") renderLiveResults();
       if (view === "results") renderOfficialResults();
       if (view === "haredi") renderHaredi();
-      if (view === "regions") renderRegions();
-      if (view === "demography") renderDemography();
-      if (view === "method") render2022();
+      if (view === "map") renderRegions();
+      if (view === "demography") { renderResultsBase(); renderDemography(); }
+      if (view === "method") renderMethod();
       rendered[view] = true;
     } catch (e) { console.error(e); }
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
-  const t = { home:"התחזית", polls:"הסקרים האחרונים", e2022:"מדד אמינות המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות", results:"תוצאות אמת", haredi:"בנק הקולות החרדי", regions:"פילוח אזורי", demography:"התחזית היבשה", method:"מתודולוגיה" }[view];
+  if (view === "map" && S.leaflet) setTimeout(() => S.leaflet.map.invalidateSize(), 50);
+  const t = { home:"התחזית", polls:"כל הסקרים", e2022:"דיוק המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
   document.title = `${t} · ברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
@@ -1523,7 +2059,7 @@ function show(view) {
 
 function routeFromHash() {
   const h = (location.hash || "#/").replace(/^#\/?/, "");
-  const view = Object.keys(VIEWS).find(k => VIEWS[k] === h) || "home";
+  const view = VIEW_ALIASES[h] || Object.keys(VIEWS).find(k => VIEWS[k] === h) || "home";
   show(view);
 }
 
@@ -1549,12 +2085,12 @@ function wire() {
     renderHome();
   }));
   $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
+  /* לוח המנדטים: לפי גושים (ברירת המחדל) או פוסטר לפי גודל */
+  const applyWallLayout = () => { $(".board").classList.toggle("layout-size", S.wallLayout === "size"); $$("[data-wall-layout]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.wallLayout === S.wallLayout))); };
+  try { S.wallLayout = localStorage.getItem("wallLayout") === "size" ? "size" : "blocs"; } catch { S.wallLayout = "blocs"; }
+  applyWallLayout();
+  $$("[data-wall-layout]").forEach(b => b.addEventListener("click", () => { S.wallLayout = b.dataset.wallLayout; try { localStorage.setItem("wallLayout", S.wallLayout); } catch {} applyWallLayout(); }));
 
-  $$("[data-scen]").forEach(b => b.addEventListener("click", () => {
-    S.scen = b.dataset.scen;
-    $$("[data-scen]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    render2022();
-  }));
 
   $$("[data-pollview]").forEach(b => b.addEventListener("click", () => {
     S.pollView = b.dataset.pollview;
@@ -1568,10 +2104,11 @@ function wire() {
   $("#calib-switch").addEventListener("click", e => {
     const b = e.target.closest("[data-calib]");
     if (!b) return;
-    S.calibYear = Number(b.dataset.calib);
+    S.calibKey = b.dataset.calib;
     if (!counterfactualAvailable()) S.scen = "actual";
     render2022();
   });
+  $("#arch-more")?.addEventListener("click", () => { S.archAll = !S.archAll; renderArchive(); $("#arch-more")?.focus(); });
   $("#arch-firm").addEventListener("change", renderArchive);
   $("#arch-q").addEventListener("input", renderArchive);
 
@@ -1589,15 +2126,19 @@ function wire() {
   $("#dlg .dclose").addEventListener("click", () => $("#dlg").close());
   $("#dlg").addEventListener("click", e => { if (e.target === $("#dlg")) $("#dlg").close(); });
 
-  $("#map-svg").addEventListener("click", e => {
-    const g = e.target.closest("[data-loc]"); if (!g) return;
-    S.selectedLoc = Number(g.dataset.loc); renderLocDetail();
+  const pickLoc = g => { S.selectedLoc = Number(g.dataset.loc); S.locPicked = true; renderLocDetail(g.tagName === "BUTTON"); $$("#map-list [data-loc]").forEach(b => b.classList.toggle("sel", Number(b.dataset.loc) === S.selectedLoc)); };
+  ["#map-svg", "#map-list"].forEach(sel => {
+    $(sel)?.addEventListener("click", e => { const g = e.target.closest("[data-loc]"); if (g) pickLoc(g); });
+    $(sel)?.addEventListener("keydown", e => { const g = e.target.closest("[data-loc]"); if (g && g.tagName !== "BUTTON" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); pickLoc(g); } });
   });
-  $("#map-svg").addEventListener("keydown", e => {
-    const g = e.target.closest("[data-loc]");
-    if (g && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); S.selectedLoc = Number(g.dataset.loc); renderLocDetail(); }
-  });
+  $("#map-q")?.addEventListener("input", e => renderMapList(e.target.value));
 
+  /* המספר ליד הידית מתעדכן תוך כדי גרירה; החישוב עצמו רץ בשחרור */
+  $("#demo-controls").addEventListener("input", e => {
+    const el = e.target; if (!el.dataset.sec) return;
+    const b = el.closest("label")?.querySelector("b.num");
+    if (b) b.textContent = (el.dataset.kind === "growth" ? Number(el.value).toFixed(1) : el.value) + "%";
+  });
   $("#demo-controls").addEventListener("change", e => {
     const el = e.target; if (!el.dataset.sec) return;
     const sec = el.dataset.sec, kind = el.dataset.kind, v = Number(el.value);
@@ -1608,11 +2149,31 @@ function wire() {
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
 
+  $("#scen-switch")?.addEventListener("click", e => {
+    const b = e.target.closest("[data-scen]"); if (!b) return;
+    S.scen = b.dataset.scen; render2022();
+  });
   $("#print-btn")?.addEventListener("click", () => window.print());
 
-  /* סוגר את תפריט "עוד" אחרי בחירת לשונית */
-  $(".nav-more")?.addEventListener("click", e => {
-    if (e.target.closest(".nav-menu .tab")) $(".nav-more").open = false;
+  /* המפה ↔ המודל: ריחוף/מיקוד על כרטיס קבוצת זהות מדגיש במפה את היישובים שבהם היא בולטת */
+  const ctl = $("#demo-main");
+  const hl = sec => $$("#map-svg .locdot").forEach(g => {
+    const ids = inferIdentities(mapLocalities()[Number(g.dataset.loc)] || {});
+    g.classList.toggle("hl", !!sec && ids.includes(sec));
+    g.classList.toggle("dim", !!sec && !ids.includes(sec));
+  });
+  ctl?.addEventListener("mouseover", e => { const c = e.target.closest("[data-sector]"); if (c) hl(c.dataset.sector); });
+  ctl?.addEventListener("mouseleave", () => hl(null));
+  ctl?.addEventListener("focusin", e => { const c = e.target.closest("[data-sector]"); if (c) hl(c.dataset.sector); });
+  ctl?.addEventListener("focusout", e => { if (!ctl.contains(e.relatedTarget)) hl(null); });
+  /* ולהפך: שבב קבוצה בפרטי היישוב קופץ לשורה המתאימה */
+  /* שבב קבוצה בפרטי היישוב → עמוד המודל, ישר לשורת הקבוצה */
+  document.addEventListener("click", e => {
+    if (!e.target.closest("#loc-detail")) return;
+    const a = e.target.closest("[data-jump-sector]"); if (!a) return;
+    e.preventDefault();
+    location.hash = "#/demography";
+    setTimeout(() => $(`#identity-table [data-sector="${CSS.escape(a.dataset.jumpSector)}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
   });
 }
 
@@ -1635,31 +2196,47 @@ async function loadJSONOptional(url) {
   }
 }
 
+function acceptLivePolls(polls, checkedAt) {
+  const byId = new Map((S.rawCur?.polls || S.cur.polls).map(p => [String(p.id), p]));
+  polls.filter(p => S.firms.sourceMap[p.sourceId]).forEach(p => byId.set(p.id, { ...byId.get(p.id), ...p }));
+  S.rawCur = { ...S.rawCur, polls: [...byId.values()], generatedAt: checkedAt };
+  S.cur = { ...S.rawCur, polls: inWindow(S.rawCur.polls, checkedAt).polls };
+  S.forecastPolls = recentForForecast(S.cur.polls);
+  S.series = buildSeries(S.forecastPolls);
+  S.homeHistory = 'current';
+  $("#stamp-updated").textContent = `נבדק ${heDate(checkedAt)} · עדכון בתצוגה זו`;
+  routeFromHash();
+}
+
 async function boot() {
   try {
-    const [hist, cur, firms, regions, demo, haredi, hist2021] = await Promise.all(
+    /* [שנה, מפתח ייחודי, תווית קצרה, קובץ]. הכיול מתחיל ב־2020: מערכות ישנות יותר
+       אינן מלמדות על מכון שהספיק ללמוד ולהשתנות מאז. */
+    const EXTRA_CALIB = [[2021, "2021", "2021", "data/historical-polls-2021.json"], [2020, "2020", "2020", "data/historical-polls-2020.json"]];
+    const [hist, cur, firms, regions, demo, haredi, ...extra] = await Promise.all(
       ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"]
         .map(u => (window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u]) : fetch(u, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(u); return r.json(); })))
-        .concat(window.__BAROMETER_DATA__ ? [Promise.resolve(window.__BAROMETER_DATA__["data/historical-polls-2021.json"] || null)] : [loadJSONOptional("data/historical-polls-2021.json")]));
+        .concat(EXTRA_CALIB.map(([, , , u]) => window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u] || null) : loadJSONOptional(u))));
     const leaders = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/leaders.json"] || null) : await loadJSONOptional("data/leaders.json");
     const forecastHistory = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/forecast-history.json"] || null) : await loadJSONOptional("data/forecast-history.json");
     Object.assign(S, { hist, firms, regions, demo, haredi, leaders: leaders?.photos || {}, forecastHistory });
     /* מערכות הבחירות שהמדד מכויל עליהן. הראשונה היא ברירת המחדל של עמוד הדיוק. */
     S.elections = [
-      { year: 2022, election: "הכנסת ה־25", data: hist, stats: scoreFirms(hist) },
-      ...(hist2021?.polls?.length ? [{ year: 2021, election: hist2021.meta?.election || "הכנסת ה־24", data: hist2021, stats: scoreFirms(hist2021) }] : [])
+      { year: 2022, key: "2022", short: "2022", election: "הכנסת ה־25", data: hist, stats: scoreFirms(hist) },
+      ...extra.map((d, i) => d?.polls?.length ? { year: EXTRA_CALIB[i][0], key: EXTRA_CALIB[i][1], short: EXTRA_CALIB[i][2], election: d.meta?.election || EXTRA_CALIB[i][1], data: d, stats: scoreFirms(d) } : null).filter(Boolean)
     ];
-    S.calibYear = S.elections[0].year;
+    S.calibKey = S.elections[0].key;
     S.calibrations = S.elections.map(e => {
       const attributed = e.data.polls.filter(p => p.firm).length;
       const missing = e.data.polls.length - attributed;
-      return { year: e.year, election: e.election, status: e.year === 2021 ? 'pending' : "active", polls: attributed,
+      return { year: e.year, election: e.election, status: "active", polls: attributed,
         note: missing ? `${attributed} מתוך ${e.data.polls.length} סקרים משויכים למכון` : "כל הסקרים משויכים למכון" };
     });
     const win = inWindow(cur.polls, cur.generatedAt);
+    S.rawCur = cur;                                   // הקובץ כפי שנטען — להשוואה בבדיקת סקרים חדשים
     S.cur = { ...cur, polls: win.polls };
-    // 2021 attribution was disputed; keep the archive visible but quarantine its weights until official reconciliation.
-    S.stats = combineCalibrations(S.elections.filter(e=>e.year!==2021));
+    /* הציון המשוקלל: ממוצע שווה־משקל של כל המערכות שבהן המכון פרסם */
+    S.stats = combineCalibrations(S.elections);
     S.counterStats = scoreFirms(hist, COUNTERFACTUAL);
     S.forecastPolls = recentForForecast(S.cur.polls);
     S.series = buildSeries(S.forecastPolls);
@@ -1683,7 +2260,7 @@ async function boot() {
 }
 
 if (typeof module !== "undefined" && module.exports)
-  module.exports = { scoreFirms, combineCalibrations, histBlocs, buildSeries, forecast, largestRemainder, baderOfer, histBlocs, structuralFix, COUNTERFACTUAL };
+  module.exports = { scoreFirms, combineCalibrations, histBlocs, buildSeries, forecast, largestRemainder, baderOfer, allocateSeats, ELECTION_RULES, histBlocs, structuralFix, COUNTERFACTUAL };
 if (typeof document !== "undefined") boot();
 
 /* ============================================================
@@ -1741,6 +2318,13 @@ function renderAnecdote() {
 /* ============================================================
    16. עמוד בנק הקולות החרדי
    ============================================================ */
+// A future scenario, not a replay of the lists that failed the threshold in 2022.
+function projectedMandateCost(validVotes, wastedPercent = 5) {
+  const wasted = Math.max(0, Math.min(12, Number.isFinite(wastedPercent) ? wastedPercent : 5));
+  return { wasted, passingVotes: validVotes * (1 - wasted / 100), cost: validVotes * (1 - wasted / 100) / 120,
+    rangeLow: validVotes * .93 / 120, rangeHigh: validVotes * .97 / 120 };
+}
+
 function harediState() {
   const H = S.haredi, D = S.demo;
   const sec = D.sectors.find(x => x.id === "haredi");
@@ -1749,13 +2333,34 @@ function harediState() {
   const turnout = (S.harTurnout ?? H.turnout.harediCities2022) / 100;
   const loyalty = (S.harLoyalty ?? H.loyalty[0].harediLists) / 100;
   const model = runDemoModel(years);
-  const cost = model.totalValid / 120;
+  // 5% is an explicit working assumption; 3–7% is a sensitivity scenario, not a confidence interval.
+  const costEstimate = projectedMandateCost(model.totalValid, S.harWasted ?? 5);
+  const { passingVotes, cost } = costEstimate;
+  const thr2022 = D.meta.validVotes2022 * D.meta.threshold;
+  const cost2022 = D.parties2022.filter(p => p.votes >= thr2022).reduce((a, p) => a + p.votes, 0) / 120;
   const cast = eligible2026 * turnout;
   const toHaredi = cast * loyalty;
   const seatsFromSector = toHaredi / cost;
-  const shasMix = D.parties2022.find(p => p.id === "shas").mix;
-  const shasOutside = (model.votes.shas * (1 - shasMix.haredi)) / cost;
-  return { H, sec, eligible2026, turnout, loyalty, cost, cast, toHaredi, seatsFromSector, shasOutside, total: seatsFromSector + shasOutside, model };
+  /* מקדם הגידול של הקולות החרדיים: קולות המגזר לרשימות החרדיות ב-2026 (בעלי
+     זכות × הצבעה × נאמנות, לפי המחוונים) חלקי אותו חשבון ב-2022 (הערכים שנמדדו). */
+  const haredi22 = sec.eligible2022 * H.turnout.harediCities2022 / 100 * H.loyalty[0].harediLists / 100;
+  const harediFactor = toHaredi / haredi22;
+  /* כל רשימה מתחילה מהקולות שלה ב-2022 ומתפצלת לחרדים / לא־חרדים לפי הרכב
+     הבוחרים (mix ב-data/demographics.json; ש״ס — מחוון). החרדים גדלים במקדם
+     המגזר; הלא־חרדים — בגידול של המגזרים שלהם (מסורתיים, דתיים, חילונים). */
+  const sectorGrowth = Object.fromEntries(D.sectors.map(x => [x.id, Math.pow(1 + x.growth, years)]));
+  const party = (id, harediShare) => {
+    const p22 = D.parties2022.find(p => p.id === id);
+    const nonMix = Object.entries(p22.mix).filter(([k]) => k !== "haredi"), nonSum = nonMix.reduce((t, [, v]) => t + v, 0) || 1;
+    const outsideGrowth = nonMix.reduce((t, [k, v]) => t + v * sectorGrowth[k], 0) / nonSum;
+    const votes22 = p22.votes, seats22 = p22.seats, haredi22v = votes22 * harediShare, outside22 = votes22 * (1 - harediShare);
+    const harediVotes = haredi22v * harediFactor, outsideVotes = outside22 * outsideGrowth, votes = harediVotes + outsideVotes;
+    return { id, votes22, seats22, harediShare, haredi22v, outside22, harediVotes, outsideVotes, outsideGrowth, votes, seats: votes / cost };
+  };
+  const shasMix = D.parties2022.find(p => p.id === "shas").mix, utjMix = D.parties2022.find(p => p.id === "utj").mix;
+  const shas = party("shas", S.harShasHaredi != null ? S.harShasHaredi / 100 : shasMix.haredi);
+  const utj = party("utj", utjMix.haredi || 0);
+  return { H, sec, eligible2026, turnout, loyalty, cost, cost2022, costEstimate, passingVotes, cast, toHaredi, haredi22, harediFactor, seatsFromSector, shas, utj, shasOutside: shas.outsideVotes / cost, total: shas.seats + utj.seats, model };
 }
 
 function renderHaredi() {
@@ -1779,32 +2384,57 @@ function renderHaredi() {
     </article>`).join("");
 
   /* מחשבון */
+  const partyCalc = (label, x, outsideLabel, color) => `
+    <div class="calcparty" style="--c:${color}">
+      <h4>${label}</h4>
+      <div class="calcline"><span>קולות ב־2022 (${x.seats22} מנדטים)</span><b class="num">${fmt(x.votes22)}</b></div>
+      <div class="calcline"><span>מתוכם חרדים · ${pct(x.harediShare * 100)} מהבוחרים</span><b class="num">${fmt(x.haredi22v)}</b></div>
+      <div class="calcline"><span>× מקדם הגידול של הקולות החרדיים (${x2(st.harediFactor)})</span><b class="num">${fmt(x.harediVotes)}</b></div>
+      <div class="calcline"><span>+ ${outsideLabel}: ${fmt(x.outside22)} ב־2022 × ${x2(x.outsideGrowth)} גידול</span><b class="num">${fmt(x.outsideVotes)}</b></div>
+      <div class="calcline"><span>= קולות ב־${S.demo.meta.targetYear}</span><b class="num">${fmt(x.votes)}</b></div>
+      <div class="calcline"><span>÷ מחיר מנדט (${fmt(st.cost)})</span><b class="num">${r1(x.seats)} מנדטים</b></div>
+      <div class="calcout"><b class="num">${r1(x.seats)}</b><span>מנדטים ל${label} — לפני שהסתכלנו על סקר אחד</span></div>
+    </div>`;
+  const x2 = v => v.toFixed(3).replace(/0+$/, "").replace(/[.]$/, "");
   $("#haredi-calc").innerHTML = `
     <p class="kicker">החישוב, שקוף</p>
     <h3 style="margin:4px 0 14px">מהאוכלוסייה אל המנדט</h3>
+    <section class="mandate-estimate" aria-label="אומדן קולות למנדט">
+      <p class="kicker">אומדן עבודה · לא נתון שנמדד</p>
+      <h4>כ־<span class="num">${fmt(Math.round(st.cost / 100) * 100)}</span> קולות למנדט</h4>
+      <p>המודל צופה כ־${r1(st.model.totalValid / 1e6)} מיליון קולות כשרים. מניחים ש־${pct(st.costEstimate.wasted)} מהם יינתנו לרשימות שלא יעברו את הסף, ואת השאר מחלקים ב־120. לא מניחים שמרצ ורשימות אחרות ייפלו שוב כפי שקרה ב־2022.</p>
+      <p><b>טווח רגישות: ${fmt(Math.round(st.costEstimate.rangeLow / 100) * 100)}–${fmt(Math.round(st.costEstimate.rangeHigh / 100) * 100)}</b>, אם 3%–7% מהקולות יישארו מחוץ לחלוקה. 5% היא הנחת אמצע, לא מסקנה מסקר; זה אינו טווח ביטחון ואינו כולל שינוי בהיקף ההצבעה הארצי.</p>
+      <label class="slider"><span>הנחת הקולות לרשימות שלא יעברו את הסף<b>${pct(st.costEstimate.wasted)}</b></span><input id="har-wasted" type="range" min="0" max="12" step="0.5" value="${st.costEstimate.wasted}"></label>
+      <p class="sec-note">אחוז החסימה עצמו נשאר <b>3.25%</b> מכל הקולות הכשרים — כ־${fmt(Math.ceil(st.model.totalValid * .0325))} קולות לפי היקף ההצבעה שבמודל. ב־2022 המודד היה ${fmt(st.cost2022)} קולות למנדט. המודד אינו מבטיח את המנדט האחרון, שמושפע גם מחלוקת העודפים. <a href="https://main.knesset.gov.il/About/Lexicon/pages/qualifying-threshold.aspx" target="_blank" rel="noopener">הסבר הכנסת ↗</a> · <a href="https://votes25.bechirot.gov.il/" target="_blank" rel="noopener">תוצאות 2022 ↗</a></p>
+    </section>
     <div class="calcline"><span>בעלי זכות בחירה חרדים ב־${S.demo.meta.targetYear}</span><b class="num">${fmt(st.eligible2026)}</b></div>
     <div class="calcline"><span>× שיעור הצבעה</span><b class="num">${pct(st.turnout * 100)}</b></div>
     <div class="calcline"><span>= קולות שהוטלו</span><b class="num">${fmt(st.cast)}</b></div>
     <div class="calcline"><span>× נאמנות לרשימות החרדיות</span><b class="num">${pct(st.loyalty * 100)}</b></div>
-    <div class="calcline"><span>= קולות לש״ס ולג׳ מהמגזר</span><b class="num">${fmt(st.toHaredi)}</b></div>
-    <div class="calcline"><span>÷ מחיר מנדט (${fmt(st.cost)})</span><b class="num">${r1(st.seatsFromSector)} מנדטים</b></div>
-    <div class="calcline"><span>+ מצביעי ש״ס שאינם חרדים (מסורתיים ודתיים)</span><b class="num">${r1(st.shasOutside)} מנדטים</b></div>
-    <div class="calcout"><b class="num">${r1(st.total)}</b><span>מנדטים לש״ס וליהדות התורה — לפני שהסתכלנו על סקר אחד</span></div>
+    <div class="calcline"><span>= קולות לש״ס ולג׳ מהמגזר ב־${S.demo.meta.targetYear}</span><b class="num">${fmt(st.toHaredi)}</b></div>
+    <div class="calcline"><span>÷ אותו חשבון ב־2022 (${fmt(st.sec.eligible2022)} × ${pct(H.turnout.harediCities2022)} × ${pct(H.loyalty[0].harediLists)} = ${fmt(st.haredi22)}) = מקדם הגידול של הקולות החרדיים</span><b class="num">× ${x2(st.harediFactor)}</b></div>
+    <div class="calcline"><span>אומדן קולות למנדט: ${fmt(st.model.totalValid)} קולות כשרים × ${pct(100 - st.costEstimate.wasted)} שנכנסים לחלוקה ÷ 120</span><b class="num">כ־${fmt(Math.round(st.cost / 100) * 100)}</b></div>
+    <div class="calcsplit">
+      ${partyCalc("ש״ס", st.shas, "לא־חרדים (מסורתיים, דתיים, חילונים)", "#1B1D21")}
+      ${partyCalc("יהדות התורה", st.utj, "לא־חרדים (דתיים, מסורתיים)", "#4A4F57")}
+    </div>
+    <div class="calcline calctotal"><span>יחד</span><b class="num">${r1(st.total)} מנדטים</b></div>
     <label class="slider"><span>גידול שנתי של בעלי זכות הבחירה<b>${r1(S.harGrowth ?? st.sec.growth*100)}%</b></span><input id="har-growth" type="range" min="0" max="6" step="0.1" value="${S.harGrowth ?? st.sec.growth*100}"></label><label class="slider"><span>שיעור הצבעה במגזר<b class="num">${pct(st.turnout * 100)}</b></span>
       <input type="range" min="45" max="95" step="0.5" value="${(st.turnout * 100).toFixed(1)}" id="har-turnout" style="accent-color:#17457F"></label>
     <label class="slider"><span>נאמנות לרשימות החרדיות<b class="num">${pct(st.loyalty * 100)}</b></span>
       <input type="range" min="55" max="95" step="0.5" value="${(st.loyalty * 100).toFixed(1)}" id="har-loyalty" style="accent-color:#B8862B"></label>
-    <button class="btn ghost" type="button" id="har-reset" style="margin-top:14px">חזרה לערכים שנמדדו</button>`;
+    <label class="slider"><span>חלק החרדים בבוחרי ש״ס (ב־2022)<b class="num">${pct(st.shas.harediShare * 100)}</b></span>
+      <input type="range" min="30" max="90" step="1" value="${(st.shas.harediShare * 100).toFixed(0)}" id="har-shas-haredi" style="accent-color:#1B1D21"></label>
+    <button class="btn ghost" type="button" id="har-reset" style="margin-top:14px">חזרה להנחות הבסיס</button>`;
 
   /* מה היה צריך לקרות */
   const est = forecast(S.mode);
-  const pollSum = (est.raw.shas || 0) + (est.raw.yahadut_hatora || 0);
-  const needSector = Math.max(0, pollSum - st.shasOutside);
-  const needTurnout = 100 * (needSector * st.cost) / (st.eligible2026 * st.loyalty);
-  const needLoyalty = 100 * (needSector * st.cost) / (st.eligible2026 * st.turnout);
-  const floors = H.meta.floors.shas + H.meta.floors.utj;
-  const modelSum = (st.model.seats.shas || 0) + (st.model.seats.utj || 0);
-  $("#haredi-verdict").innerHTML = `<p class="kicker">השוואת הנחות</p><h3>תרחיש דמוגרפי מול ממוצע הסקרים</h3><p>ממוצע הסקרים לש״ס וליהדות התורה: <b>${r1(pollSum)}</b> מנדטים. התרחיש לפי ההנחות שנבחרו: <b>${r1(st.total)}</b> מנדטים.</p><p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. תחזית הברומטר בעמוד הראשי היא הנחה נפרדת; המחשבון כאן אינו מוכיח רצפת מנדטים.</p>`;
+  const pollShas = est.raw.shas || 0, pollUtj = est.raw.yahadut_hatora || 0, pollSum = pollShas + pollUtj;
+  $("#haredi-verdict").innerHTML = `<p class="kicker">השוואת הנחות</p><h3>תרחיש דמוגרפי מול ממוצע הסקרים</h3>
+    <div class="calcline"><span>ש״ס · ממוצע הסקרים → התרחיש</span><b class="num" dir="ltr">${r1(pollShas)} → ${r1(st.shas.seats)}</b></div>
+    <div class="calcline"><span>יהדות התורה · ממוצע הסקרים → התרחיש</span><b class="num" dir="ltr">${r1(pollUtj)} → ${r1(st.utj.seats)}</b></div>
+    <div class="calcline"><span>יחד</span><b class="num" dir="ltr">${r1(pollSum)} → ${r1(st.total)}</b></div>
+    <p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. תחזית הברומטר בעמוד הראשי מקבעת ש״ס ${FIXED_SEATS.shas} וג׳ ${FIXED_SEATS.yahadut_hatora} — הנחה נפרדת; המחשבון כאן אינו מוכיח רצפת מנדטים.</p>`;
 
   /* היסטוריה */
   renderHaredHistory();
@@ -1833,8 +2463,8 @@ function renderHaredi() {
 
   /* wiring */
   const wire = (id, key) => $(id).addEventListener("change", e => { S[key] = Number(e.target.value); renderHaredi(); $(id)?.focus(); });
-  wire("#har-growth", "harGrowth"); wire("#har-turnout", "harTurnout"); wire("#har-loyalty", "harLoyalty");
-  $("#har-reset").addEventListener("click", () => { S.harGrowth = null; S.harTurnout = null; S.harLoyalty = null; renderHaredi(); });
+  wire("#har-growth", "harGrowth"); wire("#har-turnout", "harTurnout"); wire("#har-loyalty", "harLoyalty"); wire("#har-shas-haredi", "harShasHaredi"); wire("#har-wasted", "harWasted");
+  $("#har-reset").addEventListener("click", () => { S.harGrowth = null; S.harTurnout = null; S.harLoyalty = null; S.harShasHaredi = null; S.harWasted = null; renderHaredi(); $("#har-reset").focus(); });
 }
 
 function renderHaredHistory() {

@@ -85,18 +85,18 @@ function renderPollCards(rows, polls) {
     const rowHTML = id => {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
-      const meta = partyMeta(id), col = BLOCS[meta.alignment].color;
+      const meta = partyMeta(id), col = partyColor(id, meta.alignment);
       const logo = meta.logo || '';
       return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pface party-logo${logo ? '' : ' is-blank'}">${logo ? `<img src="${esc(logo)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.classList.add('is-blank');this.parentNode.textContent='${esc(initials(meta.name))}'">` : esc(initials(meta.name))}</span><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
-    /* פס הגושים יושב מעל התוצאות, בלי מספרים ובלי פתיחה. גוש שעבר 61 מקבל וי. */
+    /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך
+       כל מקטע, וי לגוש שעבר 61, וקווי 61 משני הקצוות. */
     const shown = BLOC_ORDER.filter(k => bloc[k] > 0);
     const winner = shown.find(k => bloc[k] >= 61);
-    const seatbar = `<div class="poll-blocbar" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
-      shown.map(k => `<span style="flex:${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}">${
-        k === winner ? `<b aria-hidden="true" style="color:${BLOCS[k].color}">✓</b>` : ''}</span>`).join('')
-    }${total === 120 ? '<i class="poll-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="poll-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
+    const seatbar = `<div class="poll-blocgraph" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
+      shown.map(k => `<span class="bc-seg${k === winner ? ' is-maj' : ''}" style="flex:${bloc[k]} ${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}"><b>${bloc[k]}</b></span>`).join('')
+    }${total === 120 ? '<i class="bc-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="bc-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
@@ -119,11 +119,14 @@ function renderPollCards(rows, polls) {
 function renderPollAverage(rows) {
   const box = $('#average-results'), status = $('#average-status'), firmsBox = $('#average-firms');
   if (!box || !status || !firmsBox) return;
-  const newest = Math.max(0, ...rows.map(parsePollDate));
-  const cutoff = newest - (S.avgDays - 1) * 864e5;
+  /* החלון נספר מהיום ממש (חצות, שעון ישראל) ולא מהסקר האחרון: "היום האחרון" = סקרים
+     מהיום; "5 ימים" = היום וארבעת הימים שלפניו. */
+  const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jerusalem' });
+  const today = Date.parse(todayKey);                       // חצות UTC, כמו parsePollDate
+  const cutoff = today - (S.avgDays - 1) * 864e5;
   const included = rows.filter(p => parsePollDate(p) >= cutoff);
   if (!included.length) {
-    status.textContent = 'אין סקרים בחלון הזמן שנבחר.';
+    status.textContent = S.avgDays === 1 ? 'לא פורסם סקר היום. החלון נספר מהיום ממש — בחרו חלון רחב יותר.' : `אין סקרים ב־${S.avgDays} הימים האחרונים (החלון נספר מהיום ממש).`;
     box.innerHTML = firmsBox.innerHTML = '';
     return;
   }
@@ -135,20 +138,20 @@ function renderPollAverage(rows) {
     return { id, value: values.reduce((n, x) => n + x.v * weightOf(x.p), 0) / totalW, values };
   }).filter(x => x.value > .25);
   const rawTotal = averages.reduce((n, x) => n + x.value, 0) || 120;
-  const wholeSeats = largestRemainder(Object.fromEntries(averages.map(x => [x.id, x.value * 120 / rawTotal])), 120);
+  const wholeSeats = largestRemainder(Object.fromEntries(averages.map(x => [x.id, x.value * 120 / rawTotal])), 120);   // ממוצע תיאורי של הסקרים — בלי כללי הבחירות (אלה מופעלים רק על התחזית)
   averages = averages.map(x => ({...x, seats:wholeSeats[x.id] || 0})).filter(x => x.seats > 0).sort((a, b) => b.seats - a.seats || b.value - a.value);
   const blocSeats = { Right:0, Left:0, Arabs:0, Unknown:0 };
   averages.forEach(x => { const al = partyMeta(x.id).alignment; blocSeats[al] = (blocSeats[al] || 0) + x.seats; });
   const total = 120;
   const right = 100 * blocSeats.Right / total, left = 100 * blocSeats.Left / total, arabs = 100 * blocSeats.Arabs / total;
   const start = new Date(Math.min(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
-  const end = new Date(newest).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
+  const end = new Date(Math.max(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const sources = included.slice().sort((a,b)=>parsePollDate(b)-parsePollDate(a)).map(p => `<li>${esc(p.date)} · ${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)}</li>`).join('');
   status.innerHTML = `<span><b>${included.length} סקרים</b> ${start === end ? `מ־${end}` : `בין ${start} ל־${end}`}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון אמינות גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
-  const donutStyle = `background:conic-gradient(${BLOCS.Right.color} 0 ${right}%,${BLOCS.Left.color} ${right}% ${right+left}%,${BLOCS.Arabs.color} ${right+left}% ${right+left+arabs}%,#87919A ${right+left+arabs}% 100%)`;
+  const donutStyle = `background:conic-gradient(${BLOCS.Right.color} 0 ${right}%,${BLOCS.Left.color} ${right}% ${right+left}%,${BLOCS.Arabs.color} ${right+left}% ${right+left+arabs}%,${BLOCS.Unknown.color} ${right+left+arabs}% 100%)`;
   const max = Math.max(1, ...averages.map(x => x.seats));
-  box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות']].map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${blocSeats[k]}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {
-    const meta=partyMeta(x.id), col=BLOCS[meta.alignment]?.color || '#87919A';
+  box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות'],['Unknown','לא משויך']].filter(([k])=>k !== 'Unknown' || blocSeats[k] > 0).map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${blocSeats[k]}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {
+    const meta=partyMeta(x.id), col=partyColor(x.id, meta.alignment);
     const detail=x.values.slice().sort((a,b)=>parsePollDate(b.p)-parsePollDate(a.p)).map(({p,v})=>`<li><span>${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)} · ${esc(p.date)}</span><b>${v}</b></li>`).join('');
     return `<article class="average-party" tabindex="0" style="--c:${col}"><span class="average-logo">${meta.logo?`<img src="${esc(meta.logo)}" alt="" onerror="this.remove()">`:esc(initials(meta.name))}</span><strong>${esc(meta.name)}</strong><span class="average-bar"><i style="width:${100*x.seats/max}%"></i></span><b class="average-number">${x.seats}</b><div class="average-tooltip"><b>הסקרים שמרכיבים את הממוצע</b><ul>${detail}</ul></div></article>`;
   }).join('')}</div>`;

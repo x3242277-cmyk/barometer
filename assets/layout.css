@@ -212,3 +212,403 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
   footer{ margin-top:48px; padding:40px 0 30px }
   footer .wrap{ grid-template-columns:1fr; gap:28px }
 }
+
+/* ---------- תת-לשוניות: ליל הבחירות · שיטת החישוב ---------- */
+.subtabs{ display:flex; flex-wrap:wrap; gap:4px; margin:22px 0 -14px; padding:4px; width:fit-content; max-width:100%; background:rgba(18,52,92,.05); border:1px solid var(--rule); border-radius:12px }
+.subtab{ padding:8px 14px; border-radius:8px; font-size:.88rem; font-weight:600; line-height:1.2; color:var(--ink-2); white-space:nowrap; text-decoration:none }
+.subtab:hover{ color:var(--navy); background:rgba(18,52,92,.06) }
+.subtab[aria-current="page"]{ color:var(--navy); background:#fff; font-weight:700; box-shadow:var(--shadow-s) }
+@media (max-width:560px){ .subtabs{ width:100%; margin-top:14px } .subtab{ flex:1 1 auto; text-align:center; padding:8px 10px; font-size:.84rem } }
+@media print{ .subtabs{ display:none!important } }
+
+/* היישוב הנבחר ↔ הקבוצות שמרכיבות אותו */
+.loc-identity{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 4px; font-size:.78rem; color:var(--ink-3) }
+.loc-identity.muted{ display:block }
+.loc-identity .chip{ border-width:2px; font-size:.76rem; text-decoration:none; color:var(--ink) }
+.loc-identity .chip:hover{ background:#fff }
+
+/* ריחוף על כרטיס קבוצה → המפה מדגישה את היישובים שלה */
+.locdot.dim{ opacity:.28 }
+.locdot.hl circle.core{ stroke:#141A21; stroke-width:2.4; filter:drop-shadow(0 0 4px rgba(20,26,33,.35)) }
+.locdot.hl text{ font-size:9.4px }
+
+/* ---------- כל הסקרים: גרף הגושים בראש כל כרטיס ---------- */
+.poll-blocgraph{ position:relative; display:flex; height:32px; margin:12px 14px 2px; border-radius:8px; background:var(--paper-3) }
+.bc-seg{ display:flex; align-items:center; justify-content:center; min-width:0; color:#fff; font-variant-numeric:tabular-nums; font-weight:800; font-size:.9rem; overflow:hidden }
+.bc-seg:first-child{ border-start-start-radius:8px; border-end-start-radius:8px }
+.bc-seg:last-of-type{ border-start-end-radius:8px; border-end-end-radius:8px }
+.bc-seg.is-maj b::after{ content:" ✓"; font-size:.72rem }
+.bc-61{ position:absolute; inset-block:-4px; width:2px; background:#17212D; box-shadow:0 0 0 1px #fff; pointer-events:none }
+.bc-61.from-start{ inset-inline-start:calc(100% * 61 / 120) }
+.bc-61.from-end{ inset-inline-end:calc(100% * 61 / 120) }
+@media print{ .poll-blocgraph{ break-inside:avoid } }
+
+/* ---------- כל הסקרים: שלושה כרטיסים בשורה ---------- */
+#polls-cards{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px }
+#view-polls .poll-result-card header{ padding:12px 14px 4px }
+#view-polls .poll-result-card header h3{ font-size:1rem }
+#view-polls .poll-result-card time,#view-polls .poll-date-pick select{ font-size:.76rem }
+#view-polls .poll-blocbar{ margin-inline:14px }
+#view-polls .poll-cols{ padding:4px 14px 8px; gap:0 12px }
+#view-polls .poll-cols .poll-list:first-child{ padding-inline-end:10px }
+#view-polls .poll-cols li{ min-height:38px; grid-template-columns:minmax(0,1fr) 26px 20px; gap:4px }
+#view-polls .poll-cols .poll-party-name{ gap:6px; padding:6px 0; font-size:.8rem; line-height:1.25 }
+#view-polls .poll-cols .pname{ white-space:normal; overflow:visible; text-overflow:clip }
+#view-polls .poll-cols .pface{ width:22px; height:22px; font-size:.6rem }
+#view-polls .poll-list li>span{ font-size:.82rem }
+#view-polls .poll-list li>b{ font-size:1.15rem }
+#view-polls .poll-list li>em{ min-width:22px; font-size:.68rem }
+#view-polls .poll-result-card footer{ padding:8px 14px; font-size:.7rem }
+#view-polls .zero-results{ margin-inline:14px }
+@media (max-width:1100px){ #polls-cards{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
+@media (max-width:760px){ #polls-cards{ grid-template-columns:1fr } }
+
+/* ---------- הפתיח: חמש בדיקות → תחזית אחת ---------- */
+#view-home .verdict h1{ max-width:26ch; font-size:clamp(1.9rem, 4.2vw, 3rem) }
+.pipeline{ display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:10px; width:100%; max-width:1080px; margin-top:8px }
+.pipe-node{
+  position:relative; display:grid; align-content:start; gap:4px; padding:14px 14px 16px; text-align:start; text-decoration:none; color:var(--ink);
+  background:rgba(255,255,255,.82); border:1px solid var(--rule); border-radius:14px; box-shadow:var(--shadow-s);
+  transition:transform .15s, box-shadow .15s, border-color .15s;
+}
+.pipe-node:hover{ transform:translateY(-2px); box-shadow:var(--shadow-m); border-color:rgba(18,52,92,.35) }
+.pipe-node::after{ content:""; position:absolute; top:100%; inset-inline-start:50%; width:2px; height:14px; background:var(--rule-strong) }
+.pipe-step{ font-size:.66rem; font-weight:800; letter-spacing:.14em; color:var(--gold) }
+.pipe-k{ font-size:.86rem; font-weight:800; color:var(--navy) }
+.pipe-n{ font-family:var(--serif); font-size:clamp(1.3rem, 2vw, 1.7rem); font-weight:800; line-height:1.1; color:var(--ink); white-space:nowrap }
+.pipe-t{ font-size:.72rem; line-height:1.45; color:var(--ink-3) }
+.pipe-join{ position:relative; width:min(100%, 1080px); height:34px; margin:0 }
+.pipe-join::before{ content:""; position:absolute; top:13px; inset-inline:10%; height:2px; background:var(--rule-strong) }
+.pipe-join span{ position:absolute; top:13px; inset-inline-start:50%; width:2px; height:16px; background:var(--rule-strong); transform:translateX(50%) }
+.pipe-join span::after{ content:""; position:absolute; top:100%; inset-inline-start:50%; transform:translateX(50%); border:7px solid transparent; border-top:8px solid var(--rule-strong); border-bottom:0 }
+.verdict-result{ display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; max-width:840px }
+.pipe-result-k{ margin:0; font-size:.72rem; font-weight:800; letter-spacing:.12em; color:var(--gold) }
+#verdict-auto{ margin:0; font-family:var(--serif); font-size:clamp(1.4rem, 2.8vw, 2rem); font-weight:800; line-height:1.15; letter-spacing:-.01em; color:var(--ink) }
+#verdict-auto em{ font-style:normal; color:var(--navy) }
+#view-home .verdict .lede{ font-size:.98rem }
+#view-home .verdict-result .readout{ margin-top:4px }
+@media (max-width:900px){
+  .pipeline{ grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px }
+  .pipe-node{ padding:12px }
+  .pipe-node::after,.pipe-join::before{ display:none }
+  .pipe-join{ height:26px } .pipe-join span{ top:4px }
+}
+@media (max-width:560px){
+  .pipeline{ grid-template-columns:repeat(2, minmax(0,1fr)) }
+  .pipe-node:last-child{ grid-column:1/-1 }
+  .pipe-t{ font-size:.7rem }
+}
+@media print{ .pipeline,.pipe-join{ display:none!important } }
+
+/* ---------- דיוק המכונים: מכון בלי סדרת כיול יושב באותה שורה ובאותה משבצת ---------- */
+#view-e2022 .rank-nocalib{ opacity:1; min-height:0; aspect-ratio:auto }
+#view-e2022 .rank-nocalib::before{ content:none }
+#view-e2022 .rank>.nocalib-note{ display:flex; align-items:center; padding:8px 10px; background:rgba(18,52,92,.045); border:1px dashed var(--rule-strong); border-radius:10px }
+#view-e2022 .rank>.nocalib-note p{ margin:0; font-size:.76rem; line-height:1.5; color:var(--ink-2) }
+#view-e2022 .rank>.nocalib-note b{ color:var(--navy) }
+
+/* ---------- "מה לומדים מזה לתחזית" ---------- */
+.takeaway{ margin:0; padding:10px 14px; border-inline-start:3px solid var(--gold); border-radius:0 10px 10px 0; background:rgba(184,134,43,.07); color:var(--ink-2); font-size:.8rem; line-height:1.55 }
+[dir="rtl"] .takeaway,.takeaway{ border-radius:10px 0 0 10px }
+.takeaway b{ color:#8A6318 }
+.sec-takeaway{ margin-top:18px; font-size:.9rem; line-height:1.6 }
+.identity .takeaway{ margin-top:2px }
+
+
+/* ---------- המודל הדמוגרפי: חמישה שלבים מלמעלה למטה, המפה בצד ---------- */
+.demo-layout{ display:grid; grid-template-columns:minmax(0,1fr); gap:40px; align-items:start }
+.demo-main{ min-width:0 }
+.dstep{ display:grid; grid-template-columns:56px minmax(0,1fr); gap:20px; padding:30px 0 34px; border-top:1px solid var(--rule) }
+.dstep:first-child{ border-top:0; padding-top:8px }
+.dstep-num{ display:grid; place-items:center; width:46px; height:46px; border-radius:50%; background:var(--navy); color:#fff; font-family:var(--serif); font-size:1.4rem; font-weight:800; position:sticky; top:calc(var(--masthead-h,64px) + 14px) }
+.dstep-body{ display:grid; gap:16px; min-width:0 }
+.dstep-head{ display:grid; gap:6px }
+.dstep-head h2{ margin:0; font-size:clamp(1.3rem,2vw,1.65rem); letter-spacing:-.02em }
+.dstep-head .kicker{ margin:0 }
+.dstep-head .sec-note{ margin:4px 0 0; max-width:72ch }
+.dstep .stats{ grid-template-columns:repeat(4,1fr) }
+.dstep .stats b{ font-size:1.45rem }
+.base-blocbar{ position:relative; display:flex; height:40px; border-radius:10px; overflow:visible; font-size:.86rem; font-weight:700; color:#fff }
+.base-blocbar>span{ display:flex; align-items:center; justify-content:center; gap:6px; min-width:0; white-space:nowrap }
+.base-blocbar>span:first-child{ border-start-start-radius:10px; border-end-start-radius:10px }
+.base-blocbar>span:last-of-type{ border-start-end-radius:10px; border-end-end-radius:10px }
+.base-blocbar b{ font-family:var(--serif); font-size:1.25rem }
+.elect-bar{ display:flex; height:30px; border-radius:8px; overflow:hidden; font-size:.74rem; font-weight:700; color:#fff }
+.elect-bar span{ display:flex; align-items:center; justify-content:center; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding:0 6px }
+.elect-note{ margin:6px 0 0; font-size:.76rem; color:var(--ink-3) }
+.dtable-wrap{ background:#fff }
+.dtable{ width:100%; border-collapse:collapse; font-size:.84rem }
+.dtable th,.dtable td{ padding:10px 10px; vertical-align:top; border-bottom:1px solid var(--rule-2); text-align:start }
+.dtable thead th{ font-size:.72rem; font-weight:700; color:var(--ink-3); background:var(--paper-2); white-space:nowrap }
+.dtable thead th small{ font-weight:600 }
+.dtable .n{ text-align:end; font-variant-numeric:tabular-nums; white-space:nowrap }
+.dtable td.n b{ font-size:.95rem }
+.dtable td.n small{ display:block; font-size:.68rem; color:var(--ink-3); font-weight:400 }
+.dtable tfoot th,.dtable tfoot td{ border-top:2px solid var(--rule-strong); border-bottom:0; background:var(--paper-2); font-weight:700 }
+.dtable tbody tr[data-sector]{ transition:background .15s }
+.dtable tbody tr[data-sector]:hover{ background:color-mix(in srgb, var(--c) 6%, #fff) }
+.dtable tbody tr.is-linked{ background:color-mix(in srgb, var(--c) 10%, #fff); box-shadow:inset 3px 0 0 var(--c) }
+.gcell{ font-weight:800; white-space:nowrap; color:var(--ink) }
+.gcell i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-inline-end:7px; vertical-align:-1px }
+.pbar{ display:flex; height:9px; border-radius:5px; overflow:hidden; background:var(--rule-2); min-width:160px }
+.pbar .rest{ background:transparent }
+.plegend{ display:flex; flex-wrap:wrap; gap:2px 10px; margin-top:6px; font-size:.72rem; color:var(--ink-2) }
+.plegend span{ display:inline-flex; align-items:center; gap:4px; white-space:nowrap }
+.plegend i{ width:8px; height:8px; border-radius:2px }
+.plegend b{ color:var(--ink) }
+.plegend small{ color:var(--ink-3) }
+.dtable .delta.up{ color:#1F6349; font-weight:700 } .dtable .delta.down{ color:#8E241A; font-weight:700 }
+.dtable-ctl td{ vertical-align:middle }
+.dtable-ctl label{ display:grid; gap:2px; min-width:150px }
+.dtable-ctl .identity-lbl{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:.78rem; font-weight:600; color:var(--ink-2) }
+.dtable-ctl .identity-lbl b{ font-size:1rem; color:var(--ink) }
+.dtable-ctl .identity-lbl small{ font-weight:400; color:var(--ink-3); font-size:.68rem; white-space:nowrap }
+.dtable-ctl input[type="range"]{ width:100%; min-height:28px; accent-color:var(--c) }
+.dtable-ctl .why{ max-width:300px }
+.dtable-ctl .why p{ margin:0 0 4px; font-size:.72rem; line-height:1.45; color:var(--ink-3) }
+.dtable-ctl .why .src{ font-size:.7rem }
+.identity-foot{ display:flex; flex-wrap:wrap; align-items:center; gap:12px 24px }
+.identity-foot .sec-note{ margin:0; flex:1 1 320px }
+#view-demography .share-panel{ min-width:0 }
+
+@media (max-width:1100px){
+  .demo-layout{ gap:24px }
+}
+@media (max-width:760px){
+  .dstep{ grid-template-columns:40px minmax(0,1fr); gap:12px; padding:22px 0 26px }
+  .dstep-num{ width:34px; height:34px; font-size:1.05rem; position:static }
+  .dstep .stats{ grid-template-columns:repeat(2,1fr) }
+  .dtable{ font-size:.8rem } .dtable th,.dtable td{ padding:8px 6px }
+  .base-blocbar{ font-size:.76rem } .base-blocbar b{ font-size:1rem }
+}
+
+/* ---------- שלב 1: קולות מול מנדטים ---------- */
+.base-row{ display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:12px; margin-bottom:10px }
+.base-lbl{ font-size:.78rem; font-weight:800; color:var(--ink-3) }
+.base-blocbar.votes{ height:44px }
+.base-blocbar.votes b{ font-size:1.1rem }
+.base-drama{ margin-top:6px; padding:12px 16px; border-radius:12px; background:rgba(192,57,43,.07); border-inline-start:3px solid var(--red,#C0392B); font-size:.9rem; line-height:1.6; color:var(--ink-2) }
+.base-drama b{ color:#8E241A }
+
+/* ---------- שלב 4: שתי עוגות ---------- */
+.pies{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:14px }
+.pie{ display:grid; justify-items:center; gap:4px; text-align:center }
+.pie h3{ margin:0; font-family:var(--serif); font-size:2.2rem; color:var(--navy); line-height:1 }
+.pie .kicker{ margin:0 }
+.donut{ width:min(100%, 220px); height:auto }
+.donut circle{ transition:stroke-dasharray .4s }
+.donut .d-big{ font-family:var(--serif); font-size:26px; font-weight:800; fill:var(--ink) }
+.donut .d-small{ font-size:11px; font-weight:700; fill:var(--ink-3) }
+.pie-legend{ list-style:none; margin:4px 0 0; padding:0; display:grid; gap:4px; width:100%; max-width:200px; font-size:.8rem }
+.pie-legend li{ display:flex; align-items:center; gap:6px }
+.pie-legend i{ width:10px; height:10px; border-radius:3px; flex:none }
+.pie-legend b{ margin-inline-start:auto; font-variant-numeric:tabular-nums }
+.pie-arrow{ font-size:2rem; color:var(--rule-strong); font-weight:800 }
+@media (max-width:560px){ .pies{ grid-template-columns:1fr } .pie-arrow{ transform:rotate(90deg); justify-self:center } }
+
+/* ---------- שלב 1: קולות מול מנדטים ---------- */
+.base-row{ display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:12px; margin-bottom:10px }
+.base-lbl{ font-size:.78rem; font-weight:800; color:var(--ink-3) }
+.base-blocbar.votes{ height:44px }
+.base-blocbar.votes b{ font-size:1.1rem }
+.base-drama{ margin-top:6px; padding:12px 16px; border-radius:12px; background:rgba(192,57,43,.07); border-inline-start:3px solid var(--red,#C0392B); font-size:.9rem; line-height:1.6; color:var(--ink-2) }
+.base-drama b{ color:#8E241A }
+
+/* ---------- שלב 4: שתי עוגות ---------- */
+.pies{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:14px }
+.pie{ display:grid; justify-items:center; gap:4px; text-align:center }
+.pie h3{ margin:0; font-family:var(--serif); font-size:2.2rem; color:var(--navy); line-height:1 }
+.pie .kicker{ margin:0 }
+.donut{ width:min(100%, 220px); height:auto }
+.donut circle{ transition:stroke-dasharray .4s }
+.donut .d-big{ font-family:var(--serif); font-size:26px; font-weight:800; fill:var(--ink) }
+.donut .d-small{ font-size:11px; font-weight:700; fill:var(--ink-3) }
+.pie-legend{ list-style:none; margin:4px 0 0; padding:0; display:grid; gap:4px; width:100%; max-width:200px; font-size:.8rem }
+.pie-legend li{ display:flex; align-items:center; gap:6px }
+.pie-legend i{ width:10px; height:10px; border-radius:3px; flex:none }
+.pie-legend b{ margin-inline-start:auto; font-variant-numeric:tabular-nums }
+.pie-arrow{ font-size:2rem; color:var(--rule-strong); font-weight:800 }
+@media (max-width:560px){ .pies{ grid-template-columns:1fr } .pie-arrow{ transform:rotate(90deg); justify-self:center } }
+
+/* ---------- המפה: פורצת מגבולות עמודת הצד, ומפה גדולה ---------- */
+/* ---------- דיוק המכונים: הציון למעלה, הלוגו גדול, המדדים, והערוצים בתחתית ---------- */
+#view-e2022 .ranks{ grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px }
+#view-e2022 .rank{ position:relative; grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto auto auto auto 1fr; justify-items:stretch; gap:20px; padding:22px 22px 20px; border-radius:20px; box-shadow:0 6px 24px rgba(20,26,33,.06) }
+#view-e2022 .rank:hover{ box-shadow:0 10px 30px rgba(20,26,33,.1) }
+.score-top{ display:grid; gap:8px; padding:2px 0 0 }
+.score-row{ display:flex; align-items:center; justify-content:space-between; gap:10px }
+.score-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap }
+.score-foot .grade{ padding:4px 10px; font-size:.72rem }
+.rank-no{ display:grid; place-items:center; min-width:30px; height:24px; padding:0 8px; border-radius:100px; background:var(--navy); color:#fff; font-style:normal; font-size:.7rem; font-weight:800; letter-spacing:.04em }
+.score-row b{ font-family:var(--serif); font-size:2.8rem; font-weight:800; line-height:1; letter-spacing:-.02em; color:var(--navy) }
+.score-top small{ font-size:.68rem; font-weight:700; letter-spacing:.06em; color:var(--ink-3) }
+.score-bar{ display:block; height:8px; border-radius:6px; background:var(--rule-2); overflow:hidden }
+.score-bar u{ display:block; height:100%; width:var(--v); border-radius:6px; background:var(--navy); text-decoration:none }
+.score-top.grade-high .score-bar u{ background:#1F6349 } .score-top.grade-high b{ color:#1F6349 }
+.score-top.grade-mid .score-bar u{ background:#B8862B } .score-top.grade-mid b{ color:#8A6318 }
+.score-top.grade-low .score-bar u{ background:#8E241A } .score-top.grade-low b{ color:#8E241A }
+.score-top.grade-none b{ color:var(--ink-3) }
+.score-top.grade-none .score-bar u{ background:repeating-linear-gradient(90deg, var(--rule-strong) 0 6px, transparent 6px 10px) }
+#view-e2022 .rank>.orglogo{ width:100%!important; height:128px!important; display:flex; align-items:center; justify-content:center; border-radius:14px; background:#fff; border:1px solid var(--rule-2); font-size:1.8rem; color:var(--navy); overflow:hidden }
+#view-e2022 .rank>.orglogo img{ display:block; width:100%; height:128px; object-fit:contain; padding:10px; box-sizing:border-box }
+#view-e2022 .rank::before,#view-e2022 .rank-nocalib::before{ content:none }
+#view-e2022 .rank>div:not(.meters):not(.final):not(.score-top):not(.runs){ display:grid; justify-items:center; text-align:center; gap:4px }
+#view-e2022 .rank>div strong{ font-size:1.22rem; letter-spacing:-.01em }
+#view-e2022 .rank>div>span{ font-size:.78rem!important }
+#view-e2022 .rank>.meters{ gap:12px; padding:14px 14px 8px; background:rgba(18,52,92,.035); border-radius:12px; align-content:start }
+#view-e2022 .rank>.nocalib-note{ padding:12px; background:rgba(184,134,43,.06); border:1px dashed var(--rule-strong) }
+#view-e2022 .rank>.final.rank-outlets{ display:grid; align-content:start; justify-items:center; gap:8px; padding:0; border:0; text-align:center }
+#view-e2022 .rank-outlets>span{ font-size:.72rem; font-weight:800; letter-spacing:.06em; color:var(--ink-3) }
+#view-e2022 .rank-outlets .outlet-icons{ margin:0; gap:8px; justify-content:center }
+#view-e2022 .rank-outlets .outlet-icons span{ width:60px; height:60px; border-radius:12px; font-size:.72rem; box-shadow:0 1px 3px rgba(20,26,33,.08) }
+#view-e2022 .rank-outlets .outlet-icons img{ padding:6px }
+#view-e2022 .rank-nocalib{ opacity:1; min-height:0; aspect-ratio:auto; grid-template-rows:auto auto auto auto 1fr }
+
+/* ---------- דיוק המכונים: שורת עובדות ופסי הנוסחה ---------- */
+.page-facts{ display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:18px; padding:14px 18px; background:#fff; border:1px solid var(--rule); border-radius:14px; box-shadow:var(--shadow-s) }
+.page-facts>div{ display:grid; gap:2px }
+.page-facts b{ font-family:var(--serif); font-size:1.35rem; font-weight:800; color:var(--navy); line-height:1.1 }
+.page-facts span{ font-size:.72rem; font-weight:700; color:var(--ink-3) }
+#view-e2022 .reliability-explanation .data-explainer{ font-size:.95rem; color:var(--ink-2); max-width:78ch }
+#view-e2022 .fstrip.three{ gap:14px }
+#view-e2022 .fblock{ border-radius:14px; border-top-width:5px }
+#view-e2022 .fblock b{ font-size:2.2rem }
+#view-e2022 .calibration-strip article,#view-e2022 .scen-cards .card{ border-radius:14px }
+
+/* ---------- דיוק המכונים: דרגות, ציוני מערכות, טבלת הסקרים ---------- */
+.grade{ display:inline-flex; align-items:center; justify-content:center; padding:5px 12px; border-radius:100px; font-size:.76rem; font-weight:800; letter-spacing:.02em; white-space:nowrap }
+.grade.high{ background:rgba(31,99,73,.12); color:#1F6349 }
+.grade.mid{ background:rgba(184,134,43,.14); color:#8A6318 }
+.grade.low{ background:rgba(142,36,26,.1); color:#8E241A }
+.grade.none{ background:var(--paper-3); color:var(--ink-3) }
+.grade-legend{ display:flex; flex-wrap:wrap; gap:6px; align-self:center }
+#view-e2022 .rank.grade-high{ border-color:rgba(31,99,73,.35) }
+.runs{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px }
+.runs span{ display:grid; justify-items:center; gap:2px; padding:8px 4px; border-radius:10px; background:#fff; border:1px solid var(--rule-2) }
+.runs small{ font-size:.66rem; font-weight:700; color:var(--ink-3) }
+.runs b{ font-size:1.05rem; font-variant-numeric:tabular-nums; color:var(--navy) }
+.runs span.none b{ color:var(--rule-strong) }
+.page-facts.compact{ margin:0 0 14px; padding:10px 16px; gap:8px 24px }
+.page-facts.compact b{ font-size:1.1rem }
+#view-e2022 .controls{ margin-bottom:10px }
+.arch-wrap{ max-height:none }
+.arch{ border-collapse:separate; border-spacing:0; font-size:.82rem; min-width:900px }
+.arch th{ position:sticky; top:0; z-index:1; background:var(--paper-2); font-size:.7rem; white-space:nowrap; padding:10px 8px }
+.arch th.party-h{ writing-mode:horizontal-tb; max-width:76px; white-space:normal; line-height:1.2; text-align:center }
+.arch td{ padding:7px 8px; border-bottom:1px solid var(--rule-2); vertical-align:middle }
+.arch td.date{ white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--ink-3) }
+.arch td.pub .orgcell{ gap:6px } .arch td.pub span{ font-size:.78rem; white-space:nowrap }
+.arch td.firm strong{ white-space:nowrap }
+.arch td.cell{ text-align:center; font-variant-numeric:tabular-nums; font-weight:700; color:var(--ink) }
+.arch td.cell.ok{ background:rgba(31,99,73,.16) }
+.arch td.cell.near{ background:rgba(31,99,73,.05) }
+.arch td.cell.off{ background:rgba(184,134,43,.16) }
+.arch td.cell.far{ background:rgba(142,36,26,.2) }
+.arch tr.actual td{ background:#1F6349; color:#fff; border-bottom:3px solid #fff; font-weight:800; text-align:center; font-size:.9rem }
+.arch tr.actual td.date,.arch tr.actual td strong{ color:#fff }
+.arch tr.actual td:nth-child(2){ text-align:start }
+.arch tr.actual td:first-child{ border-start-start-radius:10px } .arch tr.actual td:last-child{ border-start-end-radius:10px }
+.arch-more{ margin-top:12px }
+.arch-key{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px }
+.cell-key{ display:inline-block; padding:2px 10px; border-radius:6px; font-size:.72rem; font-weight:700 }
+.cell-key.ok{ background:rgba(31,99,73,.16) } .cell-key.near{ background:rgba(31,99,73,.05); border:1px solid var(--rule-2) } .cell-key.off{ background:rgba(184,134,43,.16) } .cell-key.far{ background:rgba(142,36,26,.2) }
+#view-e2022 .calib-switch{ margin:0; align-self:center }
+
+/* ---------- דיוק המכונים: התחשיב "אילו מרצ עברה" (2022) ---------- */
+.scen-block{ display:grid; gap:14px; margin:0 0 22px; padding:18px 20px; background:rgba(184,134,43,.06); border:1px solid rgba(184,134,43,.35); border-radius:16px }
+.scen-block[hidden]{ display:none }
+.scen-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 20px }
+.scen-head h3{ margin:0; font-size:1.25rem }
+.scen-head .kicker{ margin:0 0 2px }
+.scen-grid{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:18px; align-items:start }
+.scen-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+.scen-card{ padding:12px 14px; background:#fff; border:1px solid var(--rule); border-top:4px solid var(--c); border-radius:12px }
+.scen-card .kicker{ margin:0 0 6px; color:var(--c) }
+.scen-pair{ display:flex; align-items:center; justify-content:space-between; gap:6px }
+.scen-pair span{ display:grid; gap:0 }
+.scen-pair small{ font-size:.66rem; font-weight:700; color:var(--ink-3) }
+.scen-pair b{ font-family:var(--serif); font-size:1.7rem; line-height:1; color:var(--ink) }
+.scen-pair .cf b{ color:var(--c) }
+.scen-pair i{ font-style:normal; color:var(--rule-strong); font-weight:800 }
+.scen-text p{ margin:0 0 8px; font-size:.88rem; line-height:1.6; color:var(--ink-2) }
+.scen-text b{ color:var(--ink) }
+.arch tr.actual.cf td{ background:#8A6318 }
+@media (max-width:900px){ .scen-grid{ grid-template-columns:1fr } .scen-cards{ grid-template-columns:1fr } }
+
+/* ---------- איך מחשבים: שישה שלבים עם מספרים חיים ---------- */
+.method-steps{ display:grid; gap:0 }
+.mstep{ display:grid; grid-template-columns:56px minmax(0,1fr); gap:20px; padding:28px 0 32px; border-top:1px solid var(--rule) }
+.mstep:first-child{ border-top:0; padding-top:8px }
+.mstep-num{ display:grid; place-items:center; width:46px; height:46px; border-radius:50%; background:var(--navy); color:#fff; font-size:1.4rem; font-weight:800 }
+.mstep-body{ display:grid; gap:14px; min-width:0 }
+.mstep-head{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 20px }
+.mstep-head h2{ margin:0; font-size:clamp(1.25rem,2vw,1.6rem); letter-spacing:-.02em }
+.mstep-link{ font-size:.86rem; font-weight:700; color:var(--accent,var(--navy)); white-space:nowrap }
+.mstep-body>p{ margin:0; max-width:78ch; font-size:1rem; line-height:1.7; color:var(--ink-2) }
+.mlive{ display:flex; flex-wrap:wrap; gap:10px 32px; padding:14px 20px; background:#fff; border:1px solid var(--rule); border-radius:14px }
+.mlive>div{ display:grid; gap:2px }
+.mlive b{ font-size:1.5rem; font-weight:800; line-height:1.1; color:var(--navy) }
+.mlive span{ font-size:.74rem; font-weight:700; color:var(--ink-3) }
+.mstep-outlets{ margin:0; gap:10px }
+.mstep-outlets span{ width:52px; height:52px; border-radius:12px }
+.mtable{ width:100%; border-collapse:collapse; font-size:.88rem; background:#fff }
+.mtable th,.mtable td{ padding:10px 12px; border-bottom:1px solid var(--rule-2); text-align:start; vertical-align:middle }
+.mtable thead th{ font-size:.72rem; color:var(--ink-3); background:var(--paper-2); white-space:nowrap }
+.mtable .n{ text-align:end; font-variant-numeric:tabular-nums; white-space:nowrap }
+.mtable tbody th{ font-weight:800 }
+.sources-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px }
+.sources-group{ padding:18px 20px; background:#fff; border:1px solid var(--rule); border-radius:16px }
+.sources-group h3{ margin:0 0 10px; font-size:1rem; color:var(--navy) }
+.sources-group ul{ list-style:none; margin:0; padding:0; display:grid; gap:10px }
+.sources-group li{ display:grid; gap:2px; font-size:.86rem }
+.sources-group li a{ font-weight:700; color:var(--ink); text-decoration:none }
+.sources-group li a:hover{ color:var(--accent,var(--navy)); text-decoration:underline }
+.sources-group li span{ font-size:.76rem; color:var(--ink-3); line-height:1.5 }
+@media (max-width:760px){ .mstep{ grid-template-columns:40px minmax(0,1fr); gap:12px } .mstep-num{ width:34px; height:34px; font-size:1.05rem } .mlive{ gap:8px 20px } }
+
+/* ---------- בחירות 2022: המפה מסודרת בשלבים ---------- */
+.map-legend-top{ margin:0 0 12px; padding:10px 14px; background:#fff; border:1px solid var(--rule); border-radius:12px }
+.map-panel{ display:grid; gap:8px; padding:14px; background:#fff; border:1px solid var(--rule); border-radius:14px }
+.map-panel-title{ display:block; margin:0; font-size:.74rem; font-weight:800; letter-spacing:.06em; color:var(--ink-3) }
+.map-panel .locdetail{ padding:12px 0 0; border:0; box-shadow:none; background:none }
+.map-side{ gap:14px }
+.map-list{ max-height:360px }
+.sub-h{ margin:26px 0 6px; font-size:1.2rem }
+#mp-4 .dstep-body[hidden]{ display:none }
+
+/* ---------- בחירות 2022: המפה ---------- */
+.map-layout{ display:grid; grid-template-columns:minmax(0,1.5fr) minmax(300px,.7fr); gap:22px; align-items:start }
+.map-main{ padding:12px; background:#fff }
+.map-main svg{ display:block; width:100%; max-width:none; height:auto }
+.landmass{ fill:#F3EFE5; stroke:#B9AF9A; stroke-width:1 }
+.territory{ fill:#E6E1D6; stroke:#B9AF9A; stroke-width:.9; stroke-dasharray:3 2.5 }
+.locdot{ cursor:pointer }
+.locdot text{ pointer-events:none; font-size:7.6px; font-weight:700; fill:#3B4652; paint-order:stroke; stroke:#F6F4EF; stroke-width:2.6px; direction:ltr }
+.locdot circle.core{ transition:r .15s }
+.locdot:hover circle.core{ stroke:#141A21; stroke-width:1.6 }
+.locdot.sel circle.core{ stroke:#141A21; stroke-width:2.4 }
+.map-side{ display:grid; gap:14px; position:sticky; top:calc(var(--masthead-h,64px) + 16px) }
+.map-list{ display:grid; gap:6px; max-height:360px; overflow:auto; scrollbar-width:thin; padding-inline-end:4px }
+.map-list button{ display:grid; gap:2px; text-align:start; font:inherit; cursor:pointer }
+.map-list span i{ display:inline-block; width:8px; height:8px; border-radius:2px; margin:0 3px; vertical-align:0 }
+.map-list .empty{ padding:12px; color:var(--ink-3) }
+@media (max-width:900px){ .map-layout{ grid-template-columns:1fr } .map-side{ position:static } }
+
+/* ---------- מפת Leaflet ---------- */
+.map-main{ padding:0; overflow:hidden }
+.leaflet-host{ height:640px; width:100%; border-radius:16px; z-index:0 }
+.leaflet-host .leaflet-control-attribution{ font-size:.66rem; direction:ltr }
+.leaflet-host .leaflet-attribution-flag{ display:none !important }
+.leaflet-host .leaflet-control-zoom{ border:1px solid var(--rule) }
+.leaflet-host .leaflet-control-zoom a{ color:var(--navy); font-weight:700 }
+.map-tip{ direction:rtl; text-align:right; font-family:var(--sans); font-size:.82rem; border-radius:8px; border:1px solid var(--rule); box-shadow:var(--shadow-s) }
+@media (max-width:900px){ .leaflet-host{ height:460px } }
+
+/* ---------- מחשבון המגזר החרדי: ש״ס וג׳ בנפרד ---------- */
+.calcsplit{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:14px }
+.calcparty{ padding:12px 14px 14px; border:1px solid var(--rule-2); border-top:4px solid var(--c); border-radius:14px; background:var(--paper) }
+.calcparty h4{ margin:0 0 6px; font-size:1rem }
+.calcparty .calcout{ margin-top:12px; padding:14px }
+.calcparty .calcout b{ font-size:2.2rem }
+.calcline.calctotal{ margin-top:12px; border-top:1px solid var(--rule); border-bottom:0; font-weight:800; font-size:1rem }
+@media (max-width:640px){ .calcsplit{ grid-template-columns:1fr } }

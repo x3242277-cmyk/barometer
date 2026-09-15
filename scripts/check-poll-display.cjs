@@ -75,6 +75,24 @@ assert.equal(averageSeats.reduce((a,b) => a+b, 0), 120, 'poll average does not a
 console.log('Passed: mandate order in cards, comparison and forecast bars; average has 120 whole mandates; one shared bar scale.');
 
 vm.runInContext(`
+const averageFixture = {...S.cur.polls[0], dateTimestamp:Date.now(), parties:[
+  {id:'likud',name:'הליכוד',mandates:54,alignment:'Coalition'},
+  {id:'yashar',name:'ישר',mandates:58,alignment:'Opposition'},
+  {id:'raam',name:'רע״ם',mandates:7,alignment:'Arabs'},
+  {id:'qa_unassigned',name:'רשימה לא משויכת',mandates:1,alignment:'Unknown'}
+]};
+const savedAveragePolls = S.cur.polls;
+S.cur.polls=[averageFixture];renderPollAverage(S.cur.polls);S.cur.polls=savedAveragePolls;
+`, context);
+const unknownAverage = element('#average-results').innerHTML;
+const unknownLegend = unknownAverage.match(/class="bloc-legend">(.*?)<\/aside>/)[1];
+assert.equal([...unknownLegend.matchAll(/<b>(\d+)<\/b>/g)].reduce((sum,m)=>sum+Number(m[1]),0),120,'average bloc legend omits allocated mandates');
+assert(unknownLegend.includes('<span>לא משויך</span><b>1</b>'),'unassigned mandate has no legend entry');
+const unknownColor = vm.runInContext('BLOCS.Unknown.color',context);
+assert(unknownLegend.includes('--c:'+unknownColor) && new RegExp(unknownColor+' [\\d.]+% 100%').test(unknownAverage),'unassigned donut and legend colors differ');
+console.log('Passed: average legend accounts for all 120 seats, including unassigned lists, with matching chart colors.');
+
+vm.runInContext(`
 const many = [];
 for (const [ch, n] of [['ערוץ א',6],['ערוץ ב',2],['ערוץ ג',1]])
   for (let i = 0; i < n; i++) many.push({ id: ch+i, date: String(20-i).padStart(2,'0')+'.08.2026', dateTimestamp: Date.parse('2026-08-'+String(20-i).padStart(2,'0')),

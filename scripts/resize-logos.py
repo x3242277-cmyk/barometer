@@ -25,11 +25,14 @@ MAP = {
     "מדגם.png": "midgam.png",
     "מאגר מוחות.jpg": "maagar-mochot.png",
     "המדד.png": "hamadad.png",
+    "נקסט דאטה.jpg": "next-data.png",
     # ערוצים
     "וואלה.jpg": "walla.png",
     "16.png": "channel-16.png",
     "זמן ישראל.jpg": "zman-israel.png",
     "i24.png": "i24news.png",
+    "גלצ.png": "galatz.png",
+    "ערוץ 20.png": "channel-20.png",
 }
 
 

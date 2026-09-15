@@ -5,8 +5,8 @@
     "targetYear": 2026,
     "years": 4,
     "principle": "המודל אינו משתמש בשום סקר. הוא לוקח את תוצאות האמת של 2022, מניח שהרגלי ההצבעה בכל קבוצת אוכלוסייה נשארו כשהיו, ומשנה רק דבר אחד: את גודלה של כל קבוצה. שיטת חלוקת המנדטים היא בדר־עופר עם הסכמי העודפים שנחתמו ב־2022 — וכשמציבים גידול אפס, המודל משחזר את תוצאות 2022 מנדט במנדט.",
-    "validVotes2022": 4763694,
-    "otherVotes2022": 77657,
+    "validVotes2022": 4764742,
+    "otherVotes2022": 71215,
     "threshold": 0.0325
   },
   "sectors": [
@@ -67,7 +67,7 @@
     {
       "id": "likud",
       "name": "הליכוד",
-      "votes": 1115085,
+      "votes": 1115336,
       "seats": 32,
       "camp": "right",
       "mix": {
@@ -81,7 +81,7 @@
     {
       "id": "yesh_atid",
       "name": "יש עתיד",
-      "votes": 847145,
+      "votes": 847435,
       "seats": 24,
       "camp": "center",
       "mix": {
@@ -93,7 +93,7 @@
     {
       "id": "religious_zionism",
       "name": "הציונות הדתית–עוצמה",
-      "votes": 516146,
+      "votes": 516470,
       "seats": 14,
       "camp": "right",
       "mix": {
@@ -106,7 +106,7 @@
     {
       "id": "national_unity",
       "name": "המחנה הממלכתי",
-      "votes": 432376,
+      "votes": 432482,
       "seats": 12,
       "camp": "center",
       "mix": {
@@ -119,7 +119,7 @@
     {
       "id": "shas",
       "name": "ש״ס",
-      "votes": 392644,
+      "votes": 392964,
       "seats": 11,
       "camp": "haredi",
       "mix": {
@@ -132,7 +132,7 @@
     {
       "id": "utj",
       "name": "יהדות התורה",
-      "votes": 280125,
+      "votes": 280194,
       "seats": 7,
       "camp": "haredi",
       "mix": {
@@ -188,7 +188,7 @@
     {
       "id": "meretz",
       "name": "מרצ",
-      "votes": 150696,
+      "votes": 150793,
       "seats": 0,
       "camp": "center",
       "mix": {
@@ -200,7 +200,7 @@
     {
       "id": "balad",
       "name": "בל״ד",
-      "votes": 138093,
+      "votes": 138617,
       "seats": 0,
       "camp": "arab",
       "mix": {
@@ -210,7 +210,7 @@
     {
       "id": "jewish_home",
       "name": "הבית היהודי",
-      "votes": 51266,
+      "votes": 56775,
       "seats": 0,
       "camp": "right",
       "mix": {

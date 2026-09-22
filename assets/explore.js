@@ -99,8 +99,7 @@ function renderPollCards(rows, polls) {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
       const meta = partyMeta(id), col = partyColor(id, meta.alignment);
-      const logo = meta.logo || '';
-      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pface party-logo${logo ? '' : ' is-blank'}">${logo ? `<img src="${esc(logo)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.classList.add('is-blank');this.parentNode.textContent='${esc(initials(meta.name))}'">` : esc(initials(meta.name))}</span><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
+      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך

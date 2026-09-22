@@ -879,8 +879,6 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 .poll-view-tabs button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 5px 15px rgba(18,52,92,.2)}
 .view-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:var(--paper-3);color:var(--navy);font-size:1.12rem;line-height:1}
 .poll-view-tabs button[aria-pressed="true"] .view-icon{background:rgba(255,255,255,.14);color:#F1C15D}
-.pface.party-logo{border-radius:7px;background:#fff;padding:2px;color:var(--navy);font-size:.66rem;font-weight:900}
-.pface.party-logo img{object-fit:contain;object-position:center;width:100%;height:100%}
 
 /* --- ממוצע סקרים --- */
 .poll-average{margin-top:6px}
@@ -996,10 +994,6 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 .poll-cols li{grid-template-columns:minmax(0,1fr) 30px 26px;gap:6px;min-height:42px;padding:0}
 .poll-cols li>b{font-family:var(--sans);font-size:1.1rem;text-align:end;color:var(--c,var(--navy))}
 .poll-party-name{display:flex;align-items:center;gap:8px;min-width:0}
-.pface{flex:none;width:26px;height:26px;border-radius:50%;overflow:hidden;background:var(--paper-3);
-  border:1px solid var(--rule);display:grid;place-items:center}
-.pface img{width:100%;height:100%;object-fit:cover;object-position:center 18%}
-.pface.is-blank img{width:70%;height:70%;object-fit:contain;opacity:.7}
 .pname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.86rem}
 .poll-cols .neutral-delta{font-size:.75rem!important}
 @media(max-width:900px){#polls-cards{grid-template-columns:1fr}}

@@ -889,8 +889,6 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 .poll-view-tabs button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 5px 15px rgba(18,52,92,.2)}
 .view-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:var(--paper-3);color:var(--navy);font-size:1.12rem;line-height:1}
 .poll-view-tabs button[aria-pressed="true"] .view-icon{background:rgba(255,255,255,.14);color:#F1C15D}
-.pface.party-logo{border-radius:7px;background:#fff;padding:2px;color:var(--navy);font-size:.66rem;font-weight:900}
-.pface.party-logo img{object-fit:contain;object-position:center;width:100%;height:100%}
 
 /* --- ממוצע סקרים --- */
 .poll-average{margin-top:6px}
@@ -1006,10 +1004,6 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 .poll-cols li{grid-template-columns:minmax(0,1fr) 30px 26px;gap:6px;min-height:42px;padding:0}
 .poll-cols li>b{font-family:var(--sans);font-size:1.1rem;text-align:end;color:var(--c,var(--navy))}
 .poll-party-name{display:flex;align-items:center;gap:8px;min-width:0}
-.pface{flex:none;width:26px;height:26px;border-radius:50%;overflow:hidden;background:var(--paper-3);
-  border:1px solid var(--rule);display:grid;place-items:center}
-.pface img{width:100%;height:100%;object-fit:cover;object-position:center 18%}
-.pface.is-blank img{width:70%;height:70%;object-fit:contain;opacity:.7}
 .pname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.86rem}
 .poll-cols .neutral-delta{font-size:.75rem!important}
 @media(max-width:900px){#polls-cards{grid-template-columns:1fr}}
@@ -1025,7 +1019,7 @@ tr.outlet-head .orgcell strong{color:var(--firm, var(--ink))}
 #view-method,#view-live,#view-results{--page-art:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NTAgMzYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMxNTNjNjgiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggZD0iTTE4MCAxNzBINDgwVjMyMEgxODBaTTE4MCAxNzBMMjMwIDEyMEg0MzBMNDgwIDE3ME0yNjAgMTUwSDQwNU0yNzAgMTQwTDI0MCA0MEwzNzAgMTBMNDA1IDE0ME0yOTAgNzBMMzIwIDk1TDM1NSA0NU0xODAgMzIwTDE0NSAyODVWMjA1TDE4MCAxNzAiLz48L2c+PC9zdmc+Cg==')}
 .hero .hero-in{min-height:260px;align-items:center}.hero h1{font-size:clamp(2.6rem,4.5vw,4.8rem);letter-spacing:-.035em;line-height:1.07}.hero .hero-art{opacity:.15}.hero{border-bottom:1px solid var(--rule)}
 .forecast-section{padding-top:22px}.forecast-section>.sec-head h2{font-size:2rem}.home-stats-sec{margin-top:20px}
-.rcard .rcard-face{aspect-ratio:3/4;background:#faf8f2}.rcard .rcard-face img,.poll-party-name .pface img{object-fit:contain!important;object-position:center!important;width:100%;height:100%}.rcard{overflow:hidden}
+.rcard .rcard-face{aspect-ratio:3/4;background:#faf8f2}.rcard .rcard-face img{object-fit:contain!important;object-position:center!important;width:100%;height:100%}.rcard{overflow:hidden}
 .polls-sec>.controls>.field{display:none}.filter-modes{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.filter-modes button{border:1px solid var(--rule);padding:11px 18px;background:#fff;border-radius:24px;color:var(--navy);font:inherit;cursor:pointer}.filter-modes [aria-pressed=true]{background:var(--navy);color:#fff}
 .filter-icons{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 25px}.filter-icons button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:104px;min-height:104px;padding:9px 5px;border:1px solid var(--rule);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:.8rem;cursor:pointer}.filter-icons button[aria-pressed=true]{outline:2px solid var(--navy);background:#edf1f6}.filter-icons img{width:48px;height:48px;object-fit:contain}.letter-icon{display:grid;place-items:center;border-radius:50%;background:#f0eee8;width:46px;height:46px;color:var(--navy);font-weight:800;font-size:1.1rem}
 .focus-summary{display:flex;align-items:center;gap:32px;padding:24px;background:#fff;border:1px solid var(--rule);border-radius:18px;margin-bottom:26px}.focus-summary[hidden]{display:none}.profile-portrait{width:190px;height:250px;object-fit:contain;background:#faf8f2;border-radius:9px}.focus-summary h2{font-size:3.5rem;color:var(--navy);margin:4px 0}.focus-summary h2 span{font-size:1.35rem}.profile-count{font-size:1.3rem;font-weight:700}.focus-summary p{max-width:640px}
@@ -1962,14 +1956,13 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 #polls-cards{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px }
 #view-polls .poll-result-card header{ padding:12px 14px 4px }
 #view-polls .poll-result-card header h3{ font-size:1rem }
-#view-polls .poll-result-card time,#view-polls .poll-date-pick select{ font-size:.76rem }
+#view-polls .poll-result-card time,#view-polls .poll-date-pick select{ font-size:.72rem }
 #view-polls .poll-blocbar{ margin-inline:14px }
 #view-polls .poll-cols{ padding:4px 14px 8px; gap:0 12px }
 #view-polls .poll-cols .poll-list:first-child{ padding-inline-end:10px }
 #view-polls .poll-cols li{ min-height:38px; grid-template-columns:minmax(0,1fr) 26px 20px; gap:4px }
 #view-polls .poll-cols .poll-party-name{ gap:6px; padding:6px 0; font-size:.8rem; line-height:1.25 }
 #view-polls .poll-cols .pname{ white-space:normal; overflow:visible; text-overflow:clip }
-#view-polls .poll-cols .pface{ width:22px; height:22px; font-size:.6rem }
 #view-polls .poll-list li>span{ font-size:.82rem }
 #view-polls .poll-list li>b{ font-size:1.15rem }
 #view-polls .poll-list li>em{ min-width:22px; font-size:.68rem }
@@ -2612,14 +2605,13 @@ tbody tr:hover{background:#F7F9FD}
 .poll-result-card h3{font-size:1.2rem;font-weight:800}
 .poll-result-card header p{color:var(--ink-3);font-size:.75rem}
 .poll-result-card .orglogo{border:1px solid var(--rule);background:#FFF;border-radius:10px;width:46px;height:46px}
-.poll-date-pick select{font-size:.75rem;padding:7px 9px;min-height:39px;max-width:135px;background:var(--paper);border:0}
+.poll-date-pick select{font-size:.72rem;padding:5px 7px;min-height:32px;min-width:0;max-width:98px;background:var(--paper);border:0}
 .poll-blocgraph{margin:0 24px 12px;border-radius:7px;overflow:hidden;height:37px;box-shadow:none}
 .poll-blocgraph .bc-seg b{font-size:1rem;font-weight:700}
 .poll-cols{padding:0 18px;gap:16px}
 .poll-list li{padding-block:9px;border-color:var(--rule-2);gap:7px}
 .poll-party-name{font-size:.85rem;gap:8px}.poll-list .pname{font-size:.85rem;line-height:1.4}
 .poll-list li>b{font-size:1.2rem;font-weight:700}
-.poll-list .pface{height:29px;width:29px;border-radius:6px;flex:none}
 .poll-result-card>footer{padding:12px 22px;margin-top:auto;background:#F8FAFD;border-top:1px solid var(--rule-2);color:var(--ink-3);font-size:.68rem}
 .zero-results{padding:0 24px}.zero-results summary{font-size:.75rem;color:var(--ink-3)}
 .firm-card{padding:22px!important;border-top-width:3px!important;transition:box-shadow .2s}
@@ -2811,7 +2803,7 @@ body>footer a:hover{color:var(--accent)}
   #view-e2022 .rank>.nocalib-note p{font-size:.7rem}
   .poll-result-card>header{padding:18px 16px 14px}.poll-blocgraph{margin-inline:16px}
   .poll-cols{padding-inline:12px;gap:10px}.poll-list .pname{font-size:.75rem}
-  .poll-list .pface{width:25px;height:25px}.poll-party-name{gap:5px}
+  .poll-party-name{gap:5px}
   .poll-result-card .orglogo{width:37px;height:37px}.poll-result-card h3{font-size:1.1rem}
   .poll-result-card>footer{padding:11px 15px}
   .home-method .hero-countdown{gap:16px;flex-wrap:wrap}
@@ -4945,8 +4937,7 @@ function renderPollCards(rows, polls) {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
       const meta = partyMeta(id), col = partyColor(id, meta.alignment);
-      const logo = meta.logo || '';
-      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pface party-logo${logo ? '' : ' is-blank'}">${logo ? `<img src="${esc(logo)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.classList.add('is-blank');this.parentNode.textContent='${esc(initials(meta.name))}'">` : esc(initials(meta.name))}</span><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
+      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך

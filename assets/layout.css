@@ -247,14 +247,13 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 #polls-cards{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px }
 #view-polls .poll-result-card header{ padding:12px 14px 4px }
 #view-polls .poll-result-card header h3{ font-size:1rem }
-#view-polls .poll-result-card time,#view-polls .poll-date-pick select{ font-size:.76rem }
+#view-polls .poll-result-card time,#view-polls .poll-date-pick select{ font-size:.72rem }
 #view-polls .poll-blocbar{ margin-inline:14px }
 #view-polls .poll-cols{ padding:4px 14px 8px; gap:0 12px }
 #view-polls .poll-cols .poll-list:first-child{ padding-inline-end:10px }
 #view-polls .poll-cols li{ min-height:38px; grid-template-columns:minmax(0,1fr) 26px 20px; gap:4px }
 #view-polls .poll-cols .poll-party-name{ gap:6px; padding:6px 0; font-size:.8rem; line-height:1.25 }
 #view-polls .poll-cols .pname{ white-space:normal; overflow:visible; text-overflow:clip }
-#view-polls .poll-cols .pface{ width:22px; height:22px; font-size:.6rem }
 #view-polls .poll-list li>span{ font-size:.82rem }
 #view-polls .poll-list li>b{ font-size:1.15rem }
 #view-polls .poll-list li>em{ min-width:22px; font-size:.68rem }

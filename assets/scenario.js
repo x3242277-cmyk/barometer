@@ -26,14 +26,27 @@ function scenarioForecast(raw, options = {}) {
   };
   /* עוגן הגושים וקיבוע ש״ס/יה״ת הן אותה הנחה — "הימין חזק מהסקרים" — ואסור
      לספור אותה פעמיים. מחשבים את ההזזה הימינה הכוללת הרצויה (חצי הדרך למאזן
-     64 של 2022), ומחסירים ממנה את מה שהקיבוע כבר תרם. העוגן משלים רק את
-     היתרה. 64 = ליכוד + ציונות דתית + ש״ס + יה״ת ב-2022. */
+     היעד), ומחסירים ממנה את מה שהקיבוע כבר תרם. העוגן משלים רק את היתרה.
+     היעד הוא 62, לא 64: גוש נתניהו קיבל בפועל 64 ב-2022, אבל כ-2 מנדטים
+     מתוכם הגיעו רק כי מרצ פספסה את אחוז החסימה ב-4,062 קולות בלבד (ראו
+     COUNTERFACTUAL ב-app.js — "אילו מרצ עברה" נותן לגוש נתניהו 62, לא 64).
+     זה מקרה קצה חד-פעמי בספירת העודפים, לא אות יציב לגודל הגוש, ולכן לא
+     בונים עליו את התחזית ל-2026. */
+  const ANCHOR_TARGET_2022 = 62;
   const rawSum = Object.values(raw).reduce((s,v)=>s+(Number.isFinite(v)&&v>0?v:0),0);
   const k = rawSum ? 120/rawSum : 1;                       // נרמול הסקרים ל-120
   const pollShasUtj = k*((raw.shas||0)+(raw.yahadut_hatora||0));
-  const pollRight = k*(sum(rightIds)/REST)*total + pollShasUtj;
+  /* רשימות ימין שכרגע מתחת לאחוז החסימה (כמו עופר וינטר) לא נכנסות ל-raw
+     בכלל, ואם לא היינו מחזירים אותן כאן pollRight היה סופר אותן כתמיכה
+     אפסית — בדיוק אותה עיוות "מקרה קצה בסף החסימה" שמתקנים ב-62 למעלה,
+     רק בכיוון ההפוך. rawFull (לפני סינון הסף) מחזיר את התמיכה שלהן לצורך
+     חישוב הפער בלבד — הן עדיין לא מקבלות מנדטים אמיתיים בחלוקה הסופית. */
+  const rf = options.rawFull || raw;
+  const wastedRight = Object.entries(rf).reduce((s,[id,v]) =>
+    s + (rightIds.has(id) && !(id in raw) && Number.isFinite(v) && v > 0 ? v : 0), 0);
+  const pollRight = k*(sum(rightIds)/REST)*total + pollShasUtj + wastedRight;
   const fixGain = (fixed.shas + fixed.yahadut_hatora) - pollShasUtj;   // מה שהקיבוע כבר הוסיף לימין
-  const wantMove = Math.max(0,(64-pollRight)*blend);       // ההזזה הימינה הכוללת הרצויה
+  const wantMove = Math.max(0,(ANCHOR_TARGET_2022-pollRight)*blend);   // ההזזה הימינה הכוללת הרצויה
   const anchorSeats = Math.max(0, wantMove - fixGain);     // העוגן משלים רק את היתרה
   const initialRight = pollRight;
   const anchor = transfer(anchorSeats*REST/120);

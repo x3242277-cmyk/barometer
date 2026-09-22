@@ -281,7 +281,7 @@ const HIDE_FROM_HOME = new Set(["hadash_taal"]);
 const THRESHOLD_MANDATES = 120 * 0.0325;
 /* רשימה שמתחת לאחוז החסימה תוצג עם 0 מנדטים ואחוז התמיכה שלה, אם היא נמדדת
    מעל הסף הזה. מתחתיו — היא נשמטת מהתצוגה. */
-const SHOW_BELOW_MIN = 1;
+const SHOW_BELOW_MIN = 2;
 
 /* "היום 09:00" / "אתמול 21:00" / "04.09.2026" — לפי מה שיש ב-generatedAt.
    הקובץ מתעדכן בכל הרצה של סקריפט הסקרים, ואיתו התחזית. */
@@ -422,7 +422,7 @@ function forecast(mode, exclude) {
   if (mode === 'scenario') {
     /* שלב 5: המודל הדמוגרפי מאשר או מתקן את ההנחה הדמוגרפית — אם ההנחה רחוקה
        מאומדן המודל ביותר ממנדט אחד, התחזית משתמשת באומדן המודל במקומה. */
-    const opts = { ...(S.scenarioOptions || {}) };
+    const opts = { ...(S.scenarioOptions || {}), rawFull };
     const want = opts.demographic ?? 2, model = demoDriftSeats();
     if (model != null && Math.abs(model - want) > DEMO_TOLERANCE) { opts.demographic = Math.round(model * 4) / 4; opts.demographicCorrected = { from: want, model, to: opts.demographic }; }
     const scenario = scenarioForecast(raw, opts);
@@ -572,8 +572,10 @@ const PARTY_COLORS = {
    משויכות (אפור) והרשימות הערביות (ירוק), המרכז־שמאל בקצה השמאלי. */
 const SPECTRUM = ["ozma_yehudit", "noam", "zionut_datit", "likud", "ofer_vinter_party", "shas", "yahadut_hatora", "hendel_zeliha_party", "reshima_meshutefet", "hadash_taal", "raam", "ndi", "kahollavan", "bait_zioni", "yashar", "beyahad", "hademokratim"];
 const partyHue = id => PARTY_COLORS[normId(id)] || partyColor(id, partyMeta(id).alignment);
-/* צד בלוח המנדטים (לפי גוש): רע״מ נספרת במרכז־שמאל */
-const sideOf = id => { const al = partyMeta(id).alignment; return al === "Right" ? "right" : al === "Unknown" ? "mid" : "left"; };
+/* צד בלוח המנדטים (לפי גוש): רע״מ משויכת ידנית ל-Left (ALIGN_OVERRIDE) ולכן
+   נשארת במרכז־שמאל; הרשימות הערביות ללא שיוך ידני (הרשימה המשותפת) עוברות
+   לעמודה האמצעית, יחד עם הרשימות שאינן משויכות לגוש כלל. */
+const sideOf = id => { const al = partyMeta(id).alignment; return al === "Right" ? "right" : (al === "Unknown" || al === "Arabs") ? "mid" : "left"; };
 /* צד על הקשת (לפי משפחה): הרשימות הערביות — כולל רע״מ — והלא־משויכות באמצע */
 const ARAB_FAMILY = new Set(["raam", "hadash_taal", "reshima_meshutefet", "balad"]);
 const arcSideOf = id => { const al = partyMeta(id).alignment; return al === "Right" ? "right" : (al === "Unknown" || al === "Arabs" || ARAB_FAMILY.has(normId(id))) ? "mid" : "left"; };

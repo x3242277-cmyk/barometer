@@ -177,6 +177,10 @@
   .view:not(#view-home) .score-top.grade-high .score-bar u {background:#79d5ac}
   .view:not(#view-home) .score-top.grade-mid .score-bar u {background:#e3be78}
   .view:not(#view-home) .score-top.grade-low .score-bar u {background:#f19c91}
+  /* תגי אמינות עצמאיים (לא בתוך score-top) — למשל על כרטיסי סקר בודדים */
+  .view:not(#view-home) .grade.high {background:rgba(121,213,172,.14);color:#79d5ac}
+  .view:not(#view-home) .grade.mid {background:rgba(227,190,120,.16);color:#e3be78}
+  .view:not(#view-home) .grade.low {background:rgba(241,156,145,.16);color:#f19c91}
   .view:not(#view-home) .scen-card {background:#0b1e30;border-radius:8px}
 
   /* Research, geographic data and election-night panels. */

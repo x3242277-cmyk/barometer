@@ -39,7 +39,12 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
    שוב בשעות הנכונות, זה יכול להשאיר את האתר תקוע על נתונים ישנים ימים.
    3 ניסיונות עם נסיגה מעריכית, מכבדים Retry-After כשהוא קיים. */
 async function get(url, accept = "text/html") {
-  const maxAttempts = cfg.maxRetries ?? 3;
+  /* 3 ניסיונות מהירים (שניות בודדות) לא שרדו חסימת 429 אמיתית שנצפתה
+     בפועל ב-CI — היא נמשכת יותר מכמה שניות. זו הרצה ברקע שרצה בלאו הכי
+     רק כמה פעמים ביום, אז שווה לשלם עוד כמה דקות בשביל לצאת מחלון חסימה
+     קצר-בינוני במקום להפיל את כל הריצה. */
+  const maxAttempts = cfg.maxRetries ?? 6;
+  const baseDelayMs = cfg.retryBaseMs ?? 5000;
   for (let attempt = 1; ; attempt++) {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), cfg.requestTimeoutMs ?? 20000);
@@ -49,14 +54,14 @@ async function get(url, accept = "text/html") {
     } catch (e) {
       if (attempt >= maxAttempts) throw e;
       clearTimeout(t);
-      await sleep(1000 * 2 ** (attempt - 1));
+      await sleep(baseDelayMs * 2 ** (attempt - 1));
       continue;
     } finally { clearTimeout(t); }
     if (res.ok) return await res.text();
     const retryable = res.status === 429 || res.status >= 500;
     if (!retryable || attempt >= maxAttempts) throw new Error(`${res.status} ${res.statusText}`);
     const retryAfter = Number(res.headers.get("retry-after"));
-    const delay = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 1000 * 2 ** (attempt - 1);
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : baseDelayMs * 2 ** (attempt - 1);
     log(`${res.status} מ-${url} — ניסיון ${attempt}/${maxAttempts}, מנסה שוב בעוד ${Math.round(delay / 1000)}ש׳`);
     await sleep(delay);
   }

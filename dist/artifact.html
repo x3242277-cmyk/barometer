@@ -2943,7 +2943,12 @@ body>footer a:hover{color:var(--accent)}
 .board.layout-size .wall-poster{display:block}
 .board.layout-size .wall{display:none}
 .ptiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:18px 12px}
-.ptiles+.ptiles{margin-top:18px}
+.ptiles-row{display:flex;align-items:center;gap:16px}
+.ptiles-row+.ptiles-row{margin-top:18px}
+.ptiles-row .ptiles{flex:1;min-width:0}
+.ptiles-total{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:64px;padding:10px 12px;border-radius:12px;background:var(--c);color:#fff}
+.ptiles-total b{font-size:1.5rem;font-weight:800;line-height:1}
+.ptiles-total span{font-size:.62rem;font-weight:700;opacity:.85}
 .ptile{display:grid;justify-items:center;align-content:start;gap:3px;padding:0;border:0;background:none;cursor:pointer;text-align:center;font:inherit;color:var(--ink)}
 .ptile-photo{display:block;width:100%;aspect-ratio:4/5;border-radius:10px;overflow:hidden;border:1px solid var(--rule-2);background:var(--paper-3)}
 .ptile-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
@@ -3413,6 +3418,10 @@ body{background:var(--paper);color:var(--ink)}
   .view:not(#view-home) .score-top.grade-high .score-bar u {background:#79d5ac}
   .view:not(#view-home) .score-top.grade-mid .score-bar u {background:#e3be78}
   .view:not(#view-home) .score-top.grade-low .score-bar u {background:#f19c91}
+  /* תגי אמינות עצמאיים (לא בתוך score-top) — למשל על כרטיסי סקר בודדים */
+  .view:not(#view-home) .grade.high {background:rgba(121,213,172,.14);color:#79d5ac}
+  .view:not(#view-home) .grade.mid {background:rgba(227,190,120,.16);color:#e3be78}
+  .view:not(#view-home) .grade.low {background:rgba(241,156,145,.16);color:#f19c91}
   .view:not(#view-home) .scen-card {background:#0b1e30;border-radius:8px}
 
   /* Research, geographic data and election-night panels. */
@@ -4920,7 +4929,9 @@ function renderPollCards(rows, polls) {
     const seatbar = `<div class="poll-blocgraph" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
       shown.map(k => `<span class="bc-seg${k === winner ? ' is-maj' : ''}" style="flex:${bloc[k]} ${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}"><b>${bloc[k]}</b></span>`).join('')
     }${total === 120 ? '<i class="bc-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="bc-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
-    return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
+    const relScore = firmScore(f.meta), relGrade = gradeOf(relScore);
+    const relBadge = `<span class="grade ${relGrade.key}" title="ציון אמינות: ${r1(relScore)} מתוך 100">${esc(relGrade.label)}</span>`;
+    return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)} ${relBadge}</p></div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
           }</select></label>`
@@ -5785,8 +5796,12 @@ function renderWallPoster(seats, est, blocTot, belowEntries) {
   const isRight = id => partyMeta(id).alignment === "Right";
   const rightIds = ids.filter(isRight), otherIds = ids.filter(id => !isRight(id));
   const rightBelow = belowEntries.filter(([id]) => isRight(id)), otherBelow = belowEntries.filter(([id]) => !isRight(id));
-  box.innerHTML = `<div class="ptiles">${rightIds.map(id => tile(id, seats[id])).join("")}${rightBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
-    <div class="ptiles">${otherIds.map(id => tile(id, seats[id])).join("")}${otherBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
+  const rightTotal = blocTot.Right || 0, otherTotal = 120 - rightTotal;
+  /* תג הסכום יושב אחרון ב-DOM כדי לנחות משמאל בפריסת flex ב-RTL (הראשון
+     נופל מימין) — משמאל לכל שורה, לא רק ברצועת הסיכום למטה. */
+  const rowTotal = (n, color) => `<div class="ptiles-total" style="--c:${color}"><b class="num">${n}</b><span>מנדטים</span></div>`;
+  box.innerHTML = `<div class="ptiles-row"><div class="ptiles">${rightIds.map(id => tile(id, seats[id])).join("")}${rightBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>${rowTotal(rightTotal, BLOCS.Right.color)}</div>
+    <div class="ptiles-row"><div class="ptiles">${otherIds.map(id => tile(id, seats[id])).join("")}${otherBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>${rowTotal(otherTotal, BLOCS.Left.color)}</div>
     <div class="pstrip"><span class="pstrip-lbl">חלוקת הגושים</span>${groups.map(([l, n, c]) => `<span class="pgroup" style="--c:${c}"><b class="num">${n}</b>${esc(l)}</span>`).join("")}<span class="pstrip-note">61 דרושים לרוב</span></div>`;
 }
 

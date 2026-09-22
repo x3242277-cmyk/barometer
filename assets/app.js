@@ -756,8 +756,12 @@ function renderWallPoster(seats, est, blocTot, belowEntries) {
   const isRight = id => partyMeta(id).alignment === "Right";
   const rightIds = ids.filter(isRight), otherIds = ids.filter(id => !isRight(id));
   const rightBelow = belowEntries.filter(([id]) => isRight(id)), otherBelow = belowEntries.filter(([id]) => !isRight(id));
-  box.innerHTML = `<div class="ptiles">${rightIds.map(id => tile(id, seats[id])).join("")}${rightBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
-    <div class="ptiles">${otherIds.map(id => tile(id, seats[id])).join("")}${otherBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
+  const rightTotal = blocTot.Right || 0, otherTotal = 120 - rightTotal;
+  /* תג הסכום יושב אחרון ב-DOM כדי לנחות משמאל בפריסת flex ב-RTL (הראשון
+     נופל מימין) — משמאל לכל שורה, לא רק ברצועת הסיכום למטה. */
+  const rowTotal = (n, color) => `<div class="ptiles-total" style="--c:${color}"><b class="num">${n}</b><span>מנדטים</span></div>`;
+  box.innerHTML = `<div class="ptiles-row"><div class="ptiles">${rightIds.map(id => tile(id, seats[id])).join("")}${rightBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>${rowTotal(rightTotal, BLOCS.Right.color)}</div>
+    <div class="ptiles-row"><div class="ptiles">${otherIds.map(id => tile(id, seats[id])).join("")}${otherBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>${rowTotal(otherTotal, BLOCS.Left.color)}</div>
     <div class="pstrip"><span class="pstrip-lbl">חלוקת הגושים</span>${groups.map(([l, n, c]) => `<span class="pgroup" style="--c:${c}"><b class="num">${n}</b>${esc(l)}</span>`).join("")}<span class="pstrip-note">61 דרושים לרוב</span></div>`;
 }
 

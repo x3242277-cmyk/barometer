@@ -101,6 +101,7 @@
 .board.layout-size .wall-poster{display:block}
 .board.layout-size .wall{display:none}
 .ptiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:18px 12px}
+.ptiles+.ptiles{margin-top:18px}
 .ptile{display:grid;justify-items:center;align-content:start;gap:3px;padding:0;border:0;background:none;cursor:pointer;text-align:center;font:inherit;color:var(--ink)}
 .ptile-photo{display:block;width:100%;aspect-ratio:4/5;border-radius:10px;overflow:hidden;border:1px solid var(--rule-2);background:var(--paper-3)}
 .ptile-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}

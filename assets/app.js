@@ -749,7 +749,13 @@ function renderWallPoster(seats, est, blocTot, belowEntries) {
   };
   const arab = ids.filter(id => arcSideOf(id) === "mid" && partyMeta(id).alignment !== "Unknown").reduce((t, id) => t + seats[id], 0);
   const groups = [["גוש הימין והחרדים", blocTot.Right || 0, BLOCS.Right.color], ["מרכז־שמאל", (blocTot.Left || 0) + (blocTot.Arabs || 0) - arab, BLOCS.Left.color], ["הרשימות הערביות", arab, BLOCS.Arabs.color], ["לא משויכות", blocTot.Unknown || 0, BLOCS.Unknown.color]].filter(g => g[1] > 0);
-  box.innerHTML = `<div class="ptiles">${ids.map(id => tile(id, seats[id])).join("")}${belowEntries.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
+  /* שתי שורות: גוש הימין למעלה, כל השאר (מרכז־שמאל, הרשימות הערביות,
+     לא משויכות) למטה — לא לפי גודל בלבד, אלא לפי שיוך בפועל. */
+  const isRight = id => partyMeta(id).alignment === "Right";
+  const rightIds = ids.filter(isRight), otherIds = ids.filter(id => !isRight(id));
+  const rightBelow = belowEntries.filter(([id]) => isRight(id)), otherBelow = belowEntries.filter(([id]) => !isRight(id));
+  box.innerHTML = `<div class="ptiles">${rightIds.map(id => tile(id, seats[id])).join("")}${rightBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
+    <div class="ptiles">${otherIds.map(id => tile(id, seats[id])).join("")}${otherBelow.map(([id, pct]) => tile(id, 0, `${r1(pct)}%`)).join("")}</div>
     <div class="pstrip"><span class="pstrip-lbl">חלוקת הגושים</span>${groups.map(([l, n, c]) => `<span class="pgroup" style="--c:${c}"><b class="num">${n}</b>${esc(l)}</span>`).join("")}<span class="pstrip-note">61 דרושים לרוב</span></div>`;
 }
 

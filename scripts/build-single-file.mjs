@@ -26,6 +26,9 @@ for (const motif of ['polls','community','growth','ballot']) {
 const electionBackdrop = await readFile(path.join(ROOT, "assets/election-knesset.png"));
 const electionBackdropDataUri = `data:image/png;base64,${electionBackdrop.toString("base64")}`;
 css = css.replace(/url\(\s*(['"]?)(?:\.\/|assets\/)?election-knesset\.png(?:\?[^'"\)\s]*)?\1\s*\)/g, `url("${electionBackdropDataUri}")`);
+const flagMask = await readFile(path.join(ROOT, "assets/flag-mask.png"));
+const flagMaskDataUri = `data:image/png;base64,${flagMask.toString("base64")}`;
+css = css.replace(/url\(\s*(['"]?)(?:\.\/|assets\/)?flag-mask\.png(?:\?[^'"\)\s]*)?\1\s*\)/g, `url("${flagMaskDataUri}")`);
 const scripts = ["scenario", "upgrade", "analytics", "explore", "app", "intro", "pipeline", "election-tools", "election"];
 const js = (await Promise.all(scripts.map(name => rd(`assets/${name}.js`)))).join("\n");
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];

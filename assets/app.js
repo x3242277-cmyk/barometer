@@ -22,7 +22,9 @@ const BLOCS = {
   Arabs:   { he: "ערבים", short: "ערבים", color: "#2E8467" },
   Unknown: { he: "לא משויך", short: "אחר", color: "#96A0AB" }
 };
-const BLOC_ORDER = ["Right", "Arabs", "Left", "Unknown"];
+/* בפס RTL הקטע הראשון במערך נופל בקצה הימני — לכן "לא משויך" באמצע,
+   4th מהצד השמאלי אבל 2nd מהימין, ולא בקצה החיצוני. */
+const BLOC_ORDER = ["Right", "Unknown", "Arabs", "Left"];
 const HAREDI_PARTIES = new Set(["shas", "yahadut_hatora", "utj", "mifleget_hazibur_haharedi"]);
 const LEGACY_BLOCS = { Coalition: "Right", Opposition: "Left", Arabs: "Arabs", Unknown: "Unknown" };
 const HIST_PARTY_HE = {

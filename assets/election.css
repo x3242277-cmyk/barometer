@@ -1,5 +1,8 @@
 /* Election 2026: a shared midnight and champagne visual identity. */
-:root{color-scheme:dark;--paper:#081522;--paper-2:#102438;--paper-3:#132a40;--ink:#f4f5f7;--ink-2:#c7d2df;--ink-3:#9dadc0;--rule:#263b50;--rule-2:#1c3044;--rule-strong:#41566b;--accent:#dfbe76;--accent-light:#dfbe7615;--navy:#0b1c2e;--navy-2:#081522;--gold:#dfbe76;--apricot:#dfbe76;--page-w:1360px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px}
+:root{color-scheme:dark;--paper:#081522;--paper-2:#102438;--paper-3:#132a40;--ink:#f4f5f7;--ink-2:#c7d2df;--ink-3:#9dadc0;--rule:#263b50;--rule-2:#1c3044;--rule-strong:#41566b;--accent:#dfbe76;--accent-light:#dfbe7615;--navy:#0b1c2e;--navy-2:#081522;--gold:#dfbe76;--apricot:#dfbe76;--page-w:1360px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px;
+  /* אותה תמונה מוטמעת פעם אחת בקובץ היחיד (build-single-file.mjs) ומשמשת גם
+     ל-.cover-image וגם ל-.flag-wave — משתנה משותף במקום להטביע אותה פעמיים. */
+  --knesset-bg:url('election-knesset.png')}
 html{scroll-padding-top:110px}
 body{background:var(--paper);color:var(--ink)}
 ::selection{background:#dfbe76;color:#081522}
@@ -17,7 +20,16 @@ body{background:var(--paper);color:var(--ink)}
 .masthead-side .print-btn{background:#102337;border-color:#263b50;color:#c7d2df;border-radius:50%;min-width:35px;min-height:35px;padding:8px}
 #view-home{background:radial-gradient(ellipse at 85% 35%,#13345338,transparent 65%),#081522}
 #view-home .election-cover{position:relative;isolation:isolate;overflow:hidden;min-height:490px;background:#091b30;border-bottom:1px solid #b597532e}
-.cover-image{position:absolute;inset:0;z-index:-2;background-image:url('election-knesset.png');background-size:cover;background-position:center 60%}
+.cover-image{position:absolute;inset:0;z-index:-2;background-image:var(--knesset-bg);background-size:cover;background-position:center 60%}
+/* דגל הכנסת מתנפנף: אותה תמונה, ממוסכת רק לצורת הדגל (flag-mask.png, נגזרת
+   מאותה תמונה, אז cover/position נשארים מסונכרנים בכל רוחב מסך), עם עיוות
+   פרלין אנימטיבי (#flag-ripple ב-index.html) שממחיש בד ברוח בלי צורך בנקודת
+   ציר קבועה. */
+.flag-wave{position:absolute;inset:0;z-index:-2;background-image:var(--knesset-bg);background-size:cover;background-position:center 60%;
+  -webkit-mask-image:url('flag-mask.png');mask-image:url('flag-mask.png');-webkit-mask-size:cover;mask-size:cover;
+  -webkit-mask-position:center 60%;mask-position:center 60%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  filter:url(#flag-ripple)}
+@media (prefers-reduced-motion:reduce){.flag-wave{filter:none}}
 .election-cover::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(270deg,#081522f5 0%,#081522d9 24%,#08152265 50%,#08152208 75%),linear-gradient(0deg,#081522 0%,#08152200 30%)}
 .cover-content{padding-top:45px;padding-bottom:26px;position:relative}
 .cover-edition{display:flex;align-items:center;gap:11px;font-size:.75rem;color:#dbc58f;font-weight:600;letter-spacing:.035em}

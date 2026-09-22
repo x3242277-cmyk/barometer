@@ -64,9 +64,21 @@ function renderPollCards(rows, polls) {
     byOutlet.get(k).push(p);
   });
   byOutlet.forEach(list => list.sort((a, b) => parsePollDate(b) - parsePollDate(a)));
+  /* current-polls.json מוגבל ל-MAX_PER_OUTLET לכל ערוץ; בורר התאריך בכרטיס
+     צריך את כל ההיסטוריה מאז POLLS_FROM, שקיימת רק בארכיון המלא. אם
+     הארכיון לא נטען (אופציונלי), נופלים חזרה לרשימה המוגבלת. */
+  const archiveByOutlet = new Map();
+  (S.pollsArchive?.polls || []).forEach(p => {
+    if (parsePollDate(p) < POLLS_FROM) return;
+    const k = outletKey(p);
+    if (!archiveByOutlet.has(k)) archiveByOutlet.set(k, []);
+    archiveByOutlet.get(k).push(p);
+  });
+  archiveByOutlet.forEach(list => list.sort((a, b) => parsePollDate(b) - parsePollDate(a)));
   const cards = [...byOutlet.entries()].map(([key, list]) => {
-    const pick = list.find(p => p.id === S.cardPoll[key]) || list[0];
-    return { key, list, poll: pick };
+    const fullList = archiveByOutlet.get(key)?.length ? archiveByOutlet.get(key) : list;
+    const pick = fullList.find(p => p.id === S.cardPoll[key]) || list[0];
+    return { key, list: fullList, poll: pick };
   /* הסדר נקבע לפי הסקר האחרון של כלי התקשורת ולא לפי הסקר שנבחר בכרטיס,
      כדי שהחלפת תאריך לא תזיז את הכרטיס ממקומו. */
   }).sort((a, b) => parsePollDate(b.list[0]) - parsePollDate(a.list[0]));

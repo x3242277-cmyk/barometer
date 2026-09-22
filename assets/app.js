@@ -2263,7 +2263,12 @@ async function boot() {
         .concat(EXTRA_CALIB.map(([, , , u]) => window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u] || null) : loadJSONOptional(u))));
     const leaders = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/leaders.json"] || null) : await loadJSONOptional("data/leaders.json");
     const forecastHistory = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/forecast-history.json"] || null) : await loadJSONOptional("data/forecast-history.json");
-    Object.assign(S, { hist, firms, regions, demo, haredi, leaders: leaders?.photos || {}, forecastHistory });
+    /* current-polls.json כבר מוגבל ל-MAX_PER_OUTLET לכל ערוץ (גם בשרת וגם
+       פה בלקוח) — לתצוגת "כל ההיסטוריה" בכרטיס הסקר צריך את הארכיון
+       המלא, שלא מוגבל. אופציונלי: אם נכשל, בורר התאריך בכרטיס פשוט נשאר
+       מוגבל כמו קודם. */
+    const pollsArchive = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/polls-archive.json"] || null) : await loadJSONOptional("data/polls-archive.json");
+    Object.assign(S, { hist, firms, regions, demo, haredi, leaders: leaders?.photos || {}, forecastHistory, pollsArchive });
     /* מערכות הבחירות שהמדד מכויל עליהן. הראשונה היא ברירת המחדל של עמוד הדיוק. */
     S.elections = [
       { year: 2022, key: "2022", short: "2022", election: "הכנסת ה־25", data: hist, stats: scoreFirms(hist) },

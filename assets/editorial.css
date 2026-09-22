@@ -275,7 +275,8 @@ tbody tr:hover{background:#F7F9FD}
 .poll-view-tabs{flex:none;align-self:end}
 .poll-view-tabs button{gap:7px}
 .poll-view-tabs .view-icon{color:inherit;font-size:1rem;opacity:.65}
-#polls-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+#polls-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media(max-width:1300px){#polls-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
 .poll-result-card{border:1px solid var(--rule);border-radius:20px;background:white;box-shadow:none;overflow:hidden}
 .poll-result-card>header{padding:22px 24px 17px;gap:12px}
 .poll-result-card h3{font-size:1.2rem;font-weight:800}

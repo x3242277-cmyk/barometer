@@ -29,7 +29,7 @@ css = css.replace(/url\(\s*(['"]?)(?:\.\/|assets\/)?election-knesset\.png(?:\?[^
 const scripts = ["scenario", "upgrade", "analytics", "explore", "app", "intro", "pipeline", "election-tools", "election"];
 const js = (await Promise.all(scripts.map(name => rd(`assets/${name}.js`)))).join("\n");
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
-const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json"];
+const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json", "data/polls-archive.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 

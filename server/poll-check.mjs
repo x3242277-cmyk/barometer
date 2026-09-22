@@ -33,7 +33,11 @@ function pollURL(value) {
 }
 
 async function getText(fetcher, url, signal) {
-  const response = await fetcher(url, { signal, redirect: 'error', headers: { Accept: 'text/html,application/xml', 'User-Agent': 'Barometer-Poll-Check/1.0' } });
+  const response = await fetcher(url, { signal, redirect: 'error', headers: {
+    Accept: 'text/html,application/xml',
+    'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
+  } });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   if (Number(response.headers.get('content-length')) > MAX_BYTES) throw new Error('source-too-large');
   const reader = response.body.getReader();

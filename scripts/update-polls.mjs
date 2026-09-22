@@ -50,7 +50,7 @@ async function get(url, accept = "text/html") {
     const t = setTimeout(() => ctl.abort(), cfg.requestTimeoutMs ?? 20000);
     let res;
     try {
-      res = await fetch(url, { signal: ctl.signal, headers: { "User-Agent": cfg.userAgent, Accept: accept } });
+      res = await fetch(url, { signal: ctl.signal, headers: { "User-Agent": cfg.userAgent, "Accept-Language": "he-IL,he;q=0.9,en;q=0.8", Accept: accept } });
     } catch (e) {
       if (attempt >= maxAttempts) throw e;
       clearTimeout(t);

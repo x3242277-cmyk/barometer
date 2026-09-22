@@ -1,5 +1,5 @@
 /* Election 2026: a shared midnight and champagne visual identity. */
-:root{color-scheme:dark;--paper:#081522;--paper-2:#102438;--paper-3:#132a40;--ink:#f4f5f7;--ink-2:#c7d2df;--ink-3:#9dadc0;--rule:#263b50;--rule-2:#1c3044;--rule-strong:#41566b;--accent:#dfbe76;--accent-light:#dfbe7615;--navy:#0b1c2e;--navy-2:#081522;--gold:#dfbe76;--apricot:#dfbe76;--page-w:1360px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px}
+:root{color-scheme:dark;--paper:#081522;--paper-2:#102438;--paper-3:#132a40;--ink:#f4f5f7;--ink-2:#c7d2df;--ink-3:#9dadc0;--rule:#263b50;--rule-2:#1c3044;--rule-strong:#41566b;--accent:#dfbe76;--accent-light:#dfbe7615;--navy:#0b1c2e;--navy-2:#081522;--gold:#dfbe76;--apricot:#dfbe76;--page-w:100000px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px}
 html{scroll-padding-top:110px}
 body{background:var(--paper);color:var(--ink)}
 ::selection{background:#dfbe76;color:#081522}

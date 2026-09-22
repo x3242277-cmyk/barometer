@@ -2240,18 +2240,6 @@ async function loadJSONOptional(url) {
   }
 }
 
-function acceptLivePolls(polls, checkedAt) {
-  const byId = new Map((S.rawCur?.polls || S.cur.polls).map(p => [String(p.id), p]));
-  polls.filter(p => S.firms.sourceMap[p.sourceId]).forEach(p => byId.set(p.id, { ...byId.get(p.id), ...p }));
-  S.rawCur = { ...S.rawCur, polls: [...byId.values()], generatedAt: checkedAt };
-  S.cur = { ...S.rawCur, polls: inWindow(S.rawCur.polls, checkedAt).polls };
-  S.forecastPolls = recentForForecast(S.cur.polls);
-  S.series = buildSeries(S.forecastPolls);
-  S.homeHistory = 'current';
-  $("#stamp-updated").textContent = `נבדק ${heDate(checkedAt)} · עדכון בתצוגה זו`;
-  routeFromHash();
-}
-
 async function boot() {
   try {
     /* [שנה, מפתח ייחודי, תווית קצרה, קובץ]. הכיול מתחיל ב־2020: מערכות ישנות יותר
@@ -2282,7 +2270,6 @@ async function boot() {
         note: missing ? `${attributed} מתוך ${e.data.polls.length} סקרים משויכים למכון` : "כל הסקרים משויכים למכון" };
     });
     const win = inWindow(cur.polls, cur.generatedAt);
-    S.rawCur = cur;                                   // הקובץ כפי שנטען — להשוואה בבדיקת סקרים חדשים
     S.cur = { ...cur, polls: win.polls };
     /* הציון המשוקלל: ממוצע שווה־משקל של כל המערכות שבהן המכון פרסם */
     S.stats = combineCalibrations(S.elections);

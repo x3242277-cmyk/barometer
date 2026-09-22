@@ -4987,16 +4987,16 @@ function renderHomeHemicycle(seats, blocTot, est) {
      הגולמי. ההבדל מחלוקת המנדטים הוא בדיוק הקולות שאובדים מתחת לאחוז החסימה. */
   const parties = est?.parties || {}, rawFull = est?.rawFull || {};
   const belowIds = Object.keys(rawFull).filter(id => parties[id] == null && rawFull[id] > 0);
-  const votes = { ...Object.fromEntries(belowIds.map(id => [id, rawFull[id]])), ...parties };
-  const sumV = Object.values(votes).reduce((t, v) => t + v, 0) || 1;
-  const shareOf = pred => 100 * Object.entries(votes).filter(([id]) => pred(sideOf(id))).reduce((t, [, v]) => t + v, 0) / sumV;
-  const shR = shareOf(sd => sd === "right"), shU = shareOf(sd => sd === "mid"), shL = shareOf(sd => sd === "left");
-  /* מי בפועל בתוך ה-shU: רשימות אמיתיות (עם מנדטים) ש-sideOf שם ל"אמצע" —
-     היום זו הרשימה המשותפת, לא רע״מ (רע״מ ב"אמצע" הוויזואלי של הקשת דרך
-     ARAB_FAMILY, אבל מנדטיה נספרים ב-shL כי sideOf מכבד את השיוך הידני שלה
-     ל-Left). אם אין רשימה אמיתית כזו, כל ה-shU הוא קולות מתחת לאחוז החסימה. */
-  const midRealIds = ids.filter(id => sideOf(id) === "mid");
-  const midWhat = midRealIds.length ? midRealIds.map(id => partyMeta(id).name).join(", ") : "רשימות מתחת לאחוז החסימה";
+  const belowSet = new Set(belowIds);
+  const sumV = Object.values(rawFull).reduce((t, v) => t + (v > 0 ? v : 0), 0) || 1;
+  /* שיעור הקולות המשוער, לפי הגוש האמיתי של כל רשימה (לא לפי מיקומה על
+     הקשת) — כולל רע״מ בתוך מרכז־שמאל, כמו בכל מקום אחר באתר, ובלי לערבב
+     רשימות אמיתיות עם קולות שאבדו מתחת לאחוז החסימה. */
+  const realShareOf = al => 100 * Object.entries(rawFull)
+    .filter(([id, v]) => v > 0 && !belowSet.has(id) && partyMeta(id).alignment === al)
+    .reduce((t, [, v]) => t + v, 0) / sumV;
+  const shR = realShareOf("Right"), shL = realShareOf("Left"), shA = realShareOf("Arabs");
+  const shBelow = 100 * belowIds.reduce((t, id) => t + (rawFull[id] > 0 ? rawFull[id] : 0), 0) / sumV;
   const wasted = belowIds.filter(id => 100 * rawFull[id] / sumV >= 0.5).sort((a, b) => rawFull[b] - rawFull[a]).map(id => `${partyMeta(id).name} ${r1(100 * rawFull[id] / sumV)}%`);
   const rows = 5, pts = hemicycleLayout(total, rows);
   const W = 640, H = 330, cx = W / 2, cy = H - 14, Rr = 300;
@@ -5012,9 +5012,14 @@ function renderHomeHemicycle(seats, blocTot, est) {
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`חלוקת ${total} המנדטים. ${items.map(i => i.label).join("; ")}`)}">${dots}
       <text x="${cx}" y="${cy - 38}" text-anchor="middle" class="hemicycle-total">${total}</text><text x="${cx}" y="${cy - 12}" text-anchor="middle" class="hemicycle-caption">מנדטים</text></svg>
     <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>
-    <div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער לכל גוש · כולל רשימות שמתחת לאחוז החסימה, שקולותיהן אובדים${wasted.length ? ` (${esc(wasted.join(", "))})` : ""}</span></div>
-      <div class="sm-votes-row"><b class="num">${r1(shR)}%</b><div class="sm-bar thin"><span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shU > 0.05 ? `<span style="width:${shU}%;background:${BLOCS.Unknown.color}" title="${esc(midWhat)} ${r1(shU)}%"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span></div><b class="num">${r1(shL)}%</b></div>
-      ${shU > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Unknown.color}"></i>${r1(shU)}% ${esc(midWhat)}</div>` : ""}</div>
+    <div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער מתוך כלל המצביעים</span></div>
+      <div class="sm-bar thin" role="img" aria-label="ימין וחרדים ${r1(shR)} אחוז, הרשימות הערביות ${r1(shA)} אחוז, מרכז־שמאל ${r1(shL)} אחוז, מתחת לאחוז החסימה ${r1(shBelow)} אחוז">
+        <span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shA > 0.05 ? `<span style="width:${shA}%;background:${BLOCS.Arabs.color}"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span>${shBelow > 0.05 ? `<span style="width:${shBelow}%;background:${BLOCS.Unknown.color}"></span>` : ""}
+      </div>
+      <div class="sm-votes-mid"><i style="background:${BLOCS.Right.color}"></i>${r1(shR)}% ימין וחרדים</div>
+      ${shA > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Arabs.color}"></i>${r1(shA)}% הרשימות הערביות</div>` : ""}
+      <div class="sm-votes-mid"><i style="background:${BLOCS.Left.color}"></i>${r1(shL)}% מרכז־שמאל</div>
+      ${shBelow > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Unknown.color}"></i>${r1(shBelow)}% מתחת לאחוז החסימה${wasted.length ? ` (${esc(wasted.join(", "))})` : ""}</div>` : ""}
   </div>`;
   const modeLabel = $("#home-model-label");
   if (modeLabel) modeLabel.textContent = S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר";

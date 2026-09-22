@@ -3143,7 +3143,10 @@ body{background:var(--paper);color:var(--ink)}
 #election-title{font-size:clamp(3.6rem,6.5vw,6.4rem);line-height:1.13;letter-spacing:-.055em;margin:15px 0 0;font-weight:900;color:#fff}
 #election-title span{font-family:var(--sans);color:#dfbe76;font-weight:800;letter-spacing:-.04em;display:inline-block}
 .cover-tagline{font-size:clamp(1.2rem,1.8vw,1.65rem);font-weight:600;color:#f4f5f7;margin:7px 0 8px;letter-spacing:-.025em}
-.cover-description{font-size:.88rem;line-height:1.85;color:#b7c6d7;max-width:42ch;margin:0}
+.cover-points{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-width:38ch}
+.cover-points li{position:relative;padding-inline-start:18px;font-size:.86rem;line-height:1.5;color:#c7d2df}
+.cover-points li::before{content:"";position:absolute;inset-inline-start:0;top:.6em;width:6px;height:6px;border-radius:50%;background:#dfbe76}
+.cover-updated{margin:10px 0 0;font-size:.72rem;color:#93a5b9}
 .cover-actions{display:flex;gap:11px;margin-top:22px}
 .cover-actions button{font:700 .8rem var(--sans);min-height:43px;padding:10px 18px;border-radius:5px;display:inline-flex;gap:26px;align-items:center;cursor:pointer;transition:background .2s,transform .2s}
 .cover-primary{color:#0b1c2e;background:linear-gradient(110deg,#edd49b,#d3b16b);border:1px solid #dfbe76}
@@ -3229,7 +3232,7 @@ body{background:var(--paper);color:var(--ink)}
 @media(min-width:1700px){#view-home .election-cover{min-height:560px}.cover-content{padding-top:58px}.cover-image{background-position:center 57%}}
 @media(max-width:1190px){:root{--gutter:48px}.masthead-in{gap:15px}.masthead-side .stamp{display:none}.mainnav .tab{font-size:.76rem;padding-inline:8px}.brand-txt strong{font-size:1.5rem}.brand img{width:33px}.election-hero{gap:32px}.ptiles{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media(max-width:800px){:root{--gutter:32px}.masthead-in{flex-wrap:wrap;min-height:0;gap:8px;padding:12px 0 0}.brand{margin:0}.brand-txt strong{font-size:1.45rem}.brand-txt span{font-size:.56rem}.masthead-side{margin-inline-start:auto}.mainnav{order:3;flex:0 0 100%;overflow-x:auto}.mainnav .tabs{display:flex;flex-wrap:nowrap;justify-content:flex-start;min-width:max-content;gap:8px}.mainnav .tab{font-size:.74rem;padding:8px 10px;min-height:41px}.mainnav .tab::after{bottom:0}#view-home .election-cover{min-height:450px}.cover-content{padding-top:32px}.cover-image{background-position:40% 62%}.election-cover::after{background:linear-gradient(270deg,#081522ed,#081522ac 45%,#0815224a),linear-gradient(0deg,#081522,transparent 50%)}#election-title{font-size:clamp(3.5rem,9.5vw,5.4rem)}.cover-credit{font-size:.5rem;left:16px;bottom:9px}.election-hero{grid-template-columns:1fr;gap:24px;padding:24px 0}.election-copy{max-width:100%}#view-home #verdict-head{font-size:2.4rem;margin-bottom:12px}#view-home #verdict-head br{display:none}.forecast-headline{max-width:100%;font-size:.88rem}.hero-description{max-width:60ch;margin:7px 0 15px}.election-visual{width:100%;max-width:none;padding:20px}.seatmap svg{max-width:430px}#view-home .verdict-in{padding:18px 20px 0}.verdict-top .edition-label{display:none}#view-home .home-forecast-controls{gap:12px;align-items:flex-start}#view-home .home-history-pick{flex-wrap:wrap;align-items:center}.board-title{flex-wrap:wrap;gap:10px}.board-title>p{display:none}.board-title .wall-toggle{margin-inline-start:auto}.wall{grid-template-columns:1fr}.ptiles{grid-template-columns:repeat(4,minmax(0,1fr))}#view-home .pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}#view-home .pipe-node{border-bottom:1px solid #2b4054}#view-home .pipe-node:last-child{grid-column:1/-1}.method-intro{align-items:start}.method-intro h2{font-size:1.4rem}.method-intro .btn{font-size:.7rem;gap:10px;padding:8px 12px}}
-@media(max-width:480px){.brand-txt strong{font-size:1.4rem}.cover-edition{font-size:.65rem;gap:9px}.cover-content{padding-top:28px}#view-home .election-cover{min-height:460px}#election-title{font-size:3.35rem;margin-top:18px}.cover-tagline{font-size:1.22rem;margin:9px 0}.cover-description{font-size:.79rem}.cover-image{background-position:32% 65%;opacity:.8}.cover-actions{margin-top:21px;gap:8px}.cover-actions button{font-size:.73rem;gap:20px;padding:10px 13px}#view-home .election-cover .election-countdown{gap:22px;margin-top:28px;padding-top:18px}.election-cover .cd-head h3{font-size:.68rem}.election-cover .countdown-cells .num{font-size:1.85rem}#view-home .verdict-in{padding-inline:15px}#view-home .verdict .eyebrow{font-size:.63rem}#view-home #verdict-head{font-size:1.85rem}.election-visual{padding:16px 12px}.visual-topline{font-size:.76rem}.visual-topline>span:last-child{font-size:.6rem}.sm-bloc b{font-size:1.9rem}.sm-bloc span{font-size:.58rem}.sm-bloc.mid b{font-size:1.6rem}.board-title h2{font-size:1.3rem}.wall-toggle button{font-size:.64rem;padding:6px 8px}#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{padding:15px}.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 9px}.ptile-name{font-size:.76rem}.ptile-leader{font-size:.6rem}.pstrip-lbl{width:100%}.pgroup{font-size:.69rem;padding:6px 8px}.pstrip-note{font-size:.65rem}.method-intro{display:block}.method-intro .btn{margin-top:18px}#view-home .pipe-node{padding:17px 13px}#view-home .pipe-n{font-size:1.2rem}}
+@media(max-width:480px){.brand-txt strong{font-size:1.4rem}.cover-edition{font-size:.65rem;gap:9px}.cover-content{padding-top:28px}#view-home .election-cover{min-height:460px}#election-title{font-size:3.35rem;margin-top:18px}.cover-tagline{font-size:1.22rem;margin:9px 0}.cover-points li{font-size:.79rem}.cover-image{background-position:32% 65%;opacity:.8}.cover-actions{margin-top:21px;gap:8px}.cover-actions button{font-size:.73rem;gap:20px;padding:10px 13px}#view-home .election-cover .election-countdown{gap:22px;margin-top:28px;padding-top:18px}.election-cover .cd-head h3{font-size:.68rem}.election-cover .countdown-cells .num{font-size:1.85rem}#view-home .verdict-in{padding-inline:15px}#view-home .verdict .eyebrow{font-size:.63rem}#view-home #verdict-head{font-size:1.85rem}.election-visual{padding:16px 12px}.visual-topline{font-size:.76rem}.visual-topline>span:last-child{font-size:.6rem}.sm-bloc b{font-size:1.9rem}.sm-bloc span{font-size:.58rem}.sm-bloc.mid b{font-size:1.6rem}.board-title h2{font-size:1.3rem}.wall-toggle button{font-size:.64rem;padding:6px 8px}#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{padding:15px}.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 9px}.ptile-name{font-size:.76rem}.ptile-leader{font-size:.6rem}.pstrip-lbl{width:100%}.pgroup{font-size:.69rem;padding:6px 8px}.pstrip-note{font-size:.65rem}.method-intro{display:block}.method-intro .btn{margin-top:18px}#view-home .pipe-node{padding:17px 13px}#view-home .pipe-n{font-size:1.2rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.view.on{animation:none}.cover-actions button{transition:none}}
 @media print{.election-cover,.election-coalition{display:none!important}:root{color-scheme:light;--ink:#111;--ink-2:#333;--ink-3:#555;--paper:#fff;--paper-2:#fff;--rule:#ccc}body{background:#fff;color:#111}}
 
@@ -3754,7 +3757,13 @@ body{background:var(--paper);color:var(--ink)}
       <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
       <h1 id="election-title">בחירות <span dir="ltr">2026</span></h1>
       <p class="cover-tagline">כל מנדט משנה את התמונה.</p>
-      <p class="cover-description">הסקרים, המגמות והדרך ל־61.<br>תמונת הבחירות של ישראל, במקום אחד.</p>
+      <ul class="cover-points">
+        <li>כל הסקרים, כל הפילוחים</li>
+        <li>ניתוח אמינות מכוני הסקרים</li>
+        <li>פילוח כל המגזרים בציבוריות הישראלית</li>
+        <li>בניית תחזית בחירות מדויקת, שקופה ובלתי תלויה</li>
+      </ul>
+      <p class="cover-updated" id="cover-updated"></p>
       <div class="cover-actions"><button type="button" class="cover-primary" data-home-section="forecast-section">לתמונת המנדטים <span aria-hidden="true">↓</span></button><button type="button" class="cover-secondary" data-home-section="election-coalition">בנו קואליציה <span aria-hidden="true">↙</span></button></div>
       <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     </div>
@@ -5707,6 +5716,8 @@ function renderHome() {
   $('#home-eyebrow').textContent = snapshot
     ? `תחזית ארכיון · ${heDate(snapshot.updatedAt)} · ${snapshot.polls || '—'} סקרים`
     : 'תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר';
+  const coverUpdated = $('#cover-updated');
+  if (coverUpdated) coverUpdated.textContent = `לתחזית המלאה — מעודכן ${humanUpdate(S.cur.generatedAt)}`;
 
   const blocTot = {};
   Object.entries(seats).forEach(([id, n]) => {

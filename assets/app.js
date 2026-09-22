@@ -686,6 +686,8 @@ function renderHome() {
   $('#home-eyebrow').textContent = snapshot
     ? `תחזית ארכיון · ${heDate(snapshot.updatedAt)} · ${snapshot.polls || '—'} סקרים`
     : 'תחזית הברומטר · הכנסת ה־26 · הצבעה ב־27 באוקטובר';
+  const coverUpdated = $('#cover-updated');
+  if (coverUpdated) coverUpdated.textContent = `לתחזית המלאה — מעודכן ${humanUpdate(S.cur.generatedAt)}`;
 
   const blocTot = {};
   Object.entries(seats).forEach(([id, n]) => {

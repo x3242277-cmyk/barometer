@@ -16,6 +16,19 @@ body{background:var(--paper);color:var(--ink)}
 .pulse{background:#70c6a3;width:5px;height:5px}
 .masthead-side .print-btn{background:#102337;border-color:#263b50;color:#c7d2df;border-radius:50%;min-width:35px;min-height:35px;padding:8px}
 #view-home{background:radial-gradient(ellipse at 85% 35%,#13345338,transparent 65%),#081522}
+/* גלילה בקטעים: כל קטע ראשי גובה מסך לפחות (כדי שלא ייראה חתוך), ומיושר
+   לתחילת המסך כשגוללים אליו. proximity ולא mandatory כדי לא "להילחם"
+   בגלילה חופשית בקטעים ארוכים מגובה מסך (למשל בניית קואליציה) — היעד
+   העיקרי להתקדמות הוא כפתור החץ (section-next), לא הגלילה עצמה. */
+#view-home.on{height:calc(100vh - var(--masthead-h, 64px));overflow-y:auto;scroll-snap-type:y proximity}
+#view-home.on>.election-cover,#view-home.on>.verdict,#view-home.on>.board,#view-home.on>.election-coalition,#view-home.on>.home-method{
+  scroll-snap-align:start;min-height:calc(100vh - var(--masthead-h, 64px));box-sizing:border-box}
+.section-next{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin:22px auto 2px;
+  border-radius:50%;border:1px solid #dfbe7659;background:#11233788;color:#dfbe76;font-size:1.15rem;cursor:pointer;
+  transition:transform .15s,background .15s}
+.section-next:hover{background:#1c3448;transform:translateY(3px)}
+.section-next:focus-visible{outline:2px solid #f1cf86;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.section-next{transition:none}}
 #view-home .election-cover{position:relative;isolation:isolate;overflow:hidden;min-height:490px;background:#091b30;border-bottom:1px solid #b597532e}
 .cover-image{position:absolute;inset:0;z-index:-2;background-image:url('election-knesset.png');background-size:cover;background-position:center 60%}
 .election-cover::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(270deg,#081522f5 0%,#081522d9 24%,#08152265 50%,#08152208 75%),linear-gradient(0deg,#081522 0%,#08152200 30%)}

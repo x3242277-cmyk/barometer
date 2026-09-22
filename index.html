@@ -31,7 +31,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
 <link rel="stylesheet" href="assets/pipeline.css?v=f84bb10f">
 <script src="assets/pipeline.js?v=09584ddc" defer></script>
-<link rel="stylesheet" href="assets/election.css?v=307d0d86">
+<link rel="stylesheet" href="assets/election.css?v=7fe10143">
 <link rel="stylesheet" href="assets/election-pages.css?v=ddf3ea51">
 <link rel="stylesheet" href="assets/election-tools.css?v=bc699036">
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
@@ -85,6 +85,7 @@
       <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
+    <button type="button" class="section-next" data-home-section="forecast-section" aria-label="לקטע הבא — תמונת המנדטים"><span aria-hidden="true">↓</span></button>
   </section>
   <nav class="election-shortcuts wrap" aria-label="כלי הבחירות">
     <button type="button" data-home-section="forecast-section"><span class="shortcut-icon" aria-hidden="true">◴</span><span><b>תמונת המנדטים</b><small>כל הגושים, מבט אחד</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></button>
@@ -123,6 +124,7 @@
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
       </div>
     </div>
+    <button type="button" class="section-next" data-home-section="election-parties" aria-label="לקטע הבא — לוח המנדטים"><span aria-hidden="true">↓</span></button>
   </div>
   <div class="wrap board" id="election-parties" tabindex="-1">
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
@@ -144,9 +146,11 @@
     </div>
     <p class="board-note">המספרים מציגים את המודל שנבחר למעלה. שיוך לגוש אינו תחזית להרכב קואליציה.</p>
     <section class="printsheet" id="home-printsheet" aria-hidden="true"></section>
+    <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — בניית קואליציה"><span aria-hidden="true">↓</span></button>
   </div>
   <section id="election-coalition" class="election-coalition wrap" tabindex="-1"></section>
-  <section class="home-method">
+  <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — מאחורי המספרים"><span aria-hidden="true">↓</span></button>
+  <section class="home-method" id="home-method-section">
     <div class="wrap">
       <div class="method-intro"><div><p class="kicker">מאחורי המספרים</p><h2>לכל תחזית יש בסיס.<br>כאן אפשר לבדוק אותו.</h2></div><a class="btn" href="#/method">איך אנחנו מחשבים <span aria-hidden="true">↙</span></a></div>
       <div class="pipeline" id="home-pipeline" aria-label="הנתונים והבדיקות שמאחורי התחזית"></div>

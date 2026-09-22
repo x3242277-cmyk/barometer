@@ -200,8 +200,19 @@ async function main() {
   const archive = existsSync(archPath) ? JSON.parse(await readFile(archPath, "utf8")) : { polls: [] };
   const byId = new Map(archive.polls.map(p => [p.id, p]));
 
-  const incoming = pickArray(await fetchLatest()).map(normalize);
-  log(`נשלפו ${incoming.length} סקרים מדף הבית`);
+  /* דף הבית הוא קיצור-דרך למהירות בלבד — לא מקור אמת (ראו הערה ליד
+     fetchLatest) — אז כישלון בו לא צריך להפיל את כל הריצה. הוא גם מקור
+     ה-429 בפועל בכל הריצות שנכשלו: זו עמוד ה-SSR הכבד, וסביר שהוא נתקל
+     בהגבלת קצב לפני שהסייטמאפ (קובץ סטטי קליל) נתקל בה בכלל. אם הוא
+     חסום — ממשיכים עם הסייטמאפ בלבד, שמכסה חלון של RECENT_DAYS ולכן
+     תופס בפועל הכל, רק קצת יותר לאט. */
+  let incoming = [];
+  try {
+    incoming = pickArray(await fetchLatest()).map(normalize);
+    log(`נשלפו ${incoming.length} סקרים מדף הבית`);
+  } catch (e) {
+    log(`דף הבית לא זמין (${e.message}) — ממשיכים עם הסייטמאפ בלבד`);
+  }
 
   const known = new Set(archive.polls.map(p => p.sourceUrl).filter(Boolean));
   const fromSitemap = (await fetchFromSitemap(known, FULL ? null : RECENT_DAYS)).map(normalize);

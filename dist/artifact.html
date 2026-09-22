@@ -5252,7 +5252,12 @@ function scoreFirms(data, actual = data.actual) {
     const partyScore = clamp(100 - 15 * partyMae);
     const stability = clamp(100 - 25 * consSd);
     const partyStability = clamp(100 - 50 * partySd);
-    const consistencyScore = .65 * stability + .35 * partyStability;
+    /* עם פחות מ-3 סקרים אין ממה למדוד עקביות אמיתית — סטיית תקן של מדגם
+       יחיד היא 0 מתמטית, וזה נותן ציון עקביות מושלם בלי הצדקה. פחות מ-3
+       סקרים מקבל רק נתח יחסי מציון העקביות (1 סקר → שליש, 2 → שני-שליש);
+       דיוק בגושים ובמפלגות (90% מהציון) לא מושפע — דיוק חשוב גם ממדגם קטן. */
+    const sampleConfidence = Math.min(1, polls.length / 3);
+    const consistencyScore = (.65 * stability + .35 * partyStability) * sampleConfidence;
     const score = .6 * blocScore + .3 * partyScore + .1 * consistencyScore;
     return { firm, polls, n: polls.length, blocMean: bm, blocAbs, partyMae, blocScore, partyScore, consistencyScore, stability, partyStability, score };
   }).sort((a, b) => b.score - a.score);

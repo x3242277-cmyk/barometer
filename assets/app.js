@@ -387,6 +387,13 @@ function buildSeries(polls) {
 
 const calibrationId = meta => meta?.calibrationFirm || meta?.id;
 const firmScore = meta => meta?.calibrated ? (S.stats.find(s => s.firm === calibrationId(meta))?.score ?? 70) : 70;
+/* משקל בממוצע המשוקלל: לא רציף לפי הציון (בפועל תמיד בטווח צר, 70–85 —
+   כמעט בלי הבדל אמיתי בין המכונים), אלא לפי הדרגה שהציון נופל בה: אמינות
+   גבוהה 45%, טובה 35%, בינונית 20%. כך פער אמיתי בין דרגות משפיע בפועל
+   על הממוצע המשוקלל, לא רק על הציון המוצג. הציון עצמו (firmScore) ממשיך
+   להיות רציף — הוא רק לתצוגה ולקביעת הדרגה, לא לחישוב המשקל. */
+const TIER_WEIGHT = { high: 0.45, mid: 0.35, low: 0.20 };
+const firmWeight = meta => TIER_WEIGHT[gradeOf(firmScore(meta)).key];
 
 /* ============================================================
    3. מודל התחזית
@@ -408,7 +415,7 @@ function structuralFix(raw) {
 function forecast(mode, exclude) {
   const skip = exclude || new Set();
   const allIds = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
-  const w = s => mode !== "simple" ? firmScore(s.meta) / 100 : 1;
+  const w = s => mode !== "simple" ? firmWeight(s.meta) : 1;
   const W = S.series.reduce((sum, s) => sum + w(s), 0);
   const rawFull = Object.fromEntries(allIds.map(id => [id, S.series.reduce((sum, s) => sum + (s.parties[id] || 0) * w(s), 0) / W]));
   const visible = allIds.filter(id => !skip.has(id));
@@ -1267,7 +1274,7 @@ function crossoverBase() {
     const below = ids.filter(id => s.parties[id] < THRESHOLD_MANDATES);
     return { share: 100 * right / tot, below };
   };
-  const wOf = s => firmScore(s.meta) / 100;
+  const wOf = s => firmWeight(s.meta);
   const rows = S.series.map(s => {
     const x = shareOf(s);
     const delta = x.share - rightShare0;                              // נקודות אחוז; שלילי = הימין הצטמק
@@ -1848,11 +1855,11 @@ function renderMethod() {
     return `<span title="${esc(name)}">${l ? `<img src="${esc(l)}" alt="${esc(name)}" loading="lazy">` : esc(name.slice(0, 3))}</span>`;
   }).join("");
   // 2 · firms and their weight in the mix
-  const W = S.series.reduce((t, s) => t + firmScore(s.meta), 0) || 1;
+  const W = S.series.reduce((t, s) => t + firmWeight(s.meta), 0) || 1;
   $("#m-firms").innerHTML = `<thead><tr><th>מכון</th><th>דרגה</th><th class="n">ציון</th><th class="n">סקרים בחלון</th><th class="n">משקל בתחזית</th></tr></thead><tbody>${
     S.series.slice().sort((a, b) => firmScore(b.meta) - firmScore(a.meta)).map(s => {
       const sc = firmScore(s.meta), g = s.meta.calibrated ? gradeOf(sc) : { key: "none", label: "ללא דירוג · 70" };
-      return `<tr><td><strong>${esc(s.meta.he)}</strong></td><td><span class="grade ${g.key}">${esc(g.label)}</span></td><td class="n">${r1(sc)}</td><td class="n">${s.polls.length}</td><td class="n"><b>${r1(100 * sc / W)}%</b></td></tr>`;
+      return `<tr><td><strong>${esc(s.meta.he)}</strong></td><td><span class="grade ${g.key}">${esc(g.label)}</span></td><td class="n">${r1(sc)}</td><td class="n">${s.polls.length}</td><td class="n"><b>${r1(100 * firmWeight(s.meta) / W)}%</b></td></tr>`;
     }).join("")}</tbody>`;
   // 3 · simple vs weighted, per party
   const simple = forecast("simple", HIDE_FROM_HOME), weighted = forecast("weighted", HIDE_FROM_HOME);

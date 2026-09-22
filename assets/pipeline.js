@@ -98,10 +98,10 @@
   }
   function renderCalib() {
     const firms = S.series.slice().sort((a, b) => firmScore(b.meta) - firmScore(a.meta));
-    const allWeight = firms.reduce((t, s) => t + firmScore(s.meta), 0) || 1;
+    const allWeight = firms.reduce((t, s) => t + firmWeight(s.meta), 0) || 1;
     query(".ps-stage").innerHTML = `<div class="ps-firms">${firms.map(s => {
       const sc = firmScore(s.meta), grade = s.meta.calibrated ? gradeOf(sc) : { key: "none", label: "ללא דירוג · משקל ניטרלי" };
-      return `<div class="ps-firm"><span class="ps-firm-logo">${s.meta.logo ? `<img src="${esc(s.meta.logo)}" alt="">` : esc(s.meta.short || "")}</span><div class="ps-firm-body"><b>${esc(s.meta.he)}</b><span class="grade ${grade.key}">${esc(grade.label)}</span><span>${r1(100 * sc / allWeight)}% מהמשקל · ${s.polls.length} סקרים</span>${s.meta.calibrationFirm ? '<small>הציון מיוחס לצוות דירקט פולס לפי הגדרת האתר</small>' : ""}<i class="ps-bar"><u class="go" style="--v:${sc}%"></u></i></div><span class="ps-firm-score num">${r1(sc)}</span></div>`;
+      return `<div class="ps-firm"><span class="ps-firm-logo">${s.meta.logo ? `<img src="${esc(s.meta.logo)}" alt="">` : esc(s.meta.short || "")}</span><div class="ps-firm-body"><b>${esc(s.meta.he)}</b><span class="grade ${grade.key}">${esc(grade.label)}</span><span>${r1(100 * firmWeight(s.meta) / allWeight)}% מהמשקל · ${s.polls.length} סקרים</span>${s.meta.calibrationFirm ? '<small>הציון מיוחס לצוות דירקט פולס לפי הגדרת האתר</small>' : ""}<i class="ps-bar"><u class="go" style="--v:${sc}%"></u></i></div><span class="ps-firm-score num">${r1(sc)}</span></div>`;
     }).join("")}</div><p class="ps-caption">60% דיוק בגושים · 30% דיוק במפלגות · 10% עקביות. הבסיס: ${S.calibrations.reduce((t, e) => t + e.polls, 0)} סקרי כיול משויכים ב־${S.elections.length} מערכות בחירות. זהו דירוג לפי מדדי האתר, לא הבטחה לדיוק בעתיד. <a href="#/2022">לפירוט הציונים ↗</a></p>`;
     query('.ps-caption a').addEventListener("click", close);
   }

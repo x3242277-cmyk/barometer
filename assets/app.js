@@ -607,6 +607,7 @@ function renderHomeHemicycle(seats, blocTot, est) {
     .reduce((t, [, v]) => t + v, 0) / partiesSum;
   const shR = scenarioShareOf("Right"), shL = scenarioShareOf("Left"), shA = scenarioShareOf("Arabs");
   const sumV = Object.values(rawFull).reduce((t, v) => t + (v > 0 ? v : 0), 0) || 1;
+  const shAllBelow = 100 * belowIds.reduce((t, id) => t + (rawFull[id] > 0 ? rawFull[id] : 0), 0) / sumV;
   const wasted = belowIds.filter(id => 100 * rawFull[id] / sumV >= 0.5).sort((a, b) => rawFull[b] - rawFull[a]).map(id => `${partyMeta(id).name} ${r1(100 * rawFull[id] / sumV)}%`);
   const rows = 5, pts = hemicycleLayout(total, rows);
   const W = 640, H = 330, cx = W / 2, cy = H - 14, Rr = 300;
@@ -622,15 +623,15 @@ function renderHomeHemicycle(seats, blocTot, est) {
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`חלוקת ${total} המנדטים. ${items.map(i => i.label).join("; ")}`)}">${dots}
       <text x="${cx}" y="${cy - 38}" text-anchor="middle" class="hemicycle-total">${total}</text><text x="${cx}" y="${cy - 12}" text-anchor="middle" class="hemicycle-caption">מנדטים</text></svg>
     <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>
-    <details class="sm-votes-details" open><summary>שיעור הקולות המשוער לפי גוש</summary><div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער לפי ${S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר"}</span></div>
+    <div class="sm-votes">
       <div class="sm-votes-labels" aria-hidden="true">
         <span style="flex:0 0 ${shR}%">${r1(shR)}%</span>${shA > 0.05 ? `<span style="flex:0 0 ${shA}%">${r1(shA)}%</span>` : ""}<span style="flex:0 0 ${shL}%">${r1(shL)}%</span>
       </div>
       <div class="sm-bar thin" role="img" aria-label="ימין וחרדים ${r1(shR)} אחוז, הרשימות הערביות ${r1(shA)} אחוז, מרכז־שמאל ${r1(shL)} אחוז">
         <span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shA > 0.05 ? `<span style="width:${shA}%;background:${BLOCS.Arabs.color}"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span>
       </div>
-      ${wasted.length ? `<p class="sm-votes-foot">מתחת לאחוז החסימה, לא נכללות למעלה: ${esc(wasted.join(", "))}</p>` : ""}
-  </div></details></div>`;
+      ${wasted.length ? `<p class="sm-votes-foot">${r1(shAllBelow)}% מתחת לאחוז החסימה — ${esc(wasted.join(", "))}</p>` : ""}
+  </div></div>`;
   const modeLabel = $("#home-model-label");
   if (modeLabel) modeLabel.textContent = S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר";
 }

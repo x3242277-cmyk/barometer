@@ -84,9 +84,7 @@ body{background:var(--paper);color:var(--ink)}
 .seatmap .seat[data-k="hademokratim"]{fill:#b95248}.seatmap .seat[data-k="yashar"]{fill:#d16c5f}.seatmap .seat[data-k="beyahad"]{fill:#e19b85}.seatmap .seat[data-k="ndi"]{fill:#e9b4a4}.seatmap .seat[data-k="raam"],.seatmap .seat[data-k="hadash_taal"]{fill:#77ad94}
 .seatmap .hemicycle-total{fill:#f4f5f7;font-size:62px;font-weight:800}.seatmap .hemicycle-caption{fill:#9dadc0;font-weight:400}
 .sm-parties{display:none}
-.sm-votes-details{border-top:1px solid #263b50;font-size:.67rem;color:#a9b9cb;margin-top:9px}
-.sm-votes-details summary{cursor:pointer;padding:9px 0 0;color:#c6d1dc;min-height:30px}
-.sm-votes{border:0;padding-top:12px}.sm-votes-mid{color:#b5c3d3;font-weight:400}.sm-votes-head{color:#b5c3d3;font-weight:500}
+.sm-votes{border:0;border-top:1px solid #263b50;margin-top:9px;padding-top:12px;font-size:.67rem;color:#a9b9cb}.sm-votes-mid{color:#b5c3d3;font-weight:400}
 .visual-footnote{font-size:.61rem;margin-top:9px;color:#93a5b9}
 #view-home .home-forecast-controls{padding:14px 0;border-color:#263b50;gap:18px;font-size:.75rem}
 #view-home .home-switch{border:1px solid #334a61;background:#0b1c2e;border-radius:5px;padding:3px}

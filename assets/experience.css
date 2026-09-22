@@ -76,7 +76,6 @@
 .sm-party small{font-size:.64rem;font-weight:700;color:var(--ink-3);min-height:.9em}
 .sm-party small.up{color:#1F6349}.sm-party small.down{color:#8E241A}
 .sm-votes{display:grid;gap:6px;padding-top:10px;border-top:1px solid var(--rule-2)}
-.sm-votes-head{font-size:.72rem;font-weight:700;color:var(--ink-3)}
 .sm-votes-row{display:flex;align-items:center;gap:10px}
 .sm-votes-row b{font-size:1.05rem;font-weight:800;min-width:52px;text-align:center}
 .sm-votes-mid{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.7rem;font-weight:700;color:var(--ink-3)}

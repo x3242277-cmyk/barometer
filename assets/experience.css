@@ -81,6 +81,11 @@
 .sm-votes-row b{font-size:1.05rem;font-weight:800;min-width:52px;text-align:center}
 .sm-votes-mid{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.7rem;font-weight:700;color:var(--ink-3)}
 .sm-votes-mid i{display:inline-block;width:10px;height:10px;border-radius:3px}
+/* תוויות האחוזים יושבות בשורה משלהן, באותו flex ובאותם רוחבים (flex-basis)
+   כמו קטעי sm-bar שמתחתיהן — כך הן תמיד מיושרות מעל הקטע הנכון, בכל רוחב
+   מסך, בלי חישוב מיקום ידני. */
+.sm-votes-labels{display:flex;font-size:.72rem;font-weight:800;color:var(--ink-2)}
+.sm-votes-labels span{flex-shrink:0;text-align:center;white-space:nowrap;overflow:visible}
 @media(max-width:560px){.sm-bloc b{font-size:1.5rem}.sm-party{min-width:44px}.sm-name{max-width:60px}}
 /* עמודה אמצעית בלוח המנדטים לרשימות שאינן משויכות לגוש */
 .wall .bloc-mid{display:none}

@@ -624,12 +624,11 @@ function renderHomeHemicycle(seats, blocTot, est) {
       <text x="${cx}" y="${cy - 38}" text-anchor="middle" class="hemicycle-total">${total}</text><text x="${cx}" y="${cy - 12}" text-anchor="middle" class="hemicycle-caption">מנדטים</text></svg>
     <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>
     <details class="sm-votes-details" open><summary>שיעור הקולות המשוער לפי גוש</summary><div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער מתוך כלל המצביעים</span></div>
-      <div class="sm-votes-mid"><i style="background:${BLOCS.Right.color}"></i>${r1(shR)}% ימין וחרדים</div>
-      ${shA > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Arabs.color}"></i>${r1(shA)}% הרשימות הערביות</div>` : ""}
-      <div class="sm-votes-mid"><i style="background:${BLOCS.Left.color}"></i>${r1(shL)}% מרכז־שמאל</div>
-      ${shBelow > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Unknown.color}"></i>${r1(shBelow)}% מתחת לאחוז החסימה${wasted.length ? ` (${esc(wasted.join(", "))})` : ""}</div>` : ""}
+      <div class="sm-votes-labels" aria-hidden="true">
+        <span style="flex:0 0 ${shR}%">${r1(shR)}%</span>${shBelow > 0.05 ? `<span style="flex:0 0 ${shBelow}%"></span>` : ""}${shA > 0.05 ? `<span style="flex:0 0 ${shA}%">${r1(shA)}%</span>` : ""}<span style="flex:0 0 ${shL}%">${r1(shL)}%</span>
+      </div>
       <div class="sm-bar thin" role="img" aria-label="ימין וחרדים ${r1(shR)} אחוז, הרשימות הערביות ${r1(shA)} אחוז, מרכז־שמאל ${r1(shL)} אחוז, מתחת לאחוז החסימה ${r1(shBelow)} אחוז">
-        <span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shA > 0.05 ? `<span style="width:${shA}%;background:${BLOCS.Arabs.color}"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span>${shBelow > 0.05 ? `<span style="width:${shBelow}%;background:${BLOCS.Unknown.color}"></span>` : ""}
+        <span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shBelow > 0.05 ? `<span style="width:${shBelow}%;background:${BLOCS.Unknown.color}" title="מתחת לאחוז החסימה: ${r1(shBelow)}%${wasted.length ? ` (${esc(wasted.join(", "))})` : ""}"></span>` : ""}${shA > 0.05 ? `<span style="width:${shA}%;background:${BLOCS.Arabs.color}"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span>
       </div>
   </div></details></div>`;
   const modeLabel = $("#home-model-label");

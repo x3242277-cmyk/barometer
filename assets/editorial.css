@@ -295,7 +295,9 @@ tbody tr:hover{background:#F7F9FD}
 .firm-card{padding:22px!important;border-top-width:3px!important;transition:box-shadow .2s}
 #compare-picker{border:0;padding:0;margin:12px 0 24px;display:flex;flex-wrap:wrap;gap:10px}
 #compare-picker legend{font-size:.95rem;font-weight:700;margin-bottom:14px}
-#compare-picker label{border:1px solid var(--rule);border-radius:11px;padding:12px 16px;background:white;font-size:.875rem;min-height:44px}
+#compare-picker label{display:flex;align-items:center;gap:10px;border:1px solid var(--rule);border-radius:11px;padding:12px 16px;background:white;font-size:.875rem;min-height:44px}
+#compare-picker .compare-label-text{display:flex;flex-wrap:wrap;align-items:center;gap:3px 8px;min-width:0}
+#compare-picker .compare-label-text small{flex-basis:100%}
 #compare-picker input{accent-color:var(--accent)}
 #compare-picker label:has(input:checked){background:var(--accent-light);border-color:#BCCBFF}
 .average-toolbar{padding:20px;background:#FFF;border:1px solid var(--rule);border-radius:16px;gap:25px}

@@ -2625,7 +2625,9 @@ tbody tr:hover{background:#F7F9FD}
 .firm-card{padding:22px!important;border-top-width:3px!important;transition:box-shadow .2s}
 #compare-picker{border:0;padding:0;margin:12px 0 24px;display:flex;flex-wrap:wrap;gap:10px}
 #compare-picker legend{font-size:.95rem;font-weight:700;margin-bottom:14px}
-#compare-picker label{border:1px solid var(--rule);border-radius:11px;padding:12px 16px;background:white;font-size:.875rem;min-height:44px}
+#compare-picker label{display:flex;align-items:center;gap:10px;border:1px solid var(--rule);border-radius:11px;padding:12px 16px;background:white;font-size:.875rem;min-height:44px}
+#compare-picker .compare-label-text{display:flex;flex-wrap:wrap;align-items:center;gap:3px 8px;min-width:0}
+#compare-picker .compare-label-text small{flex-basis:100%}
 #compare-picker input{accent-color:var(--accent)}
 #compare-picker label:has(input:checked){background:var(--accent-light);border-color:#BCCBFF}
 .average-toolbar{padding:20px;background:#FFF;border:1px solid var(--rule);border-radius:16px;gap:25px}
@@ -4886,8 +4888,9 @@ function renderComparison(rows, ids) {
   if (S.compareIds === null) S.compareIds = firms.slice(0, 2).map(f => f.firm);
   S.compareIds = S.compareIds.filter(id => firms.some(f => f.firm === id)).slice(0, 3);
   const selected = firms.filter(f => S.compareIds.includes(f.firm));
-  $('#compare-picker').innerHTML = '<legend>בחרו עד שלושה מכונים להשוואה</legend>'+firms.map(f=>`<label style="--firm:${esc(f.meta.color||'#64707C')}"><input type="checkbox" data-compare-id="${esc(f.firm)}" ${S.compareIds.includes(f.firm)?'checked':selected.length===3?'disabled':''}>${esc(f.meta.he)}<small>הסקר האחרון · ${esc(f.poll.channelHebrewName)} · ${esc(f.poll.date)}</small></label>`).join('');
-  $('#compare-status').textContent = `${selected.length} מתוך 3 מכונים נבחרו. לכל מכון מוצג הסקר האחרון שלו; הרשימות מסודרות מהמנדטים הרבים למעטים, — מציין שאין נתון.`;
+  $('#compare-picker').innerHTML = '<legend>בחרו עד שלושה מכונים להשוואה — לכל מכון יוצג הסקר האחרון שפרסם בסינון הנוכחי, זה לצד זה</legend>'
+    +firms.map(f=>`<label style="--firm:${esc(f.meta.color||'#64707C')}">${logoBox(f.meta,30)}<span class="compare-label-text"><input type="checkbox" data-compare-id="${esc(f.firm)}" ${S.compareIds.includes(f.firm)?'checked':selected.length===3?'disabled':''}>${esc(f.meta.he)}<small>הסקר האחרון · ${esc(f.poll.channelHebrewName)} · ${esc(f.poll.date)}</small></span></label>`).join('');
+  $('#compare-status').textContent = `${selected.length} מתוך 3 מכונים נבחרו (סמנו תיבה כדי להוסיף מכון להשוואה, ועד שלושה בו-זמנית). הטבלה למטה מציגה, זה מול זה, רק את הסקר האחרון שכל מכון נבחר פרסם — לא ממוצע ולא משוקלל — ומסודרת לפי סך המנדטים שהמכונים הנבחרים נתנו לכל רשימה, מהגבוה לנמוך. תו "—" בתא מציין שהמכון הזה לא מדד רשימה כלשהי באותו סקר, לא שהיא קיבלה אפס.`;
   const order = [...ids].sort(byMandates(id => selected.reduce((n,f) => n + (pollValue(f.poll,id) || 0), 0)));
   $('#compare-table').innerHTML = selected.length ? `<table><caption>הסקר האחרון של כל מכון שנבחר, מהמנדטים הרבים למעטים</caption><thead><tr><th scope="col">מפלגה</th>${selected.map(f=>`<th scope="col" style="--firm:${esc(f.meta.color||'#64707C')}">${esc(f.meta.he)}<br><small>${esc(f.poll.channelHebrewName)} · ${esc(f.poll.date)}</small></th>`).join('')}</tr></thead><tbody>${order.map(id=>`<tr class="${id===S.focusParty?'party-highlight':''}"><th scope="row"><button type="button" data-select-party="${esc(id)}" aria-pressed="${id===S.focusParty}">${esc(partyMeta(id).name)}</button></th>${selected.map(f=>`<td>${pollValue(f.poll,id)??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table>` : '<p class="empty">בחרו מכונים מהרשימה כדי להתחיל בהשוואה.</p>';
 }

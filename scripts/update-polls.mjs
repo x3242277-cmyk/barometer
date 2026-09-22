@@ -32,14 +32,34 @@ const log = (...a) => console.log("·", ...a);
 const die = m => { console.error("✗", m); process.exit(1); };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+/* skarim.org מחזיר מדי פעם 429 (ריבוי בקשות) — כנראה סף רגיש שמריצות
+   ה-CI פוגעות בו לפעמים, לא תקלה קבועה. בלי ניסיון חוזר, 429 בודד באמצע
+   הריצה (כולל בבקשה הראשונה, לפני שיש בכלל מרווח בין בקשות) הפיל את כל
+   העדכון היומי — וכשגם החלון החיצוני שמפעיל את ה-workflow לא בהכרח נופל
+   שוב בשעות הנכונות, זה יכול להשאיר את האתר תקוע על נתונים ישנים ימים.
+   3 ניסיונות עם נסיגה מעריכית, מכבדים Retry-After כשהוא קיים. */
 async function get(url, accept = "text/html") {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), cfg.requestTimeoutMs ?? 20000);
-  try {
-    const res = await fetch(url, { signal: ctl.signal, headers: { "User-Agent": cfg.userAgent, Accept: accept } });
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    return await res.text();
-  } finally { clearTimeout(t); }
+  const maxAttempts = cfg.maxRetries ?? 3;
+  for (let attempt = 1; ; attempt++) {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), cfg.requestTimeoutMs ?? 20000);
+    let res;
+    try {
+      res = await fetch(url, { signal: ctl.signal, headers: { "User-Agent": cfg.userAgent, Accept: accept } });
+    } catch (e) {
+      if (attempt >= maxAttempts) throw e;
+      clearTimeout(t);
+      await sleep(1000 * 2 ** (attempt - 1));
+      continue;
+    } finally { clearTimeout(t); }
+    if (res.ok) return await res.text();
+    const retryable = res.status === 429 || res.status >= 500;
+    if (!retryable || attempt >= maxAttempts) throw new Error(`${res.status} ${res.statusText}`);
+    const retryAfter = Number(res.headers.get("retry-after"));
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 1000 * 2 ** (attempt - 1);
+    log(`${res.status} מ-${url} — ניסיון ${attempt}/${maxAttempts}, מנסה שוב בעוד ${Math.round(delay / 1000)}ש׳`);
+    await sleep(delay);
+  }
 }
 
 const nextData = html => {

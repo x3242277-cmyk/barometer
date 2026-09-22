@@ -80,3 +80,68 @@ dialog#pipeline-show:not([open]){display:none}
 .ps-totals b{color:#fff}.ps-totals>div{border-top:4px solid var(--c);padding-top:10px}
 .ps-body{display:block}.ps-title{margin-bottom:20px}.ps-bottom{min-height:70px}
 @media(max-width:760px){.ps-top{flex-wrap:wrap}.ps-brand{margin-inline-end:auto}.ps-close{order:0}.ps-steps{order:1;width:100%;margin:0;justify-content:space-between;gap:4px}.ps-steps li{flex:1;justify-content:center}.ps-steps button{font-size:.72rem;padding:8px 4px;justify-content:center}.ps-firms{grid-template-columns:1fr}.ps-firm{grid-template-columns:44px minmax(0,1fr) 44px;gap:8px;padding:12px}.ps-firm-logo{width:44px;height:44px}.ps-firm-score{font-size:1.25rem}.ps-bottom{flex-wrap:wrap;gap:8px;padding:10px 16px}.ps-sources{grid-template-columns:repeat(2,minmax(0,1fr))}.ps-analysis th,.ps-analysis td{padding:12px 8px;font-size:.82rem}.ps-actions .btn{white-space:normal;text-align:center}}
+
+/* Readable walkthrough: fixed navigation, independently scrolling content. */
+#pipeline-show {background:#081522}
+#pipeline-show::before {display:none}
+.ps-top {padding:16px max(24px,calc((100vw - 1120px)/2));gap:20px;background:#0d2032}
+.ps-brand {font-size:.9375rem}
+.ps-steps {gap:8px}
+.ps-steps li {border-radius:8px;background:#172d42;color:#c5d1e2}
+.ps-steps li.on {background:#dfbe76;color:#081522}
+.ps-steps li b {font-size:.8125rem}
+.ps-close {flex-shrink:0}
+.ps-body {padding:28px max(24px,calc((100vw - 1040px)/2));min-height:0;overscroll-behavior:contain}
+.ps-heading {border-bottom:1px solid #2c4155;margin-bottom:24px;padding-bottom:20px}
+.ps-progress {font-size:.875rem;color:#dfbe76;margin:0 0 8px;font-weight:700}
+.ps-title {font-size:clamp(1.4rem,3vw,2rem);line-height:1.4;margin:0 0 10px}
+.ps-description {font-size:1rem;line-height:1.8;color:#d0dbe6;margin:0}
+.ps-caption {font-size:1rem;line-height:1.8;margin:18px 0}
+.ps-summary {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:24px}
+.ps-summary>div {display:grid;gap:5px;background:#102438;border:1px solid #2c4155;border-radius:12px;padding:20px}
+.ps-summary b {font-size:1.8rem;color:#efdbad;font-variant-numeric:tabular-nums;line-height:1.4}
+.ps-summary>div:last-child b {font-size:1.125rem;align-self:center}
+.ps-summary span {font-size:.875rem;color:#c5d1e2}
+.ps-src {border-radius:10px;padding:16px;gap:10px}
+.ps-src b {font-size:.9375rem}
+.ps-fetch-result {font-size:1rem;margin-block:20px}
+.ps-firms {grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ps-firm {padding:18px;grid-template-columns:48px minmax(0,1fr) 60px}
+.ps-firm-logo {width:48px;height:48px}
+.ps-firm-body .grade {font-size:.8125rem;white-space:normal}
+.ps-firm-body>span:not(.grade),.ps-firm-body small {font-size:.875rem;line-height:1.7}
+.ps-bar u {background:#dfbe76}
+.ps-analysis {min-width:520px;font-size:1rem}
+.ps-analysis th,.ps-analysis td {padding:12px 16px}
+.ps-analysis thead th {white-space:normal;color:#dfd6c0;background:#172d42}
+.ps-analysis th:first-child {min-width:150px}
+.ps-analysis td:last-child {background:#dfbe7610;color:#efdbad}
+.ps-result {gap:22px}
+.ps-hemi {width:min(100%,540px)}
+.ps-totals span {font-size:.9375rem}
+.ps-bottom {padding:16px max(24px,calc((100vw - 1120px)/2));gap:16px;background:#0d2032;min-height:80px}
+.ps-note {font-size:.8125rem;text-align:center;line-height:1.7}
+.ps-next {margin-inline-start:auto;white-space:normal}
+.ps-prev {white-space:normal}
+@media(max-width:760px) {
+  .ps-top {padding:12px 16px;gap:12px}
+  .ps-steps button {font-size:.875rem;padding:8px 6px}
+  .ps-body {padding:20px 16px}
+  .ps-summary {grid-template-columns:1fr 1fr;gap:10px}
+  .ps-summary>div {padding:14px}
+  .ps-summary>div:last-child {grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .ps-firms {grid-template-columns:1fr}
+  .ps-firm {padding:14px;gap:10px}
+  .ps-bottom {padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ps-note {grid-column:1/-1;grid-row:2}
+  .ps-next {margin:0}
+  .ps-analysis th,.ps-analysis td {font-size:.9375rem}
+}
+.ps-firm-body .grade {color:#d4eee0;background:#163b32;border:1px solid #36634f}
+.ps-firm-body .grade.none {color:#d5dfed;background:#23384f;border-color:#40566e}
+@media(min-width:761px) {
+  .ps-result {grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:16px 32px}
+  .ps-result>.ps-caption,.ps-result>.ps-actions {grid-column:1/-1;margin:0}
+  .ps-hemi {width:min(100%,400px)}
+  .ps-totals {gap:20px;align-items:center}
+}

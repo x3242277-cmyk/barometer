@@ -12,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "pipeline", "election", "election-pages", "election-tools"];
+const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "pipeline", "election", "election-pages", "election-tools", "refinement"];
 let css = (await Promise.all(stylesheets.map(name => rd(`assets/${name}.css`)))).join("\n");
 // Imports must precede CSS rules, including imports from the final design layer.
 // Font URLs themselves contain semicolons (weight lists), so keep each whole line.

@@ -3066,6 +3066,71 @@ dialog#pipeline-show:not([open]){display:none}
 .ps-body{display:block}.ps-title{margin-bottom:20px}.ps-bottom{min-height:70px}
 @media(max-width:760px){.ps-top{flex-wrap:wrap}.ps-brand{margin-inline-end:auto}.ps-close{order:0}.ps-steps{order:1;width:100%;margin:0;justify-content:space-between;gap:4px}.ps-steps li{flex:1;justify-content:center}.ps-steps button{font-size:.72rem;padding:8px 4px;justify-content:center}.ps-firms{grid-template-columns:1fr}.ps-firm{grid-template-columns:44px minmax(0,1fr) 44px;gap:8px;padding:12px}.ps-firm-logo{width:44px;height:44px}.ps-firm-score{font-size:1.25rem}.ps-bottom{flex-wrap:wrap;gap:8px;padding:10px 16px}.ps-sources{grid-template-columns:repeat(2,minmax(0,1fr))}.ps-analysis th,.ps-analysis td{padding:12px 8px;font-size:.82rem}.ps-actions .btn{white-space:normal;text-align:center}}
 
+/* Readable walkthrough: fixed navigation, independently scrolling content. */
+#pipeline-show {background:#081522}
+#pipeline-show::before {display:none}
+.ps-top {padding:16px max(24px,calc((100vw - 1120px)/2));gap:20px;background:#0d2032}
+.ps-brand {font-size:.9375rem}
+.ps-steps {gap:8px}
+.ps-steps li {border-radius:8px;background:#172d42;color:#c5d1e2}
+.ps-steps li.on {background:#dfbe76;color:#081522}
+.ps-steps li b {font-size:.8125rem}
+.ps-close {flex-shrink:0}
+.ps-body {padding:28px max(24px,calc((100vw - 1040px)/2));min-height:0;overscroll-behavior:contain}
+.ps-heading {border-bottom:1px solid #2c4155;margin-bottom:24px;padding-bottom:20px}
+.ps-progress {font-size:.875rem;color:#dfbe76;margin:0 0 8px;font-weight:700}
+.ps-title {font-size:clamp(1.4rem,3vw,2rem);line-height:1.4;margin:0 0 10px}
+.ps-description {font-size:1rem;line-height:1.8;color:#d0dbe6;margin:0}
+.ps-caption {font-size:1rem;line-height:1.8;margin:18px 0}
+.ps-summary {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:24px}
+.ps-summary>div {display:grid;gap:5px;background:#102438;border:1px solid #2c4155;border-radius:12px;padding:20px}
+.ps-summary b {font-size:1.8rem;color:#efdbad;font-variant-numeric:tabular-nums;line-height:1.4}
+.ps-summary>div:last-child b {font-size:1.125rem;align-self:center}
+.ps-summary span {font-size:.875rem;color:#c5d1e2}
+.ps-src {border-radius:10px;padding:16px;gap:10px}
+.ps-src b {font-size:.9375rem}
+.ps-fetch-result {font-size:1rem;margin-block:20px}
+.ps-firms {grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ps-firm {padding:18px;grid-template-columns:48px minmax(0,1fr) 60px}
+.ps-firm-logo {width:48px;height:48px}
+.ps-firm-body .grade {font-size:.8125rem;white-space:normal}
+.ps-firm-body>span:not(.grade),.ps-firm-body small {font-size:.875rem;line-height:1.7}
+.ps-bar u {background:#dfbe76}
+.ps-analysis {min-width:520px;font-size:1rem}
+.ps-analysis th,.ps-analysis td {padding:12px 16px}
+.ps-analysis thead th {white-space:normal;color:#dfd6c0;background:#172d42}
+.ps-analysis th:first-child {min-width:150px}
+.ps-analysis td:last-child {background:#dfbe7610;color:#efdbad}
+.ps-result {gap:22px}
+.ps-hemi {width:min(100%,540px)}
+.ps-totals span {font-size:.9375rem}
+.ps-bottom {padding:16px max(24px,calc((100vw - 1120px)/2));gap:16px;background:#0d2032;min-height:80px}
+.ps-note {font-size:.8125rem;text-align:center;line-height:1.7}
+.ps-next {margin-inline-start:auto;white-space:normal}
+.ps-prev {white-space:normal}
+@media(max-width:760px) {
+  .ps-top {padding:12px 16px;gap:12px}
+  .ps-steps button {font-size:.875rem;padding:8px 6px}
+  .ps-body {padding:20px 16px}
+  .ps-summary {grid-template-columns:1fr 1fr;gap:10px}
+  .ps-summary>div {padding:14px}
+  .ps-summary>div:last-child {grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .ps-firms {grid-template-columns:1fr}
+  .ps-firm {padding:14px;gap:10px}
+  .ps-bottom {padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ps-note {grid-column:1/-1;grid-row:2}
+  .ps-next {margin:0}
+  .ps-analysis th,.ps-analysis td {font-size:.9375rem}
+}
+.ps-firm-body .grade {color:#d4eee0;background:#163b32;border:1px solid #36634f}
+.ps-firm-body .grade.none {color:#d5dfed;background:#23384f;border-color:#40566e}
+@media(min-width:761px) {
+  .ps-result {grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:16px 32px}
+  .ps-result>.ps-caption,.ps-result>.ps-actions {grid-column:1/-1;margin:0}
+  .ps-hemi {width:min(100%,400px)}
+  .ps-totals {gap:20px;align-items:center}
+}
+
 /* Election 2026: a shared midnight and champagne visual identity. */
 :root{color-scheme:dark;--paper:#081522;--paper-2:#102438;--paper-3:#132a40;--ink:#f4f5f7;--ink-2:#c7d2df;--ink-3:#9dadc0;--rule:#263b50;--rule-2:#1c3044;--rule-strong:#41566b;--accent:#dfbe76;--accent-light:#dfbe7615;--navy:#0b1c2e;--navy-2:#081522;--gold:#dfbe76;--apricot:#dfbe76;--page-w:100000px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px}
 html{scroll-padding-top:110px}
@@ -3680,6 +3745,140 @@ body{background:var(--paper);color:var(--ink)}
 }
 @media print { .election-coalition { display: none !important; } }
 
+/* Shared final layout and control scale for the election edition. */
+@media screen {
+  :root { --page-w:1280px; --gutter:64px; --ctl-h:44px; --ctl-fs:.875rem; --ctl-r:8px }
+  html { scroll-padding-top:calc(var(--masthead-h, 88px) + 20px) }
+  body { font-size:1rem; line-height:1.7 }
+  .wrap,#view-home .wrap { width:min(var(--page-w),calc(100% - var(--gutter))) }
+  .view.on { min-width:0 }
+  #view-home.on { height:auto; overflow:visible; scroll-snap-type:none }
+  #view-home.on>:is(.election-cover,.verdict,.board,.election-coalition,.home-method) { min-height:0; scroll-snap-align:none }
+  #view-home .election-cover { min-height:0 }
+  .cover-content { padding-block:48px 36px }
+  #election-title { font-size:clamp(3rem,5.5vw,4.8rem); letter-spacing:-.035em }
+  .cover-tagline { font-size:clamp(1.2rem,2vw,1.6rem); margin-block:12px }
+  .cover-purpose { max-width:48ch; font-size:1.0625rem; line-height:1.8; color:#dce4ee; margin:0 0 16px }
+  .cover-points { max-width:54ch; gap:7px }
+  .cover-points li { font-size:.9375rem }
+  .cover-credit { font-size:.75rem }
+  .cover-updated { font-size:.8125rem }
+  .cover-actions { flex-wrap:wrap }
+  #view-home .election-cover .election-countdown { flex-wrap:wrap; gap:16px; margin-top:24px }
+  .election-cover .cd-head h3,.election-cover .countdown-cells em { font-size:.8125rem }
+  .election-cover .countdown-cells .num { font-size:1.6rem }
+  .section-next { width:44px; height:44px; border-radius:8px; margin-block:20px }
+  #view-home .verdict { padding-block:32px 0 }
+  #view-home .verdict-in { padding:24px 28px 0; border-radius:12px }
+  .election-hero { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:36px; padding-block:28px }
+  #view-home #verdict-head { font-size:clamp(1.8rem,3vw,2.6rem); line-height:1.3; letter-spacing:-.025em }
+  .hero-description { font-size:1rem; line-height:1.8; max-width:48ch }
+  .forecast-headline { font-size:1.0625rem; max-width:none }
+  .hero-overline,#view-home .verdict .eyebrow { font-size:.875rem }
+  .election-visual { min-width:0; border-radius:12px }
+  .seatmap svg { max-width:440px; max-height:270px }
+  .sm-bloc span,.visual-topline>span:last-child { font-size:.8125rem }
+  .sm-votes,.visual-footnote { font-size:.8125rem; line-height:1.7 }
+  #view-home .home-forecast-controls { flex-wrap:wrap; gap:16px 24px; padding-block:18px }
+  #view-home .home-history-pick { font-size:.875rem; flex-wrap:wrap }
+  .board-title { flex-wrap:wrap; gap:16px }
+  .board-title>p,.board-note { font-size:.875rem }
+  #view-home .board { padding-block:32px }
+  #view-home .wall .hcard-leader,#view-home .wall .hcard-pct { font-size:.8125rem }
+  .ptile-name { font-size:.9375rem; line-height:1.5 }
+  .ptile-leader { font-size:.8125rem; line-height:1.5 }
+  .home-method { margin-top:12px; padding-block:40px }
+  #view-home .pipe-k { font-size:.9375rem }
+  #view-home .pipe-t { font-size:.875rem; line-height:1.7 }
+  #view-home .pipe-step { font-size:.8125rem }
+  :is(.grid,.election-hero,.wall,.page-head,.controls,.ec-content)>* { min-width:0 }
+  .page-intro { padding-block:32px 20px }
+  .page-intro p,.page-head p,.sec-note,.data-explainer { font-size:1rem; line-height:1.8 }
+  .page-head { flex-wrap:wrap; gap:20px; padding-block:28px 18px }
+  #view-polls .page-head h2 { font-size:clamp(1.65rem,3vw,2.2rem) }
+  #view-polls .page-head .stats span { font-size:.875rem }
+  .page-head-main { min-width:0 }
+  .controls,.average-toolbar { flex-wrap:wrap }
+  .tablewrap,.dtable-wrap,.mtable { max-width:100%; overflow-x:auto; overscroll-behavior-inline:contain }
+  .grid.g2 { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  #polls-cards { grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px }
+  .election-coalition .ec-heading { flex-wrap:wrap }
+  .election-coalition .ec-intro { font-size:1rem }
+  .election-coalition .ec-source,.election-coalition .ec-source small { font-size:.8125rem }
+  /* Action controls share geometry; data cards keep their own composition. */
+  body :is(.btn,.cover-actions button,.show-btn,.print-btn,.ec-reset,.ps-close,.ps-steps button),
+  body .view :is(.switch button,.wall-toggle button,.calib-switch button,.average-days button,.filter-modes button,.controls-view button),
+  #view-home :is(.home-switch button,.show-btn),
+  body :is(select,input[type=search],input[type=number],input[type=text]) {
+    min-height:44px; border-radius:8px; font-size:.875rem; line-height:1.5; letter-spacing:0;
+  }
+  body :is(.btn,.cover-actions button,.show-btn),#view-home .show-btn { padding:10px 16px; gap:10px }
+  body .view :is(.switch button,.wall-toggle button,.calib-switch button,.average-days button) { padding:8px 12px; white-space:normal }
+  body :is(.switch,.wall-toggle,.poll-view-tabs) { border-radius:10px; flex-wrap:wrap; max-width:100%; gap:4px }
+  body .masthead-side .print-btn { width:44px; height:44px; border-radius:8px }
+  #view-home .show-btn { color:#081522; background:#dfbe76; border-color:#dfbe76; font-weight:700 }
+  #view-home .show-btn:hover { background:#f0d8a4 }
+  .hero-link { min-height:44px; font-size:.875rem }
+  button:disabled { cursor:default; opacity:.5 }
+  .mainnav .tab { font-size:.875rem; min-height:44px; padding-inline:10px }
+  .brand-txt span { font-size:.75rem }
+  .stamp { font-size:.8125rem }
+  .intro-result-links { display:none }
+  footer p,footer summary { font-size:.875rem; line-height:1.8 }
+  @media (max-width:1100px) {
+    :root { --gutter:40px }
+    .masthead-in { flex-wrap:wrap; gap:8px 16px; padding-block:10px 0 }
+    .mainnav { order:3; flex:0 0 100%; justify-content:flex-start; overflow-x:auto; margin:0; padding:0 0 6px }
+    .mainnav .tabs { min-width:max-content; flex-wrap:nowrap }
+    .masthead-side { margin-inline-start:auto }
+    .wall.has-mid { grid-template-columns:1fr }
+  }
+  @media (max-width:800px) {
+    :root { --gutter:32px }
+    .election-hero { grid-template-columns:1fr; gap:24px }
+    .grid.g2 { grid-template-columns:1fr }
+    .cover-content { padding-block:32px }
+    .cover-purpose { max-width:44ch }
+    .board-title>p { display:block; width:100%; margin:0; order:3 }
+    .wall,.wall.has-mid { grid-template-columns:1fr }
+    #view-home .verdict-in { padding-inline:20px }
+    .election-coalition .ec-content { grid-template-columns:1fr }
+  }
+  @media (max-width:480px) {
+    :root { --gutter:28px }
+    #election-title { font-size:3rem }
+    .cover-content { padding-bottom:20px }
+    .cover-actions { display:grid; grid-template-columns:1fr }
+    .cover-actions button { justify-content:space-between }
+    .cover-credit { position:static; display:block; text-align:center; padding:8px }
+    .cover-purpose { font-size:1rem }
+    .cover-points li { font-size:.875rem }
+    #view-home .verdict-in { padding-inline:16px }
+    .sm-top { flex-wrap:wrap }
+    .sm-bloc span { font-size:.75rem }
+    .home-forecast-controls>* { max-width:100% }
+    #view-home .home-switch { width:100%; display:grid; grid-template-columns:1fr 1fr }
+    .poll-view-tabs { display:flex; width:100% }
+    .poll-view-tabs button { flex:1 1 110px }
+    .ptiles { grid-template-columns:repeat(3,minmax(0,1fr)) }
+  }
+}
+@media screen {
+  .live-status {grid-template-columns:1.15fr repeat(3,minmax(0,1fr))}
+  .live-status>div {min-width:0}
+  .live-status b {line-height:1.4;overflow-wrap:anywhere}
+  @media(max-width:600px) {
+    .live-status {grid-template-columns:repeat(2,minmax(0,1fr))}
+    .live-status>div {padding:16px 12px}
+    .live-status b {font-size:1.125rem}
+  }
+}
+@media screen and (max-width:600px) {
+  .live-status .live-phase {display:grid;grid-template-columns:8px minmax(0,1fr);align-content:center;gap:6px 8px;text-align:start}
+  .live-status .live-phase b {overflow-wrap:normal}
+  .live-status .live-phase em {grid-column:2;margin:0}
+}
+
 </style>
 <div dir="rtl" lang="he" id="barometer-root">
 
@@ -3724,12 +3923,12 @@ body{background:var(--paper);color:var(--ink)}
     <div class="wrap cover-content">
       <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
       <h1 id="election-title">בחירות <span dir="ltr">2026</span></h1>
-      <p class="cover-tagline">כל מנדט משנה את התמונה.</p>
+      <p class="cover-tagline">להבין את הסקרים. לראות את התמונה.</p>
+      <p class="cover-purpose">ברומטר מחבר בין סקרי הבחירות, הדיוק של המכונים ותוצאות העבר — כדי שתוכלו להבין מאיפה מגיעה התחזית ומה משפיע עליה.</p>
       <ul class="cover-points">
-        <li>כל הסקרים, כל הפילוחים</li>
-        <li>ניתוח אמינות מכוני הסקרים</li>
-        <li>פילוח כל המגזרים בציבוריות הישראלית</li>
-        <li>בניית תחזית בחירות מדויקת, שקופה ובלתי תלויה</li>
+        <li>משווים בין הסקרים במקום להסתמך על כותרת אחת</li>
+        <li>בודקים את המכונים מול תוצאות הבחירות בעבר</li>
+        <li>מפרידים בין הנתונים לבין ההנחות של התחזית</li>
       </ul>
       <p class="cover-updated" id="cover-updated"></p>
       <div class="cover-actions"><button type="button" class="cover-primary" data-home-section="forecast-section">לתמונת המנדטים <span aria-hidden="true">↓</span></button><button type="button" class="cover-secondary" data-home-section="election-coalition">בנו קואליציה <span aria-hidden="true">↙</span></button></div>
@@ -3750,9 +3949,9 @@ body{background:var(--paper);color:var(--ink)}
           <p class="hero-overline">תמונת המצב</p>
           <h2 id="verdict-head" tabindex="-1">120 מנדטים.<br><em>מי בדרך לרוב?</em></h2>
           <p class="forecast-headline" id="election-headline"></p>
-          <p class="hero-description">תחזית המשלבת את הסקרים עם הדיוק ההיסטורי של המכונים. בחרו את שיטת החישוב והשוו בין תמונות המצב.</p>
+          <p class="hero-description">״משוקלל אמינות״ נותן למכונים משקל לפי דיוקם בעבר. ״תחזית הברומטר״ מוסיפה גם הנחות על דמוגרפיה ודפוסי הצבעה. החליפו ביניהם כדי לראות את ההבדל.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
-          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> הצגת החישוב</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
+          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> מהנתונים לתחזית · צעד אחר צעד</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
         </div>
         <div class="election-visual">
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
@@ -7767,10 +7966,10 @@ function renderHaredHistory() {
 /* Interactive calculation walkthrough. Source statuses reflect actual requests. */
 (() => {
   const STEPS = [
-    ["fetch", "מקור הנתונים", "מאיפה מגיעים הנתונים"],
-    ["calib", "משקל המכונים", "לכל מכון יש משקל מוסבר"],
-    ["analyze", "ניתוח", "מה משתנה בדרך לתחזית"],
-    ["result", "התוצאה", "120 מנדטים, לפי המצב שבחרתם"]
+    ["fetch", "הנתונים", "מתחילים בסקרים שפורסמו", "רואים אילו סקרים כלולים בחישוב ומתי המאגר עודכן."],
+    ["calib", "המכונים", "לא לכל מכון אותו משקל", "הדיוק בבחירות קודמות קובע את משקלו של כל מכון בממוצע."],
+    ["analyze", "החישוב", "מהסקרים לתחזית — מה משתנה?", "משווים בין ממוצע פשוט, שקלול אמינות והנחות הברומטר."],
+    ["result", "התחזית", "התוצאה: חלוקה ל־120 מנדטים", "זו תחזית לפי המודל שנבחר בעמוד הבית. 61 מנדטים נדרשים לרוב."]
   ];
   let stage = null, currentStep = "fetch", restoreFocus = null;
   const query = s => stage?.querySelector(s);
@@ -7790,13 +7989,20 @@ function renderHaredHistory() {
     stage.innerHTML = `<div class="ps-top"><span class="ps-brand">ברומטר · הצגת החישוב</span>
       <ol class="ps-steps">${STEPS.map(([key, label], i) => `<li data-step="${key}"><button type="button" data-go="${key}"><b>0${i + 1}</b>${label}</button></li>`).join("")}</ol>
       <button type="button" class="ps-close" aria-label="סגירה">✕</button></div>
-      <div class="ps-body"><h2 id="ps-title" class="ps-title" tabindex="-1"></h2><div class="ps-stage"></div></div>
-      <div class="ps-bottom"><button type="button" class="btn ghost ps-next">לשלב הבא ←</button><span class="ps-note"></span></div>`;
+      <div class="ps-body"><div class="ps-heading"><p class="ps-progress"></p><h2 id="ps-title" class="ps-title" tabindex="-1"></h2><p class="ps-description"></p></div><div class="ps-stage"></div></div>
+      <div class="ps-bottom"><button type="button" class="btn ghost ps-prev">→ לשלב הקודם</button><span class="ps-note"></span><button type="button" class="btn ps-next">לשלב הבא ←</button></div>`;
     document.body.appendChild(stage); stage.showModal(); document.documentElement.classList.add("show-open");
     query(".ps-close").addEventListener("click", close);
     stage.addEventListener("cancel", e => { e.preventDefault(); close(); });
     stage.addEventListener("click", e => { const go = e.target.closest("[data-go]"); if (go) show(go.dataset.go, true); });
-    query(".ps-next").addEventListener("click", () => show(STEPS[(STEPS.findIndex(s => s[0] === currentStep) + 1) % STEPS.length][0], true));
+    query(".ps-next").addEventListener("click", () => {
+      if (currentStep === "result") { close(); document.getElementById("forecast-section").scrollIntoView({ block: "start" }); return; }
+      show(STEPS[STEPS.findIndex(s => s[0] === currentStep) + 1][0], true);
+    });
+    query(".ps-prev").addEventListener("click", () => {
+      const index = STEPS.findIndex(s => s[0] === currentStep);
+      if (index > 0) show(STEPS[index - 1][0], true);
+    });
     show("fetch");
   }
   function show(key, focus = false) {
@@ -7807,36 +8013,42 @@ function renderHaredHistory() {
       const button = li.querySelector("button");
       if (li.dataset.step === key) button.setAttribute("aria-current", "step"); else button.removeAttribute("aria-current");
     });
-    query(".ps-title").textContent = STEPS.find(s => s[0] === key)[2];
-    query(".ps-next").textContent = key === "result" ? "חזרה למקורות" : "לשלב הבא ←";
+    const index = STEPS.findIndex(s => s[0] === key);
+    query(".ps-title").textContent = STEPS[index][2];
+    query(".ps-description").textContent = STEPS[index][3];
+    query(".ps-progress").textContent = `שלב ${index + 1} מתוך ${STEPS.length}`;
+    query(".ps-prev").disabled = index === 0;
+    query(".ps-next").textContent = key === "result" ? "סיום · לתמונת המנדטים" : `הבא: ${STEPS[index + 1][1]} ←`;
     query(".ps-note").textContent = `${S.forecastPolls.length} סקרים בחישוב · נתונים מ־${time(S.cur.generatedAt)}`;
     ({ fetch: renderFetch, calib: renderCalib, analyze: renderAnalyze, result: renderResult })[key]();
-    if (focus) query(".ps-title").focus();
+    query(".ps-body").scrollTop = 0;
+    if (focus) query(".ps-title").focus({ preventScroll: true });
   }
   function renderFetch() {
     const box = query(".ps-stage");
     const outlets = [...new Set(S.cur.polls.map(p => p.channelHebrewName))];
-    box.innerHTML = `<p class="ps-caption">כלי התקשורת מפרסמים; מאגר <a href="https://www.skarim.org/" target="_blank" rel="noopener">סקרים ↗</a> מרכז את הפרסומים; תהליך איסוף אוטומטי שרץ פעמיים ביום קורא משם ומאמת תאריך, שיוך וסכום של 120 לפני שסקר נכנס לאתר. העמוד הזה מציג תמיד את מה שכבר נאסף ואומת — אין כאן שליפה חיה מהדפדפן שלכם.</p>
+    box.innerHTML = `<div class="ps-summary"><div><b>${S.forecastPolls.length}</b><span>סקרים בחישוב הנוכחי</span></div><div><b>${S.series.length}</b><span>מכוני סקרים בחישוב</span></div><div><b>${esc(time(S.cur.generatedAt))}</b><span>עדכון המאגר האחרון</span></div></div>
+      <p class="ps-caption">כלי התקשורת מפרסמים את הסקרים, ומאגר <a href="https://www.skarim.org/" target="_blank" rel="noopener">סקרים ↗</a> מרכז אותם. ברומטר בודק את תאריך הסקר, שיוך המכון וסכום המנדטים. כאן מוצגים הנתונים שכבר נאספו — פתיחת ההסבר אינה טעינה של סקרים חדשים.</p>
       <div class="ps-fetch-result" role="status"><b>${S.cur.polls.length} סקרים בבסיס הנתונים הנוכחי.</b> עדכון אחרון: ${esc(time(S.cur.generatedAt))}.</div>
       <p class="ps-caption">כלי תקשורת שכלולים בנתוני האתר כרגע — הלוגואים מציינים מפרסמים, לא בדיקות נפרדות.</p>
       <div class="ps-sources">${outlets.map(o => { const logo = S.firms.outletLogos[o]; return `<div class="ps-src done"><span class="ps-src-logo">${logo ? `<img src="${esc(logo)}" alt="">` : esc(o.slice(0, 3))}</span><b>${esc(o)}</b></div>`; }).join("")}</div>
       <p class="ps-caption">האיסוף עצמו ממשיך ברקע, בלי קשר למסך הזה — <a href="#/polls">לכל הסקרים ↙</a></p>`;
-    query(".ps-stage a").addEventListener("click", close);
+    box.querySelectorAll('a[href^="#/"]').forEach(a => a.addEventListener("click", close));
   }
   function renderCalib() {
     const firms = S.series.slice().sort((a, b) => firmScore(b.meta) - firmScore(a.meta));
     const allWeight = firms.reduce((t, s) => t + firmWeight(s.meta), 0) || 1;
-    query(".ps-stage").innerHTML = `<div class="ps-firms">${firms.map(s => {
+    query(".ps-stage").innerHTML = `<p class="ps-caption">המספר הגדול הוא ציון המכון מתוך 100. האחוז שלצדו מציג את חלקו במשקל החישוב הנוכחי; מכון ללא כיול מקבל משקל ניטרלי.</p><div class="ps-firms">${firms.map(s => {
       const sc = firmScore(s.meta), grade = s.meta.calibrated ? gradeOf(sc) : { key: "none", label: "ללא דירוג · משקל ניטרלי" };
       return `<div class="ps-firm"><span class="ps-firm-logo">${s.meta.logo ? `<img src="${esc(s.meta.logo)}" alt="">` : esc(s.meta.short || "")}</span><div class="ps-firm-body"><b>${esc(s.meta.he)}</b><span class="grade ${grade.key}">${esc(grade.label)}</span><span>${r1(100 * firmWeight(s.meta) / allWeight)}% מהמשקל · ${s.polls.length} סקרים</span>${s.meta.calibrationFirm ? '<small>הציון מיוחס לצוות דירקט פולס לפי הגדרת האתר</small>' : ""}<i class="ps-bar"><u class="go" style="--v:${sc}%"></u></i></div><span class="ps-firm-score num">${r1(sc)}</span></div>`;
     }).join("")}</div><p class="ps-caption">60% דיוק בגושים · 30% דיוק במפלגות · 10% עקביות. הבסיס: ${S.calibrations.reduce((t, e) => t + e.polls, 0)} סקרי כיול משויכים ב־${S.elections.length} מערכות בחירות. זהו דירוג לפי מדדי האתר, לא הבטחה לדיוק בעתיד. <a href="#/2022">לפירוט הציונים ↗</a></p>`;
-    query('.ps-caption a').addEventListener("click", close);
+    query('.ps-stage a').addEventListener("click", close);
   }
   function renderAnalyze() {
     const phases = ["simple", "weighted", "scenario"].map(mode => allocateSeats(forecast(mode, HIDE_FROM_HOME).parties));
     const ids = [...new Set(phases.flatMap(p => Object.keys(p)))].sort((a, b) => (phases[2][b] || 0) - (phases[2][a] || 0));
     query(".ps-stage").innerHTML = `<p class="ps-caption">ממצעים תחילה בתוך כל מכון, ואז בין המכונים. העמודה האמצעית משוקללת לפי הציונים; באחרונה נוספות הנחות הברומטר. בכל עמודה מוצגת חלוקה ל־120 — לא תוצאות גולמיות של סקר.</p>
-      <div class="tablewrap"><table class="ps-analysis"><thead><tr><th>מפלגה</th><th>ממוצע פשוט</th><th>משוקלל אמינות</th><th>תחזית הברומטר</th></tr></thead><tbody>${ids.map(id => `<tr><th scope="row">${esc(partyMeta(id).name)}</th>${phases.map(p => `<td class="num">${p[id] || 0}</td>`).join("")}</tr>`).join("")}<tr><th>סך הכול</th>${phases.map(p => `<td class="num">${Object.values(p).reduce((t, n) => t + n, 0)}</td>`).join("")}</tr></tbody></table></div>
+      <div class="tablewrap" tabindex="0" role="region" aria-label="השוואת שלוש שיטות החישוב"><table class="ps-analysis"><thead><tr><th scope="col">מפלגה</th><th scope="col">ממוצע פשוט</th><th scope="col">משוקלל אמינות</th><th scope="col">תחזית הברומטר</th></tr></thead><tbody>${ids.map(id => `<tr><th scope="row">${esc(partyMeta(id).name)}</th>${phases.map(p => `<td class="num">${p[id] || 0}</td>`).join("")}</tr>`).join("")}<tr><th scope="row">סך הכול</th>${phases.map(p => `<td class="num">${Object.values(p).reduce((t, n) => t + n, 0)}</td>`).join("")}</tr></tbody></table></div>
       <p class="ps-caption">קיבוע ש״ס ${FIXED_SEATS.shas}, יהדות התורה ${FIXED_SEATS.yahadut_hatora}, רע״מ ${FIXED_SEATS.raam}; קירוב למאזן 2022 ותוספת דמוגרפית. אלה הנחות שנבחרו באתר, לא תיקונים שהוכחו בסקר. <a href="#/method">להסבר ולהנחות הנוכחיות ↗</a></p>`;
     query('.ps-stage a').addEventListener("click", close);
   }
@@ -7993,7 +8205,6 @@ function renderHaredHistory() {
 /* Home section controls leave the application's hash routes intact. */
 (() => {
   "use strict";
-  const SECTION_SELECTOR = '.election-cover, .verdict, .board, .election-coalition, .home-method';
   const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function goToSection(target) {
@@ -8008,39 +8219,7 @@ function renderHaredHistory() {
     goToSection(document.getElementById(button.dataset.homeSection));
   });
 
-  /* Wheel scrolling on the home page pages a full section at a time, like the
-     arrow buttons, instead of scrolling a little at a time — one wheel tick
-     (once the in-flight jump settles) always lands on the next or previous
-     section, never partway between two. Touch/scrollbar dragging still
-     scrolls freely; only wheel input is paged, matching how most trackpads
-     and mouse wheels are actually used to move through a page like this. */
-  let locked = false;
-  function sections() {
-    const home = document.getElementById('view-home');
-    return home ? [...home.querySelectorAll(':scope > :is(' + SECTION_SELECTOR + ')')] : [];
-  }
-  function currentIndex(list, home) {
-    const homeTop = home.getBoundingClientRect().top;
-    let idx = 0;
-    list.forEach((el, i) => {
-      if (el.getBoundingClientRect().top - homeTop <= 24) idx = i;
-    });
-    return idx;
-  }
-  document.addEventListener('wheel', event => {
-    const home = document.getElementById('view-home');
-    if (!home || !home.classList.contains('on')) return;
-    if (locked) { event.preventDefault(); return; }
-    const list = sections();
-    if (list.length < 2) return;
-    const idx = currentIndex(list, home);
-    const next = event.deltaY > 0 ? idx + 1 : event.deltaY < 0 ? idx - 1 : idx;
-    if (next === idx || next < 0 || next >= list.length) return;
-    event.preventDefault();
-    locked = true;
-    goToSection(list[next]);
-    setTimeout(() => { locked = false; }, reducedMotion() ? 150 : 650);
-  }, { passive: false });
+  // Leave wheel and touch scrolling native so long sections remain readable.
 })();
 
 </script>

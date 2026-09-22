@@ -29,13 +29,14 @@
 <link rel="stylesheet" href="assets/experience.css?v=3ecaef85">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
-<link rel="stylesheet" href="assets/pipeline.css?v=83d8756e">
-<script src="assets/pipeline.js?v=60f3d5cb" defer></script>
+<link rel="stylesheet" href="assets/pipeline.css?v=2b62322c">
+<script src="assets/pipeline.js?v=6b1b1957" defer></script>
 <link rel="stylesheet" href="assets/election.css?v=0a8938da">
 <link rel="stylesheet" href="assets/election-pages.css?v=c6d0825c">
 <link rel="stylesheet" href="assets/election-tools.css?v=edd4d277">
+<link rel="stylesheet" href="assets/refinement.css?v=9a256b52">
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
-<script src="assets/election.js?v=fc7b9125" defer></script>
+<script src="assets/election.js?v=811b7313" defer></script>
 </head>
 <body>
 
@@ -79,12 +80,12 @@
     <div class="wrap cover-content">
       <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
       <h1 id="election-title">בחירות <span dir="ltr">2026</span></h1>
-      <p class="cover-tagline">כל מנדט משנה את התמונה.</p>
+      <p class="cover-tagline">להבין את הסקרים. לראות את התמונה.</p>
+      <p class="cover-purpose">ברומטר מחבר בין סקרי הבחירות, הדיוק של המכונים ותוצאות העבר — כדי שתוכלו להבין מאיפה מגיעה התחזית ומה משפיע עליה.</p>
       <ul class="cover-points">
-        <li>כל הסקרים, כל הפילוחים</li>
-        <li>ניתוח אמינות מכוני הסקרים</li>
-        <li>פילוח כל המגזרים בציבוריות הישראלית</li>
-        <li>בניית תחזית בחירות מדויקת, שקופה ובלתי תלויה</li>
+        <li>משווים בין הסקרים במקום להסתמך על כותרת אחת</li>
+        <li>בודקים את המכונים מול תוצאות הבחירות בעבר</li>
+        <li>מפרידים בין הנתונים לבין ההנחות של התחזית</li>
       </ul>
       <p class="cover-updated" id="cover-updated"></p>
       <div class="cover-actions"><button type="button" class="cover-primary" data-home-section="forecast-section">לתמונת המנדטים <span aria-hidden="true">↓</span></button><button type="button" class="cover-secondary" data-home-section="election-coalition">בנו קואליציה <span aria-hidden="true">↙</span></button></div>
@@ -105,9 +106,9 @@
           <p class="hero-overline">תמונת המצב</p>
           <h2 id="verdict-head" tabindex="-1">120 מנדטים.<br><em>מי בדרך לרוב?</em></h2>
           <p class="forecast-headline" id="election-headline"></p>
-          <p class="hero-description">תחזית המשלבת את הסקרים עם הדיוק ההיסטורי של המכונים. בחרו את שיטת החישוב והשוו בין תמונות המצב.</p>
+          <p class="hero-description">״משוקלל אמינות״ נותן למכונים משקל לפי דיוקם בעבר. ״תחזית הברומטר״ מוסיפה גם הנחות על דמוגרפיה ודפוסי הצבעה. החליפו ביניהם כדי לראות את ההבדל.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
-          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> הצגת החישוב</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
+          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> מהנתונים לתחזית · צעד אחר צעד</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
         </div>
         <div class="election-visual">
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>

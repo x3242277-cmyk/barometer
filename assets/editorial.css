@@ -260,7 +260,7 @@ tbody tr:hover{background:#F7F9FD}
 .arch-key{font-size:.75rem}
 .cell-key{border-radius:4px}
 .arch-more{display:flex;margin:18px auto 0}
-.scen-block{padding:25px;background:#FFF;border:1px solid var(--rule);border-radius:20px}
+.scen-block{padding:25px;background:#FFF;border:1px solid var(--rule);border-radius:20px;max-width:1100px}
 .scen-head{gap:18px;margin-bottom:20px}
 .scen-card{border:1px solid var(--rule);border-top:3px solid var(--c);border-radius:12px;background:var(--paper)}
 .scen-explain,.scen-text{font-size:.875rem;line-height:1.85}

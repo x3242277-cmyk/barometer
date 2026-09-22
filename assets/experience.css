@@ -86,6 +86,7 @@
    מסך, בלי חישוב מיקום ידני. */
 .sm-votes-labels{display:flex;font-size:.72rem;font-weight:800;color:var(--ink-2)}
 .sm-votes-labels span{flex-shrink:0;text-align:center;white-space:nowrap;overflow:visible}
+.sm-votes-foot{margin:0;font-size:.68rem;color:var(--ink-3)}
 @media(max-width:560px){.sm-bloc b{font-size:1.5rem}.sm-party{min-width:44px}.sm-name{max-width:60px}}
 /* עמודה אמצעית בלוח המנדטים לרשימות שאינן משויכות לגוש */
 .wall .bloc-mid{display:none}

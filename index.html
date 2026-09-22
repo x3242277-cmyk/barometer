@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#F6F4EF">
+<meta name="theme-color" content="#081522">
 <title>ברומטר · מדד הסקרים והאמינות</title>
 <meta name="description" content="ברומטר — ניתוח עצמאי של סקרי הבחירות בישראל: תחזית משוקללת לפי אמינות מכוני הסקרים, מי דייק ב־2022, תחזית דמוגרפית ללא סקרים, ופילוח תוצאות אמת לפי אזורים ומגזרים.">
 <meta property="og:title" content="ברומטר · מדד הסקרים והאמינות">
@@ -22,7 +22,7 @@
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=59cfcbc0" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=82dcb329">
-<script src="assets/app.js?v=22a73067" defer></script>
+<script src="assets/app.js?v=0606f46f" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d0304b10">
 <link rel="stylesheet" href="assets/editorial.css?v=374d99fa">
@@ -31,6 +31,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
 <link rel="stylesheet" href="assets/pipeline.css?v=f84bb10f">
 <script src="assets/pipeline.js?v=09584ddc" defer></script>
+<link rel="stylesheet" href="assets/election.css?v=45e8472f">
+<link rel="stylesheet" href="assets/election-pages.css?v=ddf3ea51">
+<link rel="stylesheet" href="assets/election-tools.css?v=bc699036">
+<script src="assets/election-tools.js?v=e91c490a" defer></script>
+<script src="assets/election.js?v=4bfe1083" defer></script>
 </head>
 <body>
 
@@ -39,10 +44,10 @@
 <header class="masthead">
   <div class="wrap masthead-in">
     <a class="brand" href="#/" aria-label="ברומטר — דף הבית">
-      <img src="assets/logo.svg?v=e893fa44" alt="">
+      <img src="assets/election-mark.svg?v=031e7f92" alt="">
       <span class="brand-txt">
         <strong>ברומטר</strong>
-        <span>בחירות. נתונים. תמונת מצב.</span>
+        <span>הבחירות. כל התמונה.</span>
       </span>
     </a>
     <nav class="mainnav" aria-label="ניווט ראשי">
@@ -69,7 +74,25 @@
 
 <!-- ==================== התחזית ==================== -->
 <section class="view" id="view-home" aria-label="תמונת מצב">
-  <div class="verdict">
+  <section class="election-cover" aria-labelledby="election-title">
+    <div class="cover-image" aria-hidden="true"></div>
+    <div class="wrap cover-content">
+      <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
+      <h1 id="election-title">בחירות <span dir="ltr">2026</span></h1>
+      <p class="cover-tagline">כל מנדט משנה את התמונה.</p>
+      <p class="cover-description">הסקרים, המגמות והדרך ל־61.<br>תמונת הבחירות של ישראל, במקום אחד.</p>
+      <div class="cover-actions"><button type="button" class="cover-primary" data-home-section="forecast-section">לתמונת המנדטים <span aria-hidden="true">↓</span></button><button type="button" class="cover-secondary" data-home-section="election-coalition">בנו קואליציה <span aria-hidden="true">↙</span></button></div>
+      <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+    </div>
+    <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
+  </section>
+  <nav class="election-shortcuts wrap" aria-label="כלי הבחירות">
+    <button type="button" data-home-section="forecast-section"><span class="shortcut-icon" aria-hidden="true">◴</span><span><b>תמונת המנדטים</b><small>כל הגושים, מבט אחד</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></button>
+    <a href="#/polls"><span class="shortcut-icon" aria-hidden="true">▥</span><span><b>סקר הסקרים</b><small>משווים בין כל המכונים</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></a>
+    <button type="button" data-home-section="election-coalition"><span class="shortcut-icon" aria-hidden="true">⊞</span><span><b>בונים קואליציה</b><small>הדרך שלכם ל־61</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></button>
+    <a href="#/2022"><span class="shortcut-icon" aria-hidden="true">◎</span><span><b>מי הכי מדויק?</b><small>מדד אמינות המכונים</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></a>
+  </nav>
+  <div class="verdict" id="forecast-section" tabindex="-1">
     <div id="hero-art" hidden aria-hidden="true"></div>
     <div class="wrap verdict-in">
       <div class="verdict-top">
@@ -78,9 +101,10 @@
       </div>
       <div class="election-hero">
         <div class="election-copy">
-          <p class="hero-overline">תמונת המצב הפוליטית</p>
-          <h1 id="verdict-head" tabindex="-1">הבחירות,<br><em>במספרים.</em></h1>
-          <p class="hero-description">מי מוביל, כמה רחוק הרוב, ומה עומד מאחורי כל מנדט. תמונת מצב המבוססת על הסקרים ועל הדיוק ההיסטורי שלהם.</p>
+          <p class="hero-overline">תמונת המצב</p>
+          <h2 id="verdict-head" tabindex="-1">120 מנדטים.<br><em>מי בדרך לרוב?</em></h2>
+          <p class="forecast-headline" id="election-headline"></p>
+          <p class="hero-description">תחזית המשלבת את הסקרים עם הדיוק ההיסטורי של המכונים. בחרו את שיטת החישוב והשוו בין תמונות המצב.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
           <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> הצגת החישוב · בדיקת סקרים חדשים</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
         </div>
@@ -100,7 +124,7 @@
       </div>
     </div>
   </div>
-  <div class="wrap board">
+  <div class="wrap board" id="election-parties" tabindex="-1">
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
       <div class="wall-toggle" role="group" aria-label="פריסת הלוח"><button type="button" data-wall-layout="blocs" aria-pressed="true">לפי גושים</button><button type="button" data-wall-layout="size" aria-pressed="false">לפי גודל</button></div></div>
     <div class="wall-poster" id="wall-poster"></div>
@@ -121,11 +145,11 @@
     <p class="board-note">המספרים מציגים את המודל שנבחר למעלה. שיוך לגוש אינו תחזית להרכב קואליציה.</p>
     <section class="printsheet" id="home-printsheet" aria-hidden="true"></section>
   </div>
+  <section id="election-coalition" class="election-coalition wrap" tabindex="-1"></section>
   <section class="home-method">
     <div class="wrap">
       <div class="method-intro"><div><p class="kicker">מאחורי המספרים</p><h2>לכל תחזית יש בסיס.<br>כאן אפשר לבדוק אותו.</h2></div><a class="btn" href="#/method">איך אנחנו מחשבים <span aria-hidden="true">↙</span></a></div>
       <div class="pipeline" id="home-pipeline" aria-label="הנתונים והבדיקות שמאחורי התחזית"></div>
-      <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     </div>
   </section>
 </section>

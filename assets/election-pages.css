@@ -1,0 +1,245 @@
+/* Election edition: existing data pages and shared overlays. */
+@media screen {
+  .view:not(#view-home) {
+    color:var(--ink);
+    --rule-strong:#3b5269;
+    --shadow-s:0 4px 20px #020a1115;
+    --shadow-m:0 12px 34px #020a1140;
+  }
+
+  .view:not(#view-home) :is(.page-intro,.page-head) {
+    border-bottom-color:var(--rule);
+  }
+  .view:not(#view-home) :is(.page-intro,.page-head) h2 {color:var(--ink)}
+  .view:not(#view-home) :is(.kicker,.step>em) {color:var(--gold)}
+  .view:not(#view-home) .sec-head h2 {color:var(--ink)}
+
+  /* Distinct, restrained surfaces keep dense numbers easy to scan. */
+  .view:not(#view-home) :is(.card,.step,.sector,.cluster,.floorcard,.pillar,.hemi,.gauge,
+    .crosschart,.stats,.page-facts,.scen-block,.average-results,.average-toolbar,
+    .live-status,.live-feed li,.fblock,.focus-summary,.map-panel,.mapbox,
+    .mlive,.sources-group,.mandate-estimate) {
+    background:linear-gradient(135deg,#132a40,#0f2235);
+    border-color:var(--rule);
+    border-radius:10px;
+    box-shadow:none;
+    color:var(--ink);
+  }
+  .view:not(#view-home) :is(.tablewrap,.dtable-wrap,.mtable) {
+    background:var(--paper-2);
+    border-color:var(--rule);
+    border-radius:10px;
+  }
+  .view:not(#view-home) :is(.notice,.takeaway) {
+    background:#152c42;
+    border-color:#314963;
+    color:var(--ink-2);
+    border-radius:10px;
+  }
+  .view:not(#view-home) :is(.notice.warm,.takeaway,.mandate-estimate) {
+    background:linear-gradient(115deg,#dfbe7610,#102438);
+    border-color:#dfbe7640;
+  }
+  .view:not(#view-home) .notice.red {background:#ec807710;border-color:#ec807740}
+  .view:not(#view-home) :is(.takeaway b,.notice.warm .ic) {color:var(--gold)}
+  .view:not(#view-home) .notice .ic {background:#25445f;color:var(--ink)}
+  .view:not(#view-home) .notice.warm .ic {background:var(--gold);color:#081522}
+  .view:not(#view-home) .notice.red .ic {background:#ec8077;color:#081522}
+
+  /* Controls share the same gold selected state across all views. */
+  .view:not(#view-home) :is(.controls,.filter-modes button,.filter-icons button,
+    .average-days button,.average-source-popover summary,.average-source-popover ul),
+  #compare-picker label {
+    background:var(--paper-2);
+    border-color:var(--rule);
+    color:var(--ink-2);
+    border-radius:8px;
+  }
+  .view:not(#view-home) :is(select,input[type="search"],input[type="number"],
+    input[type="text"],textarea,.field input,.field select),
+  dialog :is(select,input[type="search"],input[type="number"],textarea) {
+    color-scheme:dark;
+    background:#091b2b;
+    border-color:#344c64;
+    color:var(--ink);
+    border-radius:7px;
+  }
+  .view:not(#view-home) input::placeholder {color:var(--ink-3);opacity:1}
+  .view:not(#view-home) :is(input[type="checkbox"],input[type="range"]) {accent-color:var(--gold)}
+  .view:not(#view-home) :is(.switch,.poll-view-tabs) {
+    background:#071725;
+    border-color:var(--rule);
+    border-radius:9px;
+  }
+  .view:not(#view-home) :is(.switch button,.poll-view-tabs button,.calib-switch button) {
+    color:var(--ink-2);
+    border-radius:6px;
+  }
+  .view:not(#view-home) :is(.switch button,.poll-view-tabs button,.filter-modes button,
+    .filter-icons button,.average-days button):hover {
+    background:#1b3349;
+    color:var(--ink);
+    border-color:#607183;
+  }
+  .view:not(#view-home) :is(.switch button,.poll-view-tabs button,.calib-switch button,
+    .filter-modes button,.average-days button)[aria-pressed="true"] {
+    background:linear-gradient(110deg,#f0d591,#c8a257);
+    color:#081522;
+    border-color:var(--gold);
+    box-shadow:0 2px 10px #0002;
+  }
+  .view:not(#view-home) .poll-view-tabs button[aria-pressed="true"] .view-icon {color:#081522}
+  .view:not(#view-home) .filter-icons button[aria-pressed="true"] {
+    background:#dfbe7615;
+    color:var(--gold);
+    border-color:var(--gold);
+    outline:1px solid var(--gold);
+  }
+  .view:not(#view-home) .letter-icon {background:var(--paper-3);color:var(--gold)}
+  .view:not(#view-home) .filter-icons img {background:#fff;border-radius:7px;padding:3px}
+  .view:not(#view-home) .btn,dialog .btn {
+    background:linear-gradient(110deg,#efd28d,#c8a257);
+    border-color:var(--gold);
+    color:#081522;
+    border-radius:7px;
+    box-shadow:none;
+  }
+  .view:not(#view-home) .btn:hover,dialog .btn:hover {background:#f2d99b;color:#081522}
+  .view:not(#view-home) .btn.ghost,dialog .btn.ghost {
+    background:#102438;
+    border-color:#3b5269;
+    color:var(--ink);
+  }
+  .view:not(#view-home) .btn.ghost:hover,dialog .btn.ghost:hover {border-color:var(--gold);color:var(--gold)}
+  .view:not(#view-home) .subtab {border-radius:7px}
+  .view:not(#view-home) .subtab:hover {background:#162e43;color:var(--ink)}
+  .view:not(#view-home) .subtab[aria-current="page"] {
+    background:#dfbe7612;
+    border-color:#dfbe7650;
+    color:var(--gold);
+    box-shadow:none;
+  }
+  #compare-picker label:has(input:checked) {background:#dfbe7615;border-color:var(--gold);color:var(--ink)}
+
+  /* Survey cards and tables retain their party and institute identifiers. */
+  .view:not(#view-home) .poll-result-card {
+    background:linear-gradient(135deg,#122a40,#0d2032);
+    border-color:var(--rule);
+    border-radius:10px;
+    box-shadow:0 8px 24px #020a1115;
+  }
+  .view:not(#view-home) .poll-result-card header {border-color:var(--rule-2)}
+  .view:not(#view-home) .poll-result-card time {background:#1a3248;color:var(--ink-2)}
+  .view:not(#view-home) .poll-result-card footer {background:#0a1b2b;border-color:var(--rule-2);color:var(--ink-3)}
+  .view:not(#view-home) .poll-result-card .poll-date-pick select:hover {border-color:var(--gold);color:var(--gold)}
+  .view:not(#view-home) .poll-list li>b {color:var(--ink)}
+  .view:not(#view-home) :is(.poll-seatbar,.poll-blocbar) .poll-61 {background:var(--gold);box-shadow:0 0 0 1px #071725}
+  .view:not(#view-home) .party-highlight {background:#dfbe7618!important;box-shadow:inset -3px 0 var(--gold)}
+  .view:not(#view-home) .average-tooltip {background:#142c42;border-color:#3b5269;box-shadow:0 16px 30px #020a1166}
+  .view:not(#view-home) .average-firms>div>span {background:var(--paper-2)}
+  .view:not(#view-home) .average-bar {background:#263b50}
+  .view:not(#view-home) .bloc-donut::after {background:#102438}
+  .view:not(#view-home) :is(.profile-portrait,.rcard-face) {background:#122a40}
+
+  .view:not(#view-home) th,dialog th {background:#183148;color:var(--ink-2)}
+  .view:not(#view-home) :is(th,td),dialog :is(th,td) {border-color:var(--rule)}
+  .view:not(#view-home) tbody tr:hover,dialog tbody tr:hover {background:#1b344b}
+  .view:not(#view-home) .arch th {background:#183148}
+  .view:not(#view-home) .arch tr.actual td {background:#dfbe7616;border-bottom-color:#dfbe7660;color:var(--ink)}
+  .view:not(#view-home) .arch tr.actual.cf td {background:#dfbe762b}
+  .view:not(#view-home) .arch .cell.ok {background:#63c59f25}
+  .view:not(#view-home) .arch .cell.near {background:#63c59f0e}
+  .view:not(#view-home) .arch .cell.off {background:#dfbe7626}
+  .view:not(#view-home) .arch .cell.far {background:#f38d8226}
+  #view-polls #polls-table tr>th:first-child {background:#102438;border-inline-end-color:var(--rule)}
+  #view-polls #polls-table thead tr>th {background:#183148;color:var(--ink-2)}
+  #view-polls #polls-table tbody tr:nth-child(even)>* {background-color:#132a40}
+  #view-polls #polls-table tbody tr:hover>* {background-color:#1b344b}
+  .view:not(#view-home) .seat-cell {color:var(--ink);background:color-mix(in srgb,var(--firm,#64707c) calc(var(--strength,0) * 30%),#172d42)}
+  .view:not(#view-home) .dtable tbody tr[data-sector]:hover {background:color-mix(in srgb,var(--c) 12%,#102438)}
+  .view:not(#view-home) .dtable tbody tr.is-linked {background:color-mix(in srgb,var(--c) 18%,#102438)}
+
+  /* Accuracy scorecards: color remains meaningful on a dark surface. */
+  #view-e2022 .rank,#view-e2022 .rank:first-child,#view-e2022 .rank-nocalib {
+    background:linear-gradient(150deg,#142d43,#0c2032);
+    border-color:var(--rule);
+    border-radius:10px;
+  }
+  #view-e2022 .rank:first-child,#view-e2022 .rank:first-child.grade-high {border-color:#dfbe7660;box-shadow:inset 0 3px var(--gold)}
+  #view-e2022 .rank.grade-high {border-color:#63c59f50}
+  #view-e2022 .rank:hover {border-color:var(--gold);box-shadow:0 12px 32px #020a1155}
+  #view-e2022 .rank:first-child .rank-no {background:var(--gold);color:#081522}
+  #view-e2022 .rank>.orglogo {border-radius:7px}
+  #view-e2022 .rank-outlets .outlet-icons span {color:#102346}
+  .view:not(#view-home) .score-top.grade-high b {color:#79d5ac}
+  .view:not(#view-home) .score-top.grade-mid b {color:#e3be78}
+  .view:not(#view-home) .score-top.grade-low b {color:#f19c91}
+  .view:not(#view-home) .score-top.grade-high .score-bar u {background:#79d5ac}
+  .view:not(#view-home) .score-top.grade-mid .score-bar u {background:#e3be78}
+  .view:not(#view-home) .score-top.grade-low .score-bar u {background:#f19c91}
+  .view:not(#view-home) .scen-card {background:#0b1e30;border-radius:8px}
+
+  /* Research, geographic data and election-night panels. */
+  .view:not(#view-home) :is(.dstep-num,.mstep-num) {background:var(--gold);color:#081522;border-radius:8px}
+  .view:not(#view-home) .step::before {background:var(--gold)}
+  .view:not(#view-home) .submitted-research {background:#0b1e30;border:1px solid var(--rule);color:var(--ink-2)}
+  .view:not(#view-home) #scenario-panel label {background:#142d43}
+  .view:not(#view-home) .map-list button {background:#0b1d2e;color:var(--ink);border-color:var(--rule);border-radius:7px}
+  .view:not(#view-home) .map-list button:hover {background:#183148;border-color:#63788b}
+  .view:not(#view-home) .map-list button.sel {background:#dfbe7612;border-color:var(--gold)}
+  .view:not(#view-home) .maplegend {background:#102438;border-color:var(--rule);border-radius:8px}
+  .view:not(#view-home) .map-panel .locdetail {background:none}
+  .view:not(#view-home) .loc-identity .chip:hover {background:var(--paper-3)}
+  .view:not(#view-home) .map-tip {background:#102438;border-color:#3b5269;color:var(--ink)}
+  .view:not(#view-home) .leaflet-tooltip-right::before {border-right-color:#102438}
+  .view:not(#view-home) .leaflet-tooltip-left::before {border-left-color:#102438}
+  .view:not(#view-home) .leaflet-control-zoom a {background:#102438;color:var(--ink);border-color:var(--rule)}
+  .view:not(#view-home) .leaflet-control-zoom a:hover {background:#1b344b;color:var(--gold)}
+  .view:not(#view-home) .leaflet-control-attribution {background:#102438e8;color:var(--ink-2)}
+  .view:not(#view-home) .leaflet-control-attribution a {color:#e5cb90}
+
+  /* Replace old navy text, while keeping white logo canvases intact. */
+  .view:not(#view-home) :is(.share-head b,.compare-stack-row.strong>b,.rank .final b,
+    .pollcard .rel b,.live-status b,.live-big,.overview-total b,.forecast-bar strong,
+    .calib-runs b em,.bloc-donut b,.average-tooltip>b,.focus-summary h2,
+    .year-column h3,.cross-summary b,.pie h3,.score-row b,.runs b,.mlive b,
+    .sources-group h3,.nocalib-note b) {color:var(--ink)}
+  .view:not(#view-home) :is(details.math summary,.src a,.data-explainer a,
+    .zero-results summary,.poll-bloc-details summary,.trend-data summary,
+    .poll-data-note summary,.legend button[aria-pressed="true"],.party-inspect,
+    .outlet-toggle,.anecdote-nav button),
+  #compare-picker legend,#compare-table button {color:var(--gold)}
+  .view:not(#view-home) .outlet-toggle[aria-expanded="true"] {background:#dfbe761a;border-color:var(--gold);color:var(--gold)}
+  .view:not(#view-home) :is(.pos,.up,.share-row .pos,.poll-list li>em.up,.dtable .delta.up) {color:#79d5ac}
+  .view:not(#view-home) :is(.neg,.down,.share-row .neg,.poll-list li>em.down,.dtable .delta.down,.base-drama b) {color:#f19c91}
+  .view:not(#view-home) .poll-list li>em.flat {color:var(--ink-3)}
+  .view:not(#view-home) :is(.floornum b,.pillar .big b,.fblock b,.sector .turnout b) {color:color-mix(in srgb,var(--c,#dfbe76) 60%,#fff)}
+  .view:not(#view-home) svg text:is([fill="#12345C"],[fill="#141A21"],[fill="#46515E"]) {fill:var(--ink)}
+  .view:not(#view-home) svg text[fill="#6C7885"] {fill:var(--ink-3)}
+  .view:not(#view-home) svg :is([stroke="#E4DFD4"],[stroke="#DDD9CF"]) {stroke:var(--rule)}
+  .view:not(#view-home) .gauge svg :is(path,line)[stroke="#141A21"] {stroke:var(--gold)}
+
+  /* Native dialogs and the shared footer carry the same visual language. */
+  dialog:not(#pipeline-show) {
+    background:linear-gradient(145deg,#142c42,#0b1c2e);
+    color:var(--ink);
+    border-color:#3b5269;
+    border-radius:12px;
+    box-shadow:0 28px 90px #0009;
+  }
+  dialog::backdrop {background:#020912b8;backdrop-filter:blur(7px)}
+  dialog :is(.tablewrap,.fd-comps>div,.card,.hemi,.gauge) {background:#102438;border-color:var(--rule);border-radius:8px}
+  dialog :is(.dclose,.close,.dlg-close) {background:#1b344b;color:var(--ink);border-color:#3b5269}
+  dialog :is(.dclose,.close,.dlg-close):hover {border-color:var(--gold);color:var(--gold)}
+  dialog .fd-score {background:#dfbe7614;border:1px solid #dfbe7640}
+  dialog .fd-score b {color:var(--gold)}
+  dialog .fd-final {background:#dfbe761a!important;border-color:#dfbe7655!important}
+  dialog .fd-tables :is(tr.fd-bloc th,thead th.fd-cf,caption b) {color:var(--gold)}
+  dialog :is(.data-explainer a,.src a,.party-inspect) {color:var(--gold)}
+  dialog svg text:is([fill="#12345C"],[fill="#141A21"],[fill="#46515E"]) {fill:var(--ink)}
+  dialog svg text[fill="#6C7885"] {fill:var(--ink-3)}
+  body>footer {background:#07131f;color:var(--ink-2);border-top:1px solid var(--rule)}
+  body>footer h4 {color:var(--gold)}
+  body>footer :is(.footer-nav a,.footer-details>summary) {color:var(--ink)}
+  body>footer a:hover {color:var(--gold)}
+}

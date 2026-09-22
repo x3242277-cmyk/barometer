@@ -621,7 +621,7 @@ function renderHomeHemicycle(seats, blocTot, est) {
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`חלוקת ${total} המנדטים. ${items.map(i => i.label).join("; ")}`)}">${dots}
       <text x="${cx}" y="${cy - 38}" text-anchor="middle" class="hemicycle-total">${total}</text><text x="${cx}" y="${cy - 12}" text-anchor="middle" class="hemicycle-caption">מנדטים</text></svg>
     <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>
-    <div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער מתוך כלל המצביעים</span></div>
+    <details class="sm-votes-details"><summary>שיעור הקולות המשוער לפי גוש</summary><div class="sm-votes"><div class="sm-votes-head"><span>שיעור הקולות המשוער מתוך כלל המצביעים</span></div>
       <div class="sm-bar thin" role="img" aria-label="ימין וחרדים ${r1(shR)} אחוז, הרשימות הערביות ${r1(shA)} אחוז, מרכז־שמאל ${r1(shL)} אחוז, מתחת לאחוז החסימה ${r1(shBelow)} אחוז">
         <span style="width:${shR}%;background:${BLOCS.Right.color}"></span>${shA > 0.05 ? `<span style="width:${shA}%;background:${BLOCS.Arabs.color}"></span>` : ""}<span style="width:${shL}%;background:${BLOCS.Left.color}"></span>${shBelow > 0.05 ? `<span style="width:${shBelow}%;background:${BLOCS.Unknown.color}"></span>` : ""}
       </div>
@@ -629,7 +629,7 @@ function renderHomeHemicycle(seats, blocTot, est) {
       ${shA > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Arabs.color}"></i>${r1(shA)}% הרשימות הערביות</div>` : ""}
       <div class="sm-votes-mid"><i style="background:${BLOCS.Left.color}"></i>${r1(shL)}% מרכז־שמאל</div>
       ${shBelow > 0.05 ? `<div class="sm-votes-mid"><i style="background:${BLOCS.Unknown.color}"></i>${r1(shBelow)}% מתחת לאחוז החסימה${wasted.length ? ` (${esc(wasted.join(", "))})` : ""}</div>` : ""}
-  </div>`;
+  </div></details></div>`;
   const modeLabel = $("#home-model-label");
   if (modeLabel) modeLabel.textContent = S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר";
 }
@@ -720,6 +720,9 @@ function renderHome() {
 
   renderWallPoster(seats, est, blocTot, belowEntries);
   buildHomePrintSheet(est, seats, blocTot);
+  const electionHeadline = $("#election-headline");
+  if (electionHeadline) electionHeadline.innerHTML = homeHeadline(est, seats, blocTot).h;
+  window.renderElectionTools?.(seats, est, blocTot);
 }
 
 /* פריסת "פוסטר" כמו בגרפיקת הסקרים בטלוויזיה (כאן חדשות): כל הרשימות ברצף
@@ -2098,9 +2101,9 @@ function wire() {
     renderHome();
   }));
   $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
-  /* לוח המנדטים: לפי גושים (ברירת המחדל) או פוסטר לפי גודל */
+  /* Portrait board by default; retain the visitor's explicit layout choice. */
   const applyWallLayout = () => { $(".board").classList.toggle("layout-size", S.wallLayout === "size"); $$("[data-wall-layout]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.wallLayout === S.wallLayout))); };
-  try { S.wallLayout = localStorage.getItem("wallLayout") === "size" ? "size" : "blocs"; } catch { S.wallLayout = "blocs"; }
+  try { S.wallLayout = localStorage.getItem("wallLayout") === "blocs" ? "blocs" : "size"; } catch { S.wallLayout = "size"; }
   applyWallLayout();
   $$("[data-wall-layout]").forEach(b => b.addEventListener("click", () => { S.wallLayout = b.dataset.wallLayout; try { localStorage.setItem("wallLayout", S.wallLayout); } catch {} applyWallLayout(); }));
 

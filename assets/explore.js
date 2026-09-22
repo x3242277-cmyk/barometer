@@ -110,9 +110,7 @@ function renderPollCards(rows, polls) {
     const seatbar = `<div class="poll-blocgraph" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
       shown.map(k => `<span class="bc-seg${k === winner ? ' is-maj' : ''}" style="flex:${bloc[k]} ${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}"><b>${bloc[k]}</b></span>`).join('')
     }${total === 120 ? '<i class="bc-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="bc-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
-    const relScore = firmScore(f.meta), relGrade = gradeOf(relScore);
-    const relBadge = `<span class="grade ${relGrade.key}" title="ציון אמינות: ${r1(relScore)} מתוך 100">${esc(relGrade.label)}</span>`;
-    return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)} ${relBadge}</p></div></div>${list.length > 1
+    return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
           }</select></label>`
@@ -123,7 +121,7 @@ function renderPollCards(rows, polls) {
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(x.name)).join(' · ')}</p></details>` : ''}
-      <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול ${esc(f.meta.he)} · ${esc(prev.channelHebrewName)} · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
+      <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
   $('#polls-compare').hidden = S.pollView !== 'compare';

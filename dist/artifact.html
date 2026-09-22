@@ -4606,7 +4606,12 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="mstep-num" aria-hidden="true">4</div>
         <div class="mstep-body">
           <div class="mstep-head"><h2>מוסיפים את ההנחות של ״תחזית הברומטר״</h2><a class="mstep-link" href="#/haredi">להנחות ↙</a></div>
-          <p>שלוש הנחות, שקופות, שאפשר לכבות במתג בתמונת המצב: <b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8</b> קבועות (הסקרים מפחיתים להן בעקביות — ראו הערת טעות הדגימה בדיוק המכונים; העיגול למנדטים שלמים נעשה בשלב 6); <b>קירוב למאזן 2022</b> — חצי מהפער בין הסקרים לתוצאה הקודמת; ו<b>תוספת דמוגרפית</b> לימין. אלה הנחות, לא מדידות.</p>
+          <p>עד כאן — ממוצע נקי של סקרים, בלי שום שיפוט. השלב הזה מוסיף עליו שלוש הנחות עריכה מפורשות, שכל אחת אפשר לכבות בנפרד במתג בתמונת המצב:</p>
+          <ul class="mlist">
+            <li><b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8 — מספר קבוע, לא ממוצע הסקרים שלהן.</b> מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בשלב 6, ביחד עם כל שאר הרשימות.</li>
+            <li><b>קירוב למאזן 2022 — היעד הוא 62 מנדטים לגוש נתניהו, לא 64.</b> בפועל הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד, וקולותיה התחלקו בהסכמי העודפים בין הרשימות שכן עברו — מקרה קצה חד־פעמי בספירה, לא סימן לגודל האמיתי של הגוש (אפשר לבדוק ב״אילו מרצ עברה את אחוז החסימה״ בתמונת המצב). באותו היגיון ההפוך: רשימות ימין שנמצאות היום מתחת לאחוז החסימה (למשל רשימתו של עופר וינטר) לא נמחקות מהחישוב הזה — התמיכה בהן נספרת כשמודדים כמה גדול גוש נתניהו בפועל בסקרים, גם שהן עדיין לא מקבלות מנדט בחלוקה הסופית. מהפער שנשאר בין הסקרים לעוגן, התחזית סוגרת <b>רק חצי</b> — לא את כולו — ומורידה מזה את מה שקיבוע ש״ס ויהדות התורה כבר תרם לימין, כדי לא לספור את אותה הנחה פעמיים.</li>
+            <li><b>תוספת דמוגרפית לימין — כברירת מחדל 2 מנדטים</b> (אפשר לשנות בתמונת המצב בין 6- ל־6), מועברים מהרשימות המשויכות לשמאל לרשימות המשויכות לימין, כל רשימה לפי משקלה. ברירת המחדל הזאת אינה שרירותית — שלב 5 בודק אותה מול מודל נפרד.</li>
+          </ul>
           <div class="mlive" id="m-live-scenario"></div>
         </div>
       </section>
@@ -4615,7 +4620,8 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="mstep-num" aria-hidden="true">5</div>
         <div class="mstep-body">
           <div class="mstep-head"><h2>בודקים מול הדמוגרפיה</h2><a class="mstep-link" href="#/demography">למודל הדמוגרפי ↙</a></div>
-          <p>מודל נפרד לגמרי, בלי אף סקר: תוצאות 2022 של כל קבוצת אוכלוסייה, כפול הגידול שלה עד 2026. הוא בודק את ההנחה הדמוגרפית שבשלב 4: כל עוד ההנחה בטווח של מנדט אחד מאומדן המודל — היא נשארת; אם היא רחוקה יותר, התחזית מחליפה אותה באומדן המודל.</p>
+          <p>מודל נפרד לגמרי, שלא מסתכל על אף סקר: לוקח את תוצאות ההצבעה בפועל של כל קבוצת אוכלוסייה ב־2022 (איך הצביע כל מגזר, לא איך שהוא ״אמור״ להצביע), ומריץ אותן קדימה עד 2026 לפי קצב הגידול ושינוי אחוז ההצבעה הצפויים של כל קבוצה בנפרד — למשל שהמגזר החרדי גדל מהר יותר מהממוצע. את התוצאה המוקרנת מחלקים שוב ל־120 מנדטים באותם כללי בחירות (אחוז חסימה, באדר-עופר), ובודקים כמה מנדטים עברו בין 2022 לתחזית מ״ימין+חרדים״ יחד אל מול שאר הגושים.</p>
+          <p>המספר הזה הוא הבודק של ההנחה הדמוגרפית מ<b>שלב 4</b>: כל עוד ההנחה שנבחרה שם (2 מנדטים כברירת מחדל, או כל ערך שהוגדר ידנית בתמונת המצב) בטווח של מנדט אחד מאומדן המודל — היא נשארת כמו שהיא, כי ההבדל בתוך טווח הרעש הסביר. אם היא רחוקה מהמודל ביותר ממנדט אחד, התחזית <b>מחליפה אותה אוטומטית</b> באומדן המודל (מעוגל לרבע מנדט הקרוב) — כדי שהנחה ידנית לא תישאר תקועה רחוק ממה שהדמוגרפיה בפועל תומכת בו.</p>
           <div class="mlive" id="m-live-demo"></div>
         </div>
       </section>
@@ -4949,9 +4955,7 @@ function renderPollCards(rows, polls) {
     const seatbar = `<div class="poll-blocgraph" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
       shown.map(k => `<span class="bc-seg${k === winner ? ' is-maj' : ''}" style="flex:${bloc[k]} ${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}"><b>${bloc[k]}</b></span>`).join('')
     }${total === 120 ? '<i class="bc-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="bc-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
-    const relScore = firmScore(f.meta), relGrade = gradeOf(relScore);
-    const relBadge = `<span class="grade ${relGrade.key}" title="ציון אמינות: ${r1(relScore)} מתוך 100">${esc(relGrade.label)}</span>`;
-    return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)} ${relBadge}</p></div></div>${list.length > 1
+    return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
           }</select></label>`
@@ -4962,7 +4966,7 @@ function renderPollCards(rows, polls) {
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(x.name)).join(' · ')}</p></details>` : ''}
-      <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול ${esc(f.meta.he)} · ${esc(prev.channelHebrewName)} · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
+      <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
   $('#polls-compare').hidden = S.pollView !== 'compare';

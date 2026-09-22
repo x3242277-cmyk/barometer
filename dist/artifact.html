@@ -3157,15 +3157,7 @@ body{background:var(--paper);color:var(--ink)}
 .election-cover .countdown-cells .num{font:600 1.8rem/1.1 var(--sans);color:#efdbad;font-variant-numeric:tabular-nums;letter-spacing:.025em}
 .election-cover .countdown-cells em{font-style:normal;font-size:.56rem;color:#9dadc0;font-weight:400}
 .election-cover .cd-sep{color:#b79b6066;font-size:1.1rem;font-style:normal;align-self:flex-start}
-#view-home .election-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:0;margin-top:10px;margin-bottom:30px;border:1px solid #263b50;border-radius:8px;background:#102236;overflow:hidden}
-.election-shortcuts>a,.election-shortcuts>button{font:inherit;text-decoration:none;color:#edf1f6;background:none;border:0;border-inline-end:1px solid #263b50;display:flex;align-items:center;text-align:start;gap:13px;padding:20px 22px;cursor:pointer;transition:background .2s;min-width:0}
-.election-shortcuts>:last-child{border-inline-end:0}
-.election-shortcuts>a:hover,.election-shortcuts>button:hover{background:#1b3147}
-.shortcut-icon{color:#dfbe76;display:grid;place-items:center;flex-shrink:0;width:36px;height:36px;background:#dfbe7609;border:1px solid #dfbe7630;border-radius:6px;font-size:1.45rem}
-.election-shortcuts b{display:block;font-size:.9rem;font-weight:700}
-.election-shortcuts small{display:block;font-size:.68rem;color:#97a9bd;margin-top:2px}
-.shortcut-arrow{margin-inline-start:auto;color:#cfb67f;font-size:1.2rem}
-#view-home .verdict{background:none;border:0;overflow:visible;color:var(--ink);scroll-margin-top:100px}
+#view-home .verdict{background:none;border:0;overflow:visible;color:var(--ink)}
 #view-home .verdict-in{background:#10243866;border:1px solid #263b50;border-radius:10px;padding:22px 30px 0}
 .verdict-top{border-color:#263b50;padding-bottom:16px}
 #view-home .verdict .eyebrow{color:#b8c7d7;font-size:.73rem}
@@ -3208,7 +3200,7 @@ body{background:var(--paper);color:var(--ink)}
 #view-home .home-history-pick{font-size:.7rem;gap:10px}
 #view-home .home-history-pick select{background:#102438;border-color:#334a61;color:#d6e0ea;min-height:38px;border-radius:5px;font-size:.73rem}
 .intro-result-links a,.intro-result-links button{color:#9dadc0;font-size:.67rem}
-#view-home .board{padding:37px 0 32px;scroll-margin-top:100px}
+#view-home .board{padding:37px 0 32px}
 .board-title{align-items:center;padding:0 0 18px;margin:0;border-bottom:1px solid #263b50;gap:20px}
 .board-title .kicker{color:#dfbe76;font-size:.67rem;margin:0 0 4px}.board-title h2{font-size:1.65rem}.board-title>p{font-size:.73rem;margin-inline-start:auto}
 .wall-toggle{background:#0c1c2d;border-color:#2b4259;border-radius:5px;flex-shrink:0}
@@ -3233,11 +3225,11 @@ body{background:var(--paper);color:var(--ink)}
 #view-home .pipe-node{padding:20px 18px;border-color:#2b4054;gap:10px}
 #view-home .pipe-step{color:#d6b973;font-size:.65rem}#view-home .pipe-k{color:#aebed0;font-size:.75rem}#view-home .pipe-n{color:#f4e3bc;font-size:1.35rem}#view-home .pipe-t{font-size:.67rem;color:#8fa5bc}
 @media(min-width:1700px){#view-home .election-cover{min-height:560px}.cover-content{padding-top:58px}.cover-image{background-position:center 57%}}
-@media(max-width:1190px){:root{--gutter:48px}.masthead-in{gap:15px}.masthead-side .stamp{display:none}.mainnav .tab{font-size:.76rem;padding-inline:8px}.brand-txt strong{font-size:1.5rem}.brand img{width:33px}.election-hero{gap:32px}.election-shortcuts>a,.election-shortcuts>button{padding:17px 14px;gap:9px}.election-shortcuts b{font-size:.78rem}.shortcut-arrow{display:none}.ptiles{grid-template-columns:repeat(6,minmax(0,1fr))}}
-@media(max-width:800px){:root{--gutter:32px}.masthead-in{flex-wrap:wrap;min-height:0;gap:8px;padding:12px 0 0}.brand{margin:0}.brand-txt strong{font-size:1.45rem}.brand-txt span{font-size:.56rem}.masthead-side{margin-inline-start:auto}.mainnav{order:3;flex:0 0 100%;overflow-x:auto}.mainnav .tabs{display:flex;flex-wrap:nowrap;justify-content:flex-start;min-width:max-content;gap:8px}.mainnav .tab{font-size:.74rem;padding:8px 10px;min-height:41px}.mainnav .tab::after{bottom:0}#view-home .election-cover{min-height:450px}.cover-content{padding-top:32px}.cover-image{background-position:40% 62%}.election-cover::after{background:linear-gradient(270deg,#081522ed,#081522ac 45%,#0815224a),linear-gradient(0deg,#081522,transparent 50%)}#election-title{font-size:clamp(3.5rem,9.5vw,5.4rem)}.cover-credit{font-size:.5rem;left:16px;bottom:9px}#view-home .election-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:8px;margin-bottom:22px}.election-shortcuts>:nth-child(2){border-inline-end:0}.election-shortcuts>:nth-child(-n+2){border-bottom:1px solid #263b50}.election-shortcuts>a,.election-shortcuts>button{padding:15px}.election-shortcuts b{font-size:.8rem}.election-shortcuts small{font-size:.61rem}.election-hero{grid-template-columns:1fr;gap:24px;padding:24px 0}.election-copy{max-width:100%}#view-home #verdict-head{font-size:2.4rem;margin-bottom:12px}#view-home #verdict-head br{display:none}.forecast-headline{max-width:100%;font-size:.88rem}.hero-description{max-width:60ch;margin:7px 0 15px}.election-visual{width:100%;max-width:none;padding:20px}.seatmap svg{max-width:430px}#view-home .verdict-in{padding:18px 20px 0}.verdict-top .edition-label{display:none}#view-home .home-forecast-controls{gap:12px;align-items:flex-start}#view-home .home-history-pick{flex-wrap:wrap;align-items:center}.board-title{flex-wrap:wrap;gap:10px}.board-title>p{display:none}.board-title .wall-toggle{margin-inline-start:auto}.wall{grid-template-columns:1fr}.ptiles{grid-template-columns:repeat(4,minmax(0,1fr))}#view-home .pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}#view-home .pipe-node{border-bottom:1px solid #2b4054}#view-home .pipe-node:last-child{grid-column:1/-1}.method-intro{align-items:start}.method-intro h2{font-size:1.4rem}.method-intro .btn{font-size:.7rem;gap:10px;padding:8px 12px}}
-@media(max-width:480px){.brand-txt strong{font-size:1.4rem}.cover-edition{font-size:.65rem;gap:9px}.cover-content{padding-top:28px}#view-home .election-cover{min-height:460px}#election-title{font-size:3.35rem;margin-top:18px}.cover-tagline{font-size:1.22rem;margin:9px 0}.cover-description{font-size:.79rem}.cover-image{background-position:32% 65%;opacity:.8}.cover-actions{margin-top:21px;gap:8px}.cover-actions button{font-size:.73rem;gap:20px;padding:10px 13px}#view-home .election-cover .election-countdown{gap:22px;margin-top:28px;padding-top:18px}.election-cover .cd-head h3{font-size:.68rem}.election-cover .countdown-cells .num{font-size:1.85rem}.shortcut-icon{width:29px;height:32px;font-size:1.2rem}.election-shortcuts>a,.election-shortcuts>button{padding:14px 11px;gap:9px}.election-shortcuts b{font-size:.73rem}.election-shortcuts small{font-size:.56rem}#view-home .verdict-in{padding-inline:15px}#view-home .verdict .eyebrow{font-size:.63rem}#view-home #verdict-head{font-size:1.85rem}.election-visual{padding:16px 12px}.visual-topline{font-size:.76rem}.visual-topline>span:last-child{font-size:.6rem}.sm-bloc b{font-size:1.9rem}.sm-bloc span{font-size:.58rem}.sm-bloc.mid b{font-size:1.6rem}.board-title h2{font-size:1.3rem}.wall-toggle button{font-size:.64rem;padding:6px 8px}#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{padding:15px}.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 9px}.ptile-name{font-size:.76rem}.ptile-leader{font-size:.6rem}.pstrip-lbl{width:100%}.pgroup{font-size:.69rem;padding:6px 8px}.pstrip-note{font-size:.65rem}.method-intro{display:block}.method-intro .btn{margin-top:18px}#view-home .pipe-node{padding:17px 13px}#view-home .pipe-n{font-size:1.2rem}}
+@media(max-width:1190px){:root{--gutter:48px}.masthead-in{gap:15px}.masthead-side .stamp{display:none}.mainnav .tab{font-size:.76rem;padding-inline:8px}.brand-txt strong{font-size:1.5rem}.brand img{width:33px}.election-hero{gap:32px}.ptiles{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-width:800px){:root{--gutter:32px}.masthead-in{flex-wrap:wrap;min-height:0;gap:8px;padding:12px 0 0}.brand{margin:0}.brand-txt strong{font-size:1.45rem}.brand-txt span{font-size:.56rem}.masthead-side{margin-inline-start:auto}.mainnav{order:3;flex:0 0 100%;overflow-x:auto}.mainnav .tabs{display:flex;flex-wrap:nowrap;justify-content:flex-start;min-width:max-content;gap:8px}.mainnav .tab{font-size:.74rem;padding:8px 10px;min-height:41px}.mainnav .tab::after{bottom:0}#view-home .election-cover{min-height:450px}.cover-content{padding-top:32px}.cover-image{background-position:40% 62%}.election-cover::after{background:linear-gradient(270deg,#081522ed,#081522ac 45%,#0815224a),linear-gradient(0deg,#081522,transparent 50%)}#election-title{font-size:clamp(3.5rem,9.5vw,5.4rem)}.cover-credit{font-size:.5rem;left:16px;bottom:9px}.election-hero{grid-template-columns:1fr;gap:24px;padding:24px 0}.election-copy{max-width:100%}#view-home #verdict-head{font-size:2.4rem;margin-bottom:12px}#view-home #verdict-head br{display:none}.forecast-headline{max-width:100%;font-size:.88rem}.hero-description{max-width:60ch;margin:7px 0 15px}.election-visual{width:100%;max-width:none;padding:20px}.seatmap svg{max-width:430px}#view-home .verdict-in{padding:18px 20px 0}.verdict-top .edition-label{display:none}#view-home .home-forecast-controls{gap:12px;align-items:flex-start}#view-home .home-history-pick{flex-wrap:wrap;align-items:center}.board-title{flex-wrap:wrap;gap:10px}.board-title>p{display:none}.board-title .wall-toggle{margin-inline-start:auto}.wall{grid-template-columns:1fr}.ptiles{grid-template-columns:repeat(4,minmax(0,1fr))}#view-home .pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}#view-home .pipe-node{border-bottom:1px solid #2b4054}#view-home .pipe-node:last-child{grid-column:1/-1}.method-intro{align-items:start}.method-intro h2{font-size:1.4rem}.method-intro .btn{font-size:.7rem;gap:10px;padding:8px 12px}}
+@media(max-width:480px){.brand-txt strong{font-size:1.4rem}.cover-edition{font-size:.65rem;gap:9px}.cover-content{padding-top:28px}#view-home .election-cover{min-height:460px}#election-title{font-size:3.35rem;margin-top:18px}.cover-tagline{font-size:1.22rem;margin:9px 0}.cover-description{font-size:.79rem}.cover-image{background-position:32% 65%;opacity:.8}.cover-actions{margin-top:21px;gap:8px}.cover-actions button{font-size:.73rem;gap:20px;padding:10px 13px}#view-home .election-cover .election-countdown{gap:22px;margin-top:28px;padding-top:18px}.election-cover .cd-head h3{font-size:.68rem}.election-cover .countdown-cells .num{font-size:1.85rem}#view-home .verdict-in{padding-inline:15px}#view-home .verdict .eyebrow{font-size:.63rem}#view-home #verdict-head{font-size:1.85rem}.election-visual{padding:16px 12px}.visual-topline{font-size:.76rem}.visual-topline>span:last-child{font-size:.6rem}.sm-bloc b{font-size:1.9rem}.sm-bloc span{font-size:.58rem}.sm-bloc.mid b{font-size:1.6rem}.board-title h2{font-size:1.3rem}.wall-toggle button{font-size:.64rem;padding:6px 8px}#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{padding:15px}.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 9px}.ptile-name{font-size:.76rem}.ptile-leader{font-size:.6rem}.pstrip-lbl{width:100%}.pgroup{font-size:.69rem;padding:6px 8px}.pstrip-note{font-size:.65rem}.method-intro{display:block}.method-intro .btn{margin-top:18px}#view-home .pipe-node{padding:17px 13px}#view-home .pipe-n{font-size:1.2rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.view.on{animation:none}.cover-actions button{transition:none}}
-@media print{.election-cover,.election-shortcuts,.election-coalition{display:none!important}:root{color-scheme:light;--ink:#111;--ink-2:#333;--ink-3:#555;--paper:#fff;--paper-2:#fff;--rule:#ccc}body{background:#fff;color:#111}}
+@media print{.election-cover,.election-coalition{display:none!important}:root{color-scheme:light;--ink:#111;--ink-2:#333;--ink-3:#555;--paper:#fff;--paper-2:#fff;--rule:#ccc}body{background:#fff;color:#111}}
 
 /* Election edition: existing data pages and shared overlays. */
 @media screen {
@@ -3491,7 +3483,6 @@ body{background:var(--paper);color:var(--ink)}
   --ec-gold: #dfbe76;
   --ec-muted: #a5b4c6;
   color: var(--ec-ink);
-  scroll-margin-top: 90px;
   padding-block: 26px 52px;
 }
 .election-coalition .ec-panel {
@@ -3768,12 +3759,6 @@ body{background:var(--paper);color:var(--ink)}
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
     <button type="button" class="section-next" data-home-section="forecast-section" aria-label="לקטע הבא — תמונת המנדטים"><span aria-hidden="true">↓</span></button>
   </section>
-  <nav class="election-shortcuts wrap" aria-label="כלי הבחירות">
-    <button type="button" data-home-section="forecast-section"><span class="shortcut-icon" aria-hidden="true">◴</span><span><b>תמונת המנדטים</b><small>כל הגושים, מבט אחד</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></button>
-    <a href="#/polls"><span class="shortcut-icon" aria-hidden="true">▥</span><span><b>סקר הסקרים</b><small>משווים בין כל המכונים</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></a>
-    <button type="button" data-home-section="election-coalition"><span class="shortcut-icon" aria-hidden="true">⊞</span><span><b>בונים קואליציה</b><small>הדרך שלכם ל־61</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></button>
-    <a href="#/2022"><span class="shortcut-icon" aria-hidden="true">◎</span><span><b>מי הכי מדויק?</b><small>מדד אמינות המכונים</small></span><span class="shortcut-arrow" aria-hidden="true">↙</span></a>
-  </nav>
   <div class="verdict" id="forecast-section" tabindex="-1">
     <div id="hero-art" hidden aria-hidden="true"></div>
     <div class="wrap verdict-in">
@@ -3831,7 +3816,7 @@ body{background:var(--paper);color:var(--ink)}
   </div>
   <section id="election-coalition" class="election-coalition wrap" tabindex="-1"></section>
   <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — מאחורי המספרים"><span aria-hidden="true">↓</span></button>
-  <section class="home-method" id="home-method-section">
+  <section class="home-method" id="home-method-section" tabindex="-1">
     <div class="wrap">
       <div class="method-intro"><div><p class="kicker">מאחורי המספרים</p><h2>לכל תחזית יש בסיס.<br>כאן אפשר לבדוק אותו.</h2></div><a class="btn" href="#/method">איך אנחנו מחשבים <span aria-hidden="true">↙</span></a></div>
       <div class="pipeline" id="home-pipeline" aria-label="הנתונים והבדיקות שמאחורי התחזית"></div>
@@ -8040,14 +8025,55 @@ function renderHaredHistory() {
 
 /* Home section controls leave the application's hash routes intact. */
 (() => {
+  "use strict";
+  const SECTION_SELECTOR = '.election-cover, .verdict, .board, .election-coalition, .home-method';
+  const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function goToSection(target) {
+    if (!target) return;
+    target.scrollIntoView({ behavior: reducedMotion() ? 'instant' : 'smooth', block: 'start' });
+    target.focus({ preventScroll: true });
+  }
+
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-home-section]');
     if (!button) return;
-    const target = document.getElementById(button.dataset.homeSection);
-    if (!target) return;
-    target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
-    target.focus({ preventScroll: true });
+    goToSection(document.getElementById(button.dataset.homeSection));
   });
+
+  /* Wheel scrolling on the home page pages a full section at a time, like the
+     arrow buttons, instead of scrolling a little at a time — one wheel tick
+     (once the in-flight jump settles) always lands on the next or previous
+     section, never partway between two. Touch/scrollbar dragging still
+     scrolls freely; only wheel input is paged, matching how most trackpads
+     and mouse wheels are actually used to move through a page like this. */
+  let locked = false;
+  function sections() {
+    const home = document.getElementById('view-home');
+    return home ? [...home.querySelectorAll(':scope > :is(' + SECTION_SELECTOR + ')')] : [];
+  }
+  function currentIndex(list, home) {
+    const homeTop = home.getBoundingClientRect().top;
+    let idx = 0;
+    list.forEach((el, i) => {
+      if (el.getBoundingClientRect().top - homeTop <= 24) idx = i;
+    });
+    return idx;
+  }
+  document.addEventListener('wheel', event => {
+    const home = document.getElementById('view-home');
+    if (!home || !home.classList.contains('on')) return;
+    if (locked) { event.preventDefault(); return; }
+    const list = sections();
+    if (list.length < 2) return;
+    const idx = currentIndex(list, home);
+    const next = event.deltaY > 0 ? idx + 1 : event.deltaY < 0 ? idx - 1 : idx;
+    if (next === idx || next < 0 || next >= list.length) return;
+    event.preventDefault();
+    locked = true;
+    goToSection(list[next]);
+    setTimeout(() => { locked = false; }, reducedMotion() ? 150 : 650);
+  }, { passive: false });
 })();
 
 </script>

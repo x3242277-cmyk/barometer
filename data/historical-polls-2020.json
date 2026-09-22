@@ -1,0 +1,395 @@
+{
+  "meta": {
+    "election": "הכנסת ה־23",
+    "electionDate": "2020-03-02",
+    "note": "סקרי 30 הימים שלפני הבחירות, בלי מדגמי יום הבחירות. ישראל ביתנו והרשימה המשותפת עמדו מחוץ לשני הגושים.",
+    "source": "ויקיפדיה העברית — הכנסת ה־23",
+    "sourceUrl": "https://he.wikipedia.org/wiki/הבחירות_לכנסת_העשרים_ושלוש#סקרים"
+  },
+  "window": {
+    "from": "2020-02-01",
+    "to": "2020-03-01"
+  },
+  "actual": {
+    "blue_white": 33,
+    "likud": 36,
+    "joint_list": 15,
+    "shas": 9,
+    "yisrael_beiteinu": 7,
+    "utj": 7,
+    "otzma": 0,
+    "yamina": 6,
+    "labor_gesher_meretz": 7
+  },
+  "blocs": {
+    "netanyahu": [
+      "likud",
+      "shas",
+      "utj",
+      "yamina",
+      "otzma"
+    ],
+    "outgoing": [
+      "blue_white",
+      "labor_gesher_meretz"
+    ],
+    "outside": [
+      "joint_list",
+      "yisrael_beiteinu"
+    ]
+  },
+  "polls": [
+    {
+      "date": "2020-02-06",
+      "firm": "Midgam",
+      "publisher": "וואלה",
+      "p": {
+        "blue_white": 34,
+        "likud": 32,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 8,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-07",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "blue_white": 35,
+        "likud": 33,
+        "joint_list": 14,
+        "shas": 7,
+        "yisrael_beiteinu": 8,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 6,
+        "labor_gesher_meretz": 10
+      }
+    },
+    {
+      "date": "2020-02-13",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "blue_white": 35,
+        "likud": 33,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-14",
+      "firm": "Maagar Mochot",
+      "publisher": "ישראל היום",
+      "p": {
+        "blue_white": 34,
+        "likud": 32,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 9,
+        "labor_gesher_meretz": 8
+      }
+    },
+    {
+      "date": "2020-02-16",
+      "firm": "Panels Politics",
+      "publisher": "103FM",
+      "p": {
+        "blue_white": 35,
+        "likud": 32,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 8
+      }
+    },
+    {
+      "date": "2020-02-17",
+      "firm": "Midgam",
+      "publisher": "וואלה",
+      "p": {
+        "blue_white": 34,
+        "likud": 33,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 10
+      }
+    },
+    {
+      "date": "2020-02-17",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "blue_white": 36,
+        "likud": 33,
+        "joint_list": 14,
+        "shas": 7,
+        "yisrael_beiteinu": 8,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 8
+      }
+    },
+    {
+      "date": "2020-02-19",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "blue_white": 35,
+        "likud": 33,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-20",
+      "firm": "Direct Polls",
+      "publisher": "דיירקט פולס",
+      "p": {
+        "blue_white": 31,
+        "likud": 33,
+        "joint_list": 14,
+        "shas": 9,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 10
+      }
+    },
+    {
+      "date": "2020-02-21",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "blue_white": 36,
+        "likud": 32,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 8,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 8
+      }
+    },
+    {
+      "date": "2020-02-21",
+      "firm": "Maagar Mochot",
+      "publisher": "ישראל היום",
+      "p": {
+        "blue_white": 36,
+        "likud": 33,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 8
+      }
+    },
+    {
+      "date": "2020-02-23",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "blue_white": 33,
+        "likud": 34,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 10
+      }
+    },
+    {
+      "date": "2020-02-23",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "blue_white": 34,
+        "likud": 35,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 6,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-24",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "blue_white": 32,
+        "likud": 33,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 8,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 10
+      }
+    },
+    {
+      "date": "2020-02-26",
+      "firm": "Midgam",
+      "publisher": "וואלה",
+      "p": {
+        "blue_white": 34,
+        "likud": 34,
+        "joint_list": 13,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-26",
+      "firm": "Panels Politics",
+      "publisher": "103FM",
+      "p": {
+        "blue_white": 32,
+        "likud": 34,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 8,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-27",
+      "firm": "Direct Polls",
+      "publisher": "דיירקט פולס",
+      "p": {
+        "blue_white": 33,
+        "likud": 35,
+        "joint_list": 13,
+        "shas": 9,
+        "yisrael_beiteinu": 6,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-27",
+      "firm": "Kantar",
+      "publisher": "כאן 11",
+      "p": {
+        "blue_white": 34,
+        "likud": 35,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 6,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 8
+      }
+    },
+    {
+      "date": "2020-02-27",
+      "firm": "Maagar Mochot",
+      "publisher": "ישראל היום",
+      "p": {
+        "blue_white": 33,
+        "likud": 33,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 9,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-28",
+      "firm": "Panels Politics",
+      "publisher": "מעריב",
+      "p": {
+        "blue_white": 34,
+        "likud": 34,
+        "joint_list": 13,
+        "shas": 9,
+        "yisrael_beiteinu": 7,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-28",
+      "firm": "Midgam",
+      "publisher": "חדשות 12",
+      "p": {
+        "blue_white": 33,
+        "likud": 35,
+        "joint_list": 14,
+        "shas": 8,
+        "yisrael_beiteinu": 6,
+        "utj": 8,
+        "otzma": 0,
+        "yamina": 7,
+        "labor_gesher_meretz": 9
+      }
+    },
+    {
+      "date": "2020-02-28",
+      "firm": "Camil Fuchs",
+      "publisher": "חדשות 13",
+      "p": {
+        "blue_white": 33,
+        "likud": 33,
+        "joint_list": 15,
+        "shas": 8,
+        "yisrael_beiteinu": 7,
+        "utj": 7,
+        "otzma": 0,
+        "yamina": 8,
+        "labor_gesher_meretz": 9
+      }
+    }
+  ]
+}

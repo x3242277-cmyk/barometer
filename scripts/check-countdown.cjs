@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const boxes=[0,1].map(()=>{const classes=new Set(['night-waiting']);return {hidden:false,innerHTML:'',classes,closest(){return {classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name);}}}}};});
+const ctx=vm.createContext({console,Date,Intl});
+vm.runInContext(fs.readFileSync('assets/app.js','utf8'),ctx);
+ctx.document={querySelectorAll(){return boxes;}};
+const before=Date.parse('2026-10-27T21:59:59+02:00'),at=Date.parse('2026-10-27T22:00:00+02:00');
+assert.equal(vm.runInContext(`renderNightCountdown(${before})`,ctx),true);
+assert(boxes.every(b=>b.innerHTML.includes('00</b><span>שניות')===false && b.classes.has('night-waiting') && !b.hidden));
+assert.equal(vm.runInContext(`renderNightCountdown(${at})`,ctx),false);
+assert(boxes.every(b=>!b.classes.has('night-waiting') && b.hidden));
+console.log('Passed: election-night contents remain hidden until 22:00 Israel time, then unlock at the exact deadline.');

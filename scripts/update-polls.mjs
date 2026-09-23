@@ -115,16 +115,17 @@ async function fetchFromSitemap(knownUrls, recentDays) {
   log(`${todo.length} עדיין לא במאגר`);
 
   const out = [];
+  const failed = [];
   for (const [i, x] of todo.entries()) {
     try {
       const poll = nextData(await get(x.url)).props?.pageProps?.data?.poll;
       if (poll?.parties?.length) out.push({ ...poll, sourceUrl: x.url });
-      else console.warn(`   ! ${x.url}: אין מפלגות בדף`);
-    } catch (e) { console.warn(`   ! ${x.url}: ${e.message}`); }
+      else { failed.push(x.url); console.warn(`   ! ${x.url}: אין מפלגות בדף`); }
+    } catch (e) { failed.push(x.url); console.warn(`   ! ${x.url}: ${e.message}`); }
     if (i % 10 === 9) log(`   ${i + 1}/${todo.length}`);
     if (cfg.requestDelayMs) await sleep(cfg.requestDelayMs);
   }
-  return out;
+  return { polls: out, failed };
 }
 
 /* ---------- 2. נרמול ---------- */
@@ -211,17 +212,26 @@ async function main() {
     incoming = pickArray(await fetchLatest()).map(normalize);
     log(`נשלפו ${incoming.length} סקרים מדף הבית`);
   } catch (e) {
+    if (FILE) throw e;
     log(`דף הבית לא זמין (${e.message}) — ממשיכים עם הסייטמאפ בלבד`);
   }
 
   const known = new Set(archive.polls.map(p => p.sourceUrl).filter(Boolean));
-  const fromSitemap = (await fetchFromSitemap(known, FULL ? null : RECENT_DAYS)).map(normalize);
+  const scan = FILE ? { polls: [], failed: [] } : await fetchFromSitemap(known, FULL ? null : RECENT_DAYS);
+  const fromSitemap = scan.polls.map(normalize);
   log(`נשלפו ${fromSitemap.length} סקרים מהסייטמאפ`);
   incoming.push(...fromSitemap);
 
+  const covered = new Set(incoming.map(p => p.sourceUrl).filter(Boolean));
+  const missing = scan.failed.filter(url => !covered.has(url));
+  if (missing.length) throw new Error(`לא הושלם איסוף של ${missing.length} סקרים: ${missing.join(', ')}. הנתונים הקודמים נשמרו; נדרש ניסיון חוזר.`);
+  const incomingProblems = validate(incoming);
+  if (incomingProblems.length) throw new Error(incomingProblems.join('\n'));
   let added = 0;
   incoming.forEach(p => {
-    if (!byId.has(p.id)) added += 1;
+    const samePoll = [...byId.values()].find(old => old.sourceId === p.sourceId && old.dateTimestamp === p.dateTimestamp);
+    if (!byId.has(p.id) && !samePoll) added += 1;
+    if (samePoll && samePoll.id !== p.id) byId.delete(samePoll.id);
     byId.set(p.id, { ...byId.get(p.id), ...p });
   });
   const all = [...byId.values()].sort((a, b) => b.dateTimestamp - a.dateTimestamp);

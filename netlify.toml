@@ -1,3 +1,10 @@
 [build]
-  publish = "."
+  command = "node scripts/build-netlify.mjs"
+  publish = "web"
   functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[build.environment]
+  NODE_VERSION = "24"

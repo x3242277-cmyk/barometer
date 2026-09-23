@@ -1938,7 +1938,20 @@ function liveBlocCounts(parties) {
   return counts;
 }
 
+function renderNightCountdown(now = Date.now()) {
+  const remaining = Math.max(0, Date.parse(ELECTION_TIMELINE.exitPolls) - now);
+  const waiting = remaining > 0;
+  const t = countdownParts(remaining);
+  document.querySelectorAll('[data-night-countdown]').forEach(box => {
+    box.closest('.view').classList.toggle('night-waiting', waiting);
+    box.hidden = !waiting;
+    if (waiting) box.innerHTML = `<p class="kicker">ליל הבחירות · הכנסת ה־26</p><h2>נפגשים במדגמים</h2><p>ביום הבחירות, 27 באוקטובר 2026, בשעה <strong>22:00</strong> — שעון ישראל.</p><div class="night-clock" role="timer" aria-live="off" aria-label="הזמן שנותר לפרסום המדגמים">${[[t.days,'ימים'],[t.hours,'שעות'],[t.minutes,'דקות'],[t.seconds,'שניות']].map(([value,label])=>`<div><b>${String(value).padStart(2,'0')}</b><span>${label}</span></div>`).join('')}</div><p class="night-note">המדגמים יופיעו כאן עם פרסומם, לאחר סגירת הקלפיות.</p><a class="btn ghost" href="#/">בינתיים, לתמונת המצב</a>`;
+  });
+  return waiting;
+}
+
 function renderLiveResults() {
+  if (renderNightCountdown()) return;
   const live = S.live || {};
   const src = liveSource();
   const parties = src.parties;
@@ -2007,6 +2020,7 @@ function renderLiveResults() {
 }
 
 function renderOfficialResults() {
+  if (renderNightCountdown()) return;
   const live = S.live || {};
   const actual = live.actual || {};
   const parties = actual.parties || [];
@@ -2284,7 +2298,13 @@ async function boot() {
     wire();
     await refreshLiveResults(true);
     renderElectionTimer();
-    S.countdownTimer = setInterval(() => { if (!document.hidden) renderElectionTimer(); }, 1000);
+    renderNightCountdown();
+    S.countdownTimer = setInterval(() => {
+      if (document.hidden) return;
+      renderElectionTimer();
+      const wasWaiting = !!document.querySelector('.night-waiting');
+      if (!renderNightCountdown() && wasWaiting) { renderLiveResults(); renderOfficialResults(); refreshLiveResults(true); }
+    }, 1000);
     S.liveTimer = setInterval(refreshLiveResults, 60000);
     scheduleAnec();
     routeFromHash();

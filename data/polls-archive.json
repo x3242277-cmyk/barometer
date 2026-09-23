@@ -1,6 +1,137 @@
 {
-  "updatedAt": "2026-09-22T23:08:09.669Z",
+  "updatedAt": "2026-09-23T08:59:08.526Z",
   "polls": [
+    {
+      "id": "manual-channel_12-2026-09-22",
+      "date": "22.09.2026",
+      "dateTimestamp": 1790035200000,
+      "publishedAt": 1790035200000,
+      "channel": "",
+      "channelHebrewName": "חדשות 12",
+      "sourceId": "channel_12",
+      "sourceUrl": "https://www.skarim.org/polls/channel-12-2026-09-22",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 20,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "israel_thila",
+          "name": "ישראל תחילה",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "mifleget_hazibur_haharedi",
+          "name": "הציבור החרדי",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmifleget_hazibur_haharedi_1788346603387_%D7%9E%D7%A4%D7%9C%D7%92%D7%AA_%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8_%D7%94%D7%97%D7%A8%D7%93%D7%99.png?alt=media&token=fd524485-7581-4dd5-a364-72623ca455cd",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "noam",
+          "name": "נועם",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fnoam_flag.png?alt=media&token=c703e7ce-6985-4a02-8f4e-c150a028e13c",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
     {
       "id": "20260918083804",
       "date": "18.09.2026",

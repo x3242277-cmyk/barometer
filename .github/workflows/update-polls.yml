@@ -34,6 +34,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 concurrency:
   group: update-polls
@@ -54,11 +55,15 @@ jobs:
           day=${now% *}
           hour=${now#* }
 
-          case "$hour" in
-            09|10|11) slot="$day-morning" ;;
-            21|22|23) slot="$day-evening" ;;
-            *)        slot="" ;;
-          esac
+          # Delayed scheduled jobs still service the most recent due slot.
+          if [ "$hour" -ge 21 ]; then
+            slot="$day-evening"
+          elif [ "$hour" -ge 9 ]; then
+            slot="$day-morning"
+          else
+            day=$(TZ=Asia/Jerusalem date -d 'yesterday' '+%F')
+            slot="$day-evening"
+          fi
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then manual=yes; else manual=no; fi
           echo "manual=$manual" >> "$GITHUB_OUTPUT"
@@ -160,6 +165,11 @@ jobs:
 
       # רק אחרי הצלחה. אם משהו קרס — המשבצת נשארת פתוחה והניסיון הבא,
       # בעוד 20 דקות, ינסה שוב.
+      - name: פרסום הנתונים המעודכנים באתר
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST repos/${{ github.repository }}/pages/builds
+
       - name: נעילת המשבצת
         if: needs.gate.outputs.slot != ''
         run: date -u > .slot-marker

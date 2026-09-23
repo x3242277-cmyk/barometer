@@ -1,99 +1,53 @@
-/* Interactive calculation walkthrough. Source statuses reflect actual requests. */
+/* A continuous six-scene film using the same calculations as the home page. */
 (() => {
-  const STEPS = [
-    ["fetch", "הנתונים", "מתחילים בסקרים שפורסמו", "רואים אילו סקרים כלולים בחישוב ומתי המאגר עודכן."],
-    ["calib", "המכונים", "לא לכל מכון אותו משקל", "הדיוק בבחירות קודמות קובע את משקלו של כל מכון בממוצע."],
-    ["analyze", "החישוב", "מהסקרים לתחזית — מה משתנה?", "משווים בין ממוצע פשוט, שקלול אמינות והנחות הברומטר."],
-    ["result", "התחזית", "התוצאה: חלוקה ל־120 מנדטים", "זו תחזית לפי המודל שנבחר בעמוד הבית. 61 מנדטים נדרשים לרוב."]
-  ];
-  let stage = null, currentStep = "fetch", restoreFocus = null;
-  const query = s => stage?.querySelector(s);
-  const time = iso => new Date(iso).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
-  function close() {
-    if (!stage) return;
-    const previous = stage; stage = null; previous.close(); previous.remove();
-    document.documentElement.classList.remove("show-open");
-    restoreFocus?.focus();
+  const labels=['בחירות 2022','אילו מרצ עברה','סקר לדוגמה','ממוצע רגיל','שקלול אמינות','הברומטר'];
+  const durations=[9500,11000,12000,14000,18000,16000];
+  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let dialog,frames,index=0,elapsed=0,last=0,raf,playing,focusBack,displayed=[0,0],from=[0,0],started=0;
+  const q=s=>dialog?.querySelector(s);
+  function blocs(p,historical=false){
+    let right=0,other=0,total=0;
+    for(const [id,n] of Object.entries(p)){total+=n;const al=historical?(S.hist.blocs.netanyahu.includes(id)?'Right':'Left'):partyMeta(id).alignment;if(['Right','Haredi'].includes(al))right+=n;else if(!['Left','Arabs'].includes(al))other+=n;}
+    return {values:[right,total-right-other],other};
   }
-  function open() {
-    if (!S.cur || !S.series.length) return;
-    if (stage) close();
-    restoreFocus = document.activeElement;
-    stage = document.createElement("dialog"); stage.id = "pipeline-show"; stage.dir = "rtl";
-    stage.setAttribute("aria-labelledby", "ps-title");
-    stage.innerHTML = `<div class="ps-top"><span class="ps-brand">ברומטר · הצגת החישוב</span>
-      <ol class="ps-steps">${STEPS.map(([key, label], i) => `<li data-step="${key}"><button type="button" data-go="${key}"><b>0${i + 1}</b>${label}</button></li>`).join("")}</ol>
-      <button type="button" class="ps-close" aria-label="סגירה">✕</button></div>
-      <div class="ps-body"><div class="ps-heading"><p class="ps-progress"></p><h2 id="ps-title" class="ps-title" tabindex="-1"></h2><p class="ps-description"></p></div><div class="ps-stage"></div></div>
-      <div class="ps-bottom"><button type="button" class="btn ghost ps-prev">→ לשלב הקודם</button><span class="ps-note"></span><button type="button" class="btn ps-next">לשלב הבא ←</button></div>`;
-    document.body.appendChild(stage); stage.showModal(); document.documentElement.classList.add("show-open");
-    query(".ps-close").addEventListener("click", close);
-    stage.addEventListener("cancel", e => { e.preventDefault(); close(); });
-    stage.addEventListener("click", e => { const go = e.target.closest("[data-go]"); if (go) show(go.dataset.go, true); });
-    query(".ps-next").addEventListener("click", () => {
-      if (currentStep === "result") { close(); document.getElementById("forecast-section").scrollIntoView({ block: "start" }); return; }
-      show(STEPS[STEPS.findIndex(s => s[0] === currentStep) + 1][0], true);
-    });
-    query(".ps-prev").addEventListener("click", () => {
-      const index = STEPS.findIndex(s => s[0] === currentStep);
-      if (index > 0) show(STEPS[index - 1][0], true);
-    });
-    show("fetch");
+  function buildFrames(){
+    const poll=S.forecastPolls[Math.floor(Math.random()*S.forecastPolls.length)],model=forecast('scenario',HIDE_FROM_HOME);
+    return [
+      {title:'מתחילים במה שקרה באמת',eyebrow:'נקודת המוצא · 1 בנובמבר 2022',...blocs(S.hist.actual,true),text:'בבחירות 2022 גוש הימין והחרדים קיבל 64 מנדטים. המרכז–שמאל והמפלגות הערביות קיבלו יחד 56. אלה תוצאות אמת, והן נקודת ההשוואה ההיסטורית שלנו.',note:'חיבור המרכז–שמאל והערבים נעשה לצורכי השוואה; הוא אינו הנחה שיקימו קואליציה.',kind:'history'},
+      {title:'אותם בוחרים, שינוי קטן בסף',eyebrow:'תרחיש היפותטי · מרצ עוברת את אחוז החסימה',...blocs(COUNTERFACTUAL,true),text:'בתרחיש שמוגדר באתר, מרצ עוברת ומקבלת 4 מנדטים. החלוקה משתנה ל־62 מול 58. כך רואים כיצד אחוז החסימה יכול לשנות את מפת המנדטים גם בלי תנועה גדולה בין הגושים.',note:'זו הנחת תרחיש, לא תוצאת בחירות. הברומטר משתמש ב־62 כעוגן היסטורי, במקום להניח שתוצאת 64 תחזור.',kind:'history'},
+      {title:'ועכשיו — סקר אחד מהזמן האחרון',eyebrow:`${poll.channelHebrewName} · ${poll.date} · ${firmOf(poll.sourceId).meta.he}`,...blocs(Object.fromEntries(poll.parties.map(p=>[p.id,p.mandates]))),text:'בכל צפייה נבחר באקראי סקר אחד מתוך הסקרים שמשתתפים בחישוב. המספרים כאן הם תוצאות הסקר כפי שפורסמו. זהו צילום רגעי אחד, לפני ממוצע ולפני תיקוני המודל.',note:'הבחירה האקראית ממחישה את הדרך בלבד; היא אינה משנה את התחזית.',kind:'poll',poll},
+      {title:'מחברים את התמונה של כל המכונים',eyebrow:`${S.forecastPolls.length} סקרים · ${S.series.length} מכונים · משקל שווה לכל מכון`,...blocs(allocateSeats(forecast('simple',HIDE_FROM_HOME).parties)),text:'קודם מחשבים ממוצע בתוך כל מכון. אחר כך נותנים לכל מכון משקל שווה, כדי שמכון שמפרסם יותר סקרים לא ישתלט על התוצאה. לבסוף מפעילים את סף החסימה ומחלקים 120 מנדטים.',note:'זהו הממוצע הרגיל של האתר: ממוצע בין מכונים, ולא ערבוב של כל הסקרים במשקל שווה.',kind:'firms'},
+      {title:'הדיוק בעבר מקבל משקל בהווה',eyebrow:'אותם סקרים · משקל לפי דירוג המכונים',...blocs(allocateSeats(forecast('weighted',HIDE_FROM_HOME).parties)),text:'המכונים מדורגים לפי הדיוק בבחירות קודמות: 60% דיוק בגושים, 30% דיוק במפלגות ו־10% עקביות. המשקל היחסי של הדרגות הוא 45 : 35 : 20, ואז מנרמלים את כל המכונים יחד ל־100%.',note:'אלה יחסי משקל לכל מכון, לא אחוזים קבועים לכל קבוצת דירוג. מכון ללא כיול מקבל כרגע ציון ברירת מחדל 70 ומשקל בדרגה הנמוכה.',kind:'firms'},
+      {title:'מהממוצע המשוקלל לתחשיב הברומטר',eyebrow:'השלב האחרון · הנחות המודל וחלוקת המנדטים',...blocs(allocateSeats(model.parties)),text:`כעת מוסיפים את הנחות הברומטר: ש״ס ${FIXED_SEATS.shas}, יהדות התורה ${FIXED_SEATS.yahadut_hatora} ורע״מ ${FIXED_SEATS.raam} לפני העיגול; התקרבות לעוגן 62 של 2022; ותזוזה דמוגרפית של ${r1(model.scenario.demographic)} מנדטים. המודל נמנע מספירה כפולה של הקיבוע והעוגן.`,note:'זו תחזית המודל, לא סקר נוסף. הגרפים מציגים מנדטים שלמים לאחר חלוקת באדר–עופר. הנחות המודל עשויות למתן את השפעת דירוג המכונים.',kind:'result'}
+    ];
   }
-  function show(key, focus = false) {
-    if (!stage) return;
-    currentStep = key;
-    stage.querySelectorAll(".ps-steps li").forEach(li => {
-      li.classList.toggle("on", li.dataset.step === key);
-      const button = li.querySelector("button");
-      if (li.dataset.step === key) button.setAttribute("aria-current", "step"); else button.removeAttribute("aria-current");
-    });
-    const index = STEPS.findIndex(s => s[0] === key);
-    query(".ps-title").textContent = STEPS[index][2];
-    query(".ps-description").textContent = STEPS[index][3];
-    query(".ps-progress").textContent = `שלב ${index + 1} מתוך ${STEPS.length}`;
-    query(".ps-prev").disabled = index === 0;
-    query(".ps-next").textContent = key === "result" ? "סיום · לתמונת המנדטים" : `הבא: ${STEPS[index + 1][1]} ←`;
-    query(".ps-note").textContent = `${S.forecastPolls.length} סקרים בחישוב · נתונים מ־${time(S.cur.generatedAt)}`;
-    ({ fetch: renderFetch, calib: renderCalib, analyze: renderAnalyze, result: renderResult })[key]();
-    query(".ps-body").scrollTop = 0;
-    if (focus) query(".ps-title").focus({ preventScroll: true });
+  function close(){if(!dialog)return;cancelAnimationFrame(raf);playing=false;const old=dialog;dialog=null;old.close();old.remove();document.documentElement.classList.remove('show-open');focusBack?.focus();}
+  function updatePlay(){q('.ps-play').textContent=playing?'Ⅱ השהיה':index===5&&elapsed>=durations[index]?'↻ צפייה חוזרת':'▶ המשך';q('.ps-play').setAttribute('aria-pressed',String(playing));}
+  function pause(){playing=false;updatePlay();}
+  function firmCards(){const weighted=index>=4,W=S.series.reduce((s,f)=>s+(weighted?firmWeight(f.meta):1),0);return `<div class="ps-firms">${S.series.slice().sort((a,b)=>firmScore(b.meta)-firmScore(a.meta)).map((s,i)=>`<article class="ps-firm" style="--delay:${i*80}ms"><div class="ps-firm-heading">${s.meta.logo?`<img src="${esc(s.meta.logo)}" alt="">`:''}<b>${esc(s.meta.he)}</b><strong>${r1(100*(weighted?firmWeight(s.meta):1)/W)}%</strong></div><p>${[...new Set(s.polls.map(p=>p.channelHebrewName))].map(esc).join(' · ')}</p><small>${s.polls.length} סקרים · ${s.meta.calibrated?`ציון ${r1(firmScore(s.meta))} · ${gradeOf(firmScore(s.meta)).label}`:'ללא כיול · ציון ברירת מחדל 70'}</small><div class="ps-weight"><i style="width:${100*(weighted?firmWeight(s.meta):1)/W}%"></i></div></article>`).join('')}</div>`;}
+  function details(){const f=frames[index];if(f.kind==='history')return `<div class="ps-fact"><b>${index?4:64}</b><span>${index?'מנדטים למרצ בתרחיש':'מנדטים לימין ולחרדים בתוצאת האמת'}</span></div><a href="#/2022">תוצאות העבר ודירוג המכונים ↗</a>`;if(f.kind==='poll')return `<div class="ps-poll-parties">${f.poll.parties.filter(p=>p.mandates>0).sort((a,b)=>b.mandates-a.mandates).map(p=>`<span>${esc(p.name)} <b>${p.mandates}</b></span>`).join('')}</div>${f.poll.sourceUrl?`<a href="${esc(f.poll.sourceUrl)}" target="_blank" rel="noopener">לסקר המקורי ↗</a>`:''}`;return firmCards();}
+  function scene(next,manual=false){
+    index=next;elapsed=0;from=[...displayed];started=performance.now();if(manual)pause();const f=frames[index];
+    q('.ps-eyebrow').textContent=f.eyebrow;q('#ps-title').textContent=f.title;q('.ps-description').textContent=f.text;q('.ps-footnote').textContent=f.note;q('.ps-scene-details').innerHTML=details();q('.ps-scene').scrollTop=0;
+    q('.ps-other').textContent=f.other?`${f.other} מנדטים נוספים לרשימות ללא שיוך לגוש; מוצגים מחוץ לשני הגרפים.`:'';
+    q('.ps-position').textContent=`${index+1} / 6`;q('.ps-prev').disabled=index===0;q('.ps-next').disabled=index===5;
+    dialog.querySelectorAll('[data-scene]').forEach(b=>{b.classList.toggle('on',Number(b.dataset.scene)===index);b.setAttribute('aria-current',Number(b.dataset.scene)===index?'step':'false');});
+    dialog.querySelectorAll('.ps-history-column').forEach(col=>{const n=Number(col.dataset.index),g=Number(col.dataset.group);col.classList.toggle('future',n>index);col.classList.toggle('current',n===index);col.querySelector('i').style.height=n<=index?`${frames[n].values[g]/120*100}%`:'0%';col.querySelector('b').textContent=n<=index?frames[n].values[g]:'—';});
+    q('.ps-scene-details').querySelectorAll('a[href^="#/"]').forEach(a=>a.onclick=close);q('.ps-scene-details').querySelectorAll('a[target]').forEach(a=>a.onclick=pause);updatePlay();
   }
-  function renderFetch() {
-    const box = query(".ps-stage");
-    const outlets = [...new Set(S.cur.polls.map(p => p.channelHebrewName))];
-    box.innerHTML = `<div class="ps-summary"><div><b>${S.forecastPolls.length}</b><span>סקרים בחישוב הנוכחי</span></div><div><b>${S.series.length}</b><span>מכוני סקרים בחישוב</span></div><div><b>${esc(time(S.cur.generatedAt))}</b><span>עדכון המאגר האחרון</span></div></div>
-      <p class="ps-caption">כלי התקשורת מפרסמים את הסקרים, ומאגר <a href="https://www.skarim.org/" target="_blank" rel="noopener">סקרים ↗</a> מרכז אותם. ברומטר בודק את תאריך הסקר, שיוך המכון וסכום המנדטים. כאן מוצגים הנתונים שכבר נאספו — פתיחת ההסבר אינה טעינה של סקרים חדשים.</p>
-      <div class="ps-fetch-result" role="status"><b>${S.cur.polls.length} סקרים בבסיס הנתונים הנוכחי.</b> עדכון אחרון: ${esc(time(S.cur.generatedAt))}.</div>
-      <p class="ps-caption">כלי תקשורת שכלולים בנתוני האתר כרגע — הלוגואים מציינים מפרסמים, לא בדיקות נפרדות.</p>
-      <div class="ps-sources">${outlets.map(o => { const logo = S.firms.outletLogos[o]; return `<div class="ps-src done"><span class="ps-src-logo">${logo ? `<img src="${esc(logo)}" alt="">` : esc(o.slice(0, 3))}</span><b>${esc(o)}</b></div>`; }).join("")}</div>
-      <p class="ps-caption">האיסוף עצמו ממשיך ברקע, בלי קשר למסך הזה — <a href="#/polls">לכל הסקרים ↙</a></p>`;
-    box.querySelectorAll('a[href^="#/"]').forEach(a => a.addEventListener("click", close));
+  function tick(now){if(!dialog)return;const delta=Math.min(100,now-last||0);last=now;const t=reduced()?1:Math.min(1,(now-started)/1100),e=1-(1-t)**3;displayed=from.map((v,g)=>v+(frames[index].values[g]-v)*e);dialog.querySelectorAll('.ps-chart-number').forEach((n,g)=>n.textContent=Math.round(displayed[g]));if(playing&&!document.hidden){elapsed+=delta;if(elapsed>=durations[index]){if(index<5)scene(index+1);else{elapsed=durations[index];pause();}}}q('.ps-time-fill').style.width=`${elapsed/durations[index]*100}%`;raf=requestAnimationFrame(tick);}
+  function open(){
+    if(!S.cur||!S.series.length||!S.forecastPolls?.length)return;if(dialog)close();focusBack=document.activeElement;frames=buildFrames();index=0;displayed=[0,0];last=0;
+    dialog=document.createElement('dialog');dialog.id='pipeline-show';dialog.dir='rtl';dialog.setAttribute('aria-labelledby','ps-title');
+    dialog.innerHTML=`<header class="ps-top"><span class="ps-brand">ברומטר <small>מהנתונים לתחזית</small></span><span class="ps-position"></span><button type="button" class="ps-close" aria-label="סגירת הסרט">✕</button></header><nav class="ps-steps" aria-label="שלבי הסרט">${labels.map((s,i)=>`<button type="button" data-scene="${i}"><b>0${i+1}</b><span>${s}</span></button>`).join('')}</nav>
+      <main class="ps-body"><section class="ps-scene"><p class="ps-eyebrow"></p><h2 id="ps-title"></h2><p class="ps-description"></p><div class="ps-scene-details"></div><p class="ps-footnote"></p><details class="ps-all-sources"><summary>כל הערוצים והמכונים שבחישוב</summary><div>${S.series.map(s=>`<p><b>${esc(s.meta.he)}</b> · ${[...new Set(s.polls.map(p=>p.channelHebrewName))].map(esc).join(' · ')}<br><small>${esc(s.meta.about||'')} · ${s.polls.map(p=>esc(p.date)).join(', ')}</small></p>`).join('')}</div></details></section>
+      <aside class="ps-charts" aria-label="שינוי המנדטים לאורך התהליך">${['גוש הימין והחרדים','מרכז–שמאל והערבים'].map((label,g)=>`<section class="ps-chart" data-group="${g}"><header><h3>${label}</h3><p><b class="ps-chart-number">0</b> <span>מנדטים</span></p></header><div class="ps-history"><div class="ps-majority"><span>61 · רוב</span></div>${labels.map((l,i)=>`<div class="ps-history-column future" data-index="${i}" data-group="${g}"><div class="ps-track"><i><b></b></i></div><span>${l}</span></div>`).join('')}</div></section>`).join('')}<p class="ps-other"></p><p class="ps-chart-caption">אותו סולם בשני הגרפים · 0–120 מנדטים<br>העמודות נשארות להשוואה לאורך הסרט</p></aside></main>
+      <footer class="ps-bottom"><div class="ps-time" aria-hidden="true"><i class="ps-time-fill"></i></div><button type="button" class="ps-prev">→ הקודם</button><button type="button" class="ps-play"></button><button type="button" class="ps-next">הבא ←</button><span class="ps-end-note">כ־80 שניות · אפשר לעצור בכל שלב</span></footer>`;
+    document.body.appendChild(dialog);dialog.showModal();document.documentElement.classList.add('show-open');q('.ps-close').onclick=close;dialog.addEventListener('cancel',e=>{e.preventDefault();close();});
+    dialog.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>scene(Number(b.dataset.scene),true));q('.ps-prev').onclick=()=>scene(Math.max(0,index-1),true);q('.ps-next').onclick=()=>scene(Math.min(5,index+1),true);
+    q('.ps-play').onclick=()=>{if(index===5&&elapsed>=durations[index])scene(0);playing=!playing;updatePlay();};q('.ps-all-sources').addEventListener('toggle',e=>{if(e.target.open)pause();});
+    dialog.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.target.closest('button,a,summary')){e.preventDefault();q('.ps-play').click();}});
+    playing=!reduced();scene(0);raf=requestAnimationFrame(tick);
   }
-  function renderCalib() {
-    const firms = S.series.slice().sort((a, b) => firmScore(b.meta) - firmScore(a.meta));
-    const allWeight = firms.reduce((t, s) => t + firmWeight(s.meta), 0) || 1;
-    query(".ps-stage").innerHTML = `<p class="ps-caption">המספר הגדול הוא ציון המכון מתוך 100. האחוז שלצדו מציג את חלקו במשקל החישוב הנוכחי; מכון ללא כיול מקבל משקל ניטרלי.</p><div class="ps-firms">${firms.map(s => {
-      const sc = firmScore(s.meta), grade = s.meta.calibrated ? gradeOf(sc) : { key: "none", label: "ללא דירוג · משקל ניטרלי" };
-      return `<div class="ps-firm"><span class="ps-firm-logo">${s.meta.logo ? `<img src="${esc(s.meta.logo)}" alt="">` : esc(s.meta.short || "")}</span><div class="ps-firm-body"><b>${esc(s.meta.he)}</b><span class="grade ${grade.key}">${esc(grade.label)}</span><span>${r1(100 * firmWeight(s.meta) / allWeight)}% מהמשקל · ${s.polls.length} סקרים</span>${s.meta.calibrationFirm ? '<small>הציון מיוחס לצוות דירקט פולס לפי הגדרת האתר</small>' : ""}<i class="ps-bar"><u class="go" style="--v:${sc}%"></u></i></div><span class="ps-firm-score num">${r1(sc)}</span></div>`;
-    }).join("")}</div><p class="ps-caption">60% דיוק בגושים · 30% דיוק במפלגות · 10% עקביות. הבסיס: ${S.calibrations.reduce((t, e) => t + e.polls, 0)} סקרי כיול משויכים ב־${S.elections.length} מערכות בחירות. זהו דירוג לפי מדדי האתר, לא הבטחה לדיוק בעתיד. <a href="#/2022">לפירוט הציונים ↗</a></p>`;
-    query('.ps-stage a').addEventListener("click", close);
-  }
-  function renderAnalyze() {
-    const phases = ["simple", "weighted", "scenario"].map(mode => allocateSeats(forecast(mode, HIDE_FROM_HOME).parties));
-    const ids = [...new Set(phases.flatMap(p => Object.keys(p)))].sort((a, b) => (phases[2][b] || 0) - (phases[2][a] || 0));
-    query(".ps-stage").innerHTML = `<p class="ps-caption">ממצעים תחילה בתוך כל מכון, ואז בין המכונים. העמודה האמצעית משוקללת לפי הציונים; באחרונה נוספות הנחות הברומטר. בכל עמודה מוצגת חלוקה ל־120 — לא תוצאות גולמיות של סקר.</p>
-      <div class="tablewrap" tabindex="0" role="region" aria-label="השוואת שלוש שיטות החישוב"><table class="ps-analysis"><thead><tr><th scope="col">מפלגה</th><th scope="col">ממוצע פשוט</th><th scope="col">משוקלל אמינות</th><th scope="col">תחזית הברומטר</th></tr></thead><tbody>${ids.map(id => `<tr><th scope="row">${esc(partyMeta(id).name)}</th>${phases.map(p => `<td class="num">${p[id] || 0}</td>`).join("")}</tr>`).join("")}<tr><th scope="row">סך הכול</th>${phases.map(p => `<td class="num">${Object.values(p).reduce((t, n) => t + n, 0)}</td>`).join("")}</tr></tbody></table></div>
-      <p class="ps-caption">קיבוע ש״ס ${FIXED_SEATS.shas}, יהדות התורה ${FIXED_SEATS.yahadut_hatora}, רע״מ ${FIXED_SEATS.raam}; קירוב למאזן 2022 ותוספת דמוגרפית. אלה הנחות שנבחרו באתר, לא תיקונים שהוכחו בסקר. <a href="#/method">להסבר ולהנחות הנוכחיות ↗</a></p>`;
-    query('.ps-stage a').addEventListener("click", close);
-  }
-  function renderResult() {
-    const seats = allocateSeats(forecast(S.mode, HIDE_FROM_HOME).parties), totals = {};
-    Object.entries(seats).forEach(([id, n]) => { const al = partyMeta(id).alignment; totals[al] = (totals[al] || 0) + n; });
-    const items = Object.entries(totals).map(([key, count]) => ({ key, count, color: BLOCS[key].color, label: BLOCS[key].he }));
-    query(".ps-stage").innerHTML = `<div class="ps-result"><p class="ps-caption">${S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר"} · הנתונים הנוכחיים, לא תמונת ארכיון. רוב דורש 61; שיוך לגוש אינו התחייבות לקואליציה.</p><div class="ps-hemi">${hemicycleSVG(items, { aria: "חלוקת 120 המנדטים" })}</div><div class="ps-totals">${items.map(x => `<div style="--c:${x.color}"><b class="num">${x.count}</b><span>${esc(x.label)}</span></div>`).join("")}</div><div class="ps-actions"><a class="btn" href="#/">לתמונת המצב</a><a class="btn ghost" href="#/method">איך חישבנו</a></div></div>`;
-    stage.querySelectorAll(".ps-actions a").forEach(a => a.addEventListener("click", close));
-  }
-  window.openPipelineShow = open;
-  document.addEventListener("click", e => { if (e.target.closest("[data-open-show]")) { e.preventDefault(); open(); } });
+  window.openPipelineShow=open;document.addEventListener('click',e=>{if(e.target.closest('[data-open-show]')){e.preventDefault();open();}});
 })();

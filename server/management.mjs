@@ -118,8 +118,14 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
       if(publicFile && request.method==='GET') {
         try {
         if(publicFile==='live-results.json') {
-          const sample=await content().get('live/sample',{type:'json'});
-          return json(sample?{...baselineLive,status:'sample',updatedAt:sample.publishedAt,sourceName:sample.sourceName,statusText:'המדגם האחרון שפורסם',sample}:baselineLive);
+          const store=content(),blobs=[];
+          for await(const page of store.list({prefix:'live/samples/',paginate:true})) blobs.push(...page.blobs);
+          const saved=(await Promise.all(blobs.map(b=>store.get(b.key,{type:'json'})))).filter(Boolean);
+          const legacy=await store.get('live/sample',{type:'json'});
+          if(legacy?.sourceId && !saved.some(s=>s.sourceId===legacy.sourceId)) saved.push(legacy);
+          const samples=Object.fromEntries(saved.filter(s=>firms.sourceMap[s.sourceId]).map(s=>[s.sourceId,s]));
+          const sample=saved.sort((a,b)=>Date.parse(b.publishedAt||0)-Date.parse(a.publishedAt||0))[0]||legacy;
+          return json(sample?{...baselineLive,status:'sample',updatedAt:sample.publishedAt,sourceName:sample.sourceName,statusText:'המדגם האחרון שפורסם',sample,samples}:{...baselineLive,samples:{}});
         }
         if(!['current-polls.json','polls-archive.json'].includes(publicFile)) return json({},404);
         const all=await mergedPolls();
@@ -143,8 +149,8 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
       if(path==='/api/admin/save' && request.method==='POST') {
         const input=await body(request),poll=validateManual(input,now),store=content();
         if(input.kind==='sample') {
-          await store.setJSON('live/sample',{parties:poll.parties,publishedAt:new Date(now).toISOString(),sourceName:poll.channelHebrewName,sourceUrl:poll.sourceUrl});
-          return json({message:'המדגם נשמר. הוא יוצג בליל הבחירות החל מ־22:00, שעון ישראל.'});
+          await store.setJSON(`live/samples/${poll.sourceId}`,{sourceId:poll.sourceId,parties:poll.parties,publishedAt:new Date(now).toISOString(),sourceName:poll.channelHebrewName,sourceUrl:poll.sourceUrl});
+          return json({message:'המדגם נשמר לערוץ הזה. חלוקת הגושים שלו תוצג בליל הבחירות החל מ־22:00, שעון ישראל.'});
         }
         const all=await mergedPolls();
         if(all.some(p=>p.sourceId===poll.sourceId&&p.dateTimestamp===poll.dateTimestamp)) throw fail('כבר קיים סקר של כלי התקשורת בתאריך הזה. לא נוצרה כפילות.',409);

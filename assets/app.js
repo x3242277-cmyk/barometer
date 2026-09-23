@@ -1939,6 +1939,83 @@ function liveBlocCounts(parties) {
   return counts;
 }
 
+const EXIT_SHOWCASE_CHANNELS = [
+  {id:"kan_news",name:"כאן 11",short:"11",year:[62,54,4],labels:["גוש נתניהו","גוש לפיד","חד״ש־תע״ל"],photo:"assets/exit-2022-kan11.png"},
+  {id:"channel_12",name:"חדשות 12",short:"12",year:[61,55,4],labels:["גוש נתניהו","הקואליציה הנוכחית","חד״ש־תע״ל"],photo:"assets/exit-2022-channel12.png"},
+  {id:"channel_13",name:"חדשות 13",short:"13",year:[62,54,4],labels:["גוש נתניהו","הממשלה הנוכחית","לא מוצג בצילום"],photo:"assets/election-knesset.png",recreated:true},
+  {id:"channel_14",name:"ערוץ 14",short:"14",year:[61,59],labels:["גוש נתניהו","גוש לפיד והערבים"],photo:"assets/exit-2022-channel14.png"},
+  {id:"i24news",name:"i24NEWS",short:"i24",photo:"assets/election-knesset.png"}
+];
+const EXIT_SLIDE_MS = 9000;
+const exitShowcaseState = {signature:"",cards:new Map(),timer:null};
+
+function exitBlocHTML(values, labels, prefix) {
+  const colors=["#e8b76a","#78a8e9","#9dca9a","#a9b3c2"];
+  const total=values.reduce((a,b)=>a+b,0);
+  return `<div class="es-numbers">${values.map((n,i)=>`<div class="es-number" style="--es-color:${colors[i]}"><b class="num">${n}</b><span>${esc(labels[i])}</span></div>`).join("")}</div>
+    <div class="es-blocbar" role="img" aria-label="${esc(prefix)}: ${values.map((n,i)=>`${labels[i]} ${n}`).join(' · ')}">${values.map((n,i)=>`<span style="width:${total?100*n/total:0}%;background:${colors[i]}"></span>`).join("")}</div>`;
+}
+
+function exitSample(live, channel) {
+  const sample=live?.samples?.[channel.id] || (live?.sample?.sourceId===channel.id?live.sample:null);
+  return sample?.parties?.length ? sample : null;
+}
+
+function exitSlideHTML(channel, kind, live) {
+  if(kind==="historical") return `<div class="es-content es-historical"><span class="es-eyebrow">מדגם הבחירות · 2022</span><h3>חלוקת הגושים</h3>${exitBlocHTML(channel.year,channel.labels,"מדגם 2022 של "+channel.name)}<small>לפי צילום המדגם של ${esc(channel.name)} שצורף. אלה נתוני מדגם, לא תוצאות האמת.</small></div>`;
+  if(kind==="current") {
+    const sample=exitSample(live,channel);
+    if(sample && Date.now()>=Date.parse(ELECTION_TIMELINE.exitPolls)) {
+      const counts=liveBlocCounts(sample.parties), entries=[[counts.Right||0,"גוש הימין והחרדים"],[counts.Left||0,"מרכז־שמאל"],[counts.Arabs||0,"הרשימות הערביות"],[counts.Unknown||0,"ללא שיוך"]].filter(([n])=>n>0);
+      return `<div class="es-content es-current"><span class="es-eyebrow">מדגם 2026 · ${esc(channel.name)}</span><h3>נתוני הגושים</h3>${exitBlocHTML(entries.map(e=>e[0]),entries.map(e=>e[1]),"מדגם 2026 של "+channel.name)}<small>מקור: ${esc(sample.sourceName||channel.name)}${sample.publishedAt?` · עודכן ${heDate(sample.publishedAt)}`:""}</small></div>`;
+    }
+    return `<div class="es-content es-waiting"><span class="es-eyebrow">מדגם 2026 · ${esc(channel.name)}</span><div class="es-wait-icon" aria-hidden="true">26</div><h3>${Date.now()<Date.parse(ELECTION_TIMELINE.exitPolls)?"מחכים למדגם 2026":"ממתינים לנתוני המדגם"}</h3><p>חלוקת הגושים תופיע כאן עם פרסום הנתונים בערוץ.</p></div>`;
+  }
+  if(channel.id==="i24news") return `<div class="es-content es-brand es-brand-i24"><span class="es-eyebrow">מסך הערוץ</span><img src="assets/logos/i24news.png" alt="סמל i24NEWS" loading="lazy"><h3>i24NEWS</h3><p>מדגם ליל הבחירות</p></div>`;
+  return `<div class="es-photo${channel.recreated?" es-recreated":""}"><img src="${channel.photo}" alt="${channel.recreated?"רקע הכנסת לייצוג מסך חדשות 13":"צילום מדגם 2022 של "+channel.name}" loading="lazy">${channel.recreated?'<div class="es-recreated-numbers"><span><b>62</b>גוש נתניהו</span><span><b>54</b>הממשלה הנוכחית</span></div>':''}<div class="es-photo-caption"><span class="es-eyebrow">${channel.recreated?"שחזור בהשראת צילום המדגם":"צילום מסך ממדגם 2022"}</span><b>${esc(channel.name)}</b></div></div>`;
+}
+
+function updateExitShowcaseSlides() {
+  const grid=$("#exit-showcase-grid");
+  if(!grid) return;
+  const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const now=Date.now();
+  for(const channel of EXIT_SHOWCASE_CHANNELS) {
+    const state=exitShowcaseState.cards.get(channel.id),card=grid.querySelector(`[data-exit-channel="${channel.id}"]`);
+    if(!state||!card) continue;
+    if(!reduced && now-state.started>=EXIT_SLIDE_MS) {state.index=(state.index+Math.floor((now-state.started)/EXIT_SLIDE_MS))%state.count;state.started=now;}
+    card.querySelectorAll('.es-slide').forEach((slide,i)=>{slide.hidden=i!==state.index;});
+    card.querySelectorAll('.es-dot').forEach((dot,i)=>{dot.setAttribute('aria-current',i===state.index?'true':'false');});
+    const bar=card.querySelector('.es-progress>span');
+    if(bar) bar.style.width=reduced?'0%':`${Math.min(100,100*(now-state.started)/EXIT_SLIDE_MS)}%`;
+  }
+}
+
+function renderExitShowcase(live) {
+  const grid=$("#exit-showcase-grid");
+  if(!grid) return;
+  const signature=JSON.stringify({samples:live?.samples,sample:live?.sample,published:Date.now()>=Date.parse(ELECTION_TIMELINE.exitPolls)});
+  if(signature!==exitShowcaseState.signature) {
+    exitShowcaseState.signature=signature;
+    grid.innerHTML=EXIT_SHOWCASE_CHANNELS.map(channel=>{
+      const kinds=channel.year?["historical","current","photo"]:["current","photo"];
+      if(!exitShowcaseState.cards.has(channel.id)) exitShowcaseState.cards.set(channel.id,{index:0,started:Date.now(),count:kinds.length});
+      return `<article class="es-card" data-exit-channel="${channel.id}" aria-label="${esc(channel.name)}">
+        <header><span class="es-channel-mark">${esc(channel.short)}</span><b>${esc(channel.name)}</b><small>מדגם 2026</small></header>
+        <div class="es-stage">${kinds.map((kind,i)=>`<div class="es-slide" data-kind="${kind}" ${i?'hidden':''}>${exitSlideHTML(channel,kind,live)}</div>`).join('')}</div>
+        <div class="es-controls"><div class="es-dots" role="group" aria-label="מסכים של ${esc(channel.name)}">${kinds.map((kind,i)=>`<button type="button" class="es-dot" data-slide="${i}" aria-label="${kind==='historical'?'מדגם 2022':kind==='current'?'מדגם 2026':'תמונת הערוץ'}"></button>`).join('')}</div><span class="es-screen-count">${kinds.length} מסכים</span></div>
+        <div class="es-progress" aria-hidden="true"><span></span></div>
+      </article>`;
+    }).join('');
+    grid.querySelectorAll('.es-dot').forEach(dot=>dot.addEventListener('click',()=>{
+      const card=dot.closest('.es-card'),state=exitShowcaseState.cards.get(card.dataset.exitChannel);
+      state.index=Number(dot.dataset.slide);state.started=Date.now();updateExitShowcaseSlides();
+    }));
+  }
+  updateExitShowcaseSlides();
+  if(!exitShowcaseState.timer) exitShowcaseState.timer=setInterval(updateExitShowcaseSlides,250);
+}
+
 function renderNightCountdown(now = Date.now()) {
   const remaining = Math.max(0, Date.parse(ELECTION_TIMELINE.exitPolls) - now);
   const waiting = remaining > 0;
@@ -1952,6 +2029,7 @@ function renderNightCountdown(now = Date.now()) {
 }
 
 function renderLiveResults() {
+  renderExitShowcase(S.live || {});
   if (renderNightCountdown()) return;
   const live = S.live || {};
   const src = liveSource();

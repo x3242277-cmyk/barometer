@@ -6,7 +6,7 @@ function getStore({name}){if(!databases.has(name))databases.set(name,new Map());
  async setJSON(k,data,options={}){const old=map.get(k);if(options.onlyIfNew&&old||options.onlyIfMatch&&old?.etag!==options.onlyIfMatch)return {modified:false};map.set(k,{data:structuredClone(data),etag:String(Number(old?.etag||0)+1)});return {modified:true}},
  list({prefix=''}){return {[Symbol.asyncIterator]:async function*(){yield {blobs:[...map.keys()].filter(k=>k.startsWith(prefix)).map(key=>({key}))};}}},async delete(k){map.delete(k)}
 };}
-let now=Date.parse('2026-09-23T10:00:00Z');const token='test-secret-not-for-production-12345';
+let now=Date.parse('2026-09-23T10:00:00Z');const token='abcdefghijklm';
 const handle=createManagementHandler({getStore,secret:()=>token,clock:()=>now,remote:async()=>({status:'error',scope:{missingPages:1}})});
 const origin='https://test.example';let cookie='';
 async function req(path,input,options={}){const r=await handle(new Request(origin+path,{method:input===undefined?'GET':'POST',headers:{Origin:options.origin||origin,Cookie:options.anonymous?'':cookie},body:input===undefined?undefined:JSON.stringify(input)}));return {status:r.status,data:await r.json(),headers:r.headers};}

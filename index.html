@@ -22,7 +22,7 @@
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=af2c1105" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=82dcb329">
-<script src="assets/app.js?v=1ab83263" defer></script>
+<script src="assets/app.js?v=a1ac26d9" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=3daf7ef6">
 <link rel="stylesheet" href="assets/editorial.css?v=43c32b14">
@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="assets/election-tools.css?v=edd4d277">
 <link rel="stylesheet" href="assets/refinement.css?v=cc15e020">
 <link rel="stylesheet" href="assets/clarity.css?v=48e9beb6">
-<link rel="stylesheet" href="assets/exit-showcase.css?v=0936aea1">
+<link rel="stylesheet" href="assets/exit-showcase.css?v=9c17c093">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=be5ab179" defer></script>
@@ -293,12 +293,12 @@
 <section class="view night-waiting" id="view-live" aria-label="ליל הבחירות">
   <div class="exit-showcase" id="exit-showcase" aria-label="מדגמי ערוצי החדשות">
     <div class="exit-showcase-inner">
-      <div class="exit-showcase-heading"><div><p class="kicker">ליל הבחירות · חמישה ערוצים</p><h2>חלוקת הגושים במדגמים</h2><p>כך נראו מדגמי 2022. בליל הבחירות נתוני 2026 יתעדכנו כאן לכל ערוץ בנפרד.</p></div><span class="exit-showcase-date">27.10.2026 · 22:00</span></div>
+      <div class="night-countdown" data-night-countdown></div>
+      <div class="exit-showcase-heading"><div><p class="kicker">ברומטר · ליל הבחירות</p><h2>מדגמי חמשת הערוצים</h2><p>צילומי המדגמים מ־2022, ובהמשך נתוני 2026 מכל ערוץ בנפרד.</p></div></div>
       <div class="exit-showcase-grid" id="exit-showcase-grid"></div>
       <p class="exit-showcase-disclaimer">תוצאות המדגמים יופיעו ברגע שידורן בערוצים. לא יתקיים שידור חי באתר.</p>
     </div>
   </div>
-  <div class="night-countdown" data-night-countdown></div>
   <div class="wrap">
     <nav class="subtabs" aria-label="ליל הבחירות">
       <a class="subtab" href="#/live" data-view="live">המדגמים</a>
@@ -1016,7 +1016,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       <p>נגישות: האתר מותאם לניווט מקלדת, לקוראי מסך ולתצוגה במכשירים ניידים. לדיווח על טעות בנתונים יש לפנות למפעיל האתר בצירוף המקור.</p>
       </details>
       <p>הציונים מציגים דיוק היסטורי לפי שיטת החישוב המפורסמת באתר. התחזית אינה תוצאת בחירות.</p>
-      <div class="footer-utility"><a href="privacy.html">פרטיות ומדידת שימוש</a><span aria-hidden="true">·</span><form id="inline-admin" class="inline-admin"><button id="admin-trigger" type="button" aria-expanded="false" aria-controls="admin-password">ניהול</button><label id="admin-password" hidden><span class="sr-only">סיסמת ניהול</span><input type="password" name="token" minlength="24" autocomplete="current-password" placeholder="סיסמת ניהול" aria-label="סיסמת ניהול" disabled></label><button id="admin-submit" type="submit" hidden>כניסה</button></form></div>
+      <div class="footer-utility"><a href="privacy.html">פרטיות ומדידת שימוש</a><span aria-hidden="true">·</span><form id="inline-admin" class="inline-admin"><button id="admin-trigger" type="button" aria-expanded="false" aria-controls="admin-password">ניהול</button><label id="admin-password" hidden><span class="sr-only">סיסמת ניהול</span><input type="password" name="token" minlength="13" autocomplete="current-password" placeholder="סיסמת ניהול" aria-label="סיסמת ניהול" disabled></label><button id="admin-submit" type="submit" hidden>כניסה</button></form></div>
       <p id="admin-inline-status" class="admin-inline-status" role="status" aria-live="polite"></p>
     </div>
   </div>

@@ -40,7 +40,7 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
   const usage=()=>getStore({name:'barometer-usage',consistency:'strong'});
   function admin(request) {
     const key=secret();
-    if(!key || key.length<24) return false;
+    if(!key || key.length<13) return false;
     const cookie=request.headers.get('cookie')?.match(/(?:^|;\s*)barometer-admin=([^;]+)/)?.[1]||'';
     const [expires,signature]=cookie.split('.');
     return /^\d+$/.test(expires||'') && Number(expires)>clock() && Number(expires)<=clock()+8*3600e3 && equal(signature,sign(expires,key));
@@ -92,7 +92,7 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
       if(request.method==='POST' && request.headers.get('origin')!==url.origin) return json({error:'מקור בקשה לא מורשה.'},403);
       if(path==='/api/admin/session' && request.method==='POST') {
         const key=secret();
-        if(!key || key.length<24) return json({error:'יש להגדיר ב־Netlify את BAROMETER_ADMIN_TOKEN עם מפתח פרטי באורך 24 תווים לפחות, ואז לפרסם מחדש.'},503);
+        if(!key || key.length<13) return json({error:'יש להגדיר ב־Netlify את BAROMETER_ADMIN_TOKEN עם סיסמה באורך 13 תווים לפחות, ואז לפרסם מחדש.'},503);
         const input=await body(request,2048);
         if(!equal(input.token||'',key)) return json({error:'מפתח הניהול אינו נכון.'},401);
         const expires=String(now+8*3600e3);

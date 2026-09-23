@@ -1940,10 +1940,10 @@ function liveBlocCounts(parties) {
 }
 
 const EXIT_SHOWCASE_CHANNELS = [
-  {id:"kan_news",name:"כאן 11",logo:"assets/logos/kan11.svg",year:[62,54,4],labels:["גוש נתניהו","גוש לפיד","חד״ש־תע״ל"],photo:"assets/exit-2022-kan11.png"},
-  {id:"channel_12",name:"חדשות 12",logo:"assets/logos/channel12.svg",year:[61,55,4],labels:["גוש נתניהו","הקואליציה הנוכחית","חד״ש־תע״ל"],photo:"assets/exit-2022-channel12.png"},
-  {id:"channel_13",name:"חדשות 13",logo:"assets/logos/channel13.svg",year:[62,54,4],labels:["גוש נתניהו","הממשלה הנוכחית","חד״ש־תע״ל"],photo:"assets/exit-2022-channel13.png"},
-  {id:"channel_14",name:"ערוץ 14",logo:"assets/logos/channel14.png",year:[61,59],labels:["גוש נתניהו","גוש לפיד והערבים"],photo:"assets/exit-2022-channel14.png"},
+  {id:"kan_news",name:"כאן 11",logo:"assets/logos/kan11.svg",photo:"assets/exit-2022-kan11.png"},
+  {id:"channel_12",name:"חדשות 12",logo:"assets/logos/channel12.svg",photo:"assets/exit-2022-channel12.png"},
+  {id:"channel_13",name:"חדשות 13",logo:"assets/logos/channel13.svg",photo:"assets/exit-2022-channel13.png"},
+  {id:"channel_14",name:"ערוץ 14",logo:"assets/logos/channel14.png",photo:"assets/exit-2022-channel14.png"},
   {id:"i24news",name:"i24NEWS",logo:"assets/logos/i24news.png"}
 ];
 const EXIT_SLIDE_MS = 9000;
@@ -1951,9 +1951,7 @@ const exitShowcaseState = {signature:"",cards:new Map(),timer:null};
 
 function exitBlocHTML(values, labels, prefix) {
   const colors=["#e8b76a","#78a8e9","#9dca9a","#a9b3c2"];
-  const total=values.reduce((a,b)=>a+b,0);
-  return `<div class="es-numbers">${values.map((n,i)=>`<div class="es-number" style="--es-color:${colors[i]}"><b class="num">${n}</b><span>${esc(labels[i])}</span></div>`).join("")}</div>
-    <div class="es-blocbar" role="img" aria-label="${esc(prefix)}: ${values.map((n,i)=>`${labels[i]} ${n}`).join(' · ')}">${values.map((n,i)=>`<span style="width:${total?100*n/total:0}%;background:${colors[i]}"></span>`).join("")}</div>`;
+  return `<div class="es-numbers" role="img" aria-label="${esc(prefix)}: ${values.map((n,i)=>`${labels[i]} ${n}`).join(' · ')}">${values.map((n,i)=>`<div class="es-number" style="--es-color:${colors[i]}"><b class="num">${n}</b><span>${esc(labels[i])}</span></div>`).join("")}</div>`;
 }
 
 function exitSample(live, channel) {
@@ -1962,7 +1960,6 @@ function exitSample(live, channel) {
 }
 
 function exitSlideHTML(channel, kind, live) {
-  if(kind==="historical") return `<div class="es-content es-historical"><span class="es-eyebrow">מדגם הבחירות · 2022</span><h3>חלוקת הגושים</h3>${exitBlocHTML(channel.year,channel.labels,"מדגם 2022 של "+channel.name)}<small>לפי צילום המדגם של ${esc(channel.name)} שצורף. אלה נתוני מדגם, לא תוצאות האמת.</small></div>`;
   if(kind==="current") {
     const sample=exitSample(live,channel);
     if(sample && Date.now()>=Date.parse(ELECTION_TIMELINE.exitPolls)) {
@@ -1972,7 +1969,7 @@ function exitSlideHTML(channel, kind, live) {
     return `<div class="es-content es-waiting"><span class="es-eyebrow">מדגם 2026 · ${esc(channel.name)}</span><div class="es-wait-icon" aria-hidden="true">26</div><h3>${Date.now()<Date.parse(ELECTION_TIMELINE.exitPolls)?"מחכים למדגם 2026":"ממתינים לנתוני המדגם"}</h3><p>חלוקת הגושים תופיע כאן עם פרסום הנתונים בערוץ.</p></div>`;
   }
   if(channel.id==="i24news") return `<div class="es-content es-brand es-brand-i24"><span class="es-eyebrow">מסך הערוץ</span><img src="assets/logos/i24news.png" alt="סמל i24NEWS" loading="lazy"><h3>i24NEWS</h3><p>מדגם ליל הבחירות</p></div>`;
-  return `<div class="es-photo"><img src="${channel.photo}" alt="צילום מדגם 2022 של ${esc(channel.name)}" loading="lazy"><div class="es-photo-caption"><span class="es-eyebrow">צילום מסך ממדגם 2022</span><b>${esc(channel.name)}</b></div></div>`;
+  return `<div class="es-photo"><img src="${channel.photo}" alt="צילום מדגם 2022 של ${esc(channel.name)}" loading="lazy"><div class="es-photo-caption"><span class="es-eyebrow">מדגם 2022</span><b>${esc(channel.name)}</b></div></div>`;
 }
 
 function updateExitShowcaseSlides() {
@@ -1983,7 +1980,7 @@ function updateExitShowcaseSlides() {
     const state=exitShowcaseState.cards.get(channel.id),card=grid.querySelector(`[data-exit-channel="${channel.id}"]`);
     if(!state||!card) continue;
     if(now-state.started>=EXIT_SLIDE_MS) {state.index=(state.index+Math.floor((now-state.started)/EXIT_SLIDE_MS))%state.count;state.started=now;}
-    card.querySelectorAll('.es-slide').forEach((slide,i)=>{slide.hidden=i!==state.index;});
+    card.querySelectorAll('.es-slide').forEach((slide,i)=>{const active=i===state.index;slide.classList.toggle('is-active',active);slide.setAttribute('aria-hidden',active?'false':'true');slide.inert=!active;});
   }
 }
 
@@ -1994,11 +1991,12 @@ function renderExitShowcase(live) {
   if(signature!==exitShowcaseState.signature) {
     exitShowcaseState.signature=signature;
     grid.innerHTML=EXIT_SHOWCASE_CHANNELS.map(channel=>{
-      const kinds=channel.year?["historical","current","photo"]:["current","photo"];
+      const kinds=["current","photo"];
       if(!exitShowcaseState.cards.has(channel.id)) exitShowcaseState.cards.set(channel.id,{index:0,started:Date.now(),count:kinds.length});
+      const state=exitShowcaseState.cards.get(channel.id);
       return `<article class="es-card" data-exit-channel="${channel.id}" aria-label="${esc(channel.name)}">
         <header><span class="es-channel-logo"><img src="${channel.logo}" alt="לוגו ${esc(channel.name)}"></span><b>${esc(channel.name)}</b></header>
-        <div class="es-stage">${kinds.map((kind,i)=>`<div class="es-slide" data-kind="${kind}" ${i?'hidden':''}>${exitSlideHTML(channel,kind,live)}</div>`).join('')}</div>
+        <div class="es-stage">${kinds.map((kind,i)=>`<div class="es-slide${i===state.index?' is-active':''}" data-kind="${kind}" aria-hidden="${i===state.index?'false':'true'}">${exitSlideHTML(channel,kind,live)}</div>`).join('')}</div>
       </article>`;
     }).join('');
   }
@@ -2010,10 +2008,14 @@ function renderNightCountdown(now = Date.now()) {
   const remaining = Math.max(0, Date.parse(ELECTION_TIMELINE.exitPolls) - now);
   const waiting = remaining > 0;
   const t = countdownParts(remaining);
+  const clock = `<div class="night-clock" dir="ltr" role="timer" aria-live="off" aria-label="הזמן שנותר לפרסום המדגמים">${[[t.days,'ימים'],[t.hours,'שעות'],[t.minutes,'דקות'],[t.seconds,'שניות']].map(([value,label])=>`<div><b>${String(value).padStart(2,'0')}</b><span dir="rtl">${label}</span></div>`).join('')}</div>`;
   document.querySelectorAll('[data-night-countdown]').forEach(box => {
-    box.closest('.view').classList.toggle('night-waiting', waiting);
+    const view=box.closest('.view');
+    view.classList.toggle('night-waiting', waiting);
     box.hidden = !waiting;
-    if (waiting) box.innerHTML = `<p class="kicker">ליל הבחירות · הכנסת ה־26</p><h2>נפגשים במדגמים</h2><p>ביום הבחירות, 27 באוקטובר 2026, בשעה <strong>22:00</strong> — שעון ישראל.</p><div class="night-clock" dir="ltr" role="timer" aria-live="off" aria-label="הזמן שנותר לפרסום המדגמים">${[[t.days,'ימים'],[t.hours,'שעות'],[t.minutes,'דקות'],[t.seconds,'שניות']].map(([value,label])=>`<div><b>${String(value).padStart(2,'0')}</b><span dir="rtl">${label}</span></div>`).join('')}</div><p class="night-note">המדגמים יופיעו כאן עם פרסומם, לאחר סגירת הקלפיות.</p><a class="btn ghost" href="#/">בינתיים, לתמונת המצב</a>`;
+    if (waiting) box.innerHTML = view.id==='view-live'
+      ? `<div class="live-timer-row"><div class="live-timer-copy"><p class="kicker">ליל הבחירות · הכנסת ה־26</p><h2>עד שידור המדגמים</h2><p>27 באוקטובר 2026 · 22:00 · שעון ישראל</p></div>${clock}</div>`
+      : `<p class="kicker">ליל הבחירות · הכנסת ה־26</p><h2>נפגשים במדגמים</h2><p>ביום הבחירות, 27 באוקטובר 2026, בשעה <strong>22:00</strong> — שעון ישראל.</p>${clock}<p class="night-note">המדגמים יופיעו כאן עם פרסומם, לאחר סגירת הקלפיות.</p><a class="btn ghost" href="#/">בינתיים, לתמונת המצב</a>`;
   });
   return waiting;
 }

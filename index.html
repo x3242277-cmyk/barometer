@@ -31,7 +31,7 @@
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=af2c1105" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=2ee3460d" defer></script>
+<script src="assets/app.js?v=33cf42d1" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=b37a6e0a">
 <link rel="stylesheet" href="assets/editorial.css?v=325f67db">
@@ -40,15 +40,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
 <link rel="stylesheet" href="assets/pipeline.css?v=60acb053">
 <script src="assets/pipeline.js?v=53bf8822" defer></script>
-<link rel="stylesheet" href="assets/election.css?v=3afe1ad3">
+<link rel="stylesheet" href="assets/election.css?v=7809f249">
 <link rel="stylesheet" href="assets/election-pages.css?v=c6d0825c">
 <link rel="stylesheet" href="assets/election-tools.css?v=edd4d277">
-<link rel="stylesheet" href="assets/refinement.css?v=cc15e020">
+<link rel="stylesheet" href="assets/refinement.css?v=df6270df">
 <link rel="stylesheet" href="assets/clarity.css?v=80beae47">
-<link rel="stylesheet" href="assets/exit-showcase.css?v=11ee8acf">
+<link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
+<link rel="stylesheet" href="assets/usability.css?v=c3fc12bf">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
-<script src="assets/election.js?v=f4415a4c" defer></script>
+<script src="assets/election.js?v=9a32c578" defer></script>
 </head>
 <body>
 
@@ -65,12 +66,13 @@
     </a>
     <nav class="mainnav" aria-label="ניווט ראשי">
       <div class="tabs">
-        <a class="tab" href="#/" data-view="home">תמונת מצב</a>
+        <a class="tab" href="#/" data-view="home">תחזית ברומטר</a>
+        <a class="tab" href="#/method" data-view="method" data-group="method demography haredi">שיטת החישוב</a>
         <a class="tab" href="#/polls" data-view="polls">כל הסקרים</a>
         <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
+        <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
         <a class="tab" href="#/map" data-view="map">בחירות 2022</a>
-        <a class="tab" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
-        <a class="tab" href="#/method" data-view="method" data-group="method demography haredi crossover">שיטת החישוב</a>
+        <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
     </nav>
     <div class="masthead-side">
@@ -91,9 +93,11 @@
 </div>
 
 <!-- ==================== התחזית ==================== -->
-<section class="view on" id="view-home" aria-label="תמונת מצב">
+<section class="view on" id="view-home" aria-label="תחזית ברומטר">
+
   <section class="election-cover" aria-labelledby="election-title">
     <div class="cover-image" aria-hidden="true"></div>
+
     <div class="wrap cover-content">
       <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
       <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
@@ -109,7 +113,14 @@
       <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
-    <button type="button" class="section-next" data-home-section="forecast-section" aria-label="לקטע הבא — תמונת המנדטים"><span aria-hidden="true">↓</span></button>
+    <button type="button" class="section-next" data-home-section="home-discovery" aria-label="לקטע הבא — המספרים שמאחורי הכותרות"><span aria-hidden="true">↓</span></button>
+  </section>
+  <section class="home-discovery" id="home-discovery" tabindex="-1" aria-labelledby="discovery-title">
+    <div class="wrap">
+      <header class="discovery-heading"><p class="kicker">עוד מבט על התמונה</p><h2 id="discovery-title">המספרים שמאחורי הכותרות</h2><p>שלושה נתונים ששווה לעצור עליהם. כל מספר מוביל לסיפור המלא.</p></header>
+      <div class="discovery-stories" id="discovery-stories"></div>
+      <button type="button" class="section-next" data-home-section="forecast-section" aria-label="לתמונת המנדטים"><span aria-hidden="true">↓</span></button>
+    </div>
   </section>
   <div class="verdict" id="forecast-section" tabindex="-1">
     <div id="hero-art" hidden aria-hidden="true"></div>
@@ -251,9 +262,9 @@
         <label class="field"><span>חיפוש</span><input id="arch-q" type="search" placeholder="מכון, ערוץ או תאריך"></label>
         <div class="count" id="arch-count"></div>
       </div>
-      <div class="tablewrap arch-wrap"><table id="arch-table" class="arch"></table></div>
+      <div class="tablewrap arch-wrap" tabindex="0" role="region" aria-label="סקרי העבר מול תוצאות האמת — ניתן לגלול אופקית"><table id="arch-table" class="arch"></table></div>
       <button type="button" class="btn ghost arch-more" id="arch-more" hidden></button>
-      <p class="sec-note arch-key"><span class="cell-key ok">מדויק</span><span class="cell-key near">±1</span><span class="cell-key off">±2</span><span class="cell-key far">3 ומעלה</span> — הצבע בכל תא הוא הפער בין הסקר לתוצאת האמת (השורה האחרונה).</p>
+      <p class="sec-note arch-key"><span class="cell-key ok">מדויק</span><span class="cell-key near">±1</span><span class="cell-key off">±2</span><span class="cell-key far">3 ומעלה</span> — הצבע בכל תא הוא הפער בין הסקר לתוצאת האמת (השורה הראשונה).</p>
 
       <p class="takeaway sec-takeaway" id="bias-note"></p>
       <p class="sec-note" id="calib-source"></p>
@@ -279,24 +290,20 @@
 <!-- ==================== כמה עברו צד ==================== -->
 <section class="view" id="view-crossover" aria-label="כמה עברו צד">
   <div class="wrap">
-    <nav class="subtabs" aria-label="שיטת החישוב">
-      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
-      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
-      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
-    </nav>
+
     <div class="page-head"><div class="page-head-main">
       <h2>כמה עברו צד?</h2>
     </div></div>
+    <div id="crossover-highlight"></div>
     <p class="data-explainer" id="crossover-intro"></p>
+    <section class="sec">
+      <div class="sec-head"><div><p class="kicker">לשיטת כל מכון</p><h2>השינוי בגושים שמשתמע מכל מכון</h2></div>
+        <p class="sec-note" id="crossover-note"></p></div>
+      <div id="crossover-chart" class="crosschart"></div>
+    </section>
     <section class="sec">
       <div class="sec-head"><div><p class="kicker">מאזן הפתיחה</p><h2>איפה עמדו הגושים ב־2022</h2></div></div>
       <div id="crossover-baseline"></div>
-    </section>
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">לשיטת כל מכון</p><h2>כמה מצביעים עברו את קו הגוש מאז 2022</h2></div>
-        <p class="sec-note" id="crossover-note"></p></div>
-      <div id="crossover-chart" class="crosschart"></div>
     </section>
     <div class="notice warm" style="margin-top:16px"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
   </div>
@@ -823,11 +830,31 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
     <div class="page-intro">
       <p class="kicker">תוצאות האמת · ועדת הבחירות המרכזית · 1.11.2022</p>
       <h2>איך הצביעו ב־2022 — בכל יישוב ובכל קבוצה?</h2>
-      <p>המספרים הסופיים של ועדת הבחירות, מלמעלה למטה: קודם התוצאה הארצית, אחר כך המפה של כל היישובים, ואז הפילוחים. זו נקודת המוצא של כל חישוב באתר.</p>
+      <p>חפשו את היישוב שלכם וגלו את אחוז ההצבעה והרשימות המובילות. אפשר גם לחקור את המפה, התוצאה הארצית והפילוחים לפי מגזר ואשכול חברתי־כלכלי.</p>
     </div>
 
+    <nav class="page-jumps" aria-label="מעבר בין נתוני 2022">
+      <button type="button" data-page-section="mp-4">חיפוש יישוב</button>
+      <button type="button" data-page-section="mp-1">התוצאה הארצית</button>
+      <button type="button" data-page-section="mp-2">מפת ההצבעה</button>
+      <button type="button" data-page-section="mp-3">מגזרים ואשכולות</button>
+    </nav>
     <div class="demo-main">
-      <section class="dstep" id="mp-1">
+      <section class="dstep" id="mp-4" tabindex="-1">
+        <div class="dstep-num" aria-hidden="true">4</div>
+        <div class="dstep-body" id="full-localities" hidden>
+          <div class="dstep-head"><p class="kicker">הנתונים המלאים</p><h2>כל היישובים בישראל</h2>
+            <p class="sec-note">תוצאות ועדת הבחירות הרשמיות, כולל היישובים שאינם מופיעים על המפה.</p></div>
+          <div class="controls">
+            <label class="field"><span>חיפוש יישוב</span><input id="loc-q" type="search" placeholder="שם היישוב"></label>
+            <div class="count" id="loc-count" role="status" aria-live="polite"></div>
+          </div>
+          <div class="tablewrap" tabindex="0" role="region" aria-label="תוצאות בחירות 2022 לפי יישוב"><table id="loc-table"></table></div>
+          <div class="locality-pagination"><button type="button" class="btn ghost" id="loc-prev">הקודם</button><span id="loc-page"></span><button type="button" class="btn ghost" id="loc-next">הבא</button></div>
+        </div>
+      </section>
+
+      <section class="dstep" id="mp-1" tabindex="-1">
         <div class="dstep-num" aria-hidden="true">1</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">התוצאה הארצית</p><h2>מי קיבל כמה</h2></div>
@@ -836,7 +863,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         </div>
       </section>
 
-      <section class="dstep" id="mp-2">
+      <section class="dstep" id="mp-2" tabindex="-1">
         <div class="dstep-num" aria-hidden="true">2</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">המפה</p><h2>פילוח ההצבעות בכל יישוב</h2>
@@ -859,7 +886,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         </div>
       </section>
 
-      <section class="dstep" id="mp-3">
+      <section class="dstep" id="mp-3" tabindex="-1">
         <div class="dstep-num" aria-hidden="true">3</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">פילוחים</p><h2>מגזרים, מעמד וכלכלה</h2>
@@ -874,18 +901,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         </div>
       </section>
 
-      <section class="dstep" id="mp-4">
-        <div class="dstep-num" aria-hidden="true">4</div>
-        <div class="dstep-body" id="full-localities" hidden>
-          <div class="dstep-head"><p class="kicker">הנתונים המלאים</p><h2>כל היישובים בישראל</h2>
-            <p class="sec-note">הטבלה נוצרה מקובץ ועדת הבחירות הרשמי. גם היישובים שאין להם נקודה על המפה (שבטים בדואים ויישובים זעירים) נמצאים כאן.</p></div>
-          <div class="controls">
-            <label class="field"><span>חיפוש יישוב</span><input id="loc-q" type="search" placeholder="שם היישוב"></label>
-            <div class="count" id="loc-count"></div>
-          </div>
-          <div class="tablewrap"><table id="loc-table"></table></div>
-        </div>
-      </section>
+
     </div>
   </div>
 </section>

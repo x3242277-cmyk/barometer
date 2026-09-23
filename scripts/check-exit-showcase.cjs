@@ -19,7 +19,7 @@ for(const channel of channels){assert(fs.existsSync(channel.logo),channel.logo);
 const channel13=vm.runInContext('exitSlideHTML(EXIT_SHOWCASE_CHANNELS[2],"photo",{})',ctx);
 assert(channel13.includes('assets/exit-2022-channel13.png')&&!channel13.includes('שחזור'));
 const cardsSource=fs.readFileSync('assets/app.js','utf8');
-assert(cardsSource.includes('<span class="es-channel-logo"><img')&&!cardsSource.includes('class="es-channel-mark"'));
+assert(cardsSource.includes('<span class="es-slide-logo"><img')&&!cardsSource.includes('class="es-channel-logo"')&&!cardsSource.includes('class="es-channel-mark"'));
 assert(cardsSource.includes('const kinds=["current","photo"]')&&!cardsSource.includes('kind==="historical"'));
 assert(!cardsSource.includes('class="es-progress"')&&!cardsSource.includes('class="es-dots"'));
 const css=fs.readFileSync('assets/exit-showcase.css','utf8'),sceneCss=fs.readFileSync('assets/election.css','utf8'),html=fs.readFileSync('index.html','utf8');

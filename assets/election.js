@@ -1,7 +1,7 @@
 /* Home section controls leave the application's hash routes intact. */
 (() => {
   "use strict";
-  const SECTION_SELECTOR = '.election-cover, .verdict, .board, .election-coalition, .home-method';
+  const SECTION_SELECTOR = '.election-cover, .home-discovery, .verdict, .board, .election-coalition, .home-method';
   const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function goToSection(target) {
@@ -11,10 +11,21 @@
   }
 
   document.addEventListener('click', event => {
-    const button = event.target.closest('[data-home-section]');
+    const button = event.target.closest('[data-home-section], [data-page-section]');
     if (!button) return;
-    goToSection(document.getElementById(button.dataset.homeSection));
+    goToSection(document.getElementById(button.dataset.homeSection || button.dataset.pageSection));
   });
+
+  const discovery = document.getElementById('home-discovery');
+  if (discovery && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        discovery.classList.add('is-visible');
+        observer.disconnect();
+      }
+    }, { threshold:0.12 });
+    observer.observe(discovery);
+  }
 
   /* Wheel scrolling on the home page pages a full section at a time, like the
      arrow buttons, instead of scrolling a little at a time — one wheel tick
@@ -52,40 +63,15 @@
   }, { passive: false });
 })();
 
-/* A small vector flag replaces the indistinct flag in the photograph; masked
-   copies of the foliage add a little wind without shifting the building.
-   Every overlay tracks the photograph's background-size: cover. */
+/* Gentle foliage motion; keep the original flag in the photograph untouched. */
 (() => {
   'use strict';
   const IMAGE_WIDTH = 1536;
   const IMAGE_HEIGHT = 1024;
   const regions = [
-    { className: 'scene-motion-patch--flag-matte', x: 505, y: 399, width: 101, height: 95, sampleX: 630 },
     { className: 'scene-motion-patch--tree', x: 0, y: 548, width: 285, height: 250 },
     { className: 'scene-motion-patch--tree scene-motion-patch--tree-right', x: 958, y: 600, width: 235, height: 185 },
-    { className: 'scene-photo-flag', x: 525, y: 414, width: 58, height: 89, vector: true }
   ];
-  let flagCount = 0;
-
-  function flagSVG() {
-    const fabric = `scene-flag-fabric-${++flagCount}`;
-    return `<svg viewBox="0 0 58 89" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="${fabric}" x1="0" y1="0" x2="1" y2=".15">
-        <stop offset="0" stop-color="#f3f5f4"/><stop offset=".35" stop-color="#d0d9e1"/>
-        <stop offset=".7" stop-color="#f4f6f4"/><stop offset="1" stop-color="#b8c8d5"/>
-      </linearGradient></defs>
-      <path d="M1.5 2 V86" fill="none" stroke="#d7dfe4" stroke-width="1.7"/>
-      <circle cx="1.5" cy="2" r="1.6" fill="#e9eef0"/>
-      <g class="scene-flag-cloth">
-        <path d="M2 4 C18 5 38 14 57 18 Q55 34 57 53 C40 50 20 43 2 40 Z" fill="url(#${fabric})" stroke="#dce6ec" stroke-width=".7"/>
-        <path d="M3 12 C20 14 38 21 56 25 L56 29 C38 25 20 18 3 16 Z" fill="#174c84"/>
-        <path d="M3 31 C20 34 38 42 56 45 L56 49 C38 46 20 38 3 35 Z" fill="#174c84"/>
-        <path d="M29 22 L35 33 L23 33 Z M29 35 L23 24 L35 24 Z" fill="none" stroke="#1a4d83" stroke-width="1.5" stroke-linejoin="round"/>
-        <path d="M13 8 C23 16 23 37 13 42 M42 15 C37 25 38 42 44 49" fill="none" stroke="#6f8498" stroke-opacity=".18" stroke-width="4"/>
-      </g>
-    </svg>`;
-  }
-
   function percentage(value) {
     if (!value || value === 'center') return .5;
     if (value === 'left' || value === 'top') return 0;
@@ -98,9 +84,8 @@
     if (!host) return;
     const patches = regions.map(region => {
       const patch = document.createElement('span');
-      patch.className = (region.vector ? '' : 'scene-motion-patch ') + region.className;
+      patch.className = 'scene-motion-patch ' + region.className;
       patch.setAttribute('aria-hidden', 'true');
-      if (region.vector) patch.innerHTML = flagSVG();
       host.appendChild(patch);
       return { patch, region };
     });

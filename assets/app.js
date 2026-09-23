@@ -681,6 +681,7 @@ function buildHomePrintSheet(est, seats, blocTot) {
 }
 
 function renderHome() {
+  renderDiscovery();
   renderElectionTimer();
   const history = (S.forecastHistory?.snapshots || []).slice().sort((a,b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
   const dayKey = value => new Date(value).toLocaleDateString('en-CA', {timeZone:'Asia/Jerusalem'});
@@ -1267,6 +1268,32 @@ function openPoll(i) {
    מייצגת מצביעים ששייכים לגוש — הם רק לא תורגמו למנדטים. רשימה מתחת
    ל-1.5% מוצאת מהחישוב משני הצדדים. */
 const CROSS_MIN_SHARE = 1.5;
+function renderDiscovery() {
+  const host = $("#discovery-stories");
+  if (!host || !S.regions) return;
+  const c = crossoverBase();
+  const panels = c.rows.find(row => row.meta.id === "Panels Politics");
+  const cities = ["חיפה", "אשדוד", "באר שבע"].map(name => S.regions.localitiesFull?.find(l => l.name === name));
+  const cityVotes = cities.every(Boolean) ? cities.reduce((sum, city) => sum + city.valid, 0) : 0;
+  const comparison = panels && cityVotes && panels.voters > cityVotes
+    ? `יותר מכל הקולות הכשרים בחיפה, באשדוד ובבאר שבע יחד ב־2022 — ${fmt(cityVotes)} קולות.`
+    : "כמה גדול השינוי בגושים? השוו את המספרים שמשתמעים מסקרי כל מכון.";
+  const dates = panels?.series.polls.map(p => p.date).filter(Boolean) || [];
+  const dateLabel = dates.length === 1 ? ` · ${esc(dates[0])}` : ` · ${dates.length} סקרים בחלון הנוכחי`;
+  const featured = panels ? `<a class="discovery-feature" href="#/crossover">
+    <span class="discovery-eyebrow">מה משתמע מסקרי פאנלס פוליטיקס?</span>
+    <strong class="discovery-number" dir="ltr">≈ ${c.kv(panels.voters)}</strong>
+    <h3>קולות ${panels.delta < 0 ? "פחות לגוש הימין" : "יותר לגוש הימין"}</h3>
+    <p class="discovery-comparison">${comparison}</p>
+    <span class="discovery-source">מקור: סקרי פאנלס פוליטיקס${dateLabel} · חישוב ברומטר מול 2022</span>
+    <small>אומדן השינוי בתמיכה; לא ספירה ישירה של אנשים שעברו צד.</small>
+    <span class="discovery-link">איך זה נראה אצל שאר המכונים? <b aria-hidden="true">←</b></span>
+  </a>` : `<a class="discovery-feature" href="#/crossover"><h3>כמה עברו צד?</h3><p>השוואת השינוי בגושים לפי המכונים</p><span class="discovery-link">לנתונים המלאים ←</span></a>`;
+  host.innerHTML = featured + `<div class="discovery-secondary">
+    <a href="#/2022"><span class="discovery-eyebrow">על חודו של קול</span><strong class="discovery-number">${fmt(S.regions.wasted.meretzGap)}</strong><h3>קולות הפרידו בין מרצ לכנסת</h3><p>פער קטן בקלפי. שינוי של גוש שלם בחלוקת המנדטים.</p><span class="discovery-source">מקור: ועדת הבחירות · 2022</span><span class="discovery-link">מה היה קורה אילו עברה? <b aria-hidden="true">←</b></span></a>
+    <a href="#/map"><span class="discovery-eyebrow">והסיפור של היישוב שלכם?</span><strong class="discovery-number">${fmt(S.regions.localitiesFull?.length || 0)}</strong><h3>יישובים. כל אחד מצביע אחרת.</h3><p>חפשו יישוב וגלו מי הוביל בו וכמה יצאו להצביע.</p><span class="discovery-source">מקור: תוצאות האמת · בחירות 2022</span><span class="discovery-link">חפשו את היישוב שלכם <b aria-hidden="true">←</b></span></a>
+  </div>`;
+}
 /* החישוב המשותף לעמוד "כמה עברו צד" ולפתיח הבית */
 function crossoverBase() {
   const nat = S.regions.national, valid = nat.valid;
@@ -1305,7 +1332,7 @@ function renderCrossover() {
   const { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
 
   $("#crossover-intro").textContent =
-    "בבחירות 2022 קיבל גוש הימין " + r1(rightShare0) + "% מהקולות (בספירה שכוללת גם רשימות שלא עברו את אחוז החסימה אך קיבלו 1.5% ומעלה). כל מכון מצייר היום חלוקה אחרת, וכל חלוקה כזאת אומרת שכמות מסוימת של מצביעים עברה מצד לצד. כאן מתורגם כל מכון למספר אחד: כמה מצביעים, נטו, חצו את קו הגוש מאז 2022.";
+    "השוו כמה קולות מייצג השינוי בגושים לפי כל מכון. זהו אומדן על בסיס 2022, ולא מדידה ישירה של אנשים שעברו צד.";
 
   $("#crossover-baseline").innerHTML =
     `<div class="crossbar">` +
@@ -1317,13 +1344,14 @@ function renderCrossover() {
   if (!rows.length) {
     $("#crossover-note").textContent = "אין סקרים בחלון הנוכחי.";
     $("#crossover-chart").innerHTML = "";
+    $("#crossover-highlight").innerHTML = "";
     $("#crossover-verdict").textContent = "";
     return;
   }
 
 
   $("#crossover-note").textContent =
-    `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}% — כ־${kv(votersAvg)} מצביעים ${deltaAvg <= 0 ? "עזבו את" : "הצטרפו ל"}גוש הימין נטו. רשימה שממוצע המכון נותן לה 1.5% ומעלה נספרת לגוש שלה גם אם היא מתחת לאחוז החסימה.`;
+    `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}%. השינוי שקול לכ־${kv(votersAvg)} קולות ${deltaAvg <= 0 ? "פחות" : "יותר"} לעומת בסיס 2022. רשימות עם 1.5% ומעלה נכללות גם מתחת לאחוז החסימה.`;
 
   /* ציר: עיגול לכפולה נוחה של 100 אלף */
   const maxV = Math.max(...rows.map(r => r.voters), votersAvg, 100000);
@@ -1336,14 +1364,17 @@ function renderCrossover() {
   const pos = v => 50 - 50 * v / axisMax;                            // אחוז מהקצה הימני
   const tickHtml = ticks.map(v => `<span dir="ltr" style="inset-inline-start:${pos(v).toFixed(2)}%" class="${v ? "" : "zero"}">${v ? (v > 0 ? "+" : "−") + Math.abs(v) / 1000 + "K" : "2022"}</span>`).join("");
 
-  $("#crossover-chart").innerHTML =
-    `<div class="cross-summary">
+  const low = rows[0], high = rows.at(-1);
+  const namesAt = share => rows.filter(r => Math.abs(r.share - share) < 0.01).map(r => esc(r.meta.he)).join(" / ");
+  $("#crossover-highlight").innerHTML =
+    `<div class="cross-range"><span>הפער בין קצות הסקרים</span><strong>כ־${kv(votersOf(high.share - low.share))} קולות</strong><p>${namesAt(low.share)}: ${r1(low.share)}% לימין · ${namesAt(high.share)}: ${r1(high.share)}% לימין</p></div>`;
+  $("#crossover-chart").innerHTML = `<div class="cross-summary">
       <div><span>גוש הימין ב־2022</span><b class="num">${r1(rightShare0)}%</b></div>
       <div class="arrow" aria-hidden="true">←</div>
       <div><span>ממוצע המכונים היום</span><b class="num">${r1(shareAvg)}%</b></div>
-      <div class="cross-summary-out ${deltaAvg <= 0 ? "left" : "join"}"><span>${deltaAvg <= 0 ? "עזבו את גוש הימין" : "הצטרפו לגוש הימין"}</span><b class="num">≈ ${kv(votersAvg)}</b><em>${r1(Math.abs(deltaAvg))} נקודות אחוז</em></div>
+      <div class="cross-summary-out ${deltaAvg <= 0 ? "left" : "join"}"><span>השינוי המשוקלל, במונחי קולות</span><b class="num">≈ ${kv(votersAvg)}</b><em>${r1(Math.abs(deltaAvg))} נקודות אחוז ${deltaAvg <= 0 ? "פחות" : "יותר"} לימין</em></div>
     </div>
-    <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>עזבו את הימין</span><span><i style="background:${BLOCS.Right.color}"></i>הצטרפו לימין</span><span><i class="avg"></i>ממוצע המכונים</span><span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
+    <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>ירידה בחלק הימין</span><span><i style="background:${BLOCS.Right.color}"></i>עלייה בחלק הימין</span><span><i class="avg"></i>ממוצע המכונים</span><span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
     <div class="cross-grid">
       <div class="cross-axis" aria-hidden="true">${tickHtml}</div>
       ${rows.map(r => {
@@ -1374,7 +1405,7 @@ function renderCrossover() {
     `ההערכה הדרמטית ביותר היא של <b>${esc(wild.meta.he || wild.meta.firm)}</b> — ${signed(wild)} ` +
     `(${wildScale ? wildScale + ", " : ""}${r1(Math.abs(wild.delta))} נקודות אחוז). ` +
     `הרגועה ביותר, <b>${esc(calm.meta.he || calm.meta.firm)}</b> — ${signed(calm)}. ` +
-    `${closer} מספר כזה של בני אדם שמחליפים גוש בתוך קדנציה אחת הוא טלטלה נדירה — ולא לכל מכון שמצייר אותה יש אותה סבירות.`;
+    `${closer} המספרים מתרגמים פער בתמיכה לאומדן קולות על בסיס 2022; הם אינם מוכיחים שאותם אנשים החליפו גוש.`;
 }
 
 /* ============================================================
@@ -1468,17 +1499,36 @@ function renderRegions() {
   const fullBox = $("#full-localities");
   if (R.localitiesFull && R.localitiesFull.length) {
     fullBox.hidden = false;
+    let page = 0;
+    const pageSize = 25;
+    const normalize = value => value.replace(/[\s\-־–—"״׳']/g, "");
     const draw = () => {
-      const q = $("#loc-q").value.trim();
-      const rows = R.localitiesFull.filter(l => !q || l.name.includes(q)).slice(0, 400);
-      $("#loc-count").textContent = `${rows.length} מתוך ${R.localitiesFull.length} יישובים`;
+      const q = normalize($("#loc-q").value.trim());
+      const matches = R.localitiesFull.filter(l => !q || normalize(l.name).includes(q));
+      const pages = Math.max(1, Math.ceil(matches.length / pageSize));
+      page = Math.min(page, pages - 1);
+      const rows = matches.slice(page * pageSize, (page + 1) * pageSize);
+      $("#loc-count").textContent = `${fmt(matches.length)} יישובים${q ? " נמצאו" : " במאגר"} · ${rows.length ? `${page * pageSize + 1}–${page * pageSize + rows.length} מוצגים` : "אין תוצאות"}`;
+      $("#loc-page").textContent = `עמוד ${page + 1} מתוך ${pages}`;
+      $("#loc-prev").disabled = page === 0;
+      $("#loc-next").disabled = page + 1 >= pages;
       $("#loc-table").innerHTML = `<thead><tr><th>יישוב</th><th class="n">קולות כשרים</th><th class="n">אחוז הצבעה</th><th>ארבע הרשימות המובילות</th></tr></thead><tbody>${
-        rows.map(l => `<tr><td><strong>${esc(l.name)}</strong></td><td class="n">${fmt(l.valid)}</td>
-          <td class="n">${l.turnout ? pct(l.turnout) : "—"}</td>
-          <td><div style="display:flex;flex-wrap:wrap;gap:6px">${l.top.map(t => `<span class="chip" style="border-color:${R.partyColors[t.id] || "#ccc"}">${esc(t.name)} ${pct(t.pct)}</span>`).join("")}</div></td></tr>`).join("")
+        rows.map(l => `<tr><td data-label="יישוב"><strong>${esc(l.name)}</strong></td><td class="n" data-label="קולות כשרים">${fmt(l.valid)}</td>
+          <td class="n" data-label="אחוז הצבעה">${l.turnout ? pct(l.turnout) : "—"}</td>
+          <td data-label="הרשימות המובילות"><div style="display:flex;flex-wrap:wrap;gap:6px">${l.top.map(t => `<span class="chip" style="border-color:${R.partyColors[t.id] || "#ccc"}">${esc(t.name)} ${pct(t.pct)}</span>`).join("")}</div></td></tr>`).join("")
         || `<tr><td colspan="4" class="empty">לא נמצא יישוב בשם הזה.</td></tr>`}</tbody>`;
     };
-    if (!fullBox.dataset.wired) { $("#loc-q").addEventListener("input", draw); fullBox.dataset.wired = "1"; }
+    if (!fullBox.dataset.wired) {
+      $("#loc-q").addEventListener("input", () => { page = 0; draw(); });
+      const turnPage = direction => {
+        page += direction; draw();
+        $("#mp-4").scrollIntoView({ block: "start", behavior: "auto" });
+        $("#loc-q").focus({ preventScroll: true });
+      };
+      $("#loc-prev").addEventListener("click", () => turnPage(-1));
+      $("#loc-next").addEventListener("click", () => turnPage(1));
+      fullBox.dataset.wired = "1";
+    }
     draw();
   }
 
@@ -1972,17 +2022,20 @@ function exitSample(live, channel) {
   return sample?.parties?.length ? sample : null;
 }
 
+/* זיהוי הערוץ יושב בתוך השקופית עצמה — אין שורת כותרת נפרדת לכרטיס */
+const exitLogoChip = channel => `<span class="es-slide-logo"><img src="${esc(channel.logo)}" alt="" loading="lazy"></span>`;
+
 function exitSlideHTML(channel, kind, live) {
   if(kind==="current") {
     const sample=exitSample(live,channel);
     if(sample && Date.now()>=Date.parse(ELECTION_TIMELINE.exitPolls)) {
       const counts=liveBlocCounts(sample.parties), entries=[[counts.Right||0,"גוש הימין והחרדים"],[counts.Left||0,"מרכז־שמאל"],[counts.Arabs||0,"הרשימות הערביות"],[counts.Unknown||0,"ללא שיוך"]].filter(([n])=>n>0);
-      return `<div class="es-content es-current"><span class="es-eyebrow">מדגם 2026 · ${esc(channel.name)}</span><h3>נתוני הגושים</h3>${exitBlocHTML(entries.map(e=>e[0]),entries.map(e=>e[1]),"מדגם 2026 של "+channel.name)}<small>מקור: ${esc(sample.sourceName||channel.name)}${sample.publishedAt?` · עודכן ${heDate(sample.publishedAt)}`:""}</small></div>`;
+      return `<div class="es-content es-current">${exitLogoChip(channel)}<span class="es-photo-tag">מדגם 2026</span><h3>נתוני הגושים</h3>${exitBlocHTML(entries.map(e=>e[0]),entries.map(e=>e[1]),"מדגם 2026 של "+channel.name)}<small>מקור: ${esc(sample.sourceName||channel.name)}${sample.publishedAt?` · עודכן ${heDate(sample.publishedAt)}`:""}</small></div>`;
     }
-    return `<div class="es-content es-waiting"><span class="es-eyebrow">מדגם 2026 · ${esc(channel.name)}</span><div class="es-wait-icon" aria-hidden="true">26</div><h3>${Date.now()<Date.parse(ELECTION_TIMELINE.exitPolls)?"מחכים למדגם 2026":"ממתינים לנתוני המדגם"}</h3><p>חלוקת הגושים תופיע כאן עם פרסום הנתונים בערוץ.</p></div>`;
+    return `<div class="es-content es-waiting"><div class="es-wait-icon-wrap"><span class="es-wait-icon"><img class="es-wait-logo" src="${esc(channel.logo)}" alt="" loading="lazy"></span></div><h3>${Date.now()<Date.parse(ELECTION_TIMELINE.exitPolls)?"מחכים למדגם 2026":"ממתינים לנתוני המדגם"}</h3><p>חלוקת הגושים תופיע כאן עם פרסום הנתונים בערוץ.</p></div>`;
   }
   if(channel.id==="i24news") return `<div class="es-content es-brand es-brand-i24"><span class="es-eyebrow">מסך הערוץ</span><img src="assets/logos/i24news.png" alt="סמל i24NEWS" loading="lazy"><h3>i24NEWS</h3><p>מדגם ליל הבחירות</p></div>`;
-  return `<div class="es-photo"><img src="${channel.photo}" alt="צילום מדגם 2022 של ${esc(channel.name)}" loading="lazy"><div class="es-photo-caption"><span class="es-eyebrow">מדגם 2022</span><b>${esc(channel.name)}</b></div></div>`;
+  return `<div class="es-photo">${exitLogoChip(channel)}<img src="${channel.photo}" alt="צילום מדגם 2022 של ${esc(channel.name)}" loading="lazy"><span class="es-photo-tag">מדגם 2022</span></div>`;
 }
 
 function updateExitShowcaseSlides() {
@@ -1993,6 +2046,9 @@ function updateExitShowcaseSlides() {
     const state=exitShowcaseState.cards.get(channel.id),card=grid.querySelector(`[data-exit-channel="${channel.id}"]`);
     if(!state||!card) continue;
     if(now-state.started>=EXIT_SLIDE_MS) {state.index=(state.index+Math.floor((now-state.started)/EXIT_SLIDE_MS))%state.count;state.started=now;}
+    /* נוגעים ב-DOM רק כשהשקופית באמת מתחלפת; כתיבה כל רבע שנייה מבטלת סגנונות לשווא */
+    if(state.applied===state.index) continue;
+    state.applied=state.index;
     card.querySelectorAll('.es-slide').forEach((slide,i)=>{const active=i===state.index;slide.classList.toggle('is-active',active);slide.setAttribute('aria-hidden',active?'false':'true');slide.inert=!active;});
   }
 }
@@ -2007,8 +2063,8 @@ function renderExitShowcase(live) {
       const kinds=["current","photo"];
       if(!exitShowcaseState.cards.has(channel.id)) exitShowcaseState.cards.set(channel.id,{index:0,started:Date.now(),count:kinds.length});
       const state=exitShowcaseState.cards.get(channel.id);
+      state.applied=null; /* המרקאפ נבנה מחדש — שהעדכון הבא יחיל שוב class/inert */
       return `<article class="es-card" data-exit-channel="${channel.id}" aria-label="${esc(channel.name)}">
-        <header><span class="es-channel-logo"><img src="${channel.logo}" alt="לוגו ${esc(channel.name)}"></span><b>${esc(channel.name)}</b></header>
         <div class="es-stage">${kinds.map((kind,i)=>`<div class="es-slide${i===state.index?' is-active':''}" data-kind="${kind}" aria-hidden="${i===state.index?'false':'true'}">${exitSlideHTML(channel,kind,live)}</div>`).join('')}</div>
       </article>`;
     }).join('');

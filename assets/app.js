@@ -2330,17 +2330,19 @@ async function boot() {
     /* [שנה, מפתח ייחודי, תווית קצרה, קובץ]. הכיול מתחיל ב־2020: מערכות ישנות יותר
        אינן מלמדות על מכון שהספיק ללמוד ולהשתנות מאז. */
     const EXTRA_CALIB = [[2021, "2021", "2021", "data/historical-polls-2021.json"], [2020, "2020", "2020", "data/historical-polls-2020.json"]];
+    /* Optional resources start alongside the core files. Waiting for them in
+       series used to keep every view hidden even after the main data arrived. */
+    const optionalData = ["data/leaders.json", "data/forecast-history.json", "data/polls-archive.json"]
+      .map(u => window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u] || null) : loadJSONOptional(u));
     const [hist, cur, firms, regions, demo, haredi, ...extra] = await Promise.all(
       ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"]
         .map(u => (window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u]) : fetch(u, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(u); return r.json(); })))
         .concat(EXTRA_CALIB.map(([, , , u]) => window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u] || null) : loadJSONOptional(u))));
-    const leaders = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/leaders.json"] || null) : await loadJSONOptional("data/leaders.json");
-    const forecastHistory = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/forecast-history.json"] || null) : await loadJSONOptional("data/forecast-history.json");
+    const [leaders, forecastHistory, pollsArchive] = await Promise.all(optionalData);
     /* current-polls.json כבר מוגבל ל-MAX_PER_OUTLET לכל ערוץ (גם בשרת וגם
        פה בלקוח) — לתצוגת "כל ההיסטוריה" בכרטיס הסקר צריך את הארכיון
        המלא, שלא מוגבל. אופציונלי: אם נכשל, בורר התאריך בכרטיס פשוט נשאר
        מוגבל כמו קודם. */
-    const pollsArchive = window.__BAROMETER_DATA__ ? (window.__BAROMETER_DATA__["data/polls-archive.json"] || null) : await loadJSONOptional("data/polls-archive.json");
     Object.assign(S, { hist, firms, regions, demo, haredi, leaders: leaders?.photos || {}, forecastHistory, pollsArchive });
     /* מערכות הבחירות שהמדד מכויל עליהן. הראשונה היא ברירת המחדל של עמוד הדיוק. */
     S.elections = [
@@ -2367,9 +2369,11 @@ async function boot() {
 
     renderSources();
     wire();
-    await refreshLiveResults(true);
     renderElectionTimer();
     renderNightCountdown();
+    routeFromHash();
+    document.documentElement.classList.add("app-ready");
+    refreshLiveResults(true);
     S.countdownTimer = setInterval(() => {
       if (document.hidden) return;
       renderElectionTimer();
@@ -2378,9 +2382,11 @@ async function boot() {
     }, 1000);
     S.liveTimer = setInterval(refreshLiveResults, 60000);
     scheduleAnec();
-    routeFromHash();
   } catch (err) {
     console.error(err);
+    document.documentElement.classList.add("app-ready");
+    const coverUpdated = $("#cover-updated");
+    if (coverUpdated) coverUpdated.textContent = "נתוני התחזית אינם זמינים כרגע.";
     $("#main").insertAdjacentHTML("afterbegin",
       `<div class="wrap"><div class="errbox"><b>לא הצלחנו לטעון את נתוני הסקרים.</b><br>ודאו שהאתר מוגש משרת (לא פתיחת קובץ ישירה) ורעננו את הדף.</div></div>`);
   }

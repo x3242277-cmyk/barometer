@@ -1,5 +1,17 @@
 /* Readable labels and controls across every election page. */
 @media screen {
+  /* The cover is meaningful HTML, so paint it while data is loading instead of
+     showing the footer beneath an empty main area. Deep links get a compact state. */
+  .app-loading{display:none}
+  html:not(.app-ready) #view-home.on{animation:none}
+  html[data-initial-route="other"]:not(.app-ready) #view-home.on{display:none}
+  html[data-initial-route="other"]:not(.app-ready) .app-loading{
+    display:grid;align-content:center;justify-items:center;gap:16px;
+    min-height:calc(100dvh - var(--masthead-h,80px));padding:32px;
+    color:#d7e2ec;text-align:center
+  }
+  .app-loading img{width:54px;height:54px}
+  .app-loading p{margin:0;font-size:1rem;font-weight:700}
   :root{--ink-2:#d7e2ec;--ink-3:#b9c9d8;--rule:#3d546b;--rule-2:#30475d}
   .view :is(.page-intro,.page-head,.sec-head,.dstep-head,.mstep-head) h2{line-height:1.28;letter-spacing:-.015em;text-wrap:balance;max-width:28ch}
   .view :is(.page-intro,.page-head) p:not(.kicker),.view :is(.sec-note,.data-explainer,.board-note){max-width:75ch;line-height:1.75;color:var(--ink-2)}

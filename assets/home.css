@@ -23,7 +23,7 @@
 }
 .tabsbar .nav-more>summary::-webkit-details-marker{ display:none }
 .tabsbar .nav-more>summary::after{ content:"▾"; font-size:.7em; opacity:.55 }
-.tabsbar .nav-more[open]>summary{ color:var(--navy); background:rgba(18,52,92,.05) }
+.tabsbar .nav-more[open]>summary{ color:var(--navy-text); background:rgba(18,52,92,.05) }
 .tabsbar .nav-menu{
   position:absolute; inset-inline-end:0; top:100%; width:230px; padding:7px;
   background:var(--paper-2); border:1px solid var(--rule); border-radius:12px;
@@ -33,7 +33,7 @@
   display:block; text-align:start; white-space:normal; padding:11px 12px; border:0; border-radius:7px;
 }
 .tabsbar .nav-menu .tab:hover{ background:var(--paper-3) }
-.tabsbar .nav-menu .tab[aria-current="page"]{ background:rgba(18,52,92,.08); color:var(--navy) }
+.tabsbar .nav-menu .tab[aria-current="page"]{ background:rgba(18,52,92,.08); color:var(--navy-text) }
 
 /* ---------- פס התחזית (רקע כהה) ---------- */
 #view-home .verdict{
@@ -99,7 +99,7 @@
   padding-bottom:8px; border-bottom:2px solid var(--rule-strong);
 }
 #view-home .bloc-head h2{ font-size:1.12rem; font-weight:800 }
-#view-home .bloc-head .tally{ font-family:var(--serif); font-size:1.05rem; font-weight:800; color:var(--navy) }
+#view-home .bloc-head .tally{ font-family:var(--serif); font-size:1.05rem; font-weight:800; color:var(--navy-text) }
 #view-home .bloc-head .tally::before{
   content:""; display:inline-block; width:9px; height:9px; border-radius:2px; margin-inline-end:7px;
 }
@@ -130,8 +130,8 @@
 .hcard-delta{
   font-size:.7rem; font-weight:800; padding:2px 6px; border-radius:6px; line-height:1; white-space:nowrap;
 }
-.hcard-delta.up{ color:#1F6349; background:rgba(46,132,103,.14) }
-.hcard-delta.down{ color:#8E241A; background:rgba(176,48,36,.13) }
+.hcard-delta.up{ color:#33a378; background:rgba(46,132,103,.14) }
+.hcard-delta.down{ color:#e26d61; background:rgba(176,48,36,.13) }
 .hcard-name{ font-size:1rem; font-weight:800; letter-spacing:-.01em; line-height:1.2 }
 .hcard-leader{ font-size:.8rem; color:var(--ink-3); font-weight:600 }
 .hcard-pct{ margin-top:2px; font-family:var(--serif); font-size:.82rem; font-weight:700; color:var(--ink-3) }

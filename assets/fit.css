@@ -46,7 +46,7 @@ select,input[type=search],
   background:var(--paper-3); border:1px solid var(--rule); border-radius:100px; box-shadow:none }
 .poll-view-tabs button{ min-height:30px; padding:5px 13px; gap:7px; border:0; border-radius:100px; background:transparent;
   color:var(--ink-2); font-size:var(--ctl-fs); font-weight:700; box-shadow:none; transform:none }
-.poll-view-tabs button:hover{ transform:none; box-shadow:none; color:var(--navy); background:rgba(18,52,92,.05) }
+.poll-view-tabs button:hover{ transform:none; box-shadow:none; color:var(--navy-text); background:rgba(18,52,92,.05) }
 .poll-view-tabs button[aria-pressed="true"]{ background:var(--navy); color:#fff; box-shadow:none }
 .poll-view-tabs .view-icon{ width:auto; height:auto; background:none; color:inherit; font-size:.95em; opacity:.75 }
 .poll-view-tabs button[aria-pressed="true"] .view-icon{ background:none; color:#F1C15D }
@@ -177,7 +177,7 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 .fd-head h2{ font-size:1.45rem; margin:0 }
 .fd-head p{ margin:3px 0 0; color:var(--ink-3); font-size:.82rem }
 .fd-score{ margin-inline-start:auto; text-align:center; padding:8px 16px; border:1px solid var(--rule); border-radius:12px; background:var(--paper-3) }
-.fd-score b{ display:block; font-family:var(--serif); font-size:2rem; font-weight:800; line-height:1; color:var(--navy) }
+.fd-score b{ display:block; font-family:var(--serif); font-size:2rem; font-weight:800; line-height:1; color:var(--navy-text) }
 .fd-score span{ font-size:.7rem; color:var(--ink-3); font-weight:700 }
 .fd-about{ margin:12px 0 0; color:var(--ink-2); font-size:.9rem; line-height:1.6 }
 .fd-comps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) minmax(150px,auto); gap:10px; margin-top:16px }
@@ -199,7 +199,7 @@ dialog.wide{ width:min(980px, calc(100% - 28px)); padding:22px 26px 26px }
 .fd-tables .tablewrap{ max-height:none; box-shadow:none }
 .fd-tables table{ min-width:0 }
 .fd-tables th,.fd-tables td{ padding:6px 10px; font-size:.82rem }
-.fd-tables tr.fd-bloc th{ font-weight:800; color:var(--navy) }
+.fd-tables tr.fd-bloc th{ font-weight:800; color:var(--navy-text) }
 .fd-tables tr.fd-bloc td{ background:rgba(18,52,92,.04) }
 .fd-tables .fd-cf{ background:rgba(184,134,43,.07); border-inline-start:1px solid var(--rule) }
 .fd-tables thead th.fd-cf{ color:#8A6318 }

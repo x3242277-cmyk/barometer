@@ -67,15 +67,15 @@ html.show-open { overflow:hidden }
 .signal-brand img { width:34px; height:34px }
 .signal-brand [lang=en] { font:10px var(--mono); letter-spacing:.18em; color:var(--ink-3) }
 .signal-divider { height:17px; width:1px; background:var(--rule-strong) }
-#show .signal-skip { display:inline-flex; gap:8px; align-items:center; padding:6px 16px; font-size:.86rem; font-weight:700; color:var(--navy); background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
+#show .signal-skip { display:inline-flex; gap:8px; align-items:center; padding:6px 16px; font-size:.86rem; font-weight:700; color:var(--navy-text); background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
 #show .signal-skip:hover { border-color:var(--navy) }
 
 .signal-body { width:min(1040px,calc(100% - 72px)); margin:auto; padding:22px 0 18px; flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center }
-.signal-caption { display:inline-flex; align-items:center; gap:9px; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px; background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.08em }
+.signal-caption { display:inline-flex; align-items:center; gap:9px; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px; background:rgba(18,52,92,.06); color:var(--navy-text); font-size:.72rem; font-weight:800; letter-spacing:.08em }
 .signal-caption .ic { font-size:17px }
 .signal-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--red); box-shadow:0 0 0 0 rgba(176,48,36,.5); animation:pulse 2.4s infinite }
 #show .signal-title { margin:14px 0 0; min-height:1.15em; max-width:24ch; font:800 clamp(1.7rem,3.8vw,2.7rem)/1.12 var(--serif); letter-spacing:-.02em; color:var(--ink); text-wrap:balance }
-#show .signal-title em { font-style:normal; color:var(--navy) }
+#show .signal-title em { font-style:normal; color:var(--navy-text) }
 
 /* ---- הבמה ---- */
 .stage { position:relative; width:100%; height:clamp(300px, 52vh, 460px); margin:14px 0 14px }
@@ -112,7 +112,7 @@ html.show-open { overflow:hidden }
   100% { opacity:0; transform:translate(0, 34px) rotate(0) scale(.28) }
 }
 .box-count { display:inline-flex; align-items:baseline; gap:6px; padding:7px 16px; border:1px solid var(--rule); border-radius:100px; background:var(--paper-2); box-shadow:var(--shadow-s); font-size:.85rem; font-weight:700; color:var(--ink-2) }
-.box-count b { font-family:var(--serif); font-size:1.25rem; color:var(--navy) }
+.box-count b { font-family:var(--serif); font-size:1.25rem; color:var(--navy-text) }
 .box-count i { color:var(--rule-strong); font-style:normal }
 
 /* 2. חצי הגורן */
@@ -145,13 +145,13 @@ html.show-open { overflow:hidden }
 /* 4. תמונת המצב */
 .sc-final { inset:auto 0 0 0; height:0; overflow:visible }
 #show[data-phase="3"] .sc-final { opacity:1 }
-.fin { position:absolute; bottom:150px; width:76px; height:76px; display:grid; place-items:center; border-radius:20px; background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-m); color:var(--navy); font-size:44px; opacity:0; transform:scale(.6) }
+.fin { position:absolute; bottom:150px; width:76px; height:76px; display:grid; place-items:center; border-radius:20px; background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-m); color:var(--navy-text); font-size:44px; opacity:0; transform:scale(.6) }
 .fin-a { right:6% }
-.fin-b { left:6%; color:var(--navy) }
+.fin-b { left:6%; color:var(--navy-text) }
 #show[data-phase="3"] .fin { animation:fin-in .7s cubic-bezier(.2,.9,.3,1.3) both }
 #show[data-phase="3"] .fin-b { animation-delay:.18s }
 @keyframes fin-in { to { opacity:1; transform:none } }
-.fin .ic.flag { color:var(--navy) }
+.fin .ic.flag { color:var(--navy-text) }
 .fin-a .ic { color:var(--gold) }
 
 /* ---- שלבים ותחתית ---- */
@@ -162,9 +162,9 @@ html.show-open { overflow:hidden }
 .signal-step b { font:11px var(--mono); color:var(--ink-3); transition:color .4s }
 .signal-step.active { color:#fff; background:var(--navy); border-color:var(--navy) }
 .signal-step.active b { color:rgba(255,255,255,.75) }
-.signal-step.done { color:var(--navy); border-color:rgba(18,52,92,.3) }
+.signal-step.done { color:var(--navy-text); border-color:rgba(18,52,92,.3) }
 #show .signal-pause { flex-shrink:0; background:transparent; color:var(--ink-3); font-size:.8rem; font-weight:700; padding:4px 10px; display:flex; gap:8px; align-items:center }
-#show .signal-pause:hover { color:var(--navy) }
+#show .signal-pause:hover { color:var(--navy-text) }
 .signal-footer { display:flex; justify-content:space-between; gap:14px; padding:14px 4.2vw; border-top:1px solid var(--rule); color:var(--ink-3); font-size:12px }
 .signal-progress { position:fixed; bottom:0; right:0; left:0; height:3px; background:var(--navy); transform:scaleX(var(--signal-progress)); transform-origin:right }
 

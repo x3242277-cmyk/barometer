@@ -29,11 +29,11 @@
   padding:8px 12px; min-height:0; border:0; border-bottom:0; border-radius:8px;
   font-size:.9rem; font-weight:600; line-height:1.2; color:var(--ink-2); white-space:nowrap;
 }
-.mainnav .tab:hover{ color:var(--navy); background:rgba(18,52,92,.06) }
-.mainnav .tab[aria-current="page"]{ color:var(--navy); background:rgba(18,52,92,.09); font-weight:700; border-bottom:0 }
+.mainnav .tab:hover{ color:var(--navy-text); background:rgba(18,52,92,.06) }
+.mainnav .tab[aria-current="page"]{ color:var(--navy-text); background:rgba(18,52,92,.09); font-weight:700; border-bottom:0 }
 .mainnav .nav-more{ margin:0 }
 .mainnav .nav-more>summary{ padding:8px 12px; min-height:0; border-radius:8px; font-size:.9rem; font-weight:600; color:var(--ink-2); gap:5px }
-.mainnav .nav-more>summary:hover,.mainnav .nav-more[open]>summary{ color:var(--navy); background:rgba(18,52,92,.06) }
+.mainnav .nav-more>summary:hover,.mainnav .nav-more[open]>summary{ color:var(--navy-text); background:rgba(18,52,92,.06) }
 .mainnav .nav-menu{ top:calc(100% + 8px); width:240px; padding:6px; border-radius:12px }
 .mainnav .nav-menu .tab{ display:block; padding:9px 12px; border-radius:7px; font-size:.88rem }
 
@@ -72,7 +72,7 @@
   mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
   -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
 }
-#view-home .verdict-knesset{ display:block; height:150px; color:var(--navy); opacity:.09; z-index:1 }
+#view-home .verdict-knesset{ display:block; height:150px; color:var(--navy-text); opacity:.09; z-index:1 }
 #view-home .verdict-in{
   position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; text-align:center;
   gap:18px; padding:56px 0 52px; min-height:0; max-width:900px; margin-inline:auto;
@@ -80,13 +80,13 @@
 .verdict-top{ display:flex; flex-direction:column; align-items:center; gap:14px }
 #view-home .verdict .eyebrow{
   margin:0; padding:6px 14px; border:1px solid rgba(18,52,92,.14); border-radius:100px;
-  background:rgba(18,52,92,.06); color:var(--navy); font-size:.72rem; font-weight:800; letter-spacing:.1em;
+  background:rgba(18,52,92,.06); color:var(--navy-text); font-size:.72rem; font-weight:800; letter-spacing:.1em;
 }
 #view-home .verdict h1{
   margin:0; font-family:var(--serif); font-weight:800; color:var(--ink);
   font-size:clamp(2.1rem, 5vw, 3.5rem); line-height:1.1; letter-spacing:-.02em; max-width:22ch;
 }
-#view-home .verdict h1 em{ font-style:normal; color:var(--navy) }
+#view-home .verdict h1 em{ font-style:normal; color:var(--navy-text) }
 #verdict-head:focus{ outline:0 }
 #view-home .verdict .lede{ margin:0; max-width:60ch; color:var(--ink-2); font-size:1.08rem; line-height:1.65 }
 
@@ -103,7 +103,7 @@
 .hero-countdown .cd-head>span{ display:none }
 .hero-countdown .countdown-cells{ display:flex; align-items:center; gap:2px }
 .hero-countdown .countdown-cells b{ display:grid; place-items:center; min-width:34px; padding:0; background:none; border:0; border-radius:0 }
-.hero-countdown .countdown-cells .num{ font-family:var(--serif); font-size:1.05rem; font-weight:700; line-height:1; color:var(--navy) }
+.hero-countdown .countdown-cells .num{ font-family:var(--serif); font-size:1.05rem; font-weight:700; line-height:1; color:var(--navy-text) }
 .hero-countdown .countdown-cells em{ margin-top:2px; font-style:normal; font-size:.55rem; letter-spacing:.02em; color:var(--ink-3) }
 .hero-countdown .cd-sep{ display:block; padding:0 0 10px; color:var(--rule-strong); font-size:.9rem }
 
@@ -111,7 +111,7 @@
 #view-home .home-forecast-controls{ display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px 14px; margin-top:4px }
 .home-switch,#view-home .home-switch{ display:inline-flex; align-self:auto; grid-template-columns:none; background:var(--paper-2); border:1px solid var(--rule); box-shadow:var(--shadow-s) }
 .home-switch button,#view-home .home-switch button{ color:var(--ink-2); font-weight:700; padding:6px 14px }
-.home-switch button:hover{ color:var(--navy) }
+.home-switch button:hover{ color:var(--navy-text) }
 .home-switch button[aria-pressed="true"],#view-home .home-switch button[aria-pressed="true"]{ background:var(--navy); color:#fff }
 .home-history-pick,#view-home .home-history-pick{ display:flex; align-items:center; gap:8px; color:var(--ink-3); font-size:.74rem; font-weight:700 }
 .home-history-pick select,#view-home .home-history-pick select{
@@ -120,7 +120,7 @@
 }
 .home-history-pick select:focus{ outline:3px solid var(--gold); outline-offset:2px }
 .intro-result-links{ width:100%; justify-content:center; gap:20px; font-size:.8rem; color:var(--ink-3) }
-.intro-result-links a{ color:var(--navy); font-weight:600 }
+.intro-result-links a{ color:var(--navy-text); font-weight:600 }
 .intro-result-links button{ color:var(--ink-3) }
 
 /* כרטיס התוצאה — שלושת הגושים + 61 */
@@ -134,7 +134,7 @@
 #view-home .readout .rd:nth-child(3){ border-inline-end:0 }
 #view-home .readout .rd .rd-lbl{ font-size:.78rem; font-weight:700; color:var(--ink-3) }
 #view-home .readout .rd b{ font-size:2.4rem; font-weight:800; color:var(--ink) }
-#view-home .readout .rd.lead b{ color:var(--navy) }
+#view-home .readout .rd.lead b{ color:var(--navy-text) }
 #view-home .readout .rd-need{ justify-self:end; text-align:end; display:grid; gap:2px; border:0; padding:0; width:auto }
 #view-home .readout .rd-need b{ font-size:1.4rem; color:var(--ink) }
 #view-home .readout .rd-need span{ font-size:.76rem; color:var(--ink-3) }
@@ -216,8 +216,8 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 /* ---------- תת-לשוניות: ליל הבחירות · שיטת החישוב ---------- */
 .subtabs{ display:flex; flex-wrap:wrap; gap:4px; margin:22px 0 -14px; padding:4px; width:fit-content; max-width:100%; background:rgba(18,52,92,.05); border:1px solid var(--rule); border-radius:12px }
 .subtab{ padding:8px 14px; border-radius:8px; font-size:.88rem; font-weight:600; line-height:1.2; color:var(--ink-2); white-space:nowrap; text-decoration:none }
-.subtab:hover{ color:var(--navy); background:rgba(18,52,92,.06) }
-.subtab[aria-current="page"]{ color:var(--navy); background:#fff; font-weight:700; box-shadow:var(--shadow-s) }
+.subtab:hover{ color:var(--navy-text); background:rgba(18,52,92,.06) }
+.subtab[aria-current="page"]{ color:var(--navy-text); background:#fff; font-weight:700; box-shadow:var(--shadow-s) }
 @media (max-width:560px){ .subtabs{ width:100%; margin-top:14px } .subtab{ flex:1 1 auto; text-align:center; padding:8px 10px; font-size:.84rem } }
 @media print{ .subtabs{ display:none!important } }
 
@@ -273,7 +273,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .pipe-node:hover{ transform:translateY(-2px); box-shadow:var(--shadow-m); border-color:rgba(18,52,92,.35) }
 .pipe-node::after{ content:""; position:absolute; top:100%; inset-inline-start:50%; width:2px; height:14px; background:var(--rule-strong) }
 .pipe-step{ font-size:.66rem; font-weight:800; letter-spacing:.14em; color:var(--gold) }
-.pipe-k{ font-size:.86rem; font-weight:800; color:var(--navy) }
+.pipe-k{ font-size:.86rem; font-weight:800; color:var(--navy-text) }
 .pipe-n{ font-family:var(--serif); font-size:clamp(1.3rem, 2vw, 1.7rem); font-weight:800; line-height:1.1; color:var(--ink); white-space:nowrap }
 .pipe-t{ font-size:.72rem; line-height:1.45; color:var(--ink-3) }
 .pipe-join{ position:relative; width:min(100%, 1080px); height:34px; margin:0 }
@@ -283,7 +283,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .verdict-result{ display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; max-width:840px }
 .pipe-result-k{ margin:0; font-size:.72rem; font-weight:800; letter-spacing:.12em; color:var(--gold) }
 #verdict-auto{ margin:0; font-family:var(--serif); font-size:clamp(1.4rem, 2.8vw, 2rem); font-weight:800; line-height:1.15; letter-spacing:-.01em; color:var(--ink) }
-#verdict-auto em{ font-style:normal; color:var(--navy) }
+#verdict-auto em{ font-style:normal; color:var(--navy-text) }
 #view-home .verdict .lede{ font-size:.98rem }
 #view-home .verdict-result .readout{ margin-top:4px }
 @media (max-width:900px){
@@ -304,7 +304,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 #view-e2022 .rank-nocalib::before{ content:none }
 #view-e2022 .rank>.nocalib-note{ display:flex; align-items:center; padding:8px 10px; background:rgba(18,52,92,.045); border:1px dashed var(--rule-strong); border-radius:10px }
 #view-e2022 .rank>.nocalib-note p{ margin:0; font-size:.76rem; line-height:1.5; color:var(--ink-2) }
-#view-e2022 .rank>.nocalib-note b{ color:var(--navy) }
+#view-e2022 .rank>.nocalib-note b{ color:var(--navy-text) }
 
 /* ---------- "מה לומדים מזה לתחזית" ---------- */
 .takeaway{ margin:0; padding:10px 14px; border-inline-start:3px solid var(--gold); border-radius:0 10px 10px 0; background:rgba(184,134,43,.07); color:var(--ink-2); font-size:.8rem; line-height:1.55 }
@@ -356,7 +356,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .plegend i{ width:8px; height:8px; border-radius:2px }
 .plegend b{ color:var(--ink) }
 .plegend small{ color:var(--ink-3) }
-.dtable .delta.up{ color:#1F6349; font-weight:700 } .dtable .delta.down{ color:#8E241A; font-weight:700 }
+.dtable .delta.up{ color:#33a378; font-weight:700 } .dtable .delta.down{ color:#e26d61; font-weight:700 }
 .dtable-ctl td{ vertical-align:middle }
 .dtable-ctl label{ display:grid; gap:2px; min-width:150px }
 .dtable-ctl .identity-lbl{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:.78rem; font-weight:600; color:var(--ink-2) }
@@ -387,12 +387,12 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .base-blocbar.votes{ height:44px }
 .base-blocbar.votes b{ font-size:1.1rem }
 .base-drama{ margin-top:6px; padding:12px 16px; border-radius:12px; background:rgba(192,57,43,.07); border-inline-start:3px solid var(--red,#C0392B); font-size:.9rem; line-height:1.6; color:var(--ink-2) }
-.base-drama b{ color:#8E241A }
+.base-drama b{ color:#e26d61 }
 
 /* ---------- שלב 4: שתי עוגות ---------- */
 .pies{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:14px }
 .pie{ display:grid; justify-items:center; gap:4px; text-align:center }
-.pie h3{ margin:0; font-family:var(--serif); font-size:2.2rem; color:var(--navy); line-height:1 }
+.pie h3{ margin:0; font-family:var(--serif); font-size:2.2rem; color:var(--navy-text); line-height:1 }
 .pie .kicker{ margin:0 }
 .donut{ width:min(100%, 220px); height:auto }
 .donut circle{ transition:stroke-dasharray .4s }
@@ -411,12 +411,12 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .base-blocbar.votes{ height:44px }
 .base-blocbar.votes b{ font-size:1.1rem }
 .base-drama{ margin-top:6px; padding:12px 16px; border-radius:12px; background:rgba(192,57,43,.07); border-inline-start:3px solid var(--red,#C0392B); font-size:.9rem; line-height:1.6; color:var(--ink-2) }
-.base-drama b{ color:#8E241A }
+.base-drama b{ color:#e26d61 }
 
 /* ---------- שלב 4: שתי עוגות ---------- */
 .pies{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:14px }
 .pie{ display:grid; justify-items:center; gap:4px; text-align:center }
-.pie h3{ margin:0; font-family:var(--serif); font-size:2.2rem; color:var(--navy); line-height:1 }
+.pie h3{ margin:0; font-family:var(--serif); font-size:2.2rem; color:var(--navy-text); line-height:1 }
 .pie .kicker{ margin:0 }
 .donut{ width:min(100%, 220px); height:auto }
 .donut circle{ transition:stroke-dasharray .4s }
@@ -439,13 +439,13 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .score-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap }
 .score-foot .grade{ padding:4px 10px; font-size:.72rem }
 .rank-no{ display:grid; place-items:center; min-width:30px; height:24px; padding:0 8px; border-radius:100px; background:var(--navy); color:#fff; font-style:normal; font-size:.7rem; font-weight:800; letter-spacing:.04em }
-.score-row b{ font-family:var(--serif); font-size:2.8rem; font-weight:800; line-height:1; letter-spacing:-.02em; color:var(--navy) }
+.score-row b{ font-family:var(--serif); font-size:2.8rem; font-weight:800; line-height:1; letter-spacing:-.02em; color:var(--navy-text) }
 .score-top small{ font-size:.68rem; font-weight:700; letter-spacing:.06em; color:var(--ink-3) }
 .score-bar{ display:block; height:8px; border-radius:6px; background:var(--rule-2); overflow:hidden }
 .score-bar u{ display:block; height:100%; width:var(--v); border-radius:6px; background:var(--navy); text-decoration:none }
-.score-top.grade-high .score-bar u{ background:#1F6349 } .score-top.grade-high b{ color:#1F6349 }
+.score-top.grade-high .score-bar u{ background:#1F6349 } .score-top.grade-high b{ color:#33a378 }
 .score-top.grade-mid .score-bar u{ background:#B8862B } .score-top.grade-mid b{ color:#8A6318 }
-.score-top.grade-low .score-bar u{ background:#8E241A } .score-top.grade-low b{ color:#8E241A }
+.score-top.grade-low .score-bar u{ background:#8E241A } .score-top.grade-low b{ color:#e26d61 }
 .score-top.grade-none b{ color:var(--ink-3) }
 .score-top.grade-none .score-bar u{ background:repeating-linear-gradient(90deg, var(--rule-strong) 0 6px, transparent 6px 10px) }
 #view-e2022 .rank>.orglogo{ width:100%!important; height:128px!important; display:flex; align-items:center; justify-content:center; border-radius:14px; background:#fff; border:1px solid var(--rule-2); font-size:1.8rem; color:var(--navy); overflow:hidden }
@@ -466,7 +466,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 /* ---------- דיוק המכונים: שורת עובדות ופסי הנוסחה ---------- */
 .page-facts{ display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:18px; padding:14px 18px; background:#fff; border:1px solid var(--rule); border-radius:14px; box-shadow:var(--shadow-s) }
 .page-facts>div{ display:grid; gap:2px }
-.page-facts b{ font-family:var(--serif); font-size:1.35rem; font-weight:800; color:var(--navy); line-height:1.1 }
+.page-facts b{ font-family:var(--serif); font-size:1.35rem; font-weight:800; color:var(--navy-text); line-height:1.1 }
 .page-facts span{ font-size:.72rem; font-weight:700; color:var(--ink-3) }
 #view-e2022 .reliability-explanation .data-explainer{ font-size:.95rem; color:var(--ink-2); max-width:78ch }
 #view-e2022 .fstrip.three{ gap:14px }
@@ -476,16 +476,16 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 
 /* ---------- דיוק המכונים: דרגות, ציוני מערכות, טבלת הסקרים ---------- */
 .grade{ display:inline-flex; align-items:center; justify-content:center; padding:5px 12px; border-radius:100px; font-size:.76rem; font-weight:800; letter-spacing:.02em; white-space:nowrap }
-.grade.high{ background:rgba(31,99,73,.12); color:#1F6349 }
+.grade.high{ background:rgba(31,99,73,.12); color:#33a378 }
 .grade.mid{ background:rgba(184,134,43,.14); color:#8A6318 }
-.grade.low{ background:rgba(142,36,26,.1); color:#8E241A }
+.grade.low{ background:rgba(142,36,26,.1); color:#e26d61 }
 .grade.none{ background:var(--paper-3); color:var(--ink-3) }
 .grade-legend{ display:flex; flex-wrap:wrap; gap:6px; align-self:center }
 #view-e2022 .rank.grade-high{ border-color:rgba(31,99,73,.35) }
 .runs{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px }
 .runs span{ display:grid; justify-items:center; gap:2px; padding:8px 4px; border-radius:10px; background:#fff; border:1px solid var(--rule-2) }
 .runs small{ font-size:.66rem; font-weight:700; color:var(--ink-3) }
-.runs b{ font-size:1.05rem; font-variant-numeric:tabular-nums; color:var(--navy) }
+.runs b{ font-size:1.05rem; font-variant-numeric:tabular-nums; color:var(--navy-text) }
 .runs span.none b{ color:var(--rule-strong) }
 .page-facts.compact{ margin:0 0 14px; padding:10px 16px; gap:8px 24px }
 .page-facts.compact b{ font-size:1.1rem }
@@ -528,7 +528,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .scen-pair small{ font-size:.66rem; font-weight:700; color:var(--ink-3) }
 .scen-pair b{ font-family:var(--serif); font-size:1.7rem; line-height:1; color:var(--ink) }
 .scen-pair .cf b{ color:var(--c) }
-.scen-pair i{ font-style:normal; color:var(--rule-strong); font-weight:800 }
+.scen-pair i{ font-style:normal; color:var(--ink-3); font-weight:800 }
 .scen-text p{ margin:0 0 8px; font-size:.88rem; line-height:1.6; color:var(--ink-2) }
 .scen-text b{ color:var(--ink) }
 .arch tr.actual.cf td{ background:#8A6318 }
@@ -546,7 +546,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .mstep-body>p{ margin:0; max-width:78ch; font-size:1rem; line-height:1.7; color:var(--ink-2) }
 .mlive{ display:flex; flex-wrap:wrap; gap:10px 32px; padding:14px 20px; background:#fff; border:1px solid var(--rule); border-radius:14px }
 .mlive>div{ display:grid; gap:2px }
-.mlive b{ font-size:1.5rem; font-weight:800; line-height:1.1; color:var(--navy) }
+.mlive b{ font-size:1.5rem; font-weight:800; line-height:1.1; color:var(--navy-text) }
 .mlive span{ font-size:.74rem; font-weight:700; color:var(--ink-3) }
 .mstep-outlets{ margin:0; gap:10px }
 .mstep-outlets span{ width:52px; height:52px; border-radius:12px }
@@ -557,7 +557,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .mtable tbody th{ font-weight:800 }
 .sources-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px }
 .sources-group{ padding:18px 20px; background:#fff; border:1px solid var(--rule); border-radius:16px }
-.sources-group h3{ margin:0 0 10px; font-size:1rem; color:var(--navy) }
+.sources-group h3{ margin:0 0 10px; font-size:1rem; color:var(--navy-text) }
 .sources-group ul{ list-style:none; margin:0; padding:0; display:grid; gap:10px }
 .sources-group li{ display:grid; gap:2px; font-size:.86rem }
 .sources-group li a{ font-weight:700; color:var(--ink); text-decoration:none }
@@ -599,7 +599,7 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .leaflet-host .leaflet-control-attribution{ font-size:.66rem; direction:ltr }
 .leaflet-host .leaflet-attribution-flag{ display:none !important }
 .leaflet-host .leaflet-control-zoom{ border:1px solid var(--rule) }
-.leaflet-host .leaflet-control-zoom a{ color:var(--navy); font-weight:700 }
+.leaflet-host .leaflet-control-zoom a{ color:var(--navy-text); font-weight:700 }
 .map-tip{ direction:rtl; text-align:right; font-family:var(--sans); font-size:.82rem; border-radius:8px; border:1px solid var(--rule); box-shadow:var(--shadow-s) }
 @media (max-width:900px){ .leaflet-host{ height:460px } }
 

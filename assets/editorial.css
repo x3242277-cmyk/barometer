@@ -132,7 +132,7 @@ button,select,input{max-width:100%}
 .method-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:35px}
 .method-intro h2{font-size:clamp(1.65rem,3vw,2.5rem);line-height:1.3;font-weight:700;letter-spacing:-.04em;color:#FFF}
 .home-method .kicker{color:var(--apricot)}
-.home-method .btn{background:var(--apricot);color:var(--navy);border:0;border-radius:10px;min-height:46px;font-size:.875rem;gap:25px;box-shadow:none}
+.home-method .btn{background:var(--apricot);color:var(--navy-text);border:0;border-radius:10px;min-height:46px;font-size:.875rem;gap:25px;box-shadow:none}
 #view-home .pipeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;width:100%;margin:0;border:1px solid #FFFFFF25;border-radius:16px;overflow:hidden;background:#FFFFFF04}
 #view-home .pipe-node{display:flex;flex-direction:column;gap:12px;padding:23px 21px;text-align:start;background:transparent;border:0;border-inline-end:1px solid #FFFFFF25;border-radius:0;box-shadow:none;min-width:0;transform:none;color:#FFF;transition:background .2s}
 #view-home .pipe-node:last-child{border:0}

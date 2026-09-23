@@ -12,15 +12,28 @@ const avg = a => a.length ? a.reduce((s, v) => s + v, 0) / a.length : 0;
 const sd  = a => Math.sqrt(avg(a.map(v => (v - avg(a)) ** 2)));
 const r1  = v => Math.round(v * 10) / 10;
 const pct = v => `${r1(v)}%`;
+/* בוחר טקסט לבן או כהה, לפי מה שנותן ניגודיות טובה יותר על רקע בצבע נתון —
+   כדי שתגי מספרים על רקע צבע המפלגה (למשל .ptile-num) יישארו קריאים גם
+   למפלגות בגוון בהיר וגם בגוון כהה. */
+const textOnColor = hex => {
+  const h = hex.replace("#", ""), n = parseInt(h, 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lum = 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+  const cr = (l1, l2) => (l1 > l2 ? (l1 + 0.05) / (l2 + 0.05) : (l2 + 0.05) / (l1 + 0.05));
+  return cr(lum, 1) > cr(lum, 0) ? "#fff" : "#141A21";
+};
 const fmt = n => new Intl.NumberFormat("he-IL").format(Math.round(n));
 const heDate = iso => { const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleDateString("he-IL", { day:"2-digit", month:"2-digit", year:"numeric" }); };
 
+/* צבעי הגושים כוילים לקרוא גם כטקסט על רקע כהה וגם כרקע עם טקסט לבן
+   (--paper הכהה של האתר וגם white); כל גוון נבחר כך ששני הכיוונים ≥3.8:1. */
 const BLOCS = {
-  Right:   { he: "ימין",  short: "ימין",  color: "#17457F" },
-  Left:    { he: "מרכז–שמאל",  short: "מרכז–שמאל",  color: "#C0392B" },
-  Haredi:  { he: "חרדים", short: "חרדים", color: "#5B4B8A" },
-  Arabs:   { he: "ערבים", short: "ערבים", color: "#2E8467" },
-  Unknown: { he: "לא משויך", short: "אחר", color: "#96A0AB" }
+  Right:   { he: "ימין",  short: "ימין",  color: "#3A81DB" },
+  Left:    { he: "מרכז–שמאל",  short: "מרכז–שמאל",  color: "#D65548" },
+  Haredi:  { he: "חרדים", short: "חרדים", color: "#8777B5" },
+  Arabs:   { he: "ערבים", short: "ערבים", color: "#328F70" },
+  Unknown: { he: "לא משויך", short: "אחר", color: "#727C87" }
 };
 /* בפס RTL הקטע הראשון במערך נופל בקצה הימני — לכן "לא משויך" באמצע,
    4th מהצד השמאלי אבל 2nd מהימין, ולא בקצה החיצוני. */
@@ -752,7 +765,7 @@ function renderWallPoster(seats, est, blocTot, belowEntries) {
   const ids = Object.keys(seats).filter(id => seats[id] > 0).sort((a, b) => seats[b] - seats[a] || (est.parties[b] || 0) - (est.parties[a] || 0));
   const tile = (id, n, sub) => {
     const m = partyMeta(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER, d = sub ? null : homeDelta(id);
-    return `<button type="button" class="ptile${sub ? " is-below" : ""}" style="--c:${partyHue(id)}" data-focus-party="${esc(id)}" aria-label="${esc(m.name)}, ${sub ? `מתחת לאחוז החסימה, כ־${sub}` : `${n} מנדטים`}. מעבר לסקרים">
+    return `<button type="button" class="ptile${sub ? " is-below" : ""}" style="--c:${partyHue(id)};--c-ink:${textOnColor(partyHue(id))}" data-focus-party="${esc(id)}" aria-label="${esc(m.name)}, ${sub ? `מתחת לאחוז החסימה, כ־${sub}` : `${n} מנדטים`}. מעבר לסקרים">
       <span class="ptile-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "140px")} alt="" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
       <b class="ptile-num num">${sub ? sub : n}</b><span class="ptile-name">${esc(m.name)}</span><span class="ptile-leader">${esc(PARTY_LEADER[normId(id)] || "")}</span>${d ? `<small class="ptile-delta ${d.cls}">${esc(d.txt)}</small>` : ""}</button>`;
   };
@@ -1444,7 +1457,7 @@ function renderRegions() {
   // ---- clusters ----
   $("#clusters-title").textContent = R.clusters.title;
   $("#clusters-desc").textContent = R.clusters.desc;
-  $("#clusters-note").innerHTML = `${esc(R.clusters.note)} <a href="${esc(R.clusters.source.url)}" target="_blank" rel="noopener" style="color:var(--navy)">${esc(R.clusters.source.name)} ↗</a>`;
+  $("#clusters-note").innerHTML = `${esc(R.clusters.note)} <a href="${esc(R.clusters.source.url)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(R.clusters.source.name)} ↗</a>`;
   $("#cluster-cards").innerHTML = R.clusters.groups.map(g => `<article class="sector" style="--c:${g.color}">
       <h3 style="font-size:1rem">${esc(g.name)}</h3>
       <div class="lbars" style="margin-top:12px">${g.parties.map(p => `<div class="lbar" style="--c:${R.partyColors[p.id] || "#96A0AB"}">
@@ -2592,7 +2605,7 @@ function renderHaredi() {
 
   $("#haredi-sources").innerHTML = Object.values(H.sources).map(x =>
     `<a class="card pad" href="${esc(x.url)}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;justify-content:space-between;gap:14px;align-items:center">
-      <span style="font-size:.9rem;font-weight:600">${esc(x.name)}</span><span aria-hidden="true" style="color:var(--navy)">↗</span></a>`).join("");
+      <span style="font-size:.9rem;font-weight:600">${esc(x.name)}</span><span aria-hidden="true" style="color:var(--gold)">↗</span></a>`).join("");
 
   /* wiring */
   const wire = (id, key) => $(id).addEventListener("change", e => { S[key] = Number(e.target.value); renderHaredi(); $(id)?.focus(); });

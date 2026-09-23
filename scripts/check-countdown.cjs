@@ -6,6 +6,7 @@ ctx.document={querySelectorAll(){return boxes;}};
 const before=Date.parse('2026-10-27T21:59:59+02:00'),at=Date.parse('2026-10-27T22:00:00+02:00');
 assert.equal(vm.runInContext(`renderNightCountdown(${before})`,ctx),true);
 assert(boxes.every(b=>b.innerHTML.includes('00</b><span>שניות')===false && b.classes.has('night-waiting') && !b.hidden));
+assert(boxes.every(b=>b.innerHTML.includes('class="night-clock" dir="ltr"') && b.innerHTML.indexOf('ימים')<b.innerHTML.indexOf('שעות') && b.innerHTML.indexOf('שעות')<b.innerHTML.indexOf('דקות') && b.innerHTML.indexOf('דקות')<b.innerHTML.indexOf('שניות')));
 assert.equal(vm.runInContext(`renderNightCountdown(${at})`,ctx),false);
 assert(boxes.every(b=>!b.classes.has('night-waiting') && b.hidden));
 console.log('Passed: election-night contents remain hidden until 22:00 Israel time, then unlock at the exact deadline.');

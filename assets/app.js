@@ -774,6 +774,7 @@ function renderWallPoster(seats, est, blocTot, belowEntries) {
 
 /* הפתיח: חמשת המכלולים שנבדקים — כל אחד עם מספר חי מהנתונים — שמתנקזים לתחזית אחת */
 function renderHomePipeline() {
+  if (typeof window !== 'undefined') window.initPipelineStory?.();
   const box = $("#home-pipeline"); if (!box) return;
   const nodes = [];
   try {
@@ -1945,7 +1946,7 @@ function renderNightCountdown(now = Date.now()) {
   document.querySelectorAll('[data-night-countdown]').forEach(box => {
     box.closest('.view').classList.toggle('night-waiting', waiting);
     box.hidden = !waiting;
-    if (waiting) box.innerHTML = `<p class="kicker">ליל הבחירות · הכנסת ה־26</p><h2>נפגשים במדגמים</h2><p>ביום הבחירות, 27 באוקטובר 2026, בשעה <strong>22:00</strong> — שעון ישראל.</p><div class="night-clock" role="timer" aria-live="off" aria-label="הזמן שנותר לפרסום המדגמים">${[[t.days,'ימים'],[t.hours,'שעות'],[t.minutes,'דקות'],[t.seconds,'שניות']].map(([value,label])=>`<div><b>${String(value).padStart(2,'0')}</b><span>${label}</span></div>`).join('')}</div><p class="night-note">המדגמים יופיעו כאן עם פרסומם, לאחר סגירת הקלפיות.</p><a class="btn ghost" href="#/">בינתיים, לתמונת המצב</a>`;
+    if (waiting) box.innerHTML = `<p class="kicker">ליל הבחירות · הכנסת ה־26</p><h2>נפגשים במדגמים</h2><p>ביום הבחירות, 27 באוקטובר 2026, בשעה <strong>22:00</strong> — שעון ישראל.</p><div class="night-clock" dir="ltr" role="timer" aria-live="off" aria-label="הזמן שנותר לפרסום המדגמים">${[[t.days,'ימים'],[t.hours,'שעות'],[t.minutes,'דקות'],[t.seconds,'שניות']].map(([value,label])=>`<div><b>${String(value).padStart(2,'0')}</b><span dir="rtl">${label}</span></div>`).join('')}</div><p class="night-note">המדגמים יופיעו כאן עם פרסומם, לאחר סגירת הקלפיות.</p><a class="btn ghost" href="#/">בינתיים, לתמונת המצב</a>`;
   });
   return waiting;
 }

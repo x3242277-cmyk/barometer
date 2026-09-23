@@ -20,4 +20,4 @@ $('#poll-form').onsubmit=e=>{e.preventDefault();pending={kind:$('#entry-kind').v
 $('#edit-entry').onclick=()=>{$('#review').hidden=true;$('#poll-form').hidden=false;pending=null;};
 $('#publish-entry').onclick=async()=>{if(!pending||busy)return;busy=true;$('#publish-entry').disabled=true;status('שומר את הנתונים…');try{const result=await api('/api/admin/save',pending);status(result.message);pending=null;$('#review').hidden=true;$('#poll-form').hidden=false;buildForm();$('#seat-total').textContent='0 / 120 מנדטים';$('#seat-total').classList.remove('valid');$('#review-entry').disabled=true;await loadState();}catch(e){status(e.message,true);}finally{busy=false;$('#publish-entry').disabled=false;}};
 // Reuse an authenticated HttpOnly session; no secret is stored in JS storage.
-api('/api/admin/state').then(async data=>{config=data;await enter();}).catch(()=>{});
+api('/api/admin/state').then(async data=>{config=data;await enter();}).catch(()=>{$('#login').hidden=false;});

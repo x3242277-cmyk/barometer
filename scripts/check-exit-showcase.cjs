@@ -18,6 +18,12 @@ const NativeDate=Date;
 ctx.Date=class extends NativeDate{static now(){return NativeDate.parse('2026-10-27T22:00:01+02:00')}};
 const published=vm.runInContext('exitSlideHTML(EXIT_SHOWCASE_CHANNELS[1],"current",fixture)',ctx);
 assert(published.includes('נתוני הגושים')&&published.includes('120')&&!published.includes('מחכים למדגם'));
-for(const path of channels.filter(c=>c.photo&&c.id!=='channel_13').map(c=>c.photo))assert(fs.existsSync(path),path);
+for(const channel of channels){assert(fs.existsSync(channel.logo),channel.logo);if(channel.photo)assert(fs.existsSync(channel.photo),channel.photo);}
+const channel13=vm.runInContext('exitSlideHTML(EXIT_SHOWCASE_CHANNELS[2],"photo",{})',ctx);
+assert(channel13.includes('assets/exit-2022-channel13.png')&&!channel13.includes('שחזור'));
+const cardsSource=fs.readFileSync('assets/app.js','utf8');
+assert(cardsSource.includes('<span class="es-channel-logo"><img')&&!cardsSource.includes('class="es-channel-mark"'));
+assert(!cardsSource.includes('class="es-progress"')&&!cardsSource.includes('class="es-dots"'));
+assert(fs.readFileSync('assets/exit-showcase.css','utf8').includes('grid-template-columns:repeat(5,minmax(0,1fr))'));
 assert(fs.readFileSync('index.html','utf8').includes('לא יתקיים שידור חי באתר'));
 console.log('Passed: five publisher screens, distinct 2022 splits, two-screen i24NEWS, equal slide duration, and channel-specific 2026 lookup.');

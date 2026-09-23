@@ -28,9 +28,9 @@ const electionBackdropDataUri = `data:image/png;base64,${electionBackdrop.toStri
 css = css.replace(/url\(\s*(['"]?)(?:\.\/|assets\/)?election-knesset\.png(?:\?[^'"\)\s]*)?\1\s*\)/g, `url("${electionBackdropDataUri}")`);
 const scripts = ["scenario", "upgrade", "analytics", "explore", "app", "intro", "pipeline", "inline-admin", "election-tools", "election"];
 let js = (await Promise.all(scripts.map(name => rd(`assets/${name}.js`)))).join("\n");
-for (const file of ["exit-2022-kan11.png","exit-2022-channel12.png","exit-2022-channel14.png","election-knesset.png","logos/i24news.png"]) {
+for (const file of ["exit-2022-kan11.png","exit-2022-channel12.png","exit-2022-channel13.png","exit-2022-channel14.png","logos/kan11.svg","logos/channel12.svg","logos/channel13.svg","logos/channel14.png","logos/i24news.png"]) {
   const image = await readFile(path.join(ROOT, "assets", file));
-  js = js.replaceAll(`assets/${file}`, `data:image/png;base64,${image.toString("base64")}`);
+  js = js.replaceAll(`assets/${file}`, `data:image/${file.endsWith('.svg')?'svg+xml':'png'};base64,${image.toString("base64")}`);
 }
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
 const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json", "data/polls-archive.json"];
@@ -60,6 +60,7 @@ if (data["data/pollsters.json"]) {
 const logo = (await rd("assets/logo.svg")).replace(/\s+/g, " ").trim();
 const logoDataUri = "data:image/svg+xml;utf8," + encodeURIComponent(logo);
 const electionMarkDataUri = "data:image/svg+xml;base64," + Buffer.from(await rd("assets/election-mark.svg")).toString("base64");
+css = css.replace(/url\(['"]?logo\.svg['"]?\)/g, `url("${logoDataUri}")`);
 
 const inlineData = `<script>window.__BAROMETER_DATA__=${JSON.stringify(data).replace(/</g, "\\u003c")};<\/script>`;
 const leafletTags = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"><\/script>`;

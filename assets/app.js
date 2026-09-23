@@ -1940,11 +1940,11 @@ function liveBlocCounts(parties) {
 }
 
 const EXIT_SHOWCASE_CHANNELS = [
-  {id:"kan_news",name:"כאן 11",short:"11",year:[62,54,4],labels:["גוש נתניהו","גוש לפיד","חד״ש־תע״ל"],photo:"assets/exit-2022-kan11.png"},
-  {id:"channel_12",name:"חדשות 12",short:"12",year:[61,55,4],labels:["גוש נתניהו","הקואליציה הנוכחית","חד״ש־תע״ל"],photo:"assets/exit-2022-channel12.png"},
-  {id:"channel_13",name:"חדשות 13",short:"13",year:[62,54,4],labels:["גוש נתניהו","הממשלה הנוכחית","לא מוצג בצילום"],photo:"assets/election-knesset.png",recreated:true},
-  {id:"channel_14",name:"ערוץ 14",short:"14",year:[61,59],labels:["גוש נתניהו","גוש לפיד והערבים"],photo:"assets/exit-2022-channel14.png"},
-  {id:"i24news",name:"i24NEWS",short:"i24",photo:"assets/election-knesset.png"}
+  {id:"kan_news",name:"כאן 11",logo:"assets/logos/kan11.svg",year:[62,54,4],labels:["גוש נתניהו","גוש לפיד","חד״ש־תע״ל"],photo:"assets/exit-2022-kan11.png"},
+  {id:"channel_12",name:"חדשות 12",logo:"assets/logos/channel12.svg",year:[61,55,4],labels:["גוש נתניהו","הקואליציה הנוכחית","חד״ש־תע״ל"],photo:"assets/exit-2022-channel12.png"},
+  {id:"channel_13",name:"חדשות 13",logo:"assets/logos/channel13.svg",year:[62,54,4],labels:["גוש נתניהו","הממשלה הנוכחית","חד״ש־תע״ל"],photo:"assets/exit-2022-channel13.png"},
+  {id:"channel_14",name:"ערוץ 14",logo:"assets/logos/channel14.png",year:[61,59],labels:["גוש נתניהו","גוש לפיד והערבים"],photo:"assets/exit-2022-channel14.png"},
+  {id:"i24news",name:"i24NEWS",logo:"assets/logos/i24news.png"}
 ];
 const EXIT_SLIDE_MS = 9000;
 const exitShowcaseState = {signature:"",cards:new Map(),timer:null};
@@ -1972,22 +1972,18 @@ function exitSlideHTML(channel, kind, live) {
     return `<div class="es-content es-waiting"><span class="es-eyebrow">מדגם 2026 · ${esc(channel.name)}</span><div class="es-wait-icon" aria-hidden="true">26</div><h3>${Date.now()<Date.parse(ELECTION_TIMELINE.exitPolls)?"מחכים למדגם 2026":"ממתינים לנתוני המדגם"}</h3><p>חלוקת הגושים תופיע כאן עם פרסום הנתונים בערוץ.</p></div>`;
   }
   if(channel.id==="i24news") return `<div class="es-content es-brand es-brand-i24"><span class="es-eyebrow">מסך הערוץ</span><img src="assets/logos/i24news.png" alt="סמל i24NEWS" loading="lazy"><h3>i24NEWS</h3><p>מדגם ליל הבחירות</p></div>`;
-  return `<div class="es-photo${channel.recreated?" es-recreated":""}"><img src="${channel.photo}" alt="${channel.recreated?"רקע הכנסת לייצוג מסך חדשות 13":"צילום מדגם 2022 של "+channel.name}" loading="lazy">${channel.recreated?'<div class="es-recreated-numbers"><span><b>62</b>גוש נתניהו</span><span><b>54</b>הממשלה הנוכחית</span></div>':''}<div class="es-photo-caption"><span class="es-eyebrow">${channel.recreated?"שחזור בהשראת צילום המדגם":"צילום מסך ממדגם 2022"}</span><b>${esc(channel.name)}</b></div></div>`;
+  return `<div class="es-photo"><img src="${channel.photo}" alt="צילום מדגם 2022 של ${esc(channel.name)}" loading="lazy"><div class="es-photo-caption"><span class="es-eyebrow">צילום מסך ממדגם 2022</span><b>${esc(channel.name)}</b></div></div>`;
 }
 
 function updateExitShowcaseSlides() {
   const grid=$("#exit-showcase-grid");
   if(!grid) return;
-  const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const now=Date.now();
   for(const channel of EXIT_SHOWCASE_CHANNELS) {
     const state=exitShowcaseState.cards.get(channel.id),card=grid.querySelector(`[data-exit-channel="${channel.id}"]`);
     if(!state||!card) continue;
-    if(!reduced && now-state.started>=EXIT_SLIDE_MS) {state.index=(state.index+Math.floor((now-state.started)/EXIT_SLIDE_MS))%state.count;state.started=now;}
+    if(now-state.started>=EXIT_SLIDE_MS) {state.index=(state.index+Math.floor((now-state.started)/EXIT_SLIDE_MS))%state.count;state.started=now;}
     card.querySelectorAll('.es-slide').forEach((slide,i)=>{slide.hidden=i!==state.index;});
-    card.querySelectorAll('.es-dot').forEach((dot,i)=>{dot.setAttribute('aria-current',i===state.index?'true':'false');});
-    const bar=card.querySelector('.es-progress>span');
-    if(bar) bar.style.width=reduced?'0%':`${Math.min(100,100*(now-state.started)/EXIT_SLIDE_MS)}%`;
   }
 }
 
@@ -2001,16 +1997,10 @@ function renderExitShowcase(live) {
       const kinds=channel.year?["historical","current","photo"]:["current","photo"];
       if(!exitShowcaseState.cards.has(channel.id)) exitShowcaseState.cards.set(channel.id,{index:0,started:Date.now(),count:kinds.length});
       return `<article class="es-card" data-exit-channel="${channel.id}" aria-label="${esc(channel.name)}">
-        <header><span class="es-channel-mark">${esc(channel.short)}</span><b>${esc(channel.name)}</b><small>מדגם 2026</small></header>
+        <header><span class="es-channel-logo"><img src="${channel.logo}" alt="לוגו ${esc(channel.name)}"></span><b>${esc(channel.name)}</b></header>
         <div class="es-stage">${kinds.map((kind,i)=>`<div class="es-slide" data-kind="${kind}" ${i?'hidden':''}>${exitSlideHTML(channel,kind,live)}</div>`).join('')}</div>
-        <div class="es-controls"><div class="es-dots" role="group" aria-label="מסכים של ${esc(channel.name)}">${kinds.map((kind,i)=>`<button type="button" class="es-dot" data-slide="${i}" aria-label="${kind==='historical'?'מדגם 2022':kind==='current'?'מדגם 2026':'תמונת הערוץ'}"></button>`).join('')}</div><span class="es-screen-count">${kinds.length} מסכים</span></div>
-        <div class="es-progress" aria-hidden="true"><span></span></div>
       </article>`;
     }).join('');
-    grid.querySelectorAll('.es-dot').forEach(dot=>dot.addEventListener('click',()=>{
-      const card=dot.closest('.es-card'),state=exitShowcaseState.cards.get(card.dataset.exitChannel);
-      state.index=Number(dot.dataset.slide);state.started=Date.now();updateExitShowcaseSlides();
-    }));
   }
   updateExitShowcaseSlides();
   if(!exitShowcaseState.timer) exitShowcaseState.timer=setInterval(updateExitShowcaseSlides,250);

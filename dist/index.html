@@ -3033,11 +3033,15 @@ body{background:var(--paper);color:var(--ink)}
 .cover-image{position:absolute;inset:0;z-index:-2;background-image:var(--knesset-scene);background-size:cover;background-position:center 60%}
 .cover-image,.exit-scene-image{animation:scene-breathe 26s ease-in-out infinite alternate;transform-origin:50% 62%}
 .scene-motion-patch{position:absolute;pointer-events:none;background-image:inherit;background-repeat:no-repeat;will-change:transform}
-.scene-motion-patch--flag{filter:url(#scene-flag-wind);-webkit-mask-image:radial-gradient(ellipse 68% 65% at 48% 50%,#000 50%,transparent 100%);mask-image:radial-gradient(ellipse 68% 65% at 48% 50%,#000 50%,transparent 100%);transform-origin:20% 55%;animation:scene-flag-flutter 3.7s ease-in-out infinite}
-.scene-motion-patch--tree{filter:url(#scene-tree-wind);-webkit-mask-image:radial-gradient(ellipse 72% 70% at 50% 54%,#000 44%,transparent 100%);mask-image:radial-gradient(ellipse 72% 70% at 50% 54%,#000 44%,transparent 100%);transform-origin:50% 95%;animation:scene-tree-sway 8s ease-in-out infinite alternate}
+.scene-motion-patch--flag-matte{-webkit-mask-image:radial-gradient(ellipse 72% 75% at 48% 49%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 72% 75% at 48% 49%,#000 58%,transparent 100%);animation:scene-flag-enter .7s ease both}
+.scene-photo-flag{position:absolute;pointer-events:none;overflow:visible;animation:scene-flag-enter .7s ease both}
+.scene-photo-flag svg{display:block;width:100%;height:100%;filter:drop-shadow(1px 2px 2px #07172975)}
+.scene-flag-cloth{transform-box:view-box;transform-origin:2px 29px;animation:scene-flag-flutter 3.7s ease-in-out infinite}
+.scene-motion-patch--tree{-webkit-mask-image:radial-gradient(ellipse 72% 70% at 50% 54%,#000 44%,transparent 100%);mask-image:radial-gradient(ellipse 72% 70% at 50% 54%,#000 44%,transparent 100%);transform-origin:50% 95%;animation:scene-tree-sway 8s ease-in-out infinite alternate}
 .scene-motion-patch--tree-right{animation-delay:-3.3s;animation-duration:10s}
 @keyframes scene-breathe{from{transform:scale(1) translate3d(0,0,0)}to{transform:scale(1.025) translate3d(.3%,.15%,0)}}
-@keyframes scene-flag-flutter{0%,100%{transform:skewY(0deg) scaleX(1)}25%{transform:skewY(.7deg) scaleX(.985)}52%{transform:skewY(-.8deg) scaleX(1.018)}76%{transform:skewY(.5deg) scaleX(.99)}}
+@keyframes scene-flag-enter{from{opacity:0}to{opacity:1}}
+@keyframes scene-flag-flutter{0%,100%{transform:skewY(0deg) scaleX(1)}25%{transform:skewY(.7deg) scaleX(.93)}52%{transform:skewY(-.6deg) scaleX(1.06)}76%{transform:skewY(.5deg) scaleX(.97)}}
 @keyframes scene-tree-sway{from{transform:rotate(-.28deg) translateX(-1px)}to{transform:rotate(.28deg) translateX(1px)}}
 .election-cover::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(270deg,#081522f5 0%,#081522d9 24%,#08152265 50%,#08152208 75%),linear-gradient(0deg,#081522 0%,#08152200 30%)}
 .cover-content{padding-top:45px;padding-bottom:26px;position:relative}
@@ -3137,7 +3141,7 @@ body{background:var(--paper);color:var(--ink)}
 @media(max-width:1190px){:root{--gutter:48px}.masthead-in{gap:15px}.masthead-side .stamp{display:none}.mainnav .tab{font-size:.76rem;padding-inline:8px}.brand-txt strong{font-size:1.5rem}.brand img{width:33px}.election-hero{gap:32px}.ptiles{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media(max-width:800px){:root{--gutter:32px}.masthead-in{flex-wrap:wrap;min-height:0;gap:8px;padding:12px 0 0}.brand{margin:0}.brand-txt strong{font-size:1.45rem}.brand-txt span{font-size:.56rem}.masthead-side{margin-inline-start:auto}.mainnav{order:3;flex:0 0 100%;overflow-x:auto}.mainnav .tabs{display:flex;flex-wrap:nowrap;justify-content:flex-start;min-width:max-content;gap:8px}.mainnav .tab{font-size:.74rem;padding:8px 10px;min-height:41px}.mainnav .tab::after{bottom:0}#view-home .election-cover{min-height:450px}.cover-content{padding-top:32px}.cover-image{background-position:40% 62%}.election-cover::after{background:linear-gradient(270deg,#081522ed,#081522ac 45%,#0815224a),linear-gradient(0deg,#081522,transparent 50%)}#election-title{font-size:clamp(3.5rem,9.5vw,5.4rem)}.cover-credit{font-size:.5rem;left:16px;bottom:9px}.election-hero{grid-template-columns:1fr;gap:24px;padding:24px 0}.election-copy{max-width:100%}#view-home #verdict-head{font-size:2.4rem;margin-bottom:12px}#view-home #verdict-head br{display:none}.forecast-headline{max-width:100%;font-size:.88rem}.hero-description{max-width:60ch;margin:7px 0 15px}.election-visual{width:100%;max-width:none;padding:20px}.seatmap svg{max-width:430px}#view-home .verdict-in{padding:18px 20px 0}.verdict-top .edition-label{display:none}#view-home .home-forecast-controls{gap:12px;align-items:flex-start}#view-home .home-history-pick{flex-wrap:wrap;align-items:center}.board-title{flex-wrap:wrap;gap:10px}.board-title>p{display:none}.board-title .wall-toggle{margin-inline-start:auto}.wall{grid-template-columns:1fr}.ptiles{grid-template-columns:repeat(4,minmax(0,1fr))}#view-home .pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}#view-home .pipe-node{border-bottom:1px solid #2b4054}#view-home .pipe-node:last-child{grid-column:1/-1}.method-intro{align-items:start}.method-intro h2{font-size:1.4rem}.method-intro .btn{font-size:.7rem;gap:10px;padding:8px 12px}}
 @media(max-width:480px){.brand-txt strong{font-size:1.4rem}.cover-edition{font-size:.65rem;gap:9px}.cover-content{padding-top:28px}#view-home .election-cover{min-height:460px}#election-title{font-size:3.35rem;margin-top:18px}.cover-tagline{font-size:1.22rem;margin:9px 0}.cover-points li{font-size:.79rem}.cover-image{background-position:32% 65%;opacity:.8}.cover-actions{margin-top:21px;gap:8px}.cover-actions button{font-size:.73rem;gap:20px;padding:10px 13px}#view-home .election-cover .election-countdown{gap:22px;margin-top:28px;padding-top:18px}.election-cover .cd-head h3{font-size:.68rem}.election-cover .countdown-cells .num{font-size:1.85rem}#view-home .verdict-in{padding-inline:15px}#view-home .verdict .eyebrow{font-size:.63rem}#view-home #verdict-head{font-size:1.85rem}.election-visual{padding:16px 12px}.visual-topline{font-size:.76rem}.visual-topline>span:last-child{font-size:.6rem}.sm-bloc b{font-size:1.9rem}.sm-bloc span{font-size:.58rem}.sm-bloc.mid b{font-size:1.6rem}.board-title h2{font-size:1.3rem}.wall-toggle button{font-size:.64rem;padding:6px 8px}#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{padding:15px}.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 9px}.ptile-name{font-size:.76rem}.ptile-leader{font-size:.6rem}.pstrip-lbl{width:100%}.pgroup{font-size:.69rem;padding:6px 8px}.pstrip-note{font-size:.65rem}.method-intro{display:block}.method-intro .btn{margin-top:18px}#view-home .pipe-node{padding:17px 13px}#view-home .pipe-n{font-size:1.2rem}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.view.on,.cover-image,.exit-scene-image,.scene-motion-patch{animation:none}.scene-motion-patch{filter:none}.cover-actions button{transition:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.view.on,.cover-image,.exit-scene-image,.scene-motion-patch,.scene-photo-flag,.scene-flag-cloth{animation:none}.cover-actions button{transition:none}}
 @media print{.election-cover,.election-coalition{display:none!important}:root{color-scheme:light;--ink:#111;--ink-2:#333;--ink-3:#555;--paper:#fff;--paper-2:#fff;--rule:#ccc}body{background:#fff;color:#111}}
 
 /* Election edition: existing data pages and shared overlays. */
@@ -3785,12 +3789,14 @@ body{background:var(--paper);color:var(--ink)}
   .view :is(.page-intro,.page-head) p:not(.kicker),.view :is(.sec-note,.data-explainer,.board-note){max-width:75ch;line-height:1.75;color:var(--ink-2)}
   .view .kicker{font-size:.85rem;line-height:1.5;font-weight:800;letter-spacing:.01em}
   #view-home .election-cover{min-height:calc(100dvh - var(--masthead-h,64px))}
-  #election-title{font-size:clamp(2.6rem,5vw,4.7rem);max-width:14ch;line-height:1.14}
+  #election-title{font-size:clamp(2.6rem,5vw,4.55rem);max-width:14ch;line-height:1.12}
   .cover-tagline{max-width:33ch;line-height:1.45;font-size:clamp(1.15rem,1.75vw,1.45rem)}
-  .cover-purpose{max-width:49ch;color:#e3eaf1}
-  .cover-points{grid-template-columns:repeat(3,minmax(0,1fr));max-width:720px;gap:10px;margin-top:18px}
-  .cover-points li{min-width:0;border:1px solid #7892a866;background:#10283bcc;border-radius:8px;padding:8px 12px;color:#e5edf3;font-size:.82rem;line-height:1.5}
+  .cover-purpose{max-width:46ch;color:#cbd9e6;line-height:1.7}
+  .cover-points{grid-template-columns:repeat(3,minmax(0,1fr));max-width:600px;gap:14px;margin-top:20px}
+  .cover-points li{min-width:0;border:0;border-top:1px solid #dfbe7680;background:none;border-radius:0;padding:9px 0 0;color:#e2eaf1;font-size:.8rem;font-weight:700;line-height:1.35}
   .cover-points li::before{display:none}
+  .cover-actions{margin-top:24px}
+  .cover-updated{margin-top:10px}
   .cover-updated,.election-cover .countdown-cells em,.election-cover .cd-head h3{color:#c7d7e5}
   .edition-label,#view-home .verdict .eyebrow{color:#c2d2df}
   #view-home .wall .bloc-head h3{color:#c0d0df}
@@ -3833,7 +3839,7 @@ body{background:var(--paper);color:var(--ink)}
   #show{--ink:#172332;--ink-2:#334354;--ink-3:#4d5e70;--rule:#becbd5;--rule-2:#d5dee5}
   #show .signal-step{color:#34485b}
   #show .signal-title{color:#142439}
-  @media(max-width:760px){.cover-points{grid-template-columns:1fr;gap:6px;max-width:50ch}.cover-points li{padding:6px 10px}.cover-purpose{font-size:1rem}.night-clock{gap:8px}.night-clock>div{padding:17px 5px}.night-clock span{font-size:.75rem}}
+  @media(max-width:760px){.cover-points{grid-template-columns:1fr;gap:6px;max-width:50ch}.cover-points li{padding:7px 0 0}.cover-purpose{font-size:1rem}.night-clock{gap:8px}.night-clock>div{padding:17px 5px}.night-clock span{font-size:.75rem}}
   @media(max-width:480px){#election-title{font-size:clamp(2.25rem,9vw,3rem)}.cover-tagline{font-size:1.07rem}.cover-points{display:none}.night-clock b{font-size:clamp(1.7rem,7vw,2.3rem)}.footer-utility{gap:8px}}
 }
 
@@ -3943,16 +3949,16 @@ body:has(#view-live.on)>footer{display:none}
     <div class="cover-image" aria-hidden="true"></div>
     <div class="wrap cover-content">
       <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
-      <h1 id="election-title">בחירות <span dir="ltr">2026</span>: התמונה הגדולה</h1>
+      <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
       <p class="cover-tagline">מהסקרים ועד לשינויים באוכלוסייה — רואים מה באמת עומד מאחורי התחזית.</p>
-      <p class="cover-purpose">ברומטר מחבר סקרים, תוצאות עבר, דיוק המכונים וגידול דמוגרפי. הוא בודק גם תרחישי קצה כמו אחוז החסימה, כדי שתוכלו לראות איך כל מרכיב משנה את התמונה.</p>
+      <p class="cover-purpose">ברומטר משקלל סקרים לפי דיוק המכונים, משווה לבחירות עבר ובודק תרחישי קצה וגידול דמוגרפי — כדי לראות איך כל גורם משנה את חלוקת המנדטים.</p>
       <ul class="cover-points">
-        <li>סקרים ודירוג המכונים מול בחירות העבר</li>
-        <li>תרחישי אחוז החסימה והנחות המודל</li>
-        <li>גידול והצבעה של קבוצות האוכלוסייה</li>
+        <li>סקרים לפי דיוק המכונים</li>
+        <li>נתוני עבר ותרחישי קצה</li>
+        <li>גידול והצבעה של כל אוכלוסייה</li>
       </ul>
-      <p class="cover-updated" id="cover-updated">מכינים את נתוני התחזית…</p>
       <div class="cover-actions"><button type="button" class="cover-primary" data-home-section="forecast-section">לתמונת המנדטים <span aria-hidden="true">↓</span></button><button type="button" class="cover-secondary" data-home-section="election-coalition">בנו קואליציה <span aria-hidden="true">↙</span></button></div>
+      <p class="cover-updated" id="cover-updated">מכינים את נתוני התחזית…</p>
       <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
@@ -8380,18 +8386,39 @@ function renderHaredHistory() {
   }, { passive: false });
 })();
 
-/* The Knesset scene is still a photograph. Small, feathered copies of the
-   flag and foliage let wind move in those areas without shifting the building.
-   Each copy uses the same cached image and tracks background-size: cover. */
+/* A small vector flag replaces the indistinct flag in the photograph; masked
+   copies of the foliage add a little wind without shifting the building.
+   Every overlay tracks the photograph's background-size: cover. */
 (() => {
   'use strict';
   const IMAGE_WIDTH = 1536;
   const IMAGE_HEIGHT = 1024;
   const regions = [
-    { className: 'scene-motion-patch--flag', x: 510, y: 401, width: 90, height: 90 },
+    { className: 'scene-motion-patch--flag-matte', x: 505, y: 399, width: 101, height: 95, sampleX: 630 },
     { className: 'scene-motion-patch--tree', x: 0, y: 548, width: 285, height: 250 },
-    { className: 'scene-motion-patch--tree scene-motion-patch--tree-right', x: 958, y: 600, width: 235, height: 185 }
+    { className: 'scene-motion-patch--tree scene-motion-patch--tree-right', x: 958, y: 600, width: 235, height: 185 },
+    { className: 'scene-photo-flag', x: 525, y: 414, width: 58, height: 89, vector: true }
   ];
+  let flagCount = 0;
+
+  function flagSVG() {
+    const fabric = `scene-flag-fabric-${++flagCount}`;
+    return `<svg viewBox="0 0 58 89" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="${fabric}" x1="0" y1="0" x2="1" y2=".15">
+        <stop offset="0" stop-color="#f3f5f4"/><stop offset=".35" stop-color="#d0d9e1"/>
+        <stop offset=".7" stop-color="#f4f6f4"/><stop offset="1" stop-color="#b8c8d5"/>
+      </linearGradient></defs>
+      <path d="M1.5 2 V86" fill="none" stroke="#d7dfe4" stroke-width="1.7"/>
+      <circle cx="1.5" cy="2" r="1.6" fill="#e9eef0"/>
+      <g class="scene-flag-cloth">
+        <path d="M2 4 C18 5 38 14 57 18 Q55 34 57 53 C40 50 20 43 2 40 Z" fill="url(#${fabric})" stroke="#dce6ec" stroke-width=".7"/>
+        <path d="M3 12 C20 14 38 21 56 25 L56 29 C38 25 20 18 3 16 Z" fill="#174c84"/>
+        <path d="M3 31 C20 34 38 42 56 45 L56 49 C38 46 20 38 3 35 Z" fill="#174c84"/>
+        <path d="M29 22 L35 33 L23 33 Z M29 35 L23 24 L35 24 Z" fill="none" stroke="#1a4d83" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M13 8 C23 16 23 37 13 42 M42 15 C37 25 38 42 44 49" fill="none" stroke="#6f8498" stroke-opacity=".18" stroke-width="4"/>
+      </g>
+    </svg>`;
+  }
 
   function percentage(value) {
     if (!value || value === 'center') return .5;
@@ -8401,32 +8428,13 @@ function renderHaredHistory() {
     return Number.isFinite(number) && value.endsWith('%') ? number / 100 : .5;
   }
 
-  function addWindFilters() {
-    if (document.getElementById('scene-wind-filters')) return;
-    document.body.insertAdjacentHTML('beforeend', `<svg id="scene-wind-filters" xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
-      <defs>
-        <filter id="scene-flag-wind" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.07" numOctaves="1" seed="3" result="wind">
-            <animate attributeName="baseFrequency" values="0.012 0.07;0.019 0.06;0.014 0.085;0.012 0.07" dur="3.7s" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="wind" scale="5" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="scene-tree-wind" x="-10%" y="-10%" width="120%" height="120%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.025 0.023" numOctaves="1" seed="6" result="wind">
-            <animate attributeName="baseFrequency" values="0.025 0.023;0.029 0.019;0.023 0.027;0.025 0.023" dur="8s" repeatCount="indefinite"/>
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="wind" scale="2" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-      </defs>
-    </svg>`);
-  }
-
   function animateScene(host) {
     if (!host) return;
     const patches = regions.map(region => {
       const patch = document.createElement('span');
-      patch.className = 'scene-motion-patch ' + region.className;
+      patch.className = (region.vector ? '' : 'scene-motion-patch ') + region.className;
       patch.setAttribute('aria-hidden', 'true');
+      if (region.vector) patch.innerHTML = flagSVG();
       host.appendChild(patch);
       return { patch, region };
     });
@@ -8447,8 +8455,10 @@ function renderHaredHistory() {
         patch.style.top = `${offsetY + region.y * scale}px`;
         patch.style.width = `${region.width * scale}px`;
         patch.style.height = `${region.height * scale}px`;
-        patch.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
-        patch.style.backgroundPosition = `${-region.x * scale}px ${-region.y * scale}px`;
+        if (!region.vector) {
+          patch.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
+          patch.style.backgroundPosition = `${-(region.sampleX ?? region.x) * scale}px ${-region.y * scale}px`;
+        }
       }
     }
 
@@ -8462,7 +8472,6 @@ function renderHaredHistory() {
     const cover = document.querySelector('.cover-image');
     const exit = document.querySelector('.exit-showcase');
     if (!cover && !exit) return;
-    addWindFilters();
     animateScene(cover);
     if (exit) {
       const backdrop = document.createElement('div');

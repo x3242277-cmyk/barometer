@@ -336,7 +336,7 @@ async function loadCbs() {
   }
   const rows = xlsxRows(buf), head = rows[0], H = n => head.indexOf(n);
   const out = new Map();
-  for (const r of rows.slice(1)) out.set(Number(r[H("סמל יישוב")]), { nr: Number(r[H("אזור טבעי")]) || 0, nafa: r[H("שם נפה")] || "", mun: r[H("שם מעמד מונציפאלי")] || "", rel: Number(r[H("דת יישוב")]) || 0 });
+  for (const r of rows.slice(1)) out.set(Number(r[H("סמל יישוב")]), { nr: Number(r[H("אזור טבעי")]) || 0, nafa: r[H("שם נפה")] || "", mun: r[H("שם מעמד מונציפאלי")] || "", rel: Number(r[H("דת יישוב")]) || 0, form: Number(r[H("צורת יישוב שוטפת")]) || 0 });
   return out;
 }
 /* שמות האזורים הטבעיים (קודי הלמ״ס) */
@@ -371,7 +371,9 @@ function buildRegions(sites, own, R, cbs) {
     }
   }
   const info = sites.map(s => cbs.get(s.code) || { nr: 0, nafa: "", mun: "", rel: 0 });
-  const sector = i => sites[i].a > .5 ? (/באר שבע/.test(info[i].nafa) ? "bedouin" : "arab") : "jewish";
+  /* מגזר ונטייה: ערבי / בדואי, ויהודי — מחולק לפי מי שמוביל ביישוב ב־2022, כדי
+     שאזור כמו קיבוצי עוטף עזה לא יתמזג עם שדרות ונתיבות רק בגלל הקרבה */
+  const sector = i => sites[i].a > .5 ? (/באר שבע/.test(info[i].nafa) ? "bedouin" : "arab") : sites[i].r >= .5 ? "jewish" : "jleft";
   /* מפתח גאוגרפי: אזור טבעי; ביו״ש — המועצה האזורית, או של היישוב הקרוב שיש לו מועצה */
   const geoKey = new Array(n);
   for (let i = 0; i < n; i++) if (info[i].nr) geoKey[i] = "nr:" + info[i].nr; else if (/^מועצה אזורית/.test(info[i].mun)) geoKey[i] = "rc:" + councilName(info[i].mun);
@@ -381,7 +383,7 @@ function buildRegions(sites, own, R, cbs) {
     geoKey[i] = k || "?";
   }
   const keyName = k => k.startsWith("nr:") ? NATURAL[+k.slice(3)] || "אזור " + k.slice(3) : k.startsWith("rc:") ? k.slice(3) : "אזור";
-  const SECTOR_HE = { arab: "יישובים ערביים", bedouin: "בדואים", jewish: "" };
+  const SECTOR_HE = { arab: "יישובים ערביים", bedouin: "בדואים", jewish: "", jleft: "מרכז־שמאל" };
   const groups = [];
   const big = new Set();
   for (let i = 0; i < n; i++) if (sites[i].w >= .75 * T) { big.add(i); groups.push({ members: [i], key: null, sector: sector(i), city: true }); }
@@ -392,7 +394,7 @@ function buildRegions(sites, own, R, cbs) {
   /* קטנות מדי: מתאחדות עם שכן גאוגרפי, קודם מאותו מגזר */
   for (;;) {
     const of = new Int32Array(n).fill(-1); groups.forEach((g, gi) => g.members.forEach(i => { of[i] = gi; }));
-    const small = groups.map((g, gi) => ({ g, gi, w: W(g) })).filter(o => !o.g.city && o.w < .45 * T).sort((a, b) => a.w - b.w)[0];
+    const small = groups.map((g, gi) => ({ g, gi, w: W(g) })).filter(o => !o.g.city && o.w < .2 * T).sort((a, b) => a.w - b.w)[0];
     if (!small) break;
     const border = new Map();
     for (const i of small.g.members) for (const [j, len] of adj[i]) { const gj = of[j]; if (gj >= 0 && gj !== small.gi && !groups[gj].city) border.set(gj, (border.get(gj) || 0) + len); }
@@ -428,8 +430,11 @@ function buildRegions(sites, own, R, cbs) {
     if (g.city) { g.name = null; continue; }
     let name = keyName(g.key) + (g.alsoKey ? " ו" + keyName(g.alsoKey).replace(/^אזור /, "") : "");
     if (SECTOR_HE[g.sector]) name += " – " + SECTOR_HE[g.sector];
-    const tag = g.sector === "bedouin" ? " (בדואים)" : g.sector === "arab" ? " (ערבי)" : "";
+    const tag = g.sector === "bedouin" ? " (בדואים)" : g.sector === "arab" ? " (ערבי)" : g.sector === "jleft" ? " (מרכז־שמאל)" : "";
     g.name = name; g.short = keyName(g.key) + tag;
+    /* אזור שמאל שרוב קולותיו מקיבוצים — "קיבוצי <האזור>" */
+    const kib = g.members.filter(i => info[i].form === 330).reduce((t, i) => t + sites[i].w, 0);
+    if (g.sector === "jleft" && kib > .5 * W(g)) { g.name = "קיבוצי " + keyName(g.key).replace(/^אזור /, ""); g.short = g.name; }
     /* חלק של אזור שהתפצל: "סביבת <היישוב הגדול>" — ולא שם שנשמע כמו העיר עצמה */
     if (g.part) { g.name = name + " · סביבת " + sites[g.members[0]].name; g.short = "סביבת " + sites[g.members[0]].name + tag; }
   }

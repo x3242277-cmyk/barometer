@@ -21,6 +21,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import vm from "node:vm";
+import { inflateRawSync } from "node:zlib";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -272,9 +273,11 @@ function rasterize(land, water) {
   return { mask, GW, GH, X0, Y0 };
 }
 /* כל פיקסל יבשה — ליישוב הקרוב ביותר (חיפוש בדליים של 5 ק״מ) */
-function nearestOwner(R, sites) {
+/* canOwn: מי מחזיק שטח. שבטים בדואיים (דת 3 בלמ״ס) נספרים בקולות של האזור אבל לא
+   מקבלים שטח — הקואורדינטה שלהם היא נקודת רישום, לפעמים עשרות ק״מ ממקום המגורים. */
+function nearestOwner(R, sites, canOwn = () => true) {
   const B = 5, bx = new Map(), key = (i, j) => i * 100000 + j;
-  sites.forEach((s, i) => { const k = key(Math.floor(s.x / B), Math.floor(s.y / B)); if (!bx.has(k)) bx.set(k, []); bx.get(k).push(i); });
+  sites.forEach((s, i) => { if (!canOwn(i)) return; const k = key(Math.floor(s.x / B), Math.floor(s.y / B)); if (!bx.has(k)) bx.set(k, []); bx.get(k).push(i); });
   const own = new Int32Array(R.GW * R.GH).fill(-1);
   for (let gy = 0; gy < R.GH; gy++) for (let gx = 0; gx < R.GW; gx++) {
     const idx = gy * R.GW + gx; if (!R.mask[idx]) continue;
@@ -291,10 +294,74 @@ function nearestOwner(R, sites) {
   }
   return own;
 }
-function buildRegions(sites, own, R) {
-  /* היעד לאזור: 1% מהקולות — בערך מנדט. עיר גדולה מהסף היא אזור בפני עצמה */
+/* ---------- קובץ היישובים של הלמ״ס: אזור טבעי, נפה ומועצה לכל יישוב ----------
+   מקור: data.gov.il, "יישובים בישראל – קובצי יישובים" (bycode2022.xlsx). XLSX
+   הוא ZIP של קובצי XML, ולכן נקרא כאן בלי ספריות. */
+function unzip(buf) {
+  let eocd = buf.length - 22; while (eocd > 0 && buf.readUInt32LE(eocd) !== 0x06054b50) eocd--;
+  if (eocd <= 0) throw new Error("קובץ הלמ״ס אינו XLSX תקין");
+  const n = buf.readUInt16LE(eocd + 10); let p = buf.readUInt32LE(eocd + 16); const files = {};
+  for (let i = 0; i < n; i++) {
+    const method = buf.readUInt16LE(p + 10), csize = buf.readUInt32LE(p + 20), nl = buf.readUInt16LE(p + 28), xl = buf.readUInt16LE(p + 30), cl = buf.readUInt16LE(p + 32), off = buf.readUInt32LE(p + 42);
+    const name = buf.slice(p + 46, p + 46 + nl).toString();
+    const lnl = buf.readUInt16LE(off + 26), lxl = buf.readUInt16LE(off + 28), data = buf.slice(off + 30 + lnl + lxl, off + 30 + lnl + lxl + csize);
+    files[name] = method === 8 ? inflateRawSync(data) : data;
+    p += 46 + nl + xl + cl;
+  }
+  return files;
+}
+const xmlText = s => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, "&");
+function xlsxRows(buf) {
+  const files = unzip(buf);
+  const ss = [...(files["xl/sharedStrings.xml"] || "").toString().matchAll(/<si>([\s\S]*?)<\/si>/g)].map(m => xmlText([...m[1].matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(t => t[1]).join("")));
+  const sheet = Object.keys(files).filter(k => /^xl\/worksheets\/sheet\d+\.xml$/.test(k)).sort()[0];
+  const col = ref => { let c = 0; for (const ch of ref.replace(/\d+/g, "")) c = c * 26 + ch.charCodeAt(0) - 64; return c - 1; };
+  return [...files[sheet].toString().matchAll(/<row[^>]*>([\s\S]*?)<\/row>/g)].map(r => {
+    const row = [];
+    for (const c of r[1].matchAll(/<c r="([A-Z]+\d+)"([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)) {
+      const v = (/<v>([\s\S]*?)<\/v>/.exec(c[3] || "") || [])[1];
+      row[col(c[1])] = /t="s"/.test(c[2]) ? ss[+v] : v != null ? xmlText(v) : "";
+    }
+    return row;
+  });
+}
+const CBS_URL = "https://data.gov.il/dataset/d9b1e04c-426f-4e32-ba40-a1ad9d8748a7/resource/199b15db-3bcb-470e-ba03-73364737e352/download/bycode2022.xlsx";
+async function loadCbs() {
+  const file = argOf("--cbs") || (DIR && path.join(DIR, "bycode2022.xlsx"));
+  let buf;
+  try { buf = await readFile(file); } catch {
+    const res = await fetch(CBS_URL, { headers: UA });
+    if (!res.ok) throw new Error(`קובץ הלמ״ס: ההורדה נכשלה (${res.status})`);
+    buf = Buffer.from(await res.arrayBuffer());
+  }
+  const rows = xlsxRows(buf), head = rows[0], H = n => head.indexOf(n);
+  const out = new Map();
+  for (const r of rows.slice(1)) out.set(Number(r[H("סמל יישוב")]), { nr: Number(r[H("אזור טבעי")]) || 0, nafa: r[H("שם נפה")] || "", mun: r[H("שם מעמד מונציפאלי")] || "", rel: Number(r[H("דת יישוב")]) || 0 });
+  return out;
+}
+/* שמות האזורים הטבעיים (קודי הלמ״ס) */
+const NATURAL = {
+  111: "הרי יהודה", 112: "שפלת יהודה", 211: "עמק החולה", 212: "הגליל העליון המזרחי", 213: "אזור חצור", 214: "הגליל העליון",
+  221: "הכנרות", 222: "הגליל התחתון המזרחי", 231: "עמק בית שאן", 232: "עמק חרוד", 233: "רמת כוכב", 234: "עמק יזרעאל",
+  235: "אזור יקנעם", 236: "רמת מנשה", 237: "הרי נצרת–תירען", 241: "שפרעם ובקעת נטופה", 242: "אזור כרמיאל", 243: "אזור יחיעם",
+  244: "אזור אילון", 245: "אזור נהריה", 246: "אזור עכו", 291: "החרמון", 292: "הגולן הצפוני", 293: "הגולן התיכון",
+  294: "הגולן הדרומי", 311: "אזור חיפה", 321: "חוף הכרמל", 322: "אזור זכרון יעקב", 323: "הר אלכסנדר", 324: "אזור חדרה",
+  411: "מערב השרון", 412: "מזרח השרון", 421: "דרום השרון", 422: "אזור פתח תקווה", 431: "אזור מודיעין", 432: "אזור רמלה",
+  441: "אזור רחובות", 442: "אזור ראשון לציון", 511: "אזור תל אביב", 512: "אזור רמת גן", 513: "אזור חולון",
+  611: "אזור מלאכי", 612: "לכיש", 613: "אזור אשדוד", 614: "אזור אשקלון", 621: "אזור גרר", 622: "הבשור",
+  623: "אזור באר שבע", 624: "ים המלח", 625: "הערבה", 626: "הר הנגב", 627: "הר הנגב הדרומי"
+};
+const councilName = mun => mun.replace(/^מועצה אזורית\s+/, "").replace(/^מטה\s+/, "");
+
+/* ---------- אזורים: אזור טבעי × מגזר ----------
+   עיר גדולה (לפחות 75% מהיעד) — אזור בפני עצמה. שאר היישובים מקובצים לפי
+   האזור הטבעי של הלמ״ס (ביהודה ושומרון, שאין בה אזורים טבעיים — לפי המועצה
+   האזורית), ובתוכו לפי מגזר ההצבעה: יישוב שרוב קולותיו לרשימות הערביות
+   נספר ערבי (ובנפת באר שבע — בדואי). דרוזים שמצביעים לרשימות יהודיות
+   נשארים עם שכניהם היהודים. קבוצה גדולה מדי מתפצלת גאוגרפית; קטנה מדי
+   מתאחדת עם שכן מאותו מגזר. */
+function buildRegions(sites, own, R, cbs) {
   const n = sites.length, T = sites.reduce((s, t) => s + t.w, 0) / REGIONS;
-  /* שכנות בין יישובים — פיקסלים צמודים של יישובים שונים; אורך הגבול בפיקסלים */
   const adj = Array.from({ length: n }, () => new Map());
   for (let gy = 0; gy < R.GH; gy++) for (let gx = 0; gx < R.GW; gx++) {
     const a = own[gy * R.GW + gx]; if (a < 0) continue;
@@ -303,35 +370,72 @@ function buildRegions(sites, own, R) {
       adj[a].set(b, (adj[a].get(b) || 0) + 1); adj[b].set(a, (adj[b].get(a) || 0) + 1);
     }
   }
-  /* אשכולות: יישוב גדול — אזור נעול משלו; הקטנים מתאחדים */
-  const cl = sites.map((s, i) => ({ id: i, members: [i], w: s.w, x: s.x * s.w, y: s.y * s.w, r: s.r * s.w, a: s.a * s.w, locked: s.w >= .75 * T, alive: true }));
-  const of = Int32Array.from({ length: n }, (_, i) => i);
-  const cx = c => c.x / c.w, cy = c => c.y / c.w;
-  const neighbors = c => { const m = new Map(); for (const i of c.members) for (const [j, len] of adj[i]) { const d = of[j]; if (d !== c.id) m.set(d, (m.get(d) || 0) + len); } return m; };
-  const cost = (c, d, len) => Math.hypot(cx(c) - cx(d), cy(c) - cy(d)) * (1 + SIMILARITY * (Math.abs(c.r / c.w - d.r / d.w) + Math.abs(c.a / c.w - d.a / d.w))) / Math.sqrt(1 + len * PX);
-  const merge = (c, d) => {
-    for (const i of d.members) { of[i] = c.id; c.members.push(i); }
-    c.w += d.w; c.x += d.x; c.y += d.y; c.r += d.r; c.a += d.a; d.alive = false;
-  };
-  for (const cap of [1.3, 1.6, 3]) {
-    for (;;) {
-      const open = cl.filter(c => c.alive && !c.locked && c.w < .7 * T).sort((a, b) => a.w - b.w);
-      let done = false;
-      for (const c of open) {
-        let best = null;
-        for (const [d, len] of neighbors(c)) { const D = cl[d]; if (D.locked || D.w + c.w > cap * T) continue; const k = cost(c, D, len); if (!best || k < best.k) best = { D, k }; }
-        if (best) { if (best.D.w >= c.w) merge(best.D, c); else merge(c, best.D); done = true; break; }
-      }
-      if (!done) break;
+  const info = sites.map(s => cbs.get(s.code) || { nr: 0, nafa: "", mun: "", rel: 0 });
+  const sector = i => sites[i].a > .5 ? (/באר שבע/.test(info[i].nafa) ? "bedouin" : "arab") : "jewish";
+  /* מפתח גאוגרפי: אזור טבעי; ביו״ש — המועצה האזורית, או של היישוב הקרוב שיש לו מועצה */
+  const geoKey = new Array(n);
+  for (let i = 0; i < n; i++) if (info[i].nr) geoKey[i] = "nr:" + info[i].nr; else if (/^מועצה אזורית/.test(info[i].mun)) geoKey[i] = "rc:" + councilName(info[i].mun);
+  for (let i = 0; i < n; i++) if (!geoKey[i]) {
+    let best = Infinity, k = null;
+    for (let j = 0; j < n; j++) if (geoKey[j] && !String(geoKey[j]).startsWith("?")) { const d = (sites[i].x - sites[j].x) ** 2 + (sites[i].y - sites[j].y) ** 2; if (d < best) { best = d; k = geoKey[j]; } }
+    geoKey[i] = k || "?";
+  }
+  const keyName = k => k.startsWith("nr:") ? NATURAL[+k.slice(3)] || "אזור " + k.slice(3) : k.startsWith("rc:") ? k.slice(3) : "אזור";
+  const SECTOR_HE = { arab: "יישובים ערביים", bedouin: "בדואים", jewish: "" };
+  const groups = [];
+  const big = new Set();
+  for (let i = 0; i < n; i++) if (sites[i].w >= .75 * T) { big.add(i); groups.push({ members: [i], key: null, sector: sector(i), city: true }); }
+  const byKey = new Map();
+  for (let i = 0; i < n; i++) if (!big.has(i)) { const k = geoKey[i] + "|" + sector(i); if (!byKey.has(k)) byKey.set(k, []); byKey.get(k).push(i); }
+  const W = g => g.members.reduce((s, i) => s + sites[i].w, 0);
+  for (const [k, members] of byKey) groups.push({ members, key: k.split("|")[0], sector: k.split("|")[1] });
+  /* קטנות מדי: מתאחדות עם שכן גאוגרפי, קודם מאותו מגזר */
+  for (;;) {
+    const of = new Int32Array(n).fill(-1); groups.forEach((g, gi) => g.members.forEach(i => { of[i] = gi; }));
+    const small = groups.map((g, gi) => ({ g, gi, w: W(g) })).filter(o => !o.g.city && o.w < .45 * T).sort((a, b) => a.w - b.w)[0];
+    if (!small) break;
+    const border = new Map();
+    for (const i of small.g.members) for (const [j, len] of adj[i]) { const gj = of[j]; if (gj >= 0 && gj !== small.gi && !groups[gj].city) border.set(gj, (border.get(gj) || 0) + len); }
+    let cands = [...border].map(([gj, len]) => ({ gj, len, same: groups[gj].sector === small.g.sector }));
+    if (!cands.length) {                                  // בלי שכן — הקבוצה הקרובה ביותר מאותו מגזר
+      const c = small.g.members.reduce((s, i) => [s[0] + sites[i].x, s[1] + sites[i].y], [0, 0]).map(v => v / small.g.members.length);
+      cands = groups.map((g, gj) => ({ gj, g })).filter(o => o.gj !== small.gi && !o.g.city)
+        .map(o => ({ gj: o.gj, len: -Math.min(...o.g.members.map(i => Math.hypot(sites[i].x - c[0], sites[i].y - c[1]))), same: o.g.sector === small.g.sector }));
     }
+    if (!cands.length) break;
+    cands.sort((a, b) => (b.same - a.same) || (b.len - a.len));
+    const tgt = groups[cands[0].gj];
+    tgt.members.push(...small.g.members);
+    if (W(small.g) > .3 * W(tgt) && small.g.key !== tgt.key) tgt.alsoKey = small.g.key;
+    groups.splice(small.gi, 1);
   }
-  /* שאריות קטנות מאוד בלי שכן פנוי (למשל כלואות בין ערים גדולות) — לאשכול הקרוב */
-  for (const c of cl.filter(c => c.alive && !c.locked && c.w < .3 * T)) {
-    const D = cl.filter(d => d.alive && d !== c && !d.locked).sort((a, b) => Math.hypot(cx(a) - cx(c), cy(a) - cy(c)) - Math.hypot(cx(b) - cx(c), cy(b) - cy(c)))[0];
-    if (D) merge(D, c);
+  /* גדולות מדי: חציה גאוגרפית לפי הציר הארוך, עד שכל חלק ≤ 1.5 מהיעד */
+  const split = g => {
+    if (g.city || W(g) <= 1.5 * T || g.members.length < 2) return [g];
+    const xs = g.members.map(i => sites[i].x), ys = g.members.map(i => sites[i].y);
+    const axis = Math.max(...xs) - Math.min(...xs) > Math.max(...ys) - Math.min(...ys) ? "x" : "y";
+    const sorted = g.members.slice().sort((a, b) => sites[a][axis] - sites[b][axis]);
+    const parts = Math.round(W(g) / T), half = W(g) * Math.floor(parts / 2) / parts;
+    let acc = 0, cut = 0; for (; cut < sorted.length - 1; cut++) { acc += sites[sorted[cut]].w; if (acc >= half) break; }
+    const A = { ...g, members: sorted.slice(0, cut + 1), part: (g.part || "") + (axis === "y" ? "S" : "W") };
+    const B = { ...g, members: sorted.slice(cut + 1), part: (g.part || "") + (axis === "y" ? "N" : "E") };
+    return [...split(A), ...split(B)];
+  };
+  const final = groups.flatMap(split);
+  /* שמות */
+  for (const g of final) {
+    g.members.sort((a, b) => sites[b].w - sites[a].w);
+    if (g.city) { g.name = null; continue; }
+    let name = keyName(g.key) + (g.alsoKey ? " ו" + keyName(g.alsoKey).replace(/^אזור /, "") : "");
+    if (SECTOR_HE[g.sector]) name += " – " + SECTOR_HE[g.sector];
+    const tag = g.sector === "bedouin" ? " (בדואים)" : g.sector === "arab" ? " (ערבי)" : "";
+    g.name = name; g.short = keyName(g.key) + tag;
+    /* חלק של אזור שהתפצל: "סביבת <היישוב הגדול>" — ולא שם שנשמע כמו העיר עצמה */
+    if (g.part) { g.name = name + " · סביבת " + sites[g.members[0]].name; g.short = "סביבת " + sites[g.members[0]].name + tag; }
   }
-  return cl.filter(c => c.alive).map(c => c.members);
+  return final;
 }
+
 /* מעקב גבולות על הרשת, ופישוט קטע־קטע (דגלאס־פוקר) בין צמתים משותפים */
 function traceRegions(label, R, K, tol) {
   const { GW, GH } = R, L = (gx, gy) => (gx < 0 || gy < 0 || gx >= GW || gy >= GH) ? -1 : label[gy * GW + gx];
@@ -361,6 +465,11 @@ function traceRegions(label, R, K, tol) {
         const h = Math.floor(pts.length / 2);
         s = [...dp(pts.slice(0, h + 1), tol).slice(0, -1), ...dp(pts.slice(h), tol)];
       } else s = dp(pts, tol);
+      for (let it = 0; it < 3 && s.length > 2; it++) {
+        const t = [s[0]];
+        for (let i = 0; i < s.length - 1; i++) { const p = s[i], q = s[i + 1]; t.push([.75 * p[0] + .25 * q[0], .75 * p[1] + .25 * q[1]], [.25 * p[0] + .75 * q[0], .25 * p[1] + .75 * q[1]]); }
+        t.push(s[s.length - 1]); s = t;
+      }
       arcCache.set(key, s);
     }
     return rev ? s.slice().reverse() : s;
@@ -444,24 +553,25 @@ const geo = JSON.parse(await readFile(path.join(ROOT, "data/regions.json"), "utf
 const weightOf = l => l.e["2022"]?.[2] || Object.values(l.e).reduce((s, x) => s + x[2], 0) / Object.keys(l.e).length || 1;
 const sites = localities.filter(l => l.lat != null).map(l => {
   const [x, y] = toKm([l.lon, l.lat]), z = l.e["2022"] || Object.values(l.e).at(-1);
-  return { code: l.code, x, y, w: Math.max(weightOf(l), 50), r: z[2] ? z[3] / z[2] : 0, a: z[2] ? z[5] / z[2] : 0 };
+  return { code: l.code, name: l.name, x, y, w: Math.max(weightOf(l), 50), r: z[2] ? z[3] / z[2] : 0, a: z[2] ? z[5] / z[2] : 0 };
 });
 const landKm = [geo.israel, geo.westbank].map(p => p.map(toKm));
 const waterKm = [geo.kinneret, geo.deadsea].map(p => p.map(toKm));
 const R = rasterize(landKm, waterKm);
-const own = nearestOwner(R, sites);
-const groups = buildRegions(sites, own, R);
+const cbs = await loadCbs();
+const own = nearestOwner(R, sites, i => cbs.get(sites[i].code)?.rel !== 3);
+const groups = buildRegions(sites, own, R, cbs);
 /* סדר קבוע: לפי מספר הקולות, הגדול ראשון */
-groups.sort((a, b) => b.reduce((s, i) => s + sites[i].w, 0) - a.reduce((s, i) => s + sites[i].w, 0));
+groups.sort((a, b) => b.members.reduce((s, i) => s + sites[i].w, 0) - a.members.reduce((s, i) => s + sites[i].w, 0));
 const regionOf = new Int32Array(sites.length);
-groups.forEach((g, r) => g.forEach(i => { regionOf[i] = r; }));
+groups.forEach((g, r) => g.members.forEach(i => { regionOf[i] = r; }));
 const label = new Int32Array(own.length).fill(-1);
 for (let k = 0; k < own.length; k++) if (own[k] >= 0) label[k] = regionOf[own[k]];
 const shapes = traceRegions(label, R, groups.length, 1.2);     // סבולת פישוט: 1.2 פיקסלים = 300 מטר
 const labels = labelPoints(label, R, groups.length);
 const byCode = new Map(localities.map(l => [l.code, l]));
 const regions = groups.map((g, r) => {
-  const members = g.map(i => byCode.get(sites[i].code)).sort((a, b) => weightOf(b) - weightOf(a));
+  const members = g.members.map(i => byCode.get(sites[i].code)).sort((a, b) => weightOf(b) - weightOf(a));
   const e = {};
   for (const l of members) for (const [id, x] of Object.entries(l.e)) {
     const y = e[id] ??= [0, 0, 0, 0, 0, 0, 0, 0, 0, ""];
@@ -469,7 +579,7 @@ const regions = groups.map((g, r) => {
   }
   const main = members[0].name;
   return {
-    code: 1000000 + r, name: members.length === 1 ? main : `${main} והסביבה`, lead: main,
+    code: 1000000 + r, name: g.name || main, lead: g.short || main,
     members: members.map(l => l.code), e,
     shape: { rings: shapes[r].map(encodeRing), label: q10(labels[r]) }
   };
@@ -477,7 +587,7 @@ const regions = groups.map((g, r) => {
 const siteIndex = new Map(sites.map((s, i) => [s.code, i]));
 localities.forEach(l => { const i = siteIndex.get(l.code); if (i != null) l.region = 1000000 + regionOf[i]; });
 const sizes = regions.map(g => g.e["2022"]?.[2] || 0).sort((a, b) => a - b);
-log(`אזורים: ${regions.length} · ${regions.filter(g => g.members.length === 1).length} ערים שהן אזור בפני עצמן · קולות לאזור (2022): חציון ${fmtK(sizes[sizes.length >> 1])}, טווח ${fmtK(sizes[0])}–${fmtK(sizes.at(-1))}`);
+log(`אזורים: ${regions.length} · ${groups.filter(g => g.city).length} ערים שהן אזור בפני עצמן · קולות לאזור (2022): חציון ${fmtK(sizes[sizes.length >> 1])}, טווח ${fmtK(sizes[0])}–${fmtK(sizes.at(-1))}`);
 const allLand = landKm.flat().map(q10);
 const mapsMeta = {
   bbox: [Math.min(...allLand.map(p => p[0])), Math.min(...allLand.map(p => p[1])), Math.max(...allLand.map(p => p[0])), Math.max(...allLand.map(p => p[1]))],

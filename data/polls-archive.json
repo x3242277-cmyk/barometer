@@ -1,6 +1,235 @@
 {
-  "updatedAt": "2026-09-30T13:02:11.053Z",
+  "updatedAt": "2026-09-30T13:18:09.998Z",
   "polls": [
+    {
+      "id": "manual-channel_16-2026-09-29",
+      "date": "29.09.2026",
+      "dateTimestamp": 1790640000000,
+      "publishedAt": 1790640000000,
+      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2Fnews16_flag_1786459946331_Channel16_Logo.svg.jpg?alt=media&token=c06f9b58-97f3-44af-a434-cfedcbfaf287",
+      "channelHebrewName": "ערוץ 16",
+      "sourceId": "channel_16",
+      "sourceUrl": "https://www.kikar.co.il/political-news/netanyahu-bloc-leads-53-mandates-shas-yahadut-hato",
+      "pollster": "Maagar Mochot",
+      "parties": [
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 19,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 14,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 4,
+          "alignment": "Unknown"
+        }
+      ]
+    },
+    {
+      "id": "manual-channel_14-2026-09-28",
+      "date": "28.09.2026",
+      "dateTimestamp": 1790553600000,
+      "publishedAt": 1790553600000,
+      "channel": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/news%20icons%2FCh14IL.svg.png?alt=media&token=8891f536-88ed-477d-8e03-801651ccb944",
+      "channelHebrewName": "ערוץ 14",
+      "sourceId": "channel_14",
+      "sourceUrl": "https://www.kore.co.il/viewArticle/222002",
+      "pollster": "Next Data",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 31,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 10,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "mifleget_hazibur_haharedi",
+          "name": "הציבור החרדי",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fmifleget_hazibur_haharedi_1788346603387_%D7%9E%D7%A4%D7%9C%D7%92%D7%AA_%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8_%D7%94%D7%97%D7%A8%D7%93%D7%99.png?alt=media&token=fd524485-7581-4dd5-a364-72623ca455cd",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "noam",
+          "name": "נועם",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/party%20icons%2Fnoam_flag.png?alt=media&token=c703e7ce-6985-4a02-8f4e-c150a028e13c",
+          "mandates": 0,
+          "alignment": "Unknown"
+        }
+      ]
+    },
     {
       "id": "wiki-kan_news-2026-09-27",
       "date": "27.09.2026",

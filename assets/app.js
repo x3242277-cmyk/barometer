@@ -2215,7 +2215,7 @@ function renderOfficialResults() {
 /* ============================================================
    12. ניתוב וכרטיסיות
    ============================================================ */
-const VIEWS = { home:"", polls:"polls", e2022:"2022", map:"map", crossover:"crossover", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
+const VIEWS = { home:"", polls:"polls", e2022:"2022", map:"map", swing:"swing", crossover:"crossover", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
 /* כתובות ישנות שעדיין עשויות להיות מקושרות מבחוץ */
 const VIEW_ALIASES = { regions:"map" };
 const rendered = {};
@@ -2242,6 +2242,7 @@ function show(view) {
       if (view === "results") renderOfficialResults();
       if (view === "haredi") renderHaredi();
       if (view === "map") renderRegions();
+      if (view === "swing") window.renderSwing?.();
       if (view === "demography") { renderResultsBase(); renderDemography(); }
       if (view === "method") renderMethod();
       rendered[view] = true;
@@ -2249,7 +2250,7 @@ function show(view) {
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
   if (view === "map" && S.leaflet) setTimeout(() => S.leaflet.map.invalidateSize(), 50);
-  const t = { home:"התחזית", polls:"כל הסקרים", e2022:"דיוק המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
+  const t = { home:"התחזית", polls:"כל הסקרים", e2022:"דיוק המכונים", crossover:"כמה עברו צד", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", swing:"המפה המתנדנדת", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
   document.title = `${t} · ברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });

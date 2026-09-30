@@ -12,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "pipeline", "election", "election-pages", "election-tools", "refinement", "clarity", "exit-showcase"];
+const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "pipeline", "election", "election-pages", "election-tools", "refinement", "clarity", "exit-showcase", "swing"];
 let css = (await Promise.all(stylesheets.map(name => rd(`assets/${name}.css`)))).join("\n");
 // Imports must precede CSS rules, including imports from the final design layer.
 // Font URLs themselves contain semicolons (weight lists), so keep each whole line.
@@ -26,14 +26,14 @@ for (const motif of ['polls','community','growth','ballot']) {
 const electionBackdrop = await readFile(path.join(ROOT, "assets/election-knesset.png"));
 const electionBackdropDataUri = `data:image/png;base64,${electionBackdrop.toString("base64")}`;
 css = css.replace(/url\(\s*(['"]?)(?:\.\/|assets\/)?election-knesset\.png(?:\?[^'"\)\s]*)?\1\s*\)/g, `url("${electionBackdropDataUri}")`);
-const scripts = ["scenario", "upgrade", "analytics", "explore", "app", "intro", "pipeline", "inline-admin", "election-tools", "election"];
+const scripts = ["scenario", "upgrade", "analytics", "explore", "app", "intro", "pipeline", "inline-admin", "election-tools", "election", "swing"];
 let js = (await Promise.all(scripts.map(name => rd(`assets/${name}.js`)))).join("\n");
 for (const file of ["exit-2022-kan11.png","exit-2022-channel12.png","exit-2022-channel13.png","exit-2022-channel14.png","logos/kan11.svg","logos/channel12.svg","logos/channel13.svg","logos/channel14.png","logos/i24news.png"]) {
   const image = await readFile(path.join(ROOT, "assets", file));
   js = js.replaceAll(`assets/${file}`, `data:image/${file.endsWith('.svg')?'svg+xml':'png'};base64,${image.toString("base64")}`);
 }
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
-const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json", "data/polls-archive.json"];
+const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json", "data/polls-archive.json", "data/locality-history.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 

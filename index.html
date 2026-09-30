@@ -31,7 +31,7 @@
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=af2c1105" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=33cf42d1" defer></script>
+<script src="assets/app.js?v=45d9b852" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=b37a6e0a">
 <link rel="stylesheet" href="assets/editorial.css?v=325f67db">
@@ -50,6 +50,8 @@
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=9a32c578" defer></script>
+<link rel="stylesheet" href="assets/swing.css?v=881d6a3b">
+<script src="assets/swing.js?v=9ed05e22" defer></script>
 </head>
 <body>
 
@@ -72,6 +74,7 @@
         <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
         <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
         <a class="tab" href="#/map" data-view="map">בחירות 2022</a>
+        <a class="tab" href="#/swing" data-view="swing">המפה המתנדנדת</a>
         <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
     </nav>
@@ -903,6 +906,18 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 
 
     </div>
+  </div>
+</section>
+
+<!-- ==================== המפה המתנדנדת ==================== -->
+<section class="view" id="view-swing" aria-label="המפה המתנדנדת">
+  <div class="wrap">
+    <div class="page-intro">
+      <p class="kicker">תוצאות האמת · ועדת הבחירות המרכזית · 2015–2022 · כל היישובים</p>
+      <h2>המפה המתנדנדת: איפה באמת מוכרעות הבחירות?</h2>
+      <p>שש מערכות בחירות, יותר מ־1,200 יישובים. איפה כל גוש חזק, איזה ערים זזות, כמה קרוב היה המנדט ה־61 — והאם הדמוגרפיה כבר הכריעה. כל מפלגה נספרת לפי ההמלצה שלה לנשיא אחרי אותן בחירות; ימינה של בנט ב־2021 נספרת בימין.</p>
+    </div>
+    <div class="demo-main" id="sw-root"><p class="sec-note">טוען את נתוני היישובים…</p></div>
   </div>
 </section>
 

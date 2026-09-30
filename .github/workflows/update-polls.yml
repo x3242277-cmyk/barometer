@@ -119,7 +119,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
 
-      - name: שליפת סקרים חדשים מ-skarim.org
+      - name: שליפת סקרים חדשים מוויקיפדיה
         run: node scripts/update-polls.mjs
 
       - name: שמירת צילום התחזית להצגת חיווי שינוי

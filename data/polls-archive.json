@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01T20:57:53.554Z",
+  "updatedAt": "2026-10-01T22:34:26.679Z",
   "polls": [
     {
       "id": "manual-zman_israel-2026-10-01",
@@ -807,9 +807,9 @@
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
           "mandates": 4,
-          "alignment": "Unknown"
+          "alignment": "Coalition"
         },
         {
           "id": "kahollavan",
@@ -1279,9 +1279,9 @@
         {
           "id": "ofer_vinter_party",
           "name": "עמך ישראל",
-          "logoUrl": "",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
           "mandates": 4,
-          "alignment": "Unknown"
+          "alignment": "Coalition"
         },
         {
           "id": "kahollavan",

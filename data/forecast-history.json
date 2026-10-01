@@ -575,6 +575,38 @@
       },
       "polls": 9,
       "firms": 7
+    },
+    {
+      "updatedAt": "2026-10-01T12:33:14.383Z",
+      "recordedAt": "2026-10-01T12:33:14.439Z",
+      "scenario": {
+        "yashar": 22,
+        "likud": 27,
+        "beyahad": 10,
+        "hademokratim": 9,
+        "ozma_yehudit": 8,
+        "ndi": 7,
+        "reshima_meshutefet": 7,
+        "zionut_datit": 6,
+        "shas": 11,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 11,
+        "hademokratim": 9,
+        "shas": 9,
+        "ozma_yehudit": 8,
+        "yahadut_hatora": 8,
+        "ndi": 8,
+        "reshima_meshutefet": 8,
+        "zionut_datit": 6,
+        "raam": 6
+      },
+      "polls": 7,
+      "firms": 6
     }
   ]
 }

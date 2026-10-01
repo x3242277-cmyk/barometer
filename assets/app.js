@@ -1440,7 +1440,7 @@ function baseBlocsHTML() {
       <div class="base-blocbar" role="img" aria-label="גוש נתניהו ${r22}, גוש השינוי ${nb}">
         <span style="flex:${r22};background:${BLOCS.Right.color}"><b>${r22}</b></span>
         <span style="flex:${nb};background:${BLOCS.Left.color}"><b>${nb}</b></span>
-        <i class="bc-61 from-start" title="61"></i><i class="bc-61 from-end" title="61"></i></div></div>
+        <i class="bc-61" title="קו הרוב: מעבר לאמצע = 61 ומעלה"></i></div></div>
     <div class="base-drama"><b>גוש השינוי קיבל ${fmt(w.blocGap)} קולות יותר מגוש נתניהו — ובכל זאת הפסיד 56 : 64.</b> ${fmt(w.total)} מקולותיו (מרצ ${fmt(w.meretz)}, בל״ד ${fmt(w.balad)}) נפלו מתחת לאחוז החסימה ולא הפכו למנדטים; מרצ החמיצה את הסף ב־${fmt(w.meretzGap)} קולות בלבד.</div>
     <p class="sec-note base-note">גוש נתניהו = הליכוד, ש״ס, יהדות התורה והציונות הדתית. גוש השינוי = יש עתיד, המחנה הממלכתי, העבודה, ישראל ביתנו, מרצ, רע״מ, חד״ש–תע״ל ובל״ד. נספרות רשימות שקיבלו 1.5% ומעלה; הבית היהודי (${fmt(N.parties.find(p => p.id === "jewish_home")?.votes || 0)}, 1.19%) אינו נספר. מקור: <a href="${esc(w.source.url)}" target="_blank" rel="noopener">${esc(w.source.name)} ↗</a>.</p>`;
 }

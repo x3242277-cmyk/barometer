@@ -103,12 +103,12 @@ function renderPollCards(rows, polls) {
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך
-       כל מקטע, וי לגוש שעבר 61, וקווי 61 משני הקצוות. */
+       כל מקטע, וי לגוש שעבר 61, וקו רוב אחד באמצע (מי שעובר אותו — 61 ומעלה). */
     const shown = BLOC_ORDER.filter(k => bloc[k] > 0);
     const winner = shown.find(k => bloc[k] >= 61);
     const seatbar = `<div class="poll-blocgraph" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
       shown.map(k => `<span class="bc-seg${k === winner ? ' is-maj' : ''}" style="flex:${bloc[k]} ${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}"><b>${bloc[k]}</b></span>`).join('')
-    }${total === 120 ? '<i class="bc-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="bc-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
+    }${total === 120 ? `<i class="bc-61${winner ? ' is-maj' : ''}"${winner ? ` style="--c:${BLOCS[winner].color}"` : ''} title="קו הרוב: מעבר לאמצע = 61 ומעלה"></i>` : ''}</div>`;
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')

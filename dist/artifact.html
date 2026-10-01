@@ -1949,9 +1949,10 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .bc-seg:first-child{ border-start-start-radius:8px; border-end-start-radius:8px }
 .bc-seg:last-of-type{ border-start-end-radius:8px; border-end-end-radius:8px }
 .bc-seg.is-maj b::after{ content:" ✓"; font-size:.72rem }
-.bc-61{ position:absolute; inset-block:-4px; width:2px; background:#17212D; box-shadow:0 0 0 1px #fff; pointer-events:none }
-.bc-61.from-start{ inset-inline-start:calc(100% * 61 / 120) }
-.bc-61.from-end{ inset-inline-end:calc(100% * 61 / 120) }
+.bc-61{ position:absolute; inset-block:-4px; inset-inline-start:calc(50% - 1px); width:2px; background:#17212D; box-shadow:0 0 0 1px #fff; pointer-events:none }
+/* גוש שעבר את האמצע: וי בעיגול מעל קו הרוב, בצבע הגוש */
+.poll-blocgraph .bc-61.is-maj::after{ content:"✓"; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%); display:grid; place-items:center; width:18px; height:18px; border-radius:50%; background:var(--c,#17212D); box-shadow:0 0 0 2px #fff; color:#fff; font-size:.7rem; font-weight:900; line-height:1 }
+.poll-result-card .poll-blocgraph{ margin-top:26px } /* מקום לווי — זהה בכל הכרטיסים כדי שהפסים יישרו בשורה */
 @media print{ .poll-blocgraph{ break-inside:avoid } }
 
 /* ---------- כל הסקרים: שלושה כרטיסים בשורה ---------- */
@@ -2608,7 +2609,7 @@ tbody tr:hover{background:#F7F9FD}
 .poll-result-card header p{color:var(--ink-3);font-size:.75rem}
 .poll-result-card .orglogo{border:1px solid var(--rule);background:#FFF;border-radius:10px;width:46px;height:46px}
 .poll-date-pick select{font-size:.72rem;padding:5px 7px;min-height:32px;min-width:0;max-width:98px;background:var(--paper);border:0}
-.poll-blocgraph{margin:0 24px 12px;border-radius:7px;overflow:hidden;height:37px;box-shadow:none}
+.poll-blocgraph{margin:0 24px 12px;border-radius:7px;overflow:visible;height:37px;box-shadow:none}
 .poll-blocgraph .bc-seg b{font-size:1rem;font-weight:700}
 .poll-cols{padding:0 18px;gap:16px}
 .poll-list li{padding-block:9px;border-color:var(--rule-2);gap:7px}
@@ -5366,12 +5367,12 @@ function renderPollCards(rows, polls) {
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך
-       כל מקטע, וי לגוש שעבר 61, וקווי 61 משני הקצוות. */
+       כל מקטע, וי לגוש שעבר 61, וקו רוב אחד באמצע (מי שעובר אותו — 61 ומעלה). */
     const shown = BLOC_ORDER.filter(k => bloc[k] > 0);
     const winner = shown.find(k => bloc[k] >= 61);
     const seatbar = `<div class="poll-blocgraph" role="img" aria-label="${esc(shown.map(k=>`${BLOCS[k].he} ${bloc[k]}`).join(', '))}${winner ? `. רוב ל${BLOCS[winner].he}` : '. אין רוב לגוש'}">${
       shown.map(k => `<span class="bc-seg${k === winner ? ' is-maj' : ''}" style="flex:${bloc[k]} ${bloc[k]};background:${BLOCS[k].color}" title="${esc(BLOCS[k].he)}: ${bloc[k]} מנדטים${bloc[k] >= 61 ? ' — רוב' : ''}"><b>${bloc[k]}</b></span>`).join('')
-    }${total === 120 ? '<i class="bc-61 from-start" title="קו הרוב: 61 מתוך 120"></i><i class="bc-61 from-end" title="קו הרוב: 61 מתוך 120"></i>' : ''}</div>`;
+    }${total === 120 ? `<i class="bc-61${winner ? ' is-maj' : ''}"${winner ? ` style="--c:${BLOCS[winner].color}"` : ''} title="קו הרוב: מעבר לאמצע = 61 ומעלה"></i>` : ''}</div>`;
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p></div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
@@ -6921,7 +6922,7 @@ function baseBlocsHTML() {
       <div class="base-blocbar" role="img" aria-label="גוש נתניהו ${r22}, גוש השינוי ${nb}">
         <span style="flex:${r22};background:${BLOCS.Right.color}"><b>${r22}</b></span>
         <span style="flex:${nb};background:${BLOCS.Left.color}"><b>${nb}</b></span>
-        <i class="bc-61 from-start" title="61"></i><i class="bc-61 from-end" title="61"></i></div></div>
+        <i class="bc-61" title="קו הרוב: מעבר לאמצע = 61 ומעלה"></i></div></div>
     <div class="base-drama"><b>גוש השינוי קיבל ${fmt(w.blocGap)} קולות יותר מגוש נתניהו — ובכל זאת הפסיד 56 : 64.</b> ${fmt(w.total)} מקולותיו (מרצ ${fmt(w.meretz)}, בל״ד ${fmt(w.balad)}) נפלו מתחת לאחוז החסימה ולא הפכו למנדטים; מרצ החמיצה את הסף ב־${fmt(w.meretzGap)} קולות בלבד.</div>
     <p class="sec-note base-note">גוש נתניהו = הליכוד, ש״ס, יהדות התורה והציונות הדתית. גוש השינוי = יש עתיד, המחנה הממלכתי, העבודה, ישראל ביתנו, מרצ, רע״מ, חד״ש–תע״ל ובל״ד. נספרות רשימות שקיבלו 1.5% ומעלה; הבית היהודי (${fmt(N.parties.find(p => p.id === "jewish_home")?.votes || 0)}, 1.19%) אינו נספר. מקור: <a href="${esc(w.source.url)}" target="_blank" rel="noopener">${esc(w.source.name)} ↗</a>.</p>`;
 }

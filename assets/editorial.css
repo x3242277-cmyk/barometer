@@ -283,7 +283,7 @@ tbody tr:hover{background:#F7F9FD}
 .poll-result-card header p{color:var(--ink-3);font-size:.75rem}
 .poll-result-card .orglogo{border:1px solid var(--rule);background:#FFF;border-radius:10px;width:46px;height:46px}
 .poll-date-pick select{font-size:.72rem;padding:5px 7px;min-height:32px;min-width:0;max-width:98px;background:var(--paper);border:0}
-.poll-blocgraph{margin:0 24px 12px;border-radius:7px;overflow:hidden;height:37px;box-shadow:none}
+.poll-blocgraph{margin:0 24px 12px;border-radius:7px;overflow:visible;height:37px;box-shadow:none}
 .poll-blocgraph .bc-seg b{font-size:1rem;font-weight:700}
 .poll-cols{padding:0 18px;gap:16px}
 .poll-list li{padding-block:9px;border-color:var(--rule-2);gap:7px}

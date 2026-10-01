@@ -238,9 +238,10 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .bc-seg:first-child{ border-start-start-radius:8px; border-end-start-radius:8px }
 .bc-seg:last-of-type{ border-start-end-radius:8px; border-end-end-radius:8px }
 .bc-seg.is-maj b::after{ content:" ✓"; font-size:.72rem }
-.bc-61{ position:absolute; inset-block:-4px; width:2px; background:#17212D; box-shadow:0 0 0 1px #fff; pointer-events:none }
-.bc-61.from-start{ inset-inline-start:calc(100% * 61 / 120) }
-.bc-61.from-end{ inset-inline-end:calc(100% * 61 / 120) }
+.bc-61{ position:absolute; inset-block:-4px; inset-inline-start:calc(50% - 1px); width:2px; background:#17212D; box-shadow:0 0 0 1px #fff; pointer-events:none }
+/* גוש שעבר את האמצע: וי בעיגול מעל קו הרוב, בצבע הגוש */
+.poll-blocgraph .bc-61.is-maj::after{ content:"✓"; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%); display:grid; place-items:center; width:18px; height:18px; border-radius:50%; background:var(--c,#17212D); box-shadow:0 0 0 2px #fff; color:#fff; font-size:.7rem; font-weight:900; line-height:1 }
+.poll-result-card .poll-blocgraph{ margin-top:26px } /* מקום לווי — זהה בכל הכרטיסים כדי שהפסים יישרו בשורה */
 @media print{ .poll-blocgraph{ break-inside:avoid } }
 
 /* ---------- כל הסקרים: שלושה כרטיסים בשורה ---------- */

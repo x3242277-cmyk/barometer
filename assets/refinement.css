@@ -5,7 +5,7 @@
   body { font-size:1rem; line-height:1.7 }
   .wrap,#view-home .wrap { width:min(var(--page-w),calc(100% - var(--gutter))) }
   .view.on { min-width:0 }
-  #view-home.on { height:calc(100dvh - var(--masthead-h,64px)); overflow-y:auto; scroll-snap-type:y proximity }
+  #view-home.on { height:calc(100dvh - var(--masthead-h,64px)); overflow-y:auto; scroll-snap-type:none }
   #view-home.on>:is(.election-cover,.verdict,.board,.election-coalition,.home-method) { min-height:calc(100dvh - var(--masthead-h,64px)); scroll-snap-align:start }
   .cover-content { padding-block:48px 36px }
   #election-title { font-size:clamp(3rem,5.5vw,4.8rem); letter-spacing:-.035em }

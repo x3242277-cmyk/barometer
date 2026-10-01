@@ -518,7 +518,7 @@ const PARTY_LEADER = {
   likud: "בנימין נתניהו", shas: "אריה דרעי", yahadut_hatora: "יעקב אשר",
   ozma_yehudit: "איתמר בן גביר", zionut_datit: "בצלאל סמוטריץ׳", ofer_vinter_party: "עופר וינטר",
   yashar: "גדי איזנקוט", beyahad: "נפתלי בנט · יאיר לפיד", hademokratim: "יאיר גולן",
-  ndi: "אביגדור ליברמן", raam: "מנסור עבאס", reshima_meshutefet: "איימן עודה", hadash_taal: "איימן עודה",
+  ndi: "אביגדור ליברמן", raam: "מנסור עבאס", reshima_meshutefet: "יוסף ג׳בארין", hadash_taal: "איימן עודה",
   hendel_zeliha_party: "יועז הנדל · ירון זליכה", kahollavan: "בני גנץ", noam: "אבי מעוז"
 };
 

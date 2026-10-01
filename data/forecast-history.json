@@ -825,6 +825,46 @@
       },
       "polls": 9,
       "firms": 7
+    },
+    {
+      "updatedAt": "2026-10-01T20:55:58.729Z",
+      "recordedAt": "2026-10-01T20:55:58.871Z",
+      "scenario": {
+        "yashar": 21,
+        "likud": 26,
+        "beyahad": 10,
+        "ndi": 8,
+        "hademokratim": 9,
+        "reshima_meshutefet": 8,
+        "ozma_yehudit": 8,
+        "zionut_datit": 6,
+        "shas": 11,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 11,
+        "ndi": 8,
+        "shas": 8,
+        "yahadut_hatora": 8,
+        "hademokratim": 10,
+        "reshima_meshutefet": 8,
+        "ozma_yehudit": 8,
+        "raam": 6,
+        "zionut_datit": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.68
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.68
+        }
+      },
+      "polls": 10,
+      "firms": 7
     }
   ]
 }

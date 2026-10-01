@@ -88,11 +88,6 @@
 .crossrow-avg{position:absolute;inset-block:-3px;width:0;border-inline-start:2px dashed var(--ink-2);opacity:.65;z-index:2}
 .crossrow-share{display:grid;text-align:end;font-size:.92rem;font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .crossrow-share small{display:none;font-size:.8rem;font-weight:800;color:var(--ink)}
-/* מכון שהסקר האחרון שלו מחוץ לחלון התחזית: מוצג, אך עמום — אינו בממוצע */
-.crossrow.is-stale .crossrow-fill{opacity:.42}
-.crossrow.is-stale .crossrow-firm b,.crossrow.is-stale .crossrow-share{opacity:.72}
-.crossrow.is-stale .crossrow-firm em{white-space:normal}
-.crossrow:not(.is-stale)+.crossrow.is-stale{border-top:1px dashed var(--ink-3)}
 @media(max-width:640px){
   .crossrow{grid-template-columns:minmax(0,1fr) 72px;grid-template-rows:auto auto;gap:4px 10px;padding:9px 0}
   .crossrow-firm{grid-column:1/-1}.crossrow-firm>span{display:flex;gap:8px;align-items:baseline}

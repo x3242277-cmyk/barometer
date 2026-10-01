@@ -259,6 +259,18 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 #view-polls .poll-list li>b{ font-size:1.15rem }
 #view-polls .poll-list li>em{ min-width:22px; font-size:.68rem }
 #view-polls .poll-result-card footer{ padding:8px 14px; font-size:.7rem }
+
+/* ---------- כל הסקרים: דירוג אמינות המכון והערת "טעות קבועה" ---------- */
+.poll-grade{ display:inline-block; margin-top:4px; padding:1px 8px; border:1px solid currentColor; border-radius:999px; font-size:.68rem; font-weight:700; line-height:1.5; white-space:nowrap; cursor:help }
+.poll-grade.grade-high{ color:#237252 } .poll-grade.grade-mid{ color:#996126 } .poll-grade.grade-low{ color:#A7443B } .poll-grade.grade-none{ color:var(--ink-3) }
+.house-note{ grid-column:1 / -1; margin-top:-6px; padding-bottom:5px; font-size:.68rem; font-weight:600; line-height:1.35; color:#996126; cursor:help }
+.house-bloc{ margin:6px 14px 0; font-size:.72rem; font-weight:600; color:#996126; cursor:help }
+@media screen{
+  .view:not(#view-home) .poll-grade.grade-high{ color:#79d5ac }
+  .view:not(#view-home) .poll-grade.grade-mid{ color:#e3be78 }
+  .view:not(#view-home) .poll-grade.grade-low{ color:#f19c91 }
+  .view:not(#view-home) :is(.house-note,.house-bloc){ color:#e3be78 }
+}
 #view-polls .zero-results{ margin-inline:14px }
 @media (max-width:1100px){ #polls-cards{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
 @media (max-width:760px){ #polls-cards{ grid-template-columns:1fr } }

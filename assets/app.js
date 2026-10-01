@@ -1334,11 +1334,20 @@ function crossoverBase() {
   const shareAvg = S.series.reduce((t, s) => t + shareOf(s).share * wOf(s), 0) / totW;
   const deltaAvg = shareAvg - rightShare0;
   const votersAvg = votersOf(deltaAvg);
-  return { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg };
+  /* מכון שהסקר האחרון שלו ישן מחלון התחזית (FORECAST_MAX_AGE_DAYS) אינו ב-S.series.
+     הוא מוצג לפי הסקר האחרון שלו ומסומן — אבל אינו נכנס לממוצע, לקצוות ולסיכום. */
+  const inWindow = new Set(S.series.map(s => s.key));
+  const stale = buildSeries(S.cur.polls).filter(s => !inWindow.has(s.key)).map(s => {
+    const lastTs = Math.max(...s.polls.map(parsePollDate));
+    const series = buildSeries(s.polls.filter(p => parsePollDate(p) === lastTs))[0];
+    const x = shareOf(series), delta = x.share - rightShare0;
+    return { meta: series.meta, series, share: x.share, delta, voters: votersOf(delta), n: series.polls.length, below: x.below, lastDate: series.polls[0].date };
+  }).sort((a, b) => a.delta - b.delta);
+  return { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, stale, shareAvg, deltaAvg, votersAvg };
 }
 
 function renderCrossover() {
-  const { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
+  const { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, below2022, kv, votersOf, shareOf, wOf, rows, stale, shareAvg, deltaAvg, votersAvg } = crossoverBase();
 
   $("#crossover-intro").textContent =
     "השוו כמה קולות מייצג השינוי בגושים לפי כל מכון. זהו אומדן על בסיס 2022, ולא מדידה ישירה של אנשים שעברו צד.";
@@ -1363,7 +1372,7 @@ function renderCrossover() {
     `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}%. השינוי שקול לכ־${kv(votersAvg)} קולות ${deltaAvg <= 0 ? "פחות" : "יותר"} לעומת בסיס 2022. רשימות עם 1.5% ומעלה נכללות גם מתחת לאחוז החסימה.`;
 
   /* ציר: עיגול לכפולה נוחה של 100 אלף */
-  const maxV = Math.max(...rows.map(r => r.voters), votersAvg, 100000);
+  const maxV = Math.max(...rows.map(r => r.voters), ...stale.map(r => r.voters), votersAvg, 100000);
   const axisMax = Math.ceil(maxV * 1.28 / 100000) * 100000;          // מרווח לתווית מעבר לקצה הסרגל
   const step = axisMax >= 800000 ? 200000 : 100000;
   const ticks = [];
@@ -1386,12 +1395,13 @@ function renderCrossover() {
     <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>ירידה בחלק הימין</span><span><i style="background:${BLOCS.Right.color}"></i>עלייה בחלק הימין</span><span><i class="avg"></i>ממוצע המכונים</span><span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
     <div class="cross-grid">
       <div class="cross-axis" aria-hidden="true">${tickHtml}</div>
-      ${rows.map(r => {
+      ${[...rows, ...stale].map(r => {
         const shrank = r.delta <= 0;
         const w = 50 * r.voters / axisMax;
         const belowNote = r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`);
-        return `<div class="crossrow" title="${esc(r.meta.he)}: הימין ב־${r1(r.share)}% היום מול ${r1(rightShare0)}% ב־2022${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}">
-          <span class="crossrow-firm">${logoBox(r.meta, 26)}<span><b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b><em>${r.n} סקרים${r.meta.calibrated ? "" : " · משקל ניטרלי"}</em></span></span>
+        const sub = r.lastDate ? `סקר אחרון ${r.lastDate} · מחוץ לחלון, לא בממוצע` : `${r.n} סקרים${r.meta.calibrated ? "" : " · משקל ניטרלי"}`;
+        return `<div class="crossrow${r.lastDate ? " is-stale" : ""}" title="${esc(r.meta.he)}: הימין ב־${r1(r.share)}% ${r.lastDate ? `בסקר מ־${r.lastDate}` : "היום"} מול ${r1(rightShare0)}% ב־2022${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}${r.lastDate ? ` · הסקר ישן מ־${FORECAST_MAX_AGE_DAYS} ימים ולכן אינו בממוצע` : ""}">
+          <span class="crossrow-firm">${logoBox(r.meta, 26)}<span><b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b><em>${sub}</em></span></span>
           <span class="crossrow-track">
             <i class="crossrow-avg" style="inset-inline-start:${pos(deltaAvg <= 0 ? -votersAvg : votersAvg).toFixed(2)}%"></i>
             <i class="crossrow-fill ${shrank ? "shrank" : "grew"}" style="width:${w.toFixed(2)}%;background:${shrank ? BLOCS.Left.color : BLOCS.Right.color}"><b dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</b></i>

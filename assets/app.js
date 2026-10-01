@@ -701,7 +701,16 @@ function renderHome() {
   historySelect.value = S.homeHistory;
   const snapshot = S.homeHistory === 'current' ? null : history.find(s => s.updatedAt === S.homeHistory);
   const snapshotSeats = snapshot?.[S.mode === 'weighted' ? 'weighted' : 'scenario'];
-  const est = snapshotSeats ? { parties:{...snapshotSeats}, rawFull:{...snapshotSeats}, below:{} } : forecast(S.mode, HIDE_FROM_HOME);
+  /* צילום ארכיון שומר מנדטים ואת אחוזי הרשימות שמתחת לסף. מהם משחזרים את
+     rawFull: הרשימות מתחת לסף בנתח שלהן, ושאר המנדטים מצטמצמים כך שהכול
+     מסתכם ל-120 — כמו בממוצע הגולמי של התחזית החיה. */
+  const snapshotBelow = snapshot?.below?.[S.mode === 'weighted' ? 'weighted' : 'scenario'] || {};
+  const belowSeats = Object.values(snapshotBelow).reduce((t, p) => t + p * 1.2, 0), seatScale = (120 - belowSeats) / 120;
+  const est = snapshotSeats
+    ? { parties:{...snapshotSeats}, below:{...snapshotBelow},
+        rawFull:{ ...Object.fromEntries(Object.entries(snapshotSeats).map(([id, n]) => [id, n * seatScale])),
+                  ...Object.fromEntries(Object.entries(snapshotBelow).map(([id, p]) => [id, p * 1.2])) } }
+    : forecast(S.mode, HIDE_FROM_HOME);
   const seats = snapshotSeats ? {...snapshotSeats} : allocateSeats(est.parties);
   const belowEntries = Object.entries(est.below || {});
   $('#home-eyebrow').textContent = snapshot

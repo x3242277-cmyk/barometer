@@ -31,9 +31,13 @@ export function recordForecast() {
     S.stats = combineCalibrations([{ year: 2022, election: "הכנסת ה־25", stats: scoreFirms(S.hist) }]);
     S.forecastPolls = recentForForecast(S.cur.polls);
     S.series = buildSeries(S.forecastPolls);
+    const __fsc = forecast("scenario", HIDE_FROM_HOME), __fw = forecast("weighted", HIDE_FROM_HOME);
+    /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
+    const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));
     JSON.stringify({
-      scenario: largestRemainder(forecast("scenario", HIDE_FROM_HOME).parties),
-      weighted: largestRemainder(forecast("weighted", HIDE_FROM_HOME).parties),
+      scenario: largestRemainder(__fsc.parties),
+      weighted: largestRemainder(__fw.parties),
+      below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },
       polls: S.forecastPolls.length,
       firms: S.series.length
     })

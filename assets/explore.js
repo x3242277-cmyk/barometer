@@ -130,6 +130,7 @@ function renderPollCards(rows, polls) {
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(x.name)).join(' · ')}</p></details>` : ''}
+      ${(fix => fix.length ? `<details class="zero-results house-fix"><summary>התיקון של המכון בתחזית הברומטר</summary><p>${houseShiftHTML(fix)} — מנדטים שעוברים בתוך אותו גוש, לפי הטעות הממוצעת של המכון ב־2020–2022${f.meta.calibrated ? '' : ' (אין לו היסטוריה: חצי מהטעות הממוצעת של כל המכונים)'}. סך הגושים לא משתנה.</p></details>` : '')(houseShiftList(pollPartyMap(p), pollPartyMap(correctWithinBlocs(p))))}
       <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';

@@ -5034,8 +5034,9 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="mstep-num" aria-hidden="true">4</div>
         <div class="mstep-body">
           <div class="mstep-head"><h2>מוסיפים את ההנחות של ״תחזית הברומטר״</h2><a class="mstep-link" href="#/haredi">להנחות ↙</a></div>
-          <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו שלוש הנחות גלויות:</p>
+          <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו ארבעה צעדים גלויים:</p>
           <ul class="mlist">
+            <li><b>תיקון הטעות הקבועה של כל מכון — רק בתוך הגוש.</b> לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״ם, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 2 ובכרטיס הסקר. ממוצע "משוקלל אמינות" אינו מתוקן.</li>
             <li><b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8 — מספר קבוע, לא ממוצע הסקרים שלהן.</b> מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בשלב 6, ביחד עם כל שאר הרשימות.</li>
             <li><b>קירוב למאזן 2022 — היעד הוא 62 מנדטים לגוש נתניהו, לא 64.</b> בפועל הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד, וקולותיה התחלקו בהסכמי העודפים בין הרשימות שכן עברו — מקרה קצה חד־פעמי בספירה, לא סימן לגודל האמיתי של הגוש (אפשר לבדוק ב״אילו מרצ עברה את אחוז החסימה״ בתמונת המצב). באותו היגיון ההפוך: רשימות ימין שנמצאות היום מתחת לאחוז החסימה (למשל רשימתו של עופר וינטר) לא נמחקות מהחישוב הזה — התמיכה בהן נספרת כשמודדים כמה גדול גוש נתניהו בפועל בסקרים, גם שהן עדיין לא מקבלות מנדט בחלוקה הסופית. מהפער שנשאר בין הסקרים לעוגן, התחזית סוגרת <b>רק חצי</b> — לא את כולו — ומורידה מזה את מה שקיבוע ש״ס ויהדות התורה כבר תרם לימין, כדי לא לספור את אותה הנחה פעמיים.</li>
             <li><b>תוספת דמוגרפית משוערת — 2 מנדטים כברירת מחדל.</b> היא מועברת בין הגושים לפי המפלגות, ואז נבדקת מול מודל דמוגרפי נפרד בשלב הבא.</li>
@@ -5404,6 +5405,7 @@ function renderPollCards(rows, polls) {
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(x.name)).join(' · ')}</p></details>` : ''}
+      ${(fix => fix.length ? `<details class="zero-results house-fix"><summary>התיקון של המכון בתחזית הברומטר</summary><p>${houseShiftHTML(fix)} — מנדטים שעוברים בתוך אותו גוש, לפי הטעות הממוצעת של המכון ב־2020–2022${f.meta.calibrated ? '' : ' (אין לו היסטוריה: חצי מהטעות הממוצעת של כל המכונים)'}. סך הגושים לא משתנה.</p></details>` : '')(houseShiftList(pollPartyMap(p), pollPartyMap(correctWithinBlocs(p))))}
       <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
@@ -5915,12 +5917,13 @@ const firmWeight = meta => TIER_WEIGHT[gradeOf(firmScore(meta)).key];
    "קבועה" רק אם הופיעה בשתי מערכות לפחות, תמיד באותו כיוון, ובממוצע של מנדט
    ומעלה. הציונות הדתית ועוצמה יהודית רצו יחד ב־2021 וב־2022, ולכן נמדדות יחד. */
 const HOUSE_GROUPS = {
-  likud: { members: ["likud"], ids: { all: ["likud"] } },
-  shas:  { members: ["shas"], ids: { all: ["shas"] } },
-  utj:   { members: ["yahadut_hatora"], ids: { all: ["utj"] } },
-  ndi:   { members: ["ndi"], ids: { all: ["yisrael_beiteinu"] } },
-  raam:  { members: ["raam"], ids: { 2021: ["raam"], 2022: ["raam"] } },
-  rz:    { members: ["zionut_datit", "ozma_yehudit"], together: "הציונות הדתית ועוצמה יהודית יחד", ids: { 2021: ["religious_zionism"], 2022: ["religious_zionism"] } }
+  likud: { he: "ליכוד", members: ["likud"], ids: { all: ["likud"] } },
+  shas:  { he: "ש״ס", members: ["shas"], ids: { all: ["shas"] } },
+  utj:   { he: "יהדות התורה", members: ["yahadut_hatora"], ids: { all: ["utj"] } },
+  ndi:   { he: "ישראל ביתנו", members: ["ndi"], ids: { all: ["yisrael_beiteinu"] } },
+  raam:  { he: "רע״ם", members: ["raam"], ids: { 2021: ["raam"], 2022: ["raam"] } },
+  rz:    { he: "צ״ד ועוצמה", members: ["zionut_datit", "ozma_yehudit"], together: "הציונות הדתית ועוצמה יהודית יחד", ids: { 2021: ["religious_zionism"], 2022: ["religious_zionism"] } },
+  joint: { he: "המשותפת", members: ["reshima_meshutefet"], ids: { 2021: ["joint_list"], 2022: ["hadash_taal"] } }
 };
 const HOUSE_MIN_SEATS = 1;
 function houseEffects(elections) {
@@ -5959,6 +5962,57 @@ function houseBloc(meta) {
   const h = houseOf(meta);
   return h?.bloc.consistent ? h.bloc : null;
 }
+/* הטעות הממוצעת של הענף בכל קבוצה — ממוצע הטעויות של כל המכונים שסקרו אותה */
+function houseIndustry(house) {
+  return Object.fromEntries(Object.keys(HOUSE_GROUPS).map(g => {
+    const means = Object.values(house || {}).map(h => h.groups[g]?.mean).filter(Number.isFinite);
+    return [g, means.length ? avg(means) : 0];
+  }));
+}
+/* תיקון הטעות הקבועה: לכל מכון ולכל קבוצה — הטעות הממוצעת שלו בהיפוך, בחלק
+   יחסי לכמות ההיסטוריה (n/(n+1): מערכת אחת → חצי, שתיים → שני שלישים, שלוש →
+   שלושה רבעים). מכון בלי היסטוריה בקבוצה מקבל חצי מהטעות הממוצעת של הענף.
+   חיובי = מוסיפים מנדטים. */
+function houseCorrection(meta) {
+  const own = houseOf(meta)?.groups || {};
+  return Object.fromEntries(Object.keys(HOUSE_GROUPS).map(g => {
+    const n = own[g]?.runs.length;
+    return [g, n ? -own[g].mean * n / (n + 1) : -(S.houseIndustry?.[g] || 0) * 0.5];
+  }));
+}
+/* תחזית הברומטר: התיקון מדייק רק את החלוקה בתוך כל גוש. כל קבוצה מקבלת את
+   התיקון שלה (בקבוצה של שתי רשימות — לפי הגודל שלהן בסקר), ואז רשימות הגוש
+   מתכווצות או מתרחבות יחד בחזרה לסכום הגוש בסקר עצמו — כך שסך הגושים לא
+   משתנה. ש״ס, יהדות התורה ורע״ם מקובעות בתחזית (FIXED_SEATS), ולכן אינן
+   מתוקנות ואינן משתתפות בחלוקה מחדש. */
+const isFixedSeat = id => typeof FIXED_SEATS !== "undefined" && id in FIXED_SEATS;
+function correctWithinBlocs(p) {
+  const c = houseCorrection(firmOf(p.sourceId).meta);
+  const parties = p.parties.map(x => ({ ...x }));
+  const free = parties.filter(x => x.mandates > 0 && !isFixedSeat(normId(x.id)));
+  const blocSum = () => free.reduce((m, x) => { const b = alignOf(x); m[b] = (m[b] || 0) + x.mandates; return m; }, {});
+  const before = blocSum();
+  Object.entries(HOUSE_GROUPS).forEach(([g, def]) => {
+    if (def.members.some(isFixedSeat)) return;
+    const inGroup = free.filter(x => def.members.includes(normId(x.id)));
+    const tot = inGroup.reduce((t, x) => t + x.mandates, 0);
+    if (tot) inGroup.forEach(x => { x.mandates = Math.max(0, x.mandates + c[g] * x.mandates / tot); });
+  });
+  const after = blocSum();
+  free.forEach(x => { const b = alignOf(x); if (after[b] > 0) x.mandates *= before[b] / after[b]; });
+  return { ...p, parties };
+}
+/* מה התיקון עושה בפועל לרשימות: ההפרש בין שתי חלוקות (סדרה או סקר, לפני ואחרי),
+   משינוי של 0.3 מנדט ומעלה, מהגדול לקטן. ה-HTML עוטף כל מספר ב-dir="ltr", כדי
+   שהסימן יישאר לפני המספר בתוך טקסט מימין לשמאל. */
+function houseShiftList(fromParties, toParties) {
+  const ids = [...new Set([...Object.keys(fromParties), ...Object.keys(toParties)])];
+  return ids.map(id => [id, (toParties[id] || 0) - (fromParties[id] || 0)])
+    .filter(([, d]) => Math.abs(d) >= 0.3).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+    .map(([id, d]) => [partyMeta(id).name, `${d > 0 ? "+" : "−"}${r1(Math.abs(d))}`]);
+}
+const pollPartyMap = p => p.parties.reduce((m, x) => { const id = normId(x.id); m[id] = (m[id] || 0) + x.mandates; return m; }, {});
+const houseShiftHTML = list => list.map(([n, v]) => `${esc(n)} <span dir="ltr">${v}</span>`).join(" · ");
 /* "נמוך ב־1.7" / "גבוה ב־1.2" — והסבר מלא לתיבת הרמז */
 const houseShort = h => `${h.mean < 0 ? "נמוך" : "גבוה"} ב־${r1(Math.abs(h.mean))}`;
 const houseExplain = (h, what) => `${what}: בכל ${h.runs.length} מערכות הבחירות שבהן המכון סקר, הוא העריך ${h.mean < 0 ? "בחסר" : "ביתר"} — ` +
@@ -5984,10 +6038,12 @@ function structuralFix(raw) {
 
 function forecast(mode, exclude) {
   const skip = exclude || new Set();
-  const allIds = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
+  /* תחזית הברומטר מחושבת מהסקרים אחרי תיקון הטעות הקבועה בתוך כל גוש (correctWithinBlocs) */
+  const series = mode === "scenario" && S.seriesScenario ? S.seriesScenario : S.series;
+  const allIds = [...new Set(series.flatMap(s => Object.keys(s.parties)))];
   const w = s => mode !== "simple" ? firmWeight(s.meta) : 1;
-  const W = S.series.reduce((sum, s) => sum + w(s), 0);
-  const rawFull = Object.fromEntries(allIds.map(id => [id, S.series.reduce((sum, s) => sum + (s.parties[id] || 0) * w(s), 0) / W]));
+  const W = series.reduce((sum, s) => sum + w(s), 0);
+  const rawFull = Object.fromEntries(allIds.map(id => [id, series.reduce((sum, s) => sum + (s.parties[id] || 0) * w(s), 0) / W]));
   const visible = allIds.filter(id => !skip.has(id));
   /* אחוז החסימה: רשימה מתחת ל-3.25% אינה משוקללת לחלוקת המושבים. */
   const below = visible.filter(id => rawFull[id] > 0 && rawFull[id] < THRESHOLD_MANDATES);
@@ -5998,7 +6054,7 @@ function forecast(mode, exclude) {
     .sort((a, b) => rawFull[b] - rawFull[a])
     .map(id => [id, rawFull[id] / 120 * 100]));
   const fix = { parties: { ...raw }, added: 0 };
-  const blocs = Object.fromEntries(Object.keys(BLOCS).map(al => [al, S.series.reduce((sum, s) => sum + s.blocs[al] * w(s), 0) / W]));
+  const blocs = Object.fromEntries(Object.keys(BLOCS).map(al => [al, series.reduce((sum, s) => sum + s.blocs[al] * w(s), 0) / W]));
   [...skip, ...below].forEach(id => {
     const al = partyMeta(id).alignment;
     if (blocs[al] != null) blocs[al] = Math.max(0, blocs[al] - (rawFull[id] || 0));
@@ -7506,10 +7562,10 @@ function renderMethod() {
   }).join("");
   // 2 · firms and their weight in the mix
   const W = S.series.reduce((t, s) => t + firmWeight(s.meta), 0) || 1;
-  $("#m-firms").innerHTML = `<thead><tr><th>מכון</th><th>דרגה</th><th class="n">ציון</th><th class="n">סקרים בחלון</th><th class="n">משקל בתחזית</th></tr></thead><tbody>${
+  $("#m-firms").innerHTML = `<thead><tr><th>מכון</th><th>דרגה</th><th class="n">ציון</th><th class="n">סקרים בחלון</th><th class="n">משקל בתחזית</th><th>תיקון בתוך הגוש · תחזית הברומטר</th></tr></thead><tbody>${
     S.series.slice().sort((a, b) => firmScore(b.meta) - firmScore(a.meta)).map(s => {
       const sc = firmScore(s.meta), g = s.meta.calibrated ? gradeOf(sc) : { key: "none", label: "ללא דירוג · 70" };
-      return `<tr><td><strong>${esc(s.meta.he)}</strong></td><td><span class="grade ${g.key}">${esc(g.label)}</span></td><td class="n">${r1(sc)}</td><td class="n">${s.polls.length}</td><td class="n"><b>${r1(100 * firmWeight(s.meta) / W)}%</b></td></tr>`;
+      return `<tr><td><strong>${esc(s.meta.he)}</strong></td><td><span class="grade ${g.key}">${esc(g.label)}</span></td><td class="n">${r1(sc)}</td><td class="n">${s.polls.length}</td><td class="n"><b>${r1(100 * firmWeight(s.meta) / W)}%</b></td><td>${houseShiftHTML(houseShiftList(s.parties, S.seriesScenario?.find(x => x.key === s.key)?.parties || s.parties)) || "—"}</td></tr>`;
     }).join("")}</tbody>`;
   // 3 · simple vs weighted, per party
   const simple = forecast("simple", HIDE_FROM_HOME), weighted = forecast("weighted", HIDE_FROM_HOME);
@@ -8017,9 +8073,11 @@ async function boot() {
     /* הציון המשוקלל: ממוצע שווה־משקל של כל המערכות שבהן המכון פרסם */
     S.stats = combineCalibrations(S.elections);
     S.house = houseEffects(S.elections);
+    S.houseIndustry = houseIndustry(S.house);
     S.counterStats = scoreFirms(hist, COUNTERFACTUAL);
     S.forecastPolls = recentForForecast(S.cur.polls);
     S.series = buildSeries(S.forecastPolls);
+    S.seriesScenario = buildSeries(S.forecastPolls.map(correctWithinBlocs));
 
     $("#hero-art").innerHTML = KNESSET_SVG;
     $("#stamp-updated").textContent = `עודכן ${heDate(cur.generatedAt)}`;

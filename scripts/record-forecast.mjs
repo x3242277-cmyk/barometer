@@ -20,17 +20,25 @@ export function recordForecast() {
   const current = read("current-polls");
   const hist = read("historical-polls");
   const firms = read("pollsters");
+  /* אותן מערכות כיול כמו בדפדפן (2022, 2021, 2020) — כדי שהמשקלים ותיקון
+     הטעות הקבועה בתחזית הברומטר יהיו בצילום זהים למה שהאתר מציג */
+  const hist2021 = read("historical-polls-2021");
+  const hist2020 = read("historical-polls-2020");
 
   const ctx = vm.createContext({ console, Intl, Date, module: {}, window: undefined, document: undefined });
   for (const name of ["scenario", "app"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "assets", name + ".js"), "utf8"), ctx);
   }
-  ctx.fx = { current, hist, firms };
+  ctx.fx = { current, hist, hist2021, hist2020, firms };
   const result = JSON.parse(vm.runInContext(`
     S.cur = fx.current; S.hist = fx.hist; S.firms = fx.firms;
-    S.stats = combineCalibrations([{ year: 2022, election: "הכנסת ה־25", stats: scoreFirms(S.hist) }]);
+    S.elections = [[2022, fx.hist], [2021, fx.hist2021], [2020, fx.hist2020]].map(([year, data]) => ({ year, data, stats: scoreFirms(data) }));
+    S.stats = combineCalibrations(S.elections);
+    S.house = houseEffects(S.elections);
+    S.houseIndustry = houseIndustry(S.house);
     S.forecastPolls = recentForForecast(S.cur.polls);
     S.series = buildSeries(S.forecastPolls);
+    S.seriesScenario = buildSeries(S.forecastPolls.map(correctWithinBlocs));
     const __fsc = forecast("scenario", HIDE_FROM_HOME), __fw = forecast("weighted", HIDE_FROM_HOME);
     /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
     const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));

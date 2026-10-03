@@ -29,11 +29,11 @@
 <script src="assets/scenario.js?v=232c26c5" defer></script>
 <script src="assets/upgrade.js?v=c3f5bc20" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
-<script src="assets/explore.js?v=0eb6a286" defer></script>
+<script src="assets/explore.js?v=e55128b4" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=ba26275e" defer></script>
+<script src="assets/app.js?v=75ba6637" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
-<link rel="stylesheet" href="assets/layout.css?v=68ae34b9">
+<link rel="stylesheet" href="assets/layout.css?v=62db262f">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="">
@@ -201,6 +201,7 @@
         <button type="button" data-pollview="cards" aria-pressed="true"><span class="view-icon" aria-hidden="true">▦</span><span>כל הסקרים</span></button>
         <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
         <button type="button" data-pollview="average" aria-pressed="false"><span class="view-icon" aria-hidden="true">∿</span><span>ממוצע סקרים</span></button>
+        <button type="button" data-pollview="trends" aria-pressed="false"><span class="view-icon" aria-hidden="true">↗</span><span>מגמות מכון</span></button>
       </div>
     </div>
 
@@ -210,7 +211,7 @@
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
         <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label>
       </div>
-      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
+      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section><section id="polls-trends" class="firm-trends" hidden aria-label="מגמות לפי מכון"><div class="trend-toolbar"><label class="field"><span>מכון</span><select id="trend-firm"></select></label><div><span class="control-label">תצוגה</span><div class="trend-mode switch" role="group" aria-label="מה להציג"><button type="button" data-trend-mode="blocs" aria-pressed="true">גושים</button><button type="button" data-trend-mode="parties" aria-pressed="false">מפלגות</button></div></div></div><div id="trend-summary" class="trend-summary"></div><div id="trend-chart" class="trend-chart"></div><details id="trend-table" class="trend-data"></details></section>
     </section>
 
     <section class="sec">

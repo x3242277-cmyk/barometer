@@ -624,3 +624,46 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 .calcparty .calcout b{ font-size:2.2rem }
 .calcline.calctotal{ margin-top:12px; border-top:1px solid var(--rule); border-bottom:0; font-weight:800; font-size:1rem }
 @media (max-width:640px){ .calcsplit{ grid-template-columns:1fr } }
+
+/* ---------- כל הסקרים: תחזית הברומטר השבועית ומגמות מכון ---------- */
+.orglogo.is-barometer,.poll-result-card .orglogo.is-barometer{ background:#FFF url(logo.svg) center/72% no-repeat }
+.firm-trends{ display:grid; gap:14px }
+.firm-trends>*{ min-width:0 }
+.trend-toolbar{ display:flex; flex-wrap:wrap; align-items:end; gap:12px 20px }
+.trend-toolbar .field{ min-width:240px }
+.trend-summary{ display:flex; flex-wrap:wrap; gap:10px 28px; align-items:baseline }
+.trend-summary>div{ display:grid; gap:2px }
+.trend-summary b{ font-size:1.6rem; font-weight:800; color:var(--ink); line-height:1 }
+.trend-summary span{ font-size:.78rem; color:var(--ink-3); font-weight:600 }
+.trend-outlets{ flex-basis:100%; margin:0; font-size:.78rem; color:var(--ink-3) }
+.trend-chart{ border:1px solid var(--rule); border-radius:12px; background:var(--paper-2); padding:14px 16px }
+.tr-legend{ display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.8rem; color:var(--ink-2); margin-bottom:6px }
+.tr-legend i{ display:inline-block; width:14px; height:3px; border-radius:2px; margin-inline-end:6px; vertical-align:middle }
+.tr-plot{ position:relative; overflow-x:auto }
+.tr-plot svg{ display:block; width:100%; min-width:620px; height:auto; overflow:visible }
+.tr-grid{ stroke:var(--rule-2); stroke-width:1 }
+.tr-majority{ stroke:var(--ink-3); stroke-width:1 }
+.tr-tick{ fill:var(--ink-3); font-size:12px; font-variant-numeric:tabular-nums }
+.tr-line{ fill:none; stroke-width:2; stroke-linejoin:round; stroke-linecap:round }
+.tr-dot{ stroke:var(--paper-2); stroke-width:2 }
+.tr-leader{ stroke:var(--ink-3); stroke-width:1 }
+.tr-end{ fill:var(--ink-2); font-size:12.5px; font-weight:600 }
+.tr-end-v{ fill:var(--ink); font-weight:800 }
+.tr-cross{ stroke:var(--ink-3); stroke-width:1 }
+.tr-hit{ fill:transparent; cursor:crosshair }
+.tr-hitdot{ fill:transparent }
+.tr-plot svg:focus-visible{ outline:2px solid var(--gold); outline-offset:4px; border-radius:6px }
+.tr-tip{ position:absolute; top:8px; min-width:150px; padding:8px 10px; border:1px solid var(--rule); border-radius:8px; background:var(--paper); box-shadow:0 6px 18px #0006; pointer-events:none; direction:rtl; font-size:.8rem }
+.tr-tip p{ margin:0; display:flex; align-items:center; gap:8px }
+.tr-tip .tr-tip-head{ color:var(--ink-3); font-weight:600; margin-bottom:4px }
+.tr-tip i{ width:12px; height:2px; border-radius:1px }
+.tr-tip b{ color:var(--ink); font-size:.95rem; min-width:22px; font-variant-numeric:tabular-nums }
+.tr-tip span{ color:var(--ink-2) }
+.tr-minis{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px 18px }
+.tr-mini{ margin:0 }
+.tr-mini figcaption{ display:flex; align-items:baseline; gap:8px; font-size:.82rem; color:var(--ink-2) }
+.tr-mini figcaption i{ align-self:center; width:12px; height:3px; border-radius:2px }
+.tr-mini figcaption b{ color:var(--ink); font-weight:700; flex:1; min-width:0 }
+.tr-mini figcaption .num{ color:var(--ink); font-weight:800; font-size:1rem }
+.tr-mini figcaption small{ color:var(--ink-3); font-weight:700; min-width:34px; text-align:end }
+.tr-mini svg{ display:block; width:100%; height:auto; overflow:visible }

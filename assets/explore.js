@@ -56,6 +56,9 @@ function renderComparison(rows, ids) {
 }
 function renderPollCards(rows, polls) {
   const selected = S.focusParty;
+  /* התחזית השבועית של הברומטר מופיעה בכרטיסים ובהשוואה, אבל לא בממוצע הסקרים */
+  const baro = barometerWeeklyPolls(), avgRows = rows;
+  rows = [...rows, ...baro]; polls = [...polls, ...baro];
   /* כרטיס אחד לכל כלי תקשורת. ברירת המחדל היא הסקר האחרון שלו, ובורר
      התאריך שבכרטיס מחליף לסקר קודם של אותו כלי תקשורת. */
   const byOutlet = new Map();
@@ -86,7 +89,7 @@ function renderPollCards(rows, polls) {
   $('#poll-party').innerHTML = '<option value="">כל המפלגות</option>' + topPartyIds(Infinity).map(id => `<option value="${esc(id)}">${esc(partyMeta(id).name)}</option>`).join('');
   $('#poll-party').value = selected;
   const summary = $('#party-focus-summary');
-  const focusValues = rows.map(p => pollValue(p, selected)).filter(v => v !== null);
+  const focusValues = avgRows.map(p => pollValue(p, selected)).filter(v => v !== null);
   summary.hidden = !selected;
   summary.textContent = selected ? `${partyMeta(selected).name}: ${focusValues.length ? `טווח ${Math.min(...focusValues)}–${Math.max(...focusValues)} מנדטים ב־${focusValues.length} סקרים בסינון הנוכחי` : 'אין נתון בסינון הנוכחי'}.` : '';
   const stableIds = [...new Set(polls.flatMap(p => p.parties.map(x => normId(x.id))))].sort((a,b) => partyMeta(a).name.localeCompare(partyMeta(b).name,'he'));
@@ -100,7 +103,7 @@ function renderPollCards(rows, polls) {
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
       const meta = partyMeta(id), col = partyColor(id, meta.alignment);
       /* טעות קבועה של המכון ברשימה הזו במערכות הקודמות — הערה מתחת לשם */
-      const h = v !== null ? houseFor(f.meta, id) : null;
+      const h = v !== null && !p.barometer ? houseFor(f.meta, id) : null;
       const house = h ? `<small class="house-note" title="${esc(houseExplain(h, h.together || meta.name))}">טעות קבועה: ${houseShort(h)}${h.together ? ' (יחד עם ' + esc(partyMeta(HOUSE_GROUPS.rz.members.find(x => x !== normId(id))).name) + ')' : ''}</small>` : '';
       return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}${house}</li>`;
     };
@@ -114,10 +117,10 @@ function renderPollCards(rows, polls) {
     }${total === 120 ? `<i class="bc-61${winner ? ' is-maj' : ''}"${winner ? ` style="--c:${BLOCS[winner].color}"` : ''} title="קו הרוב: מעבר לאמצע = 61 ומעלה"></i>` : ''}</div>`;
     /* דירוג האמינות של המכון (הציון המשוקלל של מערכות הכיול) */
     const score = firmScore(f.meta), grade = gradeOf(score);
-    const gradeTag = f.meta.calibrated
+    const gradeTag = p.barometer ? '' : f.meta.calibrated
       ? `<span class="poll-grade grade-${grade.key}" title="ציון אמינות ${r1(score)} מתוך 100 — לפי דיוק המכון בבחירות 2020–2022">${grade.label} · ${r1(score)}</span>`
       : `<span class="poll-grade grade-none" title="אין למכון סקרים במערכות הכיול — הוא מקבל משקל ניטרלי">ללא כיול · משקל ניטרלי</span>`;
-    const hb = houseBloc(f.meta);
+    const hb = p.barometer ? null : houseBloc(f.meta);
     const blocNote = hb ? `<p class="house-bloc" title="${esc(houseExplain(hb, 'גוש הימין'))}">טעות קבועה בגוש הימין: ${houseShort(hb)} מנדטים</p>` : '';
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p>${gradeTag}</div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
@@ -129,15 +132,17 @@ function renderPollCards(rows, polls) {
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment === 'Right').map(rowHTML).join('')}</ol>
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
-      ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(x.name)).join(' · ')}</p></details>` : ''}
-      ${(fix => fix.length ? `<details class="zero-results house-fix"><summary>התיקון של המכון בתחזית הברומטר</summary><p>${houseShiftHTML(fix)} — מנדטים שעוברים בתוך אותו גוש, לפי הטעות הממוצעת של המכון ב־2020–2022${f.meta.calibrated ? '' : ' (אין לו היסטוריה: חצי מהטעות הממוצעת של כל המכונים)'}. סך הגושים לא משתנה.</p></details>` : '')(houseShiftList(pollPartyMap(p), pollPartyMap(correctWithinBlocs(p))))}
+      ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(partyMeta(normId(x.id)).name)).join(' · ')}</p></details>` : ''}
+      ${p.barometer ? '' : (fix => fix.length ? `<details class="zero-results house-fix"><summary>התיקון של המכון בתחזית הברומטר</summary><p>${houseShiftHTML(fix)} — מנדטים שעוברים בתוך אותו גוש, לפי הטעות הממוצעת של המכון ב־2020–2022${f.meta.calibrated ? '' : ' (אין לו היסטוריה: חצי מהטעות הממוצעת של כל המכונים)'}. סך הגושים לא משתנה.</p></details>` : '')(houseShiftList(pollPartyMap(p), pollPartyMap(correctWithinBlocs(p))))}
       <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
   $('#polls-compare').hidden = S.pollView !== 'compare';
   $('#polls-average').hidden = S.pollView !== 'average';
+  $('#polls-trends').hidden = S.pollView !== 'trends';
   renderComparison(rows, stableIds);
-  renderPollAverage(rows);
+  renderPollAverage(avgRows);
+  if (S.pollView === 'trends') renderFirmTrends();
 }
 function renderPollAverage(rows) {
   const box = $('#average-results'), status = $('#average-status'), firmsBox = $('#average-firms');
@@ -204,7 +209,143 @@ function renderPartyTrend(polls) {
   const dates=[...new Set(rows.map(parsePollDate))].map(t=>`<text x="${x(t)}" y="${H-10}" text-anchor="middle" fill="#46515E" font-size="12">${new Date(t).toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit'})}</text>`).join('');
   $('#trend-box').innerHTML=`<h3>${esc(partyMeta(id).name)} · מנדטים בסקרים</h3><div class="trend-scroll"><svg class="spark" viewBox="0 0 ${W} ${H}" role="img" aria-label="תוצאות ${esc(partyMeta(id).name)} בסקרים. פירוט מלא בטבלה מתחת לגרף.">${grid}${paths}${dates}</svg></div><div class="trend-legend">${legends.join('')}</div><details class="trend-data"><summary>פתיחת נתוני הגרף כטבלה</summary><div class="tablewrap" tabindex="0" role="region" aria-label="נתוני הגרף"><table><caption>תוצאות ${esc(partyMeta(id).name)}</caption><thead><tr><th scope="col">תאריך</th><th scope="col">מפרסם</th><th scope="col">מכון</th><th scope="col">מנדטים</th></tr></thead><tbody>${rows.map(p=>`<tr><td>${esc(p.date)}</td><td>${esc(p.channelHebrewName)}</td><td>${esc(firmOf(p.sourceId).meta.he)}</td><td>${pollValue(p,id)}</td></tr>`).join('')}</tbody></table></div></details>`;
 }
+/* ---------- מגמות מכון: כל הסקרים של מכון אחד לאורך זמן ----------
+   גושים — גרף קווים אחד, עם קו הרוב (61) וחלונית שעוקבת אחרי הסמן. מפלגות — גרף
+   קטן לכל רשימה, כולם באותו קנה מידה אנכי (אותו מספר מנדטים לגובה), כך ששיפוע
+   אומר אותו דבר בכל גרף. המקור: כל הארכיון מאז תחילת החלון, לא רק 4 האחרונים. */
+const TREND_BLOCS = ['Right', 'Left', 'Arabs', 'Unknown'];
+const trendBlocsOf = p => Object.fromEntries(TREND_BLOCS.map(k => [k, p.parties.filter(x => alignOf(x) === k).reduce((n, x) => n + x.mandates, 0)]));
+const trendSigned = d => d > 0 ? `+${r1(d)}` : d < 0 ? `−${r1(-d)}` : '0';
+const trendShortDate = p => new Date(parsePollDate(p)).toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
+
+function trendFirms() {
+  const src = (S.pollsArchive?.polls?.length ? S.pollsArchive.polls : S.cur.polls).filter(p => parsePollDate(p) >= POLLS_FROM);
+  const by = new Map();
+  src.forEach(p => {
+    const f = firmOf(p.sourceId);
+    if (!by.has(f.firm)) by.set(f.firm, { firm: f.firm, meta: f.meta, polls: [] });
+    by.get(f.firm).polls.push(p);
+  });
+  const list = [...by.values()].sort((a, b) => Math.max(...b.polls.map(parsePollDate)) - Math.max(...a.polls.map(parsePollDate)));
+  const baro = barometerWeeklyPolls();
+  if (baro.length) list.push({ firm: BAROMETER_SOURCE, meta: firmOf(BAROMETER_SOURCE).meta, label: BAROMETER_OUTLET, polls: baro });
+  list.forEach(f => f.polls.sort((a, b) => parsePollDate(a) - parsePollDate(b) || (a.publishedAt || 0) - (b.publishedAt || 0)));
+  return list;
+}
+
+function renderFirmTrends() {
+  if (!$('#polls-trends')) return;
+  const firms = trendFirms();
+  if (!firms.length) { $('#trend-chart').innerHTML = '<p class="empty">אין סקרים להצגה.</p>'; return; }
+  if (!firms.some(f => f.firm === S.trendFirm)) S.trendFirm = firms[0].firm;
+  const sel = $('#trend-firm');
+  sel.innerHTML = firms.map(f => `<option value="${esc(f.firm)}">${esc(f.label || f.meta.he)} · ${f.polls.length} ${f.firm === BAROMETER_SOURCE ? 'שבועות' : 'סקרים'}</option>`).join('');
+  sel.value = S.trendFirm;
+  $$('[data-trend-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.trendMode === S.trendMode)));
+  const cur = firms.find(f => f.firm === S.trendFirm), polls = cur.polls;
+  const first = polls[0], last = polls.at(-1), b0 = trendBlocsOf(first), b1 = trendBlocsOf(last);
+  const outlets = [...new Set(polls.map(p => p.channelHebrewName))];
+  $('#trend-summary').innerHTML =
+    `<div><b class="num">${polls.length}</b><span>${cur.firm === BAROMETER_SOURCE ? 'תחזיות שבועיות' : 'סקרים'} · ${esc(first.date)}–${esc(last.date)}</span></div>` +
+    ['Right', 'Left', 'Arabs'].map(k => `<div><b class="num">${b1[k]}</b><span>${esc(BLOCS[k].he)} · <span dir="ltr">${trendSigned(b1[k] - b0[k])}</span> מאז ${esc(first.date)}</span></div>`).join('') +
+    (cur.firm === BAROMETER_SOURCE ? '' : `<p class="trend-outlets">${esc(outlets.join(' · '))}</p>`);
+  if (S.trendMode === 'parties') renderFirmPartyTrends(polls); else renderFirmBlocTrend(polls);
+}
+
+function renderFirmBlocTrend(polls) {
+  const blocs = polls.map(trendBlocsOf);
+  const keys = TREND_BLOCS.filter(k => blocs.some(b => b[k] > 0));
+  const W = 900, H = 340, m = { l: 40, r: 130, t: 16, b: 34 };
+  const t0 = parsePollDate(polls[0]), t1 = parsePollDate(polls.at(-1));
+  const xs = polls.map(p => m.l + (W - m.l - m.r) * (t1 === t0 ? .5 : (parsePollDate(p) - t0) / (t1 - t0)));
+  const top = Math.max(70, Math.ceil(Math.max(...blocs.flatMap(b => keys.map(k => b[k]))) / 10) * 10);
+  const y = v => H - m.b - (H - m.b - m.t) * v / top;
+  const grid = Array.from({ length: top / 10 + 1 }, (_, i) => i * 10).map(v =>
+    `<line class="tr-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="tr-tick" x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join('');
+  const majority = `<line class="tr-majority" x1="${m.l}" x2="${W - m.r}" y1="${y(61)}" y2="${y(61)}"/><text class="tr-tick" x="${W - m.r + 6}" y="${y(61) - 6}">61 · רוב</text>`;
+  /* תאריכים בציר — לכל היותר 7, כדי שלא יתנגשו */
+  const step = Math.max(1, Math.ceil(polls.length / 7));
+  const dates = polls.map((p, i) => i % step && i !== polls.length - 1 ? '' : `<text class="tr-tick" x="${xs[i]}" y="${H - 10}" text-anchor="middle">${trendShortDate(p)}</text>`).join('');
+  const lines = keys.map(k => `<path class="tr-line" d="${blocs.map((b, i) => `${i ? 'L' : 'M'}${xs[i].toFixed(1)} ${y(b[k]).toFixed(1)}`).join(' ')}" stroke="${BLOCS[k].color}"/>` +
+    blocs.map((b, i) => `<circle class="tr-dot" cx="${xs[i].toFixed(1)}" cy="${y(b[k]).toFixed(1)}" r="4" fill="${BLOCS[k].color}"/>`).join('')).join('');
+  /* תוויות בקצה: הערך האחרון ושם הגוש, עם קו מוביל כשצריך להרחיק תוויות קרובות */
+  const lastB = blocs.at(-1), lx = xs.at(-1);
+  const labels = keys.map(k => ({ k, y0: y(lastB[k]), y: y(lastB[k]) })).sort((a, b) => a.y0 - b.y0);
+  for (let i = 1; i < labels.length; i++) labels[i].y = Math.max(labels[i].y, labels[i - 1].y + 16);
+  const endLabels = labels.map(l => `${Math.abs(l.y - l.y0) > 1 ? `<line class="tr-leader" x1="${lx + 6}" y1="${l.y0}" x2="${lx + 16}" y2="${l.y}"/>` : ''}<text class="tr-end" x="${lx + 18}" y="${l.y + 4}"><tspan class="tr-end-v">${lastB[l.k]}</tspan> ${esc(BLOCS[l.k].he)}</text>`).join('');
+  const legend = keys.map(k => `<span><i style="background:${BLOCS[k].color}"></i>${esc(BLOCS[k].he)}</span>`).join('');
+  $('#trend-chart').innerHTML = `<div class="tr-legend">${legend}</div>
+    <div class="tr-plot" dir="ltr"><svg viewBox="0 0 ${W} ${H}" role="img" tabindex="0" aria-label="הגושים בסקרי המכון לאורך זמן. חצים ימינה ושמאלה עוברים בין הסקרים; הנתונים המלאים בטבלה שמתחת.">${grid}${majority}${dates}${lines}${endLabels}<line class="tr-cross" y1="${m.t}" y2="${H - m.b}" x1="0" x2="0" visibility="hidden"/><rect class="tr-hit" x="${m.l - 10}" y="0" width="${W - m.l - m.r + 20}" height="${H}"/></svg><div class="tr-tip" hidden></div></div>`;
+  /* חלונית הריחוף: נצמדת לסקר הקרוב לסמן, ומציגה את כל הגושים בו */
+  const plot = $('#trend-chart .tr-plot'), svg = plot.querySelector('svg'), tip = plot.querySelector('.tr-tip'), cross = svg.querySelector('.tr-cross');
+  plot.scrollLeft = plot.scrollWidth;                     // בטלפון הגרף נגלל — מתחילים מהסקרים האחרונים
+  let idx = polls.length - 1;
+  const show = i => {
+    idx = Math.max(0, Math.min(polls.length - 1, i));
+    const p = polls[idx], b = blocs[idx];
+    cross.setAttribute('x1', xs[idx]); cross.setAttribute('x2', xs[idx]); cross.setAttribute('visibility', 'visible');
+    tip.replaceChildren();
+    const head = document.createElement('p'); head.className = 'tr-tip-head'; head.textContent = `${p.date} · ${p.channelHebrewName}`; tip.append(head);
+    keys.slice().sort((a, c) => b[c] - b[a]).forEach(k => {
+      const row = document.createElement('p'), key = document.createElement('i'), v = document.createElement('b'), n = document.createElement('span');
+      key.style.background = BLOCS[k].color; v.textContent = b[k]; n.textContent = BLOCS[k].he;
+      row.append(key, v, n); tip.append(row);
+    });
+    tip.hidden = false;
+    const r = svg.getBoundingClientRect(), px = xs[idx] * r.width / W;
+    tip.style.left = `${Math.min(Math.max(px + 14, 0), r.width - tip.offsetWidth - 4)}px`;
+    if (px + 14 + tip.offsetWidth > r.width) tip.style.left = `${Math.max(0, px - tip.offsetWidth - 14)}px`;
+  };
+  const hide = () => { tip.hidden = true; cross.setAttribute('visibility', 'hidden'); };
+  svg.addEventListener('pointermove', e => {
+    const r = svg.getBoundingClientRect(), sx = (e.clientX - r.left) * W / r.width;
+    let best = 0; xs.forEach((x, i) => { if (Math.abs(x - sx) < Math.abs(xs[best] - sx)) best = i; });
+    show(best);
+  });
+  svg.addEventListener('pointerleave', hide);
+  svg.addEventListener('focus', () => show(idx));
+  svg.addEventListener('blur', hide);
+  svg.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
+  });
+  $('#trend-table').innerHTML = `<summary>פתיחת הנתונים כטבלה</summary><div class="tablewrap" tabindex="0" role="region" aria-label="הגושים בכל סקר"><table><thead><tr><th scope="col">תאריך</th><th scope="col">מפרסם</th>${keys.map(k => `<th scope="col" class="n">${esc(BLOCS[k].he)}</th>`).join('')}</tr></thead><tbody>${
+    polls.slice().reverse().map((p, i) => { const b = blocs[polls.length - 1 - i]; return `<tr><td>${esc(p.date)}</td><td>${esc(p.channelHebrewName)}</td>${keys.map(k => `<td class="n">${b[k]}</td>`).join('')}</tr>`; }).join('')
+  }</tbody></table></div>`;
+}
+
+function renderFirmPartyTrends(polls) {
+  const ids = [...new Set(polls.flatMap(p => p.parties.filter(x => x.mandates > 0).map(x => normId(x.id))))];
+  const series = ids.map(id => ({ id, vals: polls.map(p => pollValue(p, id)) }));
+  const lastOf = s => s.vals.filter(v => v !== null).at(-1) ?? 0, firstOf = s => s.vals.find(v => v !== null) ?? 0;
+  series.sort((a, b) => lastOf(b) - lastOf(a) || partyMeta(a.id).name.localeCompare(partyMeta(b.id).name, 'he'));
+  /* אותו טווח אנכי לכל הגרפים הקטנים — רק נקודת ההתחלה שלו זזה */
+  const span = Math.max(8, ...series.map(s => { const v = s.vals.filter(x => x !== null); return Math.max(...v) - Math.min(...v) + 2; }));
+  const W = 260, H = 76, m = { l: 22, r: 8, t: 8, b: 8 };
+  const t0 = parsePollDate(polls[0]), t1 = parsePollDate(polls.at(-1));
+  const xs = polls.map(p => m.l + (W - m.l - m.r) * (t1 === t0 ? .5 : (parsePollDate(p) - t0) / (t1 - t0)));
+  $('#trend-chart').innerHTML = `<div class="tr-minis">${series.map(s => {
+    const vs = s.vals.filter(v => v !== null), mid = (Math.max(...vs) + Math.min(...vs)) / 2;
+    const lo = Math.max(0, Math.round(mid - span / 2)), hi = lo + span;
+    const y = v => H - m.b - (H - m.b - m.t) * (v - lo) / span;
+    const meta = partyMeta(s.id), col = partyColor(s.id, meta.alignment);
+    /* קו עם רווחים במקום שבו המכון לא מדד את הרשימה */
+    let d = '', pen = false;
+    s.vals.forEach((v, i) => { if (v === null) { pen = false; return; } d += `${pen ? 'L' : 'M'}${xs[i].toFixed(1)} ${y(v).toFixed(1)} `; pen = true; });
+    const li = s.vals.map((v, i) => v === null ? -1 : i).filter(i => i >= 0).at(-1);
+    const hits = s.vals.map((v, i) => v === null ? '' : `<circle class="tr-hitdot" cx="${xs[i].toFixed(1)}" cy="${y(v).toFixed(1)}" r="10"><title>${esc(polls[i].date)} · ${esc(polls[i].channelHebrewName)}: ${v}</title></circle>`).join('');
+    const delta = lastOf(s) - firstOf(s);
+    return `<figure class="tr-mini"><figcaption><i style="background:${col}"></i><b>${esc(meta.name)}</b><span class="num">${lastOf(s)}</span><small dir="ltr">${delta ? (delta > 0 ? '▲ ' : '▼ ') + Math.abs(delta) : '='}</small></figcaption>
+      <svg viewBox="0 0 ${W} ${H}" dir="ltr" role="img" aria-label="${esc(meta.name)}: מ־${firstOf(s)} ל־${lastOf(s)} מנדטים"><line class="tr-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(lo)}" y2="${y(lo)}"/><line class="tr-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(hi)}" y2="${y(hi)}"/><text class="tr-tick" x="${m.l - 4}" y="${y(lo) + 4}" text-anchor="end">${lo}</text><text class="tr-tick" x="${m.l - 4}" y="${y(hi) + 4}" text-anchor="end">${hi}</text><path class="tr-line" d="${d}" stroke="${col}"/>${li >= 0 ? `<circle class="tr-dot" cx="${xs[li].toFixed(1)}" cy="${y(s.vals[li]).toFixed(1)}" r="4" fill="${col}"/>` : ''}${hits}</svg></figure>`;
+  }).join('')}</div>`;
+  $('#trend-table').innerHTML = `<summary>פתיחת הנתונים כטבלה</summary><div class="tablewrap" tabindex="0" role="region" aria-label="המפלגות בכל סקר"><table><thead><tr><th scope="col">תאריך</th><th scope="col">מפרסם</th>${series.map(s => `<th scope="col" class="n">${esc(partyMeta(s.id).name)}</th>`).join('')}</tr></thead><tbody>${
+    polls.map((p, i) => ({ p, i })).reverse().map(({ p, i }) => `<tr><td>${esc(p.date)}</td><td>${esc(p.channelHebrewName)}</td>${series.map(s => `<td class="n">${s.vals[i] ?? '—'}</td>`).join('')}</tr>`).join('')
+  }</tbody></table></div>`;
+}
+
 function wireExploration() {
+  $('#trend-firm')?.addEventListener('change', e => { S.trendFirm = e.target.value; renderFirmTrends(); });
+  $$('[data-trend-mode]').forEach(b => b.addEventListener('click', () => { S.trendMode = b.dataset.trendMode; renderFirmTrends(); }));
   $$('[data-homeview]').forEach(b=>b.addEventListener('click',()=>{S.homeView=b.dataset.homeview;$$('[data-homeview]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$$('[data-homepanel]').forEach(x=>x.hidden=x.dataset.homepanel!==S.homeView);}));
   $('#poll-party').addEventListener('change',e=>{S.focusParty=e.target.value;renderPolls();});
   $('#polls-cards').addEventListener('change', e => {

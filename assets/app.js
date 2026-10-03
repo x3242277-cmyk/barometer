@@ -71,7 +71,7 @@ const ELECTION_TIMELINE = {
 
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"scenario", scen:"actual",
-            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"cards", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
+            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", trendFirm:"", trendMode:"blocs", pollView:"cards", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
             calibrations:[], elections:[], calibKey:"2022", leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */
@@ -323,6 +323,11 @@ const humanUpdate = iso => {
    רע״ם נספרת בגוש השמאל; המפלגות החרדיות נספרות בגוש הימין. הפילוח הפנימי
    של גוש הימין נשאר רק במודל הדמוגרפי, שם הוא נגזר מ-HAREDI_PARTIES. */
 const ALIGN_OVERRIDE = { ofer_vinter_party: "Right", noam: "Right", raam: "Left", bait_zioni: "Left" };
+/* שם שהאתר קובע לרשימה, מעל לשם שמופיע בנתוני הסקר הגולמיים — כדי שרענון נתונים לא ידרוס אותו */
+const NAME_OVERRIDE = { hendel_zeliha_party: "המילואימניקים/הכלכלית", zionut_datit: "הציונות הדתית/זהות" };
+/* תחזית הברומטר השבועית (forecast-history.json → weekly) מוצגת בעמוד "כל הסקרים"
+   כמו סקר, תחת המקור הזה. היא לעולם לא נכנסת לתחזית, לממוצעים או לכיול. */
+const BAROMETER_SOURCE = "barometer", BAROMETER_OUTLET = "תחזית הברומטר";
 /* צבע לפי משפחת המפלגה, לא לפי הגוש: רע״מ היא מפלגה ערבית (ירוק) שנספרת בגוש
    המרכז־שמאל לצורך חשבון הקואליציה. */
 const PARTY_COLOR_OVERRIDE = { raam: BLOCS.Arabs.color };
@@ -364,6 +369,7 @@ const FIRM_FALLBACK_COLOR = "#64707C";
 const firmColor = sourceId => firmOf(sourceId).meta.color || FIRM_FALLBACK_COLOR;
 
 function firmOf(sourceId) {
+  if (sourceId === BAROMETER_SOURCE) return { firm: BAROMETER_SOURCE, outlet: BAROMETER_OUTLET, meta: { id: BAROMETER_SOURCE, he: "ברומטר", short: "ב", calibrated: false, color: "#B8862B" } };
   const m = S.firms.sourceMap[sourceId];
   if (!m) return { firm: sourceId, outlet: sourceId, meta: { he: sourceId, short: "?", calibrated: false, color: FIRM_FALLBACK_COLOR } };
   return { ...m, meta: S.firms.firms.find(f => f.id === m.firm) || { he: m.firm, short: "?", calibrated: false } };
@@ -375,6 +381,17 @@ function firmOf(sourceId) {
    להציג את כל החלון (S.cur.polls). אם 8 הימים האחרונים דלים מדי (פחות מ-3
    מכונים), נשמר כל החלון — עדיף על תחזית שנשענת על סקר בודד. */
 const FORECAST_MAX_AGE_DAYS = 8;
+/* התחזיות השבועיות כ"סקרים" — באותו מבנה של סקר, לתצוגה בלבד */
+function barometerWeeklyPolls() {
+  return (S.forecastHistory?.weekly || []).map(w => {
+    const [y, m, d] = w.date.split("-");
+    const ts = Date.parse(w.date + "T00:00:00Z");
+    return { id: `${BAROMETER_SOURCE}-${w.week}`, barometer: true, date: `${d}.${m}.${y}`, dateTimestamp: ts, publishedAt: Date.parse(w.recordedAt) || ts,
+      channelHebrewName: BAROMETER_OUTLET, sourceId: BAROMETER_SOURCE, pollster: "ברומטר",
+      parties: Object.entries(w.seats || {}).map(([id, mandates]) => ({ id, name: partyMeta(id).name, logoUrl: "", mandates, alignment: partyMeta(id).alignment })) };
+  }).sort((a, b) => b.dateTimestamp - a.dateTimestamp);
+}
+
 function recentForForecast(polls) {
   const cutoff = Date.now() - FORECAST_MAX_AGE_DAYS * 864e5;
   const recent = polls.filter(p => parsePollDate(p) >= cutoff);
@@ -583,9 +600,10 @@ function demoDriftSeats() {
 function partyMeta(id) {
   const rows = S.cur.polls.flatMap(p => p.parties.filter(x => normId(x.id) === id));
   const last = rows.at(-1) || { name: id, logoUrl: "" };
-  if (ALIGN_OVERRIDE[id]) return { name: last.name, logo: last.logoUrl, alignment: ALIGN_OVERRIDE[id] };
+  const name = NAME_OVERRIDE[id] || last.name;
+  if (ALIGN_OVERRIDE[id]) return { name, logo: last.logoUrl, alignment: ALIGN_OVERRIDE[id] };
   const al = [...new Set(rows.filter(x => x.mandates > 0).map(x => alignOf(x)))];
-  return { name: last.name, logo: last.logoUrl, alignment: al.length === 1 ? al[0] : "Unknown" };
+  return { name, logo: last.logoUrl, alignment: al.length === 1 ? al[0] : "Unknown" };
 }
 
 function countdownParts(ms) {
@@ -630,7 +648,7 @@ function renderElectionTimer() {
 /* שם המנהיג/ה שמוצג מתחת לשם הרשימה בכרטיס. */
 const PARTY_LEADER = {
   likud: "בנימין נתניהו", shas: "אריה דרעי", yahadut_hatora: "יעקב אשר",
-  ozma_yehudit: "איתמר בן גביר", zionut_datit: "בצלאל סמוטריץ׳", ofer_vinter_party: "עופר וינטר",
+  ozma_yehudit: "איתמר בן גביר", zionut_datit: "בצלאל סמוטריץ׳ · משה פייגלין", ofer_vinter_party: "עופר וינטר",
   yashar: "גדי איזנקוט", beyahad: "נפתלי בנט · יאיר לפיד", hademokratim: "יאיר גולן",
   ndi: "אביגדור ליברמן", raam: "מנסור עבאס", reshima_meshutefet: "יוסף ג׳בארין", hadash_taal: "איימן עודה",
   hendel_zeliha_party: "יועז הנדל · ירון זליכה", kahollavan: "בני גנץ", noam: "אבי מעוז"
@@ -952,6 +970,7 @@ function logoBox(meta, size = 34) {
   return `<span class="orglogo" style="width:${size}px;height:${size}px" title="${esc(meta?.he || "")}">${esc(meta?.short || "—")}</span>`;
 }
 function outletLogo(name) {
+  if (name === BAROMETER_OUTLET) return `<span class="orglogo is-barometer" title="${esc(name)}"></span>`;
   const l = S.firms.outletLogos[name];
   return l ? `<span class="orglogo" title="${esc(name)}"><img src="${esc(l)}" alt="" onerror="var p=this.parentNode;this.remove();p.textContent='${esc((name||"").slice(0,3))}'"></span>`
            : `<span class="orglogo" title="${esc(name)}">${esc((name || "").slice(0, 3))}</span>`;
@@ -2435,6 +2454,8 @@ function wire() {
     $("#polls-cards").hidden = S.pollView !== "cards";
     $("#polls-compare").hidden = S.pollView !== "compare";
     $("#polls-average").hidden = S.pollView !== "average";
+    $("#polls-trends").hidden = S.pollView !== "trends";
+    if (S.pollView === "trends") renderFirmTrends();
   }));
 
   ["#poll-firm", "#poll-outlet"].forEach(s => $(s).addEventListener("change", renderPolls));

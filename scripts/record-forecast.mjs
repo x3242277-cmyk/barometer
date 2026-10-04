@@ -3,12 +3,14 @@
  * שומר צילום של התחזית הנוכחית ב-data/forecast-history.json בכל עדכון סקרים.
  * עמוד הבית משווה את שני הצילומים האחרונים כדי להציג חיווי שינוי (▲/▼) לכל מפלגה.
  *
- * פעם בשבוע (השבוע מתחיל ביום ראשון, שעון ישראל) נשמרת גם תחזית שבועית תחת
- * weekly — תחזית הברומטר של העדכון הראשון בשבוע, במנדטים לפי כללי הבחירות.
+ * פעם בשבוע — במוצאי שבת ב־20:00 (שעון ישראל) — נשמרת גם תחזית שבועית תחת
+ * weekly: תחזית הברומטר, במנדטים לפי כללי הבחירות. העדכון הראשון אחרי השעה
+ * הזו (ריצת 21:00 של הבוט) שומר אותה, עם התאריך של השבת.
  * היא מוצגת בעמוד "כל הסקרים" לצד הסקרים, ואינה נכנסת לשום חישוב.
  *
  *   node scripts/record-forecast.mjs
  *   node scripts/record-forecast.mjs --backfill-weekly   # משחזר שבועות קודמים מהארכיון
+ *   node scripts/record-forecast.mjs --rebuild-weekly    # מוחק ומשחזר את כל השבועות
  *
  * מריץ את מנוע התחזית האמיתי (assets/app.js) ב-sandbox, כדי שהמספרים יהיו
  * זהים למה שהדפדפן מחשב.
@@ -22,11 +24,19 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = name => JSON.parse(fs.readFileSync(path.join(ROOT, "data", name + ".json"), "utf8"));
 const FILE = path.join(ROOT, "data", "forecast-history.json");
 
-/* יום ראשון של השבוע (שעון ישראל) כ-YYYY-MM-DD */
 const israelDay = ts => new Date(ts).toLocaleDateString("en-CA", { timeZone: "Asia/Jerusalem" });
+const israelHour = ts => Number(new Date(ts).toLocaleString("en-GB", { timeZone: "Asia/Jerusalem", hour: "2-digit", hour12: false })) % 24;
+/* השעה hh:00 שעון ישראל בתאריך YYYY-MM-DD, כחותמת זמן (קיץ UTC+3, חורף UTC+2) */
+export function israelTime(day, hh) {
+  const guess = Date.parse(`${day}T${String(hh).padStart(2, "0")}:00:00Z`);
+  return guess - ((israelHour(guess) - hh + 24) % 24) * 36e5;
+}
+/* השבוע של התחזית השבועית: התאריך של מוצאי השבת האחרון שבו כבר הגיעה 20:00 */
 export function weekKey(ts) {
-  const day = Date.parse(israelDay(ts) + "T00:00:00Z");
-  return new Date(day - new Date(day).getUTCDay() * 864e5).toISOString().slice(0, 10);
+  const day = israelDay(ts), dow = new Date(day + "T00:00:00Z").getUTCDay();      // 6 = שבת
+  let back = (dow + 1) % 7;                                                          // ימים מאז השבת
+  if (back === 0 && israelHour(ts) < 20) back = 7;
+  return new Date(Date.parse(day + "T00:00:00Z") - back * 864e5).toISOString().slice(0, 10);
 }
 
 /* מריץ את המנוע על סט סקרים. now — הזמן שהמנוע "חושב" שהוא עכשיו (לשחזור שבועות
@@ -74,7 +84,7 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
   `, ctx));
 }
 
-const weeklyEntry = (week, ts, r) => ({ week, date: israelDay(ts), recordedAt: new Date(ts).toISOString(), polls: r.polls, firms: r.firms, seats: r.seats });
+const weeklyEntry = (week, ts, r) => ({ week, date: week, time: "20:00", recordedAt: new Date(ts).toISOString(), polls: r.polls, firms: r.firms, seats: r.seats });
 
 export function recordForecast() {
   const current = read("current-polls");
@@ -107,23 +117,24 @@ function asJointList(p) {
   return { ...p, parties: [...p.parties.filter(x => x.id !== "reshima_meshutefet" && !JOINT_PARTS.has(x.id)), { ...base, id: "reshima_meshutefet", name: "הרשימה המשותפת", mandates: joint }] };
 }
 
-/* שחזור שבועות שעברו: לכל יום ראשון מאז תחילת חלון הסקרים — הסקרים שבארכיון עד
-   סוף השבוע הקודם (שבת), והמנוע רץ כאילו השעה 09:00 באותו יום ראשון. */
-export function backfillWeekly() {
+/* שחזור שבועות שעברו: לכל מוצאי שבת מאז תחילת חלון הסקרים — הסקרים שבארכיון עד
+   אותה שבת, והמנוע רץ כאילו השעה 20:00 באותו מוצאי שבת. */
+export function backfillWeekly({ rebuild = false } = {}) {
   const archive = read("polls-archive").polls;
   const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, "scripts/config.json"), "utf8"));
   const history = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, "utf8")) : { snapshots: [] };
+  if (rebuild) history.weekly = [];
   history.weekly ||= [];
-  const thisWeek = weekKey(Date.now());
-  let sunday = Date.parse(weekKey(Date.parse(cfg.from || "2026-08-01")) + "T00:00:00Z");
+  const from = Date.parse(cfg.from || "2026-08-01");
+  let sat = from + ((6 - new Date(from).getUTCDay() + 7) % 7) * 864e5;              // השבת הראשונה
   const added = [];
-  for (; new Date(sunday).toISOString().slice(0, 10) < thisWeek; sunday += 7 * 864e5) {
-    const week = new Date(sunday).toISOString().slice(0, 10);
+  for (; israelTime(new Date(sat).toISOString().slice(0, 10), 20) <= Date.now(); sat += 7 * 864e5) {
+    const week = new Date(sat).toISOString().slice(0, 10);
     if (history.weekly.some(w => w.week === week)) continue;
     /* בחודש אוגוסט חלק מהמכונים עוד מדדו את חד״ש–תע״ל ובל״ד לבד ואחרים את
        הרשימה המשותפת. בשחזור הן נספרות כרשימה אחת, כמו שהן רצות היום. */
-    const polls = archive.filter(p => p.dateTimestamp < sunday).map(asJointList);
-    const at = sunday + 6 * 3600e3;                       // 09:00 שעון ישראל
+    const polls = archive.filter(p => p.dateTimestamp < sat + 864e5).map(asJointList);
+    const at = israelTime(week, 20);
     let r;
     try { r = runEngine(polls, { now: at, select: true }); }
     catch (e) { if (String(e.message).includes("NO_POLLS")) continue; throw e; }
@@ -137,8 +148,8 @@ export function backfillWeekly() {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  if (process.argv.includes("--backfill-weekly")) {
-    const added = backfillWeekly();
+  if (process.argv.includes("--backfill-weekly") || process.argv.includes("--rebuild-weekly")) {
+    const added = backfillWeekly({ rebuild: process.argv.includes("--rebuild-weekly") });
     console.log(`· שוחזרו ${added.length} שבועות: ${added.join(", ") || "—"}`);
   }
   const h = recordForecast();

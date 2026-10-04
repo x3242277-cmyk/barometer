@@ -18,8 +18,8 @@
     document.head.append(coverPreload);
   }
 </script>
-<link rel="icon" href="assets/favicon.png?v=23380a8d" type="image/png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=bf2963ab">
+<link rel="icon" href="assets/favicon.png?v=b1c9f503" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=cf68422a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=f57a0da5">
@@ -30,11 +30,11 @@
 <script src="assets/upgrade.js?v=c3f5bc20" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=af5fa7aa" defer></script>
-<script src="assets/poll-tracker.js?v=8b8b3882" defer></script>
+<script src="assets/poll-tracker.js?v=af6a1683" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=ccb2823b" defer></script>
+<script src="assets/app.js?v=bc86959b" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
-<link rel="stylesheet" href="assets/layout.css?v=1bbfa645">
+<link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
 <link rel="stylesheet" href="assets/pipeline.css?v=724592e2">
@@ -47,7 +47,7 @@
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
-<link rel="stylesheet" href="assets/poll-tracker.css?v=9bc7297c">
+<link rel="stylesheet" href="assets/poll-tracker.css?v=4b18ef66">
 <link rel="stylesheet" href="assets/theme.css?v=7f725377">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
@@ -210,11 +210,17 @@
 
     <div class="polls-layout">
     <div class="polls-main">
-    <section class="sec tracker-sec" aria-label="מגמות בסקרים">
+    <nav class="polls-tabs" role="tablist" aria-label="מה להציג">
+      <button type="button" role="tab" data-polls-tab="trend" aria-selected="true"><b>המגמה</b><small>הגושים והמפלגות לאורך זמן</small></button>
+      <button type="button" role="tab" data-polls-tab="list" aria-selected="false"><b>כל סקר בנפרד</b><small>טבלה, כרטיסים, השוואה</small></button>
+      <button type="button" role="tab" data-polls-tab="cross" aria-selected="false"><b>כמה עברו צד</b><small>לפי כל מכון</small></button>
+      <button type="button" role="tab" data-polls-tab="firms" aria-selected="false"><b>מי סקר ומי פרסם</b><small>המכונים וכלי התקשורת</small></button>
+    </nav>
+    <section class="sec tracker-sec" data-polls-panel="trend" aria-label="מגמות בסקרים">
       <div id="poll-tracker" class="tracker"></div>
     </section>
 
-    <section class="sec cross-sec" id="poll-crossover" aria-labelledby="cross-title" tabindex="-1">
+    <section class="sec cross-sec" id="poll-crossover" data-polls-panel="cross" hidden aria-labelledby="cross-title" tabindex="-1">
       <div class="tr-card cross-card">
         <div class="tr-card-head cross-head"><div><p class="kicker">כמה עברו צד</p><h3 id="cross-title">כמה מצביעים עברו מגוש לגוש — לפי כל מכון</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
         <p class="sec-note" id="crossover-note"></p>
@@ -224,13 +230,12 @@
       </div>
     </section>
 
-    <section class="sec polls-sec">
+    <section class="sec polls-sec" data-polls-panel="list" hidden>
       <div class="sec-head polls-sec-head"><div><p class="kicker">הסקרים עצמם</p><h2>כל סקר בנפרד</h2></div>
       <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
         <button type="button" data-pollview="table" aria-pressed="true"><span class="view-icon" aria-hidden="true">☰</span><span>טבלה</span></button>
         <button type="button" data-pollview="cards" aria-pressed="false"><span class="view-icon" aria-hidden="true">▦</span><span>כרטיסים</span></button>
         <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
-        <button type="button" data-pollview="average" aria-pressed="false"><span class="view-icon" aria-hidden="true">∿</span><span>ממוצע סקרים</span></button>
       </div></div>
       <div class="controls" hidden>
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
@@ -240,21 +245,15 @@
       <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-table" class="polls-table" hidden></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 
-    <section class="sec">
+    <section class="sec" data-polls-panel="firms" hidden>
       <div class="sec-head"><div><p class="kicker">מאחורי כל סקר</p><h2>מי ביצע את הסקר, ומי פרסם אותו?</h2></div>
       <p class="sec-note">סקר הוא תמיד שני גופים: המכון שביצע את המדידה, והגוף שבחר לפרסם אותה. השיוך הזה חשוב — הוא מסביר למה מכון מסוים מופיע שוב ושוב באותו ערוץ.</p></div>
       <div class="grid g2" id="firm-cards"></div>
     </section>
 
-    <section class="sec">
-      <div class="notice warm"><span class="ic">↻</span><div>
-        <p style="margin:0 0 6px"><b>העמוד הזה מתעדכן אוטומטית.</b></p>
-        <p style="margin:0">העמוד מציג את הסקרים שבמאגר בחלון הזמן הנוכחי. תאריך הפרסום והמכון מוצגים לצד כל סקר.</p>
-      </div></div>
-    </section>
     </div>
     <aside class="polls-feed" aria-labelledby="feed-title">
-      <div class="feed-head"><h2 id="feed-title">הסקרים האחרונים</h2><p>מהחדש לישן. לחצו על סקר לפירוט המלא.</p></div>
+      <div class="feed-head"><h2 id="feed-title">הסקרים האחרונים</h2><p>מהחדש לישן, כולל תחזית הברומטר של כל מוצאי שבת. לחצו לפירוט.</p></div>
       <div id="polls-feed" class="feed-list"></div>
     </aside>
     </div>

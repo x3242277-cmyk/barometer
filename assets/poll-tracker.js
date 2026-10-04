@@ -65,6 +65,47 @@ function trackerModel() {
   return { polls, vec, series, now, before, parties, recent };
 }
 
+/* ---------- על מה מבוססים המספרים: שלוש אפשרויות לבחירת הגולש ----------
+   ממוצע כל הסקרים — הממוצע הנע שלמעלה. תחזית הברומטר ומשוקלל אמינות — אותם
+   מספרים כמו בעמוד התחזית, והקו לאורך זמן מצילומי התחזית (פעמיים ביום). */
+const TRACK_BASES = {
+  avg: { label: "ממוצע כל הסקרים", kicker: "ממוצע הסקרים",
+    note: "ממוצע נע של 7 ימים: כל מכון נספר פעם אחת, בלי משקלים ובלי תיקונים. כל נקודה בגרף היא סקר." },
+  baro: { label: "תחזית הברומטר", kicker: "תחזית הברומטר", key: "scenario", mode: "scenario",
+    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות הקבועה, ש״ס, יהדות התורה ורע״מ קבועים, והתוספת הדמוגרפית — במנדטים לפי כללי הבחירות." },
+  weighted: { label: "משוקלל אמינות", kicker: "משוקלל אמינות", key: "weighted", mode: "weighted",
+    note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון — בלי ההנחות של תחזית הברומטר." }
+};
+function basisModel(P, basis) {
+  const B = TRACK_BASES[basis];
+  if (!B?.key) return P;
+  const point = (t, seats, n, firms) => {
+    const parties = {}, blocs = { Right: 0, Left: 0, Arabs: 0, Unknown: 0 };
+    Object.entries(seats || {}).forEach(([id, v]) => {
+      const k = normId(id), al = partyMeta(k).alignment;
+      parties[k] = (parties[k] || 0) + v;
+      blocs[al in blocs ? al : "Unknown"] += v;
+    });
+    return { t, n, firms, parties, blocs };
+  };
+  let live = null;
+  try { live = point(Date.parse(S.cur.generatedAt), allocateSeats(forecast(B.mode, HIDE_FROM_HOME).parties), S.forecastPolls?.length || 0, S.series?.length || 0); } catch { /* בלי תחזית חיה — רק הצילומים */ }
+  const series = (S.forecastHistory?.snapshots || []).filter(x => x[B.key])
+    .map(x => point(Date.parse(x.updatedAt), x[B.key], x.polls, x.firms))
+    .filter(x => !live || x.t < live.t - 36e5).sort((a, b) => a.t - b.t);
+  if (live) series.push(live);
+  if (series.length < 2) return P;
+  const now = series.at(-1), before = series.find(x => x.t >= now.t - TRACK_CHANGE_DAYS * DAY_MS) || series[0];
+  const ids = [...new Set(series.flatMap(x => Object.keys(x.parties)))], range = Object.fromEntries(P.parties.map(x => [x.id, x]));
+  const parties = ids.map(id => ({ id, name: NAME_OVERRIDE[id] || partyMeta(id).name, now: now.parties[id] || 0, before: before.parties[id] || 0,
+      min: range[id]?.min ?? 0, max: range[id]?.max ?? 0, color: partyHue(id), line: series.map(x => x.parties[id] || 0) }))
+    .filter(x => x.now >= 0.5 || x.max >= 4).sort((a, b) => b.now - a.now);
+  return { ...P, series, now, before, parties, dotPolls: [], basis };
+}
+
+/* תחזיות הברומטר של מוצאי שבת — מופיעות ברשימת הסקרים ובטבלה כמו סקר, אבל לא בשום ממוצע */
+const weeklyBaro = () => (typeof barometerWeeklyPolls === "function" ? barometerWeeklyPolls() : []).filter(p => parsePollDate(p) >= POLLS_FROM);
+
 const trFmt = v => (Math.round(v * 10) / 10).toFixed(1).replace(/\.0$/, "");
 const trDelta = d => Math.abs(d) < 0.25 ? { cls: "flat", txt: "ללא שינוי", sym: "=" } :
   d > 0 ? { cls: "up", txt: `עלייה של ${trFmt(d)}`, sym: `▲ ${trFmt(d)}` } : { cls: "down", txt: `ירידה של ${trFmt(-d)}`, sym: `▼ ${trFmt(-d)}` };
@@ -86,7 +127,7 @@ function trackerChart(M, mode) {
   const W = Math.round(Math.min(920, Math.max(320, S.trackWidth || 920))), H = W < 600 ? 260 : 340, m = { l: 30, r: W < 600 ? 40 : 52, t: 18, b: 34 };
   const days = S.trackRange === "month" ? 30 : 400;
   const tMin = Math.max(M.series[0].t, M.now.t - (days - 1) * DAY_MS);
-  const S2 = M.series.filter(s => s.t >= tMin), polls = M.polls.filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);
+  const S2 = M.series.filter(s => s.t >= tMin), polls = (M.dotPolls || M.polls).filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);
   const party = mode !== "blocs" ? M.parties.find(x => x.id === mode) : null;
   const lines = party
     ? [{ key: party.id, label: party.name, color: party.color, get: s => s.parties[party.id], dot: p => M.vec.get(p.id).parties[party.id] || 0 }]
@@ -120,7 +161,7 @@ function trackerChart(M, mode) {
     ${g}${dots}${paths}${labels}<line class="tr-cursor" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" hidden/><rect class="tr-hit" x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}"/></svg>`;
   const rows = S2.slice().reverse().filter((_, i) => i % 2 === 0);
   const table = `<details class="tr-data"><summary>נתוני הגרף בטבלה</summary><div class="tablewrap" tabindex="0" role="region" aria-label="נתוני הגרף"><table><thead><tr><th scope="col">תאריך</th>${lines.map(l => `<th scope="col">${esc(l.label)}</th>`).join("")}<th scope="col">סקרים בחלון</th></tr></thead><tbody>${rows.map(s => `<tr><td>${trDay(s.t)}</td>${lines.map(l => `<td>${trFmt(l.get(s))}</td>`).join("")}<td>${s.n}</td></tr>`).join("")}</tbody></table></div></details>`;
-  return { svg, legend, table, S2, lines, geom: { W, m, t0, t1, x, y } };
+  return { svg, legend, table, S2, lines, basis: M.basis || "avg", geom: { W, m, t0, t1, x, y } };
 }
 
 function wireTrackerHover(box, chart) {
@@ -133,7 +174,7 @@ function wireTrackerHover(box, chart) {
     const px = geom.x(s.t);
     cur.setAttribute("x1", px); cur.setAttribute("x2", px); cur.hidden = false;
     tip.hidden = false;
-    tip.innerHTML = `<b>${trDay(s.t)}</b><small>${s.n} סקרים · ${s.firms} מכונים בשבוע שהסתיים ביום זה</small>${lines.map(l => `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${trFmt(l.get(s))}</b></span>`).join("")}`;
+    tip.innerHTML = `<b>${trDay(s.t)}</b><small>${chart.basis === "avg" ? `${s.n} סקרים · ${s.firms} מכונים בשבוע שהסתיים ביום זה` : `${TRACK_BASES[chart.basis].label} · ${s.n} סקרים מ־${s.firms} מכונים`}</small>${lines.map(l => `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${trFmt(l.get(s))}</b></span>`).join("")}`;
     const left = px / geom.W * r.width;
     tip.style.left = Math.min(r.width - tip.offsetWidth - 4, Math.max(4, left - tip.offsetWidth - 14)) + "px";
   };
@@ -161,12 +202,13 @@ function feedWhen(p) {
 }
 function renderPollFeed(M) {
   const box = $("#polls-feed"); if (!box) return;
-  const list = M.polls.slice().sort((a, b) => parsePollDate(b) - parsePollDate(a) || (b.publishedAt || 0) - (a.publishedAt || 0));
+  const list = [...M.polls, ...weeklyBaro()].sort((a, b) => parsePollDate(b) - parsePollDate(a) || (b.publishedAt || 0) - (a.publishedAt || 0));
   const LIMIT = 12, shown = S.feedAll ? list : list.slice(0, LIMIT);
   /* במחשב הסקר החדש פתוח; בטלפון הכרטיסים בשורה נגללת, ולכן כולם סגורים */
   const wide = matchMedia("(min-width: 981px)").matches;
   box.innerHTML = shown.map((p, i) => {
-    const v = M.vec.get(p.id), f = firmOf(p.sourceId), prev = previousComparablePoll(p, M.polls), pv = prev ? M.vec.get(prev.id) : null;
+    const vecOf = q => M.vec.get(q.id) || pollVector(q);
+    const v = vecOf(p), f = firmOf(p.sourceId), prev = previousComparablePoll(p, list), pv = prev ? vecOf(prev) : null;
     const names = {};
     p.parties.forEach(x => { names[normId(x.id)] ||= NAME_OVERRIDE[normId(x.id)] || x.name; });
     const ids = Object.keys(v.parties).filter(id => v.parties[id] > 0).sort((a, b) => v.parties[b] - v.parties[a]);
@@ -178,14 +220,14 @@ function renderPollFeed(M) {
       const d = v.parties[id] - (pv.parties[id] || 0);
       return d ? `<em class="${d > 0 ? "up" : "down"}" aria-label="${d > 0 ? "עלייה" : "ירידה"} של ${Math.abs(d)}">${d > 0 ? "▲" : "▼"}${Math.abs(d)}</em>` : `<em class="flat" aria-label="ללא שינוי">=</em>`;
     };
-    return `<details class="feed-item"${i === 0 && wide ? " open" : ""}>
+    return `<details class="feed-item${p.barometer ? " is-baro" : ""}"${i === 0 && wide ? " open" : ""}>
       <summary>
-        <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${esc(f.meta.he)}</small></span><time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}</time></span>
+        <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer ? "ניתוח שבועי · לא סקר" : esc(f.meta.he)}</small></span><time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}${p.barometer ? " · 20:00" : ""}</time></span>
         <span class="feed-bar" role="img" aria-label="${esc(aria)}">${bar}<i class="feed-61" title="61"></i></span>
         <span class="feed-lead">${ids.slice(0, 3).map(id => `<span style="--c:${partyHue(id)}"><i></i>${esc(names[id])} <b>${v.parties[id]}</b></span>`).join("")}</span>
       </summary>
       <ol class="feed-parties">${ids.map(id => `<li style="--c:${partyHue(id)}"><i></i><span>${esc(names[id])}</span><b>${v.parties[id]}</b>${delta(id)}</li>`).join("")}</ol>
-      <p class="feed-src">${prev ? `החצים: שינוי מול הסקר הקודם של ${esc(f.meta.he)} ב${esc(p.channelHebrewName)} (${esc(prev.date.replace(/\.20\d\d$/, ""))})` : "אין סקר קודם של אותו מכון ואותו ערוץ"}${p.sourceUrl ? ` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>` : ""}</p>
+      <p class="feed-src">${p.barometer ? `תחזית הברומטר של מוצאי שבת ב־20:00, במנדטים לפי כללי הבחירות. לא נכנסת לשום ממוצע.${prev ? ` החצים: מול השבוע הקודם (${esc(prev.date.replace(/\.20\d\d$/, ""))}).` : ""}` : prev ? `החצים: שינוי מול הסקר הקודם של ${esc(f.meta.he)} ב${esc(p.channelHebrewName)} (${esc(prev.date.replace(/\.20\d\d$/, ""))})` : "אין סקר קודם של אותו מכון ואותו ערוץ"}${p.sourceUrl ? ` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>` : ""}</p>
     </details>`;
   }).join("") + (list.length > LIMIT ? `<button type="button" class="feed-more" data-feed-more>${S.feedAll ? "להציג פחות" : `עוד ${list.length - LIMIT} סקרים מאז אוגוסט`}</button>` : "");
 }
@@ -194,13 +236,14 @@ function renderPollFeed(M) {
 function renderTrackerTable(M) {
   const box = $("#polls-table"); if (!box) return;
   const ff = $("#poll-firm")?.value || "all", oo = $("#poll-outlet")?.value || "all";
-  const rows = M.polls.filter(p => (ff === "all" || firmOf(p.sourceId).firm === ff) && (oo === "all" || p.channelHebrewName === oo)).reverse();
+  const rows = [...M.polls, ...weeklyBaro()].filter(p => (ff === "all" || firmOf(p.sourceId).firm === ff) && (oo === "all" || p.channelHebrewName === oo))
+    .sort((a, b) => parsePollDate(b) - parsePollDate(a) || (b.publishedAt || 0) - (a.publishedAt || 0));
   const cols = M.parties.filter(x => x.now >= 3).slice(0, 12);
   const LIMIT = 25, shown = S.trackAllRows ? rows : rows.slice(0, LIMIT);
   box.innerHTML = `<div class="tablewrap tr-table-wrap" tabindex="0" role="region" aria-label="כל הסקרים בטבלה"><table class="tr-table"><caption>כל סקר בשורה, מהחדש לישן · המספרים במנדטים</caption><thead><tr><th scope="col">תאריך</th><th scope="col">פורסם ב־</th><th scope="col">מכון</th>${cols.map(c => `<th scope="col" class="n" style="--c:${c.color}"><span>${esc(c.name)}</span></th>`).join("")}<th scope="col" class="n bloc">ימין וחרדים</th></tr></thead><tbody>${
     `<tr class="tr-avg-row"><td>${trDay(M.now.t)}</td><td colspan="2"><b>ממוצע 7 הימים האחרונים</b></td>${cols.map(c => `<td class="n"><b>${trFmt(c.now)}</b></td>`).join("")}<td class="n bloc"><b>${trFmt(M.now.blocs.Right)}</b></td></tr>` +
-    shown.map(p => { const v = M.vec.get(p.id), f = firmOf(p.sourceId), r = v.blocs.Right;
-      return `<tr><td class="date">${esc(p.date)}</td><td><div class="orgcell">${outletLogo(p.channelHebrewName)}<span>${esc(p.channelHebrewName)}</span></div></td><td>${esc(f.meta.he)}</td>${cols.map(c => {
+    shown.map(p => { const v = M.vec.get(p.id) || pollVector(p), f = firmOf(p.sourceId), r = v.blocs.Right;
+      return `<tr${p.barometer ? ' class="tr-baro"' : ""}><td class="date">${esc(p.date)}${p.barometer ? " · 20:00" : ""}</td><td><div class="orgcell">${outletLogo(p.channelHebrewName)}<span>${esc(p.channelHebrewName)}</span></div></td><td>${p.barometer ? "ניתוח שבועי" : esc(f.meta.he)}</td>${cols.map(c => {
         const val = v.parties[c.id] || 0, dv = val - c.now;
         return `<td class="n${Math.abs(dv) >= 2 ? (dv > 0 ? " hi" : " lo") : ""}"${Math.abs(dv) >= 2 ? ` title="${dv > 0 ? "גבוה" : "נמוך"} ב־${trFmt(Math.abs(dv))} מהממוצע"` : ""}>${val || "<span class=\"z\">0</span>"}</td>`; }).join("")}<td class="n bloc${r >= 61 ? " maj" : ""}"><b>${r}</b></td></tr>`; }).join("")
   }</tbody></table></div><p class="tr-table-note">תא מודגש: המכון נתן למפלגה 2 מנדטים או יותר מעל (כחול) או מתחת (כתום) לממוצע העדכני. ${rows.length > LIMIT ? `<button type="button" class="linkbtn" data-track-rows>${S.trackAllRows ? `להציג רק ${LIMIT} אחרונים` : `להציג את כל ${rows.length} הסקרים`}</button>` : ""}</p>`;
@@ -208,8 +251,10 @@ function renderTrackerTable(M) {
 
 function renderPollTracker() {
   const root = $("#poll-tracker"); if (!root) return;
-  const M = trackerModel();
-  if (!M) { root.hidden = true; return; }
+  const P = trackerModel();
+  if (!P) { root.hidden = true; return; }
+  S.trackBasis ||= "avg";
+  const M = basisModel(P, S.trackBasis), B = TRACK_BASES[M.basis || "avg"];
   root.hidden = false;
   S.trackMode ||= "blocs"; S.trackRange ||= "all";
   if (S.trackMode !== "blocs" && !M.parties.some(x => x.id === S.trackMode)) S.trackMode = "blocs";
@@ -222,9 +267,14 @@ function renderPollTracker() {
   const maxNow = Math.max(...M.parties.map(x => x.max));
   const scale = Math.max(25, Math.ceil((maxNow + 1) / 5) * 5);
   root.innerHTML = `
+    <div class="tr-basis" role="group" aria-label="על מה מבוססים המספרים">
+      <span class="tr-basis-lbl">המספרים לפי</span>
+      <div class="switch tr-basis-switch">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" data-track-basis="${k}" aria-pressed="${(M.basis || "avg") === k}">${b.label}</button>`).join("")}</div>
+      <p class="tr-basis-note">${esc(B.note)}</p>
+    </div>
     <div class="tr-hero">
       <div class="tr-hero-text">
-        <p class="kicker">ממוצע הסקרים · עודכן ${trDay(M.now.t)}</p>
+        <p class="kicker">${B.kicker} · עודכן ${trDay(M.now.t)}</p>
         <h3>${esc(h.head)}</h3>
         <p>${h.sub}</p>
       </div>
@@ -237,7 +287,7 @@ function renderPollTracker() {
     </div>
     <div class="tr-card tr-chart-card">
       <div class="tr-card-head">
-        <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"}</h3><p>${selParty ? "" : "ימין וחרדים מול מרכז–שמאל. "}הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד.</p></div>
+        <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"}</h3><p>${selParty ? "" : "ימין וחרדים מול מרכז–שמאל. "}${M.basis && M.basis !== "avg" ? `הקו — ${B.label} בכל עדכון (פעמיים ביום) מאז ${trDay(M.series[0].t)}.` : "הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד."}</p></div>
         <div class="tr-controls">
           ${selParty ? `<button type="button" class="tr-back" data-track-party="blocs">→ חזרה לגושים</button>` : ""}
           <div class="switch tr-range" role="group" aria-label="טווח זמן"><button type="button" data-track-range="month" aria-pressed="${S.trackRange === "month"}">חודש אחרון</button><button type="button" data-track-range="all" aria-pressed="${S.trackRange === "all"}">מאז אוגוסט</button></div>
@@ -248,9 +298,9 @@ function renderPollTracker() {
       ${chart.table}
     </div>
     <div class="tr-card tr-parties">
-      <div class="tr-card-head"><div><h3>כל המפלגות — ממוצע ומגמה</h3><p>הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע.</p></div></div>
+      <div class="tr-card-head"><div><h3>כל המפלגות — ${M.basis && M.basis !== "avg" ? B.label : "ממוצע"} ומגמה</h3><p>${M.basis && M.basis !== "avg" ? `${B.label} עכשיו, הקו מאז ${trDay(M.series[0].t)}, השינוי בשבועיים, והטווח שבין הסקרים השונים השבוע.` : "הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע."}</p></div></div>
       <div class="tablewrap" tabindex="0" role="region" aria-label="ממוצע ומגמה לכל מפלגה">
-      <table class="tr-ptable"><thead><tr><th scope="col">מפלגה</th><th scope="col" class="n">ממוצע</th><th scope="col">מגמה</th><th scope="col" class="n">שבועיים</th><th scope="col" class="rng">טווח השבוע <small>(0–${scale})</small></th></tr></thead><tbody>${
+      <table class="tr-ptable"><thead><tr><th scope="col">מפלגה</th><th scope="col" class="n">${M.basis && M.basis !== "avg" ? "מנדטים" : "ממוצע"}</th><th scope="col">מגמה</th><th scope="col" class="n">שבועיים</th><th scope="col" class="rng">טווח השבוע <small>(0–${scale})</small></th></tr></thead><tbody>${
         M.parties.map(x => { const d = trDelta(x.now - x.before), below = x.now < 4;
           return `<tr class="${S.trackMode === x.id ? "is-on" : ""}${below ? " is-below" : ""}" style="--c:${x.color}"><th scope="row"><button type="button" data-track-party="${esc(x.id)}" aria-pressed="${S.trackMode === x.id}"><i></i>${esc(x.name)}</button></th>
           <td class="n"><b class="num">${trFmt(x.now)}</b></td><td>${trSpark(x.line, x.color)}</td>
@@ -260,8 +310,18 @@ function renderPollTracker() {
       <p class="tr-foot">מפלגה מתחת ל־4 מנדטים בממוצע מסומנת בחיוור — היא קרובה לאחוז החסימה (3.25%).</p>
     </div>`;
   wireTrackerHover(root, chart);
-  renderTrackerTable(M);
-  renderPollFeed(M);
+  renderTrackerTable(P);
+  renderPollFeed(P);
+}
+
+/* ---------- הלשוניות של העמוד: לשונית אחת גלויה בכל פעם ---------- */
+function setPollsTab(tab) {
+  S.pollsTab = tab;
+  document.querySelectorAll("[data-polls-tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.pollsTab === tab)));
+  document.querySelectorAll("[data-polls-panel]").forEach(p => { p.hidden = p.dataset.pollsPanel !== tab; });
+  /* גרפים שמחושבים לפי רוחב — מציירים כשהלשונית גלויה */
+  if (tab === "trend") renderPollTracker();
+  if (tab === "cross" && S.regions && typeof renderCrossover === "function") renderCrossover();
 }
 
 function wirePollTracker() {
@@ -276,6 +336,10 @@ function wirePollTracker() {
     }
     const r = e.target.closest("[data-track-range]");
     if (r) { S.trackRange = r.dataset.trackRange; renderPollTracker(); $(`[data-track-range="${S.trackRange}"]`)?.focus(); return; }
+    const bs = e.target.closest("[data-track-basis]");
+    if (bs) { S.trackBasis = bs.dataset.trackBasis; renderPollTracker(); $(`[data-track-basis="${S.trackBasis}"]`)?.focus(); return; }
+    const tb = e.target.closest("[data-polls-tab]");
+    if (tb) { setPollsTab(tb.dataset.pollsTab); return; }
     if (e.target.closest("[data-feed-more]")) { S.feedAll = !S.feedAll; const M = trackerModel(); if (M) renderPollFeed(M); return; }
     if (e.target.closest("[data-track-rows]")) { S.trackAllRows = !S.trackAllRows; const M = trackerModel(); if (M) renderTrackerTable(M); }
   });

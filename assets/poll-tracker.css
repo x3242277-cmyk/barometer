@@ -223,3 +223,24 @@
   .feed-item{flex:0 0 min(300px,82vw);scroll-snap-align:start}
   .feed-more{flex:0 0 160px;min-height:auto}
 }
+
+/* ---------- עמוד כל הסקרים: לשוניות, בסיס המספרים, תחזית הברומטר השבועית (04.10.2026) ---------- */
+.polls-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 12px}
+.polls-tabs button{display:grid;gap:1px;padding:9px 12px;border:1px solid #ffffff26;border-radius:6px;background:#ffffff0d;color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.polls-tabs button b{font-size:.92rem;font-weight:800}
+.polls-tabs button small{font-size:.7rem;color:var(--ink-3)}
+.polls-tabs button:hover{border-color:#e5c78380}
+.polls-tabs button[aria-selected="true"]{background:var(--champagne,#e5c783);border-color:transparent;color:#14233a}
+.polls-tabs button[aria-selected="true"] small{color:#3a4859}
+.tr-basis{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 10px}
+.tr-basis-lbl{font-size:.8rem;font-weight:800;color:var(--ink)}
+.tr-basis-switch button{font-size:.8rem}
+.tr-basis-note{flex-basis:100%;margin:0;font-size:.76rem;line-height:1.5;color:var(--ink-3)}
+.feed-item.is-baro{border-inline-start:3px solid #c9a24f}
+.feed-item.is-baro .feed-who small{color:#855a0c;font-weight:700}
+.tr-table tr.tr-baro td{background:#f8f1e0}
+.tr-table tr.tr-baro td.date{font-weight:700;color:#855a0c}
+@media (min-width:981px){
+  .polls-feed{position:sticky;top:calc(var(--masthead-h,64px) + 12px);max-height:calc(100vh - var(--masthead-h,64px) - 24px);overflow:auto;align-self:start}
+}
+@media (max-width:760px){.polls-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}

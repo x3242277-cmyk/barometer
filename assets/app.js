@@ -381,12 +381,12 @@ function firmOf(sourceId) {
    להציג את כל החלון (S.cur.polls). אם 8 הימים האחרונים דלים מדי (פחות מ-3
    מכונים), נשמר כל החלון — עדיף על תחזית שנשענת על סקר בודד. */
 const FORECAST_MAX_AGE_DAYS = 8;
-/* התחזיות השבועיות כ"סקרים" — באותו מבנה של סקר, לתצוגה בלבד */
+/* התחזיות השבועיות (כל מוצאי שבת ב־20:00) כ"סקרים" — באותו מבנה של סקר, לתצוגה בלבד */
 function barometerWeeklyPolls() {
   return (S.forecastHistory?.weekly || []).map(w => {
     const [y, m, d] = w.date.split("-");
     const ts = Date.parse(w.date + "T00:00:00Z");
-    return { id: `${BAROMETER_SOURCE}-${w.week}`, barometer: true, date: `${d}.${m}.${y}`, dateTimestamp: ts, publishedAt: Date.parse(w.recordedAt) || ts,
+    return { id: `${BAROMETER_SOURCE}-${w.week}`, barometer: true, date: `${d}.${m}.${y}`, time: w.time || "", dateTimestamp: ts, publishedAt: Date.parse(w.recordedAt) || ts,
       channelHebrewName: BAROMETER_OUTLET, sourceId: BAROMETER_SOURCE, pollster: "הברומטר",
       parties: Object.entries(w.seats || {}).map(([id, mandates]) => ({ id, name: partyMeta(id).name, logoUrl: "", mandates, alignment: partyMeta(id).alignment })) };
   }).sort((a, b) => b.dateTimestamp - a.dateTimestamp);
@@ -2392,12 +2392,10 @@ function routeFromHash() {
   show(view);
   if (h === "forecast/coalition") requestAnimationFrame(() => $("#election-coalition")?.scrollIntoView({ block: "start" }));
   /* "כמה עברו צד" הוא עכשיו חלק מעמוד כל הסקרים */
+  /* "כמה עברו צד" היא לשונית בעמוד כל הסקרים: פותחים אותה כשהנתונים מוכנים */
   if (h === "crossover" || h === "polls/crossover") {
-    /* מחכים שהגרף יצויר (בטעינה ראשונה הנתונים עוד בדרך) ואז גוללים אליו */
     let tries = 0;
-    const jump = () => $("#poll-crossover").scrollIntoView({ block: "start", behavior: "instant" });
-    /* פעם נוספת אחרי שהפריסה מתייצבת — בזמן המעבר בין כרטיסיות גובה העמוד עוד משתנה */
-    const go = () => $("#crossover-chart")?.childElementCount ? (jump(), setTimeout(jump, 350)) : (++tries < 40 && setTimeout(go, 100));
+    const go = () => S.regions && typeof setPollsTab === "function" ? (setPollsTab("cross"), window.scrollTo({ top: 0 })) : (++tries < 40 && setTimeout(go, 100));
     setTimeout(go, 0);
   }
 }

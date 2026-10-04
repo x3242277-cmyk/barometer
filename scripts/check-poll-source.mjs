@@ -4,6 +4,7 @@ import { parseTheMadadHtml } from "./themadad-source.mjs";
 import { checkRemotePolls } from "../server/poll-check.mjs";
 
 const firms = JSON.parse(readFileSync("data/pollsters.json", "utf8"));
+const cfg = JSON.parse(readFileSync("scripts/config.json", "utf8"));
 const firmBySource = Object.fromEntries(Object.entries(firms.sourceMap).map(([key, value]) => [key, value.firm]));
 const row = {
   pollNumber: "735", publisher: "ערוץ 14", pollster: "שלמה פילבר", date: "2026-09-23",
@@ -12,7 +13,7 @@ const row = {
   otzma: "6", raam: "5"
 };
 const parse = rows => parseTheMadadHtml(`<script>const allPolls = ${JSON.stringify(rows)};</script>`, {
-  year: 2026, from: Date.parse("2026-09-01"), firmBySource
+  year: 2026, from: Date.parse("2026-09-01"), firmBySource, trustSourceMap: cfg.madadTrustSourceMap
 });
 const result = parse([row, { ...row, pollNumber: "736", publisher: "ישראל היום", pollster: "דודי חסיד" }]);
 assert.equal(result.polls.length, 2);

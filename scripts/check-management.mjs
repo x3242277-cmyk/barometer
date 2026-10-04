@@ -19,9 +19,10 @@ const draft={kind:'poll',sourceId:'channel_12',date:'2026-09-23',sourceUrl:'http
 assert.throws(()=>validateManual({...draft,parties:[{id:'likud',mandates:119}]},now));assert.throws(()=>validateManual({...draft,date:'2026-09-24'},now));assert.throws(()=>validateManual({...draft,sourceUrl:'javascript:alert(1)'},now));
 assert.equal((await req('/api/admin/save',draft,{origin:'https://evil.example'})).status,403);
 assert.equal((await req('/api/admin/save',draft)).status,200);assert.equal((await req('/api/admin/save',draft)).status,409);
-const feed=(await req('/api/content/current-polls.json',undefined,{anonymous:true})).data;assert.equal(feed.polls[0].date,'23.09.2026');assert.equal(feed.polls[0].parties.reduce((s,p)=>s+p.mandates,0),120);
-assert.equal((await req('/data/current-polls.json',undefined,{anonymous:true})).data.polls[0].date,'23.09.2026');
-assert.equal((await req('/api/admin/refresh',{})).status,502);assert.equal((await req('/api/content/current-polls.json')).data.polls[0].date,'23.09.2026');
+const saved=feed=>feed.polls.find(p=>p.sourceId==='channel_12'&&p.date==='23.09.2026');
+const feed=(await req('/api/content/current-polls.json',undefined,{anonymous:true})).data;assert(saved(feed));assert.equal(saved(feed).parties.reduce((s,p)=>s+p.mandates,0),120);
+assert(saved((await req('/data/current-polls.json',undefined,{anonymous:true})).data));
+assert.equal((await req('/api/admin/refresh',{})).status,502);assert(saved((await req('/api/content/current-polls.json')).data));
 assert.equal((await req('/api/admin/save',{...draft,kind:'sample'})).status,200);
 assert.equal((await req('/api/admin/save',{...draft,kind:'sample',sourceId:'kan_news'})).status,200);
 const liveFeed=(await req('/api/content/live-results.json',undefined,{anonymous:true})).data;

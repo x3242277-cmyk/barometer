@@ -52,7 +52,7 @@ function trackerModel() {
   }
   const now = series.at(-1), before = series.find(s => s.t >= now.t - TRACK_CHANGE_DAYS * DAY_MS) || series[0];
   const names = {};
-  polls.forEach(p => p.parties.forEach(x => { names[normId(x.id)] = x.name; }));
+  polls.forEach(p => p.parties.forEach(x => { names[normId(x.id)] = NAME_OVERRIDE[normId(x.id)] || x.name; }));
   const recent = polls.filter(p => parsePollDate(p) > now.t - TRACK_WINDOW_DAYS * DAY_MS);
   const parties = ids
     .map(id => {
@@ -168,7 +168,7 @@ function renderPollFeed(M) {
   box.innerHTML = shown.map((p, i) => {
     const v = M.vec.get(p.id), f = firmOf(p.sourceId), prev = previousComparablePoll(p, M.polls), pv = prev ? M.vec.get(prev.id) : null;
     const names = {};
-    p.parties.forEach(x => { names[normId(x.id)] ||= x.name; });
+    p.parties.forEach(x => { names[normId(x.id)] ||= NAME_OVERRIDE[normId(x.id)] || x.name; });
     const ids = Object.keys(v.parties).filter(id => v.parties[id] > 0).sort((a, b) => v.parties[b] - v.parties[a]);
     const blocs = ["Right", "Unknown", "Arabs", "Left"].filter(k => v.blocs[k] > 0);
     const bar = blocs.map(k => `<span style="flex:${v.blocs[k]};background:${BLOCS[k].color}">${v.blocs[k] >= 7 ? v.blocs[k] : ""}</span>`).join("");

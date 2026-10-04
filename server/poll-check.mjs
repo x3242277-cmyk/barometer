@@ -1,5 +1,6 @@
 // Shared by the local preview and the hosted Worker. No client-supplied URLs.
 import pollsters from '../data/pollsters.json' with { type: 'json' };
+import updaterConfig from '../scripts/config.json' with { type: 'json' };
 import { parseTheMadadHtml, THE_MADAD_URL } from '../scripts/themadad-source.mjs';
 
 const FIRM_BY_SOURCE = Object.fromEntries(Object.entries(pollsters.sourceMap).map(([key, value]) => [key, value.firm]));
@@ -62,7 +63,7 @@ export async function checkRemotePolls({ fetcher = fetch, now = Date.now(), time
     const html = await getText(fetcher, THE_MADAD_URL, alternateController.signal);
     const parsed = parseTheMadadHtml(html, {
       year: new Date(now).getUTCFullYear(), from: now - 14 * DAY,
-      firmBySource: FIRM_BY_SOURCE
+      firmBySource: FIRM_BY_SOURCE, trustSourceMap: updaterConfig.madadTrustSourceMap || []
     });
     const polls = parsed.polls.map(p => normalizePoll(p, THE_MADAD_URL, now)).filter(Boolean)
       .sort((a, b) => b.dateTimestamp - a.dateTimestamp);

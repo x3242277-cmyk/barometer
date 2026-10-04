@@ -40,10 +40,12 @@ const POLLSTER_FIRM = {
   "שלמה פילבר": "Next Data", "מנחם לזר": "Panels Politics",
   "דודי חסיד": "Kantar", "יצחק כ״ץ": "Maagar Mochot",
   "יצחק כץ": "Maagar Mochot", "יוסי טאטיקה": "Yossi Tatika",
-  "צוריאל שרון": "Direct Polls"
+  "צוריאל שרון": "Direct Polls", "דירקט פולס": "Direct Polls"
 };
 
-export function parseTheMadadHtml(html, { year, from, recentDays = null, firmBySource = {}, partyMeta = {} }) {
+/* trustSourceMap: ערוצים שבהם השיוך שב-pollsters.json גובר על שם הסוקר שבמדד
+   (ישראל היום: המדד רושם את דודי חסיד, והאתר משייך למאגר מוחות). */
+export function parseTheMadadHtml(html, { year, from, recentDays = null, firmBySource = {}, partyMeta = {}, trustSourceMap = [] }) {
   const match = /\bconst\s+allPolls\s*=\s*(\[[\s\S]*?\]);/.exec(html);
   if (!match) throw new Error("לא נמצא מערך הסקרים בעמוד המדד");
   const rows = JSON.parse(match[1]);
@@ -56,7 +58,7 @@ export function parseTheMadadHtml(html, { year, from, recentDays = null, firmByS
     const sourceId = OUTLETS[row.publisher];
     if (!sourceId) { skipped.push(`${row.date} ${row.publisher}: כלי תקשורת לא מוכר`); continue; }
     const expectedFirm = POLLSTER_FIRM[row.pollster];
-    if (!expectedFirm || firmBySource[sourceId] !== expectedFirm) {
+    if (!trustSourceMap.includes(sourceId) && (!expectedFirm || firmBySource[sourceId] !== expectedFirm)) {
       skipped.push(`${row.date} ${row.publisher}: שיוך מכון דורש בדיקה (${row.pollster})`);
       continue;
     }
@@ -75,7 +77,7 @@ export function parseTheMadadHtml(html, { year, from, recentDays = null, firmByS
     polls.push({
       id: `themadad-${row.pollNumber}`, date: `${row.date.slice(8, 10)}.${row.date.slice(5, 7)}.${row.date.slice(0, 4)}`,
       dateTimestamp: ts, publishedAt: ts, channel: "", channelHebrewName: row.publisher,
-      sourceId, sourceUrl: THE_MADAD_URL, parties
+      sourceId, sourceUrl: THE_MADAD_URL, pollster: row.pollster, parties
     });
   }
   if (!polls.length) throw new Error("לא נמצאו סקרים מתאימים בעמוד המדד");

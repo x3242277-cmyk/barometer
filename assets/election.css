@@ -25,12 +25,10 @@ body{background:var(--paper);color:var(--ink)}
 .stamp{color:#495565;font-size:.67rem}
 .pulse{background:#70c6a3;width:5px;height:5px}
 .masthead-side .print-btn{background:#f0f6fe;border-color:#c9d6e5;color:#36404b;border-radius:50%;min-width:35px;min-height:35px;padding:8px}
-#view-home{background:radial-gradient(ellipse at 85% 35%,#f5faff38,transparent 65%),#ecf3fa}/* גלילה בקטעים: כל קטע ראשי גובה מסך לפחות (כדי שלא ייראה חתוך), ומיושר
-   לתחילת המסך כשגוללים אליו. proximity ולא mandatory כדי לא "להילחם"
-   בגלילה חופשית בקטעים ארוכים מגובה מסך (למשל בניית קואליציה) — היעד
-   העיקרי להתקדמות הוא כפתור החץ (section-next), לא הגלילה עצמה. */
-
-#view-home.on{height:calc(100vh - var(--masthead-h, 64px));overflow-y:auto;scroll-snap-type:y proximity}
+#view-home{background:radial-gradient(ellipse at 85% 35%,#f5faff38,transparent 65%),#ecf3fa}
+/* כל קטע ראשי גובה מסך לפחות (כדי שלא ייראה חתוך). הגלילה חופשית — בלי
+   הצמדה לקטעים ובלי קפיצות; המעבר בין קטעים בקפיצה הוא רק בכפתור החץ (section-next). */
+#view-home.on{height:calc(100vh - var(--masthead-h, 64px));overflow-y:auto;scroll-snap-type:none}
 #view-home.on>.election-cover,#view-home.on>.verdict,#view-home.on>.board,#view-home.on>.election-coalition,#view-home.on>.home-method{
   scroll-snap-align:start;min-height:calc(100vh - var(--masthead-h, 64px));box-sizing:border-box}
 .section-next{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin:22px auto 2px;

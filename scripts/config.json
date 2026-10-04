@@ -1,14 +1,59 @@
 {
-  "//": "שליפת הסקרים מעמוד המדד, עם skarim.org כגיבוי. התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
+  "//": "מקור הסקרים: עמוד הסקרים של המדד (alternateUrl, scripts/themadad-source.mjs); אם הוא לא זמין — ויקיפדיה (wikipedia למטה, scripts/wiki-polls.mjs). התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
   "alternateUrl": "https://themadad.com/polls26/",
-  "sourceUrl": "https://www.skarim.org/",
-  "sitemapUrl": "https://www.skarim.org/api/static/sitemap-polls",
-  "pollPageBase": "https://www.skarim.org",
+  "madadTrustSourceMap": [
+    "israel_hayom"
+  ],
+  "requestTimeoutMs": 20000,
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
   "year": 2026,
   "maxPerOutlet": 4,
   "outFile": "data/current-polls.json",
-  "requestTimeoutMs": 20000,
-  "requestDelayMs": 250,
-  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-  "from": "2026-08-01"
+  "from": "2026-08-01",
+  "wikipedia": {
+    "//": "מקור הסקרים מאז 30.09.2026 (skarim.org חוסם בקשות אוטומטיות). parties: קישור בכותרת העמודה בוויקיפדיה → מזהה מפלגה שלנו (null = להתעלם). outlets: קישור המפרסם → sourceId.",
+    "page": "Opinion polling for the 2026 Israeli legislative election",
+    "userAgent": "barometer-poll-updater/1.0 (+https://github.com/x3242277-cmyk/barometer)",
+    "parties": {
+      "Likud": "likud",
+      "Together (Israel)": "beyahad",
+      "Religious Zionist Party": "zionut_datit",
+      "Zehut": "zehut",
+      "Otzma Yehudit": "ozma_yehudit",
+      "Blue and White (political party)": "kahollavan",
+      "Shas": "shas",
+      "United Torah Judaism": "yahadut_hatora",
+      "Yisrael Beiteinu": "ndi",
+      "Ra'am": "raam",
+      "Joint List": "reshima_meshutefet",
+      "Hadash–Ta'al": "hadash_taal",
+      "Balad": "balad",
+      "The Democrats (Israel)": "hademokratim",
+      "Yashar (political party)": "yashar",
+      "The Reservists (political party)": "hendel_zeliha_party",
+      "New Economic Party": "hakalkalit",
+      "Amcha Yisrael": "ofer_vinter_party",
+      "Haredi Public": "mifleget_hazibur_haharedi",
+      "Zionist Home": "bait_zioni",
+      "Unity (Israel)": "ahdut_party",
+      "Noam (political party)": "noam",
+      "A Place for Us All": "makom_lekulanu",
+      "Israel First (political party)": "israel_thila",
+      "Gov.": null
+    },
+    "outlets": {
+      "HaHadashot 12": "channel_12",
+      "Channel 12 (Israel)": "channel_12",
+      "Channel 13 (Israel)": "channel_13",
+      "Channel 14 (Israel)": "channel_14",
+      "Channel 16 (Israel)": "channel_16",
+      "Kan 11": "kan_news",
+      "Maariv (newspaper)": "maariv",
+      "Israel Hayom": "israel_hayom",
+      "Zman Yisrael": "zman_israel",
+      "i24NEWS (Israeli TV channel)": "i24news",
+      "Walla! Communications": "walla",
+      "Walla!": "walla"
+    }
+  }
 }

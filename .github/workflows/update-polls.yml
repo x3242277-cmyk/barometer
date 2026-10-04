@@ -122,7 +122,7 @@ jobs:
       - name: בדיקת מבנה ושיוך מקור הסקרים החלופי
         run: node scripts/check-poll-source.mjs
 
-      - name: שליפת סקרים חדשים מהמדד או ממקור הגיבוי
+      - name: שליפת סקרים חדשים מהמדד (ויקיפדיה כגיבוי)
         run: node scripts/update-polls.mjs
 
       - name: שמירת צילום התחזית להצגת חיווי שינוי

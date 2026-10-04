@@ -29,31 +29,33 @@
 <script src="assets/scenario.js?v=232c26c5" defer></script>
 <script src="assets/upgrade.js?v=c3f5bc20" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
-<script src="assets/explore.js?v=09423810" defer></script>
-<script src="assets/poll-tracker.js?v=72928cea" defer></script>
+<script src="assets/explore.js?v=a849f1eb" defer></script>
+<script src="assets/poll-tracker.js?v=8b8b3882" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=26ba1cca" defer></script>
+<script src="assets/app.js?v=6d067266" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
-<link rel="stylesheet" href="assets/layout.css?v=b37a6e0a">
-<link rel="stylesheet" href="assets/editorial.css?v=325f67db">
+<link rel="stylesheet" href="assets/layout.css?v=86cd49ba">
+<link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
 <link rel="stylesheet" href="assets/pipeline.css?v=724592e2">
 <script src="assets/pipeline.js?v=53bf8822" defer></script>
-<link rel="stylesheet" href="assets/election.css?v=6b65b3a6">
+<link rel="stylesheet" href="assets/election.css?v=cc3b226d">
 <link rel="stylesheet" href="assets/election-pages.css?v=f47d6a9d">
 <link rel="stylesheet" href="assets/election-tools.css?v=777a6e9d">
-<link rel="stylesheet" href="assets/refinement.css?v=aabc8da9">
+<link rel="stylesheet" href="assets/refinement.css?v=627b24b3">
 <link rel="stylesheet" href="assets/clarity.css?v=bb57cffa">
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
 <link rel="stylesheet" href="assets/poll-tracker.css?v=9bc7297c">
-<link rel="stylesheet" href="assets/theme.css?v=3cd3e71f">
+<link rel="stylesheet" href="assets/theme.css?v=bc55ac8c">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
-<script src="assets/election.js?v=22e6c32f" defer></script>
+<script src="assets/election.js?v=aba0ee3c" defer></script>
+<link rel="stylesheet" href="assets/swing.css?v=881d6a3b">
+<script src="assets/swing.js?v=9ed05e22" defer></script>
 </head>
 <body>
 
@@ -75,7 +77,7 @@
         <a class="tab" href="#/method" data-view="method" data-group="method demography haredi">שיטת החישוב</a>
         <a class="tab" href="#/polls" data-view="polls">כל הסקרים</a>
         <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-        <a class="tab" href="#/map" data-view="map">בחירות 2022</a>
+        <a class="tab" href="#/map" data-view="map" data-group="map swing">בחירות 2022</a>
         <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
     </nav>
@@ -842,6 +844,10 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 <!-- ==================== בחירות 2022 ==================== -->
 <section class="view" id="view-map" aria-label="בחירות 2022">
   <div class="wrap">
+    <nav class="subtabs" aria-label="בחירות 2022">
+      <a class="subtab" href="#/map" data-view="map">התוצאות לפי יישוב</a>
+      <a class="subtab" href="#/swing" data-view="swing">המפה המתנדנדת</a>
+    </nav>
     <div class="page-intro">
       <p class="kicker">תוצאות האמת · ועדת הבחירות המרכזית · 1.11.2022</p>
       <h2>איך הצביעו ב־2022 — בכל יישוב ובכל קבוצה?</h2>
@@ -921,6 +927,22 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
   </div>
 </section>
 
+<!-- ==================== המפה המתנדנדת ==================== -->
+<section class="view" id="view-swing" aria-label="המפה המתנדנדת">
+  <div class="wrap">
+    <nav class="subtabs" aria-label="בחירות 2022">
+      <a class="subtab" href="#/map" data-view="map">התוצאות לפי יישוב</a>
+      <a class="subtab" href="#/swing" data-view="swing">המפה המתנדנדת</a>
+    </nav>
+    <div class="page-intro">
+      <p class="kicker">תוצאות האמת · ועדת הבחירות המרכזית · 2015–2022 · כל היישובים</p>
+      <h2>המפה המתנדנדת: איפה באמת מוכרעות הבחירות?</h2>
+      <p>שש מערכות בחירות, יותר מ־1,200 יישובים. איפה כל גוש חזק, איזה ערים זזות, כמה קרוב היה המנדט ה־61 — והאם הדמוגרפיה כבר הכריעה. כל מפלגה נספרת לפי ההמלצה שלה לנשיא אחרי אותן בחירות; ימינה של בנט ב־2021 נספרת בימין.</p>
+    </div>
+    <div class="demo-main" id="sw-root"><p class="sec-note">טוען את נתוני היישובים…</p></div>
+  </div>
+</section>
+
 <!-- ==================== מתודולוגיה ==================== -->
 <section class="view" id="view-method" aria-label="שיטת החישוב">
   <div class="wrap">
@@ -941,7 +963,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="mstep-num" aria-hidden="true">1</div>
         <div class="mstep-body">
           <div class="mstep-head"><h2>אוספים את כל הסקרים</h2><a class="mstep-link" href="#/polls">לכל הסקרים ↙</a></div>
-          <p>כל סקר מנדטים שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה — לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 14 הימים האחרונים.</p>
+          <p>כל סקר מנדטים שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה — לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 8 הימים האחרונים.</p>
           <div class="mlive" id="m-live-polls"></div>
           <div class="outlet-icons mstep-outlets" id="m-outlets" aria-label="כלי התקשורת שמהם נאספים הסקרים"></div>
         </div>
@@ -976,8 +998,9 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="mstep-num" aria-hidden="true">4</div>
         <div class="mstep-body">
           <div class="mstep-head"><h2>מוסיפים את ההנחות של ״תחזית הברומטר״</h2><a class="mstep-link" href="#/haredi">להנחות ↙</a></div>
-          <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו שלוש הנחות גלויות:</p>
+          <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו ארבעה צעדים גלויים:</p>
           <ul class="mlist">
+            <li><b>תיקון הטעות הקבועה של כל מכון — רק בתוך הגוש.</b> לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״ם, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 2 ובכרטיס הסקר. ממוצע "משוקלל אמינות" אינו מתוקן.</li>
             <li><b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8 — מספר קבוע, לא ממוצע הסקרים שלהן.</b> מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בשלב 6, ביחד עם כל שאר הרשימות.</li>
             <li><b>קירוב למאזן 2022 — היעד הוא 62 מנדטים לגוש נתניהו, לא 64.</b> בפועל הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד, וקולותיה התחלקו בהסכמי העודפים בין הרשימות שכן עברו — מקרה קצה חד־פעמי בספירה, לא סימן לגודל האמיתי של הגוש (אפשר לבדוק ב״אילו מרצ עברה את אחוז החסימה״ בתמונת המצב). באותו היגיון ההפוך: רשימות ימין שנמצאות היום מתחת לאחוז החסימה (למשל רשימתו של עופר וינטר) לא נמחקות מהחישוב הזה — התמיכה בהן נספרת כשמודדים כמה גדול גוש נתניהו בפועל בסקרים, גם שהן עדיין לא מקבלות מנדט בחלוקה הסופית. מהפער שנשאר בין הסקרים לעוגן, התחזית סוגרת <b>רק חצי</b> — לא את כולו — ומורידה מזה את מה שקיבוע ש״ס ויהדות התורה כבר תרם לימין, כדי לא לספור את אותה הנחה פעמיים.</li>
             <li><b>תוספת דמוגרפית משוערת — 2 מנדטים כברירת מחדל.</b> היא מועברת בין הגושים לפי המפלגות, ואז נבדקת מול מודל דמוגרפי נפרד בשלב הבא.</li>

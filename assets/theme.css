@@ -134,3 +134,17 @@ div#polls-table{min-width:0;width:auto}
 .view:not(#_):not(#__) .cross-card .cross-range{background:var(--ivory-2);border:1px solid var(--ivory-rule)}
 .view:not(#_):not(#__) .average-firms span em{color:var(--ink);font-weight:800}
 .view:not(#_):not(#__) .bloc-donut::after{background:var(--ivory)}
+
+/* ---------- פינות: כרטיסים וכרטיסיות פחות עגולים (04.10.2026) ----------
+   !important: חלק מהשכבות הקודמות מגדירות רדיוס עם בוררי מזהה חזקים יותר. */
+:root{--card-r:6px;--ctl-r:6px}
+.view:not(#_):not(#__) :is(.card,.tr-card,.tr-hero,.tr-bloc,.tr-movers,.feed-item,.tablewrap,.dtable-wrap,.mtable,.arch-wrap,.poll-result-card,
+  .rank,.step,.sector,.cluster,.floorcard,.pillar,.hemi,.gauge,.scen-block,.average-results,.average-toolbar,.average-firms,.live-status,
+  .fblock,.focus-summary,.map-panel,.mapbox,.leaflet-host,.mlive,.sources-group,.mandate-estimate,.page-facts,.stats,#home-story,
+  .election-visual,.verdict-in,.bloc,.wall-poster,.ec-panel,.story-graphs,.share-panel,.firm-card,.pipeline,.notice,.takeaway,
+  .discovery-card,.base-drama,.base-blocbar,.calcout,.calcparty,.submitted-research,.math,.es-card,.night-clock,.crosschart,.cross-summary-out,
+  .sw-board,.sw-calc-big,.sw-wf,.sw-strip-row,.meters),
+dialog{border-radius:var(--card-r)!important}
+.view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle,.subtabs,.tr-range,.calib-switch){border-radius:var(--ctl-r)!important}
+.view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle,.subtabs,.tr-range,.calib-switch) :is(button,a){border-radius:calc(var(--ctl-r) - 2px)!important}
+.mainnav .tab-live{border-radius:var(--ctl-r)!important}

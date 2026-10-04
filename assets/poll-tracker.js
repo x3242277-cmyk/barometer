@@ -147,7 +147,8 @@ function trackerChart(M, mode) {
   const ref = party ? (lo <= 4 && hi >= 4 ? [4, "אחוז החסימה ≈ 4"] : null) : [61, "61 · רוב"];
   if (ref) g += `<line class="tr-ref" x1="${m.l}" x2="${W - m.r}" y1="${y(ref[0])}" y2="${y(ref[0])}"/><text class="tr-ref-label" text-anchor="end" x="${W - m.r - 14}" y="${y(ref[0]) - 7}">${ref[1]}</text>`;
   /* תוויות תאריך: בערך כל שבוע */
-  const every = Math.max(1, Math.round((t1 - t0) / DAY_MS / (W < 600 ? 4 : 7))) * DAY_MS;
+  /* תאריכים בציר: כתווית אחת לכל ~90 פיקסלים (לפחות 4, ובמסך רחב כ־12) */
+  const every = Math.max(1, Math.round((t1 - t0) / DAY_MS / Math.max(4, Math.floor(W / 90)))) * DAY_MS;
   for (let t = t1; t >= t0; t -= every) g += `<text class="tr-tick" text-anchor="middle" x="${x(t)}" y="${H - 10}">${trDay(t)}</text>`;
   const dots = lines.map(l => polls.map(p => `<circle class="tr-dot" cx="${x(Math.min(t1, Math.max(t0, parsePollDate(p))))}" cy="${y(l.dot(p))}" r="3.2" fill="${l.color}"/>`).join("")).join("");
   const paths = lines.map(l => `<path class="tr-line" d="${S2.map((s, i) => `${i ? "L" : "M"}${x(s.t).toFixed(1)} ${y(l.get(s)).toFixed(1)}`).join("")}" stroke="${l.color}"/>`).join("");
@@ -283,7 +284,7 @@ function renderPollTracker() {
             <option value="blocs"${selParty ? "" : " selected"}>כל המפלגות — הגושים</option>
             ${M.parties.map(x => `<option value="${esc(x.id)}"${S.trackMode === x.id ? " selected" : ""}>${esc(x.name)} · ${trFmt(x.now)}</option>`).join("")}
           </select></label>
-          <div class="switch tr-range" role="group" aria-label="טווח זמן"><button type="button" data-track-range="month" aria-pressed="${S.trackRange === "month"}">חודש אחרון</button><button type="button" data-track-range="all" aria-pressed="${S.trackRange === "all"}">מאז אוגוסט</button></div>
+          ${M.now.t - M.series[0].t <= 31 * DAY_MS ? "" : `<div class="switch tr-range" role="group" aria-label="טווח זמן"><button type="button" data-track-range="month" aria-pressed="${S.trackRange === "month"}">חודש אחרון</button><button type="button" data-track-range="all" aria-pressed="${S.trackRange === "all"}">${M.basis && M.basis !== "avg" ? `מאז ${trDay(M.series[0].t)}` : "מאז אוגוסט"}</button></div>`}
         </div>
       </div>
       <div class="tr-legend">${chart.legend}</div>

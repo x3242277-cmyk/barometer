@@ -1859,7 +1859,7 @@ const pointsHe = n => Math.abs(Math.round(n * 10) / 10) === 1 ? "נקודת אח
 const kfmt = v => fmt(Math.round(v / 1000) * 1000);          // עיגול לאלפים — מספרים מוערכים
 
 /* שלב 2 — מי גדל ובכמה מאז ספטמבר 2019: פנקס הבוחרים לפי סוג היישוב (data/sector-growth.json,
-   scripts/build-locality-trends.py). הקצב שנמדד מופיע גם ליד כל הנחה בשלב 4. */
+   scripts/build-locality-trends.mjs). הקצב שנמדד מופיע גם ליד כל הנחה בשלב 4. */
 const GROWTH_COLORS = { jewish: "#2563B0", haredi: "#6A5A9C", arab: "#2A7A5E", bedouin: "#8A6318", mixed: "#B8862B" };
 async function renderGrowth2019() {
   const el = $("#growth-2019"); if (!el) return;

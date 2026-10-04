@@ -10,9 +10,10 @@
      לפי אזורים — 68 אזורי הצבעה רציפים (נקבעו לפי 2022), צבועים לפי
                  הקבוצה המובילה ועוצמת היתרון; הטבלה: האזורים.
      לפי ערים   — כל יישוב בצורתו, סינון לפי אוכלוסייה; הטבלה: היישובים.
-   תחזית 2026 (data/trends.json — scripts/build-locality-trends.py): כל יישוב
-   מצביע כמו ב־2022 וגדל בקצב שלו; בעמודה הימנית — אחוז ההצבעה של כל קבוצה
-   ועוצמת המגמה של היישובים. המספרים מול 2022, והגרף — הבחירה מ־2019 עד 2026.
+   תחזית 2026 (data/trends.json — scripts/build-locality-trends.mjs): כל יישוב
+   ממשיך את הקו שלו מ־2019 וגדל בקצב שלו; "אחרות" מושמטות — החלקים מתוך ארבע
+   הקבוצות. בעמודה הימנית — אחוז ההצבעה של כל קבוצה ועוצמת המגמה של היישובים.
+   המספרים מול 2022 (גם הם בלי "אחרות"), והגרף — הבחירה מ־2019 עד 2026.
    הגאוגרפיה: data/results-2022.json (scripts/build-results-2022.mjs).
    ============================================================ */
 (() => {
@@ -61,14 +62,8 @@ async function loadData() {
   await applyYear(st.year);
   return D;
 }
-/* תחזית 2026: ברירות המחדל של הידיות — אחוז ההצבעה של כל קבוצה לפי המודל,
-   והימין ברמה של 2021 (הערכת העורך); המגמה של היישובים כבויה (ראו forecastExplain) */
-const RIGHT_TURNOUT_FROM = "2021";
-/* אחוז ההצבעה של כל תא כברירת מחדל: הימין שאינו חרדי — כמו ב־2021, השאר — לפי המודל */
-function defRate(T, j) {
-  const gt = T.national.groupTurnout, k21 = T.meta.elections.findIndex(e => e.id === RIGHT_TURNOUT_FROM);
-  return j === 0 && k21 >= 0 ? gt.series[k21][0] : gt.base26[j];
-}
+/* תחזית 2026: ברירות המחדל של הידיות — אחוז ההצבעה של כל קבוצה לפי המודל, והמגמה של
+   היישובים בעוצמה שנבנתה (data/trends.json → national.defaultTrend; מלאה מאז 05.10.2026) */
 /* אחוז ההצבעה של קבוצה שיש בה כמה תאים (הימין: ימין וחרדים) — סך המצביעים חלקי סך
    בעלי זכות הבחירה. בעלי זכות הבחירה של תא ב־2026: קולות המודל חלקי אחוז ההצבעה שלו */
 function groupRate(T, g, rate) {
@@ -81,12 +76,12 @@ function seriesRate(T, g, k) {
   return v.reduce((a, b) => a + b, 0) / js.reduce((s, j, i) => s + v[i] / n.groupTurnout.series[k][j], 0);
 }
 function fcDefaults(T) {
-  return { trend: 0, turnout: Object.fromEntries(GROUPS.map(g => [g, groupRate(T, g, j => defRate(T, j))])) };
+  return { trend: T.national.defaultTrend ?? 0, turnout: Object.fromEntries(GROUPS.map(g => [g, groupRate(T, g, j => T.national.groupTurnout.base26[j])])) };
 }
-/* הידית של קבוצה מזיזה את כל התאים שלה באותו יחס; המכפיל של כל תא מול אחוז ההצבעה של המודל */
+/* הידית של קבוצה מזיזה את כל התאים שלה באותו יחס מול אחוז ההצבעה של המודל */
 function cellFactors(T) {
-  const base = T.national.groupTurnout.base26, def = fcDefaults(T), fac = [1, 1, 1, 1, 1];
-  for (const g of GROUPS) for (const j of GT_IDX[g]) fac[j] = defRate(T, j) * st.fc.turnout[g] / def.turnout[g] / base[j];
+  const def = fcDefaults(T), fac = [1, 1, 1, 1, 1];
+  for (const g of GROUPS) for (const j of GT_IDX[g]) fac[j] = st.fc.turnout[g] / def.turnout[g];
   return fac;
 }
 /* חמשת התאים של הנתונים לארבע "רשימות" התחזית (ימין, מרכז־שמאל, ערבים, אחרות), ולשלוש קבוצות */
@@ -104,8 +99,9 @@ function forecastYear(T) {
   const last = T.meta.elections.length - 1, lam = st.fc.trend, fac = cellFactors(T);
   const rows = [], tot = [0, 0, 0, 0, 0], tot0 = [0, 0, 0, 0, 0];
   for (const [c, L] of Object.entries(T.loc)) {
-    const v22 = L.v[last]; if (!v22) continue;
-    const at = l => { const sh = CAMPS.map((_, j) => Math.max(0, L.g[last * 5 + j] / v22 + l * L.tr[j] / 100)), n = sh.reduce((a, b) => a + b, 0) || 1; return sh.map((x, j) => L.f[2] * x / n * fac[j]); };
+    /* החלקים של 2022 מתוך ארבע הקבוצות בלבד — "אחרות" מושמטות מהתחזית */
+    const g4 = L.g.slice(last * 5, last * 5 + 4).reduce((a, b) => a + b, 0); if (!L.v[last] || !g4) continue;
+    const at = l => { const sh = CAMPS.map((_, j) => j < 4 ? Math.max(0, L.g[last * 5 + j] / g4 + l * L.tr[j] / 100) : 0), n = sh.reduce((a, b) => a + b, 0) || 1; return sh.map((x, j) => L.f[2] * x / n * fac[j]); };
     const votes = at(lam), v = votes.reduce((a, b) => a + b, 0);
     votes.forEach((x, j) => tot[j] += x);
     if (lam) at(0).forEach((x, j) => tot0[j] += x);
@@ -117,8 +113,8 @@ function forecastYear(T) {
   const n = T.national, prop = propSeats(tot.slice(0, 4)), seats = foldGroups(n.seats22.map((a, i) => a + prop[i] - n.prop22[i]));
   /* הפירוק מול 2022: דמוגרפיה (מהבנייה), הצבעה (של המודל + הידיות), מגמה */
   const share = t => { const s = t.reduce((a, b) => a + b, 0); return t.map(x => 100 * x / s); };
-  const sNo = share(lam ? tot0 : tot), sAll = share(tot);
-  const steps = { demography: foldGroups(n.steps.demography), turnout: foldGroups(n.steps.turnout.map((x, i) => x + sNo[i] - n.f26[i])), trend: foldGroups(sAll.map((x, i) => x - sNo[i])) };
+  const sNo = share(lam ? tot0 : tot), sAll = share(tot), fNo = n.f26.map((x, i) => x - n.steps.trend[i]);   // ברירת המחדל בלי המגמה
+  const steps = { demography: foldGroups(n.steps.demography), turnout: foldGroups(n.steps.turnout.map((x, i) => x + sNo[i] - fNo[i])), trend: foldGroups(sAll.map((x, i) => x - sNo[i])) };
   const parties = ["R", "L", "A", "O"].map((k, i) => ({ id: `g_${k}`, name: CAMP_HE[k], short: CAMP_HE[k], camp: k, color: campColor(k), seats: seats[i] || 0 }));
   return { id: FORECAST, label: "תחזית 2026", parties, national, rows, names: {}, trends: T, seats22: foldGroups(n.seats22), seats26: seats, steps };
 }
@@ -174,7 +170,9 @@ function history(r) {
     for (let k = 0; k < K; k++) { v[k] += L.v[k]; e[k] += L.e[k]; for (let j = 0; j < 5; j++) g[k][j] += L.g[k * 5 + j]; }
   }
   for (const x of g) { x[0] += x[1]; x[1] = 0; }                 // החרדים — בימין
-  return { v, e, g, share: k => Object.fromEntries(CAMPS.map((c, j) => [c, v[k] ? 100 * g[k][j] / v[k] : null])) };
+  /* החלקים — מתוך ארבע הקבוצות, כמו בתחזית ("אחרות" מושמטות) */
+  const v4 = g.map(x => x[0] + x[2] + x[3]);
+  return { v, v4, e, g, share: k => Object.fromEntries(CAMPS.map((c, j) => [c, v4[k] ? (j === 4 ? 0 : 100 * g[k][j] / v4[k]) : null])) };
 }
 /* גידול: בעלי זכות הבחירה הצפויים מול 2022, באחוזים */
 const growthOf = r => { const h = history(r), e22 = h.e[h.e.length - 1]; return e22 ? 100 * (r.e - e22) / e22 : null; };
@@ -253,10 +251,10 @@ function forecastControls() {
 }
 /* ההסבר של התחזית: השיטה, הידיות, והבדיקה לאחור על 2022 */
 function forecastExplain() {
-  const T = D.E.trends, b = T.national.backtest, e = b.locErr;
+  const T = D.E.trends, b = T.national.backtest, e = b.locErr, right = a => (a?.[0] || 0) + (a?.[1] || 0);
   return `<p class="r22-rule">${escH(T.meta.method)}</p>
-    <p class="r22-rule"><b>אחוז ההצבעה</b> של כל קבוצה הוא אומדן לפי היישובים שבהם מצביעיה גרים. ברירת המחדל — הממוצע של כל יישוב, ומצביעי הימין שאינם חרדים ברמה של בחירות ${RIGHT_TURNOUT_FROM}. הזזת ידית מגדילה או מקטינה את הקולות של אותה קבוצה בכל היישובים.</p>
-    <p class="r22-rule"><b>מגמת היישובים כבויה מראש.</b> בדיקה לאחור — אותה שיטה על הנתונים עד 2021, מול התוצאה של 2022: בלי מגמה הטעות הממוצעת ביישוב הייתה ${p1(e["0"])} נקודות, עם חצי מגמה ${p1(e["0.5"])} ועם מגמה מלאה ${p1(e["1"])}. ארבע בחירות בשלוש שנים קצרות מדי כדי להמשיך מהן קו.</p>
+    <p class="r22-rule"><b>אחוז ההצבעה</b> של כל קבוצה הוא אומדן לפי היישובים שבהם מצביעיה גרים. ברירת המחדל — הממוצע של כל יישוב בארבע הבחירות. הזזת ידית מגדילה או מקטינה את הקולות של אותה קבוצה בכל היישובים.</p>
+    <p class="r22-rule"><b>מגמת היישובים פועלת במלואה</b> (אפשר להחליש בידית). בדיקה לאחור — אותה שיטה על הנתונים עד 2021, מול 2022: הימין יצא ${p1(right(b.predictedNoTrend))}% בלי מגמה ו־${p1(right(b.predicted))}% עם מגמה, ובפועל ${p1(right(b.actual))}%. ביישוב הבודד הטעות הממוצעת גדלה — ${p1(e["0"])} נקודות בלי מגמה, ${p1(e["1"])} עם מגמה מלאה: הקו נכון בכיוון הכללי, פחות בכל יישוב לחוד.</p>
     <p class="r22-rule">המנדטים: 2022 בפועל, ועוד השינוי בקולות כאילו כל קבוצה רצה כרשימה אחת. לא סקר.</p>`;
 }
 
@@ -420,7 +418,7 @@ function renderTrend() {
   const pad = { r: 44, l: 40, t: 10, b: 24 }, x0 = xs[0], span = x26 - x0;
   const X = t => pad.l + (t - x0) / span * (W - pad.r - pad.l);              // הזמן משמאל לימין, כמו בגרף הסקרים
   const vals = [];
-  for (let k = 0; k < xs.length; k++) if (h.v[k]) GROUPS.forEach((g, j) => vals.push(100 * h.g[k][CAMPS.indexOf(g)] / h.v[k]));
+  for (let k = 0; k < xs.length; k++) if (h.v4[k]) GROUPS.forEach(g => vals.push(100 * h.g[k][CAMPS.indexOf(g)] / h.v4[k]));
   GROUPS.forEach(g => vals.push(c[g]));
   const top = Math.min(100, Math.max(20, Math.ceil(Math.max(...vals) / 10) * 10));
   const Y = v => pad.t + (1 - v / top) * (H - pad.t - pad.b);
@@ -434,7 +432,7 @@ function renderTrend() {
   GROUPS.map(g => [g, Y(c[g])]).sort((a, b) => a[1] - b[1]).forEach(([g, y], i, a) => { endY[g] = i ? Math.max(y, endY[a[i - 1][0]] + 12) : y; });
   const lines = GROUPS.map(g => {
     const j = CAMPS.indexOf(g), pts = [];
-    for (let k = 0; k < xs.length; k++) if (h.v[k]) pts.push([X(xs[k]), Y(100 * h.g[k][j] / h.v[k])]);
+    for (let k = 0; k < xs.length; k++) if (h.v4[k]) pts.push([X(xs[k]), Y(100 * h.g[k][j] / h.v4[k])]);
     if (!pts.length) return "";
     const last = pts[pts.length - 1], end = [X(x26), Y(c[g])];
     return `<path class="r22-tr-line" d="${smoothPath(pts)}" stroke="${campColor(g)}"/>

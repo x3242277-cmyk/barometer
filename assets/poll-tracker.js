@@ -90,8 +90,9 @@ function basisModel(P, basis) {
   };
   let live = null;
   try { live = point(Date.parse(S.cur.generatedAt), allocateSeats(forecast(B.mode, HIDE_FROM_HOME).parties), S.forecastPolls?.length || 0, S.series?.length || 0); } catch { /* בלי תחזית חיה — רק הצילומים */ }
+  /* המנדטים לפי כללי הבחירות (x.seats), כמו הנקודה החיה; צילום ישן בלי seats — שארית גדולה */
   const series = (S.forecastHistory?.snapshots || []).filter(x => x[B.key])
-    .map(x => point(Date.parse(x.updatedAt), x[B.key], x.polls, x.firms))
+    .map(x => point(Date.parse(x.updatedAt), x.seats?.[B.key] || x[B.key], x.polls, x.firms))
     .filter(x => !live || x.t < live.t - 36e5).sort((a, b) => a.t - b.t);
   if (live) series.push(live);
   if (series.length < 2) return P;

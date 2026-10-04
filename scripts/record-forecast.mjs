@@ -11,6 +11,12 @@
  *   node scripts/record-forecast.mjs
  *   node scripts/record-forecast.mjs --backfill-weekly   # משחזר שבועות קודמים מהארכיון
  *   node scripts/record-forecast.mjs --rebuild-weekly    # מוחק ומשחזר את כל השבועות
+ *   node scripts/record-forecast.mjs --rebuild-snapshots # מחשב מחדש את כל הצילומים במנוע הנוכחי
+ *                                                         (הסקרים של כל צילום — מהיסטוריית git)
+ *
+ * בכל צילום: scenario/weighted — שארית גדולה (לשחזור הממוצע הגולמי), ו־seats —
+ * המנדטים לפי כללי הבחירות, כמו שהאתר מציג. בלי seats הגרף ועמוד הבית ערבבו
+ * את שתי השיטות (שארית גדולה 58 מול כללי הבחירות 60, 04.10.2026).
  *
  * מריץ את מנוע התחזית האמיתי (assets/app.js) ב-sandbox, כדי שהמספרים יהיו
  * זהים למה שהדפדפן מחשב.
@@ -18,6 +24,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -79,16 +86,19 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
       below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },
       polls: S.forecastPolls.length,
       firms: S.series.length,
-      seats: allocateSeats(__fsc.parties)
+      seats: allocateSeats(__fsc.parties),
+      seatsWeighted: allocateSeats(__fw.parties)
     })
   `, ctx));
 }
 
 const weeklyEntry = (week, ts, r) => ({ week, date: week, time: "20:00", recordedAt: new Date(ts).toISOString(), polls: r.polls, firms: r.firms, seats: r.seats });
+/* צילום: שארית גדולה + המנדטים לפי כללי הבחירות לשני הבסיסים */
+const snapshotOf = ({ seats, seatsWeighted, ...rest }) => ({ ...rest, seats: { scenario: seats, weighted: seatsWeighted } });
 
 export function recordForecast() {
   const current = read("current-polls");
-  const { seats, ...result } = runEngine(current.polls);
+  const r = runEngine(current.polls), result = snapshotOf(r), seats = r.seats;
 
   const history = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, "utf8")) : { snapshots: [] };
   if (!history.snapshots.some(s => s.updatedAt === current.generatedAt)) {
@@ -147,7 +157,31 @@ export function backfillWeekly({ rebuild = false } = {}) {
   return added;
 }
 
+/* מחשב מחדש את כל הצילומים במנוע הנוכחי: לכל צילום — current-polls.json מהקומיט
+   שבו generatedAt שלו שווה ל־updatedAt של הצילום. צילום שאין לו קומיט כזה נשאר. */
+export function rebuildSnapshots() {
+  const history = JSON.parse(fs.readFileSync(FILE, "utf8"));
+  const git = args => execFileSync("git", args, { cwd: ROOT, encoding: "utf8", maxBuffer: 1e9 });
+  const byTime = new Map();
+  for (const h of git(["log", "--format=%H", "--", "data/current-polls.json"]).trim().split(/\s+/)) {
+    try { const cur = JSON.parse(git(["show", `${h}:data/current-polls.json`])); if (!byTime.has(cur.generatedAt)) byTime.set(cur.generatedAt, cur); } catch { /* קומיט בלי הקובץ */ }
+  }
+  let done = 0;
+  history.snapshots = history.snapshots.map(snap => {
+    const cur = byTime.get(snap.updatedAt);
+    if (!cur) return snap;
+    done++;
+    return { updatedAt: snap.updatedAt, recordedAt: snap.recordedAt, ...snapshotOf(runEngine(cur.polls, { now: Date.parse(cur.generatedAt) })) };
+  });
+  fs.writeFileSync(FILE, JSON.stringify(history, null, 2) + "\n");
+  return [done, history.snapshots.length];
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  if (process.argv.includes("--rebuild-snapshots")) {
+    const [done, all] = rebuildSnapshots();
+    console.log(`· חושבו מחדש ${done} מתוך ${all} צילומים`);
+  }
   if (process.argv.includes("--backfill-weekly") || process.argv.includes("--rebuild-weekly")) {
     const added = backfillWeekly({ rebuild: process.argv.includes("--rebuild-weekly") });
     console.log(`· שוחזרו ${added.length} שבועות: ${added.join(", ") || "—"}`);

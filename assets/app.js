@@ -678,8 +678,9 @@ function homeDelta(id) {
   if (!hist || !Array.isArray(hist.snapshots) || hist.snapshots.length < 2) return null;
   const snaps = hist.snapshots.slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
   const key = S.mode === "weighted" ? "weighted" : "scenario";
-  const now = (snaps[0][key] || snaps[0].parties || {})[id];
-  const prev = (snaps[1][key] || snaps[1].parties || {})[id];
+  /* לפי כללי הבחירות (seats), כמו המספרים שבכרטיסים */
+  const now = (snaps[0].seats?.[key] || snaps[0][key] || snaps[0].parties || {})[id];
+  const prev = (snaps[1].seats?.[key] || snaps[1][key] || snaps[1].parties || {})[id];
   if (now == null || prev == null) return null;
   const d = Math.round(now) - Math.round(prev);
   if (!d) return null;
@@ -914,7 +915,7 @@ function renderHome() {
         rawFull:{ ...Object.fromEntries(Object.entries(snapshotSeats).map(([id, n]) => [id, n * seatScale])),
                   ...Object.fromEntries(Object.entries(snapshotBelow).map(([id, p]) => [id, p * 1.2])) } }
     : forecast(S.mode, HIDE_FROM_HOME);
-  const seats = snapshotSeats ? {...snapshotSeats} : allocateSeats(est.parties);
+  const seats = snapshotSeats ? {...(snapshot.seats?.[S.mode === 'weighted' ? 'weighted' : 'scenario'] || snapshotSeats)} : allocateSeats(est.parties);
   const belowEntries = Object.entries(est.below || {});
   $('#home-eyebrow').textContent = snapshot
     ? `תחזית ארכיון · ${heDate(snapshot.updatedAt)} · ${snapshot.polls || '—'} סקרים`

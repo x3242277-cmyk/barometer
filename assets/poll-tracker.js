@@ -124,7 +124,7 @@ function trackerHeadline(M) {
 /* ---------- גרף הקווים (גושים או מפלגה אחת) ---------- */
 function trackerChart(M, mode) {
   /* רוחב ה־viewBox = הרוחב האמיתי, כדי שהטקסט יישאר בגודל קריא גם בטלפון */
-  const W = Math.round(Math.min(920, Math.max(320, S.trackWidth || 920))), H = W < 600 ? 260 : 340, m = { l: 30, r: W < 600 ? 40 : 52, t: 18, b: 34 };
+  const W = Math.round(Math.min(1600, Math.max(320, S.trackWidth || 920))), H = W < 600 ? 260 : 320, m = { l: 30, r: W < 600 ? 40 : 52, t: 18, b: 34 };
   const days = S.trackRange === "month" ? 30 : 400;
   const tMin = Math.max(M.series[0].t, M.now.t - (days - 1) * DAY_MS);
   const S2 = M.series.filter(s => s.t >= tMin), polls = (M.dotPolls || M.polls).filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);
@@ -220,13 +220,16 @@ function renderPollFeed(M) {
       const d = v.parties[id] - (pv.parties[id] || 0);
       return d ? `<em class="${d > 0 ? "up" : "down"}" aria-label="${d > 0 ? "עלייה" : "ירידה"} של ${Math.abs(d)}">${d > 0 ? "▲" : "▼"}${Math.abs(d)}</em>` : `<em class="flat" aria-label="ללא שינוי">=</em>`;
     };
-    return `<details class="feed-item${p.barometer ? " is-baro" : ""}"${i === 0 && wide ? " open" : ""}>
+    return `<details class="feed-item${p.barometer ? " is-baro" : ""}"${i < 3 && wide ? " open" : ""}>
       <summary>
         <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer ? "ניתוח שבועי · לא סקר" : esc(f.meta.he)}</small></span><time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}${p.barometer ? " · 20:00" : ""}</time></span>
         <span class="feed-bar" role="img" aria-label="${esc(aria)}">${bar}<i class="feed-61" title="61"></i></span>
         <span class="feed-lead">${ids.slice(0, 3).map(id => `<span style="--c:${partyHue(id)}"><i></i>${esc(names[id])} <b>${v.parties[id]}</b></span>`).join("")}</span>
       </summary>
-      <ol class="feed-parties">${ids.map(id => `<li style="--c:${partyHue(id)}"><i></i><span>${esc(names[id])}</span><b>${v.parties[id]}</b>${delta(id)}</li>`).join("")}</ol>
+      <div class="feed-cols">${[["Right", "ימין וחרדים"], ["rest", "מרכז–שמאל וערביות"]].map(([side, label]) => {
+        const col = ids.filter(id => (partyMeta(id).alignment === "Right") === (side === "Right"));
+        return `<div><p class="feed-col-head">${label} <b>${col.reduce((t, id) => t + v.parties[id], 0)}</b></p><ol class="feed-parties">${col.map(id => `<li style="--c:${partyHue(id)}"><i></i><span>${esc(names[id])}</span><b>${v.parties[id]}</b>${delta(id)}</li>`).join("")}</ol></div>`;
+      }).join("")}</div>
       <p class="feed-src">${p.barometer ? `תחזית הברומטר של מוצאי שבת ב־20:00, במנדטים לפי כללי הבחירות. לא נכנסת לשום ממוצע.${prev ? ` החצים: מול השבוע הקודם (${esc(prev.date.replace(/\.20\d\d$/, ""))}).` : ""}` : prev ? `החצים: שינוי מול הסקר הקודם של ${esc(f.meta.he)} ב${esc(p.channelHebrewName)} (${esc(prev.date.replace(/\.20\d\d$/, ""))})` : "אין סקר קודם של אותו מכון ואותו ערוץ"}${p.sourceUrl ? ` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>` : ""}</p>
     </details>`;
   }).join("") + (list.length > LIMIT ? `<button type="button" class="feed-more" data-feed-more>${S.feedAll ? "להציג פחות" : `עוד ${list.length - LIMIT} סקרים מאז אוגוסט`}</button>` : "");

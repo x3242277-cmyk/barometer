@@ -244,3 +244,19 @@
   .polls-feed{position:sticky;top:calc(var(--masthead-h,64px) + 12px);max-height:calc(100vh - var(--masthead-h,64px) - 24px);overflow:auto;align-self:start}
 }
 @media (max-width:760px){.polls-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- הסקרים האחרונים: עמודה רחבה, ובכל סקר שני טורים (04.10.2026) ---------- */
+@media (min-width:981px){
+  .polls-layout{grid-template-columns:minmax(0,1fr) minmax(440px,34%)!important;gap:22px!important}
+}
+@media (min-width:981px) and (max-width:1180px){
+  .polls-layout{grid-template-columns:minmax(0,1fr) minmax(380px,40%)!important}
+}
+.feed-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;padding:6px 14px 2px}
+.feed-cols .feed-parties{padding:0}
+.feed-col-head{margin:4px 0 2px;padding-bottom:4px;border-bottom:2px solid var(--rule);font-size:.72rem;font-weight:800;color:var(--ink-3);display:flex;justify-content:space-between}
+.feed-col-head b{color:var(--ink);font-variant-numeric:tabular-nums}
+.feed-cols>div:first-child .feed-col-head{border-color:#2563B066}
+.feed-cols>div:last-child .feed-col-head{border-color:#C0392B66}
+.feed-item[open] .feed-lead{display:none}
+@media (max-width:980px){.feed-cols{grid-template-columns:1fr}}

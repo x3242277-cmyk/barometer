@@ -162,6 +162,10 @@ const out = {
 await writeFile(path.join(ROOT, "data/results-2022.json"), JSON.stringify(out), "utf8");
 /* קיבוץ המפה נעשה בשלב נפרד: אזורים טבעיים, ובתוכם כל שטח ליישוב הקרוב.
    כך קבוצה קטנה לא יכולה להיצבע בשם של אזור מרוחק בגלל דמיון בהצבעה. */
-execFileSync(process.platform === "win32" ? "python" : "python3", [path.join(ROOT, "scripts/refine-results-2022-areas.py")], { stdio: "inherit" });
+const PY = process.platform === "win32" ? "python" : "python3";
+execFileSync(PY, [path.join(ROOT, "scripts/refine-results-2022-areas.py")], { stdio: "inherit" });
+/* הצורה האמיתית של הערים והמועצות המקומיות (OpenStreetMap), והתבליט של המפה */
+execFileSync(PY, [path.join(ROOT, "scripts/add-locality-shapes.py")], { stdio: "inherit" });
+execFileSync(PY, [path.join(ROOT, "scripts/build-terrain.py")], { stdio: "inherit" });
 log(`${localities.length} יישובים · ${districts.length} מחוזות · ${regions.length} אזורים · ${fmtN(national.valid)} קולות כשרים ✓`);
 function fmtN(n) { return new Intl.NumberFormat("he-IL").format(n); }

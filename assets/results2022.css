@@ -201,3 +201,11 @@ body:has(#view-map.on)>footer{display:none}
   .r22-map{height:420px}
   .r22-src{display:none}
 }
+
+/* ---------- מפה: צורות היישובים ותבליט (04.10.2026) ---------- */
+.r22-terrain{mix-blend-mode:multiply;pointer-events:none;opacity:.95}
+.r22-top path.r22-city{fill:var(--c);stroke:#fdfbf6;stroke-width:.7px;vector-effect:non-scaling-stroke;cursor:pointer;opacity:.82}
+.r22-top path.r22-city.off{fill:#b7b1a5;opacity:.35}
+.r22-top path.r22-city:hover{opacity:1;stroke:#14233a;stroke-width:1.4px}
+.r22-top path.r22-city.sel{opacity:1;stroke:#14233a;stroke-width:2.4px}
+.r22-credit{position:absolute;inset-inline-start:8px;top:6px;margin:0;font-size:.58rem;color:#5d6977;pointer-events:none}

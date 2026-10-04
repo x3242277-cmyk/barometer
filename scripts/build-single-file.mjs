@@ -65,6 +65,7 @@ const logoDataUri = await pngUri("favicon.png");
 const iconDataUri = await pngUri("logo-icon.png");
 css = css.replace(/url\(['"]?icon-chart\.png['"]?\)/g, `url("${await pngUri("icon-chart.png")}")`);
 js = js.replaceAll("assets/logo-icon.png", iconDataUri);
+js = js.replaceAll("assets/terrain.jpg", `data:image/jpeg;base64,${(await readFile(path.join(ROOT, "assets/terrain.jpg"))).toString("base64")}`);
 
 const inlineData = `<script>window.__BAROMETER_DATA__=${JSON.stringify(data).replace(/</g, "\\u003c")};<\/script>`;
 const styleTag = `<style>\n${css}\n</style>`;

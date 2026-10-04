@@ -279,10 +279,12 @@ function renderMapBase() {
     <defs><clipPath id="r22-land-clip"><path d="${land}"/></clipPath></defs>
     <path class="r22-landfill" d="${land}"/>
     <g class="r22-layer"></g>
+    ${D.map.terrain ? `<image class="r22-terrain" href="assets/terrain.jpg" x="${D.map.terrain.x}" y="${D.map.terrain.y}" width="${D.map.terrain.w}" height="${D.map.terrain.h}" preserveAspectRatio="none" clip-path="url(#r22-land-clip)"/>` : ""}
     <path class="r22-water" d="${water}"/>
     <g class="r22-top"></g><g class="r22-labels"></g></svg>
     <div class="r22-zoom" role="group" aria-label="זום"><button type="button" data-zoom="in" aria-label="התקרבות">+</button><button type="button" data-zoom="out" aria-label="התרחקות">−</button><button type="button" data-zoom="reset" aria-label="כל המפה">⟲</button></div>
-    <div class="r22-tip" role="tooltip" hidden></div>`;
+    <div class="r22-tip" role="tooltip" hidden></div>
+    <p class="r22-credit">גבולות היישובים: © OpenStreetMap · ${escH(D.map.terrain?.credit || "")}</p>`;
 }
 const svgEl = () => q("#r22-map svg");
 /* יחידות מפה לפיקסל מסך, לפי ערכת התצוגה הנוכחית */
@@ -345,10 +347,16 @@ function renderLabels() {
 function renderDots() {
   const svg = svgEl(); if (!svg || st.mode !== "cities") return;
   const inSet = new Set(rows().map(r => r.id)), u = unitsPerPx();
-  const rad = l => Math.max(1.8, Math.min(12, Math.sqrt(l.v) / 26)) * u;
-  const dots = D.localities.filter(l => l.x != null).sort((a, b) => b.v - a.v), sel = dots.find(l => l.c === st.sel);
-  const dot = l => { const [x, y] = proj(l.x, l.y), li = leadIdx(l); return `<circle data-id="${l.c}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad(l).toFixed(2)}" class="${inSet.has(l.c) ? "on" : "off"}${l.c === st.sel ? " sel" : ""}" style="--c:${campColor(leadCamp(l))}" aria-label="${escH(l.n)}"></circle>`; };
-  svg.querySelector(".r22-top").innerHTML = dots.filter(l => l !== sel).map(dot).join("") + (sel ? dot(sel) : "");
+  /* יישוב בלי גבול משלו (קיבוץ, מושב): נקודה בגודל קבוע על הקרקע — מתקרבים והיא גדלה,
+     אבל לא קטנה מפיקסל וחצי כשרואים את כל הארץ */
+  const rad = l => Math.max(1.6 * u, Math.min(18, Math.max(4, Math.sqrt(l.v) * .12)));
+  const all = D.localities.filter(l => l.b || l.x != null).sort((a, b) => b.v - a.v), sel = all.find(l => l.c === st.sel);
+  const cls = l => `${inSet.has(l.c) ? "on" : "off"}${l.c === st.sel ? " sel" : ""}`;
+  const shape = l => `<path data-id="${l.c}" d="${l.b.map(e => pathOf(decode(e))).join("")}" class="r22-city ${cls(l)}" style="--c:${campColor(leadCamp(l))}" aria-label="${escH(l.n)}"/>`;
+  const dot = l => { const [x, y] = proj(l.x, l.y); return `<circle data-id="${l.c}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad(l).toFixed(2)}" class="${cls(l)}" style="--c:${campColor(leadCamp(l))}" aria-label="${escH(l.n)}"></circle>`; };
+  const draw = l => l.b ? shape(l) : dot(l);
+  /* הגבולות קודם (מתחת), הנקודות מעליהם, והנבחר מעל כולם */
+  svg.querySelector(".r22-top").innerHTML = all.filter(l => l.b && l !== sel).map(draw).join("") + all.filter(l => !l.b && l !== sel).map(draw).join("") + (sel ? draw(sel) : "");
   renderLabels();
 }
 
@@ -356,7 +364,7 @@ function renderDots() {
 function focusMap() {
   const svg = svgEl(); if (!svg) return;
   let target = MAP.full, pts = [];
-  if (st.mode === "cities" && st.sel != null) { const l = D.byCode.get(st.sel); if (l?.x != null) pts = [proj(l.x, l.y)]; }
+  if (st.mode === "cities" && st.sel != null) { const l = D.byCode.get(st.sel); pts = l?.b ? l.b.flatMap(decode) : l?.x != null ? [proj(l.x, l.y)] : []; }
   else if (st.mode === "cities" && st.sectors.size) pts = rows().filter(r => r.l.x != null).map(r => proj(r.l.x, r.l.y));
   else if (st.mode === "areas" && st.sel != null) pts = D.areas[st.sel].shape.rings.flatMap(decode);
   if (pts.length) {

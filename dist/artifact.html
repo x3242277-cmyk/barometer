@@ -4375,18 +4375,23 @@ body:has(#view-landing.on) #print-btn{display:none}
   .feed-more{flex:0 0 160px;min-height:auto}
 }
 
-/* ---------- עמוד כל הסקרים: לשוניות, בסיס המספרים, תחזית הברומטר השבועית (04.10.2026) ---------- */
-.polls-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 12px}
-.polls-tabs button{display:grid;gap:1px;padding:9px 12px;border:1px solid #ffffff26;border-radius:6px;background:#ffffff0d;color:var(--ink);font:inherit;text-align:start;cursor:pointer}
-.polls-tabs button b{font-size:.92rem;font-weight:800}
-.polls-tabs button small{font-size:.7rem;color:var(--ink-3)}
-.polls-tabs button:hover{border-color:#e5c78380}
-.polls-tabs button[aria-selected="true"]{background:var(--champagne,#e5c783);border-color:transparent;color:#14233a}
-.polls-tabs button[aria-selected="true"] small{color:#3a4859}
-.tr-basis{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 10px}
-.tr-basis-lbl{font-size:.8rem;font-weight:800;color:var(--ink)}
+/* ---------- עמוד כל הסקרים: שורה אחת של לשוניות ובסיס המספרים (04.10.2026) ---------- */
+.polls-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin:0 0 12px}
+.polls-tabs{display:inline-flex;gap:4px;padding:4px;border:1px solid #ffffff26;border-radius:6px;background:#ffffff0d}
+.polls-tabs button{padding:8px 16px;border:0;border-radius:4px;background:transparent;color:var(--ink);font:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
+.polls-tabs button:hover{background:#ffffff14}
+.polls-tabs button[aria-selected="true"]{background:var(--champagne,#e5c783);color:#14233a}
+.tr-basis{display:flex;align-items:center;gap:8px}
+.tr-basis[hidden]{display:none}
+.tr-basis-lbl{font-size:.8rem;font-weight:700;color:var(--ink-3)}
 .tr-basis-switch button{font-size:.8rem}
-.tr-basis-note{flex-basis:100%;margin:0;font-size:.76rem;line-height:1.5;color:var(--ink-3)}
+.tr-info{display:inline-grid;place-items:center;width:1.25em;height:1.25em;margin-inline-start:4px;border-radius:50%;font-size:.8em;font-weight:700;line-height:1;color:var(--ink-3);cursor:help;vertical-align:.1em}
+.tr-info:hover,.tr-info:focus-visible{color:var(--gold)}
+.tr-hero-movers{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center;padding-top:14px;border-top:1px solid var(--rule)}
+.polls-sec-head{display:flex;justify-content:flex-end;margin:0 0 10px}
+.feed-head h2{margin:0}
+.feed-stats{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:4px;font-size:.76rem;color:var(--ink-3)}
+.feed-stats b{font-size:.92rem;color:var(--ink)}
 .feed-item.is-baro{border-inline-start:3px solid #c9a24f}
 .feed-item.is-baro .feed-who small{color:#855a0c;font-weight:700}
 .tr-table tr.tr-baro td{background:#f8f1e0}
@@ -4934,28 +4939,23 @@ body:has(#view-map.on)>footer{display:none}
 <!-- ==================== סקרי 2026 ==================== -->
 <section class="view" id="view-polls" aria-label="הסקרים האחרונים">
   <div class="wrap">
-    <div class="page-head">
-      <div class="page-head-main">
-        <h2>מה מראים הסקרים עכשיו?</h2>
-        <div class="stats" id="polls-stats"></div>
-      </div>
-    </div>
-
     <div class="polls-layout">
     <div class="polls-main">
-    <nav class="polls-tabs" role="tablist" aria-label="מה להציג">
-      <button type="button" role="tab" data-polls-tab="trend" aria-selected="true"><b>המגמה</b><small>הגושים והמפלגות לאורך זמן</small></button>
-      <button type="button" role="tab" data-polls-tab="list" aria-selected="false"><b>כל סקר בנפרד</b><small>טבלה, כרטיסים, השוואה</small></button>
-      <button type="button" role="tab" data-polls-tab="cross" aria-selected="false"><b>כמה עברו צד</b><small>לפי כל מכון</small></button>
-      <button type="button" role="tab" data-polls-tab="firms" aria-selected="false"><b>מי סקר ומי פרסם</b><small>המכונים וכלי התקשורת</small></button>
-    </nav>
+    <div class="polls-toolbar">
+      <nav class="polls-tabs" role="tablist" aria-label="מה להציג">
+        <button type="button" role="tab" data-polls-tab="trend" aria-selected="true">המגמה</button>
+        <button type="button" role="tab" data-polls-tab="list" aria-selected="false">כל סקר בנפרד</button>
+        <button type="button" role="tab" data-polls-tab="cross" aria-selected="false">כמה עברו צד</button>
+      </nav>
+      <div id="poll-basis" class="tr-basis" role="group" aria-label="על מה מבוססים המספרים"></div>
+    </div>
     <section class="sec tracker-sec" data-polls-panel="trend" aria-label="מגמות בסקרים">
       <div id="poll-tracker" class="tracker"></div>
     </section>
 
     <section class="sec cross-sec" id="poll-crossover" data-polls-panel="cross" hidden aria-labelledby="cross-title" tabindex="-1">
       <div class="tr-card cross-card">
-        <div class="tr-card-head cross-head"><div><p class="kicker">כמה עברו צד</p><h3 id="cross-title">כמה מצביעים עברו מגוש לגוש — לפי כל מכון</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
+        <div class="tr-card-head cross-head"><div><h3 id="cross-title">כמה מצביעים עברו מגוש לגוש — לפי כל מכון</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
         <p class="sec-note" id="crossover-note"></p>
         <div id="crossover-chart" class="crosschart"></div>
         <div class="notice warm cross-verdict"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
@@ -4964,7 +4964,7 @@ body:has(#view-map.on)>footer{display:none}
     </section>
 
     <section class="sec polls-sec" data-polls-panel="list" hidden>
-      <div class="sec-head polls-sec-head"><div><p class="kicker">הסקרים עצמם</p><h2>כל סקר בנפרד</h2></div>
+      <div class="polls-sec-head">
       <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
         <button type="button" data-pollview="table" aria-pressed="true"><span class="view-icon" aria-hidden="true">☰</span><span>טבלה</span></button>
         <button type="button" data-pollview="cards" aria-pressed="false"><span class="view-icon" aria-hidden="true">▦</span><span>כרטיסים</span></button>
@@ -4978,15 +4978,10 @@ body:has(#view-map.on)>footer{display:none}
       <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-table" class="polls-table" hidden></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 
-    <section class="sec" data-polls-panel="firms" hidden>
-      <div class="sec-head"><div><p class="kicker">מאחורי כל סקר</p><h2>מי ביצע את הסקר, ומי פרסם אותו?</h2></div>
-      <p class="sec-note">סקר הוא תמיד שני גופים: המכון שביצע את המדידה, והגוף שבחר לפרסם אותה. השיוך הזה חשוב — הוא מסביר למה מכון מסוים מופיע שוב ושוב באותו ערוץ.</p></div>
-      <div class="grid g2" id="firm-cards"></div>
-    </section>
 
     </div>
     <aside class="polls-feed" aria-labelledby="feed-title">
-      <div class="feed-head"><h2 id="feed-title">הסקרים האחרונים</h2><p>מהחדש לישן, כולל תחזית הברומטר של כל מוצאי שבת. לחצו לפירוט.</p></div>
+      <div class="feed-head"><h2 id="feed-title">הסקרים האחרונים</h2><div class="feed-stats" id="polls-stats"></div></div>
       <div id="polls-feed" class="feed-list"></div>
     </aside>
     </div>
@@ -6386,28 +6381,26 @@ function renderPollTracker() {
   const selParty = S.trackMode !== "blocs" ? M.parties.find(x => x.id === S.trackMode) : null;
   const maxNow = Math.max(...M.parties.map(x => x.max));
   const scale = Math.max(25, Math.ceil((maxNow + 1) / 5) * 5);
+  const basisBox = $("#poll-basis");
+  if (basisBox) basisBox.innerHTML = `<span class="tr-basis-lbl">המספרים לפי</span><div class="switch tr-basis-switch">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" data-track-basis="${k}" aria-pressed="${(M.basis || "avg") === k}" title="${esc(b.note)}">${b.label}</button>`).join("")}</div>`;
+  const info = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
   root.innerHTML = `
-    <div class="tr-basis" role="group" aria-label="על מה מבוססים המספרים">
-      <span class="tr-basis-lbl">המספרים לפי</span>
-      <div class="switch tr-basis-switch">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" data-track-basis="${k}" aria-pressed="${(M.basis || "avg") === k}">${b.label}</button>`).join("")}</div>
-      <p class="tr-basis-note">${esc(B.note)}</p>
-    </div>
     <div class="tr-hero">
       <div class="tr-hero-text">
-        <p class="kicker">${B.kicker} · עודכן ${trDay(M.now.t)}</p>
+        <p class="kicker">${B.kicker} · עודכן ${trDay(M.now.t)} ${info(B.note)}</p>
         <h3>${esc(h.head)}</h3>
         <p>${h.sub}</p>
       </div>
       <div class="tr-blocs" role="list">${TRACK_BLOCS.map(([k, l]) => { const d = trDelta(M.now.blocs[k] - M.before.blocs[k]);
         return `<div class="tr-bloc" role="listitem" style="--c:${BLOCS[k].color}"><span>${l}</span><b class="num">${trFmt(M.now.blocs[k])}</b><em class="${d.cls}" title="שינוי מלפני שבועיים">${d.sym}</em></div>`; }).join("")}</div>
-    </div>
-    <div class="tr-movers" aria-label="מי עולה ומי יורדת בשבועיים האחרונים">
-      <div class="tr-mover-group"><span class="tr-mover-lbl up">עולות בשבועיים</span>${ups.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא עלתה בחצי מנדט או יותר</span>'}</div>
-      <div class="tr-mover-group"><span class="tr-mover-lbl down">יורדות בשבועיים</span>${downs.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא ירדה בחצי מנדט או יותר</span>'}</div>
+      <div class="tr-hero-movers" aria-label="מי עולה ומי יורדת בשבועיים האחרונים">
+        <div class="tr-mover-group"><span class="tr-mover-lbl up">עולות בשבועיים</span>${ups.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא עלתה בחצי מנדט או יותר</span>'}</div>
+        <div class="tr-mover-group"><span class="tr-mover-lbl down">יורדות בשבועיים</span>${downs.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא ירדה בחצי מנדט או יותר</span>'}</div>
+      </div>
     </div>
     <div class="tr-card tr-chart-card">
       <div class="tr-card-head">
-        <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"}</h3><p>${selParty ? "" : "ימין וחרדים מול מרכז–שמאל. "}${M.basis && M.basis !== "avg" ? `הקו — ${B.label} בכל עדכון (פעמיים ביום) מאז ${trDay(M.series[0].t)}.` : "הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד."}</p></div>
+        <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"} ${info((selParty ? "" : "ימין וחרדים מול מרכז–שמאל. ") + (M.basis && M.basis !== "avg" ? `הקו — ${B.label} בכל עדכון (פעמיים ביום) מאז ${trDay(M.series[0].t)}.` : "הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד."))}</h3></div>
         <div class="tr-controls">
           ${selParty ? `<button type="button" class="tr-back" data-track-party="blocs">→ חזרה לגושים</button>` : ""}
           <div class="switch tr-range" role="group" aria-label="טווח זמן"><button type="button" data-track-range="month" aria-pressed="${S.trackRange === "month"}">חודש אחרון</button><button type="button" data-track-range="all" aria-pressed="${S.trackRange === "all"}">מאז אוגוסט</button></div>
@@ -6418,7 +6411,7 @@ function renderPollTracker() {
       ${chart.table}
     </div>
     <div class="tr-card tr-parties">
-      <div class="tr-card-head"><div><h3>כל המפלגות — ${M.basis && M.basis !== "avg" ? B.label : "ממוצע"} ומגמה</h3><p>${M.basis && M.basis !== "avg" ? `${B.label} עכשיו, הקו מאז ${trDay(M.series[0].t)}, השינוי בשבועיים, והטווח שבין הסקרים השונים השבוע.` : "הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע."}</p></div></div>
+      <div class="tr-card-head"><div><h3>כל המפלגות ${info(M.basis && M.basis !== "avg" ? `${B.label} עכשיו, הקו מאז ${trDay(M.series[0].t)}, השינוי בשבועיים, והטווח שבין הסקרים השונים השבוע.` : "הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע.")}</h3></div></div>
       <div class="tablewrap" tabindex="0" role="region" aria-label="ממוצע ומגמה לכל מפלגה">
       <table class="tr-ptable"><thead><tr><th scope="col">מפלגה</th><th scope="col" class="n">${M.basis && M.basis !== "avg" ? "מנדטים" : "ממוצע"}</th><th scope="col">מגמה</th><th scope="col" class="n">שבועיים</th><th scope="col" class="rng">טווח השבוע <small>(0–${scale})</small></th></tr></thead><tbody>${
         M.parties.map(x => { const d = trDelta(x.now - x.before), below = x.now < 4;
@@ -6439,6 +6432,7 @@ function setPollsTab(tab) {
   S.pollsTab = tab;
   document.querySelectorAll("[data-polls-tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.pollsTab === tab)));
   document.querySelectorAll("[data-polls-panel]").forEach(p => { p.hidden = p.dataset.pollsPanel !== tab; });
+  const basis = $("#poll-basis"); if (basis) basis.hidden = tab !== "trend";   // הבחירה משנה רק את המגמה
   /* גרפים שמחושבים לפי רוחב — מציירים כשהלשונית גלויה */
   if (tab === "trend") renderPollTracker();
   if (tab === "cross" && S.regions && typeof renderCrossover === "function") renderCrossover();
@@ -7607,11 +7601,11 @@ function renderPolls() {
   // stats
   const days = Math.max(1, Math.round((Math.max(...polls.map(parsePollDate)) - Math.min(...polls.map(parsePollDate))) / 864e5) + 1);
   $("#polls-stats").innerHTML = [
-    [polls.length, "סקרים בחלון"],
-    [new Set(polls.map(p => firmOf(p.sourceId).firm)).size, "מכונים שונים"],
+    [polls.length, "סקרים"],
+    [new Set(polls.map(p => firmOf(p.sourceId).firm)).size, "מכונים"],
     [new Set(polls.map(p => p.channelHebrewName)).size, "כלי תקשורת"],
-    [days, "ימים מכוסים"]
-  ].map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+    [days, "ימים"]
+  ].map(([n, l]) => `<span><b class="num">${n}</b> ${esc(l)}</span>`).join("");
 
   renderPollCards(rows, polls);
   renderPartyProfile(rows);
@@ -7623,6 +7617,7 @@ function renderPolls() {
 const shortName = n => n.replace(/^ה/, "").replace(/!.*/, "").replace(/\s*עם.*/, "").trim().slice(0, 12);
 
 function renderFirmCards() {
+  if (!$("#firm-cards")) return;                       // המכונים ומפרסמיהם — בעמוד דיוק המכונים
   const active = [...new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm))];
   $("#firm-cards").innerHTML = S.firms.firms.filter(f => active.includes(f.id)).map(f => {
     const st = S.stats.find(s => s.firm === f.id);

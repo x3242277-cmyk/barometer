@@ -1133,11 +1133,11 @@ function renderPolls() {
   // stats
   const days = Math.max(1, Math.round((Math.max(...polls.map(parsePollDate)) - Math.min(...polls.map(parsePollDate))) / 864e5) + 1);
   $("#polls-stats").innerHTML = [
-    [polls.length, "סקרים בחלון"],
-    [new Set(polls.map(p => firmOf(p.sourceId).firm)).size, "מכונים שונים"],
+    [polls.length, "סקרים"],
+    [new Set(polls.map(p => firmOf(p.sourceId).firm)).size, "מכונים"],
     [new Set(polls.map(p => p.channelHebrewName)).size, "כלי תקשורת"],
-    [days, "ימים מכוסים"]
-  ].map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+    [days, "ימים"]
+  ].map(([n, l]) => `<span><b class="num">${n}</b> ${esc(l)}</span>`).join("");
 
   renderPollCards(rows, polls);
   renderPartyProfile(rows);
@@ -1149,6 +1149,7 @@ function renderPolls() {
 const shortName = n => n.replace(/^ה/, "").replace(/!.*/, "").replace(/\s*עם.*/, "").trim().slice(0, 12);
 
 function renderFirmCards() {
+  if (!$("#firm-cards")) return;                       // המכונים ומפרסמיהם — בעמוד דיוק המכונים
   const active = [...new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm))];
   $("#firm-cards").innerHTML = S.firms.firms.filter(f => active.includes(f.id)).map(f => {
     const st = S.stats.find(s => s.firm === f.id);

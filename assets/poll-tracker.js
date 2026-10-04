@@ -269,28 +269,26 @@ function renderPollTracker() {
   const selParty = S.trackMode !== "blocs" ? M.parties.find(x => x.id === S.trackMode) : null;
   const maxNow = Math.max(...M.parties.map(x => x.max));
   const scale = Math.max(25, Math.ceil((maxNow + 1) / 5) * 5);
+  const basisBox = $("#poll-basis");
+  if (basisBox) basisBox.innerHTML = `<span class="tr-basis-lbl">המספרים לפי</span><div class="switch tr-basis-switch">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" data-track-basis="${k}" aria-pressed="${(M.basis || "avg") === k}" title="${esc(b.note)}">${b.label}</button>`).join("")}</div>`;
+  const info = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
   root.innerHTML = `
-    <div class="tr-basis" role="group" aria-label="על מה מבוססים המספרים">
-      <span class="tr-basis-lbl">המספרים לפי</span>
-      <div class="switch tr-basis-switch">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" data-track-basis="${k}" aria-pressed="${(M.basis || "avg") === k}">${b.label}</button>`).join("")}</div>
-      <p class="tr-basis-note">${esc(B.note)}</p>
-    </div>
     <div class="tr-hero">
       <div class="tr-hero-text">
-        <p class="kicker">${B.kicker} · עודכן ${trDay(M.now.t)}</p>
+        <p class="kicker">${B.kicker} · עודכן ${trDay(M.now.t)} ${info(B.note)}</p>
         <h3>${esc(h.head)}</h3>
         <p>${h.sub}</p>
       </div>
       <div class="tr-blocs" role="list">${TRACK_BLOCS.map(([k, l]) => { const d = trDelta(M.now.blocs[k] - M.before.blocs[k]);
         return `<div class="tr-bloc" role="listitem" style="--c:${BLOCS[k].color}"><span>${l}</span><b class="num">${trFmt(M.now.blocs[k])}</b><em class="${d.cls}" title="שינוי מלפני שבועיים">${d.sym}</em></div>`; }).join("")}</div>
-    </div>
-    <div class="tr-movers" aria-label="מי עולה ומי יורדת בשבועיים האחרונים">
-      <div class="tr-mover-group"><span class="tr-mover-lbl up">עולות בשבועיים</span>${ups.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא עלתה בחצי מנדט או יותר</span>'}</div>
-      <div class="tr-mover-group"><span class="tr-mover-lbl down">יורדות בשבועיים</span>${downs.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא ירדה בחצי מנדט או יותר</span>'}</div>
+      <div class="tr-hero-movers" aria-label="מי עולה ומי יורדת בשבועיים האחרונים">
+        <div class="tr-mover-group"><span class="tr-mover-lbl up">עולות בשבועיים</span>${ups.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא עלתה בחצי מנדט או יותר</span>'}</div>
+        <div class="tr-mover-group"><span class="tr-mover-lbl down">יורדות בשבועיים</span>${downs.map(moverChip).join("") || '<span class="tr-none">אף מפלגה לא ירדה בחצי מנדט או יותר</span>'}</div>
+      </div>
     </div>
     <div class="tr-card tr-chart-card">
       <div class="tr-card-head">
-        <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"}</h3><p>${selParty ? "" : "ימין וחרדים מול מרכז–שמאל. "}${M.basis && M.basis !== "avg" ? `הקו — ${B.label} בכל עדכון (פעמיים ביום) מאז ${trDay(M.series[0].t)}.` : "הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד."}</p></div>
+        <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"} ${info((selParty ? "" : "ימין וחרדים מול מרכז–שמאל. ") + (M.basis && M.basis !== "avg" ? `הקו — ${B.label} בכל עדכון (פעמיים ביום) מאז ${trDay(M.series[0].t)}.` : "הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד."))}</h3></div>
         <div class="tr-controls">
           ${selParty ? `<button type="button" class="tr-back" data-track-party="blocs">→ חזרה לגושים</button>` : ""}
           <div class="switch tr-range" role="group" aria-label="טווח זמן"><button type="button" data-track-range="month" aria-pressed="${S.trackRange === "month"}">חודש אחרון</button><button type="button" data-track-range="all" aria-pressed="${S.trackRange === "all"}">מאז אוגוסט</button></div>
@@ -301,7 +299,7 @@ function renderPollTracker() {
       ${chart.table}
     </div>
     <div class="tr-card tr-parties">
-      <div class="tr-card-head"><div><h3>כל המפלגות — ${M.basis && M.basis !== "avg" ? B.label : "ממוצע"} ומגמה</h3><p>${M.basis && M.basis !== "avg" ? `${B.label} עכשיו, הקו מאז ${trDay(M.series[0].t)}, השינוי בשבועיים, והטווח שבין הסקרים השונים השבוע.` : "הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע."}</p></div></div>
+      <div class="tr-card-head"><div><h3>כל המפלגות ${info(M.basis && M.basis !== "avg" ? `${B.label} עכשיו, הקו מאז ${trDay(M.series[0].t)}, השינוי בשבועיים, והטווח שבין הסקרים השונים השבוע.` : "הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע.")}</h3></div></div>
       <div class="tablewrap" tabindex="0" role="region" aria-label="ממוצע ומגמה לכל מפלגה">
       <table class="tr-ptable"><thead><tr><th scope="col">מפלגה</th><th scope="col" class="n">${M.basis && M.basis !== "avg" ? "מנדטים" : "ממוצע"}</th><th scope="col">מגמה</th><th scope="col" class="n">שבועיים</th><th scope="col" class="rng">טווח השבוע <small>(0–${scale})</small></th></tr></thead><tbody>${
         M.parties.map(x => { const d = trDelta(x.now - x.before), below = x.now < 4;
@@ -322,6 +320,7 @@ function setPollsTab(tab) {
   S.pollsTab = tab;
   document.querySelectorAll("[data-polls-tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.pollsTab === tab)));
   document.querySelectorAll("[data-polls-panel]").forEach(p => { p.hidden = p.dataset.pollsPanel !== tab; });
+  const basis = $("#poll-basis"); if (basis) basis.hidden = tab !== "trend";   // הבחירה משנה רק את המגמה
   /* גרפים שמחושבים לפי רוחב — מציירים כשהלשונית גלויה */
   if (tab === "trend") renderPollTracker();
   if (tab === "cross" && S.regions && typeof renderCrossover === "function") renderCrossover();

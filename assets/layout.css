@@ -622,4 +622,4 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 @media (max-width:640px){ .calcsplit{ grid-template-columns:1fr } }
 
 /* ---------- כל הסקרים: תחזית הברומטר השבועית ---------- */
-.orglogo.is-barometer,.poll-result-card .orglogo.is-barometer{ background:#FFF url(logo.svg) center/72% no-repeat }
+.orglogo.is-barometer,.poll-result-card .orglogo.is-barometer{ background:#0b1a2b url(logo-icon.png) center/cover no-repeat }

@@ -59,10 +59,12 @@ if (data["data/pollsters.json"]) {
   for (const k of Object.keys(p.outletLogos || {})) p.outletLogos[k] = await embedLocal(p.outletLogos[k], "image/png");
 }
 
-const logo = (await rd("assets/logo.svg")).replace(/\s+/g, " ").trim();
-const logoDataUri = "data:image/svg+xml;utf8," + encodeURIComponent(logo);
-const electionMarkDataUri = "data:image/svg+xml;base64," + Buffer.from(await rd("assets/election-mark.svg")).toString("base64");
-css = css.replace(/url\(['"]?logo\.svg['"]?\)/g, `url("${logoDataUri}")`);
+/* הלוגו: הסמל הריבועי (גם סמל הלשונית) והשם — מוטמעים כ-data URI */
+const pngUri = async f => `data:image/png;base64,${(await readFile(path.join(ROOT, "assets", f))).toString("base64")}`;
+const logoDataUri = await pngUri("favicon.png");
+const iconDataUri = await pngUri("logo-icon.png");
+css = css.replace(/url\(['"]?logo-icon\.png['"]?\)/g, `url("${iconDataUri}")`);
+js = js.replaceAll("assets/logo-icon.png", iconDataUri);
 
 const inlineData = `<script>window.__BAROMETER_DATA__=${JSON.stringify(data).replace(/</g, "\\u003c")};<\/script>`;
 const styleTag = `<style>\n${css}\n</style>`;
@@ -72,10 +74,8 @@ const scriptTag = `<script>\n${js}\n<\/script>`;
 let body = html.slice(html.indexOf("<body>") + 6, html.lastIndexOf("</body>"));
 // חותמות הגרסה (?v=...) נועדו לקאש של האתר החי; בקובץ היחיד הכול מוטמע ואין להן מקום
 body = body.replace(/(assets\/[^"'?\s]+)\?v=[0-9a-f]+/g, "$1");
-body = body.replaceAll("assets/logo.svg", logoDataUri);
-body = body.replaceAll("assets/election-mark.svg", electionMarkDataUri);
-for (const file of ["logo-word-light.png", "logo-word.png"])
-  body = body.replaceAll(`assets/${file}`, `data:image/png;base64,${(await readFile(path.join(ROOT, "assets", file))).toString("base64")}`);
+body = body.replaceAll("assets/logo-icon.png", iconDataUri);
+body = body.replaceAll("assets/logo-wordmark.png", await pngUri("logo-wordmark.png"));
 const title = "ברומטר";
 const fullTitle = "ברומטר · מדד הסקרים והאמינות";
 const fontLink = `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">`;

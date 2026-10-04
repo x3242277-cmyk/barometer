@@ -144,7 +144,7 @@
     if (!data.polls.length) return;
     played = true; elapsed = 0; previous = null; paused = false; phase = -1;
     restoreFocus = document.activeElement;
-    const logoSrc = document.querySelector('.brand img')?.getAttribute('src') || 'assets/logo.svg';
+    const logoSrc = 'assets/logo-icon.png';   // הסמל הריבועי; השם עצמו כתוב בטקסט לידו
     const R = data.blocTot.Right || 0, L = data.blocTot.Left || 0, A = data.blocTot.Arabs || 0;
     stage = document.createElement('div'); stage.id = 'show'; stage.dir = 'rtl';
     stage.setAttribute('role', 'dialog'); stage.setAttribute('aria-modal', 'true');

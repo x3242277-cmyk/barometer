@@ -148,3 +148,15 @@ dialog{border-radius:var(--card-r)!important}
 .view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle,.subtabs,.tr-range,.calib-switch){border-radius:var(--ctl-r)!important}
 .view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle,.subtabs,.tr-range,.calib-switch) :is(button,a){border-radius:calc(var(--ctl-r) - 2px)!important}
 .mainnav .tab-live{border-radius:var(--ctl-r)!important}
+
+/* ---------- הלוגו (04.10.2026): מד חצי־עיגול + המילה "ברומטר" כתמונה ---------- */
+.masthead .brand{align-items:center;gap:12px}
+.masthead .brand>img{width:auto!important;height:34px!important}
+.brand-word{display:block;line-height:0;margin:0}
+.brand-word img{display:block;width:auto!important;height:24px!important}
+.masthead .brand-txt span{margin-top:7px}
+body>footer .fbrand{display:flex;align-items:center;gap:10px}
+body>footer .fbrand>img{width:auto!important;height:28px!important}
+body>footer .fbrand .brand-word img{height:20px!important}
+#app-loading>img{width:auto!important;height:46px!important}
+@media(max-width:800px){.masthead .brand>img{height:28px!important}.brand-word img{height:20px!important}}

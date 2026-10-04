@@ -18,8 +18,8 @@
     document.head.append(coverPreload);
   }
 </script>
-<link rel="icon" href="assets/logo.svg?v=e893fa44">
-<link rel="apple-touch-icon" href="assets/logo.svg?v=e893fa44">
+<link rel="icon" href="assets/favicon.svg?v=aecfa1c7" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=1cf6b087">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=f57a0da5">
@@ -50,7 +50,7 @@
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
 <link rel="stylesheet" href="assets/poll-tracker.css?v=9bc7297c">
-<link rel="stylesheet" href="assets/theme.css?v=bc55ac8c">
+<link rel="stylesheet" href="assets/theme.css?v=beb835de">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
@@ -64,9 +64,9 @@
 <header class="masthead">
   <div class="wrap masthead-in">
     <a class="brand" href="#/" aria-label="ברומטר — דף הבית">
-      <img src="assets/election-mark.svg?v=031e7f92" alt="">
+      <img src="assets/election-mark.svg?v=fa6aa128" alt="">
       <span class="brand-txt">
-        <strong>ברומטר</strong>
+        <strong class="brand-word"><img src="assets/logo-word-light.png?v=33c3c189" alt="ברומטר" width="648" height="128"></strong>
         <span>רואים את התמונה הגדולה</span>
       </span>
     </a>
@@ -94,7 +94,7 @@
 <main id="main">
 
 <div id="app-loading" class="app-loading" role="status" aria-live="polite">
-  <img src="assets/election-mark.svg?v=031e7f92" alt="">
+  <img src="assets/election-mark.svg?v=fa6aa128" alt="">
   <p>מכינים את תמונת הבחירות…</p>
 </div>
 
@@ -1067,7 +1067,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 <footer>
   <div class="wrap">
     <div>
-      <div class="fbrand"><img src="assets/logo.svg?v=e893fa44" alt=""><strong>ברומטר</strong></div>
+      <div class="fbrand"><img src="assets/election-mark.svg?v=fa6aa128" alt=""><strong class="brand-word"><img src="assets/logo-word-light.png?v=33c3c189" alt="ברומטר" width="648" height="128"></strong></div>
       <p>תמונת מצב עצמאית של סקרי הבחירות בישראל.</p>
       <nav class="footer-nav" aria-label="ניווט בתחתית האתר"><a href="#/polls">כל הסקרים</a><a href="#/2022">דיוק המכונים</a><a href="#/map">בחירות 2022</a><a href="#/method">שיטת החישוב</a></nav>
       <details class="footer-details"><summary>מקורות הנתונים</summary><div class="srclist" id="footer-sources"></div></details>

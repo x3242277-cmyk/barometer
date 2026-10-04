@@ -2347,9 +2347,9 @@ function renderOfficialResults() {
 /* ============================================================
    12. ניתוב וכרטיסיות
    ============================================================ */
-const VIEWS = { landing:"", home:"forecast", polls:"polls", e2022:"2022", map:"map", swing:"swing", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
+const VIEWS = { landing:"", home:"forecast", polls:"polls", e2022:"2022", map:"map", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
 /* כתובות ישנות שעדיין עשויות להיות מקושרות מבחוץ */
-const VIEW_ALIASES = { regions:"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls" };
+const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls" };
 const rendered = {};
 
 function show(view) {
@@ -2373,14 +2373,13 @@ function show(view) {
       if (view === "results") renderOfficialResults();
       if (view === "haredi") renderHaredi();
       if (view === "map") window.renderR22?.();
-      if (view === "swing") window.renderSwing?.();
       if (view === "demography") { renderResultsBase(); renderDemography(); }
       if (view === "method") renderMethod();
       rendered[view] = true;
     } catch (e) { console.error(e); }
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
-  const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", swing:"המפה המתנדנדת", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
+  const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
   document.title = `${t} · ברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
   if (view === "home") $("#view-home").scrollTop = 0;

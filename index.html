@@ -32,7 +32,7 @@
 <script src="assets/explore.js?v=af5fa7aa" defer></script>
 <script src="assets/poll-tracker.js?v=8b8b3882" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=cbf15ade" defer></script>
+<script src="assets/app.js?v=5a6e5442" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=9b2dd900">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
@@ -52,10 +52,8 @@
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
-<link rel="stylesheet" href="assets/swing.css?v=881d6a3b">
-<link rel="stylesheet" href="assets/results2022.css?v=31fb958c">
-<script src="assets/results2022.js?v=c2415c60" defer></script>
-<script src="assets/swing.js?v=9ed05e22" defer></script>
+<link rel="stylesheet" href="assets/results2022.css?v=0128e702">
+<script src="assets/results2022.js?v=56662401" defer></script>
 </head>
 <body>
 
@@ -77,7 +75,7 @@
         <a class="tab" href="#/method" data-view="method" data-group="method demography haredi">שיטת החישוב</a>
         <a class="tab" href="#/polls" data-view="polls">כל הסקרים</a>
         <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-        <a class="tab" href="#/map" data-view="map" data-group="map swing">בחירות 2022</a>
+        <a class="tab" href="#/map" data-view="map">בחירות 2022</a>
         <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
     </nav>
@@ -845,22 +843,11 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 <section class="view" id="view-map" aria-label="בחירות 2022">
   <div class="wrap r22">
     <header class="r22-head">
-      <nav class="subtabs" aria-label="בחירות 2022">
-        <a class="subtab" href="#/map" data-view="map">התוצאות לפי יישוב</a>
-        <a class="subtab" href="#/swing" data-view="swing">המפה המתנדנדת</a>
-      </nav>
-      <h2>בחירות 2022 · תוצאות האמת לפי יישוב</h2>
-      <p class="r22-src">ועדת הבחירות המרכזית · הלמ״ס</p>
+      <h2>בחירות 2022 · תוצאות האמת</h2>
+      <p class="r22-src">ועדת הבחירות המרכזית · הלמ״ס · אזורי "המפה המתנדנדת"</p>
     </header>
     <div class="r22-dash" id="r22-dash">
-      <aside class="r22-card r22-filters" aria-label="סינון">
-        <label class="r22-field"><span>עיר</span><input id="r22-city" type="search" list="r22-city-list" placeholder="שם יישוב" autocomplete="off"><datalist id="r22-city-list"></datalist></label>
-        <label class="r22-field"><span>אזור</span><select id="r22-region"></select></label>
-        <fieldset class="r22-field"><legend>אוכלוסייה</legend><div class="r22-chips" id="r22-sector"></div></fieldset>
-        <label class="r22-toggle"><input type="checkbox" id="r22-nat" checked><span>השוואה לממוצע הארצי</span></label>
-        <button type="button" class="r22-reset" id="r22-reset">ניקוי הסינון</button>
-        <p class="r22-rule" id="r22-rule"></p>
-      </aside>
+      <aside class="r22-card r22-side" id="r22-side" aria-label="תצוגה ובחירה"></aside>
       <section class="r22-card r22-table" aria-labelledby="r22-table-title">
         <div class="r22-card-head"><h3 id="r22-table-title">היישובים</h3><span id="r22-count"></span></div>
         <div class="r22-scroll" tabindex="0" role="region" aria-label="טבלת היישובים"><table id="r22-table"></table></div>
@@ -875,22 +862,6 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="r22-map-legend" id="r22-map-legend"></div>
       </section>
     </div>
-  </div>
-</section>
-
-<!-- ==================== המפה המתנדנדת ==================== -->
-<section class="view" id="view-swing" aria-label="המפה המתנדנדת">
-  <div class="wrap">
-    <nav class="subtabs" aria-label="בחירות 2022">
-      <a class="subtab" href="#/map" data-view="map">התוצאות לפי יישוב</a>
-      <a class="subtab" href="#/swing" data-view="swing">המפה המתנדנדת</a>
-    </nav>
-    <div class="page-intro">
-      <p class="kicker">תוצאות האמת · ועדת הבחירות המרכזית · 2015–2022 · כל היישובים</p>
-      <h2>המפה המתנדנדת: איפה באמת מוכרעות הבחירות?</h2>
-      <p>שש מערכות בחירות, יותר מ־1,200 יישובים. איפה כל גוש חזק, איזה ערים זזות, כמה קרוב היה המנדט ה־61 — והאם הדמוגרפיה כבר הכריעה. כל מפלגה נספרת לפי ההמלצה שלה לנשיא אחרי אותן בחירות; ימינה של בנט ב־2021 נספרת בימין.</p>
-    </div>
-    <div class="demo-main" id="sw-root"><p class="sec-note">טוען את נתוני היישובים…</p></div>
   </div>
 </section>
 

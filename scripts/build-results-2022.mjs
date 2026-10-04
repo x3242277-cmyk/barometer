@@ -27,7 +27,9 @@ const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKi
 const RESULTS_URL = "https://media25.bechirot.gov.il/files/expc.csv";
 const log = (...a) => console.log("·", ...a);
 
-/* אות הרשימה בקובץ → מזהה, שם, שם קצר לגרף, גוש (R גוש נתניהו · L המתנגדים · A הרשימות הערביות) */
+/* אות הרשימה בקובץ → מזהה, שם, שם קצר לגרף, גוש. הגושים כמו בשאר האתר: R גוש נתניהו
+   (ארבע הרשימות), L המתנגדים, A הרשימות הערביות — L+A הם "גוש השינוי" (8 רשימות);
+   הבית היהודי, שלא הייתה חלק מאף גוש, ב-O עם שאר הרשימות. */
 const LISTS = {
   "מחל": ["likud", "הליכוד", "הליכוד", "R"],
   "פה": ["yesh_atid", "יש עתיד", "יש עתיד", "L"],
@@ -41,7 +43,7 @@ const LISTS = {
   "אמת": ["labor", "העבודה", "העבודה", "L"],
   "מרצ": ["meretz", "מרצ", "מרצ", "L"],
   "ד": ["balad", "בל״ד", "בל״ד", "A"],
-  "ב": ["jewish_home", "הבית היהודי", "הבית היהודי", "R"]
+  "ב": ["jewish_home", "הבית היהודי", "הבית היהודי", "O"]
 };
 const SECTORS = { jewish: "יהודים", haredi: "חרדים", arab: "ערבים ודרוזים", bedouin: "בדואים", mixed: "ערים מעורבות" };
 const EXTERNAL = 99999;
@@ -81,6 +83,11 @@ const cbs = new Map(cbsRows.map(r => [Number(r[H("סמל יישוב")]), {
 }]));
 const history = JSON.parse(await readFile(path.join(ROOT, "data/locality-history.json"), "utf8"));
 const coord = new Map(history.localities.filter(l => l.lon != null).map(l => [l.code, [l.lon, l.lat]]));
+/* האזורים של המפה המתנדנדת (scripts/import-locality-history.mjs): כל יישוב לאזור שלו.
+   שבטים בדואיים בלי אזור (אין להם שטח במפה) — לאזור הבדואי הגדול ביותר. */
+const areaOf = new Map();
+history.regions.forEach((g, gi) => g.members.forEach(c => areaOf.set(c, gi)));
+const bedouinArea = history.regions.map((g, gi) => ({ gi, v: g.e["2022"]?.[2] || 0, g })).filter(x => /בדואים/.test(x.g.name)).sort((a, b) => b.v - a.v)[0]?.gi;
 
 /* הרשימות: 13 הרשימות הידועות לפי סדר הקולות הארצי, ואז "אחרות" */
 const nationalVotes = {};
@@ -118,13 +125,22 @@ for (const r of rows) {
   const [x, y] = coord.get(r.code) || [null, null];
   /* השם מקובץ הלמ״ס — בקובץ ועדת הבחירות המקפים והגרשיים נמחקו ("אום אלפחם") */
   localities.push({ c: r.code, n: info.name || r.name, d: idx(districts, district), r: idx(regions, region), s: sector,
-    e: r.eligible, t: r.voted, v: r.valid, p: v, x, y });
+    e: r.eligible, t: r.voted, v: r.valid, p: v, x, y, g: areaOf.get(r.code) ?? (sector === "bedouin" ? bedouinArea : null) });
 }
 if (missing.length) console.warn(`   ! ${missing.length} יישובים בלי רשומה בקובץ הלמ״ס (לא נכללו): ${missing.slice(0, 8).join(", ")}${missing.length > 8 ? "…" : ""}`);
 /* בדיקת שפיות מול התוצאה הרשמית שבאתר */
 const off = Math.abs(national.valid - regionsJson.national.valid);
 if (off > 0) throw new Error(`סך הקולות הכשרים ${national.valid} שונה מהתוצאה הרשמית ${regionsJson.national.valid}`);
 
+const unplaced = localities.filter(l => l.g == null);
+if (unplaced.length) console.warn(`   ! ${unplaced.length} יישובים בלי אזור במפה: ${unplaced.slice(0, 6).map(l => l.n).join(", ")}`);
+/* אזורי המפה: שם, צורה (יחידות של עשירית ק״מ, צפון למעלה) והמחוז של רוב הקולות בו */
+const areas = history.regions.map((g, gi) => {
+  const byD = {};
+  localities.filter(l => l.g === gi).forEach(l => byD[l.d] = (byD[l.d] || 0) + l.v);
+  const d = Number(Object.entries(byD).sort((a, b) => b[1] - a[1])[0]?.[0] ?? -1);
+  return { name: g.name.replace(/־/g, "-").replace(/\s+/g, " "), lead: g.lead, d, shape: g.shape };
+});
 /* אזור → מחוז (לבורר האזורים, מקובץ לפי מחוז) */
 const regionDistrict = regions.map((_, ri) => localities.find(l => l.r === ri).d);
 localities.sort((a, b) => b.v - a.v);
@@ -139,7 +155,8 @@ const out = {
     camps: { R: "גוש נתניהו", L: "המתנגדים", A: "הרשימות הערביות", O: "אחרות" },
     generatedAt: new Date().toISOString()
   },
-  parties, sectors: SECTORS, districts, regions, regionDistrict, national, localities
+  parties, sectors: SECTORS, districts, regions, regionDistrict, national, localities,
+  areas, map: { bbox: history.meta.map.bbox, water: history.meta.map.water, units: history.meta.map.units }
 };
 await writeFile(path.join(ROOT, "data/results-2022.json"), JSON.stringify(out), "utf8");
 log(`${localities.length} יישובים · ${districts.length} מחוזות · ${regions.length} אזורים · ${fmtN(national.valid)} קולות כשרים ✓`);

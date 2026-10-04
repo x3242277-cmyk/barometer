@@ -71,7 +71,7 @@ const ELECTION_TIMELINE = {
 
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"scenario", scen:"actual",
-            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"table", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", selectedLoc:0, demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
+            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"table", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
             calibrations:[], elections:[], calibKey:"2022", leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */
@@ -1780,97 +1780,6 @@ function renderResultsBase() {
 }
 
 /* עמוד "בחירות 2022": התוצאה הלאומית, המפה, רשימת היישובים ופילוחי המגזרים */
-function renderRegions() {
-  const R = S.regions;
-  $("#r22-stats").innerHTML = natStatsHTML();
-  $("#r22-blocs").innerHTML = baseBlocsHTML();
-
-  // ---- map: every locality from the official file that has coordinates ----
-  mapLocalities();
-  if (!renderLeafletMap()) $("#map-svg").innerHTML = mapSVG({ labelMin: 14000 });   // בלי Leaflet (למשל בקובץ היחיד) — מפת SVG
-  const used = [...new Set(S.mapLocs.map(l => l.top[0]?.id).filter(Boolean))].sort((a, b) => S.mapLocs.filter(l => l.top[0]?.id === b).length - S.mapLocs.filter(l => l.top[0]?.id === a).length);
-  $("#map-legend").innerHTML = used.map(id => {
-    const nm = R.national.parties.find(p => p.id === id)?.name || id;
-    return `<span style="--c:${R.partyColors[id] || "#96A0AB"}"><i></i>${esc(nm)}</span>`;
-  }).join("");
-  $("#map-count").textContent = `${fmt(S.mapLocs.length)} יישובים ו־${fmt(S.mapLocs.reduce((t, l) => t + l.valid, 0))} קולות על המפה (${pct(100 * S.mapLocs.reduce((t, l) => t + l.valid, 0) / R.national.valid)} מהקולות הכשרים).`;
-  renderMapList($("#map-q")?.value || "");
-  renderLocDetail();
-
-  // ---- sectors ----
-  $("#sector-cards").innerHTML = R.sectors.map(s => `<article class="sector" style="--c:${s.color}">
-      <h3>${esc(s.name)}</h3>
-      <div class="turnout"><b class="num">${pct(s.turnout)}</b><span>אחוז הצבעה${s.turnoutPrev ? ` · לעומת ${pct(s.turnoutPrev)} ב־2021` : ""}</span></div>
-      <p style="margin:0 0 14px;color:var(--ink-2);font-size:.88rem">${esc(s.desc)}</p>
-      <div class="lbars">${s.parties.map(p => `<div class="lbar" style="--c:${R.partyColors[p.id] || "#96A0AB"}">
-          <span>${esc(p.name)}</span><i><b style="--w:${clamp(p.pct * 2.4)}%"></b></i><span class="v">${pct(p.pct)}</span></div>`).join("")}</div>
-      ${s.extra ? `<p style="margin:12px 0 0;color:var(--ink-3);font-size:.79rem">${esc(s.extra)}</p>` : ""}
-      <span class="src">מקור: <a href="${esc(s.source.url)}" target="_blank" rel="noopener">${esc(s.source.name)} ↗</a></span>
-    </article>`).join("");
-
-  // ---- clusters ----
-  $("#clusters-title").textContent = R.clusters.title;
-  $("#clusters-desc").textContent = R.clusters.desc;
-  $("#clusters-note").innerHTML = `${esc(R.clusters.note)} <a href="${esc(R.clusters.source.url)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(R.clusters.source.name)} ↗</a>`;
-  $("#cluster-cards").innerHTML = R.clusters.groups.map(g => `<article class="sector" style="--c:${g.color}">
-      <h3 style="font-size:1rem">${esc(g.name)}</h3>
-      <div class="lbars" style="margin-top:12px">${g.parties.map(p => `<div class="lbar" style="--c:${R.partyColors[p.id] || "#96A0AB"}">
-        <span>${esc(p.name)}</span><i><b style="--w:${clamp(p.pct * 2.4)}%"></b></i><span class="v">${pct(p.pct)}</span></div>`).join("")}</div>
-    </article>`).join("");
-
-  // ---- full locality table (מופיע רק אחרי הרצת סקריפט הייבוא הרשמי) ----
-  const fullBox = $("#full-localities");
-  if (R.localitiesFull && R.localitiesFull.length) {
-    fullBox.hidden = false;
-    let page = 0;
-    const pageSize = 25;
-    const normalize = value => value.replace(/[\s\-־–—"״׳']/g, "");
-    const draw = () => {
-      const q = normalize($("#loc-q").value.trim());
-      const matches = R.localitiesFull.filter(l => !q || normalize(l.name).includes(q));
-      const pages = Math.max(1, Math.ceil(matches.length / pageSize));
-      page = Math.min(page, pages - 1);
-      const rows = matches.slice(page * pageSize, (page + 1) * pageSize);
-      $("#loc-count").textContent = `${fmt(matches.length)} יישובים${q ? " נמצאו" : " במאגר"} · ${rows.length ? `${page * pageSize + 1}–${page * pageSize + rows.length} מוצגים` : "אין תוצאות"}`;
-      $("#loc-page").textContent = `עמוד ${page + 1} מתוך ${pages}`;
-      $("#loc-prev").disabled = page === 0;
-      $("#loc-next").disabled = page + 1 >= pages;
-      $("#loc-table").innerHTML = `<thead><tr><th>יישוב</th><th class="n">קולות כשרים</th><th class="n">אחוז הצבעה</th><th>ארבע הרשימות המובילות</th></tr></thead><tbody>${
-        rows.map(l => `<tr><td data-label="יישוב"><strong>${esc(l.name)}</strong></td><td class="n" data-label="קולות כשרים">${fmt(l.valid)}</td>
-          <td class="n" data-label="אחוז הצבעה">${l.turnout ? pct(l.turnout) : "—"}</td>
-          <td data-label="הרשימות המובילות"><div style="display:flex;flex-wrap:wrap;gap:6px">${l.top.map(t => `<span class="chip" style="border-color:${R.partyColors[t.id] || "#ccc"}">${esc(t.name)} ${pct(t.pct)}</span>`).join("")}</div></td></tr>`).join("")
-        || `<tr><td colspan="4" class="empty">לא נמצא יישוב בשם הזה.</td></tr>`}</tbody>`;
-    };
-    if (!fullBox.dataset.wired) {
-      $("#loc-q").addEventListener("input", () => { page = 0; draw(); });
-      const turnPage = direction => {
-        page += direction; draw();
-        $("#mp-4").scrollIntoView({ block: "start", behavior: "auto" });
-        $("#loc-q").focus({ preventScroll: true });
-      };
-      $("#loc-prev").addEventListener("click", () => turnPage(-1));
-      $("#loc-next").addEventListener("click", () => turnPage(1));
-      fullBox.dataset.wired = "1";
-    }
-    draw();
-  }
-
-  // ---- what each section teaches about the 2026 forecast ----
-  const arabSec = S.demo?.sectors.find(x => x.id === "arab"), aSector = R.sectors.find(x => x.id === "arab");
-  const arabLists = aSector ? aSector.parties.filter(p => p.id !== "jewish").reduce((t, p) => t + p.pct, 0) / 100 : .857;
-  const per5 = arabSec ? arabSec.eligible2022 * 0.05 * arabLists / seatCost() : 0;
-  const yosh = R.sectors.find(x => x.id === "yosh");
-  $("#sectors-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> שיעור ההצבעה במגזר הערבי הוא המשתנה הגדול ביותר במפה: הוא נע בין ${pct(aSector?.turnoutPrev || 44.6)} ל־${pct(aSector?.turnoutDecadeAvg || 55.9)} בעשור האחרון, וכל 5 נקודות בו ≈ ${seatsHe(per5)} לרשימות הערביות — מנדטים שיוצאים בעיקר מגוש הימין. ${yosh ? `ביהודה ושומרון ההצבעה גבוהה ויציבה (${pct(yosh.turnout)}) ו־${pct(yosh.parties.slice(0, 2).reduce((t, p) => t + p.pct, 0))} מהקולות הולכים לשתי הרשימות הראשונות — בסיס קבוע שכמעט אינו זז בין סקר לסקר.` : ""}`;
-  $("#clusters-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> השסע המעמדי הוא שסע הגושים. ביישובים החלשים מובילות המפלגות החרדיות והערביות, במעמד הבינוני הליכוד, וביישובים החזקים יש עתיד. לכן מעבר קולות בין שתי מפלגות באותו אשכול כמעט לא משנה את מאזן הגושים — ואילו שינוי קטן בשיעור ההצבעה באשכולות 1–3 (החרדים והערבים גם יחד) מזיז אותו יותר מכל תנודה אחרת בסקרים.`;
-
-}
-
-/* ---- הגשר בין המפה למודל ----
-   תיאור המגזר של כל יישוב במפה (טקסט חופשי בקובץ הנתונים) ממופה לקבוצות
-   הזהות של המודל הדמוגרפי, כדי שהמפה והכרטיסים יוכלו להצביע זה על זה. */
-const LOC_IDENTITY = { haredi:/חרדי/, dati:/דתי/, mesorati:/מסורתי|עיירת פיתוח|פריפריאל/, hiloni:/חילוני/, arab:/ערבי|דרוזי/ };
-const localityIdentities = loc => loc ? Object.keys(LOC_IDENTITY).filter(k => LOC_IDENTITY[k].test(loc.sector || "")) : [];
-
 /* תוצאת האמת של 2022 לכל קבוצת זהות במודל: ארבע הקבוצות היהודיות מסקר
    ההגדרה הדתית, הקבוצה הערבית מתוצאות היישובים הערביים והדרוזיים. */
 function identityVote2022(secId) {
@@ -1894,116 +1803,6 @@ function identityVote2022(secId) {
   return { items, blocs, note, rightShare, total: tot };
 }
 
-
-/* רשימת המפה: כל יישוב מהקובץ הרשמי שיש לו קואורדינטות; היישובים המסוקרים
-   (regions.localities) תורמים את התיאור, האזור וההערה שלהם. */
-function mapLocalities() {
-  if (S.mapLocs) return S.mapLocs;
-  const R = S.regions, key = n => String(n || "").replace(/[\s–—\-־"״׳']/g, "");
-  const curated = new Map(R.localities.map(l => [key(l.name), l]));
-  S.mapLocs = (R.localitiesFull || []).filter(l => l.lon != null && l.lat != null && l.name !== "מעטפות חיצוניות")
-    .map(l => { const c = curated.get(key(l.name)); return { ...l, region: c?.region, sector: c?.sector, note: c?.note, parties: c?.parties?.length >= 4 ? c.parties : null }; })
-    .sort((a, b) => b.valid - a.valid);
-  return S.mapLocs;
-}
-
-/* סיווג יישוב לקבוצות הזהות של המודל לפי דפוס ההצבעה שלו ב־2022 (ארבע הרשימות
-   המובילות), בתוספת מילות המפתח של היישובים המסוקרים. */
-function inferIdentities(loc) {
-  const p = Object.fromEntries((loc.top || []).map(t => [t.id, t.pct]));
-  const sum = (...ids) => ids.reduce((t, id) => t + (p[id] || 0), 0);
-  const out = new Set(localityIdentities(loc));
-  if (sum("utj", "shas") >= 45) out.add("haredi");
-  if (sum("raam", "hadash_taal", "balad") >= 45) out.add("arab");
-  if (sum("religious_zionism", "jewish_home") >= 30) out.add("dati");
-  if (sum("yesh_atid", "national_unity", "labor", "meretz", "yisrael_beiteinu") >= 45) out.add("hiloni");
-  if ((p.likud || 0) >= 38 && !out.has("haredi")) out.add("mesorati");
-  return [...out];
-}
-
-function mapSVG({ labelMin = 14000, big = true } = {}) {
-  const R = S.regions, locs = mapLocalities(), G = R.geo;
-  const [minLon, minLat, maxLon, maxLat] = G.bbox;
-  const box = { minLon, maxLon, minLat, maxLat, W: 520, H: 900, pad: 18 };
-  const path = pts => pts.map((p, i) => { const [x, y] = project(p[0], p[1], box); return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`; }).join("") + "Z";
-  const dots = locs.map((loc, i) => {
-    const [x, y] = project(loc.lon, loc.lat, box);
-    const l = loc.top[0], col = l ? (R.partyColors[l.id] || "#96A0AB") : "#96A0AB";
-    const rr = clamp(1.9 + Math.sqrt(loc.valid) / 28, 1.9, 11);
-    const label = loc.valid >= labelMin;
-    return `<g class="locdot${i === S.selectedLoc ? " sel" : ""}${label ? " lbl" : ""}" data-loc="${i}" tabindex="${label ? 0 : -1}" role="button" aria-label="${esc(loc.name)}"><title>${esc(loc.name)} · ${fmt(loc.valid)} קולות${l ? ` · ${esc(l.name)} ${pct(l.pct)}` : ""}</title>
-      <circle class="core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr.toFixed(1)}" fill="${col}" fill-opacity=".88" stroke="#fff" stroke-width="${rr > 4 ? 1.2 : .6}"/>
-      ${label ? `<text x="${(x + rr + 3).toFixed(1)}" y="${(y + 3).toFixed(1)}" text-anchor="start">${esc(loc.name)}</text>` : ""}</g>`;
-  }).join("");
-  return `<svg viewBox="0 0 ${box.W} ${box.H}" role="img" aria-label="מפת כל היישובים עם תוצאות האמת של 2022">
-      <defs><filter id="landShadow" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#0B2740" flood-opacity=".22"/></filter></defs>
-      <rect width="${box.W}" height="${box.H}" fill="#D6E4EC" rx="14"/>
-      <g filter="url(#landShadow)"><path class="landmass" d="${path(G.israel)}"/></g>
-      <path class="territory" d="${path(G.westbank)}"/>
-      <path class="territory" d="${path(G.gaza)}"/>
-      ${dots}
-    </svg>`;
-}
-
-function locDetailHTML(loc) {
-  const R = S.regions, ids = inferIdentities(loc);
-  const rows = loc.parties || loc.top;
-  return `<p class="kicker">${loc.region ? `${esc(loc.region)} · ${esc(loc.sector)}` : "תוצאות הכנסת ה־25"}</p>
-    <h3>${esc(loc.name)}</h3>
-    <p class="lmeta">${fmt(loc.valid)} קולות כשרים${loc.turnout ? ` · אחוז הצבעה ${pct(loc.turnout)}` : ""}</p>
-    <div class="lbars">${rows.map(p => `<div class="lbar" style="--c:${R.partyColors[p.id] || "#96A0AB"}">
-        <span>${esc(p.name)}</span><i><b style="--w:${clamp(p.pct * 2.2)}%"></b></i><span class="v">${pct(p.pct)}</span></div>`).join("")}</div>
-    ${loc.note ? `<p style="margin:12px 0 0;color:var(--ink-3);font-size:.78rem">${esc(loc.note)}</p>` : ""}
-    ${ids.length ? `<div class="loc-identity"><span>קבוצות הזהות במודל הדמוגרפי (לפי דפוס ההצבעה):</span>${ids.map(id => { const sec = S.demo.sectors.find(x => x.id === id); return `<a class="chip" href="#/demography" data-jump-sector="${id}" style="border-color:${sec?.color || "#ccc"}">${esc(sec?.name || id)}</a>`; }).join("")}</div>` : `<p class="loc-identity muted">דפוס הצבעה מעורב — ללא שיוך חד־משמעי לקבוצת זהות אחת.</p>`}
-    <span class="src">מקור: <a href="${esc(R.sources.official?.url || "#")}" target="_blank" rel="noopener">${esc(R.sources.official?.name || "ועדת הבחירות המרכזית")} ↗</a></span>`;
-}
-
-/* ---- מפה אמיתית (Leaflet + אריחי OpenStreetMap), אם הספרייה נטענה ---- */
-function renderLeafletMap() {
-  if (typeof L === "undefined" || !$("#map-svg")) return false;
-  const R = S.regions, locs = mapLocalities();
-  if (S.leaflet) { S.leaflet.map.invalidateSize(); return true; }
-  const box = $("#map-svg"); box.classList.add("leaflet-host"); box.innerHTML = "";
-  const map = L.map(box, { preferCanvas: true, zoomControl: true, scrollWheelZoom: true, attributionControl: true, minZoom: 6, maxZoom: 15 });
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 }).addTo(map);
-  map.attributionControl.setPrefix(false);
-  map.fitBounds([[29.45, 34.2], [33.35, 35.95]]);
-  const layer = L.layerGroup().addTo(map), markers = [];
-  const rOf = v => clamp(3 + Math.sqrt(v) / 22, 3, 22);
-  locs.forEach((loc, i) => {
-    const l = loc.top[0], col = l ? (R.partyColors[l.id] || "#96A0AB") : "#96A0AB";
-    const m = L.circleMarker([loc.lat, loc.lon], { radius: rOf(loc.valid), color: "#fff", weight: 1, fillColor: col, fillOpacity: .85 });
-    m.bindTooltip(`<b>${esc(loc.name)}</b><br>${fmt(loc.valid)} קולות${l ? ` · ${esc(l.name)} ${pct(l.pct)}` : ""}`, { direction: "top", sticky: true, className: "map-tip" });
-    m.on("click", () => { S.selectedLoc = i; S.locPicked = true; renderLocDetail(); $$("#map-list [data-loc]").forEach(b => b.classList.toggle("sel", Number(b.dataset.loc) === i)); });
-    m.addTo(layer); markers[i] = m;
-  });
-  S.leaflet = { map, markers, base: rOf };
-  return true;
-}
-function leafletSelect(i, fly) {
-  const lf = S.leaflet; if (!lf) return;
-  lf.markers.forEach((m, k) => m.setStyle({ color: k === i ? "#141A21" : "#fff", weight: k === i ? 3 : 1 }));
-  const m = lf.markers[i];
-  if (m) { m.bringToFront(); if (fly) lf.map.flyTo(m.getLatLng(), Math.max(lf.map.getZoom(), 10), { duration: .8 }); }
-}
-
-function renderLocDetail(fly = false) {
-  const loc = mapLocalities()[S.selectedLoc];
-  if (!loc) return;
-  const box = $("#loc-detail"); if (box) box.innerHTML = locDetailHTML(loc);
-  $$("#map-svg .locdot").forEach(g => g.classList.toggle("sel", Number(g.dataset.loc) === S.selectedLoc));
-  leafletSelect(S.selectedLoc, fly);
-  /* יישוב שהמשתמש בחר במפה מדגיש את שורות הקבוצות שמרכיבות אותו בטבלאות (לא בברירת המחדל) */
-  const ids = inferIdentities(loc);
-  $$("#demo-main [data-sector]").forEach(c => c.classList.toggle("is-linked", !!S.locPicked && ids.includes(c.dataset.sector)));
-}
-
-function renderMapList(q) {
-  const locs = mapLocalities(), qq = q.trim();
-  const rows = (qq ? locs.filter(l => l.name.includes(qq)) : locs).slice(0, 40);
-  $("#map-list").innerHTML = rows.map(l => { const i = locs.indexOf(l), t = l.top[0]; return `<button type="button" data-loc="${i}" class="${i === S.selectedLoc ? "sel" : ""}"><b>${esc(l.name)}</b><span>${fmt(l.valid)} קולות${t ? ` · <i style="background:${S.regions.partyColors[t.id] || "#96A0AB"}"></i>${esc(t.name)} ${pct(t.pct)}` : ""}</span></button>`; }).join("") || `<p class="empty">לא נמצא יישוב בשם הזה.</p>`;
-  $("#map-list-count").textContent = qq ? `${rows.length} תוצאות` : `${fmt(locs.length)} יישובים · הגדולים ראשונים · 40 מוצגים`;
-}
 
 /* ============================================================
    8. עמוד התחזית היבשה
@@ -2076,11 +1875,10 @@ function renderDemography() {
 const groupCell = s => `<th scope="row" class="gcell"><i style="background:${s.color}"></i>${esc(s.name)}</th>`;
 /* אותו סדר בכל השלבים: מהקבוצה הגדולה לקטנה */
 const sectorsBySize = () => [...S.demo.sectors].sort((a, b) => b.eligible2022 - a.eligible2022);
-const linkedNow = () => S.locPicked ? localityIdentities(S.regions?.localities?.[S.selectedLoc]) : [];
 
 /* שלב 2 — מי הצביע ב־2022: גודל, הצבעה, ארבע הרשימות, גושים */
 function renderIdentityTable() {
-  const D = S.demo, linked = linkedNow(), secs = sectorsBySize();
+  const D = S.demo, secs = sectorsBySize();
   const totalEl = D.sectors.reduce((t, s) => t + s.eligible2022, 0);
   $("#electorate-bar").innerHTML = `<div class="elect-bar" role="img" aria-label="${esc(secs.map(s => `${s.name} ${pct(100 * s.eligible2022 / totalEl)}`).join(", "))}">${
       secs.map(s => `<span style="flex:${s.eligible2022};background:${s.color};color:${textOnColor(s.color)}" title="${esc(s.name)}: ${fmt(s.eligible2022)} בעלי זכות בחירה">${100 * s.eligible2022 / totalEl >= 8 ? `${esc(s.name)} ${Math.round(100 * s.eligible2022 / totalEl)}%` : ""}</span>`).join("")
@@ -2091,7 +1889,7 @@ function renderIdentityTable() {
       const v = S.regions ? identityVote2022(s.id) : null;
       const voters = s.eligible2022 * s.turnout;
       if (v) { if (!rightTop || v.rightShare > rightTop.v) rightTop = { n: s.name, v: v.rightShare }; if (!rightLow || v.rightShare < rightLow.v) rightLow = { n: s.name, v: v.rightShare }; }
-      return `<tr data-sector="${s.id}" class="${linked.includes(s.id) ? "is-linked" : ""}" style="--c:${s.color}">
+      return `<tr data-sector="${s.id}" style="--c:${s.color}">
         ${groupCell(s)}
         <td class="n">${fmt(s.eligible2022)}</td>
         <td class="n">${pct(s.turnout * 100)}</td>
@@ -2107,11 +1905,11 @@ function renderIdentityTable() {
 
 /* שלב 3 — ההנחות: אחוז הצבעה וגידול, ידית לכל קבוצה */
 function renderDemoControls() {
-  const D = S.demo, P = demoParams(), linked = linkedNow();
+  const D = S.demo, P = demoParams();
   $("#demo-controls").innerHTML = `<table class="dtable dtable-ctl"><thead><tr><th>קבוצה</th><th>אחוז הצבעה ב־2026 <small>(ב־2022)</small></th><th>גידול שנתי בבעלי זכות הבחירה</th><th>על מה זה מבוסס</th></tr></thead><tbody>${
     sectorsBySize().map(s => {
       const g = P[s.id].growth, t = P[s.id].turnout;
-      return `<tr data-sector="${s.id}" class="${linked.includes(s.id) ? "is-linked" : ""}" style="--c:${s.color}">
+      return `<tr data-sector="${s.id}" style="--c:${s.color}">
         ${groupCell(s)}
         <td><label><span class="identity-lbl"><b class="num">${(t * 100).toFixed(0)}%</b><small>ב־2022: ${pct(s.turnout * 100)}</small></span>
           <input type="range" min="35" max="95" step="1" value="${(t * 100).toFixed(0)}" data-sec="${s.id}" data-kind="turnout" aria-label="אחוז הצבעה · ${esc(s.name)}"></label></td>
@@ -2127,7 +1925,7 @@ function renderDemoControls() {
 /* שלב 4א — 120 מנדטים לא משתנים. מה שמשתנה הוא חלקה של כל קבוצה מכלל המצביעים,
    ולפי דפוס ההצבעה שלה ב־2022 — כמה מנדטים עוברים בין הגושים. הסכום תמיד 0. */
 function renderResultTable() {
-  const D = S.demo, P = demoParams(), linked = linkedNow(), years = D.meta.years, secs = sectorsBySize();
+  const D = S.demo, P = demoParams(), years = D.meta.years, secs = sectorsBySize();
   const rows = secs.map(s => {
     const g = P[s.id].growth, t = P[s.id].turnout, v = S.regions ? identityVote2022(s.id) : null;
     const v22 = s.eligible2022 * s.turnout, v26 = s.eligible2022 * Math.pow(1 + g, years) * t;
@@ -2139,7 +1937,7 @@ function renderResultTable() {
     const sh22 = r.v22 / T22, sh26 = r.v26 / T26, d = sh26 - sh22, seats = d * 120, toR = seats * r.right, toO = seats - toR;
     netRight += toR;
     const sg = x => Math.abs(x) < .05 ? "0" : `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
-    return `<tr data-sector="${r.s.id}" class="${linked.includes(r.s.id) ? "is-linked" : ""}" style="--c:${r.s.color}">
+    return `<tr data-sector="${r.s.id}" style="--c:${r.s.color}">
       ${groupCell(r.s)}
       <td class="n">~${kfmt(r.v22)}<small>${pct(sh22 * 100)} מהמצביעים</small></td>
       <td class="n"><b>~${kfmt(r.v26)}</b><small>${pct(sh26 * 100)} מהמצביעים</small></td>
@@ -2574,7 +2372,7 @@ function show(view) {
       if (view === "live") renderLiveResults();
       if (view === "results") renderOfficialResults();
       if (view === "haredi") renderHaredi();
-      if (view === "map") renderRegions();
+      if (view === "map") window.renderR22?.();
       if (view === "swing") window.renderSwing?.();
       if (view === "demography") { renderResultsBase(); renderDemography(); }
       if (view === "method") renderMethod();
@@ -2582,7 +2380,6 @@ function show(view) {
     } catch (e) { console.error(e); }
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
-  if (view === "map" && S.leaflet) setTimeout(() => S.leaflet.map.invalidateSize(), 50);
   const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", swing:"המפה המתנדנדת", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
   document.title = `${t} · ברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
@@ -2670,13 +2467,6 @@ function wire() {
   $("#dlg .dclose").addEventListener("click", () => $("#dlg").close());
   $("#dlg").addEventListener("click", e => { if (e.target === $("#dlg")) $("#dlg").close(); });
 
-  const pickLoc = g => { S.selectedLoc = Number(g.dataset.loc); S.locPicked = true; renderLocDetail(g.tagName === "BUTTON"); $$("#map-list [data-loc]").forEach(b => b.classList.toggle("sel", Number(b.dataset.loc) === S.selectedLoc)); };
-  ["#map-svg", "#map-list"].forEach(sel => {
-    $(sel)?.addEventListener("click", e => { const g = e.target.closest("[data-loc]"); if (g) pickLoc(g); });
-    $(sel)?.addEventListener("keydown", e => { const g = e.target.closest("[data-loc]"); if (g && g.tagName !== "BUTTON" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); pickLoc(g); } });
-  });
-  $("#map-q")?.addEventListener("input", e => renderMapList(e.target.value));
-
   /* המספר ליד הידית מתעדכן תוך כדי גרירה; החישוב עצמו רץ בשחרור */
   $("#demo-controls").addEventListener("input", e => {
     const el = e.target; if (!el.dataset.sec) return;
@@ -2698,27 +2488,6 @@ function wire() {
     S.scen = b.dataset.scen; render2022();
   });
   $("#print-btn")?.addEventListener("click", () => window.print());
-
-  /* המפה ↔ המודל: ריחוף/מיקוד על כרטיס קבוצת זהות מדגיש במפה את היישובים שבהם היא בולטת */
-  const ctl = $("#demo-main");
-  const hl = sec => $$("#map-svg .locdot").forEach(g => {
-    const ids = inferIdentities(mapLocalities()[Number(g.dataset.loc)] || {});
-    g.classList.toggle("hl", !!sec && ids.includes(sec));
-    g.classList.toggle("dim", !!sec && !ids.includes(sec));
-  });
-  ctl?.addEventListener("mouseover", e => { const c = e.target.closest("[data-sector]"); if (c) hl(c.dataset.sector); });
-  ctl?.addEventListener("mouseleave", () => hl(null));
-  ctl?.addEventListener("focusin", e => { const c = e.target.closest("[data-sector]"); if (c) hl(c.dataset.sector); });
-  ctl?.addEventListener("focusout", e => { if (!ctl.contains(e.relatedTarget)) hl(null); });
-  /* ולהפך: שבב קבוצה בפרטי היישוב קופץ לשורה המתאימה */
-  /* שבב קבוצה בפרטי היישוב → עמוד המודל, ישר לשורת הקבוצה */
-  document.addEventListener("click", e => {
-    if (!e.target.closest("#loc-detail")) return;
-    const a = e.target.closest("[data-jump-sector]"); if (!a) return;
-    e.preventDefault();
-    location.hash = "#/demography";
-    setTimeout(() => $(`#identity-table [data-sector="${CSS.escape(a.dataset.jumpSector)}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
-  });
 }
 
 /* ============================================================

@@ -6237,6 +6237,23 @@ function trackerHeadline(M) {
   return { head, sub: `הגוש ${trend}. ${esc(lead.name)} היא הגדולה בממוצע (${trFmt(lead.now)}), ${esc(second.name)} אחריה (${trFmt(second.now)}).` };
 }
 
+/* קו מעוגל בלי לחרוג מהערכים: עקומה מונוטונית (Fritsch–Carlson) — בין שתי נקודות
+   הקו לא עולה מעל הגבוהה ולא יורד מתחת לנמוכה, כך שהעיגול לא ממציא שיאים */
+function smoothPath(pts) {
+  const n = pts.length;
+  if (n < 3) return pts.map(([px, py], i) => `${i ? "L" : "M"}${px.toFixed(1)} ${py.toFixed(1)}`).join("");
+  const dx = [], m = [], t = new Array(n);
+  for (let i = 0; i < n - 1; i++) { dx[i] = pts[i + 1][0] - pts[i][0] || 1e-6; m[i] = (pts[i + 1][1] - pts[i][1]) / dx[i]; }
+  t[0] = m[0]; t[n - 1] = m[n - 2];
+  for (let i = 1; i < n - 1; i++) t[i] = m[i - 1] * m[i] <= 0 ? 0 : 3 * (dx[i - 1] + dx[i]) / ((2 * dx[i] + dx[i - 1]) / m[i - 1] + (dx[i] + 2 * dx[i - 1]) / m[i]);
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < n - 1; i++) {
+    const h = dx[i] / 3;
+    d += `C${(pts[i][0] + h).toFixed(1)} ${(pts[i][1] + t[i] * h).toFixed(1)} ${(pts[i + 1][0] - h).toFixed(1)} ${(pts[i + 1][1] - t[i + 1] * h).toFixed(1)} ${pts[i + 1][0].toFixed(1)} ${pts[i + 1][1].toFixed(1)}`;
+  }
+  return d;
+}
+
 /* ---------- גרף הקווים (גושים או מפלגה אחת) ---------- */
 function trackerChart(M, mode) {
   /* רוחב ה־viewBox = הרוחב האמיתי, כדי שהטקסט יישאר בגודל קריא גם בטלפון */
@@ -6267,7 +6284,7 @@ function trackerChart(M, mode) {
   const every = Math.max(1, Math.round((t1 - t0) / DAY_MS / Math.max(4, Math.floor(W / 90)))) * DAY_MS;
   for (let t = t1; t >= t0; t -= every) g += `<text class="tr-tick" text-anchor="middle" x="${x(t)}" y="${H - 10}">${trDay(t)}</text>`;
   const dots = lines.map(l => polls.map(p => `<circle class="tr-dot" cx="${x(Math.min(t1, Math.max(t0, parsePollDate(p))))}" cy="${y(l.dot(p))}" r="3.2" fill="${l.color}"/>`).join("")).join("");
-  const paths = lines.map(l => `<path class="tr-line" d="${S2.map((s, i) => `${i ? "L" : "M"}${x(s.t).toFixed(1)} ${y(l.get(s)).toFixed(1)}`).join("")}" stroke="${l.color}"/>`).join("");
+  const paths = lines.map(l => `<path class="tr-line" d="${smoothPath(S2.map(s => [x(s.t), y(l.get(s))]))}" stroke="${l.color}"/>`).join("");
   const ends = lines.map(l => ({ l, v: l.get(S2.at(-1)) })).sort((a, b) => b.v - a.v);
   /* תוויות הסוף לא עולות זו על זו */
   let lastY = -99;
@@ -6330,7 +6347,7 @@ function renderPollFeed(M) {
     };
     return `<details class="feed-item${p.barometer ? " is-baro" : ""}"${i < 3 && wide ? " open" : ""}>
       <summary>
-        <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer ? "ניתוח שבועי" : esc(f.meta.he)}</small></span>${p.barometer ? "" : `<span class="feed-firm">${logoBox(f.meta, 26)}</span>`}<time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}${p.barometer ? " · 20:00" : ""}</time></span>
+        <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer ? "ניתוח שבועי" : esc(f.meta.he)}</small></span>${p.barometer ? "" : `<span class="feed-firm">${logoBox(f.meta, 32)}</span>`}<time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}${p.barometer ? " · 20:00" : ""}</time></span>
         <span class="feed-bar" role="img" aria-label="${esc(aria)}">${bar}<i class="feed-61" title="61"></i></span>
         <span class="feed-lead">${ids.slice(0, 3).map(id => `<span style="--c:${partyHue(id)}"><i></i>${esc(names[id])} <b>${v.parties[id]}</b></span>`).join("")}</span>
       </summary>

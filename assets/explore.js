@@ -128,7 +128,7 @@ function renderPollCards(rows, polls) {
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(partyMeta(normId(x.id)).name)).join(' · ')}</p></details>` : ''}
-      <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
+</article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
   $('#polls-compare').hidden = S.pollView !== 'compare';

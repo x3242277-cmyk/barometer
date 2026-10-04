@@ -124,7 +124,7 @@ function trackerHeadline(M) {
 /* ---------- גרף הקווים (גושים או מפלגה אחת) ---------- */
 function trackerChart(M, mode) {
   /* רוחב ה־viewBox = הרוחב האמיתי, כדי שהטקסט יישאר בגודל קריא גם בטלפון */
-  const W = Math.round(Math.min(1600, Math.max(320, S.trackWidth || 920))), H = W < 600 ? 260 : 320, m = { l: 30, r: W < 600 ? 40 : 52, t: 18, b: 34 };
+  const W = Math.round(Math.min(1600, Math.max(320, S.trackWidth || 920))), H = W < 600 ? 260 : (S.trackH || 320), m = { l: 30, r: W < 600 ? 40 : 52, t: 18, b: 34 };
   const days = S.trackRange === "month" ? 30 : 400;
   const tMin = Math.max(M.series[0].t, M.now.t - (days - 1) * DAY_MS);
   const S2 = M.series.filter(s => s.t >= tMin), polls = (M.dotPolls || M.polls).filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);
@@ -183,15 +183,6 @@ function wireTrackerHover(box, chart) {
   hit.addEventListener("pointerleave", () => { cur.hidden = true; tip.hidden = true; });
 }
 
-/* ---------- ספארקליין לשורה בטבלת המפלגות ---------- */
-function trSpark(line, color) {
-  const W = 120, H = 30, pts = line.slice(-Math.min(line.length, 45));
-  const lo = Math.min(...pts), hi = Math.max(...pts), span = Math.max(2, hi - lo);
-  const mid = (hi + lo) / 2, a = mid - span / 2;
-  const x = i => 2 + (W - 4) * i / Math.max(1, pts.length - 1), y = v => H - 3 - (H - 6) * (v - a) / span;
-  return `<svg class="tr-spark" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${pts.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join("")}" stroke="${color}"/><circle cx="${x(pts.length - 1)}" cy="${y(pts.at(-1))}" r="2.6" fill="${color}"/></svg>`;
-}
-
 /* ---------- העמודה השמאלית: הסקרים האחרונים, מהחדש לישן ---------- */
 function feedWhen(p) {
   const key = t => new Date(t).toLocaleDateString("en-CA", { timeZone: "Asia/Jerusalem" });
@@ -222,7 +213,7 @@ function renderPollFeed(M) {
     };
     return `<details class="feed-item${p.barometer ? " is-baro" : ""}"${i < 3 && wide ? " open" : ""}>
       <summary>
-        <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer ? "ניתוח שבועי · לא סקר" : esc(f.meta.he)}</small></span><time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}${p.barometer ? " · 20:00" : ""}</time></span>
+        <span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer ? "ניתוח שבועי" : esc(f.meta.he)}</small></span>${p.barometer ? "" : `<span class="feed-firm">${logoBox(f.meta, 26)}</span>`}<time datetime="${new Date(parsePollDate(p)).toISOString().slice(0, 10)}">${esc(feedWhen(p))}${p.barometer ? " · 20:00" : ""}</time></span>
         <span class="feed-bar" role="img" aria-label="${esc(aria)}">${bar}<i class="feed-61" title="61"></i></span>
         <span class="feed-lead">${ids.slice(0, 3).map(id => `<span style="--c:${partyHue(id)}"><i></i>${esc(names[id])} <b>${v.parties[id]}</b></span>`).join("")}</span>
       </summary>
@@ -230,7 +221,7 @@ function renderPollFeed(M) {
         const col = ids.filter(id => (partyMeta(id).alignment === "Right") === (side === "Right"));
         return `<div><p class="feed-col-head">${label} <b>${col.reduce((t, id) => t + v.parties[id], 0)}</b></p><ol class="feed-parties">${col.map(id => `<li style="--c:${partyHue(id)}"><i></i><span>${esc(names[id])}</span><b>${v.parties[id]}</b>${delta(id)}</li>`).join("")}</ol></div>`;
       }).join("")}</div>
-      <p class="feed-src">${p.barometer ? `תחזית הברומטר של מוצאי שבת ב־20:00, במנדטים לפי כללי הבחירות. לא נכנסת לשום ממוצע.${prev ? ` החצים: מול השבוע הקודם (${esc(prev.date.replace(/\.20\d\d$/, ""))}).` : ""}` : prev ? `החצים: שינוי מול הסקר הקודם של ${esc(f.meta.he)} ב${esc(p.channelHebrewName)} (${esc(prev.date.replace(/\.20\d\d$/, ""))})` : "אין סקר קודם של אותו מכון ואותו ערוץ"}${p.sourceUrl ? ` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>` : ""}</p>
+      ${p.sourceUrl ? `<a class="feed-link" href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>` : ""}
     </details>`;
   }).join("") + (list.length > LIMIT ? `<button type="button" class="feed-more" data-feed-more>${S.feedAll ? "להציג פחות" : `עוד ${list.length - LIMIT} סקרים מאז אוגוסט`}</button>` : "");
 }
@@ -249,7 +240,7 @@ function renderTrackerTable(M) {
       return `<tr${p.barometer ? ' class="tr-baro"' : ""}><td class="date">${esc(p.date)}${p.barometer ? " · 20:00" : ""}</td><td><div class="orgcell">${outletLogo(p.channelHebrewName)}<span>${esc(p.channelHebrewName)}</span></div></td><td>${p.barometer ? "ניתוח שבועי" : esc(f.meta.he)}</td>${cols.map(c => {
         const val = v.parties[c.id] || 0, dv = val - c.now;
         return `<td class="n${Math.abs(dv) >= 2 ? (dv > 0 ? " hi" : " lo") : ""}"${Math.abs(dv) >= 2 ? ` title="${dv > 0 ? "גבוה" : "נמוך"} ב־${trFmt(Math.abs(dv))} מהממוצע"` : ""}>${val || "<span class=\"z\">0</span>"}</td>`; }).join("")}<td class="n bloc${r >= 61 ? " maj" : ""}"><b>${r}</b></td></tr>`; }).join("")
-  }</tbody></table></div><p class="tr-table-note">תא מודגש: המכון נתן למפלגה 2 מנדטים או יותר מעל (כחול) או מתחת (כתום) לממוצע העדכני. ${rows.length > LIMIT ? `<button type="button" class="linkbtn" data-track-rows>${S.trackAllRows ? `להציג רק ${LIMIT} אחרונים` : `להציג את כל ${rows.length} הסקרים`}</button>` : ""}</p>`;
+  }</tbody></table></div><p class="tr-table-note"><span class="tr-info" tabindex="0" title="תא מודגש: המכון נתן למפלגה 2 מנדטים או יותר מעל (כחול) או מתחת (כתום) לממוצע העדכני.">ⓘ</span> ${rows.length > LIMIT ? `<button type="button" class="linkbtn" data-track-rows>${S.trackAllRows ? `להציג רק ${LIMIT} אחרונים` : `להציג את כל ${rows.length} הסקרים`}</button>` : ""}</p>`;
 }
 
 function renderPollTracker() {
@@ -267,8 +258,6 @@ function renderPollTracker() {
   const ups = movers.filter(x => x.d > 0).slice(0, 3), downs = movers.filter(x => x.d < 0).slice(-3).reverse();
   const moverChip = x => `<button type="button" class="tr-mover" data-track-party="${esc(x.id)}" style="--c:${x.color}"><i></i><span>${esc(x.name)}</span><b class="${x.d > 0 ? "up" : "down"}">${trDelta(x.d).sym}</b></button>`;
   const selParty = S.trackMode !== "blocs" ? M.parties.find(x => x.id === S.trackMode) : null;
-  const maxNow = Math.max(...M.parties.map(x => x.max));
-  const scale = Math.max(25, Math.ceil((maxNow + 1) / 5) * 5);
   const basisBox = $("#poll-basis");
   if (basisBox) basisBox.innerHTML = `<span class="tr-basis-lbl">המספרים לפי</span><div class="switch tr-basis-switch">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" data-track-basis="${k}" aria-pressed="${(M.basis || "avg") === k}" title="${esc(b.note)}">${b.label}</button>`).join("")}</div>`;
   const info = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
@@ -290,30 +279,36 @@ function renderPollTracker() {
       <div class="tr-card-head">
         <div><h3>${selParty ? `${esc(selParty.name)} לאורך זמן` : "הגושים לאורך זמן"} ${info((selParty ? "" : "ימין וחרדים מול מרכז–שמאל. ") + (M.basis && M.basis !== "avg" ? `הקו — ${B.label} בכל עדכון (פעמיים ביום) מאז ${trDay(M.series[0].t)}.` : "הקו הוא ממוצע נע של 7 ימים (כל מכון נספר פעם אחת); כל נקודה היא סקר בודד."))}</h3></div>
         <div class="tr-controls">
-          ${selParty ? `<button type="button" class="tr-back" data-track-party="blocs">→ חזרה לגושים</button>` : ""}
+          <label class="tr-pick"><span class="sr-only">מה להציג בגרף</span><select data-track-select>
+            <option value="blocs"${selParty ? "" : " selected"}>כל המפלגות — הגושים</option>
+            ${M.parties.map(x => `<option value="${esc(x.id)}"${S.trackMode === x.id ? " selected" : ""}>${esc(x.name)} · ${trFmt(x.now)}</option>`).join("")}
+          </select></label>
           <div class="switch tr-range" role="group" aria-label="טווח זמן"><button type="button" data-track-range="month" aria-pressed="${S.trackRange === "month"}">חודש אחרון</button><button type="button" data-track-range="all" aria-pressed="${S.trackRange === "all"}">מאז אוגוסט</button></div>
         </div>
       </div>
       <div class="tr-legend">${chart.legend}</div>
       <div class="tr-plot">${chart.svg}<div class="tr-tip" hidden></div></div>
-      ${chart.table}
     </div>
-    <div class="tr-card tr-parties">
-      <div class="tr-card-head"><div><h3>כל המפלגות ${info(M.basis && M.basis !== "avg" ? `${B.label} עכשיו, הקו מאז ${trDay(M.series[0].t)}, השינוי בשבועיים, והטווח שבין הסקרים השונים השבוע.` : "הממוצע של השבוע האחרון, הקו מאז אוגוסט, השינוי בשבועיים והטווח שבין הסקרים השונים השבוע.")}</h3></div></div>
-      <div class="tablewrap" tabindex="0" role="region" aria-label="ממוצע ומגמה לכל מפלגה">
-      <table class="tr-ptable"><thead><tr><th scope="col">מפלגה</th><th scope="col" class="n">${M.basis && M.basis !== "avg" ? "מנדטים" : "ממוצע"}</th><th scope="col">מגמה</th><th scope="col" class="n">שבועיים</th><th scope="col" class="rng">טווח השבוע <small>(0–${scale})</small></th></tr></thead><tbody>${
-        M.parties.map(x => { const d = trDelta(x.now - x.before), below = x.now < 4;
-          return `<tr class="${S.trackMode === x.id ? "is-on" : ""}${below ? " is-below" : ""}" style="--c:${x.color}"><th scope="row"><button type="button" data-track-party="${esc(x.id)}" aria-pressed="${S.trackMode === x.id}"><i></i>${esc(x.name)}</button></th>
-          <td class="n"><b class="num">${trFmt(x.now)}</b></td><td>${trSpark(x.line, x.color)}</td>
-          <td class="n"><em class="tr-d ${d.cls}" aria-label="${d.txt}">${d.sym}</em></td>
-          <td class="rng"><span class="tr-range-bar" aria-label="בין ${x.min} ל־${x.max} מנדטים"><i style="--a:${100 * x.min / scale}%;--b:${100 * x.max / scale}%"></i><b style="--at:${100 * x.now / scale}%"></b></span><small class="tr-range-txt">${x.min === x.max ? x.min : `${x.min}–${x.max}`}</small></td></tr>`; }).join("")
-      }</tbody></table></div>
-      <p class="tr-foot">מפלגה מתחת ל־4 מנדטים בממוצע מסומנת בחיוור — היא קרובה לאחוז החסימה (3.25%).</p>
     </div>`;
   wireTrackerHover(root, chart);
   renderTrackerTable(P);
   renderPollFeed(P);
+  /* אחרי שהפריסה מתייצבת (גופנים, לוגואים, עמודת הסקרים) */
+  requestAnimationFrame(() => fitTrackerHeight(root));
+  clearTimeout(S.trackFitTimer); S.trackFitTimer = setTimeout(() => fitTrackerHeight(root), 450);
 }
+
+/* שולחן עבודה: המגמה נכנסת למסך אחד — הגרף מקבל את הגובה שנשאר מתחת לכותרת */
+function fitTrackerHeight(root) {
+  if (innerWidth <= 980 || root.hidden || !root.offsetParent) return;
+  const card = root.querySelector(".tr-chart-card"), svg = root.querySelector(".tr-svg"); if (!card || !svg) return;
+  /* כל מה שבכרטיס חוץ מהגרף עצמו קבוע — ולכן החישוב מתכנס בצעד אחד */
+  const fixed = card.getBoundingClientRect().bottom - svg.getBoundingClientRect().height;
+  const want = Math.max(200, Math.min(320, Math.round(innerHeight - 26 - fixed)));
+  if (Math.abs(want - (S.trackH || 320)) > 6) { S.trackH = want; renderPollTracker(); }
+}
+/* הגופנים משנים את גובה הכותרת — מתאימים שוב אחרי שנטענו */
+if (typeof document !== "undefined") document.fonts?.ready.then(() => { const r = $("#poll-tracker"); if (r?.offsetParent) fitTrackerHeight(r); });
 
 /* ---------- הלשוניות של העמוד: לשונית אחת גלויה בכל פעם ---------- */
 function setPollsTab(tab) {
@@ -327,6 +322,10 @@ function setPollsTab(tab) {
 }
 
 function wirePollTracker() {
+  document.addEventListener("change", e => {
+    const sel = e.target.closest?.("[data-track-select]");
+    if (sel) { S.trackMode = sel.value; renderPollTracker(); $("[data-track-select]")?.focus(); }
+  });
   document.addEventListener("click", e => {
     const p = e.target.closest("[data-track-party]");
     if (p) {
@@ -348,8 +347,12 @@ function wirePollTracker() {
 }
 if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", wirePollTracker);
 /* גודל הגרף תלוי ברוחב — מציירים מחדש כשהרוחב משתנה באמת */
-let trResizeTimer = 0, trLastW = 0;
+let trResizeTimer = 0, trLastW = 0, trLastH = 0;
 if (typeof window !== "undefined") window.addEventListener("resize", () => {
   clearTimeout(trResizeTimer);
-  trResizeTimer = setTimeout(() => { const r = $("#poll-tracker"); if (!r || !r.offsetParent || Math.abs(r.clientWidth - trLastW) < 40) return; trLastW = r.clientWidth; renderPollTracker(); }, 200);
+  trResizeTimer = setTimeout(() => {
+    const r = $("#poll-tracker"); if (!r || !r.offsetParent) return;
+    if (Math.abs(r.clientWidth - trLastW) < 40 && Math.abs(innerHeight - (trLastH || innerHeight)) < 30) return;
+    trLastW = r.clientWidth; trLastH = innerHeight; S.trackH = 0; renderPollTracker();
+  }, 200);
 });

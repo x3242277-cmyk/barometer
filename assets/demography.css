@@ -91,6 +91,12 @@ body:has(#view-demography.on)>footer{display:none}
 #result-table .dtable td small{display:block;font-size:.62rem;line-height:1.15}
 #result-table .dtable thead th{white-space:normal;vertical-align:bottom;line-height:1.2}
 .dm-pies .pie-legend{font-size:.72rem}
+/* העוגות נבנו לרקע הכהה — על הכרטיס הבהיר המספרים צריכים דיו כהה */
+#view-demography .dm-pies :is(.pie h3,.pie-legend b,.pie-legend li){color:var(--dm-ink)!important}   /* גובר על theme.css ו־election-pages.css */
+.dm-pies .pie .kicker{color:var(--dm-gold)}
+.dm-pies .donut .d-big{fill:var(--dm-ink)}
+.dm-pies .donut .d-small{fill:var(--dm-ink-3)}
+.dm-pies .pie-arrow{color:var(--dm-ink-3)}
 
 /* נקודת המוצא: הטקסט הדרמטי כבר בשורת המסקנה */
 #view-demography .dm .base-drama{display:none}
@@ -143,3 +149,10 @@ body:has(#view-demography.on)>footer{display:none}
   .dm-result{grid-template-columns:minmax(0,1fr)}
   .dm-verdict{margin-inline-start:0}
 }
+
+/* --- טקסט על הכרטיס הבהיר: הסגנונות הכלליים של האתר נבנו לרקע הכהה ---- */
+#view-demography .dm-card :is(.sec-note,.base-lbl,.base-note){color:var(--dm-ink-3)!important}
+#view-demography .dm-card a:not(.btn){color:#254f83!important}
+#view-demography .dm-card .btn.ghost{color:var(--dm-ink)!important;border-color:#c9bfae!important;background:#fff!important}
+#view-demography .dm-card .btn.ghost:hover{border-color:#c9a24f!important}
+#view-demography .dm-pies .pie .kicker{color:var(--dm-gold)!important}

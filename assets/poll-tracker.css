@@ -268,3 +268,49 @@
 .polls-tabs a[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a}
 .polls-tablist + a{margin-inline-start:6px;border-inline-start:1px solid #ffffff26;border-radius:0 4px 4px 0}
 #view-e2022 .polls-toolbar{margin-bottom:6px}
+
+/* ---------- עמוד הסקרים במסך אחד (05.10.2026) ----------
+   שולחן העבודה: העמוד בדיוק בגובה החלון שמתחת לכותרת. עמודת הסקרים האחרונים צרה
+   יותר וגוללת בתוך עצמה; במגמה — שורת כלים אחת, כרטיס כותרת קומפקטי, והגרף מקבל
+   את מה שנשאר (fitTrackerHeight ב־poll-tracker.js). כל סקר בנפרד וכמה עברו צד —
+   גוללים בתוך העמודה הראשית. */
+@media (min-width:981px){
+  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:540px;padding-top:10px;padding-bottom:10px}
+  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin-top:0;align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(330px,28%)!important;gap:16px!important}
+  #view-polls .polls-main{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;display:flex;flex-direction:column}
+  #view-polls .polls-feed{position:static;align-self:stretch;max-height:none;min-height:0;overflow:auto}
+  #view-polls .polls-main>.sec{padding-bottom:0}
+  /* בלי ההזזה של 5px באנימציית הכניסה — היא הקפיצה פס גלילה */
+  #view-polls.on{animation-name:polls-enter}
+  #view-polls .polls-toolbar{flex-wrap:nowrap;margin:0 0 8px;gap:10px}
+  #view-polls .polls-tabs{padding:3px}
+  #view-polls .polls-tabs :is(button,a){padding:6px 12px;font-size:.84rem;white-space:nowrap}
+  #view-polls .tr-basis{gap:6px}
+  #view-polls .tr-basis-switch button{padding:6px 10px;font-size:.78rem;white-space:nowrap}
+  /* כרטיס הכותרת: הטקסט והגושים בשורה אחת, העולות והיורדות בשורה צרה מתחת */
+  #view-polls .tr-hero{padding:12px 18px;gap:8px 22px}
+  #view-polls .tr-hero .kicker{margin-bottom:3px}
+  #view-polls .tr-hero h3{font-size:clamp(1.05rem,1.35vw,1.3rem)}
+  #view-polls .tr-hero-text>p:last-child{font-size:.8rem;line-height:1.45;margin-top:3px}
+  #view-polls .tr-blocs{gap:8px}
+  #view-polls .tr-bloc{padding:7px 10px 6px}
+  #view-polls .tr-bloc span{font-size:.72rem}
+  #view-polls .tr-bloc b{font-size:1.45rem}
+  #view-polls .tr-hero-movers{padding-top:7px;gap:6px 18px}
+  #view-polls .tr-mover-group{gap:6px}
+  #view-polls .tr-mover{min-height:30px;padding:3px 10px;font-size:.8rem;gap:6px}
+  #view-polls .tr-mover b{font-size:.82rem}
+  /* כרטיס הגרף */
+  #view-polls .tr-chart-card{margin-top:8px;padding:12px 16px 8px}
+  #view-polls .tr-chart-card .tr-card-head{margin-bottom:6px}
+  #view-polls .tr-chart-card .tr-card-head h3{font-size:1.05rem}
+  #view-polls .tr-pick select{min-height:32px;font-size:.8rem}
+  #view-polls .tr-legend{margin-bottom:2px}
+  /* עמודת הסקרים האחרונים */
+  #view-polls .feed-head{padding-bottom:8px;margin-bottom:8px}
+  #view-polls .feed-head h2{font-size:1.1rem}
+  #view-polls .feed-item>summary{padding:10px 12px;gap:7px}
+  #view-polls .feed-cols{padding:4px 12px 2px;gap:0 12px}
+  #view-polls .feed-parties li{gap:6px;padding:4px 0;font-size:.8rem}
+}
+@keyframes polls-enter{from{opacity:.5}to{opacity:1}}

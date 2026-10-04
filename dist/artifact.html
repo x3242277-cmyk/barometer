@@ -4420,6 +4420,52 @@ body:has(#view-landing.on) #print-btn{display:none}
 .polls-tablist + a{margin-inline-start:6px;border-inline-start:1px solid #ffffff26;border-radius:0 4px 4px 0}
 #view-e2022 .polls-toolbar{margin-bottom:6px}
 
+/* ---------- עמוד הסקרים במסך אחד (05.10.2026) ----------
+   שולחן העבודה: העמוד בדיוק בגובה החלון שמתחת לכותרת. עמודת הסקרים האחרונים צרה
+   יותר וגוללת בתוך עצמה; במגמה — שורת כלים אחת, כרטיס כותרת קומפקטי, והגרף מקבל
+   את מה שנשאר (fitTrackerHeight ב־poll-tracker.js). כל סקר בנפרד וכמה עברו צד —
+   גוללים בתוך העמודה הראשית. */
+@media (min-width:981px){
+  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:540px;padding-top:10px;padding-bottom:10px}
+  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin-top:0;align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(330px,28%)!important;gap:16px!important}
+  #view-polls .polls-main{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;display:flex;flex-direction:column}
+  #view-polls .polls-feed{position:static;align-self:stretch;max-height:none;min-height:0;overflow:auto}
+  #view-polls .polls-main>.sec{padding-bottom:0}
+  /* בלי ההזזה של 5px באנימציית הכניסה — היא הקפיצה פס גלילה */
+  #view-polls.on{animation-name:polls-enter}
+  #view-polls .polls-toolbar{flex-wrap:nowrap;margin:0 0 8px;gap:10px}
+  #view-polls .polls-tabs{padding:3px}
+  #view-polls .polls-tabs :is(button,a){padding:6px 12px;font-size:.84rem;white-space:nowrap}
+  #view-polls .tr-basis{gap:6px}
+  #view-polls .tr-basis-switch button{padding:6px 10px;font-size:.78rem;white-space:nowrap}
+  /* כרטיס הכותרת: הטקסט והגושים בשורה אחת, העולות והיורדות בשורה צרה מתחת */
+  #view-polls .tr-hero{padding:12px 18px;gap:8px 22px}
+  #view-polls .tr-hero .kicker{margin-bottom:3px}
+  #view-polls .tr-hero h3{font-size:clamp(1.05rem,1.35vw,1.3rem)}
+  #view-polls .tr-hero-text>p:last-child{font-size:.8rem;line-height:1.45;margin-top:3px}
+  #view-polls .tr-blocs{gap:8px}
+  #view-polls .tr-bloc{padding:7px 10px 6px}
+  #view-polls .tr-bloc span{font-size:.72rem}
+  #view-polls .tr-bloc b{font-size:1.45rem}
+  #view-polls .tr-hero-movers{padding-top:7px;gap:6px 18px}
+  #view-polls .tr-mover-group{gap:6px}
+  #view-polls .tr-mover{min-height:30px;padding:3px 10px;font-size:.8rem;gap:6px}
+  #view-polls .tr-mover b{font-size:.82rem}
+  /* כרטיס הגרף */
+  #view-polls .tr-chart-card{margin-top:8px;padding:12px 16px 8px}
+  #view-polls .tr-chart-card .tr-card-head{margin-bottom:6px}
+  #view-polls .tr-chart-card .tr-card-head h3{font-size:1.05rem}
+  #view-polls .tr-pick select{min-height:32px;font-size:.8rem}
+  #view-polls .tr-legend{margin-bottom:2px}
+  /* עמודת הסקרים האחרונים */
+  #view-polls .feed-head{padding-bottom:8px;margin-bottom:8px}
+  #view-polls .feed-head h2{font-size:1.1rem}
+  #view-polls .feed-item>summary{padding:10px 12px;gap:7px}
+  #view-polls .feed-cols{padding:4px 12px 2px;gap:0 12px}
+  #view-polls .feed-parties li{gap:6px;padding:4px 0;font-size:.8rem}
+}
+@keyframes polls-enter{from{opacity:.5}to{opacity:1}}
+
 /* Navy & ivory — loaded last.
    The frame of the site is deep navy with champagne accents; everything you read
    sits on warm ivory cards with navy ink. Each surface re-declares the tokens, so any
@@ -4996,6 +5042,12 @@ body:has(#view-demography.on)>footer{display:none}
 #result-table .dtable td small{display:block;font-size:.62rem;line-height:1.15}
 #result-table .dtable thead th{white-space:normal;vertical-align:bottom;line-height:1.2}
 .dm-pies .pie-legend{font-size:.72rem}
+/* העוגות נבנו לרקע הכהה — על הכרטיס הבהיר המספרים צריכים דיו כהה */
+#view-demography .dm-pies :is(.pie h3,.pie-legend b,.pie-legend li){color:var(--dm-ink)!important}   /* גובר על theme.css ו־election-pages.css */
+.dm-pies .pie .kicker{color:var(--dm-gold)}
+.dm-pies .donut .d-big{fill:var(--dm-ink)}
+.dm-pies .donut .d-small{fill:var(--dm-ink-3)}
+.dm-pies .pie-arrow{color:var(--dm-ink-3)}
 
 /* נקודת המוצא: הטקסט הדרמטי כבר בשורת המסקנה */
 #view-demography .dm .base-drama{display:none}
@@ -5048,6 +5100,13 @@ body:has(#view-demography.on)>footer{display:none}
   .dm-result{grid-template-columns:minmax(0,1fr)}
   .dm-verdict{margin-inline-start:0}
 }
+
+/* --- טקסט על הכרטיס הבהיר: הסגנונות הכלליים של האתר נבנו לרקע הכהה ---- */
+#view-demography .dm-card :is(.sec-note,.base-lbl,.base-note){color:var(--dm-ink-3)!important}
+#view-demography .dm-card a:not(.btn){color:#254f83!important}
+#view-demography .dm-card .btn.ghost{color:var(--dm-ink)!important;border-color:#c9bfae!important;background:#fff!important}
+#view-demography .dm-card .btn.ghost:hover{border-color:#c9a24f!important}
+#view-demography .dm-pies .pie .kicker{color:var(--dm-gold)!important}
 
 </style>
 <div dir="rtl" lang="he" id="barometer-root">
@@ -6683,14 +6742,20 @@ function renderPollTracker() {
   clearTimeout(S.trackFitTimer); S.trackFitTimer = setTimeout(() => fitTrackerHeight(root), 450);
 }
 
-/* שולחן עבודה: המגמה נכנסת למסך אחד — הגרף מקבל את הגובה שנשאר מתחת לכותרת */
+/* שולחן עבודה: המגמה נכנסת למסך אחד — הגרף מקבל את הגובה שנשאר עד תחתית הלוח
+   (העמוד בגובה החלון, poll-tracker.css) */
 function fitTrackerHeight(root) {
   if (innerWidth <= 980 || root.hidden || !root.offsetParent) return;
   const card = root.querySelector(".tr-chart-card"), svg = root.querySelector(".tr-svg"); if (!card || !svg) return;
   /* כל מה שבכרטיס חוץ מהגרף עצמו קבוע — ולכן החישוב מתכנס בצעד אחד */
-  const fixed = card.getBoundingClientRect().bottom - svg.getBoundingClientRect().height;
-  const want = Math.max(200, Math.min(320, Math.round(innerHeight - 26 - fixed)));
-  if (Math.abs(want - (S.trackH || 320)) > 6) { S.trackH = want; renderPollTracker(); }
+  const svgH = svg.getBoundingClientRect().height, cur = S.trackH || 320;
+  const fixed = card.getBoundingClientRect().bottom - svgH;
+  const bottom = root.closest(".polls-main")?.getBoundingClientRect().bottom || innerHeight - 26;
+  /* ה־SVG נמתח לרוחב הכרטיס, ולכן הגובה בפועל = H × (הרוחב בפועל / W) */
+  const scale = svgH / cur || 1;
+  const want = Math.max(160, Math.min(600, Math.floor((bottom - 4 - fixed) / scale)));
+  /* כל חריגה מתוקנת (גם של פיקסל — אחרת מופיע פס גלילה); הגדלה — רק כשהיא מורגשת */
+  if (want < cur || want - cur > 6) { S.trackH = want; renderPollTracker(); }
 }
 /* הגופנים משנים את גובה הכותרת — מתאימים שוב אחרי שנטענו */
 if (typeof document !== "undefined") document.fonts?.ready.then(() => { const r = $("#poll-tracker"); if (r?.offsetParent) fitTrackerHeight(r); });

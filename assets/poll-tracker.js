@@ -317,14 +317,20 @@ function renderPollTracker() {
   clearTimeout(S.trackFitTimer); S.trackFitTimer = setTimeout(() => fitTrackerHeight(root), 450);
 }
 
-/* שולחן עבודה: המגמה נכנסת למסך אחד — הגרף מקבל את הגובה שנשאר מתחת לכותרת */
+/* שולחן עבודה: המגמה נכנסת למסך אחד — הגרף מקבל את הגובה שנשאר עד תחתית הלוח
+   (העמוד בגובה החלון, poll-tracker.css) */
 function fitTrackerHeight(root) {
   if (innerWidth <= 980 || root.hidden || !root.offsetParent) return;
   const card = root.querySelector(".tr-chart-card"), svg = root.querySelector(".tr-svg"); if (!card || !svg) return;
   /* כל מה שבכרטיס חוץ מהגרף עצמו קבוע — ולכן החישוב מתכנס בצעד אחד */
-  const fixed = card.getBoundingClientRect().bottom - svg.getBoundingClientRect().height;
-  const want = Math.max(200, Math.min(320, Math.round(innerHeight - 26 - fixed)));
-  if (Math.abs(want - (S.trackH || 320)) > 6) { S.trackH = want; renderPollTracker(); }
+  const svgH = svg.getBoundingClientRect().height, cur = S.trackH || 320;
+  const fixed = card.getBoundingClientRect().bottom - svgH;
+  const bottom = root.closest(".polls-main")?.getBoundingClientRect().bottom || innerHeight - 26;
+  /* ה־SVG נמתח לרוחב הכרטיס, ולכן הגובה בפועל = H × (הרוחב בפועל / W) */
+  const scale = svgH / cur || 1;
+  const want = Math.max(160, Math.min(600, Math.floor((bottom - 4 - fixed) / scale)));
+  /* כל חריגה מתוקנת (גם של פיקסל — אחרת מופיע פס גלילה); הגדלה — רק כשהיא מורגשת */
+  if (want < cur || want - cur > 6) { S.trackH = want; renderPollTracker(); }
 }
 /* הגופנים משנים את גובה הכותרת — מתאימים שוב אחרי שנטענו */
 if (typeof document !== "undefined") document.fonts?.ready.then(() => { const r = $("#poll-tracker"); if (r?.offsetParent) fitTrackerHeight(r); });

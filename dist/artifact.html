@@ -10182,7 +10182,7 @@ function renderLayer() {
   renderDots();
 }
 /* שמות על המפה: רק כשיש להם מקום על המסך (מתעדכן בכל זום), בלי חפיפות, הגדולים קודם */
-const SHORT = { "תל אביב-יפו": "ת״א-יפו", "ראשון לציון": "ראשל״צ", "פתח תקווה": "פ״ת", "באר שבע": "ב״ש", "מודיעין-מכבים-רעות": "מודיעין" };
+const SHORT = { "תל אביב-יפו": "ת״א-יפו", "ראשון לציון": "ראשל״צ", "פתח תקווה": "פ״ת", "מודיעין-מכבים-רעות": "מודיעין" };
 function renderLabels() {
   const svg = svgEl(); if (!svg) return;
   const g = svg.querySelector(".r22-labels"), u = unitsPerPx(), [vx, vy, vw, vh] = MAP.vb, placed = [];

@@ -4712,7 +4712,7 @@ body:has(#view-map.on)>footer{display:none}
 .r22-seatcamp{color:var(--r22-ink-3);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r22-seatcount{min-width:2ch;color:var(--r22-ink);font-size:clamp(.95rem,1.9vh,1.2rem);font-weight:800;text-align:end;font-variant-numeric:tabular-nums}
 .r22-seat-out :is(.r22-seatparty,.r22-seatcount){color:var(--r22-ink-3);font-weight:600}
-.r22-seatgrid-groups{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(3,minmax(0,1fr))}
+.r22-seatgrid-groups{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(4,minmax(0,1fr))}
 .r22-seatgrid-groups .r22-seatname strong{font-size:.95rem}
 .r22-seatgrid-groups .r22-seatnum b{font-size:1.3rem}
 .r22-seat-next{border-inline-start:1px solid #ddd4c5;padding-inline-start:5px}
@@ -10027,7 +10027,7 @@ function renderHaredHistory() {
    הברומטר — המודל הגיאוגרפי: לוח נתונים במסך אחד (#/map)
    ------------------------------------------------------------
    בכותרת בוחרים מערכת בחירות — מספטמבר 2019 עד 2022 — או תחזית 2026 לפי
-   היישובים. הכול בשלוש קבוצות: ימין (כולל החרדים), מרכז־שמאל וערבים; רשימה נספרת
+   היישובים. הכול בארבע קבוצות: ימין, חרדים, מרכז־שמאל וערבים; רשימה נספרת
    בקבוצה שלה מ־1.5% (data/elections/*.json — scripts/import-elections-history.py).
    שלוש תצוגות (בעמודה הימנית), כל אחת עם מפה, כרטיס וגרף משלה:
      כל הארץ   — המדינה מחולקת לפסים לפי הקולות של כל קבוצה;
@@ -10044,15 +10044,15 @@ function renderHaredHistory() {
 (() => {
 "use strict";
 
-/* שלוש קבוצות בכל השנים (החלטת המשתמש, 04.10.2026): ימין — כולל החרדים; ישראל ביתנו
-   (מספטמבר 2019) ותקווה חדשה במרכז־שמאל כי ישבו מול נתניהו. O — רשימות מחוץ לקבוצות.
-   הנתונים עצמם שומרים חמישה תאים (H — החרדים); הם מתאחדים עם הימין כאן בלבד:
-   ב־prepare (שיוך הרשימות), ב־history ובתחזית (forecastYear). */
+/* ארבע קבוצות בכל השנים (החלטת המשתמש, 05.10.2026 — אחרי יום עם שלוש, החרדים בתוך הימין):
+   לפי האידיאולוגיה, וישראל ביתנו (מספטמבר 2019) ותקווה חדשה במרכז־שמאל כי ישבו מול
+   נתניהו. בהשוואת הגושים (פער, תזוזה, מנדטים) — ימין וחרדים יחד. O — מחוץ לקבוצות. */
 const CAMPS = ["R", "H", "L", "A", "O"];
-const GROUPS = ["R", "L", "A"];
-const CAMP_HE = { R: "ימין", H: "ימין", L: "מרכז־שמאל", A: "ערבים", O: "אחרות" };
-/* התאים של כל קבוצה במערכי groupTurnout (ימין, חרדים, מרכז־שמאל, ערבים) */
-const GT_IDX = { R: [0, 1], L: [2], A: [3] };
+const GROUPS = ["R", "H", "L", "A"];
+const CAMP_HE = { R: "ימין", H: "חרדים", L: "מרכז־שמאל", A: "ערבים", O: "אחרות" };
+/* התאים של כל קבוצה במערכי groupTurnout (ימין, חרדים, מרכז־שמאל, ערבים); קבוצה יכולה
+   לכלול כמה תאים — groupRate ו־seriesRate מחברים אותם */
+const GT_IDX = { R: [0], H: [1], L: [2], A: [3] };
 const campColor = k => {
   const b = typeof BLOCS !== "undefined" ? BLOCS : null;
   return { R: b?.Right.color || "#2563B0", H: b?.Haredi.color || "#6A5A9C", L: b?.Left.color || "#C0392B", A: b?.Arabs.color || "#2A7A5E", O: b?.Unknown.color || "#6B7580" }[k];
@@ -10089,8 +10089,8 @@ async function loadData() {
 }
 /* תחזית 2026: ברירות המחדל של הידיות — אחוז ההצבעה של כל קבוצה לפי המודל, והמגמה של
    היישובים בעוצמה שנבנתה (data/trends.json → national.defaultTrend; מלאה מאז 05.10.2026) */
-/* אחוז ההצבעה של קבוצה שיש בה כמה תאים (הימין: ימין וחרדים) — סך המצביעים חלקי סך
-   בעלי זכות הבחירה. בעלי זכות הבחירה של תא ב־2026: קולות המודל חלקי אחוז ההצבעה שלו */
+/* אחוז ההצבעה של קבוצה (אם יש בה כמה תאים — סך המצביעים חלקי סך
+   בעלי זכות הבחירה). בעלי זכות הבחירה של תא ב־2026: קולות המודל חלקי אחוז ההצבעה שלו */
 function groupRate(T, g, rate) {
   const n = T.national, el = j => n.votes26[j] / n.groupTurnout.base26[j], js = GT_IDX[g];
   return js.reduce((s, j) => s + el(j) * rate(j), 0) / js.reduce((s, j) => s + el(j), 0);
@@ -10109,9 +10109,6 @@ function cellFactors(T) {
   for (const g of GROUPS) for (const j of GT_IDX[g]) fac[j] = st.fc.turnout[g] / def.turnout[g];
   return fac;
 }
-/* חמשת התאים של הנתונים לארבע "רשימות" התחזית (ימין, מרכז־שמאל, ערבים, אחרות), ולשלוש קבוצות */
-const foldCells = v => [v[0] + v[1], v[2], v[3], v[4] || 0];
-const foldGroups = v => [v[0] + v[1], v[2], v[3]];
 /* מנדטים כאילו כל קבוצה רצה כרשימה אחת (שארית גדולה) */
 function propSeats(votes) {
   const tot = votes.reduce((a, b) => a + b, 0), raw = votes.map(v => 120 * v / tot), seat = raw.map(Math.floor);
@@ -10130,18 +10127,17 @@ function forecastYear(T) {
     const votes = at(lam), v = votes.reduce((a, b) => a + b, 0);
     votes.forEach((x, j) => tot[j] += x);
     if (lam) at(0).forEach((x, j) => tot0[j] += x);
-    rows.push([Number(c), L.f[0], Math.round(c === "99999" ? v : L.f[0] * L.f[1] / 1000 * v / L.f[2]), Math.round(v), ...foldCells(votes).map(Math.round)]);
+    rows.push([Number(c), L.f[0], Math.round(c === "99999" ? v : L.f[0] * L.f[1] / 1000 * v / L.f[2]), Math.round(v), ...votes.map(Math.round)]);
   }
-  const national = { eligible: 0, voted: 0, valid: 0, votes: [0, 0, 0, 0] };
+  const national = { eligible: 0, voted: 0, valid: 0, votes: [0, 0, 0, 0, 0] };
   for (const r of rows) { national.eligible += r[1]; national.voted += r[0] === 99999 ? r[3] : r[2]; national.valid += r[3]; r.slice(4).forEach((x, i) => national.votes[i] += x); }
-  /* המנדטים מחושבים בארבעת התאים של הבנייה (כמו ב־2022) ורק אז מתאחדים */
-  const n = T.national, prop = propSeats(tot.slice(0, 4)), seats = foldGroups(n.seats22.map((a, i) => a + prop[i] - n.prop22[i]));
+  const n = T.national, prop = propSeats(tot.slice(0, 4)), seats = n.seats22.map((a, i) => a + prop[i] - n.prop22[i]);
   /* הפירוק מול 2022: דמוגרפיה (מהבנייה), הצבעה (של המודל + הידיות), מגמה */
   const share = t => { const s = t.reduce((a, b) => a + b, 0); return t.map(x => 100 * x / s); };
   const sNo = share(lam ? tot0 : tot), sAll = share(tot), fNo = n.f26.map((x, i) => x - n.steps.trend[i]);   // ברירת המחדל בלי המגמה
-  const steps = { demography: foldGroups(n.steps.demography), turnout: foldGroups(n.steps.turnout.map((x, i) => x + sNo[i] - fNo[i])), trend: foldGroups(sAll.map((x, i) => x - sNo[i])) };
-  const parties = ["R", "L", "A", "O"].map((k, i) => ({ id: `g_${k}`, name: CAMP_HE[k], short: CAMP_HE[k], camp: k, color: campColor(k), seats: seats[i] || 0 }));
-  return { id: FORECAST, label: "תחזית 2026", parties, national, rows, names: {}, trends: T, seats22: foldGroups(n.seats22), seats26: seats, steps };
+  const steps = { demography: n.steps.demography, turnout: n.steps.turnout.map((x, i) => x + sNo[i] - fNo[i]), trend: sAll.map((x, i) => x - sNo[i]) };
+  const parties = CAMPS.map((k, i) => ({ id: `g_${k}`, name: CAMP_HE[k], short: CAMP_HE[k], camp: k, color: campColor(k), seats: seats[i] || 0 }));
+  return { id: FORECAST, label: "תחזית 2026", parties, national, rows, names: {}, trends: T, seats22: n.seats22, seats26: seats, steps };
 }
 async function loadYear(id) {
   if (!YEARS.cache.has(id)) YEARS.cache.set(id, await getJSON(id === FORECAST ? "data/trends.json" : `data/elections/${id}.json`));
@@ -10166,7 +10162,6 @@ function useYear(id, E) {
 
 /* ---------- נתונים מחושבים ---------- */
 function prepare() {
-  for (const p of D.parties) if (p.camp === "H") p.camp = "R";   // החרדים — בימין
   D.campIdx =CAMPS.map(c => D.parties.map((p, i) => p.camp === c ? i : -1).filter(i => i >= 0));
   D.byCode = new Map(D.localities.map(l => [l.c, l]));
   const sum = list => {
@@ -10194,16 +10189,15 @@ function history(r) {
     const L = T.loc[c]; if (!L) continue;
     for (let k = 0; k < K; k++) { v[k] += L.v[k]; e[k] += L.e[k]; for (let j = 0; j < 5; j++) g[k][j] += L.g[k * 5 + j]; }
   }
-  for (const x of g) { x[0] += x[1]; x[1] = 0; }                 // החרדים — בימין
   /* החלקים — מתוך ארבע הקבוצות, כמו בתחזית ("אחרות" מושמטות) */
-  const v4 = g.map(x => x[0] + x[2] + x[3]);
+  const v4 = g.map(x => x[0] + x[1] + x[2] + x[3]);
   return { v, v4, e, g, share: k => Object.fromEntries(CAMPS.map((c, j) => [c, v4[k] ? (j === 4 ? 0 : 100 * g[k][j] / v4[k]) : null])) };
 }
 /* גידול: בעלי זכות הבחירה הצפויים מול 2022, באחוזים */
 const growthOf = r => { const h = history(r), e22 = h.e[h.e.length - 1]; return e22 ? 100 * (r.e - e22) / e22 : null; };
 const share22 = r => { const h = history(r); return h.share(h.v.length - 1); };
-/* תזוזה: השינוי בחלקו של הימין (כולל החרדים) מ־2022 לתחזית, בנקודות */
-const shiftOf = r => { const b = share22(r), c = campShares(r); return b.R == null ? null : c.R - b.R; };
+/* תזוזה: השינוי בחלקם של ימין וחרדים יחד מ־2022 לתחזית, בנקודות */
+const shiftOf = r => { const b = share22(r), c = campShares(r); return b.R == null ? null : c.R + c.H - b.R - b.H; };
 const campShares = r => Object.fromEntries(CAMPS.map((c, k) => [c, r.v ? 100 * D.campIdx[k].reduce((t, i) => t + r.p[i], 0) / r.v : 0]));
 const isOther = p => p.id === "other" || p.id.startsWith("other_") || p.id === "g_O";
 const leadIdx = r => r.p.reduce((b, x, i) => x > r.p[b] && !isOther(D.parties[i]) ? i : b, 0);
@@ -10242,7 +10236,7 @@ function renderSide() {
     ${st.mode === "nation" ? "" : `<button type="button" class="r22-reset" id="r22-reset" ${st.sel == null && !st.sectors.size ? "disabled" : ""}>ניקוי הבחירה</button>`}
     <details class="r22-explain"><summary>${isForecast() ? "איך מחושבת התחזית?" : "איך קוראים את התצוגה?"}</summary>${isForecast() ? forecastExplain() : `<p class="r22-rule">${st.mode === "cities" ? escH(D.meta.sectorRule) : st.mode === "areas"
       ? "היבשה מחולקת ל־68 אזורים רציפים, על בסיס קרבה גאוגרפית ודפוסי ההצבעה ב־2022 — אותם אזורים בכל השנים. רשומות שבט ונקודות מיקום לא אמינות נספרות בתוצאות, אך אינן משמשות נקודת מיקום במפה. צבע כהה מציין יתרון גדול יותר לקבוצה המובילה."
-      : "ימין — הליכוד, הציונות הדתית, עוצמה יהודית, ימינה, ש״ס ויהדות התורה. מרכז־שמאל — יש עתיד, כחול לבן והמחנה הממלכתי, העבודה, מרצ, ישראל ביתנו ותקווה חדשה. ערבים — חד״ש־תע״ל, רע״מ ובל״ד. רשימה נספרת בקבוצה שלה מ־1.5% מהקולות, גם אם לא עברה את אחוז החסימה; הקטנות יותר — ״אחרות״. הפסים מחלקים את שטח המפה לפי הקולות."}</p>`}</details>`;
+      : "ימין — הליכוד, הציונות הדתית ועוצמה יהודית, ימינה. חרדים — ש״ס ויהדות התורה. מרכז־שמאל — יש עתיד, כחול לבן והמחנה הממלכתי, העבודה, מרצ, ישראל ביתנו ותקווה חדשה. ערבים — חד״ש־תע״ל, רע״מ ובל״ד. רשימה נספרת בקבוצה שלה מ־1.5% מהקולות, גם אם לא עברה את אחוז החסימה; הקטנות יותר — ״אחרות״. הפסים מחלקים את שטח המפה לפי הקולות."}</p>`}</details>`;
 }
 /* סוגי יישוב בלי כפתור סינון (החלטת המשתמש, 05.10.2026); היישובים עצמם נשארים בטבלה ובמפה */
 const NO_FILTER = new Set(["mixed"]);
@@ -10260,10 +10254,10 @@ function modeControls() {
   return duelHTML();
 }
 function duelHTML() {
-  const R = blocVotes(D.nat, ["R"]), C = blocVotes(D.nat, ["L", "A"]), yl = D.E.label;
+  const R = blocVotes(D.nat, ["R", "H"]), C = blocVotes(D.nat, ["L", "A"]), yl = D.E.label;
   const seats = ks => D.parties.filter(p => ks.includes(p.camp)).reduce((n, p) => n + (p.seats || 0), 0);
-  return `<div class="r22-duel" id="r22-duel"><div style="--c:${campColor("R")}"><b>${n0(R)}</b><span>ימין</span></div><div style="--c:${campColor("L")}"><b>${n0(C)}</b><span>מרכז־שמאל וערבים</span></div>
-    <p>${escH(yl)} · פער של ${n0(Math.abs(C - R))} קולות ${C > R ? "לטובת מרכז־שמאל וערבים" : "לטובת הימין"} · ${isForecast() ? "בערך " : ""}${seats(["R"])}–${seats(["L", "A"])} במנדטים.</p></div>`;
+  return `<div class="r22-duel" id="r22-duel"><div style="--c:${campColor("R")}"><b>${n0(R)}</b><span>ימין וחרדים</span></div><div style="--c:${campColor("L")}"><b>${n0(C)}</b><span>מרכז־שמאל וערבים</span></div>
+    <p>${escH(yl)} · פער של ${n0(Math.abs(C - R))} קולות ${C > R ? "לטובת מרכז־שמאל וערבים" : "לטובת ימין וחרדים"} · ${isForecast() ? "בערך " : ""}${seats(["R", "H"])}–${seats(["L", "A"])} במנדטים.</p></div>`;
 }
 /* הידיות של התחזית: אחוז ההצבעה של כל קבוצה, ועוצמת המגמה של היישובים */
 function forecastControls() {
@@ -10290,7 +10284,7 @@ const campCell = k => ({ key: k, he: CAMP_HE[k], num: true, val: r => campShares
   cell: r => { const v = campShares(r)[k]; return `<td class="n r22-camp" style="--c:${campColor(k)};--w:${v.toFixed(1)}%"><span>${p1(v)}%</span></td>`; } });
 const leadCell = { key: "lead", he: "הגדולה", title: "הרשימה הגדולה", val: r => D.parties[leadIdx(r)].short,
   cell: r => { const p = D.parties[leadIdx(r)]; return `<td class="r22-lead"><i class="r22-sw" style="--c:${p.color}"></i>${escH(p.short)}</td>`; } };
-const shiftCell = { key: "shift", he: "תזוזה", title: "השינוי בחלקו של הימין (כולל החרדים) מול 2022, בנקודות", num: true, val: r => shiftOf(r) ?? 0,
+const shiftCell = { key: "shift", he: "תזוזה", title: "השינוי בחלקם של ימין וחרדים יחד מול 2022, בנקודות", num: true, val: r => shiftOf(r) ?? 0,
   cell: r => { const v = shiftOf(r); return v == null ? `<td class="n r22-dim">חדש</td>` : `<td class="n r22-shift ${v >= .05 ? "right" : v <= -.05 ? "left" : ""}">${Math.abs(v) < .05 ? "±0" : `${v > 0 ? "ימינה" : "שמאלה"} ${p1(Math.abs(v))}`}</td>`; } };
 const growthCell = { key: "growth", he: "גידול", title: "בעלי זכות הבחירה הצפויים ב־2026 מול 2022", num: true, val: r => growthOf(r) ?? -1e9,
   cell: r => { const v = growthOf(r); return `<td class="n">${v == null ? "—" : `${signed(v)}%`}</td>`; } };
@@ -10394,12 +10388,12 @@ function renderForecastKpi() {
     <div class="r22-kpis">
       <div><b>${n0(s.v)}</b><span>קולות כשרים צפויים</span>${em(pct(s.v, v22), "%")}</div>
       <div><b>${p1(turnout)}%</b><span>אחוז הצבעה צפוי</span><em class="flat">לפי הידיות</em></div>
-      <div><b style="color:${campColor(shift == null ? lead : shift >= 0 ? "R" : "L")}">${shift == null ? escH(CAMP_HE[lead]) : `${shift >= 0 ? "ימינה" : "שמאלה"} ${p1(Math.abs(shift))}`}</b><span>${shift == null ? "הקבוצה הגדולה" : "תזוזה מ־2022"}</span><em class="flat">${shift == null ? `${p1(c[lead])}%` : "הימין, בנקודות"}</em></div>
+      <div><b style="color:${campColor(shift == null ? lead : shift >= 0 ? "R" : "L")}">${shift == null ? escH(CAMP_HE[lead]) : `${shift >= 0 ? "ימינה" : "שמאלה"} ${p1(Math.abs(shift))}`}</b><span>${shift == null ? "הקבוצה הגדולה" : "תזוזה מ־2022"}</span><em class="flat">${shift == null ? `${p1(c[lead])}%` : "ימין וחרדים יחד, בנקודות"}</em></div>
     </div>
     <div class="r22-blocs">
       <div class="r22-blocbar" role="img" aria-label="${CAMPS.map(k => `${CAMP_HE[k]} ${p1(c[k])}%`).join(", ")}">${
         CAMPS.filter(k => c[k] > 0).map(k => `<span style="flex:${c[k]};background:${campColor(k)}"></span>`).join("")}
-        ${b.R != null ? `<i class="r22-natmark" style="inset-inline-start:${b.R.toFixed(2)}%" title="הימין ב־2022: ${p1(b.R)}%"></i>` : ""}</div>
+        ${b.R != null ? `<i class="r22-natmark" style="inset-inline-start:${(b.R + b.H).toFixed(2)}%" title="ימין וחרדים ב־2022: ${p1(b.R + b.H)}%"></i>` : ""}</div>
       <ul>${GROUPS.map(k => `<li style="--c:${campColor(k)}"><i></i><span>${CAMP_HE[k]}</span><b>${p1(c[k])}%</b>${b[k] == null ? "" : em(c[k] - b[k])}</li>`).join("")}</ul>
     </div>`;
 }
@@ -10540,7 +10534,7 @@ function renderLayer() {
     ? (blocVotes(D.nat, ["O"]) ? `<span class="r22-legend-note">${n0(blocVotes(D.nat, ["O"]))} קולות לרשימות אחרות — לא בשום קבוצה</span>` : "")
     : st.mode === "areas" ? `<span class="r22-legend-note">הצבע — הקבוצה המובילה · כהה = יתרון גדול</span>` : `<span class="r22-dimkey"><i></i>מחוץ לסינון</span>`);
   if (st.mode === "nation") {
-    /* פס לכל קבוצה, משטח המפה לפי חלקה בקולות — מלמעלה: ימין, מרכז־שמאל, ערבים */
+    /* פס לכל קבוצה, משטח המפה לפי חלקה בקולות — מלמעלה: ימין, חרדים, מרכז־שמאל, ערבים */
     const votes = GROUPS.map(k => blocVotes(D.nat, [k])), tot = votes.reduce((a, b) => a + b, 0), [x, y0, w, h] = MAP.full, cx = x + w * .40;
     const ys = [y0]; let acc = 0;
     votes.slice(0, -1).forEach(v => { acc += v / tot; ys.push(splitY(Math.round(acc * 1e5) / 1e5)); });

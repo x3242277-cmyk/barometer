@@ -93,7 +93,7 @@ body:has(#view-map.on)>footer{display:none}
 .r22-seatcamp{color:var(--r22-ink-3);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r22-seatcount{min-width:2ch;color:var(--r22-ink);font-size:clamp(.95rem,1.9vh,1.2rem);font-weight:800;text-align:end;font-variant-numeric:tabular-nums}
 .r22-seat-out :is(.r22-seatparty,.r22-seatcount){color:var(--r22-ink-3);font-weight:600}
-.r22-seatgrid-groups{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(3,minmax(0,1fr))}
+.r22-seatgrid-groups{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(4,minmax(0,1fr))}
 .r22-seatgrid-groups .r22-seatname strong{font-size:.95rem}
 .r22-seatgrid-groups .r22-seatnum b{font-size:1.3rem}
 .r22-seat-next{border-inline-start:1px solid #ddd4c5;padding-inline-start:5px}

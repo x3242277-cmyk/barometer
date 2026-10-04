@@ -1,0 +1,145 @@
+/* ============================================================
+   המודל הדמוגרפי — לוח במסך אחד (#/demography, app.js: renderDemography)
+   משמאל הכרטיסיות (התוצאה · נקודת המוצא · מי גדל · מי הצביע · ההנחות ·
+   מגבלות), מימין "המסקנות" — תמיד גלויות ומתעדכנות עם כל הזזת ידית.
+   שולחן העבודה: העמוד בדיוק בגובה החלון שמתחת לכותרת, כמו המודל הגיאוגרפי.
+   מתחת ל־1000px הכרטיסים נערמים והעמוד גולל כרגיל.
+   ============================================================ */
+#view-demography .dm{--dm-ink:#14233a;--dm-ink-2:#344456;--dm-ink-3:#4c5b6a;--dm-rule:#e1d9ca;--dm-gold:#765007;
+  padding-top:10px;padding-bottom:12px}
+#view-demography>.wrap.dm{width:auto!important;max-width:none!important;margin-inline:0!important;padding-inline:var(--edge,14px)!important}
+body:has(#view-demography.on)>footer{display:none}
+#view-demography.on{animation-name:dm-enter}
+@keyframes dm-enter{from{opacity:.5}to{opacity:1}}
+
+/* --- הכותרת: שם המודל ומשפט המסקנה --- */
+.dm-head{display:flex;align-items:flex-end;gap:6px 24px;flex-wrap:wrap;margin-bottom:10px}
+.dm-title .kicker{margin:0 0 2px;font-size:.72rem}
+.dm-title h2{margin:0;font-size:1.15rem;font-weight:800;line-height:1.3;color:var(--ink)}
+.dm-verdict{margin:0;margin-inline-start:auto;font-size:.95rem;color:#dbe4ee;max-width:62ch}
+.dm-verdict b{color:#e9cf8f}
+
+.dm-dash{display:grid;gap:10px;grid-template-columns:minmax(0,1fr) clamp(260px,22vw,340px);grid-template-areas:"main side"}
+.dm-main{grid-area:main}.dm-side{grid-area:side}
+.dm-card{background:var(--ivory,#fdfbf6);color:var(--dm-ink);border:1px solid #d6cebe;border-radius:8px;
+  box-shadow:0 8px 24px -16px #00000088;min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+@media (min-width:1001px){
+  #view-demography.on>.dm{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:540px}
+  .dm-head{flex:none}
+  .dm-dash{flex:1 1 auto;min-height:0}
+}
+
+/* --- המסקנות --- */
+.dm-side{border-top:3px solid #c9a24f;padding:12px 14px;gap:12px;overflow:auto}
+.dm-side h3{margin:0;font-size:.8rem;font-weight:800;letter-spacing:.04em;color:var(--dm-gold)}
+#dm-conclusions{display:flex;flex-direction:column;gap:12px;flex:1}
+.dm-big{display:grid;gap:2px;padding:10px 12px;border-radius:6px;background:color-mix(in srgb,var(--c) 10%,#fff);border-inline-start:4px solid var(--c)}
+.dm-big b{font-size:2.3rem;font-weight:800;line-height:1;color:var(--c);font-variant-numeric:tabular-nums}
+.dm-big span{font-size:.9rem;font-weight:800;color:var(--dm-ink)}
+.dm-big small{font-size:.72rem;line-height:1.4;color:var(--dm-ink-2)}
+/* גרף המנדטים: שני פסים (2022, 2026), הימין מימין, וקו הרוב ב־61 */
+.dm-seats{margin:0;display:grid;gap:6px}
+.dm-seats figcaption{font-size:.74rem;font-weight:800;color:var(--dm-ink)}
+.dm-seats-row{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:8px;font-size:.76rem;font-weight:700;color:var(--dm-ink-3)}
+.dm-seats-row.is-next{color:var(--dm-ink)}
+.dm-seats-bar{position:relative;display:flex;height:24px;border-radius:4px;overflow:hidden}
+.dm-seats-row:not(.is-next) .dm-seats-bar{height:18px;opacity:.75}
+.dm-seats-bar i{display:flex;align-items:center;justify-content:center;min-width:0;font-style:normal}
+.dm-seats-bar b{color:#fff;font-size:.8rem;font-weight:800;font-variant-numeric:tabular-nums}
+.dm-seats-bar em{position:absolute;inset-block:-2px;inset-inline-start:calc(61 / 120 * 100%);border-inline-start:2px dashed #fdfbf6;opacity:.95}
+.dm-seats-key{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:.66rem;color:var(--dm-ink-3)}
+.dm-seats-key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-inline-end:4px;vertical-align:-1px}
+.dm-61{margin-inline-start:auto}
+.dm-points{margin:0;padding:0;list-style:none;counter-reset:dm;display:grid;gap:9px}
+.dm-points li{counter-increment:dm;position:relative;padding-inline-start:24px;font-size:.78rem;line-height:1.5;color:var(--dm-ink-2)}
+.dm-points li::before{content:counter(dm);position:absolute;inset-inline-start:0;top:1px;width:17px;height:17px;border-radius:50%;background:#14233a;color:#fdfbf6;font-size:.64rem;font-weight:800;display:grid;place-items:center}
+.dm-points b{color:var(--dm-ink)}
+
+/* --- הכרטיסיות --- */
+.dm-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:6px 10px;border-bottom:1px solid var(--dm-rule);background:#f6f1e7;flex:none}
+.dm-tabs button{min-height:30px;padding:3px 12px;border:1px solid #d3c9b7;border-radius:6px;background:#fff;color:var(--dm-ink-2);font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.dm-tabs button:hover{border-color:#c9a24f}
+.dm-tabs button[aria-selected="true"]{background:#14233a;border-color:#14233a;color:#fdfbf6}
+.dm-tabs button:focus-visible{outline:2px solid #a07019;outline-offset:2px}
+.dm-tabs button[hidden]{display:none}
+.dm-panel{flex:1;min-height:0;overflow:auto;padding:10px 14px 12px;display:flex;flex-direction:column;gap:10px}
+.dm-panel[hidden]{display:none}
+.dm-lead{margin:0;padding:7px 12px;border-radius:6px;background:#f4ead2;border-inline-start:4px solid #c9a24f;font-size:.88rem;line-height:1.45;color:var(--dm-ink)}
+.dm-lead b{color:#0d2743}
+.dm-note{margin:0!important;font-size:.72rem!important;line-height:1.5!important;color:var(--dm-ink-3)!important;max-width:none!important}
+.dm-more{border-top:1px solid var(--dm-rule);padding-top:6px;margin-top:auto}
+.dm-more summary{font-size:.74rem;font-weight:800;color:#324a67;cursor:pointer;min-height:0}
+.dm-more .takeaway{margin:6px 0 0!important;font-size:.78rem!important;line-height:1.6!important}
+.dm-more .sec-note{margin:6px 0 0!important;font-size:.7rem!important;max-width:none!important}
+
+/* הטבלאות הקיימות, צפופות יותר בתוך הכרטיס */
+#view-demography .dm .tablewrap{margin:0;border-radius:6px}
+#view-demography .dm .dtable{font-size:.78rem}
+#view-demography .dm .dtable :is(th,td){padding:5px 8px}
+#view-demography .dm .tablewrap{max-height:none}
+#view-demography .dm .dtable small{font-size:.66rem}
+
+/* התוצאה: הטבלה והעוגות זו לצד זו */
+.dm-result{display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:14px;align-items:start}
+#result-table>.sec-note{display:none}           /* ההסבר עבר ל״איך קוראים את הטבלה״ */
+.dm-pies .pies{display:flex;align-items:center;justify-content:center;gap:6px}
+.dm-pies .pie{flex:1;min-width:0}
+.dm-pies .pie h3{margin:0;font-size:1rem}
+.dm-pies .pie .kicker{font-size:.62rem}
+.dm-pies .donut{max-width:120px;margin-inline:auto;display:block}
+#result-table .dtable :is(th,td){padding-block:4px!important;line-height:1.25}
+#result-table .dtable td small{display:block;font-size:.62rem;line-height:1.15}
+#result-table .dtable thead th{white-space:normal;vertical-align:bottom;line-height:1.2}
+.dm-pies .pie-legend{font-size:.72rem}
+
+/* נקודת המוצא: הטקסט הדרמטי כבר בשורת המסקנה */
+#view-demography .dm .base-drama{display:none}
+#view-demography .dm .stats b.num{font-size:1.45rem!important}
+
+/* מי גדל: היישובים בשורה אחת עם השם */
+#view-demography .dm .g2019 .g-sub{display:inline;margin-inline-start:6px}
+
+/* מי הצביע: בלי עמודת "מצביעים" (בעלי זכות × הצבעה) ובלי מספרי הקולות במקרא —
+   האחוזים נשארים, הקולות בריחוף על הפס */
+#identity-table .dtable :is(th,td):nth-child(4){display:none}
+#identity-table .plegend small{display:none}
+#identity-table .plegend{font-size:.68rem;gap:2px 10px;margin-top:3px}
+#identity-table .pbar{height:9px}
+#view-demography .dm .elect-note{display:none}
+#view-demography .dm .elect-bar{min-height:24px;font-size:.7rem}
+
+/* ההנחות: ההסבר צפוף יותר */
+#demo-controls .why{font-size:.68rem;line-height:1.4}
+#demo-controls .why p{display:inline;margin:0;font-size:inherit;line-height:inherit}
+#demo-controls .why .src{display:inline;margin:0 6px 0 0;font-size:.64rem}
+/* המספר והידית באותה שורה */
+#demo-controls td>label{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 10px}
+#demo-controls .identity-lbl{display:grid;gap:0;min-width:64px}
+#demo-controls .identity-lbl small{font-size:.62rem;white-space:nowrap}
+#demo-controls input[type=range]{margin:0;width:100%}
+#view-demography .dm .identity-foot{margin:0;display:flex;align-items:center;gap:12px}
+#view-demography .dm .identity-foot .sec-note{margin:0;font-size:.72rem}
+
+/* מגבלות */
+.dm-limits .step{padding:12px 14px}
+.dm-limits .step h3{font-size:.95rem}
+.dm-limits .step p{font-size:.8rem;line-height:1.55}
+
+/* --- מסכים נמוכים: מצמצמים ריווח, לא טקסט --- */
+@media (min-width:1001px) and (max-height:820px){
+  #view-demography .dm{padding-top:8px;padding-bottom:10px}
+  .dm-head{margin-bottom:6px}
+  .dm-dash{gap:8px}
+  .dm-panel{padding:10px 14px 12px;gap:10px}
+  .dm-side{padding:10px 12px;gap:10px}
+  .dm-big b{font-size:2rem}
+  #view-demography .dm .dtable :is(th,td){padding:4px 7px}
+  .dm-panel{padding:8px 12px 10px;gap:8px}
+}
+/* --- טאבלט וטלפון: הכרטיסים נערמים --- */
+@media (max-width:1000px){
+  body:has(#view-demography.on)>footer{display:block}
+  .dm-dash{grid-template-columns:minmax(0,1fr);grid-template-areas:"side" "main"}
+  .dm-result{grid-template-columns:minmax(0,1fr)}
+  .dm-verdict{margin-inline-start:0}
+}

@@ -4905,6 +4905,152 @@ body:has(#view-map.on)>footer{display:none}
   border-radius:8px;background:color-mix(in srgb,#0a1827 82%,transparent);backdrop-filter:blur(3px)}
 .r22-loading p{margin:0;font-size:.95rem;font-weight:700;color:#e8edf3}
 
+/* ============================================================
+   המודל הדמוגרפי — לוח במסך אחד (#/demography, app.js: renderDemography)
+   משמאל הכרטיסיות (התוצאה · נקודת המוצא · מי גדל · מי הצביע · ההנחות ·
+   מגבלות), מימין "המסקנות" — תמיד גלויות ומתעדכנות עם כל הזזת ידית.
+   שולחן העבודה: העמוד בדיוק בגובה החלון שמתחת לכותרת, כמו המודל הגיאוגרפי.
+   מתחת ל־1000px הכרטיסים נערמים והעמוד גולל כרגיל.
+   ============================================================ */
+#view-demography .dm{--dm-ink:#14233a;--dm-ink-2:#344456;--dm-ink-3:#4c5b6a;--dm-rule:#e1d9ca;--dm-gold:#765007;
+  padding-top:10px;padding-bottom:12px}
+#view-demography>.wrap.dm{width:auto!important;max-width:none!important;margin-inline:0!important;padding-inline:var(--edge,14px)!important}
+body:has(#view-demography.on)>footer{display:none}
+#view-demography.on{animation-name:dm-enter}
+@keyframes dm-enter{from{opacity:.5}to{opacity:1}}
+
+/* --- הכותרת: שם המודל ומשפט המסקנה --- */
+.dm-head{display:flex;align-items:flex-end;gap:6px 24px;flex-wrap:wrap;margin-bottom:10px}
+.dm-title .kicker{margin:0 0 2px;font-size:.72rem}
+.dm-title h2{margin:0;font-size:1.15rem;font-weight:800;line-height:1.3;color:var(--ink)}
+.dm-verdict{margin:0;margin-inline-start:auto;font-size:.95rem;color:#dbe4ee;max-width:62ch}
+.dm-verdict b{color:#e9cf8f}
+
+.dm-dash{display:grid;gap:10px;grid-template-columns:minmax(0,1fr) clamp(260px,22vw,340px);grid-template-areas:"main side"}
+.dm-main{grid-area:main}.dm-side{grid-area:side}
+.dm-card{background:var(--ivory,#fdfbf6);color:var(--dm-ink);border:1px solid #d6cebe;border-radius:8px;
+  box-shadow:0 8px 24px -16px #00000088;min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+@media (min-width:1001px){
+  #view-demography.on>.dm{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:540px}
+  .dm-head{flex:none}
+  .dm-dash{flex:1 1 auto;min-height:0}
+}
+
+/* --- המסקנות --- */
+.dm-side{border-top:3px solid #c9a24f;padding:12px 14px;gap:12px;overflow:auto}
+.dm-side h3{margin:0;font-size:.8rem;font-weight:800;letter-spacing:.04em;color:var(--dm-gold)}
+#dm-conclusions{display:flex;flex-direction:column;gap:12px;flex:1}
+.dm-big{display:grid;gap:2px;padding:10px 12px;border-radius:6px;background:color-mix(in srgb,var(--c) 10%,#fff);border-inline-start:4px solid var(--c)}
+.dm-big b{font-size:2.3rem;font-weight:800;line-height:1;color:var(--c);font-variant-numeric:tabular-nums}
+.dm-big span{font-size:.9rem;font-weight:800;color:var(--dm-ink)}
+.dm-big small{font-size:.72rem;line-height:1.4;color:var(--dm-ink-2)}
+/* גרף המנדטים: שני פסים (2022, 2026), הימין מימין, וקו הרוב ב־61 */
+.dm-seats{margin:0;display:grid;gap:6px}
+.dm-seats figcaption{font-size:.74rem;font-weight:800;color:var(--dm-ink)}
+.dm-seats-row{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:8px;font-size:.76rem;font-weight:700;color:var(--dm-ink-3)}
+.dm-seats-row.is-next{color:var(--dm-ink)}
+.dm-seats-bar{position:relative;display:flex;height:24px;border-radius:4px;overflow:hidden}
+.dm-seats-row:not(.is-next) .dm-seats-bar{height:18px;opacity:.75}
+.dm-seats-bar i{display:flex;align-items:center;justify-content:center;min-width:0;font-style:normal}
+.dm-seats-bar b{color:#fff;font-size:.8rem;font-weight:800;font-variant-numeric:tabular-nums}
+.dm-seats-bar em{position:absolute;inset-block:-2px;inset-inline-start:calc(61 / 120 * 100%);border-inline-start:2px dashed #fdfbf6;opacity:.95}
+.dm-seats-key{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:.66rem;color:var(--dm-ink-3)}
+.dm-seats-key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-inline-end:4px;vertical-align:-1px}
+.dm-61{margin-inline-start:auto}
+.dm-points{margin:0;padding:0;list-style:none;counter-reset:dm;display:grid;gap:9px}
+.dm-points li{counter-increment:dm;position:relative;padding-inline-start:24px;font-size:.78rem;line-height:1.5;color:var(--dm-ink-2)}
+.dm-points li::before{content:counter(dm);position:absolute;inset-inline-start:0;top:1px;width:17px;height:17px;border-radius:50%;background:#14233a;color:#fdfbf6;font-size:.64rem;font-weight:800;display:grid;place-items:center}
+.dm-points b{color:var(--dm-ink)}
+
+/* --- הכרטיסיות --- */
+.dm-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:6px 10px;border-bottom:1px solid var(--dm-rule);background:#f6f1e7;flex:none}
+.dm-tabs button{min-height:30px;padding:3px 12px;border:1px solid #d3c9b7;border-radius:6px;background:#fff;color:var(--dm-ink-2);font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.dm-tabs button:hover{border-color:#c9a24f}
+.dm-tabs button[aria-selected="true"]{background:#14233a;border-color:#14233a;color:#fdfbf6}
+.dm-tabs button:focus-visible{outline:2px solid #a07019;outline-offset:2px}
+.dm-tabs button[hidden]{display:none}
+.dm-panel{flex:1;min-height:0;overflow:auto;padding:10px 14px 12px;display:flex;flex-direction:column;gap:10px}
+.dm-panel[hidden]{display:none}
+.dm-lead{margin:0;padding:7px 12px;border-radius:6px;background:#f4ead2;border-inline-start:4px solid #c9a24f;font-size:.88rem;line-height:1.45;color:var(--dm-ink)}
+.dm-lead b{color:#0d2743}
+.dm-note{margin:0!important;font-size:.72rem!important;line-height:1.5!important;color:var(--dm-ink-3)!important;max-width:none!important}
+.dm-more{border-top:1px solid var(--dm-rule);padding-top:6px;margin-top:auto}
+.dm-more summary{font-size:.74rem;font-weight:800;color:#324a67;cursor:pointer;min-height:0}
+.dm-more .takeaway{margin:6px 0 0!important;font-size:.78rem!important;line-height:1.6!important}
+.dm-more .sec-note{margin:6px 0 0!important;font-size:.7rem!important;max-width:none!important}
+
+/* הטבלאות הקיימות, צפופות יותר בתוך הכרטיס */
+#view-demography .dm .tablewrap{margin:0;border-radius:6px}
+#view-demography .dm .dtable{font-size:.78rem}
+#view-demography .dm .dtable :is(th,td){padding:5px 8px}
+#view-demography .dm .tablewrap{max-height:none}
+#view-demography .dm .dtable small{font-size:.66rem}
+
+/* התוצאה: הטבלה והעוגות זו לצד זו */
+.dm-result{display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:14px;align-items:start}
+#result-table>.sec-note{display:none}           /* ההסבר עבר ל״איך קוראים את הטבלה״ */
+.dm-pies .pies{display:flex;align-items:center;justify-content:center;gap:6px}
+.dm-pies .pie{flex:1;min-width:0}
+.dm-pies .pie h3{margin:0;font-size:1rem}
+.dm-pies .pie .kicker{font-size:.62rem}
+.dm-pies .donut{max-width:120px;margin-inline:auto;display:block}
+#result-table .dtable :is(th,td){padding-block:4px!important;line-height:1.25}
+#result-table .dtable td small{display:block;font-size:.62rem;line-height:1.15}
+#result-table .dtable thead th{white-space:normal;vertical-align:bottom;line-height:1.2}
+.dm-pies .pie-legend{font-size:.72rem}
+
+/* נקודת המוצא: הטקסט הדרמטי כבר בשורת המסקנה */
+#view-demography .dm .base-drama{display:none}
+#view-demography .dm .stats b.num{font-size:1.45rem!important}
+
+/* מי גדל: היישובים בשורה אחת עם השם */
+#view-demography .dm .g2019 .g-sub{display:inline;margin-inline-start:6px}
+
+/* מי הצביע: בלי עמודת "מצביעים" (בעלי זכות × הצבעה) ובלי מספרי הקולות במקרא —
+   האחוזים נשארים, הקולות בריחוף על הפס */
+#identity-table .dtable :is(th,td):nth-child(4){display:none}
+#identity-table .plegend small{display:none}
+#identity-table .plegend{font-size:.68rem;gap:2px 10px;margin-top:3px}
+#identity-table .pbar{height:9px}
+#view-demography .dm .elect-note{display:none}
+#view-demography .dm .elect-bar{min-height:24px;font-size:.7rem}
+
+/* ההנחות: ההסבר צפוף יותר */
+#demo-controls .why{font-size:.68rem;line-height:1.4}
+#demo-controls .why p{display:inline;margin:0;font-size:inherit;line-height:inherit}
+#demo-controls .why .src{display:inline;margin:0 6px 0 0;font-size:.64rem}
+/* המספר והידית באותה שורה */
+#demo-controls td>label{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 10px}
+#demo-controls .identity-lbl{display:grid;gap:0;min-width:64px}
+#demo-controls .identity-lbl small{font-size:.62rem;white-space:nowrap}
+#demo-controls input[type=range]{margin:0;width:100%}
+#view-demography .dm .identity-foot{margin:0;display:flex;align-items:center;gap:12px}
+#view-demography .dm .identity-foot .sec-note{margin:0;font-size:.72rem}
+
+/* מגבלות */
+.dm-limits .step{padding:12px 14px}
+.dm-limits .step h3{font-size:.95rem}
+.dm-limits .step p{font-size:.8rem;line-height:1.55}
+
+/* --- מסכים נמוכים: מצמצמים ריווח, לא טקסט --- */
+@media (min-width:1001px) and (max-height:820px){
+  #view-demography .dm{padding-top:8px;padding-bottom:10px}
+  .dm-head{margin-bottom:6px}
+  .dm-dash{gap:8px}
+  .dm-panel{padding:10px 14px 12px;gap:10px}
+  .dm-side{padding:10px 12px;gap:10px}
+  .dm-big b{font-size:2rem}
+  #view-demography .dm .dtable :is(th,td){padding:4px 7px}
+  .dm-panel{padding:8px 12px 10px;gap:8px}
+}
+/* --- טאבלט וטלפון: הכרטיסים נערמים --- */
+@media (max-width:1000px){
+  body:has(#view-demography.on)>footer{display:block}
+  .dm-dash{grid-template-columns:minmax(0,1fr);grid-template-areas:"side" "main"}
+  .dm-result{grid-template-columns:minmax(0,1fr)}
+  .dm-verdict{margin-inline-start:0}
+}
+
 </style>
 </head><body>
 
@@ -5599,92 +5745,76 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 
 <!-- ==================== המודל הדמוגרפי ==================== -->
 <section class="view" id="view-demography" aria-label="המודל הדמוגרפי">
-  <div class="wrap">
-    <div class="page-intro">
-      <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
-      <h2>איך הגידול של כל קבוצת אוכלוסייה משנה את מפת ההצבעה?</h2>
-      <p>שישה שלבים, מלמעלה למטה. מתחילים ממה שקרה באמת ב־2022 ובכמה גדלה כל אוכלוסייה מאז ספטמבר 2019, מפרקים את ציבור הבוחרים לחמש קבוצות זהות, מניחים כמה כל קבוצה תגדל וכמה ממנה תצביע — ומקבלים תחזית לגודל הגושים שלא נשענת על שום סקר. איך אותן קבוצות נראות על המפה, יישוב־יישוב — ב<a href="#/map">מודל הגיאוגרפי</a>.</p>
-    </div>
+  <div class="wrap dm">
+    <header class="dm-head">
+      <div class="dm-title">
+        <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
+        <h2>המודל הדמוגרפי: מה הגידול באוכלוסייה לבדו עושה לגושים</h2>
+      </div>
+      <p class="dm-verdict" id="dm-verdict" aria-live="polite"></p>
+    </header>
 
-    <div class="demo-layout">
-    <div class="demo-main" id="demo-main">
+    <div class="dm-dash">
+      <aside class="dm-card dm-side" aria-labelledby="dm-side-title">
+        <h3 id="dm-side-title">המסקנות</h3>
+        <div id="dm-conclusions" aria-live="polite"></div>
+      </aside>
 
-      <section class="dstep" id="dstep-1">
-        <div class="dstep-num" aria-hidden="true">1</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">נקודת המוצא · נתוני אמת</p><h2>מה קרה ב־2022</h2></div>
+      <section class="dm-card dm-main" aria-label="שלבי המודל">
+        <div class="dm-tabs" role="tablist" aria-label="שלבי המודל">
+          <button type="button" role="tab" id="dm-tab-result" data-dm-tab="result" aria-controls="dm-p-result" aria-selected="true">התוצאה · 2026</button>
+          <button type="button" role="tab" id="dm-tab-base" data-dm-tab="base" aria-controls="dm-p-base" aria-selected="false" tabindex="-1">נקודת המוצא · 2022</button>
+          <button type="button" role="tab" id="dm-tab-growth" data-dm-tab="growth" aria-controls="dm-p-growth" aria-selected="false" tabindex="-1">מי גדל</button>
+          <button type="button" role="tab" id="dm-tab-identity" data-dm-tab="identity" aria-controls="dm-p-identity" aria-selected="false" tabindex="-1">מי הצביע</button>
+          <button type="button" role="tab" id="dm-tab-assume" data-dm-tab="assume" aria-controls="dm-p-assume" aria-selected="false" tabindex="-1">ההנחות</button>
+          <button type="button" role="tab" id="dm-tab-limits" data-dm-tab="limits" aria-controls="dm-p-limits" aria-selected="false" tabindex="-1">מגבלות</button>
+        </div>
+
+        <div class="dm-panel" id="dm-p-result" role="tabpanel" aria-labelledby="dm-tab-result" data-dm-panel="result">
+          <p class="dm-lead" id="dm-lead-result"></p>
+          <div class="dm-result">
+            <div class="tablewrap dtable-wrap" id="result-table"></div>
+            <div class="dm-pies"><div id="demo-share-chart"></div><div class="legend" id="demo-legend"></div><div id="demo-delta" hidden></div></div>
+          </div>
+          <details class="dm-more"><summary>מה לומדים מזה · איך קוראים את הטבלה</summary><p class="takeaway" id="demo-takeaway"></p><p class="sec-note">בכנסת יש 120 מנדטים, וזה לא משתנה. מה שמשתנה הוא חלקה של כל קבוצה מכלל המצביעים — קבוצה שגדלה מהר יותר מהאחרות ״לוקחת״ מנדטים מהן. ״≈ מנדטים״ = השינוי בחלק × 120; לאן הם הולכים — לפי דפוס ההצבעה של הקבוצה ב־2022. העוגות — ארבעת הגושים באחוזים מהקולות.</p></details>
+        </div>
+
+        <div class="dm-panel" id="dm-p-base" role="tabpanel" aria-labelledby="dm-tab-base" data-dm-panel="base" hidden>
+          <p class="dm-lead" id="dm-lead-base"></p>
           <div class="stats" id="nat-stats"></div>
           <div id="base-blocs"></div>
-          <p class="takeaway sec-takeaway" id="map-takeaway"></p>
+          <details class="dm-more"><summary>מה לומדים מזה</summary><p class="takeaway" id="map-takeaway"></p></details>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-growth">
-        <div class="dstep-num" aria-hidden="true">2</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">נתוני אמת · ספטמבר 2019 ← 2022</p><h2>מי גדל, ובכמה</h2>
-            <p class="sec-note">בעלי זכות הבחירה בכל מערכת בחירות מאז ספטמבר 2019, לפי סוג היישוב (סיווג הלמ״ס; יישוב יהודי שבו ש״ס ויהדות התורה קיבלו יחד יותר ממחצית הקולות — חרדי). זה הגידול שנמדד בפנקס הבוחרים, לא הערכה; 2026 — לפי הקצב של כל יישוב, כמו במודל הגיאוגרפי.</p></div>
+        <div class="dm-panel" id="dm-p-growth" role="tabpanel" aria-labelledby="dm-tab-growth" data-dm-panel="growth" hidden>
+          <p class="dm-lead" id="dm-lead-growth"></p>
           <div class="tablewrap dtable-wrap" id="growth-2019"></div>
-          <p class="takeaway sec-takeaway" id="growth-takeaway"></p>
+          <details class="dm-more"><summary>מה לומדים מזה · איך נמדד</summary><p class="takeaway" id="growth-takeaway"></p><p class="sec-note">בעלי זכות הבחירה בכל מערכת בחירות לפי סוג היישוב (סיווג הלמ״ס; יישוב יהודי שבו ש״ס ויהדות התורה קיבלו יחד יותר ממחצית הקולות — חרדי). נמדד בפנקס הבוחרים, לא הערכה; 2026 — לפי הקצב של כל יישוב, כמו במודל הגיאוגרפי.</p></details>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-2">
-        <div class="dstep-num" aria-hidden="true">3</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">מי הצביע · נתוני אמת 2022</p><h2>חמש קבוצות זהות, ואיך כל אחת הצביעה</h2>
-            <p class="sec-note">החלוקה החזקה ביותר בפוליטיקה הישראלית אינה גיאוגרפית אלא זהותית. כל שורה היא קבוצה: כמה בעלי זכות בחירה, כמה מהם הצביעו, לאילו ארבע רשימות הלכו רוב הקולות — וכמה מהם לכל גוש. המספרים לרשימות הם אומדן: קולות האמת של כל רשימה לפי הרכב המצביעים שלה.</p></div>
+        <div class="dm-panel" id="dm-p-identity" role="tabpanel" aria-labelledby="dm-tab-identity" data-dm-panel="identity" hidden>
+          <p class="dm-lead" id="dm-lead-identity"></p>
           <div id="electorate-bar"></div>
           <div class="tablewrap dtable-wrap" id="identity-table"></div>
-          <p class="sec-note" id="relig-source"></p>
-          <p class="takeaway sec-takeaway" id="identity-takeaway"></p>
+          <details class="dm-more"><summary>מה לומדים מזה · מקורות</summary><p class="takeaway" id="identity-takeaway"></p><p class="sec-note" id="relig-source"></p></details>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-3">
-        <div class="dstep-num" aria-hidden="true">4</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">ההנחות · מה משתנה עד 2026</p><h2>כמה כל קבוצה גדלה, וכמה ממנה תצביע</h2>
-            <p class="sec-note">שני דברים בלבד משתנים במודל: גודל הקבוצה (גידול טבעי שנתי בבעלי זכות הבחירה) ושיעור ההצבעה שלה. הרגלי ההצבעה של 2022 נשארים כפי שהיו. ברירות המחדל מהמקורות; גררו את הידיות לתרחישים אחרים.</p></div>
+        <div class="dm-panel" id="dm-p-assume" role="tabpanel" aria-labelledby="dm-tab-assume" data-dm-panel="assume" hidden>
+          <p class="dm-lead" id="dm-lead-assume"></p>
           <div class="tablewrap dtable-wrap" id="demo-controls"></div>
           <div class="identity-foot"><button class="btn ghost" type="button" id="demo-reset">איפוס לערכי הבסיס</button><p class="sec-note" id="assump-note"></p></div>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-4">
-        <div class="dstep-num" aria-hidden="true">5</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">התוצאה · תחזית 2026</p><h2>כמה יצביעו, ולאן זה הולך</h2>
-            <p class="sec-note">קודם לכל קבוצה: כמה מצביעים צפויים ב־2026 לעומת 2022, ומה ההפרש שווה במנדטים. אחר כך הסכום — ארבעה גושים, באחוזי תמיכה, בלי מפלגות ובלי חלוקת מנדטים.</p></div>
-          <div class="tablewrap dtable-wrap" id="result-table"></div>
-          <div class="split" style="margin-top:22px">
-            <div class="hemi share-panel">
-              <div id="demo-share-chart"></div>
-              <div class="legend" id="demo-legend"></div>
-            </div>
-            <div class="card pad">
-              <p class="kicker">2022 → 2026 → אחוזים</p>
-              <div id="demo-delta"></div>
-            </div>
-          </div>
-          <p class="takeaway sec-takeaway" id="demo-takeaway"></p>
-        </div>
-      </section>
-
-      <section class="dstep" id="dstep-5">
-        <div class="dstep-num" aria-hidden="true">6</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">מה המודל לא יודע</p><h2>מגבלות, בגלוי</h2></div>
-          <div class="grid g3">
+        <div class="dm-panel" id="dm-p-limits" role="tabpanel" aria-labelledby="dm-tab-limits" data-dm-panel="limits" hidden>
+          <p class="dm-lead">המודל מבודד את הדמוגרפיה בלבד: מה קורה אם רק גודל הקבוצות והשתתפותן משתנים. שלושה דברים הוא לא יודע.</p>
+          <div class="grid g3 dm-limits">
             <div class="step"><em>01</em><h3>מפלגות חדשות</h3><p>המודל עובד עם רשימות 2022. מפלגה שנולדה מאז — ויש כאלה בסקרים היום — אינה קיימת בו. לכן הוא מודד גושים וכיוונים, לא שמות.</p></div>
-            <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה בדיוק מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
-            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. הידית בשלב 4 מראה עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
+            <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
+            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. בכרטיסייה ״ההנחות״ אפשר לראות עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
           </div>
+          <p class="sec-note dm-note">איך אותן קבוצות נראות על המפה, יישוב־יישוב — ב<a href="#/map">מודל הגיאוגרפי</a>.</p>
         </div>
       </section>
-
-    </div>
-
     </div>
   </div>
 </section>
@@ -8482,8 +8612,9 @@ async function renderGrowth2019() {
   if (!S.growth2019) {
     S.growth2019 = window.__BAROMETER_DATA__?.["data/sector-growth.json"]
       || await fetch("data/sector-growth.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : null).catch(() => null);
-    if (!S.growth2019) { el.closest(".dstep").hidden = true; return; }
+    if (!S.growth2019) { el.closest("[data-dm-panel]").hidden = true; $('[data-dm-tab="growth"]')?.setAttribute("hidden", ""); return; }
     renderDemoControls();
+    renderDemoConclusions();
   }
   const G = S.growth2019, E = G.meta.elections, last = E.length - 1;
   const label = e => e.label.replace("ספטמבר ", "9.");
@@ -8529,7 +8660,70 @@ function renderDemography() {
   const d = (sh(m1, "right") + sh(m1, "haredi")) - (sh(m0, "right") + sh(m0, "haredi"));
   const seats = d / 100 * 120;
   const scen = S.scenarioOptions?.demographic ?? 2;
+  renderDemoConclusions();
   $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים, וזה מה שעומד מאחורי ״התוספת הדמוגרפית״ של ${scen} מנדטים בתחזית הברומטר שבתמונת המצב: ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על תוספת גדולה יותר" : "המודל כאן מצביע על תוספת קטנה יותר"}. הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
+}
+
+/* המסקנות: העמודה שליד הכרטיסיות, משפט הכותרת, ושורת מסקנה בראש כל כרטיסייה.
+   מחושבות מאותו מודל ומאותן הנחות, ומתעדכנות עם כל הזזת ידית. */
+function renderDemoConclusions() {
+  const D = S.demo; if (!D || !$("#dm-conclusions")) return;
+  const years = D.meta.years, P = demoParams();
+  const rh = m => 100 * ((m.campVotes.right || 0) + (m.campVotes.haredi || 0)) / m.campTotal;
+  const m0 = runDemoModel(0), m1 = runDemoModel(years), d = rh(m1) - rh(m0);
+  /* מנדטים לכל גוש לפי כללי הבחירות (בדר־עופר והסכמי העודפים, כמו runDemoModel) */
+  const camp = Object.fromEntries(D.parties2022.map(p => [p.id, p.camp]));
+  const blocs = m => Object.entries(m.seats).reduce((a, [id, n]) => { a[camp[id] === "right" || camp[id] === "haredi" ? 0 : 1] += n; return a; }, [0, 0]);
+  const [R22, L22] = blocs(m0), [R26, L26] = blocs(m1), dR = R26 - R22, seats = dR;
+  /* רגישות: אחוז ההצבעה של האזרחים הערבים ±10 נקודות מההנחה הנוכחית */
+  const withArab = dt => {
+    const keep = S.demoOverrides, base = P.arab?.turnout;
+    if (base == null) return null;
+    S.demoOverrides = { ...keep, arab: { ...(keep.arab || {}), turnout: Math.min(.95, Math.max(.2, base + dt)) } };
+    try { return rh(runDemoModel(years)); } finally { S.demoOverrides = keep; }
+  };
+  const hi = withArab(.10), lo = withArab(-.10), swing = hi == null ? null : Math.abs(lo - hi) * 1.2 / 2;
+  const secs = sectorsBySize(), fast = [...secs].sort((a, b) => P[b.id].growth - P[a.id].growth), slow = fast.at(-1);
+  const ids = S.regions ? secs.map(sc => ({ sc, v: identityVote2022(sc.id) })).filter(x => x.v) : [];
+  const top = ids.length ? ids.reduce((a, b) => b.v.rightShare > a.v.rightShare ? b : a) : null;
+  const low = ids.length ? ids.reduce((a, b) => b.v.rightShare < a.v.rightShare ? b : a) : null;
+  const scen = S.scenarioOptions?.demographic ?? 2;
+  const sgn = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+  const times = fast[0] && slow && P[slow.id].growth > 0 ? P[fast[0].id].growth / P[slow.id].growth : null;
+  const changed = Object.keys(S.demoOverrides).length > 0;
+
+  $("#dm-verdict").innerHTML = `בלי אף סקר: הגידול באוכלוסייה לבדו מביא את הימין והחרדים ל־<b>${R26} מנדטים</b> ב־2026 (${R22} ב־2022)${changed ? " · לפי ההנחות ששונו" : ""}.`;
+  $("#dm-conclusions").innerHTML = `
+    <div class="dm-big" style="--c:${BLOCS.Right.color}"><b>${dR > 0 ? "+" : dR < 0 ? "−" : "±"}${Math.abs(dR)}</b><span>מנדטים לימין ולחרדים עד 2026</span><small>לפי כללי הבחירות · ${sgn(d)} נק׳ אחוז מכלל המצביעים — בלי שאף אחד משנה את דעתו</small></div>
+    <figure class="dm-seats" role="img" aria-label="מנדטים צפויים לפי כללי הבחירות. 2022: ימין וחרדים ${R22}, מרכז־שמאל וערבים ${L22}. 2026: ימין וחרדים ${R26}, מרכז־שמאל וערבים ${L26}.">
+      <figcaption>מנדטים צפויים לכל גוש</figcaption>
+      ${[["2022", R22, L22], ["2026", R26, L26]].map(([y, r, l]) => `<div class="dm-seats-row${y === "2026" ? " is-next" : ""}"><span>${y}</span><div class="dm-seats-bar"><i style="flex:${r};background:${BLOCS.Right.color}"><b>${r}</b></i><i style="flex:${l};background:${BLOCS.Left.color}"><b>${l}</b></i><em aria-hidden="true"></em></div></div>`).join("")}
+      <div class="dm-seats-key"><span><i style="background:${BLOCS.Right.color}"></i>ימין וחרדים</span><span><i style="background:${BLOCS.Left.color}"></i>מרכז־שמאל וערבים</span><span class="dm-61">61 · רוב</span></div>
+    </figure>
+    <ol class="dm-points">
+      ${fast[0] && slow ? `<li><b>${esc(fast[0].name)} גדלים הכי מהר</b> — ${pct(P[fast[0].id].growth * 100)} בשנה, מול ${pct(P[slow.id].growth * 100)} אצל ה${esc(slow.name)}${times && times >= 2 ? ` (פי ${Math.round(times)})` : ""}.</li>` : ""}
+      ${top ? `<li><b>הזהות מכריעה את ההצבעה</b> — ${esc(top.sc.name)}: ${Math.round(top.v.rightShare)}% לימין ולחרדים; ${esc(low.sc.name)}: ${Math.round(low.v.rightShare)}%.</li>` : ""}
+      ${swing != null ? `<li><b>אחוז ההצבעה הערבי רגיש</b> — 10 נקודות למעלה או למטה מזיזות כ־${seatsHe(swing)}.</li>` : ""}
+      <li><b>מול תחזית הברומטר</b> — שם התוספת הדמוגרפית היא ${scen} מנדטים; ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על יותר" : "המודל כאן מצביע על פחות"}.</li>
+    </ol>`;
+
+  const lead = (id, html) => { const el = $("#dm-lead-" + id); if (el) el.innerHTML = html; };
+  lead("result", `120 המנדטים נשארים 120 — אבל קבוצה שגדלה מהר ״לוקחת״ חלק מהקבוצות האחרות. נטו: <b>${dR === 0 ? "בלי שינוי בין הגושים" : `${seatsHe(dR)} ${dR > 0 ? "יותר" : "פחות"} לימין ולחרדים`}</b> (${R22}←${R26}).`);
+  const w = S.regions?.wasted;
+  if (w) lead("base", `ב־2022 גוש השינוי קיבל <b>${fmt(w.blocGap)} קולות יותר</b> — ובכל זאת הפסיד 56 : 64, כי ${fmt(w.total)} מקולותיו נפלו מתחת לאחוז החסימה.`);
+  const G = S.growth2019;
+  if (G) { const hs = G.sectors.find(x => x.id === "haredi"); lead("growth", `מספטמבר 2019 בעלי זכות הבחירה גדלו ב־<b>${pct(G.national.growth)} בשנה</b>${hs ? `; ביישובים החרדיים — <b>${pct(hs.growth)}</b>${G.national.growth > 0 ? `, פי ${r1(hs.growth / G.national.growth)}` : ""}` : ""}.`); }
+  if (top) lead("identity", `הזהות מנבאת את ההצבעה: <b>${esc(top.sc.name)} — ${Math.round(top.v.rightShare)}%</b> לימין ולחרדים, <b>${esc(low.sc.name)} — ${Math.round(low.v.rightShare)}%</b>. לכן שינוי בגודל הקבוצות מזיז את הגושים.`);
+  lead("assume", `רק שני דברים משתנים: <b>גודל כל קבוצה</b> ו<b>שיעור ההצבעה שלה</b>. הרגלי ההצבעה של 2022 נשארים. ${changed ? "ההנחות שונו — המסקנות מימין מחושבות לפיהן." : "הזיזו ידית — המסקנות מימין מתעדכנות."}`);
+}
+
+/* הכרטיסיות של המודל הדמוגרפי */
+function setDemoTab(tab, focus = false) {
+  const tabs = $$("[data-dm-tab]"); if (!tabs.length) return;
+  if (!tabs.some(t => t.dataset.dmTab === tab && !t.hidden)) tab = "result";
+  S.demoTab = tab;
+  tabs.forEach(t => { const on = t.dataset.dmTab === tab; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+  $$("[data-dm-panel]").forEach(p => { p.hidden = p.dataset.dmPanel !== tab; });
 }
 
 /* תא ראשון בכל טבלה: נקודת צבע + שם הקבוצה. אותו סדר שורות בכל שלב. */
@@ -8576,7 +8770,7 @@ function renderDemoControls() {
           <input type="range" min="35" max="95" step="1" value="${(t * 100).toFixed(0)}" data-sec="${s.id}" data-kind="turnout" aria-label="אחוז הצבעה · ${esc(s.name)}"></label></td>
         <td><label><span class="identity-lbl"><b class="num">${(g * 100).toFixed(1)}%</b><small>${fmt(s.eligible2022)} → ${fmt(s.eligible2022 * Math.pow(1 + g, D.meta.years))}</small></span>
           <input type="range" min="-1" max="6" step="0.1" value="${(g * 100).toFixed(1)}" data-sec="${s.id}" data-kind="growth" aria-label="גידול שנתי · ${esc(s.name)}"></label></td>
-        <td class="why"><p><b>גידול אוכלוסייה:</b> ${pct(s.growth * 100)} בשנה${(m => m ? ` · <b>נמדד מאז 9.2019</b> ביישובים ${esc(m.where)}: ${pct(m.rate)}` : "")(measuredGrowth(s.id))}. <b>הצבעה ב־2022:</b> ${pct(s.turnout * 100)}.</p><span class="src">מקור: <a href="${esc(D.sources[s.src].url)}" target="_blank" rel="noopener">${esc(D.sources[s.src].name)} ↗</a></span></td>
+        <td class="why"><p><b>בסיס:</b> גידול של ${pct(s.growth * 100)} בשנה${(m => m ? ` · <b>נמדד מאז 9.2019</b> ביישובים ${esc(m.where)}: ${pct(m.rate)}` : "")(measuredGrowth(s.id))}.</p><span class="src">מקור: <a href="${esc(D.sources[s.src].url)}" target="_blank" rel="noopener">${esc(D.sources[s.src].name)} ↗</a></span></td>
       </tr>`;
     }).join("")}</tbody></table>`;
   const changed = Object.keys(S.demoOverrides).length;
@@ -9140,6 +9334,15 @@ function wire() {
     $(`#demo-controls [data-sec="${CSS.escape(sec)}"][data-kind="${CSS.escape(kind)}"]`)?.focus();
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
+  /* כרטיסיות המודל הדמוגרפי: לחיצה, וחצים בין הכרטיסיות */
+  const dmTabs = $(".dm-tabs");
+  dmTabs?.addEventListener("click", e => { const t = e.target.closest("[data-dm-tab]"); if (t) setDemoTab(t.dataset.dmTab); });
+  dmTabs?.addEventListener("keydown", e => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    const list = $$("[data-dm-tab]").filter(t => !t.hidden), i = list.findIndex(t => t.dataset.dmTab === S.demoTab);
+    const next = e.key === "Home" ? 0 : e.key === "End" ? list.length - 1 : (i + (e.key === "ArrowLeft" ? 1 : -1) + list.length) % list.length;   // RTL: שמאלה = הבאה
+    e.preventDefault(); setDemoTab(list[next].dataset.dmTab, true);
+  });
 
   $("#scen-switch")?.addEventListener("click", e => {
     const b = e.target.closest("[data-scen]"); if (!b) return;

@@ -32,7 +32,7 @@
 <script src="assets/explore.js?v=5f643732" defer></script>
 <script src="assets/poll-tracker.js?v=5bda6743" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=0b8c7e8b" defer></script>
+<script src="assets/app.js?v=5da5c7ab" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
@@ -53,6 +53,7 @@
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
 <link rel="stylesheet" href="assets/results2022.css?v=226a1e2d">
+<link rel="stylesheet" href="assets/demography.css?v=413dcd7c">
 <script src="assets/results2022.js?v=c13c6ec8" defer></script>
 </head>
 <body>
@@ -747,92 +748,76 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 
 <!-- ==================== המודל הדמוגרפי ==================== -->
 <section class="view" id="view-demography" aria-label="המודל הדמוגרפי">
-  <div class="wrap">
-    <div class="page-intro">
-      <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
-      <h2>איך הגידול של כל קבוצת אוכלוסייה משנה את מפת ההצבעה?</h2>
-      <p>שישה שלבים, מלמעלה למטה. מתחילים ממה שקרה באמת ב־2022 ובכמה גדלה כל אוכלוסייה מאז ספטמבר 2019, מפרקים את ציבור הבוחרים לחמש קבוצות זהות, מניחים כמה כל קבוצה תגדל וכמה ממנה תצביע — ומקבלים תחזית לגודל הגושים שלא נשענת על שום סקר. איך אותן קבוצות נראות על המפה, יישוב־יישוב — ב<a href="#/map">מודל הגיאוגרפי</a>.</p>
-    </div>
+  <div class="wrap dm">
+    <header class="dm-head">
+      <div class="dm-title">
+        <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
+        <h2>המודל הדמוגרפי: מה הגידול באוכלוסייה לבדו עושה לגושים</h2>
+      </div>
+      <p class="dm-verdict" id="dm-verdict" aria-live="polite"></p>
+    </header>
 
-    <div class="demo-layout">
-    <div class="demo-main" id="demo-main">
+    <div class="dm-dash">
+      <aside class="dm-card dm-side" aria-labelledby="dm-side-title">
+        <h3 id="dm-side-title">המסקנות</h3>
+        <div id="dm-conclusions" aria-live="polite"></div>
+      </aside>
 
-      <section class="dstep" id="dstep-1">
-        <div class="dstep-num" aria-hidden="true">1</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">נקודת המוצא · נתוני אמת</p><h2>מה קרה ב־2022</h2></div>
+      <section class="dm-card dm-main" aria-label="שלבי המודל">
+        <div class="dm-tabs" role="tablist" aria-label="שלבי המודל">
+          <button type="button" role="tab" id="dm-tab-result" data-dm-tab="result" aria-controls="dm-p-result" aria-selected="true">התוצאה · 2026</button>
+          <button type="button" role="tab" id="dm-tab-base" data-dm-tab="base" aria-controls="dm-p-base" aria-selected="false" tabindex="-1">נקודת המוצא · 2022</button>
+          <button type="button" role="tab" id="dm-tab-growth" data-dm-tab="growth" aria-controls="dm-p-growth" aria-selected="false" tabindex="-1">מי גדל</button>
+          <button type="button" role="tab" id="dm-tab-identity" data-dm-tab="identity" aria-controls="dm-p-identity" aria-selected="false" tabindex="-1">מי הצביע</button>
+          <button type="button" role="tab" id="dm-tab-assume" data-dm-tab="assume" aria-controls="dm-p-assume" aria-selected="false" tabindex="-1">ההנחות</button>
+          <button type="button" role="tab" id="dm-tab-limits" data-dm-tab="limits" aria-controls="dm-p-limits" aria-selected="false" tabindex="-1">מגבלות</button>
+        </div>
+
+        <div class="dm-panel" id="dm-p-result" role="tabpanel" aria-labelledby="dm-tab-result" data-dm-panel="result">
+          <p class="dm-lead" id="dm-lead-result"></p>
+          <div class="dm-result">
+            <div class="tablewrap dtable-wrap" id="result-table"></div>
+            <div class="dm-pies"><div id="demo-share-chart"></div><div class="legend" id="demo-legend"></div><div id="demo-delta" hidden></div></div>
+          </div>
+          <details class="dm-more"><summary>מה לומדים מזה · איך קוראים את הטבלה</summary><p class="takeaway" id="demo-takeaway"></p><p class="sec-note">בכנסת יש 120 מנדטים, וזה לא משתנה. מה שמשתנה הוא חלקה של כל קבוצה מכלל המצביעים — קבוצה שגדלה מהר יותר מהאחרות ״לוקחת״ מנדטים מהן. ״≈ מנדטים״ = השינוי בחלק × 120; לאן הם הולכים — לפי דפוס ההצבעה של הקבוצה ב־2022. העוגות — ארבעת הגושים באחוזים מהקולות.</p></details>
+        </div>
+
+        <div class="dm-panel" id="dm-p-base" role="tabpanel" aria-labelledby="dm-tab-base" data-dm-panel="base" hidden>
+          <p class="dm-lead" id="dm-lead-base"></p>
           <div class="stats" id="nat-stats"></div>
           <div id="base-blocs"></div>
-          <p class="takeaway sec-takeaway" id="map-takeaway"></p>
+          <details class="dm-more"><summary>מה לומדים מזה</summary><p class="takeaway" id="map-takeaway"></p></details>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-growth">
-        <div class="dstep-num" aria-hidden="true">2</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">נתוני אמת · ספטמבר 2019 ← 2022</p><h2>מי גדל, ובכמה</h2>
-            <p class="sec-note">בעלי זכות הבחירה בכל מערכת בחירות מאז ספטמבר 2019, לפי סוג היישוב (סיווג הלמ״ס; יישוב יהודי שבו ש״ס ויהדות התורה קיבלו יחד יותר ממחצית הקולות — חרדי). זה הגידול שנמדד בפנקס הבוחרים, לא הערכה; 2026 — לפי הקצב של כל יישוב, כמו במודל הגיאוגרפי.</p></div>
+        <div class="dm-panel" id="dm-p-growth" role="tabpanel" aria-labelledby="dm-tab-growth" data-dm-panel="growth" hidden>
+          <p class="dm-lead" id="dm-lead-growth"></p>
           <div class="tablewrap dtable-wrap" id="growth-2019"></div>
-          <p class="takeaway sec-takeaway" id="growth-takeaway"></p>
+          <details class="dm-more"><summary>מה לומדים מזה · איך נמדד</summary><p class="takeaway" id="growth-takeaway"></p><p class="sec-note">בעלי זכות הבחירה בכל מערכת בחירות לפי סוג היישוב (סיווג הלמ״ס; יישוב יהודי שבו ש״ס ויהדות התורה קיבלו יחד יותר ממחצית הקולות — חרדי). נמדד בפנקס הבוחרים, לא הערכה; 2026 — לפי הקצב של כל יישוב, כמו במודל הגיאוגרפי.</p></details>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-2">
-        <div class="dstep-num" aria-hidden="true">3</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">מי הצביע · נתוני אמת 2022</p><h2>חמש קבוצות זהות, ואיך כל אחת הצביעה</h2>
-            <p class="sec-note">החלוקה החזקה ביותר בפוליטיקה הישראלית אינה גיאוגרפית אלא זהותית. כל שורה היא קבוצה: כמה בעלי זכות בחירה, כמה מהם הצביעו, לאילו ארבע רשימות הלכו רוב הקולות — וכמה מהם לכל גוש. המספרים לרשימות הם אומדן: קולות האמת של כל רשימה לפי הרכב המצביעים שלה.</p></div>
+        <div class="dm-panel" id="dm-p-identity" role="tabpanel" aria-labelledby="dm-tab-identity" data-dm-panel="identity" hidden>
+          <p class="dm-lead" id="dm-lead-identity"></p>
           <div id="electorate-bar"></div>
           <div class="tablewrap dtable-wrap" id="identity-table"></div>
-          <p class="sec-note" id="relig-source"></p>
-          <p class="takeaway sec-takeaway" id="identity-takeaway"></p>
+          <details class="dm-more"><summary>מה לומדים מזה · מקורות</summary><p class="takeaway" id="identity-takeaway"></p><p class="sec-note" id="relig-source"></p></details>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-3">
-        <div class="dstep-num" aria-hidden="true">4</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">ההנחות · מה משתנה עד 2026</p><h2>כמה כל קבוצה גדלה, וכמה ממנה תצביע</h2>
-            <p class="sec-note">שני דברים בלבד משתנים במודל: גודל הקבוצה (גידול טבעי שנתי בבעלי זכות הבחירה) ושיעור ההצבעה שלה. הרגלי ההצבעה של 2022 נשארים כפי שהיו. ברירות המחדל מהמקורות; גררו את הידיות לתרחישים אחרים.</p></div>
+        <div class="dm-panel" id="dm-p-assume" role="tabpanel" aria-labelledby="dm-tab-assume" data-dm-panel="assume" hidden>
+          <p class="dm-lead" id="dm-lead-assume"></p>
           <div class="tablewrap dtable-wrap" id="demo-controls"></div>
           <div class="identity-foot"><button class="btn ghost" type="button" id="demo-reset">איפוס לערכי הבסיס</button><p class="sec-note" id="assump-note"></p></div>
         </div>
-      </section>
 
-      <section class="dstep" id="dstep-4">
-        <div class="dstep-num" aria-hidden="true">5</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">התוצאה · תחזית 2026</p><h2>כמה יצביעו, ולאן זה הולך</h2>
-            <p class="sec-note">קודם לכל קבוצה: כמה מצביעים צפויים ב־2026 לעומת 2022, ומה ההפרש שווה במנדטים. אחר כך הסכום — ארבעה גושים, באחוזי תמיכה, בלי מפלגות ובלי חלוקת מנדטים.</p></div>
-          <div class="tablewrap dtable-wrap" id="result-table"></div>
-          <div class="split" style="margin-top:22px">
-            <div class="hemi share-panel">
-              <div id="demo-share-chart"></div>
-              <div class="legend" id="demo-legend"></div>
-            </div>
-            <div class="card pad">
-              <p class="kicker">2022 → 2026 → אחוזים</p>
-              <div id="demo-delta"></div>
-            </div>
-          </div>
-          <p class="takeaway sec-takeaway" id="demo-takeaway"></p>
-        </div>
-      </section>
-
-      <section class="dstep" id="dstep-5">
-        <div class="dstep-num" aria-hidden="true">6</div>
-        <div class="dstep-body">
-          <div class="dstep-head"><p class="kicker">מה המודל לא יודע</p><h2>מגבלות, בגלוי</h2></div>
-          <div class="grid g3">
+        <div class="dm-panel" id="dm-p-limits" role="tabpanel" aria-labelledby="dm-tab-limits" data-dm-panel="limits" hidden>
+          <p class="dm-lead">המודל מבודד את הדמוגרפיה בלבד: מה קורה אם רק גודל הקבוצות והשתתפותן משתנים. שלושה דברים הוא לא יודע.</p>
+          <div class="grid g3 dm-limits">
             <div class="step"><em>01</em><h3>מפלגות חדשות</h3><p>המודל עובד עם רשימות 2022. מפלגה שנולדה מאז — ויש כאלה בסקרים היום — אינה קיימת בו. לכן הוא מודד גושים וכיוונים, לא שמות.</p></div>
-            <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה בדיוק מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
-            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. הידית בשלב 4 מראה עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
+            <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
+            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. בכרטיסייה ״ההנחות״ אפשר לראות עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
           </div>
+          <p class="sec-note dm-note">איך אותן קבוצות נראות על המפה, יישוב־יישוב — ב<a href="#/map">מודל הגיאוגרפי</a>.</p>
         </div>
       </section>
-
-    </div>
-
     </div>
   </div>
 </section>

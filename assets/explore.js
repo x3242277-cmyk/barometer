@@ -102,10 +102,7 @@ function renderPollCards(rows, polls) {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
       const meta = partyMeta(id), col = partyColor(id, meta.alignment);
-      /* טעות קבועה של המכון ברשימה הזו במערכות הקודמות — הערה מתחת לשם */
-      const h = v !== null && !p.barometer ? houseFor(f.meta, id) : null;
-      const house = h ? `<small class="house-note" title="${esc(houseExplain(h, h.together || meta.name))}">טעות קבועה: ${houseShort(h)}${h.together ? ' (יחד עם ' + esc(partyMeta(HOUSE_GROUPS.rz.members.find(x => x !== normId(id))).name) + ')' : ''}</small>` : '';
-      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}${house}</li>`;
+      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך
@@ -120,20 +117,17 @@ function renderPollCards(rows, polls) {
     const gradeTag = p.barometer ? '' : f.meta.calibrated
       ? `<span class="poll-grade grade-${grade.key}" title="ציון אמינות ${r1(score)} מתוך 100 — לפי דיוק המכון בבחירות 2020–2022">${grade.label} · ${r1(score)}</span>`
       : `<span class="poll-grade grade-none" title="אין למכון סקרים במערכות הכיול — הוא מקבל משקל ניטרלי">ללא כיול · משקל ניטרלי</span>`;
-    const hb = p.barometer ? null : houseBloc(f.meta);
-    const blocNote = hb ? `<p class="house-bloc" title="${esc(houseExplain(hb, 'גוש הימין'))}">טעות קבועה בגוש הימין: ${houseShort(hb)} מנדטים</p>` : '';
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p>${gradeTag}</div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
           }</select></label>`
         : `<time>${esc(p.date)}</time>`}</header>
-      ${seatbar}${blocNote}
+      ${seatbar}
       <div class="poll-cols">
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment === 'Right').map(rowHTML).join('')}</ol>
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(partyMeta(normId(x.id)).name)).join(' · ')}</p></details>` : ''}
-      ${p.barometer ? '' : (fix => fix.length ? `<details class="zero-results house-fix"><summary>התיקון של המכון בתחזית הברומטר</summary><p>${houseShiftHTML(fix)} — מנדטים שעוברים בתוך אותו גוש, לפי הטעות הממוצעת של המכון ב־2020–2022${f.meta.calibrated ? '' : ' (אין לו היסטוריה: חצי מהטעות הממוצעת של כל המכונים)'}. סך הגושים לא משתנה.</p></details>` : '')(houseShiftList(pollPartyMap(p), pollPartyMap(correctWithinBlocs(p))))}
       <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';

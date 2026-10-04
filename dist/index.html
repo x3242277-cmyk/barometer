@@ -1973,11 +1973,13 @@ footer p{ font-size:.8rem; line-height:1.65; margin:8px 0 }
 #view-polls .poll-list li>em{ min-width:22px; font-size:.68rem }
 #view-polls .poll-result-card footer{ padding:8px 14px; font-size:.7rem }
 
-/* ---------- כל הסקרים: דירוג אמינות המכון והערת "טעות קבועה" ---------- */
+/* ---------- כל הסקרים: דירוג אמינות המכון · דיוק המכונים: "טעות קבועה" ---------- */
 .poll-grade{ display:inline-block; margin-top:4px; padding:1px 8px; border:1px solid currentColor; border-radius:999px; font-size:.68rem; font-weight:700; line-height:1.5; white-space:nowrap; cursor:help }
 .poll-grade.grade-high{ color:#237252 } .poll-grade.grade-mid{ color:#996126 } .poll-grade.grade-low{ color:#A7443B } .poll-grade.grade-none{ color:var(--ink-3) }
-.house-note{ grid-column:1 / -1; margin-top:-6px; padding-bottom:5px; font-size:.68rem; font-weight:600; line-height:1.35; color:#996126; cursor:help }
-.house-bloc{ margin:6px 14px 0; font-size:.72rem; font-weight:600; color:#996126; cursor:help }
+.rank .house-firm{ grid-column:1 / -1; margin:0; padding-top:8px; border-top:1px dashed var(--rule); font-size:.74rem; font-weight:600; line-height:1.5; color:#8a5a12 }
+.rank .house-firm b{ font-weight:800 }
+.rank .house-firm span{ cursor:help; white-space:nowrap }
+.rank .house-firm.is-clean{ color:var(--ink-3); font-weight:500 }
 #view-polls .zero-results{ margin-inline:14px }
 @media (max-width:1100px){ #polls-cards{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
 @media (max-width:760px){ #polls-cards{ grid-template-columns:1fr } }
@@ -5651,7 +5653,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
           <div class="mstep-head"><h2>מוסיפים את ההנחות של ״תחזית הברומטר״</h2><a class="mstep-link" href="#/haredi">להנחות ↙</a></div>
           <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו ארבעה צעדים גלויים:</p>
           <ul class="mlist">
-            <li><b>תיקון הטעות הקבועה של כל מכון — רק בתוך הגוש.</b> לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״ם, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 2 ובכרטיס הסקר. ממוצע "משוקלל אמינות" אינו מתוקן.</li>
+            <li><b>תיקון הטעות הקבועה של כל מכון — רק בתוך הגוש.</b> לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״ם, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 2, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע "משוקלל אמינות" אינו מתוקן.</li>
             <li><b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8 — מספר קבוע, לא ממוצע הסקרים שלהן.</b> מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בשלב 6, ביחד עם כל שאר הרשימות.</li>
             <li><b>קירוב למאזן 2022 — היעד הוא 62 מנדטים לגוש נתניהו, לא 64.</b> בפועל הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד, וקולותיה התחלקו בהסכמי העודפים בין הרשימות שכן עברו — מקרה קצה חד־פעמי בספירה, לא סימן לגודל האמיתי של הגוש (אפשר לבדוק ב״אילו מרצ עברה את אחוז החסימה״ בתמונת המצב). באותו היגיון ההפוך: רשימות ימין שנמצאות היום מתחת לאחוז החסימה (למשל רשימתו של עופר וינטר) לא נמחקות מהחישוב הזה — התמיכה בהן נספרת כשמודדים כמה גדול גוש נתניהו בפועל בסקרים, גם שהן עדיין לא מקבלות מנדט בחלוקה הסופית. מהפער שנשאר בין הסקרים לעוגן, התחזית סוגרת <b>רק חצי</b> — לא את כולו — ומורידה מזה את מה שקיבוע ש״ס ויהדות התורה כבר תרם לימין, כדי לא לספור את אותה הנחה פעמיים.</li>
             <li><b>תוספת דמוגרפית משוערת — 2 מנדטים כברירת מחדל.</b> היא מועברת בין הגושים לפי המפלגות, ואז נבדקת מול מודל דמוגרפי נפרד בשלב הבא.</li>
@@ -5991,10 +5993,7 @@ function renderPollCards(rows, polls) {
       const v = pollValue(p,id), pv = comparablePartyValue(p,prev,id), d = v !== null && pv !== null ? v-pv : null;
       const delta = !prev ? '' : d === null ? '<em class="flat" title="אין נתון בר השוואה">—</em>' : `<em class="neutral-delta" aria-label="${d > 0 ? 'עלייה של' : d < 0 ? 'ירידה של' : 'ללא שינוי'} ${Math.abs(d)} מנדטים">${d > 0 ? '↑' : d < 0 ? '↓' : '='}${d ? Math.abs(d) : ''}</em>`;
       const meta = partyMeta(id), col = partyColor(id, meta.alignment);
-      /* טעות קבועה של המכון ברשימה הזו במערכות הקודמות — הערה מתחת לשם */
-      const h = v !== null && !p.barometer ? houseFor(f.meta, id) : null;
-      const house = h ? `<small class="house-note" title="${esc(houseExplain(h, h.together || meta.name))}">טעות קבועה: ${houseShort(h)}${h.together ? ' (יחד עם ' + esc(partyMeta(HOUSE_GROUPS.rz.members.find(x => x !== normId(id))).name) + ')' : ''}</small>` : '';
-      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}${house}</li>`;
+      return `<li class="${selected===id ? 'party-highlight' : ''}" style="--c:${col}"><button type="button" class="poll-party-name" data-select-party="${esc(id)}" aria-pressed="${selected===id}"><span class="pname">${esc(meta.name)}</span></button><b>${v===null ? '—' : v}</b>${delta}</li>`;
     };
     const displayIds = stableIds.filter(id => (pollValue(p,id)||0)>0 || id===selected).sort(byMandates(id => pollValue(p,id)));
     /* גרף הגושים בראש הכרטיס: ימין בימין, ערבים באמצע, מרכז–שמאל בשמאל, המספר בתוך
@@ -6009,20 +6008,17 @@ function renderPollCards(rows, polls) {
     const gradeTag = p.barometer ? '' : f.meta.calibrated
       ? `<span class="poll-grade grade-${grade.key}" title="ציון אמינות ${r1(score)} מתוך 100 — לפי דיוק המכון בבחירות 2020–2022">${grade.label} · ${r1(score)}</span>`
       : `<span class="poll-grade grade-none" title="אין למכון סקרים במערכות הכיול — הוא מקבל משקל ניטרלי">ללא כיול · משקל ניטרלי</span>`;
-    const hb = p.barometer ? null : houseBloc(f.meta);
-    const blocNote = hb ? `<p class="house-bloc" title="${esc(houseExplain(hb, 'גוש הימין'))}">טעות קבועה בגוש הימין: ${houseShort(hb)} מנדטים</p>` : '';
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p>${gradeTag}</div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
             list.map(q => `<option value="${esc(q.id)}" ${q.id === p.id ? 'selected' : ''}>${esc(q.date)}</option>`).join('')
           }</select></label>`
         : `<time>${esc(p.date)}</time>`}</header>
-      ${seatbar}${blocNote}
+      ${seatbar}
       <div class="poll-cols">
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment === 'Right').map(rowHTML).join('')}</ol>
         <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(partyMeta(normId(x.id)).name)).join(' · ')}</p></details>` : ''}
-      ${p.barometer ? '' : (fix => fix.length ? `<details class="zero-results house-fix"><summary>התיקון של המכון בתחזית הברומטר</summary><p>${houseShiftHTML(fix)} — מנדטים שעוברים בתוך אותו גוש, לפי הטעות הממוצעת של המכון ב־2020–2022${f.meta.calibrated ? '' : ' (אין לו היסטוריה: חצי מהטעות הממוצעת של כל המכונים)'}. סך הגושים לא משתנה.</p></details>` : '')(houseShiftList(pollPartyMap(p), pollPartyMap(correctWithinBlocs(p))))}
       <footer><span>${total} מנדטים</span><span>${prev ? `שינוי מול הסקר הקודם שלהם · ${esc(prev.date)}` : 'אין סקר קודם של אותו מכון ומפרסם בחלון'}</span></footer></article>`;
   }).join('') || '<p class="empty">לא נמצאו סקרים לפי הסינון.</p>';
   $('#polls-cards').hidden = S.pollView !== 'cards';
@@ -6876,17 +6872,8 @@ function houseEffects(elections) {
     groups: Object.fromEntries(Object.keys(HOUSE_GROUPS).filter(g => r[g]).map(g => [g, pack(r[g])]))
   }]));
 }
-/* הטעות הקבועה של המכון ברשימה של 2026 (או בגוש הימין), אם יש כזו */
+/* נתוני הטעות הקבועה של המכון (לפי מכון הכיול שלו), אם יש לו היסטוריה */
 const houseOf = meta => (meta?.calibrated && S.house?.[calibrationId(meta)]) || null;
-function houseFor(meta, id) {
-  const h = houseOf(meta);
-  const g = h && Object.keys(HOUSE_GROUPS).find(k => HOUSE_GROUPS[k].members.includes(normId(id)));
-  return g && h.groups[g]?.consistent ? { ...h.groups[g], together: HOUSE_GROUPS[g].together } : null;
-}
-function houseBloc(meta) {
-  const h = houseOf(meta);
-  return h?.bloc.consistent ? h.bloc : null;
-}
 /* הטעות הממוצעת של הענף בכל קבוצה — ממוצע הטעויות של כל המכונים שסקרו אותה */
 function houseIndustry(house) {
   return Object.fromEntries(Object.keys(HOUSE_GROUPS).map(g => {
@@ -6936,7 +6923,6 @@ function houseShiftList(fromParties, toParties) {
     .filter(([, d]) => Math.abs(d) >= 0.3).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .map(([id, d]) => [partyMeta(id).name, `${d > 0 ? "+" : "−"}${r1(Math.abs(d))}`]);
 }
-const pollPartyMap = p => p.parties.reduce((m, x) => { const id = normId(x.id); m[id] = (m[id] || 0) + x.mandates; return m; }, {});
 const houseShiftHTML = list => list.map(([n, v]) => `${esc(n)} <span dir="ltr">${v}</span>`).join(" · ");
 /* "נמוך ב־1.7" / "גבוה ב־1.2" — והסבר מלא לתיבת הרמז */
 const houseShort = h => `${h.mean < 0 ? "נמוך" : "גבוה"} ב־${r1(Math.abs(h.mean))}`;
@@ -7631,6 +7617,21 @@ function renderCalibSwitch() {
   $("#calib-source").innerHTML = `מקור הסקרים: ${src} · תוצאות האמת: ועדת הבחירות המרכזית. ${esc(e.data.meta?.note || "")}`;
 }
 
+/* דיוק המכונים: הערה אחת לכל מכון — איפה הוא טועה באופן קבוע (2020–2022). אלה
+   הטעויות שתחזית הברומטר מתקנת בתוך הגוש; בכרטיסי הסקרים עצמם אין הערה. */
+function houseFirmNote(meta) {
+  const h = houseOf(meta);
+  if (!h) return "";
+  if (h.bloc.runs.length < 2)
+    return `<p class="house-firm is-clean">סקר רק במערכת אחת (${h.bloc.runs.map(r => r.year).join("")}) — מוקדם לקבוע טעות קבועה</p>`;
+  const items = [];
+  if (h.bloc.consistent) items.push(["גוש הימין", "גוש הימין", h.bloc]);
+  Object.entries(HOUSE_GROUPS).forEach(([g, def]) => { if (h.groups[g]?.consistent) items.push([def.he, def.together || def.he, h.groups[g]]); });
+  if (!items.length) return `<p class="house-firm is-clean">בלי טעות קבועה ב־2020–2022</p>`;
+  return `<p class="house-firm"><b>טעות קבועה:</b> ${items.map(([short, long, x]) =>
+    `<span title="${esc(houseExplain(x, long))}">${esc(short)} ${houseShort(x)}</span>`).join(" · ")}</p>`;
+}
+
 function render2022() {
   const stats = S.stats, el = curElection(), defs = curBlocDefs(), target = scenActual();
   renderCalibSwitch();
@@ -7661,6 +7662,7 @@ function render2022() {
         ? `<span title="${esc(r.election)}: ${r.n} סקרים"><small>${esc(runsOf[i].short)}</small><b>${r1(r.score)}</b></span>`
         : `<span class="none" title="לא פרסם סקרים בחלון"><small>${esc(runsOf[i].short)}</small><b>—</b></span>`).join("")}</div>
       <div class="meters">${comps.map(([k, l, c]) => `<div class="meter" style="--c:${c}"><span>${l}<b>${r1(it[k])}</b></span><i style="--v:${clamp(it[k])}%"></i></div>`).join("")}</div>
+      ${houseFirmNote(m)}
       <div class="final rank-outlets"><span>מפרסם ב־</span>${outletIconStrip(m.outlets || [])}</div>
     </article>`;
   $("#rank-list").innerHTML = calibrated.map((it, idx) => {

@@ -464,17 +464,8 @@ function houseEffects(elections) {
     groups: Object.fromEntries(Object.keys(HOUSE_GROUPS).filter(g => r[g]).map(g => [g, pack(r[g])]))
   }]));
 }
-/* הטעות הקבועה של המכון ברשימה של 2026 (או בגוש הימין), אם יש כזו */
+/* נתוני הטעות הקבועה של המכון (לפי מכון הכיול שלו), אם יש לו היסטוריה */
 const houseOf = meta => (meta?.calibrated && S.house?.[calibrationId(meta)]) || null;
-function houseFor(meta, id) {
-  const h = houseOf(meta);
-  const g = h && Object.keys(HOUSE_GROUPS).find(k => HOUSE_GROUPS[k].members.includes(normId(id)));
-  return g && h.groups[g]?.consistent ? { ...h.groups[g], together: HOUSE_GROUPS[g].together } : null;
-}
-function houseBloc(meta) {
-  const h = houseOf(meta);
-  return h?.bloc.consistent ? h.bloc : null;
-}
 /* הטעות הממוצעת של הענף בכל קבוצה — ממוצע הטעויות של כל המכונים שסקרו אותה */
 function houseIndustry(house) {
   return Object.fromEntries(Object.keys(HOUSE_GROUPS).map(g => {
@@ -524,7 +515,6 @@ function houseShiftList(fromParties, toParties) {
     .filter(([, d]) => Math.abs(d) >= 0.3).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .map(([id, d]) => [partyMeta(id).name, `${d > 0 ? "+" : "−"}${r1(Math.abs(d))}`]);
 }
-const pollPartyMap = p => p.parties.reduce((m, x) => { const id = normId(x.id); m[id] = (m[id] || 0) + x.mandates; return m; }, {});
 const houseShiftHTML = list => list.map(([n, v]) => `${esc(n)} <span dir="ltr">${v}</span>`).join(" · ");
 /* "נמוך ב־1.7" / "גבוה ב־1.2" — והסבר מלא לתיבת הרמז */
 const houseShort = h => `${h.mean < 0 ? "נמוך" : "גבוה"} ב־${r1(Math.abs(h.mean))}`;
@@ -1219,6 +1209,21 @@ function renderCalibSwitch() {
   $("#calib-source").innerHTML = `מקור הסקרים: ${src} · תוצאות האמת: ועדת הבחירות המרכזית. ${esc(e.data.meta?.note || "")}`;
 }
 
+/* דיוק המכונים: הערה אחת לכל מכון — איפה הוא טועה באופן קבוע (2020–2022). אלה
+   הטעויות שתחזית הברומטר מתקנת בתוך הגוש; בכרטיסי הסקרים עצמם אין הערה. */
+function houseFirmNote(meta) {
+  const h = houseOf(meta);
+  if (!h) return "";
+  if (h.bloc.runs.length < 2)
+    return `<p class="house-firm is-clean">סקר רק במערכת אחת (${h.bloc.runs.map(r => r.year).join("")}) — מוקדם לקבוע טעות קבועה</p>`;
+  const items = [];
+  if (h.bloc.consistent) items.push(["גוש הימין", "גוש הימין", h.bloc]);
+  Object.entries(HOUSE_GROUPS).forEach(([g, def]) => { if (h.groups[g]?.consistent) items.push([def.he, def.together || def.he, h.groups[g]]); });
+  if (!items.length) return `<p class="house-firm is-clean">בלי טעות קבועה ב־2020–2022</p>`;
+  return `<p class="house-firm"><b>טעות קבועה:</b> ${items.map(([short, long, x]) =>
+    `<span title="${esc(houseExplain(x, long))}">${esc(short)} ${houseShort(x)}</span>`).join(" · ")}</p>`;
+}
+
 function render2022() {
   const stats = S.stats, el = curElection(), defs = curBlocDefs(), target = scenActual();
   renderCalibSwitch();
@@ -1249,6 +1254,7 @@ function render2022() {
         ? `<span title="${esc(r.election)}: ${r.n} סקרים"><small>${esc(runsOf[i].short)}</small><b>${r1(r.score)}</b></span>`
         : `<span class="none" title="לא פרסם סקרים בחלון"><small>${esc(runsOf[i].short)}</small><b>—</b></span>`).join("")}</div>
       <div class="meters">${comps.map(([k, l, c]) => `<div class="meter" style="--c:${c}"><span>${l}<b>${r1(it[k])}</b></span><i style="--v:${clamp(it[k])}%"></i></div>`).join("")}</div>
+      ${houseFirmNote(m)}
       <div class="final rank-outlets"><span>מפרסם ב־</span>${outletIconStrip(m.outlets || [])}</div>
     </article>`;
   $("#rank-list").innerHTML = calibrated.map((it, idx) => {

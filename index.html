@@ -32,7 +32,7 @@
 <script src="assets/explore.js?v=5f643732" defer></script>
 <script src="assets/poll-tracker.js?v=e3686e93" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=2aee4e19" defer></script>
+<script src="assets/app.js?v=90aa889e" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
@@ -47,7 +47,7 @@
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
-<link rel="stylesheet" href="assets/poll-tracker.css?v=9a575927">
+<link rel="stylesheet" href="assets/poll-tracker.css?v=cdc39323">
 <link rel="stylesheet" href="assets/theme.css?v=2852f412">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
@@ -220,12 +220,19 @@
     </section>
 
     <section class="sec cross-sec" id="poll-crossover" data-polls-panel="cross" hidden aria-labelledby="cross-title" tabindex="-1">
-      <div class="tr-card cross-card">
-        <div class="tr-card-head cross-head"><div><h3 id="cross-title">כמה מצביעים עברו מגוש לגוש — לפי כל מכון</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
-        <p class="sec-note" id="crossover-note"></p>
-        <div id="crossover-chart" class="crosschart"></div>
-        <div class="notice warm cross-verdict"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
-        <details class="cross-base"><summary>מאזן הפתיחה — איפה עמדו הגושים ב־2022</summary><div id="crossover-baseline"></div></details>
+      <div class="cx">
+        <div class="tr-card cx-story">
+          <p class="kicker">כמה עברו צד · הסקר האחרון של כל מכון מול 2022</p>
+          <h3 id="cross-title">כמה מצביעים עברו מגוש לגוש</h3>
+          <p class="cx-lead" id="cx-lead"></p>
+          <div class="cx-line" id="cx-line" role="img"></div>
+          <details class="cx-how"><summary>איך מחשבים · מי בכל גוש</summary><div id="crossover-baseline"></div></details>
+        </div>
+        <div class="tr-card cx-firms">
+          <div class="cx-firms-head"><h4 id="cx-firms-title">כל מכון: כמה קולות זזו מהצפוי</h4><span id="cx-firms-note"></span></div>
+          <div id="crossover-chart"></div>
+          <p class="cx-verdict" id="crossover-verdict"></p>
+        </div>
       </div>
     </section>
 

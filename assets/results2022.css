@@ -206,3 +206,28 @@ body:has(#view-map.on)>footer{display:none}
 .r22-top path.r22-city:hover{opacity:1;stroke:#14233a;stroke-width:1.4px}
 .r22-top path.r22-city.sel{opacity:1;stroke:#14233a;stroke-width:2.4px}
 .r22-credit{position:absolute;inset-inline-start:8px;top:6px;margin:0;font-size:.58rem;color:#5d6977;pointer-events:none}
+
+/* ---------- מערכות הבחירות ותחזית 2026 (04.10.2026) ---------- */
+.r22-years{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.r22-years button{min-height:30px;padding:3px 10px;border:1px solid rgba(253,251,246,.22);border-radius:6px;background:rgba(253,251,246,.06);color:#dbe4ee;font:inherit;font-size:.76rem;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums}
+.r22-years button:hover{background:rgba(253,251,246,.14)}
+.r22-years button[aria-pressed="true"]{background:#fdfbf6;border-color:#fdfbf6;color:#14233a}
+.r22-years .r22-year-fc{margin-inline-start:8px;border-color:#c9a24a;color:#e9cf8f}
+.r22-years .r22-year-fc[aria-pressed="true"]{background:#c9a24a;border-color:#c9a24a;color:#14233a}
+.r22-years[aria-busy="true"]{opacity:.6;pointer-events:none}
+#r22-table td.r22-shift{font-weight:700}
+#view-map #r22-table td.r22-shift.right{color:#1d4f8f}
+#view-map #r22-table td.r22-shift.left{color:#a3352b}
+.r22-groupitem .r22-seatname small{white-space:normal}
+.r22-trend{display:block;width:100%;height:100%}
+.r22-tr-grid{stroke:#e4dccb;stroke-width:1}
+.r22-tr-ax{font-size:10.5px;fill:#6b7480;font-variant-numeric:tabular-nums}
+.r22-tr-future{fill:#c9a24a;opacity:.1}
+.r22-tr-line{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.r22-tr-proj{stroke-dasharray:5 4;stroke-width:2.2}
+.r22-tr-end{font-size:11px;font-weight:800;paint-order:stroke;stroke:#fdfbf6;stroke-width:3px}
+.r22-tr-key{display:inline-flex;align-items:center;gap:4px;margin-inline-end:8px}
+.r22-tr-key i{width:12px;height:3px;border-radius:2px;background:var(--c)}
+.r22-tr-dash{display:inline-block;width:16px;border-top:2px dashed #6b7480;vertical-align:middle}
+#r22-bars-legend .r22-tr-key{margin-inline-end:6px;white-space:nowrap}
+.r22-bars .r22-card-head h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}

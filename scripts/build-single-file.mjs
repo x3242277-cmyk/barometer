@@ -37,6 +37,10 @@ for (const file of ["exit-2022-kan11.png","exit-2022-channel12.png","exit-2022-c
 const files = ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"];
 const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/historical-polls-2021.json", "data/historical-polls-2020.json", "data/forecast-history.json", "data/polls-archive.json", "data/results-2022.json"];
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
+/* מפת הבחירות: כל מערכות הבחירות מאז 2003 ומגמות היישובים לתחזית 2026 */
+try {
+  optionalFiles.push("data/elections/index.json", "data/trends.json", ...JSON.parse(await rd("data/elections/index.json")).map(e => `data/elections/${e.id}.json`));
+} catch { /* optional */ }
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 
 // הטמעת תמונות מקומיות כ-data URI כדי שהקובץ היחיד יעבוד בלי שרת

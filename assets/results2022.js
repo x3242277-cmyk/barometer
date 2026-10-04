@@ -219,6 +219,8 @@ function renderSide() {
       ? "היבשה מחולקת ל־68 אזורים רציפים, על בסיס קרבה גאוגרפית ודפוסי ההצבעה ב־2022 — אותם אזורים בכל השנים. רשומות שבט ונקודות מיקום לא אמינות נספרות בתוצאות, אך אינן משמשות נקודת מיקום במפה. צבע כהה מציין יתרון גדול יותר לקבוצה המובילה."
       : "ימין — הליכוד, הציונות הדתית, עוצמה יהודית, ימינה, ש״ס ויהדות התורה. מרכז־שמאל — יש עתיד, כחול לבן והמחנה הממלכתי, העבודה, מרצ, ישראל ביתנו ותקווה חדשה. ערבים — חד״ש־תע״ל, רע״מ ובל״ד. רשימה נספרת בקבוצה שלה מ־1.5% מהקולות, גם אם לא עברה את אחוז החסימה; הקטנות יותר — ״אחרות״. הפסים מחלקים את שטח המפה לפי הקולות."}</p>`}</details>`;
 }
+/* סוגי יישוב בלי כפתור סינון (החלטת המשתמש, 05.10.2026); היישובים עצמם נשארים בטבלה ובמפה */
+const NO_FILTER = new Set(["mixed"]);
 function modeControls() {
   if (st.mode === "areas") return `<label class="r22-field"><span>אזור</span><input id="r22-find" type="search" list="r22-find-list" placeholder="שם אזור או עיר" autocomplete="off"><datalist id="r22-find-list">${
     D.areaRows.slice().sort((a, b) => a.name.localeCompare(b.name, "he")).map(r => `<option value="${escH(r.name)}"></option>`).join("")}</datalist></label>`;
@@ -228,7 +230,7 @@ function modeControls() {
       D.localities.map(l => `<option value="${escH(l.n)}"></option>`).join("")}</datalist></label>
       <fieldset class="r22-field"><legend>אוכלוסייה</legend><div class="r22-chips">
         <button type="button" data-sector="" aria-pressed="${!st.sectors.size}">הכול</button>${
-        Object.entries(D.sectors).map(([k, he]) => `<button type="button" data-sector="${k}" aria-pressed="${st.sectors.has(k)}" title="${counts[k]} יישובים">${escH(he)}</button>`).join("")}</div></fieldset>`;
+        Object.entries(D.sectors).filter(([k]) => !NO_FILTER.has(k)).map(([k, he]) => `<button type="button" data-sector="${k}" aria-pressed="${st.sectors.has(k)}" title="${counts[k]} יישובים">${escH(he)}</button>`).join("")}</div></fieldset>`;
   }
   return duelHTML();
 }

@@ -1651,8 +1651,25 @@ function crossExtremes(rows) {
 const heJoin = names => names.length < 2 ? (names[0] || "") : names.slice(0, -1).join(", ") + " ו" + names.at(-1);
 const firmsHe = rs => heJoin(rs.map(r => r.meta.he || r.meta.firm || r.meta.id));
 
+/* תחזית 2026 של המודל הגיאוגרפי (data/trends.json, ברירת המחדל של העמוד): חלק הימין
+   והחרדים מתוך ארבע הקבוצות — אותה הגדרה כמו כאן (רשימות מ־1.5%). נטען בפעם הראשונה. */
+function geoRightShare() {
+  if (S.trendsNat === undefined) {
+    S.trendsNat = null;
+    const inline = window.__BAROMETER_DATA__?.["data/trends.json"];
+    (inline ? Promise.resolve(inline) : loadJSONOptional("data/trends.json")).then(t => {
+      S.trendsNat = t?.national || null;
+      if (S.trendsNat && $("#poll-crossover") && !$("#poll-crossover").hidden) renderCrossover();
+    });
+    return null;
+  }
+  const f = S.trendsNat?.f26;
+  return f ? 100 * (f[0] + f[1]) / (f[0] + f[1] + f[2] + f[3]) : null;
+}
+
 function renderCrossover() {
   const { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
+  const geo = geoRightShare();
 
   $("#crossover-intro").textContent =
     "השוו כמה קולות מייצג השינוי בגושים לפי הסקר האחרון של כל מכון, מעבר לגידול הטבעי. זהו אומדן על בסיס 2022, ולא מדידה ישירה של אנשים שעברו צד.";
@@ -1678,7 +1695,7 @@ function renderCrossover() {
     `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}%. מול 2022 בתוספת הגידול הטבעי (${r1(base)}%), השינוי שקול לכ־${kv(votersAvg)} קולות ${deltaAvg <= 0 ? "פחות" : "יותר"}. רשימות עם 1.5% ומעלה נכללות גם מתחת לאחוז החסימה.`;
 
   /* ציר: עיגול לכפולה נוחה של 100 אלף */
-  const maxV = Math.max(...rows.map(r => r.voters), votersAvg, 100000);
+  const maxV = Math.max(...rows.map(r => r.voters), votersAvg, votersOf(growth), geo == null ? 0 : votersOf(geo - base), 100000);
   const axisMax = Math.ceil(maxV * 1.28 / 100000) * 100000;          // מרווח לתווית מעבר לקצה הסרגל
   const step = axisMax >= 800000 ? 200000 : 100000;
   const ticks = [];
@@ -1688,6 +1705,14 @@ function renderCrossover() {
   const pos = v => 50 - 50 * v / axisMax;                            // אחוז מהקצה הימני
   const tickHtml = ticks.map(v => `<span dir="ltr" style="inset-inline-start:${pos(v).toFixed(2)}%" class="${v ? "" : "zero"}">${v ? (v > 0 ? "+" : "−") + Math.abs(v) / 1000 + "K" : r1(base) + "%"}</span>`).join("");
 
+  /* קווי הייחוס: 2022, המודל הדמוגרפי (נקודת האפס) והמודל הגיאוגרפי — לאורך כל השורות */
+  const at = share => pos(Math.sign(share - base) * votersOf(share - base));
+  const refs = [
+    { cls: "ref-2022", label: "2022", share: rightShare0 },
+    { cls: "ref-demo", label: "המודל הדמוגרפי", share: base },
+    ...(geo == null ? [] : [{ cls: "ref-geo", label: "המודל הגיאוגרפי", share: geo }])
+  ].map(r => ({ ...r, at: at(r.share) }));
+  const refLines = refs.filter(r => r.cls !== "ref-demo").map(r => `<i class="crossrow-ref ${r.cls}" style="inset-inline-start:${r.at.toFixed(2)}%"></i>`).join("");
   const low = rows[0], high = rows.at(-1);
   const namesAt = share => rows.filter(r => Math.abs(r.share - share) < 0.01).map(r => esc(r.meta.he)).join(" / ");
   $("#crossover-highlight").innerHTML =
@@ -1695,13 +1720,15 @@ function renderCrossover() {
   $("#crossover-chart").innerHTML = `<div class="cross-summary">
       <div><span>גוש הימין ב־2022</span><b class="num">${r1(rightShare0)}%</b></div>
       <div class="arrow" aria-hidden="true">←</div>
-      <div><span>עם הגידול הטבעי</span><b class="num">${r1(base)}%</b></div>
+      <div><span>המודל הדמוגרפי · 2026</span><b class="num">${r1(base)}%</b></div>
+      ${geo == null ? "" : `<div class="cross-summary-geo"><span>המודל הגיאוגרפי · 2026</span><b class="num">${r1(geo)}%</b></div>`}
       <div class="arrow" aria-hidden="true">←</div>
       <div><span>ממוצע המכונים היום</span><b class="num">${r1(shareAvg)}%</b></div>
       <div class="cross-summary-out ${deltaAvg <= 0 ? "left" : "join"}"><span>השינוי המשוקלל, במונחי קולות</span><b class="num">≈ ${kv(votersAvg)}</b><em>${r1(Math.abs(deltaAvg))} נקודות אחוז ${deltaAvg <= 0 ? "פחות" : "יותר"} לימין</em></div>
     </div>
-    <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>ירידה בחלק הימין</span><span><i style="background:${BLOCS.Right.color}"></i>עלייה בחלק הימין</span><span><i class="avg"></i>ממוצע המכונים</span><span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
+    <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>ירידה בחלק הימין</span><span><i style="background:${BLOCS.Right.color}"></i>עלייה בחלק הימין</span><span><i class="avg"></i>ממוצע המכונים</span>${refs.map(r => `<span><i class="ref ${r.cls}"></i>${esc(r.label)} · ${r1(r.share)}%${r.cls === "ref-demo" ? " (נקודת האפס)" : ""}</span>`).join("")}<span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
     <div class="cross-grid">
+      <div class="cross-refs" aria-hidden="true">${refs.map((r, i) => `<span class="${r.cls}" style="inset-inline-start:${r.at.toFixed(2)}%;--i:${i}">${esc(r.label)} ${r1(r.share)}%</span>`).join("")}</div>
       <div class="cross-axis" aria-hidden="true">${tickHtml}</div>
       ${rows.map(r => {
         const shrank = r.delta <= 0;
@@ -1710,7 +1737,7 @@ function renderCrossover() {
         return `<div class="crossrow" title="${esc(r.meta.he)}: הימין ב־${r1(r.share)}% בסקר מ־${r.date} מול ${r1(base)}% (2022 + גידול טבעי)${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}">
           <span class="crossrow-firm">${logoBox(r.meta, 26)}<span><b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b><em>${r.date}</em></span></span>
           <span class="crossrow-track">
-            <i class="crossrow-avg" style="inset-inline-start:${pos(deltaAvg <= 0 ? -votersAvg : votersAvg).toFixed(2)}%"></i>
+            <i class="crossrow-avg" style="inset-inline-start:${pos(deltaAvg <= 0 ? -votersAvg : votersAvg).toFixed(2)}%"></i>${refLines}
             <i class="crossrow-fill ${shrank ? "shrank" : "grew"}" style="width:${w.toFixed(2)}%;background:${shrank ? BLOCS.Left.color : BLOCS.Right.color}"><b dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</b></i>
           </span>
           <span class="crossrow-share num"><span dir="ltr">${r1(r.share)}%</span><small dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</small></span>

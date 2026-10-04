@@ -314,3 +314,22 @@
   #view-polls .feed-parties li{gap:6px;padding:4px 0;font-size:.8rem}
 }
 @keyframes polls-enter{from{opacity:.5}to{opacity:1}}
+
+/* ---------- כמה עברו צד: קווי ייחוס — 2022, המודל הדמוגרפי, המודל הגיאוגרפי (05.10.2026) ----------
+   המודל הדמוגרפי הוא נקודת האפס (הקו האמצעי בכל שורה). התוויות מעל הציר מדורגות
+   בשלוש שורות, כי שלושת הערכים קרובים. */
+.cross-refs{position:relative;height:48px;margin-inline-start:200px;margin-inline-end:74px}
+.cross-refs span{position:absolute;top:calc(var(--i) * 16px);transform:translateX(50%);padding:0 5px;border-radius:3px;font-size:.66rem;font-weight:800;white-space:nowrap;line-height:15px;background:var(--paper-2,#fdfbf6)}
+.cross-refs span::after{content:"";position:absolute;top:100%;inset-inline-start:50%;height:calc(48px - var(--i) * 16px - 15px);border-inline-start:1px solid currentColor;opacity:.6}
+.cross-refs .ref-2022{color:#6b7480}
+.cross-refs .ref-demo{color:var(--ink)}
+.cross-refs .ref-geo{color:#8a5d0b}
+.crossrow-ref{position:absolute;inset-block:-3px;width:0;z-index:2;pointer-events:none}
+.crossrow-ref.ref-2022{border-inline-start:2px dotted #6b7480}
+.crossrow-ref.ref-geo{border-inline-start:2px solid #b8862b}
+.cross-legend i.ref{width:0;height:14px;border-radius:0}
+.cross-legend i.ref-2022{border-inline-start:2px dotted #6b7480}
+.cross-legend i.ref-demo{border-inline-start:2px solid var(--ink)}
+.cross-legend i.ref-geo{border-inline-start:2px solid #b8862b}
+.cross-summary-geo b{color:#8a5d0b!important}
+@media(max-width:640px){.cross-refs{margin-inline:0}}

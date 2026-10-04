@@ -148,9 +148,9 @@
     const R = data.blocTot.Right || 0, L = data.blocTot.Left || 0, A = data.blocTot.Arabs || 0;
     stage = document.createElement('div'); stage.id = 'show'; stage.dir = 'rtl';
     stage.setAttribute('role', 'dialog'); stage.setAttribute('aria-modal', 'true');
-    stage.setAttribute('aria-label', 'פתיח ברומטר — המחשת התחזית');
+    stage.setAttribute('aria-label', 'פתיח הברומטר — המחשת התחזית');
     stage.innerHTML = `
-      <header class="signal-top"><span class="signal-brand"><img src="${logoSrc}" alt="">ברומטר<span class="signal-divider"></span><span lang="en" dir="ltr">BAROMETER</span></span><button class="signal-skip" type="button">לדלג לתחזית <span aria-hidden="true">↙</span></button></header>
+      <header class="signal-top"><span class="signal-brand"><img src="${logoSrc}" alt="">הברומטר<span class="signal-divider"></span><span lang="en" dir="ltr">BAROMETER</span></span><button class="signal-skip" type="button">לדלג לתחזית <span aria-hidden="true">↙</span></button></header>
       <main class="signal-body">
         <div class="signal-caption" aria-hidden="true"><span class="signal-dot"></span>${ICON.flag} בחירות לכנסת ה־26 · 27 באוקטובר 2026</div>
         <h2 class="signal-title" aria-live="polite" aria-atomic="true"></h2>

@@ -1,5 +1,5 @@
-<title>ברומטר</title>
-<meta name="description" content="ברומטר — ניתוח עצמאי של סקרי הבחירות בישראל.">
+<title>הברומטר</title>
+<meta name="description" content="הברומטר — ניתוח עצמאי של סקרי הבחירות בישראל.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap');
@@ -4801,7 +4801,7 @@ body:has(#view-map.on)>footer{display:none}
         <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
         <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
         <p class="cover-tagline">מהסקרים ועד לשינויים באוכלוסייה — רואים מה באמת עומד מאחורי התחזית.</p>
-        <p class="cover-purpose">ברומטר משקלל סקרים לפי דיוק המכונים, משווה לבחירות עבר ובודק תרחישי קצה וגידול דמוגרפי — כדי לראות איך כל גורם משנה את חלוקת המנדטים.</p>
+        <p class="cover-purpose">הברומטר משקלל סקרים לפי דיוק המכונים, משווה לבחירות עבר ובודק תרחישי קצה וגידול דמוגרפי — כדי לראות איך כל גורם משנה את חלוקת המנדטים.</p>
         <ul class="cover-points">
           <li>סקרים לפי דיוק המכונים</li>
           <li>נתוני עבר ותרחישי קצה</li>
@@ -5025,7 +5025,7 @@ body:has(#view-map.on)>footer{display:none}
   <div class="exit-showcase" id="exit-showcase" aria-label="מדגמי ערוצי החדשות">
     <div class="exit-showcase-inner">
       <div class="night-countdown" data-night-countdown></div>
-      <div class="exit-showcase-heading"><div><p class="kicker">ברומטר · ליל הבחירות</p><h2>מדגמי חמשת הערוצים</h2><p>צילומי המדגמים מ־2022, ובהמשך נתוני 2026 מכל ערוץ בנפרד.</p></div></div>
+      <div class="exit-showcase-heading"><div><p class="kicker">הברומטר · ליל הבחירות</p><h2>מדגמי חמשת הערוצים</h2><p>צילומי המדגמים מ־2022, ובהמשך נתוני 2026 מכל ערוץ בנפרד.</p></div></div>
       <div class="exit-showcase-grid" id="exit-showcase-grid"></div>
       <p class="exit-showcase-disclaimer">תוצאות המדגמים יופיעו ברגע שידורן בערוצים. לא יתקיים שידור חי באתר.</p>
     </div>
@@ -5433,7 +5433,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 
 נתוני בחירות 2022: ועדת הבחירות המרכזית, תוצאות ארציות.
 
-סקרים וממוצעים: אתר &quot;המדד&quot; (themadad.com), &quot;ברומטר&quot; (x3242277-cmyk.github.io/barometer), סרוגים.
+סקרים וממוצעים: אתר &quot;המדד&quot; (themadad.com), &quot;הברומטר&quot; (x3242277-cmyk.github.io/barometer), סרוגים.
 
 מחקרים אקדמיים: המכון הישראלי לדמוקרטיה, מרכז טאוב, אוניברסיטאות בר־אילן, תל־אביב, העברית.
 
@@ -5442,7 +5442,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 
 עדכון שוטף: מומלץ לעדכן את המודל מדי שבוע עם פרסום סקרים חדשים ונתוני פנקס בוחרים מעודכנים.
 
-תיקוף צולב: השוו תחזיות המודל עם תחזיות &quot;המדד&quot;, &quot;ברומטר&quot; וסקרי מכוני מחקר אקדמיים לתיקוף רציף.</div></details></section>  </div>
+תיקוף צולב: השוו תחזיות המודל עם תחזיות &quot;המדד&quot;, &quot;הברומטר&quot; וסקרי מכוני מחקר אקדמיים לתיקוף רציף.</div></details></section>  </div>
 </section>
 
 <!-- ==================== המודל הדמוגרפי ==================== -->
@@ -6370,7 +6370,7 @@ if (typeof window !== "undefined") window.addEventListener("resize", () => {
 });
 
 /* ============================================================
-   ברומטר — לוגיקת האתר
+   הברומטר — לוגיקת האתר
    ============================================================ */
 "use strict";
 
@@ -6740,7 +6740,7 @@ const FIRM_FALLBACK_COLOR = "#64707C";
 const firmColor = sourceId => firmOf(sourceId).meta.color || FIRM_FALLBACK_COLOR;
 
 function firmOf(sourceId) {
-  if (sourceId === BAROMETER_SOURCE) return { firm: BAROMETER_SOURCE, outlet: BAROMETER_OUTLET, meta: { id: BAROMETER_SOURCE, he: "ברומטר", short: "ב", calibrated: false, color: "#B8862B" } };
+  if (sourceId === BAROMETER_SOURCE) return { firm: BAROMETER_SOURCE, outlet: BAROMETER_OUTLET, meta: { id: BAROMETER_SOURCE, he: "הברומטר", short: "ה", calibrated: false, color: "#B8862B" } };
   const m = S.firms.sourceMap[sourceId];
   if (!m) return { firm: sourceId, outlet: sourceId, meta: { he: sourceId, short: "?", calibrated: false, color: FIRM_FALLBACK_COLOR } };
   return { ...m, meta: S.firms.firms.find(f => f.id === m.firm) || { he: m.firm, short: "?", calibrated: false } };
@@ -6758,7 +6758,7 @@ function barometerWeeklyPolls() {
     const [y, m, d] = w.date.split("-");
     const ts = Date.parse(w.date + "T00:00:00Z");
     return { id: `${BAROMETER_SOURCE}-${w.week}`, barometer: true, date: `${d}.${m}.${y}`, dateTimestamp: ts, publishedAt: Date.parse(w.recordedAt) || ts,
-      channelHebrewName: BAROMETER_OUTLET, sourceId: BAROMETER_SOURCE, pollster: "ברומטר",
+      channelHebrewName: BAROMETER_OUTLET, sourceId: BAROMETER_SOURCE, pollster: "הברומטר",
       parties: Object.entries(w.seats || {}).map(([id, mandates]) => ({ id, name: partyMeta(id).name, logoUrl: "", mandates, alignment: partyMeta(id).alignment })) };
   }).sort((a, b) => b.dateTimestamp - a.dateTimestamp);
 }
@@ -7932,8 +7932,8 @@ function renderDiscovery() {
   const displayed = value => String(r1(value)).replace(/\.0$/, "");
   discoveryGroups = [
     [
-      { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב ברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
-      { eyebrow:"ממוצע המכונים", number:`≈ ${c.kv(c.votersAvg)}`, title:`קולות ${c.deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`, description:"שינוי התמיכה המשוקלל לעומת 2022 בתוספת הגידול הטבעי, במונחי מצביעים. זהו אומדן, לא מעקב אחרי מצביעים בודדים.", source:"מקור: הסקר האחרון של כל מכון · חישוב ברומטר", href:"#/polls/crossover", link:"ראו את דרך ההשוואה" },
+      { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב הברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
+      { eyebrow:"ממוצע המכונים", number:`≈ ${c.kv(c.votersAvg)}`, title:`קולות ${c.deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`, description:"שינוי התמיכה המשוקלל לעומת 2022 בתוספת הגידול הטבעי, במונחי מצביעים. זהו אומדן, לא מעקב אחרי מצביעים בודדים.", source:"מקור: הסקר האחרון של כל מכון · חישוב הברומטר", href:"#/polls/crossover", link:"ראו את דרך ההשוואה" },
       { eyebrow:"כשסופרים גם קולות שלא עברו", number:fmt(S.regions.wasted.blocGap), title:"קולות בלבד בין שני המחנות ב־2022", description:"הפער בין הגושים קטן בהרבה כשמוסיפים את מצביעי מרצ ובל״ד שנותרו מחוץ לכנסת.", source:"מקור: ועדת הבחירות · תוצאות 2022 · לפי שיוך הגושים באתר", href:"#/polls/crossover", link:"ראו את חישוב הגושים" }
     ],
     [
@@ -8751,7 +8751,7 @@ function show(view) {
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
   const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
-  document.title = `${t} · ברומטר`;
+  document.title = `${t} · הברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
   if (view === "home") $("#view-home").scrollTop = 0;
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
@@ -9341,9 +9341,9 @@ function renderHaredHistory() {
     const R = data.blocTot.Right || 0, L = data.blocTot.Left || 0, A = data.blocTot.Arabs || 0;
     stage = document.createElement('div'); stage.id = 'show'; stage.dir = 'rtl';
     stage.setAttribute('role', 'dialog'); stage.setAttribute('aria-modal', 'true');
-    stage.setAttribute('aria-label', 'פתיח ברומטר — המחשת התחזית');
+    stage.setAttribute('aria-label', 'פתיח הברומטר — המחשת התחזית');
     stage.innerHTML = `
-      <header class="signal-top"><span class="signal-brand"><img src="${logoSrc}" alt="">ברומטר<span class="signal-divider"></span><span lang="en" dir="ltr">BAROMETER</span></span><button class="signal-skip" type="button">לדלג לתחזית <span aria-hidden="true">↙</span></button></header>
+      <header class="signal-top"><span class="signal-brand"><img src="${logoSrc}" alt="">הברומטר<span class="signal-divider"></span><span lang="en" dir="ltr">BAROMETER</span></span><button class="signal-skip" type="button">לדלג לתחזית <span aria-hidden="true">↙</span></button></header>
       <main class="signal-body">
         <div class="signal-caption" aria-hidden="true"><span class="signal-dot"></span>${ICON.flag} בחירות לכנסת ה־26 · 27 באוקטובר 2026</div>
         <h2 class="signal-title" aria-live="polite" aria-atomic="true"></h2>
@@ -9739,7 +9739,7 @@ function renderHaredHistory() {
 })();
 
 /* ============================================================
-   ברומטר — בחירות 2022: לוח נתונים במסך אחד (#/map)
+   הברומטר — בחירות 2022: לוח נתונים במסך אחד (#/map)
    ------------------------------------------------------------
    שלוש תצוגות (בעמודה הימנית), כל אחת עם מפה, כרטיס וגרף משלה:
      כל הארץ   — המדינה מחולקת בין גוש נתניהו לגוש השינוי לפי הקולות;

@@ -1,5 +1,5 @@
 /* ============================================================
-   ברומטר — לוגיקת האתר
+   הברומטר — לוגיקת האתר
    ============================================================ */
 "use strict";
 
@@ -369,7 +369,7 @@ const FIRM_FALLBACK_COLOR = "#64707C";
 const firmColor = sourceId => firmOf(sourceId).meta.color || FIRM_FALLBACK_COLOR;
 
 function firmOf(sourceId) {
-  if (sourceId === BAROMETER_SOURCE) return { firm: BAROMETER_SOURCE, outlet: BAROMETER_OUTLET, meta: { id: BAROMETER_SOURCE, he: "ברומטר", short: "ב", calibrated: false, color: "#B8862B" } };
+  if (sourceId === BAROMETER_SOURCE) return { firm: BAROMETER_SOURCE, outlet: BAROMETER_OUTLET, meta: { id: BAROMETER_SOURCE, he: "הברומטר", short: "ה", calibrated: false, color: "#B8862B" } };
   const m = S.firms.sourceMap[sourceId];
   if (!m) return { firm: sourceId, outlet: sourceId, meta: { he: sourceId, short: "?", calibrated: false, color: FIRM_FALLBACK_COLOR } };
   return { ...m, meta: S.firms.firms.find(f => f.id === m.firm) || { he: m.firm, short: "?", calibrated: false } };
@@ -387,7 +387,7 @@ function barometerWeeklyPolls() {
     const [y, m, d] = w.date.split("-");
     const ts = Date.parse(w.date + "T00:00:00Z");
     return { id: `${BAROMETER_SOURCE}-${w.week}`, barometer: true, date: `${d}.${m}.${y}`, dateTimestamp: ts, publishedAt: Date.parse(w.recordedAt) || ts,
-      channelHebrewName: BAROMETER_OUTLET, sourceId: BAROMETER_SOURCE, pollster: "ברומטר",
+      channelHebrewName: BAROMETER_OUTLET, sourceId: BAROMETER_SOURCE, pollster: "הברומטר",
       parties: Object.entries(w.seats || {}).map(([id, mandates]) => ({ id, name: partyMeta(id).name, logoUrl: "", mandates, alignment: partyMeta(id).alignment })) };
   }).sort((a, b) => b.dateTimestamp - a.dateTimestamp);
 }
@@ -1561,8 +1561,8 @@ function renderDiscovery() {
   const displayed = value => String(r1(value)).replace(/\.0$/, "");
   discoveryGroups = [
     [
-      { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב ברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
-      { eyebrow:"ממוצע המכונים", number:`≈ ${c.kv(c.votersAvg)}`, title:`קולות ${c.deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`, description:"שינוי התמיכה המשוקלל לעומת 2022 בתוספת הגידול הטבעי, במונחי מצביעים. זהו אומדן, לא מעקב אחרי מצביעים בודדים.", source:"מקור: הסקר האחרון של כל מכון · חישוב ברומטר", href:"#/polls/crossover", link:"ראו את דרך ההשוואה" },
+      { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב הברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
+      { eyebrow:"ממוצע המכונים", number:`≈ ${c.kv(c.votersAvg)}`, title:`קולות ${c.deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`, description:"שינוי התמיכה המשוקלל לעומת 2022 בתוספת הגידול הטבעי, במונחי מצביעים. זהו אומדן, לא מעקב אחרי מצביעים בודדים.", source:"מקור: הסקר האחרון של כל מכון · חישוב הברומטר", href:"#/polls/crossover", link:"ראו את דרך ההשוואה" },
       { eyebrow:"כשסופרים גם קולות שלא עברו", number:fmt(S.regions.wasted.blocGap), title:"קולות בלבד בין שני המחנות ב־2022", description:"הפער בין הגושים קטן בהרבה כשמוסיפים את מצביעי מרצ ובל״ד שנותרו מחוץ לכנסת.", source:"מקור: ועדת הבחירות · תוצאות 2022 · לפי שיוך הגושים באתר", href:"#/polls/crossover", link:"ראו את חישוב הגושים" }
     ],
     [
@@ -2380,7 +2380,7 @@ function show(view) {
   }
   if (view === "live" || view === "results") refreshLiveResults(true);
   const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"בחירות 2022", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
-  document.title = `${t} · ברומטר`;
+  document.title = `${t} · הברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
   if (view === "home") $("#view-home").scrollTop = 0;
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });

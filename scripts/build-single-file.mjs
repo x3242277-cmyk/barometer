@@ -76,12 +76,12 @@ let body = html.slice(html.indexOf("<body>") + 6, html.lastIndexOf("</body>"));
 body = body.replace(/(assets\/[^"'?\s]+)\?v=[0-9a-f]+/g, "$1");
 body = body.replaceAll("assets/logo-icon.png", iconDataUri);
 body = body.replaceAll("assets/logo-wordmark.png", await pngUri("logo-wordmark.png"));
-const title = "ברומטר";
-const fullTitle = "ברומטר · מדד הסקרים והאמינות";
+const title = "הברומטר";
+const fullTitle = "הברומטר · מדד הסקרים והאמינות";
 const fontLink = `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">`;
 
 const artifact = `<title>${title}</title>
-<meta name="description" content="ברומטר — ניתוח עצמאי של סקרי הבחירות בישראל.">
+<meta name="description" content="הברומטר — ניתוח עצמאי של סקרי הבחירות בישראל.">
 ${fontLink}
 ${styleTag}
 <div dir="rtl" lang="he" id="barometer-root">

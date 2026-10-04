@@ -42,7 +42,7 @@ def pixels(ring):
     return [((x - x0) / STEP, (y - y0) / STEP) for x, y in decode(ring)]
 
 
-# Reuse the verified coastline from the existing map as the land mask.
+# The land mask starts from the outlines of the CBS natural regions.
 mask_image = Image.new("L", (width, height))
 draw = ImageDraw.Draw(mask_image)
 for area in source_areas:
@@ -51,6 +51,43 @@ for area in source_areas:
 for water in data["map"]["water"]:
     draw.polygon(pixels(water), fill=0)
 mask = np.asarray(mask_image, dtype=bool)
+# Those outlines run far out to sea along the coast; cut them at the real
+# coastline from the elevation model (scripts/sea_mask.py).
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sea_mask import sea_cells
+from sea_mask import KX as KX_MAP, KY as KY_MAP
+sea = sea_cells(x0, y0, width, height, STEP)
+print(f"· קו החוף: {int((mask & sea).sum() * STEP * STEP / 100)} קמ״ר של ים הוצאו מהמפה")
+mask = mask & ~sea
+# The cut leaves a few specks off the coast (islets, breakwaters): keep only the
+# land that is the main mass or holds a locality.
+speck_id = np.full(mask.shape, -1, dtype=np.int32)
+specks = []
+for seed_y, seed_x in zip(*np.nonzero(mask)):
+    if speck_id[seed_y, seed_x] >= 0:
+        continue
+    speck_id[seed_y, seed_x] = len(specks)
+    pending, cells = [(seed_y, seed_x)], []
+    while pending:
+        y, x = pending.pop()
+        cells.append((y, x))
+        for yy, xx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+            if 0 <= yy < height and 0 <= xx < width and mask[yy, xx] and speck_id[yy, xx] < 0:
+                speck_id[yy, xx] = len(specks)
+                pending.append((yy, xx))
+    specks.append(cells)
+inhabited = set()
+for l in data["localities"]:
+    if l["x"] is not None and l["y"] is not None:
+        cx, cy = int(((l["x"] - 34) * KX_MAP - x0) / STEP), int((-(l["y"] - 29) * KY_MAP - y0) / STEP)
+        if 0 <= cy < height and 0 <= cx < width and speck_id[cy, cx] >= 0:
+            inhabited.add(int(speck_id[cy, cx]))
+largest = max(range(len(specks)), key=lambda i: len(specks[i]))
+mask = mask.copy()
+for i, cells in enumerate(specks):
+    if i != largest and i not in inhabited:
+        for y, x in cells:
+            mask[y, x] = False
 
 localities = [
     l for l in data["localities"]

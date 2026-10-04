@@ -86,8 +86,6 @@ body:has(#view-map.on)>footer{display:none}
 #r22-table[hidden]{display:none}
 #view-map #r22-table :is(th,td),#view-map #r22-table th button{color:var(--r22-ink)}
 #view-map #r22-table .r22-dim{color:var(--r22-ink-3)}
-#view-map #r22-table tr.is-sel :is(th,td){color:#fdfbf6}
-#view-map #r22-table tr.is-sel .r22-dim{color:#c9d3df}
 #r22-table thead th{position:sticky;top:0;z-index:1;background:#f6f1e7;padding:0;border-bottom:1px solid #d3c9b7;font-weight:800;text-align:start;white-space:nowrap}
 #r22-table thead th button{display:flex;align-items:center;gap:4px;width:100%;padding:7px 6px;border:0;background:none;color:inherit;font:inherit;font-weight:800;cursor:pointer;text-align:start}
 #r22-table thead th.n button{justify-content:flex-end}
@@ -95,15 +93,14 @@ body:has(#view-map.on)>footer{display:none}
 #r22-table tbody tr{cursor:pointer}
 #r22-table tbody tr:nth-child(even){background:#faf6ee}
 #r22-table tbody tr:hover{background:#f1e9d8}
-#r22-table tbody tr.is-sel{background:#14233a;color:#fdfbf6}
+#r22-table tbody tr.is-sel :is(th,td){background-color:#f6ebcd}
+#r22-table tbody tr.is-sel th{box-shadow:inset -3px 0 0 #a07019}
 #r22-table tbody tr:focus-visible{outline:2px solid #a07019;outline-offset:-2px}
-#r22-table tbody tr.is-sel .r22-dim{color:#c9d3df}
 #r22-table :is(th,td){padding:5px 6px;border-bottom:1px solid #eee8dc;white-space:nowrap}
 #r22-table tbody th{font-weight:700;text-align:start;max-width:130px;overflow:hidden;text-overflow:ellipsis}
 #r22-table td.n{text-align:end;font-variant-numeric:tabular-nums}
 #r22-table .r22-dim{color:var(--r22-ink-3);max-width:104px;overflow:hidden;text-overflow:ellipsis}
 .r22-camp{background:linear-gradient(to left,color-mix(in srgb,var(--c) 22%,transparent) var(--w),transparent var(--w))}
-#r22-table tr.is-sel .r22-camp{background:none}
 #r22-table .r22-lead{max-width:104px;overflow:hidden;text-overflow:ellipsis}
 .r22-sw{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--c);margin-inline-end:6px;vertical-align:middle}
 .r22-seat-delta.up{color:#176044;font-weight:800}.r22-seat-delta.down{color:#a3352b;font-weight:800}.r22-seat-delta.flat{color:var(--r22-ink-3)}

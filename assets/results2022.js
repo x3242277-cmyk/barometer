@@ -356,7 +356,9 @@ function renderDots() {
   const dot = l => { const [x, y] = proj(l.x, l.y); return `<circle data-id="${l.c}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad(l).toFixed(2)}" class="${cls(l)}" style="--c:${campColor(leadCamp(l))}" aria-label="${escH(l.n)}"></circle>`; };
   const draw = l => l.b ? shape(l) : dot(l);
   /* הגבולות קודם (מתחת), הנקודות מעליהם, והנבחר מעל כולם */
-  svg.querySelector(".r22-top").innerHTML = all.filter(l => l.b && l !== sel).map(draw).join("") + all.filter(l => !l.b && l !== sel).map(draw).join("") + (sel ? draw(sel) : "");
+  /* גבולות השיפוט של ערי החוף נכנסים לפעמים לים — חותכים אותם בקו החוף */
+  const clipLand = h => h && `<g clip-path="url(#r22-land-clip)">${h}</g>`;
+  svg.querySelector(".r22-top").innerHTML = clipLand(all.filter(l => l.b && l !== sel).map(draw).join("")) + all.filter(l => !l.b && l !== sel).map(draw).join("") + (sel ? (sel.b ? clipLand(draw(sel)) : draw(sel)) : "");
   renderLabels();
 }
 
@@ -384,7 +386,8 @@ function animateTo(target) {
   const from = MAP.vb.slice(), t0 = performance.now(), dur = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 320;
   cancelAnimationFrame(MAP.anim);
   const step = now => {
-    const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3);
+    /* חותמת הזמן של הפריים הראשון יכולה להיות מוקדמת מ־t0 — בלי זה הזום "חוזר אחורה" לרגע ונותן viewBox שלילי */
+    const k = dur ? Math.min(1, Math.max(0, (now - t0) / dur)) : 1, e = 1 - Math.pow(1 - k, 3);
     setVB(from.map((v, i) => v + (target[i] - v) * e));
     if (k < 1) MAP.anim = requestAnimationFrame(step); else afterZoom();
   };

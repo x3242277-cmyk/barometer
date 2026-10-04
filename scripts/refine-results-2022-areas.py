@@ -7,12 +7,16 @@ recognized Bedouin towns beside larger right-leaning cities.
 """
 
 import json
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw
 
+
+# Windows consoles default to a legacy code page; the progress lines are Hebrew.
+sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT = Path(__file__).resolve().parent.parent
 TARGET = ROOT / "data" / "results-2022.json"
@@ -319,8 +323,44 @@ mapped = label >= 0
 label[mapped] = area_index[label[mapped]]
 assert np.all(label[mask] >= 0), "Uncolored land cells after merging"
 
-# Flood-fill the finished raster as a hard guarantee: every published area has
-# one connected land component. Matching vote patterns across a gap do not pass.
+# Strongholds join the nearest area of their own color. A locality that gave 80%
+# or more to one bloc is never shown inside an area that another bloc leads (a
+# kibbutz in a right-leaning valley, a right-wing village in the Besor): it and
+# its land move to the area of the nearest locality whose area its bloc leads.
+# The number of areas does not change; such a locality may become a detached
+# patch of that area.
+STRONG_SHARE = .8
+moved_codes, touched = set(), set()
+for _ in range(6):
+    area_votes = np.zeros((len(roots), 3))
+    for locality in localities:
+        if locality["g"] is not None:
+            area_votes[locality["g"]] += [sum(locality["p"][i] for i in indices) for indices in camp_indices]
+    leader = area_votes.argmax(axis=1)
+    misfits = []
+    for li, locality in enumerate(localities):
+        if locality["g"] is None or not locality["v"]:
+            continue
+        shares = [sum(locality["p"][i] for i in indices) / locality["v"] for indices in camp_indices]
+        camp = int(np.argmax(shares))
+        if shares[camp] >= STRONG_SHARE and leader[locality["g"]] != camp:
+            misfits.append((li, camp))
+    if not misfits:
+        break
+    for li, camp in misfits:
+        candidates = [lj for lj, peer in enumerate(localities) if lj != li and peer["g"] is not None and leader[peer["g"]] == camp]
+        if not candidates:
+            continue
+        nearest = min(candidates, key=lambda lj: (xs[lj] - xs[li]) ** 2 + (ys[lj] - ys[li]) ** 2)
+        target = localities[nearest]["g"]
+        touched.update((localities[li]["g"], target))
+        localities[li]["g"] = target
+        label[(owner == li) & mask] = target
+        moved_codes.add(localities[li]["c"])
+print(f"· {len(moved_codes)} יישובים (80% ומעלה לגוש אחד) עברו לאזור הקרוב בצבע שלהם")
+
+# Areas that gave or received a stronghold may now have a detached patch; every
+# other area must still be a single connected piece of land.
 area_cell_counts = np.bincount(label[mask], minlength=len(roots))
 visited = np.zeros((height, width), dtype=bool)
 for ai in range(len(roots)):
@@ -338,7 +378,7 @@ for ai in range(len(roots)):
             if 0 <= y2 < height and 0 <= x2 < width and not visited[y2, x2] and label[y2, x2] == ai:
                 visited[y2, x2] = True
                 pending.append(y2 * width + x2)
-    if n != area_cell_counts[ai]:
+    if n != area_cell_counts[ai] and ai not in touched:
         raise RuntimeError(f"Voting area {ai} is disconnected: {n} of {area_cell_counts[ai]} cells joined")
 
 
@@ -493,7 +533,9 @@ members_by_area = defaultdict(list)
 for locality in data["localities"]:
     if locality["g"] is not None:
         members_by_area[locality["g"]].append(locality)
-representatives = [max(members_by_area[i], key=lambda locality: locality["v"]) for i in range(len(roots))]
+# The name and label come from the area's own largest locality, not from a
+# stronghold that was moved into it.
+representatives = [max([m for m in members_by_area[i] if m["c"] not in moved_codes] or members_by_area[i], key=lambda locality: locality["v"]) for i in range(len(roots))]
 region_counts = Counter(main["r"] for main in representatives)
 areas = []
 for ai, main in enumerate(representatives):
@@ -519,7 +561,8 @@ assert len(areas) <= MAX_AREAS
 data["areas"] = areas
 data["meta"]["areaMethod"] = (
     "אזורים מקומיים רציפים של דפוסי הצבעה דומים, על בסיס אזורים טבעיים של הלמ״ס והיישוב הקרוב. "
-    "עד 68 אזורים; קולות השבטים נספרים בלי שיוך נקודתי. באזורים דלילי יישוב הצבע משקף את היישוב האמין הקרוב."
+    "עד 68 אזורים. יישוב שנתן 80% ומעלה לגוש אחד משויך תמיד לאזור הקרוב שאותו גוש מוביל בו. "
+    "קולות השבטים נספרים בלי שיוך נקודתי. באזורים דלילי יישוב הצבע משקף את היישוב האמין הקרוב."
 )
 TARGET.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 print(f"Refined {len(areas)} connected voting areas from {len(localities)} reliable localities; excluded {len(outliers)} questionable coordinates")

@@ -48,12 +48,12 @@
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
 <link rel="stylesheet" href="assets/poll-tracker.css?v=9bc7297c">
-<link rel="stylesheet" href="assets/theme.css?v=beb835de">
+<link rel="stylesheet" href="assets/theme.css?v=84f9d928">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
-<link rel="stylesheet" href="assets/results2022.css?v=0128e702">
-<script src="assets/results2022.js?v=56662401" defer></script>
+<link rel="stylesheet" href="assets/results2022.css?v=a7596a11">
+<script src="assets/results2022.js?v=d989e82e" defer></script>
 </head>
 <body>
 
@@ -844,13 +844,13 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
   <div class="wrap r22">
     <header class="r22-head">
       <h2>בחירות 2022 · תוצאות האמת</h2>
-      <p class="r22-src">ועדת הבחירות המרכזית · הלמ״ס · אזורי "המפה המתנדנדת"</p>
+      <p class="r22-src">ועדת הבחירות המרכזית · הלמ״ס · אזורי הצבעה מקומיים</p>
     </header>
     <div class="r22-dash" id="r22-dash">
       <aside class="r22-card r22-side" id="r22-side" aria-label="תצוגה ובחירה"></aside>
       <section class="r22-card r22-table" aria-labelledby="r22-table-title">
         <div class="r22-card-head"><h3 id="r22-table-title">היישובים</h3><span id="r22-count"></span></div>
-        <div class="r22-scroll" tabindex="0" role="region" aria-label="טבלת היישובים"><table id="r22-table"></table></div>
+        <div class="r22-scroll" tabindex="0" role="region" aria-label="טבלת היישובים"><table id="r22-table"></table><ol id="r22-party-grid" class="r22-seatgrid" hidden></ol></div>
       </section>
       <section class="r22-card r22-kpi" id="r22-kpi" aria-live="polite"></section>
       <section class="r22-card r22-bars" aria-labelledby="r22-bars-title">

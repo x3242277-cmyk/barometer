@@ -160,3 +160,12 @@ body>footer .fbrand>img{width:auto!important;height:28px!important}
 body>footer .fbrand .brand-word img{height:20px!important}
 #app-loading>img{width:auto!important;height:46px!important}
 @media(max-width:800px){.masthead .brand>img{height:28px!important}.brand-word img{height:20px!important}}
+
+/* ---------- כל המסכים מצד לצד (04.10.2026) ----------
+   בלי עמודה ממורכזת ושוליים רחבים: כל עמוד מתפרס על כל רוחב החלון, עם מרווח
+   קטן בצדדים. (refinement.css הגביל ל־1280px.) */
+:root{--edge:clamp(14px,1.4vw,28px)}
+.wrap{width:calc(100% - 2 * var(--edge))!important;max-width:none!important;margin-inline:auto!important}
+/* בלוקים שהיו ממורכזים ברוחב קבוע */
+.submitted-research{max-width:none!important;margin-inline:0!important}
+.night-countdown{max-width:none!important;margin-inline:0!important}

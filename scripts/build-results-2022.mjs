@@ -16,6 +16,7 @@
  * בטבלת היישובים הן אינן מופיעות.
  */
 import { readFile, writeFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadCbsRows, NATURAL } from "./lib/cbs.mjs";
@@ -159,5 +160,8 @@ const out = {
   areas, map: { bbox: history.meta.map.bbox, water: history.meta.map.water, units: history.meta.map.units }
 };
 await writeFile(path.join(ROOT, "data/results-2022.json"), JSON.stringify(out), "utf8");
+/* קיבוץ המפה נעשה בשלב נפרד: אזורים טבעיים, ובתוכם כל שטח ליישוב הקרוב.
+   כך קבוצה קטנה לא יכולה להיצבע בשם של אזור מרוחק בגלל דמיון בהצבעה. */
+execFileSync(process.platform === "win32" ? "python" : "python3", [path.join(ROOT, "scripts/refine-results-2022-areas.py")], { stdio: "inherit" });
 log(`${localities.length} יישובים · ${districts.length} מחוזות · ${regions.length} אזורים · ${fmtN(national.valid)} קולות כשרים ✓`);
 function fmtN(n) { return new Intl.NumberFormat("he-IL").format(n); }

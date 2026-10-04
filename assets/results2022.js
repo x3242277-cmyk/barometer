@@ -1,11 +1,11 @@
 /* ============================================================
    ברומטר — בחירות 2022: לוח נתונים במסך אחד (#/map)
    ------------------------------------------------------------
-   שלוש תצוגות (בעמודה הימנית), כל אחת עם מפה, טבלה, כרטיס וגרף משלה:
+   שלוש תצוגות (בעמודה הימנית), כל אחת עם מפה, כרטיס וגרף משלה:
      כל הארץ   — המדינה מחולקת בין גוש נתניהו לגוש השינוי לפי הקולות;
-                 הטבלה: המחוזות.
-     לפי אזורים — אזורי "המפה המתנדנדת" (כ־1% מהקולות כל אחד) צבועים לפי
-                 הגוש המוביל ועוצמת היתרון; הטבלה: האזורים.
+                 רשימת המנדטים של כל מפלגה במקום טבלת מחוזות.
+     לפי אזורים — עד 68 אזורי הצבעה רציפים, צבועים לפי הגוש המוביל
+                 ועוצמת היתרון; הטבלה: האזורים.
      לפי ערים   — נקודה לכל יישוב, סינון לפי אוכלוסייה; הטבלה: היישובים.
    כל נתון מופיע במקום אחד: הטבלה — שורה לכל יחידה; הכרטיס — סיכום הבחירה
    והגושים; הגרף — הרשימות; המפה — הגאוגרפיה. המפה מתקרבת בגלגלת וזזה בגרירה.
@@ -21,8 +21,8 @@ const campColor = k => {
   const b = typeof BLOCS !== "undefined" ? BLOCS : null;
   return { R: b?.Right.color || "#2563B0", L: b?.Left.color || "#C0392B", A: b?.Arabs.color || "#2A7A5E", O: b?.Unknown.color || "#6B7580" }[k];
 };
-/* עוצמת היתרון של הגוש המוביל (בנקודות אחוז מול השני), כמו במפה המתנדנדת */
-const RATING = [[30, 1], [15, .78], [7, .56], [2, .38], [0, .2]];
+/* צבע רך יותר לאזורים צמודים; ההבדל בגוון משקף את יתרון הגוש. */
+const RATING = [[30, .86], [15, .72], [7, .58], [2, .44], [0, .32]];
 const nf = new Intl.NumberFormat("he-IL");
 const n0 = v => nf.format(Math.round(v));
 const p1 = v => (Math.round(v * 10) / 10).toFixed(1);
@@ -31,7 +31,8 @@ const escH = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;
 const q = s => document.querySelector(s);
 
 let D = null;
-const st = { mode: "nation", sel: null, sectors: new Set(), nat: true, sort: { key: "v", dir: -1 } };
+const st = { mode: "nation", sel: null, sectors: new Set(), nat: true, demo: false, sort: { key: "v", dir: -1 } };
+const demoModel = () => typeof runDemoModel === "function" && typeof S !== "undefined" && S.demo ? runDemoModel(S.demo.meta.years) : null;
 
 async function loadData() {
   if (D) return D;
@@ -71,9 +72,10 @@ const blocVotes = (r, ks) => ks.reduce((t, k) => t + D.campIdx[CAMPS.indexOf(k)]
 /* ---------- התצוגה הנוכחית ---------- */
 function rows() {
   if (st.mode === "nation") return D.districtRows;
-  if (st.mode === "areas") return D.areaRows;
+  if (st.mode === "areas") return st.sel == null ? D.areaRows : D.cityRows.filter(r => r.l.g === st.sel);
   return D.cityRows.filter(r => !st.sectors.size || st.sectors.has(r.s));
 }
+const areaCities = () => st.mode === "areas" && st.sel != null;
 function selection() {
   const sel = st.sel == null ? null : st.mode === "nation" ? D.districtRows[st.sel] : st.mode === "areas" ? D.areaRows[st.sel] : D.cityRows.find(r => r.id === st.sel);
   if (sel) return sel;
@@ -83,21 +85,21 @@ function selection() {
 
 /* ---------- העמודה הימנית ---------- */
 const MODES = [
-  ["nation", "כל הארץ", "גוש מול גוש"],
-  ["areas", "לפי אזורים", "המפה המתנדנדת"],
+  ["nation", "כל הארץ", "מפלגות ומנדטים"],
+  ["areas", "לפי אזורים", "דפוסי הצבעה מקומיים"],
   ["cities", "לפי ערים", "כל יישוב בנפרד"]
 ];
 function renderSide() {
-  const sub = { nation: `${D.districts.length} מחוזות`, areas: `${D.areas.length} אזורים`, cities: `${n0(D.localities.length)} יישובים` };
+  const sub = { nation: "120 מנדטים", areas: `${D.areas.length} אזורים`, cities: `${n0(D.localities.length)} יישובים` };
   q("#r22-side").innerHTML = `
     <div class="r22-modes" role="group" aria-label="תצוגה">${MODES.map(([k, he, note]) =>
       `<button type="button" data-mode="${k}" aria-pressed="${st.mode === k}"><b>${he}</b><small>${note} · ${sub[k]}</small></button>`).join("")}</div>
     <div class="r22-mode-controls">${modeControls()}</div>
-    <label class="r22-toggle"><input type="checkbox" id="r22-nat" ${st.nat ? "checked" : ""}><span>השוואה לממוצע הארצי</span></label>
-    <button type="button" class="r22-reset" id="r22-reset" ${st.sel == null && !st.sectors.size ? "disabled" : ""}>ניקוי הבחירה</button>
-    <p class="r22-rule">${st.mode === "cities" ? escH(D.meta.sectorRule) : st.mode === "areas"
-      ? "כל אזור — כ־1% מהקולות: עיר גדולה לבדה, או יישובים סמוכים מאותו אזור טבעי ומאותו מגזר. גוון הצבע — גודל היתרון של הגוש המוביל."
-      : "גוש נתניהו — הליכוד, הציונות הדתית, ש״ס ויהדות התורה. גוש השינוי — שמונה הרשימות שמולו, כולל הערביות. הקו מחלק את שטח המפה לפי הקולות."}</p>`;
+    ${st.mode === "nation" ? "" : `<label class="r22-toggle"><input type="checkbox" id="r22-nat" ${st.nat ? "checked" : ""}><span>השוואה לממוצע הארצי</span></label>
+    <button type="button" class="r22-reset" id="r22-reset" ${st.sel == null && !st.sectors.size ? "disabled" : ""}>ניקוי הבחירה</button>`}
+    <details class="r22-explain"><summary>איך קוראים את התצוגה?</summary><p class="r22-rule">${st.mode === "cities" ? escH(D.meta.sectorRule) : st.mode === "areas"
+      ? "היבשה מחולקת לעד 68 אזורים רציפים, על בסיס קרבה גאוגרפית ודפוסי ההצבעה ביישובים. גם אזורי מרכז־שמאל ויישובים בדואיים מוכרים מקבלים צבע משלהם. רשומות שבט ונקודות מיקום לא אמינות נספרות בתוצאות, אך אינן משמשות נקודת מיקום במפה. צבע כהה מציין יתרון גדול יותר לגוש המוביל."
+      : st.demo ? "תחזית 2026 משתמשת בדפוסי ההצבעה של 2022, בקצב הגידול ובשיעור ההצבעה של חמש קבוצות האוכלוסייה. היא אינה משתמשת בסקרים. המפה מציגה את תוצאות 2022 בלבד." : "גוש נתניהו — הליכוד, הציונות הדתית, ש״ס ויהדות התורה. גוש השינוי — שמונה הרשימות שמולו, כולל הערביות. הקו מחלק את שטח המפה לפי הקולות."}</p></details>`;
 }
 function modeControls() {
   if (st.mode === "areas") return `<label class="r22-field"><span>אזור</span><input id="r22-find" type="search" list="r22-find-list" placeholder="שם אזור או עיר" autocomplete="off"><datalist id="r22-find-list">${
@@ -111,8 +113,9 @@ function modeControls() {
         Object.entries(D.sectors).map(([k, he]) => `<button type="button" data-sector="${k}" aria-pressed="${st.sectors.has(k)}" title="${counts[k]} יישובים">${escH(he)}</button>`).join("")}</div></fieldset>`;
   }
   const R = blocVotes(D.nat, ["R"]), C = blocVotes(D.nat, ["L", "A"]);
-  return `<div class="r22-duel"><div style="--c:${campColor("R")}"><b>${n0(R)}</b><span>גוש נתניהו</span></div><div style="--c:${campColor("L")}"><b>${n0(C)}</b><span>גוש השינוי</span></div>
-    <p>פער של ${n0(Math.abs(C - R))} קולות — ${C > R ? "לטובת גוש השינוי" : "לטובת גוש נתניהו"}, ובכל זאת גוש נתניהו קיבל 64 מנדטים.</p></div>`;
+  return `<div class="r22-duel"><div style="--c:${campColor("R")}"><b>${n0(R)}</b><span>גוש נתניהו · 2022</span></div><div style="--c:${campColor("L")}"><b>${n0(C)}</b><span>גוש השינוי · 2022</span></div>
+    <p>פער של ${n0(Math.abs(C - R))} קולות — ${C > R ? "לטובת גוש השינוי" : "לטובת גוש נתניהו"}, ובכל זאת גוש נתניהו קיבל 64 מנדטים.</p></div>
+    <button type="button" class="r22-demo-toggle" id="r22-demo-toggle" aria-pressed="${st.demo}">${st.demo ? "חזרה לתוצאות 2022" : "השוואה לגידול דמוגרפי ב־2026"}</button>`;
 }
 
 /* ---------- טבלה ---------- */
@@ -132,34 +135,73 @@ const NUM_COLS = [
   { key: "v", he: "קולות", title: "קולות כשרים", num: true, val: r => r.v, cell: r => `<td class="n">${n0(r.v)}</td>` },
   { key: "to", he: "הצבעה", title: "אחוז הצבעה", num: true, val: r => r.e ? r.t / r.e : 0, cell: r => `<td class="n">${r.e ? p1(100 * r.t / r.e) + "%" : "—"}</td>` }
 ];
-const cols = () => [...COLS[st.mode](), ...NUM_COLS, campCell("R"), campCell("L"), campCell("A"), leadCell];
+const cols = () => [...COLS[areaCities() ? "cities" : st.mode](), ...NUM_COLS, campCell("R"), campCell("L"), campCell("A"), leadCell];
 function renderTable() {
+  if (st.mode === "nation") {
+    const m = st.demo ? demoModel() : null;
+    const list = D.parties.filter(p => p.id !== "other");
+    q("#r22-table-title").textContent = m ? "מנדטים לפי רשימה · 2022 מול 2026" : "מנדטים לפי רשימה · 2022";
+    q("#r22-table").hidden = true;
+    q(".r22-scroll").classList.add("r22-is-nation");
+    const grid = q("#r22-party-grid");
+    grid.hidden = false;
+    grid.innerHTML = list.map((p, i) => {
+      const old = p.seats || 0, next = m?.seats[p.id] || 0, diff = next - old;
+      return `<li class="r22-seatitem" title="${escH(p.name)} · ${n0(D.nat.p[i])} קולות · ${p1(100 * D.nat.p[i] / D.nat.v)}%"><i class="r22-sw" style="--c:${p.color}"></i><span class="r22-seatname"><strong>${escH(p.short)}</strong>${old ? "" : "<small>לא עברה את אחוז החסימה</small>"}</span><span class="r22-seatnum"><small>${m ? "2022" : "מנדטים"}</small><b>${old}</b></span>${m ? `<span class="r22-seatnum r22-seat-next"><small>2026</small><b>${next}</b></span><span class="r22-seat-delta ${diff > 0 ? "up" : diff < 0 ? "down" : "flat"}">${diff > 0 ? "+" : ""}${diff}</span>` : ""}</li>`;
+    }).join("");
+    q("#r22-count").textContent = `${list.filter(p => p.seats).length} רשימות עברו ב־2022 · 120 מנדטים`;
+    q(".r22-scroll").setAttribute("aria-label", "מנדטים לפי רשימה");
+    return;
+  }
+  q("#r22-table").hidden = false;
+  q("#r22-party-grid").hidden = true;
+  q(".r22-scroll").classList.remove("r22-is-nation");
   const C = cols(), col = C.find(c => c.key === st.sort.key) || C.find(c => c.key === "v");
   const list = rows().slice().sort((a, b) => {
     const x = col.val(a), y = col.val(b);
     return (typeof x === "string" ? x.localeCompare(y, "he") : x - y) * st.sort.dir || b.v - a.v;
   });
-  const sel = st.sel == null ? -1 : list.findIndex(r => r.id === st.sel);
+  const sel = st.sel == null || areaCities() ? -1 : list.findIndex(r => r.id === st.sel);
   if (sel > 0) list.unshift(list.splice(sel, 1)[0]);
-  if (st.mode === "nation") list.push(D.envelopes);
-  q("#r22-table-title").textContent = { nation: "המחוזות", areas: "האזורים", cities: "היישובים" }[st.mode];
+  q("#r22-table-title").textContent = areaCities() ? `יישובי ${D.areaRows[st.sel].name}` : { nation: "המחוזות", areas: "האזורים", cities: "היישובים" }[st.mode];
   q("#r22-table").innerHTML = `<thead><tr>${C.map(c => {
     const on = c.key === col.key;
     return `<th scope="col" class="${c.num ? "n" : ""}" aria-sort="${on ? (st.sort.dir > 0 ? "ascending" : "descending") : "none"}"><button type="button" data-sort="${c.key}"${c.title ? ` title="${escH(c.title)}"` : ""}>${escH(c.he)}${on ? `<i aria-hidden="true">${st.sort.dir > 0 ? "▲" : "▼"}</i>` : ""}</button></th>`;
   }).join("")}</tr></thead><tbody>${list.map(r =>
-    `<tr ${r.fixed ? 'class="r22-fixed"' : `data-id="${r.id}" class="${r.id === st.sel ? "is-sel" : ""}"`}>${C.map(c => c.cell(r)).join("")}</tr>`).join("")}</tbody>`;
+    `<tr ${r.fixed ? 'class="r22-fixed"' : `data-id="${r.id}" tabindex="0" aria-selected="${!areaCities() && r.id === st.sel}" class="${!areaCities() && r.id === st.sel ? "is-sel" : ""}"`}>${C.map(c => c.cell(r)).join("")}</tr>`).join("")}</tbody>`;
   const shown = rows();
-  q("#r22-count").textContent = st.mode === "cities" ? `${n0(shown.length)} יישובים · ${n0(shown.reduce((t, r) => t + r.v, 0))} קולות` : `${shown.length} שורות · לחצו לבחירה`;
+  q("#r22-count").textContent = st.mode === "cities" || areaCities() ? `${n0(shown.length)} יישובים · ${n0(shown.reduce((t, r) => t + r.v, 0))} קולות` : st.mode === "areas" ? `${shown.length} אזורים · לחצו לבחירה` : `${shown.length} שורות · לחצו לבחירה`;
+  q(".r22-scroll").setAttribute("aria-label", `טבלת ${q("#r22-table-title").textContent}`);
 }
 
 /* ---------- כרטיס הבחירה ---------- */
 function renderKpi() {
+  if (st.mode === "nation" && st.demo) {
+    const m = demoModel();
+    if (m) {
+      const right22 = D.parties.filter(p => p.camp === "R").reduce((n, p) => n + p.seats, 0);
+      const right26 = D.parties.filter(p => p.camp === "R").reduce((n, p) => n + (m.seats[p.id] || 0), 0);
+      const deltaSeats = right26 - right22;
+      const secs = S.demo.sectors.map(s => {
+        const p = S.demoOverrides[s.id] || {};
+        const growth = p.growth ?? s.growth, turnout = p.turnout ?? s.turnout;
+        const v22 = s.eligible2022 * s.turnout, v26 = s.eligible2022 * Math.pow(1 + growth, S.demo.meta.years) * turnout;
+        return { name: s.name, color: s.color, v22, v26, growth, turnout };
+      });
+      q("#r22-kpi").innerHTML = `<div class="r22-kpi-head"><p class="r22-kicker">תרחיש דמוגרפי · ללא סקרים</p><h3>מה היה משתנה עד 2026?</h3><p>הרגלי ההצבעה של 2022 נשמרים; גודל הקבוצות ושיעור השתתפותן משתנים לפי המודל הדמוגרפי.</p></div>
+        <div class="r22-kpis"><div><b>${right26}</b><span>מנדטים לגוש נתניהו</span><em class="${deltaSeats > 0 ? "up" : deltaSeats < 0 ? "down" : "flat"}">${deltaSeats > 0 ? "+" : ""}${deltaSeats} לעומת 2022</em></div>
+        <div><b>${n0(m.totalValid)}</b><span>קולות כשרים בתרחיש</span></div><div><b>${120 - right26}</b><span>שאר הרשימות</span></div></div>
+        <div class="r22-demo-sectors"><b>מה מניע את השינוי?</b>${secs.map(s => `<div style="--c:${s.color}"><i></i><span>${escH(s.name)}</span><small>2022: ${n0(s.v22)} · 2026: ${n0(s.v26)}</small></div>`).join("")}</div>
+        <p class="r22-foot">המספרים תלויים בהנחות הגידול וההצבעה שב<a href="#/demography">מודל הדמוגרפי</a>. תוצאות 2026 הן תרחיש, לא תוצאת בחירות.</p>`;
+      return;
+    }
+  }
   const s = selection(), camps = campShares(s), natC = campShares(D.nat);
   const isNat = s === D.nat, turnout = s.e ? 100 * s.t / s.e : 0, li = leadIdx(s);
   const delta = (v, ref) => st.nat && !isNat ? `<em class="${v - ref >= 0 ? "up" : "down"}" title="מול הממוצע הארצי">${signed(v - ref)}</em>` : "";
   const kind = { nation: "מחוז", areas: "אזור", cities: "יישוב" }[st.mode];
   const subline = isNat ? `${n0(s.n)} יישובים ומעטפות חיצוניות` : st.sel == null ? `${n0(s.n)} יישובים`
-    : st.mode === "cities" ? `${escH(s.sub)} · ${escH(s.sector)}` : `${n0(s.n)} יישובים${s.sub ? ` · ${escH(s.sub)}` : ""}`;
+    : st.mode === "cities" ? `${escH(s.sub)} · ${escH(s.sector)}${s.l?.x == null ? " · ללא מיקום מדויק במפה" : ""}` : `${n0(s.n)} יישובים${s.sub ? ` · ${escH(s.sub)}` : ""}`;
   q("#r22-kpi").innerHTML = `
     <div class="r22-kpi-head"><p class="r22-kicker">${isNat ? "התוצאה הרשמית" : st.sel != null ? kind : "הבחירה"}</p><h3>${escH(s.name)}</h3><p>${subline} · ${n0(s.e)} בעלי זכות בחירה</p></div>
     <div class="r22-kpis">
@@ -177,19 +219,22 @@ function renderKpi() {
 
 /* ---------- גרף הרשימות ---------- */
 function renderBars() {
+  q("#r22-bars-title").textContent = st.mode === "nation" && st.demo ? "תמיכה לפי רשימה · 2026" : "הקולות לפי רשימה";
   const s = selection(), isNat = s === D.nat, natS = D.nat.p.map(v => 100 * v / D.nat.v);
-  const shares = s.p.map(v => s.v ? 100 * v / s.v : 0), cmp = st.nat && !isNat;
+  const m = st.mode === "nation" && st.demo ? demoModel() : null;
+  const shares = m ? D.parties.map(p => 100 * (m.votes[p.id] || 0) / m.totalValid) : s.p.map(v => s.v ? 100 * v / s.v : 0);
+  const cmp = !!m || (st.nat && !isNat);
   const shown = D.parties.map((p, i) => ({ p, v: shares[i], n: natS[i] }))
     .filter(x => x.p.id !== "other" && (x.v >= 0.5 || (cmp && x.n >= 3.25 && x.v >= 0.1)))
     .sort((x, y) => y.v - x.v).slice(0, 12);
   const top = Math.max(...shown.map(x => Math.max(x.v, cmp ? x.n : 0)), 1), max = top > 40 ? Math.ceil(top / 10) * 10 : Math.ceil(top / 5) * 5;
   q("#r22-bars").innerHTML = `<div class="r22-rows" style="--rows:${shown.length}">${shown.map(x => `
-    <div class="r22-row" title="${escH(x.p.name)}: ${p1(x.v)}%${cmp ? ` · ארצי ${p1(x.n)}%` : ""}">
+    <div class="r22-row" title="${escH(x.p.name)}: ${p1(x.v)}%${cmp ? ` · ${m ? "2022" : "ארצי"} ${p1(x.n)}%` : ""}">
       <span class="r22-row-name">${escH(x.p.short)}</span>
       <span class="r22-row-track"><span class="r22-row-bar" style="width:${(100 * x.v / max).toFixed(2)}%;background:${x.p.color}"></span>${
         cmp ? `<i class="r22-row-nat" style="inset-inline-start:${(100 * x.n / max).toFixed(2)}%"></i>` : ""}</span>
       <b>${p1(x.v)}%</b></div>`).join("")}</div>`;
-  q("#r22-bars-legend").innerHTML = `באחוזים מהקולות${cmp ? ` · <i class="r22-natkey"></i> ממוצע ארצי` : ""}`;
+  q("#r22-bars-legend").innerHTML = m ? `2026 · <i class="r22-natkey"></i> תוצאת 2022` : `באחוזים מהקולות${cmp ? ` · <i class="r22-natkey"></i> ממוצע ארצי` : ""}`;
 }
 
 /* ---------- מפה ---------- */
@@ -236,7 +281,8 @@ function renderMapBase() {
     <g class="r22-layer"></g>
     <path class="r22-water" d="${water}"/>
     <g class="r22-top"></g><g class="r22-labels"></g></svg>
-    <div class="r22-zoom" role="group" aria-label="זום"><button type="button" data-zoom="in" aria-label="התקרבות">+</button><button type="button" data-zoom="out" aria-label="התרחקות">−</button><button type="button" data-zoom="reset" aria-label="כל המפה">⟲</button></div>`;
+    <div class="r22-zoom" role="group" aria-label="זום"><button type="button" data-zoom="in" aria-label="התקרבות">+</button><button type="button" data-zoom="out" aria-label="התרחקות">−</button><button type="button" data-zoom="reset" aria-label="כל המפה">⟲</button></div>
+    <div class="r22-tip" role="tooltip" hidden></div>`;
 }
 const svgEl = () => q("#r22-map svg");
 /* יחידות מפה לפיקסל מסך, לפי ערכת התצוגה הנוכחית */
@@ -250,7 +296,7 @@ function renderLayer() {
   const layer = svg.querySelector(".r22-layer"), top = svg.querySelector(".r22-top"), u = unitsPerPx();
   svg.dataset.mode = st.mode;
   q("#r22-map-legend").innerHTML = st.mode === "nation"
-    ? `<span><i style="background:${campColor("R")}"></i>גוש נתניהו</span><span><i style="background:${campColor("L")}"></i>גוש השינוי</span><span class="r22-legend-note">${n0(blocVotes(D.nat, ["O"]))} קולות לרשימות אחרות — לא בשום גוש</span>`
+    ? `<span><i style="background:${campColor("R")}"></i>גוש נתניהו</span><span><i style="background:${campColor("L")}"></i>גוש השינוי</span><span class="r22-legend-note">${st.demo ? "המפה מציגה את ההצבעה בפועל ב־2022" : `${n0(blocVotes(D.nat, ["O"]))} קולות לרשימות אחרות — לא בשום גוש`}</span>`
     : ["R", "L", "A"].map(k => `<span><i style="background:${campColor(k)}"></i>${CAMP_HE[k]} מוביל</span>`).join("") +
       (st.mode === "areas" ? `<span class="r22-legend-note">כהה = יתרון גדול · בהיר = צמוד</span>` : `<span class="r22-dimkey"><i></i>מחוץ לסינון</span>`);
   if (st.mode === "nation") {
@@ -267,7 +313,7 @@ function renderLayer() {
   if (st.mode === "areas") {
     layer.innerHTML = D.areaRows.map(r => {
       const a = D.areas[r.id], k = leadCamp(r);
-      return `<path data-id="${r.id}" d="${a.shape.rings.map(e => pathOf(decode(e))).join("")}" class="r22-area${r.id === st.sel ? " sel" : ""}" style="--c:${campColor(k)};--o:${strength(r)}"><title>${escH(r.name)} · ${n0(r.v)} קולות · ${CAMP_HE[k]} ${p1(campShares(r)[k])}%</title></path>`;
+      return `<path data-id="${r.id}" d="${a.shape.rings.map(e => pathOf(decode(e))).join("")}" class="r22-area${r.id === st.sel ? " sel" : ""}" style="--c:${campColor(k)};--o:${strength(r)}" aria-label="${escH(r.name)}"></path>`;
     }).join("");
     top.innerHTML = st.sel != null ? `<path d="${D.areas[st.sel].shape.rings.map(e => pathOf(decode(e))).join("")}" class="r22-area-ring"/>` : "";
     renderLabels();
@@ -289,7 +335,7 @@ function renderLabels() {
         return { x, y: y - Math.max(1.8, Math.min(12, Math.sqrt(l.v) / 26)) * u - 3 * u, w: Math.sqrt(l.v) / 2.2, v: l.v, name: SHORT[l.n] || l.n }; });
   const fs = 11 * u;
   g.innerHTML = items.filter(it => it.x > vx && it.x < vx + vw && it.y > vy && it.y < vy + vh && it.w >= (st.mode === "areas" ? 46 : 60))
-    .sort((a, b) => b.v - a.v).map(it => {
+    .sort((a, b) => b.v - a.v).slice(0, st.mode === "areas" ? (MAP.vb[2] < MAP.full[2] * .65 ? 20 : 11) : 40).map(it => {
       const w = it.name.length * .58 * fs, h = 1.3 * fs, box = [it.x - w / 2, it.y - h, it.x + w / 2, it.y + .3 * fs];
       if (placed.some(o => box[0] < o[2] && box[2] > o[0] && box[1] < o[3] && box[3] > o[1])) return "";
       placed.push(box);
@@ -301,7 +347,7 @@ function renderDots() {
   const inSet = new Set(rows().map(r => r.id)), u = unitsPerPx();
   const rad = l => Math.max(1.8, Math.min(12, Math.sqrt(l.v) / 26)) * u;
   const dots = D.localities.filter(l => l.x != null).sort((a, b) => b.v - a.v), sel = dots.find(l => l.c === st.sel);
-  const dot = l => { const [x, y] = proj(l.x, l.y), li = leadIdx(l); return `<circle data-id="${l.c}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad(l).toFixed(2)}" class="${inSet.has(l.c) ? "on" : "off"}${l.c === st.sel ? " sel" : ""}" style="--c:${campColor(leadCamp(l))}"><title>${escH(l.n)} · ${n0(l.v)} קולות · ${escH(D.parties[li].short)} ${p1(100 * l.p[li] / (l.v || 1))}%</title></circle>`; };
+  const dot = l => { const [x, y] = proj(l.x, l.y), li = leadIdx(l); return `<circle data-id="${l.c}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad(l).toFixed(2)}" class="${inSet.has(l.c) ? "on" : "off"}${l.c === st.sel ? " sel" : ""}" style="--c:${campColor(leadCamp(l))}" aria-label="${escH(l.n)}"></circle>`; };
   svg.querySelector(".r22-top").innerHTML = dots.filter(l => l !== sel).map(dot).join("") + (sel ? dot(sel) : "");
   renderLabels();
 }
@@ -349,8 +395,35 @@ function zoomAt(factor, px, py) {
   setVB([mx - (mx - x) * k, my - (my - y) * k, nw, h * k]);
   afterZoom();
 }
+/* ריחוף על אזור או יישוב: השם מופיע מיד ליד הסמן, עם הקולות והגוש המוביל */
+function tipHTML(el) {
+  const id = Number(el.dataset.id);
+  const r = st.mode === "areas" ? D.areaRows[id] : D.cityRows.find(x => x.id === id);
+  if (!r) return "";
+  const k = leadCamp(r), li = leadIdx(r);
+  return `<b>${escH(r.name)}</b><span>${n0(r.v)} קולות · ${CAMP_HE[k]} ${p1(campShares(r)[k])}%</span><span>הגדולה: ${escH(D.parties[li].short)} ${p1(100 * r.p[li] / (r.v || 1))}%</span>`;
+}
+function wireTip(host) {
+  const tip = () => host.querySelector(".r22-tip");
+  const hide = () => { const t = tip(); if (t) t.hidden = true; };
+  host.addEventListener("pointermove", e => {
+    const t = tip(), el = e.target.closest?.("[data-id]");
+    if (!t || !el || host.classList.contains("dragging") || st.mode === "nation") return hide();
+    if (t.dataset.for !== el.dataset.id + st.mode) { t.innerHTML = tipHTML(el); t.dataset.for = el.dataset.id + st.mode; }
+    if (!t.innerHTML) return hide();
+    t.hidden = false;
+    const box = host.getBoundingClientRect(), w = t.offsetWidth, h = t.offsetHeight;
+    let x = e.clientX - box.left + 14, y = e.clientY - box.top + 14;
+    if (x + w > box.width - 6) x = e.clientX - box.left - w - 14;
+    if (y + h > box.height - 6) y = e.clientY - box.top - h - 14;
+    t.style.left = `${Math.max(6, x)}px`; t.style.top = `${Math.max(6, y)}px`;
+  });
+  host.addEventListener("pointerleave", hide);
+  host.addEventListener("wheel", hide, { passive: true });
+}
 function wireMap() {
   const host = q("#r22-map");
+  wireTip(host);
   host.addEventListener("wheel", e => {
     if (!svgEl()?.contains(e.target)) return;
     e.preventDefault();
@@ -398,7 +471,13 @@ function select(id) {
   st.sel = id == null || id === st.sel ? null : id;
   update({ side: false });
   const reset = q("#r22-reset"); if (reset) reset.disabled = st.sel == null && !st.sectors.size;
-  if (st.sel != null) q(`#r22-table tr[data-id="${st.sel}"]`)?.scrollIntoView({ block: "nearest" });
+  if (st.mode === "areas") q(".r22-scroll").scrollTop = 0;
+  else if (st.sel != null) q(`#r22-table tr[data-id="${st.sel}"]`)?.scrollIntoView({ block: "nearest" });
+}
+function selectAreaCity(code) {
+  st.mode = "cities"; st.sel = code; st.sectors.clear(); st.sort = { key: "v", dir: -1 };
+  update();
+  q(`#r22-table tr[data-id="${code}"]`)?.scrollIntoView({ block: "nearest" });
 }
 function setMode(mode) {
   if (mode === st.mode) return;
@@ -409,6 +488,7 @@ function wire() {
   const side = q("#r22-side");
   side.addEventListener("click", e => {
     const m = e.target.closest("[data-mode]"); if (m) return setMode(m.dataset.mode);
+    if (e.target.closest("#r22-demo-toggle")) { st.demo = !st.demo; return update(); }
     const s = e.target.closest("[data-sector]");
     if (s) { const k = s.dataset.sector; if (!k) st.sectors.clear(); else if (st.sectors.has(k)) st.sectors.delete(k); else st.sectors.add(k); st.sel = null; return update(); }
     if (e.target.closest("#r22-reset")) { st.sel = null; st.sectors.clear(); update(); }
@@ -427,7 +507,12 @@ function wire() {
   q("#r22-table").addEventListener("click", e => {
     const s = e.target.closest("[data-sort]");
     if (s) { const k = s.dataset.sort, num = cols().find(c => c.key === k)?.num; st.sort = { key: k, dir: st.sort.key === k ? -st.sort.dir : num ? -1 : 1 }; return update({ refocus: false, side: false }); }
-    const r = e.target.closest("tr[data-id]"); if (r) select(Number(r.dataset.id));
+    const r = e.target.closest("tr[data-id]"); if (r) areaCities() ? selectAreaCity(Number(r.dataset.id)) : select(Number(r.dataset.id));
+  });
+  q("#r22-table").addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const r = e.target.closest("tr[data-id]");
+    if (r) { e.preventDefault(); areaCities() ? selectAreaCity(Number(r.dataset.id)) : select(Number(r.dataset.id)); }
   });
   wireMap();
   let t; window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(() => { if (q("#view-map")?.classList.contains("on")) { fitHeight(); focusMap(); } }, 150); });

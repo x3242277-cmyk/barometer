@@ -167,3 +167,11 @@ body>footer .fbrand>img.brand-logo{width:auto!important;height:28px!important}
 /* בלוקים שהיו ממורכזים ברוחב קבוע */
 .submitted-research{max-width:none!important;margin-inline:0!important}
 .night-countdown{max-width:none!important;margin-inline:0!important}
+
+/* המודל הדמוגרפי · שלב 2: הגידול מאז ספטמבר 2019 (04.10.2026) */
+.g2019 .g-sub{display:block;font-size:.68rem;font-weight:500;opacity:.7}
+.g2019 .g-change{position:relative;min-width:110px}
+.g2019 .g-bar{position:absolute;inset-block:8px;inset-inline-end:6px;width:calc((100% - 60px) * var(--w) / 100);background:color-mix(in srgb,var(--c) 22%,transparent);border-radius:3px}
+.g2019 .g-change b{position:relative}
+.g2019 .g-turn{font-size:.78rem;white-space:nowrap;opacity:.85}
+.g2019 tfoot th,.g2019 tfoot td{font-weight:800;border-top:2px solid currentColor}

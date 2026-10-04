@@ -1,4 +1,8 @@
-"""Official results by locality for every Knesset election since 2000 (2003–2022).
+"""Official results by locality for the Knesset elections from September 2019 (2019b–2022).
+
+The table below goes back to 2003; FROM picks where the site starts (the user's
+decision, 04.10.2026: from September 2019, after Yisrael Beiteinu moved to the
+anti-Netanyahu side, so every election uses the same grouping).
 
     python scripts/import-elections-history.py            # downloads the ten files
     python scripts/import-elections-history.py --dir DIR  # reads 2003.xls … 2022.csv from DIR
@@ -8,13 +12,12 @@ Sources — Central Elections Committee result files:
   2015:      data.gov.il;  2019–2022: mediaXX.bechirot.gov.il (by locality)
 Needs pandas + xlrd (2003, 2006 .xls) + openpyxl (2009, 2013 .xlsx).
 
-Every list is placed in one of four groups (the user's decision, 04.10.2026):
+Every list is placed in one of four groups (the user's decisions, 04.10.2026):
   R ימין · H חרדים · L מרכז–שמאל · A ערבים   (O = other, no group)
 by its ideology — Kadima, Shinui, Gil, Hatnua are centre–left; Kulanu is right —
 except Yisrael Beiteinu (from September 2019) and New Hope (2021), counted
-centre–left because they sat against Netanyahu. Small lists that are not named
-below go to A or H only when most of their votes come from Arab / Haredi
-localities; otherwise O.
+centre–left because they sat against Netanyahu. A list counts in its group from
+1.5% of the national vote, also when it missed the threshold; smaller lists are O.
 
 Output: data/elections/<id>.json — the lists (name, group, colour, official seats),
 the national totals and, per locality (CBS code, stable across elections),
@@ -152,6 +155,8 @@ PARTY = {
 OTHER = {"R": ("אחרות — ימין", "#8FA6C4"), "H": ("אחרות — חרדים", "#9D93B8"), "L": ("אחרות — מרכז־שמאל", "#C99791"),
          "A": ("אחרות — ערבים", "#8DB3A3"), "O": ("אחרות", "#96A0AB")}
 
+FROM = "2019b"
+MIN_SHARE = 1.5            # % of the valid votes for a list to count in its group
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36"}
 
 
@@ -216,34 +221,27 @@ sector = {l["c"]: l["s"] for l in base["localities"]}
 known = {l["c"] for l in base["localities"]}
 OUT.mkdir(parents=True, exist_ok=True)
 index = []
-for e in ELECTIONS:
+for e in ELECTIONS[[x["id"] for x in ELECTIONS].index(FROM):]:
     table, names, letters = read(e)
     nat = table.sum()
     valid = int(nat["v"])
-    # small lists that are not named: Arab / Haredi only by where their votes come from
-    def small_group(L):
-        col = table[L]
-        tot = col.sum() or 1
-        arab = col[[c in sector and sector[c] in ("arab", "bedouin") for c in table.index]].sum() / tot
-        haredi = col[[sector.get(c) == "haredi" for c in table.index]].sum() / tot
-        return "A" if arab >= .7 else "H" if haredi >= .6 else "O"
     parties, cols = [], []
     for L in letters:
         if L in e["lists"]:
             pid, seats = e["lists"][L]
             name, short, grp, color = PARTY[pid]
             grp = GROUP_OVERRIDE.get((pid, e["id"]), grp)
+            if 100 * nat[L] / valid < MIN_SHARE:
+                grp = "O"
             parties.append(dict(id=pid, name=name, short=short, camp=grp, color=color, seats=seats, letter=L))
             cols.append([L])
-    other = {}
-    for L in letters:
-        if L not in e["lists"] and nat[L] > 0:
-            other.setdefault(small_group(L), []).append(L)
-    for grp in GROUPS:
-        if grp in other:
-            name, color = OTHER[grp]
-            parties.append(dict(id="other" if grp == "O" else f"other_{grp}", name=name, short=name, camp=grp, color=color, seats=0, letter=""))
-            cols.append(other[grp])
+    rest = [L for L in letters if L not in e["lists"] and nat[L] > 0]
+    big = [L for L in rest if 100 * nat[L] / valid >= MIN_SHARE]
+    if big:
+        raise SystemExit(f"{e['label']}: רשימה בלי שיוך עם יותר מ־{MIN_SHARE}%: {big}")
+    if rest:
+        parties.append(dict(id="other", name="אחרות", short="אחרות", camp="O", color=OTHER["O"][1], seats=0, letter=""))
+        cols.append(rest)
     votes = [int(sum(nat[L] for L in c)) for c in cols]
     order = sorted(range(len(parties)), key=lambda i: (parties[i]["id"].startswith("other"), -votes[i]))
     parties, cols, votes = [parties[i] for i in order], [cols[i] for i in order], [votes[i] for i in order]

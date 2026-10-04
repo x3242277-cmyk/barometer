@@ -32,7 +32,7 @@
 <script src="assets/explore.js?v=5f643732" defer></script>
 <script src="assets/poll-tracker.js?v=d66be565" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=e9a55c40" defer></script>
+<script src="assets/app.js?v=81b7ed43" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
@@ -47,13 +47,13 @@
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
-<link rel="stylesheet" href="assets/poll-tracker.css?v=8dfca45d">
-<link rel="stylesheet" href="assets/theme.css?v=7f725377">
+<link rel="stylesheet" href="assets/poll-tracker.css?v=103d8ba5">
+<link rel="stylesheet" href="assets/theme.css?v=9479bc41">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
-<link rel="stylesheet" href="assets/results2022.css?v=f1f884bb">
-<script src="assets/results2022.js?v=76ccdd83" defer></script>
+<link rel="stylesheet" href="assets/results2022.css?v=04d7d22f">
+<script src="assets/results2022.js?v=248f51f8" defer></script>
 </head>
 <body>
 
@@ -69,10 +69,10 @@
       <div class="tabs">
         <a class="tab" href="#/" data-view="landing">ראשי</a>
         <a class="tab" href="#/forecast" data-view="home">תחזית הברומטר</a>
-        <a class="tab" href="#/method" data-view="method" data-group="method demography haredi">שיטת החישוב</a>
-        <a class="tab" href="#/polls" data-view="polls">כל הסקרים</a>
-        <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-        <a class="tab" href="#/map" data-view="map">מפת הבחירות</a>
+        <a class="tab" href="#/polls" data-view="polls" data-group="polls e2022">מודל אמינות הסוקרים</a>
+        <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
+        <a class="tab" href="#/map" data-view="map">המודל הגיאוגרפי</a>
+        <a class="tab" href="#/method" data-view="method" data-group="method haredi">שיטת החישוב</a>
         <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
     </nav>
@@ -204,10 +204,13 @@
     <div class="polls-layout">
     <div class="polls-main">
     <div class="polls-toolbar">
-      <nav class="polls-tabs" role="tablist" aria-label="מה להציג">
-        <button type="button" role="tab" data-polls-tab="trend" aria-selected="true">המגמה</button>
-        <button type="button" role="tab" data-polls-tab="list" aria-selected="false">כל סקר בנפרד</button>
-        <button type="button" role="tab" data-polls-tab="cross" aria-selected="false">כמה עברו צד</button>
+      <nav class="polls-tabs" aria-label="מודל אמינות הסוקרים">
+        <div class="polls-tablist" role="tablist" aria-label="מה להציג">
+          <button type="button" role="tab" data-polls-tab="trend" aria-selected="true">המגמה</button>
+          <button type="button" role="tab" data-polls-tab="list" aria-selected="false">כל סקר בנפרד</button>
+          <button type="button" role="tab" data-polls-tab="cross" aria-selected="false">כמה עברו צד</button>
+        </div>
+        <a href="#/2022">דיוק המכונים</a>
       </nav>
       <div id="poll-basis" class="tr-basis" role="group" aria-label="על מה מבוססים המספרים"></div>
     </div>
@@ -253,6 +256,11 @@
 <!-- ==================== מדד אמינות המכונים ==================== -->
 <section class="view" id="view-e2022" aria-label="מדד אמינות מכוני הסקרים">
   <div class="wrap">
+    <div class="polls-toolbar">
+      <nav class="polls-tabs" aria-label="מודל אמינות הסוקרים">
+        <a href="#/polls/trend">המגמה</a><a href="#/polls/list">כל סקר בנפרד</a><a href="#/crossover">כמה עברו צד</a><a href="#/2022" aria-current="page">דיוק המכונים</a>
+      </nav>
+    </div>
     <div class="page-intro">
       <p class="kicker">כיול מול תוצאות האמת · 2020 · 2021 · 2022</p>
       <h2>עד כמה דייקו המכונים בבחירות הקודמות?</h2>
@@ -433,7 +441,6 @@
   <div class="wrap">
     <nav class="subtabs" aria-label="שיטת החישוב">
       <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
-      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
       <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
     </nav>
     <div class="page-intro">
@@ -741,15 +748,10 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 <!-- ==================== המודל הדמוגרפי ==================== -->
 <section class="view" id="view-demography" aria-label="המודל הדמוגרפי">
   <div class="wrap">
-    <nav class="subtabs" aria-label="שיטת החישוב">
-      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
-      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
-    </nav>
     <div class="page-intro">
       <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
       <h2>איך הגידול של כל קבוצת אוכלוסייה משנה את מפת ההצבעה?</h2>
-      <p>חמישה שלבים, מלמעלה למטה. מתחילים ממה שקרה באמת ב־2022, מפרקים את ציבור הבוחרים לחמש קבוצות זהות, מניחים כמה כל קבוצה תגדל וכמה ממנה תצביע — ומקבלים תחזית לגודל הגושים שלא נשענת על שום סקר. איך אותן קבוצות נראות על המפה, יישוב־יישוב — בכרטיסייה <a href="#/map">מפת הבחירות</a>.</p>
+      <p>שישה שלבים, מלמעלה למטה. מתחילים ממה שקרה באמת ב־2022 ובכמה גדלה כל אוכלוסייה מאז ספטמבר 2019, מפרקים את ציבור הבוחרים לחמש קבוצות זהות, מניחים כמה כל קבוצה תגדל וכמה ממנה תצביע — ומקבלים תחזית לגודל הגושים שלא נשענת על שום סקר. איך אותן קבוצות נראות על המפה, יישוב־יישוב — ב<a href="#/map">מודל הגיאוגרפי</a>.</p>
     </div>
 
     <div class="demo-layout">
@@ -765,8 +767,18 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         </div>
       </section>
 
-      <section class="dstep" id="dstep-2">
+      <section class="dstep" id="dstep-growth">
         <div class="dstep-num" aria-hidden="true">2</div>
+        <div class="dstep-body">
+          <div class="dstep-head"><p class="kicker">נתוני אמת · ספטמבר 2019 ← 2022</p><h2>מי גדל, ובכמה</h2>
+            <p class="sec-note">בעלי זכות הבחירה בכל מערכת בחירות מאז ספטמבר 2019, לפי סוג היישוב (סיווג הלמ״ס; יישוב יהודי שבו ש״ס ויהדות התורה קיבלו יחד יותר ממחצית הקולות — חרדי). זה הגידול שנמדד בפנקס הבוחרים, לא הערכה; 2026 — לפי הקצב של כל יישוב, כמו במודל הגיאוגרפי.</p></div>
+          <div class="tablewrap dtable-wrap" id="growth-2019"></div>
+          <p class="takeaway sec-takeaway" id="growth-takeaway"></p>
+        </div>
+      </section>
+
+      <section class="dstep" id="dstep-2">
+        <div class="dstep-num" aria-hidden="true">3</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">מי הצביע · נתוני אמת 2022</p><h2>חמש קבוצות זהות, ואיך כל אחת הצביעה</h2>
             <p class="sec-note">החלוקה החזקה ביותר בפוליטיקה הישראלית אינה גיאוגרפית אלא זהותית. כל שורה היא קבוצה: כמה בעלי זכות בחירה, כמה מהם הצביעו, לאילו ארבע רשימות הלכו רוב הקולות — וכמה מהם לכל גוש. המספרים לרשימות הם אומדן: קולות האמת של כל רשימה לפי הרכב המצביעים שלה.</p></div>
@@ -778,7 +790,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       </section>
 
       <section class="dstep" id="dstep-3">
-        <div class="dstep-num" aria-hidden="true">3</div>
+        <div class="dstep-num" aria-hidden="true">4</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">ההנחות · מה משתנה עד 2026</p><h2>כמה כל קבוצה גדלה, וכמה ממנה תצביע</h2>
             <p class="sec-note">שני דברים בלבד משתנים במודל: גודל הקבוצה (גידול טבעי שנתי בבעלי זכות הבחירה) ושיעור ההצבעה שלה. הרגלי ההצבעה של 2022 נשארים כפי שהיו. ברירות המחדל מהמקורות; גררו את הידיות לתרחישים אחרים.</p></div>
@@ -788,7 +800,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       </section>
 
       <section class="dstep" id="dstep-4">
-        <div class="dstep-num" aria-hidden="true">4</div>
+        <div class="dstep-num" aria-hidden="true">5</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">התוצאה · תחזית 2026</p><h2>כמה יצביעו, ולאן זה הולך</h2>
             <p class="sec-note">קודם לכל קבוצה: כמה מצביעים צפויים ב־2026 לעומת 2022, ומה ההפרש שווה במנדטים. אחר כך הסכום — ארבעה גושים, באחוזי תמיכה, בלי מפלגות ובלי חלוקת מנדטים.</p></div>
@@ -808,13 +820,13 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       </section>
 
       <section class="dstep" id="dstep-5">
-        <div class="dstep-num" aria-hidden="true">5</div>
+        <div class="dstep-num" aria-hidden="true">6</div>
         <div class="dstep-body">
           <div class="dstep-head"><p class="kicker">מה המודל לא יודע</p><h2>מגבלות, בגלוי</h2></div>
           <div class="grid g3">
             <div class="step"><em>01</em><h3>מפלגות חדשות</h3><p>המודל עובד עם רשימות 2022. מפלגה שנולדה מאז — ויש כאלה בסקרים היום — אינה קיימת בו. לכן הוא מודד גושים וכיוונים, לא שמות.</p></div>
             <div class="step"><em>02</em><h3>שינוי דעה</h3><p>ההנחה שכל קבוצה מצביעה ב־2026 בדיוק כמו ב־2022 היא הנחה חזקה, וגם שגויה במידה מסוימת. זה בדיוק מה שהופך את המודל ל״יבש״: הוא מבודד את השפעת הדמוגרפיה בלבד.</p></div>
-            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. הידית בשלב 3 מראה עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
+            <div class="step"><em>03</em><h3>אחוז ההצבעה</h3><p>שיעור ההצבעה במגזר הערבי נע בין 44.6% ל־55.9% בעשור האחרון. הידית בשלב 4 מראה עד כמה התוצאה רגישה לפרמטר הזה לבדו.</p></div>
           </div>
         </div>
       </section>
@@ -825,8 +837,8 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
   </div>
 </section>
 
-<!-- ==================== מפת הבחירות (2003–2022, תחזית 2026) ==================== -->
-<section class="view" id="view-map" aria-label="מפת הבחירות">
+<!-- ==================== המודל הגיאוגרפי (ספטמבר 2019–2022, תחזית 2026) ==================== -->
+<section class="view" id="view-map" aria-label="המודל הגיאוגרפי">
   <div class="wrap r22">
     <header class="r22-head">
       <h2 id="r22-heading">בחירות 2022 · תוצאות האמת</h2>
@@ -857,7 +869,6 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
   <div class="wrap">
     <nav class="subtabs" aria-label="שיטת החישוב">
       <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
-      <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
       <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
     </nav>
     <div class="page-intro">
@@ -978,7 +989,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
     <div>
       <div class="fbrand"><img class="brand-logo" src="assets/logo-wordmark.png?v=52e13ba5" alt="הברומטר" width="756" height="128"></div>
       <p>תמונת מצב עצמאית של סקרי הבחירות בישראל.</p>
-      <nav class="footer-nav" aria-label="ניווט בתחתית האתר"><a href="#/polls">כל הסקרים</a><a href="#/2022">דיוק המכונים</a><a href="#/map">מפת הבחירות</a><a href="#/method">שיטת החישוב</a></nav>
+      <nav class="footer-nav" aria-label="ניווט בתחתית האתר"><a href="#/polls">מודל אמינות הסוקרים</a><a href="#/demography">המודל הדמוגרפי</a><a href="#/map">המודל הגיאוגרפי</a><a href="#/method">שיטת החישוב</a></nav>
       <details class="footer-details"><summary>מקורות הנתונים</summary><div class="srclist" id="footer-sources"></div></details>
     </div>
     <div>

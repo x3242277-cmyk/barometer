@@ -39,7 +39,7 @@ const optionalFiles = ["data/leaders.json", "data/live-results.json", "data/hist
 const data = Object.fromEntries(await Promise.all(files.map(async f => [f, JSON.parse(await rd(f))])));
 /* מפת הבחירות: כל מערכות הבחירות מאז 2003 ומגמות היישובים לתחזית 2026 */
 try {
-  optionalFiles.push("data/elections/index.json", "data/trends.json", ...JSON.parse(await rd("data/elections/index.json")).map(e => `data/elections/${e.id}.json`));
+  optionalFiles.push("data/elections/index.json", "data/trends.json", "data/sector-growth.json", ...JSON.parse(await rd("data/elections/index.json")).map(e => `data/elections/${e.id}.json`));
 } catch { /* optional */ }
 for (const f of optionalFiles) { try { data[f] = JSON.parse(await rd(f)); } catch { /* optional */ } }
 

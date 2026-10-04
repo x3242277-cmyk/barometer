@@ -231,3 +231,13 @@ body:has(#view-map.on)>footer{display:none}
 .r22-tr-dash{display:inline-block;width:16px;border-top:2px dashed #6b7480;vertical-align:middle}
 #r22-bars-legend .r22-tr-key{margin-inline-end:6px;white-space:nowrap}
 .r22-bars .r22-card-head h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+/* ידיות התחזית (04.10.2026) */
+.r22-fc{margin:10px 0 0;padding:10px 0 0;border:0;border-top:1px solid #e4dccb;display:grid;gap:2px}
+.r22-fc legend{padding:0;font-size:.78rem;font-weight:800;color:var(--r22-ink)}
+.r22-slider{display:grid;grid-template-columns:minmax(0,74px) 1fr 42px;align-items:center;gap:6px;font-size:.76rem;font-weight:700;color:var(--r22-ink)}
+.r22-slider span{border-inline-start:3px solid var(--c,#a07019);padding-inline-start:6px}
+.r22-slider input{width:100%;accent-color:var(--c,#a07019);min-height:22px}
+.r22-slider b{text-align:end;font-variant-numeric:tabular-nums}
+.r22-fc-ref{display:block;margin:-3px 0 4px;padding-inline-start:84px;font-size:.62rem;color:var(--r22-ink-3)}
+.r22-slider-trend{margin-top:6px}
+.r22-fc .r22-reset{margin-top:6px}

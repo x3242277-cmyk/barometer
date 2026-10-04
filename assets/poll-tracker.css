@@ -260,3 +260,11 @@
 #view-polls .tr-chart-card{margin-top:12px}
 /* עמוד כל הסקרים במסך אחד: בלי התחתית של האתר מתחת (כמו בעמוד בחירות 2022) */
 @media (min-width:981px){body:has(#view-polls.on)>footer{display:none}}
+/* מודל אמינות הסוקרים: שורת לשוניות אחת — שלוש בעמוד הסקרים ודיוק המכונים (04.10.2026) */
+.polls-tabs{align-items:center}
+.polls-tablist{display:contents}
+.polls-tabs a{padding:8px 16px;border-radius:4px;color:var(--ink);font-size:.9rem;font-weight:700;text-decoration:none}
+.polls-tabs a:hover{background:#ffffff14}
+.polls-tabs a[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a}
+.polls-tablist + a{margin-inline-start:6px;border-inline-start:1px solid #ffffff26;border-radius:0 4px 4px 0}
+#view-e2022 .polls-toolbar{margin-bottom:6px}

@@ -125,6 +125,7 @@ function renderPollCards(rows, polls) {
   $('#polls-cards').hidden = S.pollView !== 'cards';
   $('#polls-compare').hidden = S.pollView !== 'compare';
   $('#polls-average').hidden = S.pollView !== 'average';
+  $('#polls-table').hidden = S.pollView !== 'table';
   renderComparison(rows, stableIds);
   renderPollAverage(rows);
 }

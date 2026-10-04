@@ -1,4 +1,8 @@
 // Shared by the local preview and the hosted Worker. No client-supplied URLs.
+import pollsters from '../data/pollsters.json' with { type: 'json' };
+import { parseTheMadadHtml, THE_MADAD_URL } from '../scripts/themadad-source.mjs';
+
+const FIRM_BY_SOURCE = Object.fromEntries(Object.entries(pollsters.sourceMap).map(([key, value]) => [key, value.firm]));
 const ORIGIN = 'https://www.skarim.org';
 const HOME = `${ORIGIN}/`;
 const SITEMAP = `${ORIGIN}/api/static/sitemap-polls`;
@@ -51,8 +55,27 @@ async function getText(fetcher, url, signal) {
 }
 
 export async function checkRemotePolls({ fetcher = fetch, now = Date.now(), timeoutMs = 25000 } = {}) {
+  const alternateController = new AbortController();
+  const alternateTimer = setTimeout(() => alternateController.abort(), Math.min(timeoutMs, 12000));
+  let alternateFailed = false;
+  try {
+    const html = await getText(fetcher, THE_MADAD_URL, alternateController.signal);
+    const parsed = parseTheMadadHtml(html, {
+      year: new Date(now).getUTCFullYear(), from: now - 14 * DAY,
+      firmBySource: FIRM_BY_SOURCE
+    });
+    const polls = parsed.polls.map(p => normalizePoll(p, THE_MADAD_URL, now)).filter(Boolean)
+      .sort((a, b) => b.dateTimestamp - a.dateTimestamp);
+    if (!polls.length) throw new Error('source-empty');
+    return { status: parsed.skipped.length ? 'partial' : 'complete', checkedAt: new Date(now).toISOString(),
+      polls, sources: [{ name: 'המדד — מאגר הסקרים', url: THE_MADAD_URL, ok: true }],
+      scope: { days: 14, checkedPages: polls.length, missingPages: parsed.skipped.length, rejected: 0, capped: false }, cached: false };
+  } catch { alternateFailed = true; }
+  finally { clearTimeout(alternateTimer); }
+
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), timeoutMs);
-  const sources = [], found = new Map(); let rejected = 0, checkedPages = 0, missingPages = 0, capped = false;
+  const sources = alternateFailed ? [{ name: 'המדד — מאגר הסקרים', url: THE_MADAD_URL, ok: false }] : [];
+  const found = new Map(); let rejected = 0, checkedPages = 0, missingPages = 0, capped = false;
   const add = (raw, url) => { const p = normalizePoll(raw, url, now); if (!p) { rejected++; return; } if (p.dateTimestamp >= now - 14 * DAY) found.set(p.id, p); };
   try {
     const [home, sitemap] = await Promise.allSettled([

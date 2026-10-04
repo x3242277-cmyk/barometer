@@ -1,42 +1,42 @@
-/* Election 2026: a shared midnight and champagne visual identity. */
-:root{color-scheme:dark;--paper:#081522;--paper-2:#102438;--paper-3:#132a40;--ink:#f4f5f7;--ink-2:#c7d2df;--ink-3:#9dadc0;--rule:#263b50;--rule-2:#1c3044;--rule-strong:#41566b;--accent:#dfbe76;--accent-light:#dfbe7615;--navy:#0b1c2e;--navy-2:#081522;--navy-text:#639de1;--gold:#dfbe76;--apricot:#dfbe76;--page-w:100000px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px}
+/* Election 2026: a calm, light reading surface (navy ink, amber accents); photo scenes stay dark. */
+:root{color-scheme:light;--paper:#f3f5f9;--paper-2:#ffffff;--paper-3:#eef2f7;--ink:#122033;--ink-2:#3b4a5d;--ink-3:#566476;--rule:#dce3ec;--rule-2:#e8edf3;--rule-strong:#c3cedb;--accent:#8c5e0c;--accent-light:#f7eedc;--navy:#12345C;--navy-2:#0D2743;--navy-text:#12345C;--gold:#8c5e0c;--apricot:#e0b25c;--page-w:100000px;--gutter:80px;--r:12px;--r-s:6px;--r-l:16px}
 :root{--knesset-scene:url('election-knesset.png')}
 html{scroll-padding-top:110px}
 body{background:var(--paper);color:var(--ink)}
 ::selection{background:#dfbe76;color:#081522}
 :focus-visible{outline:2px solid #f1cf86;outline-offset:5px}
-.masthead{background:#081522f5;border-color:#ffffff12;backdrop-filter:blur(20px)}
+.masthead{background:#ecf3faf5;border-color:#10234623;backdrop-filter:blur(20px)}
 .masthead-in{min-height:80px;gap:24px}
-.brand-txt strong{color:#f4f5f7;font-size:1.8rem;letter-spacing:-.06em}
-.brand-txt span{color:#b9c5d3;font-size:.63rem;margin-top:3px}
+.brand-txt strong{color:#252627;font-size:1.8rem;letter-spacing:-.06em}
+.brand-txt span{color:#3f4a57;font-size:.63rem;margin-top:3px}
 .brand img{width:39px;height:39px}
-.mainnav .tab{color:#a9b6c7;font-size:.82rem;padding:12px 10px;white-space:nowrap}
-.mainnav .tab[aria-current="page"],.mainnav .tab:hover{color:#e9ca86}
-.mainnav .tab::after{height:2px;inset-inline:10px;background:#dfbe76}
-/* ליל הבחירות — כרטיסיית אירוע, מסומנת כגלולה עם נקודה נושמת במקום קו תחתון */
-.mainnav .tab-live{margin-inline-start:7px;padding:7px 13px;border:1px solid #dfbe7659;border-radius:100px;color:#e9ca86;background:#dfbe760f}
+.mainnav .tab{color:#495565;font-size:.82rem;padding:12px 10px;white-space:nowrap}
+.mainnav .tab[aria-current="page"],.mainnav .tab:hover{color:#533d03}
+.mainnav .tab::after{height:2px;inset-inline:10px;background:#dfbe76}/* ליל הבחירות — כרטיסיית אירוע, מסומנת כגלולה עם נקודה נושמת במקום קו תחתון */
+
+.mainnav .tab-live{margin-inline-start:7px;padding:7px 13px;border:1px solid #dfbe7659;border-radius:100px;color:#533d03;background:#dfbe760f}
 .mainnav .tab-live:hover{background:#dfbe761f;border-color:#dfbe76a6}
 .mainnav .tab-live[aria-current="page"]{background:linear-gradient(110deg,#f0d591,#c8a257);border-color:#dfbe76;color:#081522}
 .mainnav .tab-live::after{display:none}
 .mainnav .tab-live::before{content:"";display:inline-block;width:6px;height:6px;margin-inline-end:7px;border-radius:50%;background:#dfbe76;vertical-align:middle;animation:tab-live-pulse 2.4s ease-in-out infinite}
-.mainnav .tab-live[aria-current="page"]::before{background:#081522}
+.mainnav .tab-live[aria-current="page"]::before{background:#ecf3fa}
 @keyframes tab-live-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #dfbe7666}50%{opacity:.45;box-shadow:0 0 0 4px #dfbe7600}}
 @media(prefers-reduced-motion:reduce){.mainnav .tab-live::before{animation:none}}
-.stamp{color:#a9b6c7;font-size:.67rem}
+.stamp{color:#495565;font-size:.67rem}
 .pulse{background:#70c6a3;width:5px;height:5px}
-.masthead-side .print-btn{background:#102337;border-color:#263b50;color:#c7d2df;border-radius:50%;min-width:35px;min-height:35px;padding:8px}
-#view-home{background:radial-gradient(ellipse at 85% 35%,#13345338,transparent 65%),#081522}
-/* גלילה בקטעים: כל קטע ראשי גובה מסך לפחות (כדי שלא ייראה חתוך), ומיושר
+.masthead-side .print-btn{background:#f0f6fe;border-color:#c9d6e5;color:#36404b;border-radius:50%;min-width:35px;min-height:35px;padding:8px}
+#view-home{background:radial-gradient(ellipse at 85% 35%,#f5faff38,transparent 65%),#ecf3fa}/* גלילה בקטעים: כל קטע ראשי גובה מסך לפחות (כדי שלא ייראה חתוך), ומיושר
    לתחילת המסך כשגוללים אליו. proximity ולא mandatory כדי לא "להילחם"
    בגלילה חופשית בקטעים ארוכים מגובה מסך (למשל בניית קואליציה) — היעד
    העיקרי להתקדמות הוא כפתור החץ (section-next), לא הגלילה עצמה. */
+
 #view-home.on{height:calc(100vh - var(--masthead-h, 64px));overflow-y:auto;scroll-snap-type:y proximity}
 #view-home.on>.election-cover,#view-home.on>.verdict,#view-home.on>.board,#view-home.on>.election-coalition,#view-home.on>.home-method{
   scroll-snap-align:start;min-height:calc(100vh - var(--masthead-h, 64px));box-sizing:border-box}
 .section-next{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin:22px auto 2px;
-  border-radius:50%;border:1px solid #dfbe7659;background:#11233788;color:#dfbe76;font-size:1.15rem;cursor:pointer;
+  border-radius:50%;border:1px solid #dfbe7659;background:#f0f6fe88;color:#5d4609;font-size:1.15rem;cursor:pointer;
   transition:transform .15s,background .15s}
-.section-next:hover{background:#1c3448;transform:translateY(3px)}
+.section-next:hover{background:#dfebf6;transform:translateY(3px)}
 .section-next:focus-visible{outline:2px solid #f1cf86;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.section-next{transition:none}}
 #view-home .election-cover{position:relative;isolation:isolate;overflow:hidden;min-height:490px;background:#091b30;border-bottom:1px solid #b597532e}
@@ -64,7 +64,36 @@ body{background:var(--paper);color:var(--ink)}
 .cover-primary{color:#0b1c2e;background:linear-gradient(110deg,#edd49b,#d3b16b);border:1px solid #dfbe76}
 .cover-secondary{color:#e6d4ab;background:#11233788;border:1px solid #dfbe7659}
 .cover-actions button:hover{transform:translateY(-2px);background:#f0d8a4;color:#0b1c2e}
-.cover-credit{position:absolute;bottom:16px;left:28px;color:#d5dfed80;font-size:.57rem}
+.cover-credit{position:absolute;bottom:16px;left:28px;color:#d5dfed80;font-size:.57rem}/* שני עמודי הגוש בצד הצילום: מספר המנדטים ושם הגוש בלבד. הסולם הוא 120
+   המנדטים, וקו הרוב (61) נמתח כחוט דק על פני שני העמודים — כך רואים במבט
+   אחד מי מגיע אליו. סְכָך רדיאלי רך במקום מסגרת, כדי שהעמודים יישבו בתוך
+   הצילום ולא עליו. */
+
+.cover-gauges{position:absolute;z-index:1;left:clamp(16px,4.2vw,78px);top:50%;transform:translateY(-50%);
+  pointer-events:none;padding:30px 32px;
+  background:radial-gradient(ellipse 64% 58% at 50% 47%,#04101dcc,#04101d7a 54%,#04101d00 78%)}
+.cg-plot{--ph:clamp(168px,26vh,248px);--bw:clamp(44px,3.4vw,60px);
+  position:relative;display:grid;grid-template-columns:repeat(2,var(--bw));column-gap:clamp(13px,1.5vw,23px)}/* קו הרוב נפרש על שתי העמודות ונמצא באותו תא איתן. המיקום של שלושת
+   הפריטים מפורש: פריסה אוטומטית לעולם לא מניחה פריט על תא תפוס, ולכן בלי
+   grid-column מפורש העמודים נדחפים לעמודות משתמעות מימין לקו. */
+
+.cg-major{grid-area:1/1/2/3;align-self:start;position:relative;height:var(--ph);z-index:1}
+.cg-major::before{content:"";position:absolute;inset-inline:-14px;bottom:var(--major);height:1px;
+  background:linear-gradient(90deg,#e7eef600,#e8eff7a3 20%,#e8eff7a3 80%,#e7eef600)}
+.cg-stack{grid-row:1;display:grid;row-gap:9px;justify-items:center}
+.cg-stack--right{grid-column:1}
+.cg-stack--left{grid-column:2}
+.cg-track{height:var(--ph);width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px}
+.cg-col{width:100%;flex:0 0 var(--h);border-radius:7px 7px 2px 2px;
+  box-shadow:inset 0 1px 0 #ffffff36,0 7px 20px #04101d7a;transition:flex-basis .9s ease}
+.cg-num{font:800 clamp(1.5rem,2vw,2.1rem)/1 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-.04em;text-shadow:0 2px 14px #05111ee0}
+.cg-name{font-size:clamp(.64rem,.74vw,.78rem);font-weight:700;letter-spacing:.05em;color:#e5edf5;text-shadow:0 1px 9px #04101cea;white-space:nowrap}
+.cg-stack--right .cg-col{background:linear-gradient(180deg,#f0d194,#c9a35c)}
+.cg-stack--right .cg-num{color:#f2d79a}
+.cg-stack--left .cg-col{background:linear-gradient(180deg,#9cc9f2,#3d7cbe)}
+.cg-stack--left .cg-num{color:#bedbf6}
+@media(prefers-reduced-motion:reduce){.cg-col{transition:none}}
+@media(max-width:1080px){.cover-gauges{display:none}}
 #view-home .election-cover .election-countdown{display:flex;justify-content:flex-start;align-items:center;gap:26px;width:fit-content;margin:27px 0 0;padding:15px 0 0;border:0;border-top:1px solid #dfbe7636;border-radius:0;background:none;box-shadow:none;color:#f4f5f7}
 .election-cover .cd-head{text-align:start;display:block}
 .election-cover .cd-head .kicker,.election-cover .cd-head>span{display:none}
@@ -75,74 +104,74 @@ body{background:var(--paper);color:var(--ink)}
 .election-cover .countdown-cells em{font-style:normal;font-size:.56rem;color:#9dadc0;font-weight:400}
 .election-cover .cd-sep{color:#b79b6066;font-size:1.1rem;font-style:normal;align-self:flex-start}
 #view-home .verdict{background:none;border:0;overflow:visible;color:var(--ink)}
-#view-home .verdict-in{background:#10243866;border:1px solid #263b50;border-radius:10px;padding:22px 30px 0}
-.verdict-top{border-color:#263b50;padding-bottom:16px}
-#view-home .verdict .eyebrow{color:#b8c7d7;font-size:.73rem}
+#view-home .verdict-in{background:#f0f7fe66;border:1px solid #c9d6e5;border-radius:10px;padding:22px 30px 0}
+.verdict-top{border-color:#c9d6e5;padding-bottom:16px}
+#view-home .verdict .eyebrow{color:#3b4958;font-size:.73rem}
 .edition-label{color:#70899f;font-size:.6rem;letter-spacing:.12em}
 .election-hero{grid-template-columns:.85fr 1.15fr;gap:60px;padding:28px 0}
-.hero-overline{color:#dfbe76;font-size:.72rem;margin-bottom:11px}
-#view-home #verdict-head{font-size:clamp(2rem,3.5vw,3.1rem);font-weight:800;letter-spacing:-.04em;line-height:1.2;margin:0 0 20px;color:#f4f5f7}
-#view-home #verdict-head em{font-style:normal;color:#dfbe76}
-.forecast-headline{font-size:1rem;line-height:1.8;color:#e1e8ef;font-weight:600;max-width:35ch;margin:0 0 8px}
-.forecast-headline em{font-style:normal;color:#e9ca86}
-.hero-description{color:#9dadc0;font-size:.8rem;max-width:40ch;line-height:1.9;margin-bottom:22px}
+.hero-overline{color:#5d4609;font-size:.72rem;margin-bottom:11px}
+#view-home #verdict-head{font-size:clamp(2rem,3.5vw,3.1rem);font-weight:800;letter-spacing:-.04em;line-height:1.2;margin:0 0 20px;color:#252627}
+#view-home #verdict-head em{font-style:normal;color:#5d4609}
+.forecast-headline{font-size:1rem;line-height:1.8;color:#2b3036;font-weight:600;max-width:35ch;margin:0 0 8px}
+.forecast-headline em{font-style:normal;color:#533d03}
+.hero-description{color:#4d5d70;font-size:.8rem;max-width:40ch;line-height:1.9;margin-bottom:22px}
 #view-home .hero-faces{display:none}
 .hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
-#view-home .show-btn{background:#dfbe7612;color:#dfbe76;border:1px solid #dfbe764d;padding:10px 14px;border-radius:5px;font-size:.75rem;box-shadow:none}
+#view-home .show-btn{background:#dfbe7612;color:#5d4609;border:1px solid #dfbe764d;padding:10px 14px;border-radius:5px;font-size:.75rem;box-shadow:none}
 #view-home .show-btn:hover{background:#dfbe7629}
-.hero-link{font-size:.75rem;color:#c7d2df;gap:10px}
-.hero-link span{width:28px;height:28px;border-color:#3a4f64;font-size:1rem}
-.election-visual{background:linear-gradient(140deg,#162d43,#0c1c2d);border:1px solid #2b4259;border-radius:8px;padding:20px 22px 15px}
-.visual-topline{font-size:.85rem;padding-bottom:11px;border-bottom:1px solid #ffffff0a}
+.hero-link{font-size:.75rem;color:#36404b;gap:10px}
+.hero-link span{width:28px;height:28px;border-color:#cbd9e8;font-size:1rem}
+.election-visual{background:linear-gradient(140deg,#f2f8ff,#eef5fc);border:1px solid #cad7e6;border-radius:8px;padding:20px 22px 15px}
+.visual-topline{font-size:.85rem;padding-bottom:11px;border-bottom:1px solid #10234618}
 .visual-topline>span:last-child{font-size:.64rem}
 .home-hemicycle{margin:14px auto 0;max-width:none}
 .seatmap{gap:12px}
 .seatmap .sm-top{gap:16px;align-items:end}
 .sm-bloc b{font-size:2.2rem}
-.sm-bloc.right b{color:#77abe4}.sm-bloc.left b{color:#e68e83}.sm-bloc.mid b{color:#b6bec9}
-.sm-bloc span{color:#a9b9cb;font-weight:500;font-size:.65rem}
-.sm-bar{height:5px;background:#263b50}.sm-61{background:#edd49b;box-shadow:none;width:1px}
+.sm-bloc.right b{color:#29619b}.sm-bloc.left b{color:#953d35}.sm-bloc.mid b{color:#464e58}
+.sm-bloc span{color:#445465;font-weight:500;font-size:.65rem}
+.sm-bar{height:5px;background:#f7fbff}.sm-61{background:#edd49b;box-shadow:none;width:1px}
 .seatmap svg{max-width:440px;margin:0 auto}
 .seatmap .seat{stroke:#ffffff28;stroke-width:1}
 .seatmap .seat[data-k="likud"]{fill:#467eba}.seatmap .seat[data-k="ozma_yehudit"]{fill:#6d9fcb}.seatmap .seat[data-k="zionut_datit"]{fill:#315989}.seatmap .seat[data-k="shas"]{fill:#8a99ac}.seatmap .seat[data-k="yahadut_hatora"]{fill:#657a93}
 .seatmap .seat[data-k="hademokratim"]{fill:#b95248}.seatmap .seat[data-k="yashar"]{fill:#d16c5f}.seatmap .seat[data-k="beyahad"]{fill:#e19b85}.seatmap .seat[data-k="ndi"]{fill:#e9b4a4}.seatmap .seat[data-k="raam"],.seatmap .seat[data-k="hadash_taal"]{fill:#77ad94}
-.seatmap .hemicycle-total{fill:#f4f5f7;font-size:62px;font-weight:800}.seatmap .hemicycle-caption{fill:#9dadc0;font-weight:400}
+.seatmap .hemicycle-total{fill:#252627;font-size:62px;font-weight:800}.seatmap .hemicycle-caption{fill:#4d5d70;font-weight:400}
 .sm-parties{display:none}
-.sm-votes{border:0;border-top:1px solid #263b50;margin-top:9px;padding-top:12px;font-size:.67rem;color:#a9b9cb}.sm-votes-mid{color:#b5c3d3;font-weight:400}
-.visual-footnote{font-size:.61rem;margin-top:9px;color:#93a5b9}
-#view-home .home-forecast-controls{padding:14px 0;border-color:#263b50;gap:18px;font-size:.75rem}
-#view-home .home-switch{border:1px solid #334a61;background:#0b1c2e;border-radius:5px;padding:3px}
-#view-home .home-switch button{min-height:34px;font-size:.73rem;border-radius:3px;padding:7px 14px;color:#9dadc0}
+.sm-votes{border:0;border-top:1px solid #c9d6e5;margin-top:9px;padding-top:12px;font-size:.67rem;color:#445465}.sm-votes-mid{color:#3f4c5a;font-weight:400}
+.visual-footnote{font-size:.61rem;margin-top:9px;color:#526478}
+#view-home .home-forecast-controls{padding:14px 0;border-color:#c9d6e5;gap:18px;font-size:.75rem}
+#view-home .home-switch{border:1px solid #cbd9e7;background:#eef5fc;border-radius:5px;padding:3px}
+#view-home .home-switch button{min-height:34px;font-size:.73rem;border-radius:3px;padding:7px 14px;color:#4d5d70}
 #view-home .home-switch button[aria-pressed="true"]{background:#dfbe76;color:#0b1c2e;box-shadow:none}
 #view-home .home-history-pick{font-size:.7rem;gap:10px}
-#view-home .home-history-pick select{background:#102438;border-color:#334a61;color:#d6e0ea;min-height:38px;border-radius:5px;font-size:.73rem}
-.intro-result-links a,.intro-result-links button{color:#9dadc0;font-size:.67rem}
+#view-home .home-history-pick select{background:#f0f7fe;border-color:#cbd9e7;color:#2e363f;min-height:38px;border-radius:5px;font-size:.73rem}
+.intro-result-links a,.intro-result-links button{color:#4d5d70;font-size:.67rem}
 #view-home .board{padding:37px 0 32px}
-.board-title{align-items:center;padding:0 0 18px;margin:0;border-bottom:1px solid #263b50;gap:20px}
-.board-title .kicker{color:#dfbe76;font-size:.67rem;margin:0 0 4px}.board-title h2{font-size:1.65rem}.board-title>p{font-size:.73rem;margin-inline-start:auto}
-.wall-toggle{background:#0c1c2d;border-color:#2b4259;border-radius:5px;flex-shrink:0}
-.wall-toggle button{color:#99adc1;border-radius:3px;font-size:.71rem;padding:6px 12px;min-height:32px}
-.wall-toggle button[aria-pressed="true"]{background:#263c51;color:#eed59e;box-shadow:none}
+.board-title{align-items:center;padding:0 0 18px;margin:0;border-bottom:1px solid #c9d6e5;gap:20px}
+.board-title .kicker{color:#5d4609;font-size:.67rem;margin:0 0 4px}.board-title h2{font-size:1.65rem}.board-title>p{font-size:.73rem;margin-inline-start:auto}
+.wall-toggle{background:#eef5fc;border-color:#cad7e6;border-radius:5px;flex-shrink:0}
+.wall-toggle button{color:#4b5f72;border-radius:3px;font-size:.71rem;padding:6px 12px;min-height:32px}
+.wall-toggle button[aria-pressed="true"]{background:#f7fbff;color:#493704;box-shadow:none}
 .wall{gap:20px;margin-top:20px}
-#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{background:#10243875;border:1px solid #263b50;border-radius:8px;padding:20px}
-#view-home .wall .bloc-head{border-bottom-color:#263b50;padding-bottom:14px}
-#view-home .wall .bloc-head .kicker{color:#b5c5d8}.wall .bloc-head h3{color:#8299b1}
-#view-home .bloc-head .tally{color:#e8d3a0;background:none;font-size:2.4rem;padding:0}
-#view-home .wall .hcard{padding:13px 0;border-color:#ffffff0a;grid-template-columns:65px minmax(0,1fr) 52px;gap:14px}
+#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{background:#f0f7fe75;border:1px solid #c9d6e5;border-radius:8px;padding:20px}
+#view-home .wall .bloc-head{border-bottom-color:#c9d6e5;padding-bottom:14px}
+#view-home .wall .bloc-head .kicker{color:#3b4a5c}.wall .bloc-head h3{color:#4e667e}
+#view-home .bloc-head .tally{color:#4b3904;background:none;font-size:2.4rem;padding:0}
+#view-home .wall .hcard{padding:13px 0;border-color:#10234618;grid-template-columns:65px minmax(0,1fr) 52px;gap:14px}
 #view-home .wall .hcard-photo{width:65px;height:76px;border:1px solid #dfbe7640;border-radius:5px}
-#view-home .wall .hcard-name{color:#f4f5f7;font-size:.9rem}.wall .hcard-leader{color:#9dadc0;font-size:.72rem}
-#view-home .wall .hcard-seat{color:#dfbe76;font-size:2.15rem}
-#view-home .wall .hcard:hover{background:#1c3448}
-#view-home .wall .hcard-track{height:4px;background:#283e53;margin-top:6px}
-.board-note{font-size:.67rem;color:#8198ae;margin:14px 0 0}
-.wall-poster{margin-top:20px}.ptiles{grid-template-columns:repeat(7,minmax(0,1fr));gap:22px 15px}.ptiles+.ptiles{margin-top:22px}.ptile-photo{border-radius:5px;border:1px solid #dfbe7640}.ptile-num{background:#dfbe76;color:#0b1c2e;box-shadow:0 0 0 3px #102438;border-radius:4px;z-index:1;position:relative}.ptile-name{font-size:.82rem}.ptile-leader{font-size:.67rem}.ptile-delta.up{color:#86cbb3}.ptile-delta.down{color:#e89b8f}.pstrip{border-color:#263b50}.pgroup{background:#182f43;color:#c7d2df;border-width:3px;border-radius:4px}.pgroup b{color:#dfbe76}
-.home-method{background:linear-gradient(120deg,#0c1e30,#102438);border-top:1px solid #263b50;padding:42px 0;margin-top:38px}
-.method-intro h2{font-size:1.8rem;line-height:1.4}.method-intro .kicker{font-size:.7rem;color:#dfbe76}.home-method .btn{border-radius:5px;font-size:.78rem;min-height:41px}
-#view-home .pipeline{border-radius:7px;border-color:#2b4054;background:#07152244}
-#view-home .pipe-node{padding:20px 18px;border-color:#2b4054;gap:10px}
-#view-home .pipe-step{color:#d6b973;font-size:.65rem}#view-home .pipe-k{color:#aebed0;font-size:.75rem}#view-home .pipe-n{color:#f4e3bc;font-size:1.35rem}#view-home .pipe-t{font-size:.67rem;color:#8fa5bc}
+#view-home .wall .hcard-name{color:#252627;font-size:.9rem}.wall .hcard-leader{color:#4d5d70;font-size:.72rem}
+#view-home .wall .hcard-seat{color:#5d4609;font-size:2.15rem}
+#view-home .wall .hcard:hover{background:#dfebf6}
+#view-home .wall .hcard-track{height:4px;background:#f8fcff;margin-top:6px}
+.board-note{font-size:.67rem;color:#4e667d;margin:14px 0 0}
+.wall-poster{margin-top:20px}.ptiles{grid-template-columns:repeat(7,minmax(0,1fr));gap:22px 15px}.ptiles+.ptiles{margin-top:22px}.ptile-photo{border-radius:5px;border:1px solid #dfbe7640}.ptile-num{background:#dfbe76;color:#0b1c2e;box-shadow:0 0 0 3px #10234626;border-radius:4px;z-index:1;position:relative}.ptile-name{font-size:.82rem}.ptile-leader{font-size:.67rem}.ptile-delta.up{color:#135d49}.ptile-delta.down{color:#873c33}.pstrip{border-color:#c9d6e5}.pgroup{background:#f2f9ff;color:#36404b;border-width:3px;border-radius:4px}.pgroup b{color:#5d4609}
+.home-method{background:linear-gradient(120deg,#eff5fc,#f0f7fe);border-top:1px solid #c9d6e5;padding:42px 0;margin-top:38px}
+.method-intro h2{font-size:1.8rem;line-height:1.4}.method-intro .kicker{font-size:.7rem;color:#5d4609}.home-method .btn{border-radius:5px;font-size:.78rem;min-height:41px}
+#view-home .pipeline{border-radius:7px;border-color:#c9d7e5;background:#ecf3fa44}
+#view-home .pipe-node{padding:20px 18px;border-color:#c9d7e5;gap:10px}
+#view-home .pipe-step{color:#624b04;font-size:.65rem}#view-home .pipe-k{color:#415061;font-size:.75rem}#view-home .pipe-n{color:#3e2f05;font-size:1.35rem}#view-home .pipe-t{font-size:.67rem;color:#4f657c}
 @media(min-width:1700px){#view-home .election-cover{min-height:560px}.cover-content{padding-top:58px}.cover-image{background-position:center 57%}}
 @media(max-width:1190px){:root{--gutter:48px}.masthead-in{gap:15px}.masthead-side .stamp{display:none}.mainnav .tab{font-size:.76rem;padding-inline:8px}.brand-txt strong{font-size:1.5rem}.brand img{width:33px}.election-hero{gap:32px}.ptiles{grid-template-columns:repeat(6,minmax(0,1fr))}}
-@media(max-width:800px){:root{--gutter:32px}.masthead-in{flex-wrap:wrap;min-height:0;gap:8px;padding:12px 0 0}.brand{margin:0}.brand-txt strong{font-size:1.45rem}.brand-txt span{font-size:.56rem}.masthead-side{margin-inline-start:auto}.mainnav{order:3;flex:0 0 100%;overflow-x:auto}.mainnav .tabs{display:flex;flex-wrap:nowrap;justify-content:flex-start;min-width:max-content;gap:8px}.mainnav .tab{font-size:.74rem;padding:8px 10px;min-height:41px}.mainnav .tab::after{bottom:0}#view-home .election-cover{min-height:450px}.cover-content{padding-top:32px}.cover-image{background-position:40% 62%}.election-cover::after{background:linear-gradient(270deg,#081522ed,#081522ac 45%,#0815224a),linear-gradient(0deg,#081522,transparent 50%)}#election-title{font-size:clamp(3.5rem,9.5vw,5.4rem)}.cover-credit{font-size:.5rem;left:16px;bottom:9px}.election-hero{grid-template-columns:1fr;gap:24px;padding:24px 0}.election-copy{max-width:100%}#view-home #verdict-head{font-size:2.4rem;margin-bottom:12px}#view-home #verdict-head br{display:none}.forecast-headline{max-width:100%;font-size:.88rem}.hero-description{max-width:60ch;margin:7px 0 15px}.election-visual{width:100%;max-width:none;padding:20px}.seatmap svg{max-width:430px}#view-home .verdict-in{padding:18px 20px 0}.verdict-top .edition-label{display:none}#view-home .home-forecast-controls{gap:12px;align-items:flex-start}#view-home .home-history-pick{flex-wrap:wrap;align-items:center}.board-title{flex-wrap:wrap;gap:10px}.board-title>p{display:none}.board-title .wall-toggle{margin-inline-start:auto}.wall{grid-template-columns:1fr}.ptiles{grid-template-columns:repeat(4,minmax(0,1fr))}#view-home .pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}#view-home .pipe-node{border-bottom:1px solid #2b4054}#view-home .pipe-node:last-child{grid-column:1/-1}.method-intro{align-items:start}.method-intro h2{font-size:1.4rem}.method-intro .btn{font-size:.7rem;gap:10px;padding:8px 12px}}
+@media(max-width:800px){:root{--gutter:32px}.masthead-in{flex-wrap:wrap;min-height:0;gap:8px;padding:12px 0 0}.brand{margin:0}.brand-txt strong{font-size:1.45rem}.brand-txt span{font-size:.56rem}.masthead-side{margin-inline-start:auto}.mainnav{order:3;flex:0 0 100%;overflow-x:auto}.mainnav .tabs{display:flex;flex-wrap:nowrap;justify-content:flex-start;min-width:max-content;gap:8px}.mainnav .tab{font-size:.74rem;padding:8px 10px;min-height:41px}.mainnav .tab::after{bottom:0}#view-home .election-cover{min-height:450px}.cover-content{padding-top:32px}.cover-image{background-position:40% 62%}.election-cover::after{background:linear-gradient(270deg,#081522ed,#081522ac 45%,#0815224a),linear-gradient(0deg,#081522,transparent 50%)}#election-title{font-size:clamp(3.5rem,9.5vw,5.4rem)}.cover-credit{font-size:.5rem;left:16px;bottom:9px}.election-hero{grid-template-columns:1fr;gap:24px;padding:24px 0}.election-copy{max-width:100%}#view-home #verdict-head{font-size:2.4rem;margin-bottom:12px}#view-home #verdict-head br{display:none}.forecast-headline{max-width:100%;font-size:.88rem}.hero-description{max-width:60ch;margin:7px 0 15px}.election-visual{width:100%;max-width:none;padding:20px}.seatmap svg{max-width:430px}#view-home .verdict-in{padding:18px 20px 0}.verdict-top .edition-label{display:none}#view-home .home-forecast-controls{gap:12px;align-items:flex-start}#view-home .home-history-pick{flex-wrap:wrap;align-items:center}.board-title{flex-wrap:wrap;gap:10px}.board-title>p{display:none}.board-title .wall-toggle{margin-inline-start:auto}.wall{grid-template-columns:1fr}.ptiles{grid-template-columns:repeat(4,minmax(0,1fr))}#view-home .pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}#view-home .pipe-node{border-bottom:1px solid #c9d7e5}#view-home .pipe-node:last-child{grid-column:1/-1}.method-intro{align-items:start}.method-intro h2{font-size:1.4rem}.method-intro .btn{font-size:.7rem;gap:10px;padding:8px 12px}}
 @media(max-width:480px){.brand-txt strong{font-size:1.4rem}.cover-edition{font-size:.65rem;gap:9px}.cover-content{padding-top:28px}#view-home .election-cover{min-height:460px}#election-title{font-size:3.35rem;margin-top:18px}.cover-tagline{font-size:1.22rem;margin:9px 0}.cover-points li{font-size:.79rem}.cover-image{background-position:32% 65%;opacity:.8}.cover-actions{margin-top:21px;gap:8px}.cover-actions button{font-size:.73rem;gap:20px;padding:10px 13px}#view-home .election-cover .election-countdown{gap:22px;margin-top:28px;padding-top:18px}.election-cover .cd-head h3{font-size:.68rem}.election-cover .countdown-cells .num{font-size:1.85rem}#view-home .verdict-in{padding-inline:15px}#view-home .verdict .eyebrow{font-size:.63rem}#view-home #verdict-head{font-size:1.85rem}.election-visual{padding:16px 12px}.visual-topline{font-size:.76rem}.visual-topline>span:last-child{font-size:.6rem}.sm-bloc b{font-size:1.9rem}.sm-bloc span{font-size:.58rem}.sm-bloc.mid b{font-size:1.6rem}.board-title h2{font-size:1.3rem}.wall-toggle button{font-size:.64rem;padding:6px 8px}#view-home .bloc,#view-home .bloc+.bloc,#view-home .wall-poster{padding:15px}.ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 9px}.ptile-name{font-size:.76rem}.ptile-leader{font-size:.6rem}.pstrip-lbl{width:100%}.pgroup{font-size:.69rem;padding:6px 8px}.pstrip-note{font-size:.65rem}.method-intro{display:block}.method-intro .btn{margin-top:18px}#view-home .pipe-node{padding:17px 13px}#view-home .pipe-n{font-size:1.2rem}}
 @media print{.election-cover,.election-coalition{display:none!important}:root{color-scheme:light;--ink:#111;--ink-2:#333;--ink-3:#555;--paper:#fff;--paper-2:#fff;--rule:#ccc;--navy:#12345C;--navy-text:#12345C}body{background:#fff;color:#111}}

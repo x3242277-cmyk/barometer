@@ -1,6 +1,226 @@
 {
-  "updatedAt": "2026-09-23T08:59:08.526Z",
+  "updatedAt": "2026-09-24T09:50:58.151Z",
   "polls": [
+    {
+      "id": "themadad-734",
+      "date": "23.09.2026",
+      "dateTimestamp": 1790121600000,
+      "publishedAt": 1790121600000,
+      "channel": "",
+      "channelHebrewName": "חדשות 13",
+      "sourceId": "channel_13",
+      "sourceUrl": "https://themadad.com/polls26/",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 18,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש״ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית וזהות",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע״מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 4,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "themadad-735",
+      "date": "23.09.2026",
+      "dateTimestamp": 1790121600000,
+      "publishedAt": 1790121600000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 14",
+      "sourceId": "channel_14",
+      "sourceUrl": "https://themadad.com/polls26/",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 32,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש״ס",
+          "logoUrl": "",
+          "mandates": 11,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית וזהות",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע״מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 22,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
     {
       "id": "manual-channel_12-2026-09-22",
       "date": "22.09.2026",
@@ -1546,6 +1766,116 @@
           "name": "עמך ישראל",
           "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
           "mandates": 0,
+          "alignment": "Coalition"
+        }
+      ]
+    },
+    {
+      "id": "themadad-720",
+      "date": "10.09.2026",
+      "dateTimestamp": 1788998400000,
+      "publishedAt": 1788998400000,
+      "channel": "",
+      "channelHebrewName": "ערוץ 16",
+      "sourceId": "channel_16",
+      "sourceUrl": "https://themadad.com/polls26/",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 20,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "kahollavan",
+          "name": "כחול לבן",
+          "logoUrl": "",
+          "mandates": 0,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש״ס",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית וזהות",
+          "logoUrl": "",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע״מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 16,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 23,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 0,
+          "alignment": "Unknown"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "",
+          "mandates": 4,
           "alignment": "Coalition"
         }
       ]

@@ -49,6 +49,7 @@
   document.addEventListener('wheel', event => {
     const home = document.getElementById('view-home');
     if (!home || !home.classList.contains('on')) return;
+    if (getComputedStyle(home).overflowY === 'visible') return;
     if (document.querySelector('dialog[open]') || !home.contains(event.target)) return;
     if (locked) { event.preventDefault(); return; }
     const list = sections();

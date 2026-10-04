@@ -26,11 +26,11 @@
   --red:#B03024;
 
   /* blocs — נבחרו לקריאות גם כטקסט על --paper הכהה וגם כרקע עם טקסט לבן, בהתאמה ל-BLOCS ב-app.js */
-  --coalition:#3A81DB;
-  --opposition:#D65548;
-  --arabs:#328F70;
-  --unknown:#727C87;
-  --haredi:#8777B5;
+  --coalition:#2563B0;
+  --opposition:#C0392B;
+  --arabs:#2A7A5E;
+  --unknown:#6B7580;
+  --haredi:#6A5A9C;
 
   --shadow-s:0 1px 2px rgba(20,26,33,.06), 0 2px 8px rgba(20,26,33,.05);
   --shadow-m:0 2px 4px rgba(20,26,33,.05), 0 10px 30px rgba(20,26,33,.08);
@@ -48,7 +48,7 @@
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{
-  margin:0; min-width:320px;
+  margin:0; min-width:0;
   background:var(--paper); color:var(--ink);
   font-family:var(--sans); font-size:16px; line-height:1.6;
   -webkit-font-smoothing:antialiased;

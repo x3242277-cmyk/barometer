@@ -1,0 +1,136 @@
+/* Navy & ivory — loaded last.
+   The frame of the site is deep navy with champagne accents; everything you read
+   sits on warm ivory cards with navy ink. Each surface re-declares the tokens, so any
+   text that uses var(--ink…) is automatically dark on ivory and light on navy. */
+:root{
+  color-scheme:dark;
+  --paper:#0b1a2b; --paper-2:#11243a; --paper-3:#0e2033;
+  --ink:#f6f3ec; --ink-2:#d5dce5; --ink-3:#b4c1ce;
+  --rule:#ffffff24; --rule-2:#ffffff17; --rule-strong:#ffffff3d;
+  --gold:#e5c783; --accent:#e5c783; --accent-light:#e5c78322; --apricot:#e5c783;
+  --navy:#12345C; --navy-2:#0D2743; --navy-text:#a9cbef;
+  --ivory:#fdfbf6; --ivory-2:#f6f1e7; --ivory-rule:#e6dfd1;
+  --champagne:linear-gradient(110deg,#f1d99d,#d1ad62);
+}
+body{background:radial-gradient(1200px 600px at 85% -10%,#173556 0%,transparent 60%),var(--paper) fixed;color:var(--ink)}
+
+/* ---------- ivory surfaces ---------- */
+:is(.card,.tr-card,.tr-hero,.feed-item,.tablewrap,.dtable-wrap,.mtable,.arch-wrap,.notice,.takeaway,.poll-result-card,.rank,
+  .step,.sector,.cluster,.floorcard,.pillar,.hemi,.gauge,.scen-block,.average-results,.average-toolbar,.average-firms,
+  .live-status,.live-feed li,.fblock,.focus-summary,.map-panel,.mapbox,.mlive,.sources-group,.mandate-estimate,
+  .page-facts,.stats,#home-story,.election-visual,.verdict-in,.bloc,.wall-poster,.ec-panel,.story-graphs,.share-panel,.scen-cards>*,
+  .discovery-stories a,.dstep-body .grid>*,.mstep-body>.facts,.firm-card,.tr-movers,#compare-picker label,.average-party,
+  .pipeline,.home-method .pipe-node,dialog,.average-tooltip,.tr-tip,.leaflet-popup-content-wrapper){
+  --paper:#f3eee4; --paper-2:var(--ivory); --paper-3:#efe9dd;
+  --ink:#14233a; --ink-2:#3a4859; --ink-3:#586575;
+  --rule:var(--ivory-rule); --rule-2:#eee8dc; --rule-strong:#d3c9b7;
+  --gold:#855a0c; --accent:#855a0c; --accent-light:#f5ead3; --navy-text:#12345C;
+  color-scheme:light;
+}
+/* :not(#_) twice — the older layers use :not(#view-home) plus element selectors inside :is(), so plain .view loses */
+.view:not(#_):not(#__) :is(.card,.tr-card,.tr-hero,.feed-item,.tablewrap,.dtable-wrap,.mtable,.arch-wrap,.poll-result-card,.rank,
+  .step,.sector,.cluster,.floorcard,.pillar,.hemi,.gauge,.scen-block,.average-results,.average-toolbar,.average-firms,
+  .live-status,.fblock,.focus-summary,.map-panel,.mapbox,.mlive,.sources-group,.mandate-estimate,.page-facts,.stats,#home-story,
+  .election-visual,.verdict-in,.bloc,.wall-poster,.ec-panel,.story-graphs,.share-panel,.firm-card,.tr-movers,.pipeline),
+dialog{
+  background:var(--ivory);color:var(--ink);border:1px solid #ffffff14;
+  box-shadow:0 1px 0 #ffffff10 inset,0 18px 40px -18px #00000080;border-radius:14px}
+.view:not(#_):not(#__) .tablewrap table,.view:not(#_):not(#__) .tablewrap :is(th,td){color:var(--ink)}
+.view:not(#_):not(#__) .tablewrap thead th{background:var(--ivory-2)}
+.view:not(#_):not(#__) :is(.notice,.takeaway){background:var(--ivory);border:1px solid var(--ivory-rule);border-inline-start:4px solid #d1ad62;color:var(--ink-2);border-radius:12px}
+.view:not(#_):not(#__) .notice.warm .ic{background:#855a0c;color:#fff}
+.view:not(#_):not(#__) .notice .ic{background:#e9e2d4;color:var(--navy)}
+.view:not(#_):not(#__) .page-facts{border-radius:12px}
+
+
+/* ---------- the navy frame ---------- */
+.masthead{background:#0a1827f2;border-bottom:1px solid #e5c78326;box-shadow:0 10px 30px -20px #000;backdrop-filter:blur(18px)}
+.brand-txt strong{color:#fbf8f1}
+.brand-txt span{color:#b9c6d4}
+.mainnav .tab{color:#c9d3de}
+.mainnav .tab[aria-current="page"],.mainnav .tab:hover{color:#f1d99d}
+.mainnav .tab::after{background:#e5c783}
+.mainnav .tab-live{color:#f1d99d;border-color:#e5c78366;background:#e5c78314}
+.mainnav .tab-live::before{background:#e5c783}
+.mainnav .tab-live:hover{background:#e5c78326;border-color:#e5c783}
+.mainnav .tab-live[aria-current="page"]{background:var(--champagne);border-color:#e5c783;color:#0b1a2b}
+.mainnav .tab-live[aria-current="page"]::before{background:#0b1a2b}
+.stamp{color:#b9c6d4}
+.masthead-side .print-btn{background:#ffffff0d;border-color:#ffffff2e;color:#e8edf3}
+:focus-visible{outline:2px solid #f1d99d;outline-offset:3px}
+::selection{background:#e5c783;color:#0b1a2b}
+.view:not(#_):not(#__) .kicker{color:var(--gold)}
+.view:not(#_):not(#__) :is(.page-intro,.page-head){border-bottom-color:#e5c78333}
+.view:not(#_):not(#__) :is(.page-intro,.page-head) h2,.view:not(#_):not(#__) .sec-head h2{color:var(--ink)}
+.view:not(#_):not(#__) a:not([class]){color:var(--navy-text)}
+body>footer{background:#08141f;border-top:1px solid #e5c78326;color:#c9d3de}
+body>footer :is(p,.footer-details p){color:#c9d3de}
+body>footer :is(a,.footer-nav a,.footer-details>summary){color:#f1d99d}
+body>footer .fbrand strong{color:#fbf8f1}
+body>footer #footer-sources,body>footer #footer-sources *{color:#c9d3de}
+body>footer h4{color:#f1d99d}
+body>footer a:hover{color:#fff}
+
+/* ---------- controls ---------- */
+/* On navy: glassy pill; selected = champagne with navy text (the same everywhere). */
+.view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle){background:#ffffff0f;border:1px solid #ffffff26;border-radius:10px}
+.view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle) button{color:#dde4ec;background:none;border-color:transparent}
+.view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle) button:hover{background:#ffffff14;color:#fff}
+.view:not(#_):not(#__) :is(.switch,.poll-view-tabs,.home-switch,.wall-toggle,.average-days,.filter-modes,.calib-switch) button[aria-pressed="true"],
+.view:not(#_):not(#__) .average-days button[aria-pressed="true"]{background:var(--champagne);color:#0b1a2b;border-color:#e5c783;box-shadow:0 2px 10px -4px #e5c78399}
+.view:not(#_):not(#__) .poll-view-tabs button[aria-pressed="true"] .view-icon{color:#0b1a2b;opacity:.85}
+/* Inside ivory cards the pill turns light. */
+.view:not(#_):not(#__) :is(.tr-card,.card,.average-toolbar,.verdict-in,.scen-block) :is(.switch,.average-days,.home-switch){background:var(--ivory-2);border-color:var(--ivory-rule)}
+.view:not(#_):not(#__) :is(.tr-card,.card,.average-toolbar,.verdict-in,.scen-block) :is(.switch,.average-days,.home-switch) button:not([aria-pressed="true"]){color:var(--ink-2)}
+.view:not(#_):not(#__) :is(.tr-card,.card,.average-toolbar,.verdict-in,.scen-block) :is(.switch,.average-days,.home-switch) button:not([aria-pressed="true"]):hover{background:#ebe4d6;color:var(--ink)}
+.view:not(#_):not(#__) :is(.btn,.hero-link-btn),dialog .btn{background:var(--champagne);border:1px solid #e5c783;color:#0b1a2b;font-weight:700}
+.view:not(#_):not(#__) .btn:hover,dialog .btn:hover{background:#f3dfa9;color:#0b1a2b}
+.view:not(#_):not(#__) .btn.ghost,dialog .btn.ghost{background:transparent;border-color:#ffffff40;color:#f6f3ec}
+.view:not(#_):not(#__) :is(.card,.tr-card,.verdict-in) .btn.ghost,dialog .btn.ghost{border-color:var(--rule-strong);color:var(--navy)}
+.view:not(#_):not(#__) .subtab{color:#d5dce5;border-color:#ffffff1f}
+.view:not(#_):not(#__) .subtab:hover{background:#ffffff12;color:#fff}
+.view:not(#_):not(#__) .subtab[aria-current="page"]{background:#e5c7831c;border-color:#e5c783aa;color:#f1d99d}
+.view:not(#_):not(#__) :is(select,input[type="search"],input[type="number"],input[type="text"],textarea){background:#fff;border:1px solid #cfc5b3;color:#14233a;color-scheme:light}
+.view:not(#_):not(#__) .filter-icons button{background:#ffffff0d;border-color:#ffffff24;color:#dde4ec}
+.view:not(#_):not(#__) .filter-icons button[aria-pressed="true"]{background:#e5c78322;border-color:#e5c783;color:#f1d99d}
+#compare-picker label{border-color:var(--ivory-rule)}
+#compare-picker label:has(input:checked){background:#f5ead3;border-color:#855a0c}
+.view:not(#_):not(#__) .party-highlight{background:#f5ead3!important;box-shadow:inset -3px 0 #855a0c}
+
+/* ---------- data colors ---------- */
+.view:not(#_):not(#__) :is(.bc-seg,.crossbar>span){color:#fff;box-shadow:none}
+.view:not(#_):not(#__) .bc-seg b,.view:not(#_):not(#__) .crossrow-fill b,.election-coalition .ec-party-seats,.ptile.is-below .ptile-num{color:#fff}
+.view:not(#_):not(#__) .elect-bar>span{box-shadow:none}
+.view:not(#_):not(#__) .arch tr.actual td{background:#12345C;color:#fff;border-bottom-color:#d1ad62}
+.view:not(#_):not(#__) .arch tr.actual td :is(b,strong){color:#fff}
+.view:not(#_):not(#__) :is(.rank-no,.dstep-num,.mstep-num){background:var(--champagne);color:#0b1a2b!important;border:0}
+.view:not(#_):not(#__) .pie-legend b{color:var(--ink)}
+:is(.poll-seatbar,.poll-blocbar) .poll-61{background:#14233a;box-shadow:0 0 0 1px #fff}
+
+/* ---------- photo scenes keep their own night palette ---------- */
+.election-cover,.exit-showcase{--ink:#f6f3ec;--ink-2:#d5dce5;--ink-3:#b4c1ce;--rule:#ffffff2e;color-scheme:dark}
+#view-results .night-countdown{color:var(--ink)}
+
+/* ---------- text that sits straight on the navy page ---------- */
+.view:not(#_):not(#__) :is(.field>span,.control-label,.stats span,.sec-note,.average-status,#compare-status,.count,.board-note,.data-explainer,.elect-note){color:var(--ink-2)}
+.view:not(#_):not(#__) :is(.page-facts span,.poll-result-card header p,.poll-result-card footer){color:var(--ink-3)}
+.view:not(#_):not(#__) .stats b{color:var(--ink)}
+/* Home and landing sections: navy, not the old pale wash. */
+#view-home,#view-landing,#view-home.on>.home-discovery,#view-landing .home-discovery,#view-home .board,#view-home .election-coalition,#view-home .home-method{background:transparent}
+/* Grade chips, map legend: small ivory labels. */
+.view:not(#_):not(#__) .grade-legend .grade{background:var(--ivory);border-color:var(--ivory-rule)}
+.view:not(#_):not(#__) .maplegend{--ink:#14233a;--ink-2:#3a4859;background:#fdfbf6f0;color:var(--ink);border-radius:8px}
+.view:not(#_):not(#__) .base-drama b{color:#f3a79c}
+.masthead .mainnav .tab-live[aria-current="page"]{color:#0b1a2b}
+.view:not(#_):not(#__) .tr-table-note .linkbtn{color:#f1d99d;border-color:#e5c78366;background:#e5c78314}
+.view:not(#_):not(#__)#view-polls .page-head .stats{background:none;border:0;box-shadow:none;--ink:#f6f3ec;--ink-2:#d5dce5;--ink-3:#b4c1ce;color:var(--ink)}
+.view:not(#_):not(#__) :is(.discovery-heading>p,.board-title>p){color:var(--ink-2)}
+.view:not(#_):not(#__) .section-next,.election-cover .section-next{background:#ffffff10;border:1px solid #e5c78366;color:#f1d99d}
+.view:not(#_):not(#__) .section-next span{color:inherit}
+.view:not(#_):not(#__) .section-next:hover{background:#e5c78326}
+/* #polls-table used to be a <table> with min-width:1120px (styles.css); today it is the table view's wrapper. */
+div#polls-table{min-width:0;width:auto}
+.view:not(#_):not(#__) .cross-card .crosschart{background:none;border:0;box-shadow:none;padding:0}
+.view:not(#_):not(#__) .cross-card .cross-range{background:var(--ivory-2);border:1px solid var(--ivory-rule)}
+.view:not(#_):not(#__) .average-firms span em{color:var(--ink);font-weight:800}
+.view:not(#_):not(#__) .bloc-donut::after{background:var(--ivory)}

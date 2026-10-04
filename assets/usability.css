@@ -1,27 +1,28 @@
 /* Final reading layer: explicit contrast, complete logos, and direct access to data. */
 @media screen {
-  #view-home.on>.home-discovery { min-height:calc(100dvh - var(--masthead-h,80px)); scroll-snap-align:start; display:grid; align-content:center; padding-block:32px; background:radial-gradient(ellipse at 85% 45%,#24446038,transparent 60%),#081522; border-bottom:1px solid #34485b }
+  #view-home.on { height:auto; overflow:visible; scroll-snap-type:none }
+  #view-home.on>.home-discovery { min-height:calc(100dvh - var(--masthead-h,80px)); scroll-snap-align:start; display:grid; align-content:center; padding-block:32px; background:radial-gradient(ellipse at 85% 45%,#fafcff38,transparent 60%),#ecf3fa; border-bottom:1px solid #cad8e7 }
   .discovery-heading { margin-bottom:24px }
-  .discovery-heading .kicker { color:#dfbe76; margin:0 0 8px }
+  .discovery-heading .kicker { color:#5d4609; margin:0 0 8px }
   .discovery-heading h2 { margin:0; font-size:clamp(1.65rem,3vw,2.4rem); line-height:1.3 }
-  .discovery-heading>p:last-child { margin:8px 0 0; color:#c5d3e0; font-size:.9375rem }
+  .discovery-heading>p:last-child { margin:8px 0 0; color:#34404c; font-size:.9375rem }
   .discovery-stories { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:22px }
-  .discovery-stories a { color:#f3f6f9; text-decoration:none; min-width:0; border:1px solid #435e75; border-radius:12px; padding:24px; transition:background .2s,border-color .2s,transform .2s }
-  .discovery-stories a:hover { background-color:#1b344a; border-color:#dfbe76; transform:translateY(-3px) }
-  .discovery-feature { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; background:linear-gradient(145deg,#1b344a,#102235); border-top:3px solid #dfbe76!important }
-  .discovery-eyebrow { font-size:.875rem; color:#e5c989; font-weight:700 }
-  .discovery-number { display:block; color:#f1d18b; font-size:clamp(2rem,4vw,3.25rem); font-variant-numeric:tabular-nums; line-height:1.1; letter-spacing:-.04em; margin-block:10px }
+  .discovery-stories a { color:#232528; text-decoration:none; min-width:0; border:1px solid #ccdce9; border-radius:12px; padding:24px; transition:background .2s,border-color .2s,transform .2s }
+  .discovery-stories a:hover { background-color:#dfebf7; border-color:#dfbe76; transform:translateY(-3px) }
+  .discovery-feature { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; background:linear-gradient(145deg,#f4faff,#f0f6fd); border-top:3px solid #dfbe76!important }
+  .discovery-eyebrow { font-size:.875rem; color:#523f0c; font-weight:700 }
+  .discovery-number { display:block; color:#4c3906; font-size:clamp(2rem,4vw,3.25rem); font-variant-numeric:tabular-nums; line-height:1.1; letter-spacing:-.04em; margin-block:10px }
   .discovery-feature .discovery-number { font-size:clamp(3.6rem,7vw,6rem); margin-block:22px 10px; white-space:nowrap }
   .discovery-stories h3 { font-size:1.125rem; line-height:1.4; margin:0 }
   .discovery-feature h3 { font-size:clamp(1.4rem,2.5vw,2rem) }
-  .discovery-stories p { color:#e1e9f0; margin:10px 0 14px; line-height:1.6 }
+  .discovery-stories p { color:#2a2f36; margin:10px 0 14px; line-height:1.6 }
   .discovery-feature .discovery-comparison { max-width:38ch; font-size:1.125rem; margin-block:18px 24px }
-  .discovery-source,.discovery-stories small { display:block; color:#bfcedc; font-size:.8125rem; line-height:1.65 }
+  .discovery-source,.discovery-stories small { display:block; color:#364451; font-size:.8125rem; line-height:1.65 }
   .discovery-stories small { margin-top:5px }
-  .discovery-link { display:flex; align-items:center; justify-content:space-between; width:100%; gap:12px; padding-top:16px; margin-top:16px; border-top:1px solid #486177; font-weight:700; color:#f1d18b; font-size:.875rem }
+  .discovery-link { display:flex; align-items:center; justify-content:space-between; width:100%; gap:12px; padding-top:16px; margin-top:16px; border-top:1px solid #cddcea; font-weight:700; color:#4c3906; font-size:.875rem }
   .discovery-link b { font-size:1.2rem }
   .discovery-secondary { display:grid; gap:18px }
-  .discovery-secondary a { display:block; background:#11263a; padding:20px 24px }
+  .discovery-secondary a { display:block; background:#f0f7fe; padding:20px 24px }
   .discovery-secondary .discovery-number { float:left; margin:0 14px 10px 0; font-size:2.25rem }
   .discovery-secondary h3 { margin-top:6px }
   .discovery-secondary .discovery-link { clear:both; margin-top:10px; padding-top:10px }
@@ -38,28 +39,28 @@
     #view-home.on>.home-discovery { padding-block:24px }
   }
   .page-jumps { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 }
-  .page-jumps button { font:700 .9rem var(--sans); min-height:44px; padding:10px 18px; border:1px solid #6e879c; background:#142c41; color:#f1d18d; border-radius:8px; cursor:pointer }
-  .page-jumps button:hover { background:#25435c }
+  .page-jumps button { font:700 .9rem var(--sans); min-height:44px; padding:10px 18px; border:1px solid #6e879c; background:#f1f8ff; color:#4c3908; border-radius:8px; cursor:pointer }
+  .page-jumps button:hover { background:#dfebf6 }
   .locality-pagination { display:flex; justify-content:center; align-items:center; gap:18px; margin-top:18px }
   #view-map .dstep-num { display:none }
   #view-map .dstep { grid-template-columns:minmax(0,1fr) }
   #view-map #loc-q { min-width:min(300px,100%); width:100% }
   #view-map #mp-4 .controls .field { flex:1 1 250px }
-  #view-map #loc-count { font-size:.875rem; color:#d7e2ec }
-  #view-map .tablewrap { background:#11283c }
+  #view-map #loc-count { font-size:.875rem; color:#2d343e }
+  #view-map .tablewrap { background:#f0f7fe }
   #loc-table td { padding:14px 12px }
-  #loc-table tbody tr:nth-child(even) { background:#172f44 }
-  #loc-table .chip { background:#0b1e2f; color:#f4f7fa; font-size:.8125rem }
-  .view:not(#view-home) .chip.good, dialog .chip.good { color:#9ce7c9; background:#153d33; border-color:#4c9679 }
-  .view:not(#view-home) .chip.bad, dialog .chip.bad { color:#ffc0b5; background:#482c32; border-color:#af726c }
-  #view-polls .poll-result-card header h3 { color:#f4f7fa }
-  .view :is(.bc-seg,.crossbar>span,.elect-bar>span) { box-shadow:inset 0 0 0 100vmax #0004; color:#fff }
-  .view .pie-arrow { color:#b9c9d8 }
-  .view:not(#view-home) :is(.cross-summary-out.left,.cross-summary-out.join) b { color:#f2d28b }
-  .cross-range { padding:20px 24px; margin-bottom:22px; border:1px solid #b69a60; border-radius:9px; background:#1b3042; display:grid; gap:5px }
-  .cross-range>span { color:#d4e0ea; font-size:1rem }
-  .cross-range strong { color:#f2d28b; font-size:clamp(1.8rem,3.4vw,2.6rem); line-height:1.35 }
-  .cross-range p { margin:0; color:#e1eaf2; line-height:1.7 }
+  #loc-table tbody tr:nth-child(even) { background:#f2f9ff }
+  #loc-table .chip { background:#eef5fc; color:#232527; font-size:.8125rem }
+  .view:not(#view-home) .chip.good, dialog .chip.good { color:#084735; background:#f2fcf9; border-color:#4c9679 }
+  .view:not(#view-home) .chip.bad, dialog .chip.bad { color:#622b23; background:#fff8f9; border-color:#af726c }
+  #view-polls .poll-result-card header h3 { color:#232527 }
+  .view :is(.bc-seg,.crossbar>span,.elect-bar>span) { box-shadow:inset 0 0 0 100vmax #10234614; color:#1f1f1f }
+  .view .pie-arrow { color:#394856 }
+  .view:not(#view-home) :is(.cross-summary-out.left,.cross-summary-out.join) b { color:#4b3804 }
+  .cross-range { padding:20px 24px; margin-bottom:22px; border:1px solid #b69a60; border-radius:9px; background:#f2f9ff; display:grid; gap:5px }
+  .cross-range>span { color:#2e3640; font-size:1rem }
+  .cross-range strong { color:#4b3804; font-size:clamp(1.8rem,3.4vw,2.6rem); line-height:1.35 }
+  .cross-range p { margin:0; color:#292e36; line-height:1.7 }
   #crossover-highlight { margin-top:18px }
   #view-crossover .sec { margin-top:24px }
   #view-crossover .sec-head { margin-bottom:16px }
@@ -69,15 +70,15 @@
   #view-crossover .crossrow-firm b { white-space:normal; font-size:.9375rem }
   #view-crossover .crossrow-firm em { font-size:.8125rem }
   #view-crossover .crossbar { height:auto; min-height:48px }
-  #view-crossover .crossbar span { white-space:normal; padding:12px; line-height:1.5 }
-  /* The dense historical matrix gets a paper surface, with dark numerals and
+  #view-crossover .crossbar span { white-space:normal; padding:12px; line-height:1.5 }/* The dense historical matrix gets a paper surface, with dark numerals and
      four distinct, labelled deviation bands. No transparent color stacking. */
+  
   .view:not(#view-home) .arch-wrap { background:#f5f7fa; border-color:#a5b5c4 }
   .view:not(#view-home) .arch :is(th,td) { color:#162d43; border-color:#c6d1dc; font-weight:600 }
   .view:not(#view-home) .arch th { background:#dce6ef; color:#19344c; font-size:.8125rem; line-height:1.4; padding:14px 10px }
   .view:not(#view-home) .arch td { background:#f8fafc; font-size:.9375rem; padding:12px 10px }
-  .view:not(#view-home) .arch tr.actual td { background:#233e55; color:#fff; border-bottom:3px solid #d8b666 }
-  .view:not(#view-home) .arch tr.actual.cf td { background:#3d4552 }
+  .view:not(#view-home) .arch tr.actual td { background:#f8fbff; color:#1f1f1f; border-bottom:3px solid #d8b666 }
+  .view:not(#view-home) .arch tr.actual.cf td { background:#fbfdff }
   .view:not(#view-home) .arch .cell.ok,.arch-key .cell-key.ok { background:#dceee5; color:#173b2c }
   .view:not(#view-home) .arch .cell.near,.arch-key .cell-key.near { background:#eef3f7; color:#243d51 }
   .view:not(#view-home) .arch .cell.off,.arch-key .cell-key.off { background:#f9eac5; color:#594111 }
@@ -87,9 +88,9 @@
   .view:not(#view-home) .arch .chip.good { background:#dceee5; color:#173b2c; border-color:#769a87 }
   .view:not(#view-home) .arch .chip.bad { background:#f4d4d0; color:#642f2d; border-color:#b5827a }
   .arch-key { line-height:2; font-size:.875rem }
-  .arch-key .cell-key { border:1px solid #8b9eac; padding:4px 9px; border-radius:4px }
-  /* Grid images need a definite box and min-size zero to prevent intrinsic
+  .arch-key .cell-key { border:1px solid #8b9eac; padding:4px 9px; border-radius:4px }/* Grid images need a definite box and min-size zero to prevent intrinsic
      SVG dimensions from escaping or being clipped by rounded wrappers. */
+  
   :is(.orglogo,.average-logo,.plogo-wrap,.env-logo,.outlet-icons span) { flex-shrink:0; color:#183148; background:#fff }
   :is(.orglogo,.average-logo,.plogo-wrap,.env-logo,.outlet-icons span) img { display:block; min-width:0; min-height:0; width:100%; height:100%; max-width:100%; max-height:100%; object-fit:contain; box-sizing:border-box; padding:4px }
   #view-e2022 .rank>.orglogo { height:76px!important; padding:8px 16px }
@@ -113,10 +114,10 @@
     #loc-table { min-width:0; width:100%; table-layout:fixed }
     #loc-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%) }
     #loc-table tbody { display:block }
-    #loc-table tr { display:grid; grid-template-columns:1fr 1fr; padding:10px; border-bottom:1px solid #526a80 }
+    #loc-table tr { display:grid; grid-template-columns:1fr 1fr; padding:10px; border-bottom:1px solid #cfddeb }
     #loc-table td { display:block; padding:8px; border:0; text-align:start }
     #loc-table td:first-child,#loc-table td:last-child { grid-column:1/-1 }
-    #loc-table td[data-label]::before { content:attr(data-label); display:block; color:#c4d3df; font-size:.75rem; margin-bottom:4px }
+    #loc-table td[data-label]::before { content:attr(data-label); display:block; color:#33414b; font-size:.75rem; margin-bottom:4px }
     #loc-table td:first-child { font-size:1.125rem }
     .cross-range { padding:16px }
     #view-crossover .cross-summary { gap:12px }

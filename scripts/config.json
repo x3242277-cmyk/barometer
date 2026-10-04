@@ -1,5 +1,6 @@
 {
-  "//": "שליפת הסקרים מ-skarim.org. sourceUrl הוא דף הבית; sitemapUrl הוא מפת כל דפי הסקרים. התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
+  "//": "שליפת הסקרים מעמוד המדד, עם skarim.org כגיבוי. התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
+  "alternateUrl": "https://themadad.com/polls26/",
   "sourceUrl": "https://www.skarim.org/",
   "sitemapUrl": "https://www.skarim.org/api/static/sitemap-polls",
   "pollPageBase": "https://www.skarim.org",

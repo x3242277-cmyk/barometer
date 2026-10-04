@@ -1,18 +1,18 @@
 /* Scoped election coalition sandbox; the rest of the site owns its layout. */
 .election-coalition {
-  --ec-ink: #f4f5f7;
-  --ec-gold: #dfbe76;
-  --ec-muted: #a5b4c6;
+  --ec-ink: #252627;
+  --ec-gold: #8c5e0c;
+  --ec-muted: #566476;
   color: var(--ec-ink);
   padding-block: 26px 52px;
 }
 .election-coalition .ec-panel {
   position: relative;
-  background: linear-gradient(120deg, #102438, #0a1928 75%);
-  border: 1px solid #283b4c;
+  background: linear-gradient(120deg, #f0f7fe, #edf4fb 75%);
+  border: 1px solid #c8d7e5;
   border-radius: 8px;
   padding: clamp(20px, 3.1vw, 44px);
-  box-shadow: 0 20px 65px #0002;
+  box-shadow: 0 20px 65px #1023460a;
   overflow: hidden;
 }
 .election-coalition .ec-heading {
@@ -50,9 +50,9 @@
   grid-template-columns: 7px auto;
   align-items: center;
   gap: 5px 9px;
-  border: 1px solid #314251;
+  border: 1px solid #c9d8e6;
   padding: 10px 14px;
-  color: #e9edf2;
+  color: #282c30;
   font-size: 12px;
 }
 .election-coalition .ec-source > span {
@@ -96,13 +96,13 @@
 }
 .election-coalition .ec-result {
   min-height: 26px;
-  color: #e2e8f0;
+  color: #2a2f36;
   font-size: 16px;
   font-weight: 750;
   margin: 2px 0 17px;
 }
 .election-coalition.has-majority .ec-result { color: var(--ec-gold); }
-.election-coalition .ec-meter { position: relative; height: 5px; background: #25394c; direction: ltr; }
+.election-coalition .ec-meter { position: relative; height: 5px; background: #f6fbff; direction: ltr; }
 .election-coalition .ec-meter-fill {
   display: block;
   width: 0;
@@ -116,12 +116,12 @@
   justify-content: space-between;
   align-items: center;
   direction: ltr;
-  color: #91a3b6;
+  color: #536578;
   font-size: 10px;
   margin-top: 8px;
   font-variant-numeric: tabular-nums;
 }
-.election-coalition .ec-meter-labels strong { direction: rtl; font-size: 11px; font-weight: 500; color: #d1dbe5; }
+.election-coalition .ec-meter-labels strong { direction: rtl; font-size: 11px; font-weight: 500; color: #323942; }
 .election-coalition .ec-selection { color: var(--ec-muted); font-size: 12px; line-height: 1.7; min-height: 42px; margin: 18px 0 0; }
 .election-coalition .ec-choices { min-width: 0; }
 .election-coalition .ec-choices-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
@@ -130,7 +130,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: #d1dbe5;
+  color: #323942;
   background: transparent;
   border: 0;
   border-radius: 3px;
@@ -150,9 +150,9 @@
   align-items: stretch;
   min-width: 0;
   padding: 0 0 11px;
-  border: 1px solid #354b60;
+  border: 1px solid #cbd9e7;
   border-radius: 3px;
-  background: #0b1d2e;
+  background: #eef5fc;
   color: var(--ec-ink);
   text-align: center;
   cursor: pointer;
@@ -160,9 +160,9 @@
   transition: border-color .15s, background .15s, transform .15s;
 }
 .election-coalition .ec-party:hover { border-color: #ad9665; transform: translateY(-2px); }
-.election-coalition .ec-party[aria-pressed="true"] { border-color: var(--ec-gold); background: #26313a; box-shadow: inset 0 0 0 1px #dfbe7644; }
-.election-coalition .ec-party-image { position: relative; overflow: hidden; aspect-ratio: 1.07; background: #1a3045; }
-.election-coalition .ec-party-image::after { content: ""; position: absolute; inset: 50% 0 0; background: linear-gradient(transparent, #0b1d2eaa); }
+.election-coalition .ec-party[aria-pressed="true"] { border-color: var(--ec-gold); background: #f3f9ff; box-shadow: inset 0 0 0 1px #dfbe7644; }
+.election-coalition .ec-party-image { position: relative; overflow: hidden; aspect-ratio: 1.07; background: #f3f9ff; }
+.election-coalition .ec-party-image::after { content: ""; position: absolute; inset: 50% 0 0; background: linear-gradient(transparent, #eef5fcaa); }
 .election-coalition .ec-party-image img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
 .election-coalition .ec-check {
   position: absolute;
@@ -170,15 +170,15 @@
   z-index: 1;
   width: 21px;
   height: 21px;
-  border: 1px solid #f4f5f75a;
+  border: 1px solid #10234633;
   border-radius: 50%;
-  background: #071522b8;
+  background: #ecf3fab8;
   color: transparent;
   font-size: 13px;
   line-height: 19px;
   font-weight: 800;
 }
-.election-coalition .ec-party[aria-pressed="true"] .ec-check { color: #081522; background: var(--ec-gold); border-color: var(--ec-gold); }
+.election-coalition .ec-party[aria-pressed="true"] .ec-check { color: #fff; background: var(--ec-gold); border-color: var(--ec-gold); }
 .election-coalition .ec-party-seats {
   position: relative;
   z-index: 1;
@@ -191,16 +191,16 @@
   border-radius: 50%;
   background: var(--ec-gold);
   color: #091929;
-  border: 2px solid #0b1d2e;
+  border: 2px solid #c4d2e0;
   font-size: 16px;
   line-height: 23px;
   font-weight: 800;
 }
 .election-coalition .ec-party-name { display: block; margin: 5px 3px 0; font-size: 12px; line-height: 1.35; font-weight: 800; overflow-wrap: anywhere; }
-.election-coalition .ec-party-leader { display: block; margin: 3px 3px 0; color: #aabaca; font-size: 9px; line-height: 1.4; }
+.election-coalition .ec-party-leader { display: block; margin: 3px 3px 0; color: #445363; font-size: 9px; line-height: 1.4; }
 .election-coalition .ec-party:focus-visible, .election-coalition .ec-reset:focus-visible { outline: 2px solid #f7de9c; outline-offset: 4px; }
-.election-coalition .ec-note { display: flex; gap: 9px; align-items: flex-start; color: #9cafc0; border-top: 1px solid #2b3e50; padding-top: 17px; margin: 24px 0 0; font-size: 11px; line-height: 1.7; }
-.election-coalition .ec-note > span { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 15px; width: 15px; height: 15px; border: 1px solid #526476; border-radius: 50%; font: 10px Georgia, serif; margin-top: 2px; }
+.election-coalition .ec-note { display: flex; gap: 9px; align-items: flex-start; color: #4a5d6e; border-top: 1px solid #c9d7e5; padding-top: 17px; margin: 24px 0 0; font-size: 11px; line-height: 1.7; }
+.election-coalition .ec-note > span { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 15px; width: 15px; height: 15px; border: 1px solid #cedceb; border-radius: 50%; font: 10px Georgia, serif; margin-top: 2px; }
 .election-coalition .ec-live { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @media (max-width: 1100px) {
   .election-coalition .ec-content { grid-template-columns: minmax(230px, .8fr) minmax(0, 1.3fr); gap: 27px; }
@@ -210,7 +210,7 @@
   .election-coalition { padding-block: 20px 32px; }
   .election-coalition .ec-heading { align-items: flex-start; flex-direction: column; gap: 15px; margin-bottom: 16px; padding-bottom: 18px; }
   .election-coalition .ec-source { grid-template-columns: 6px auto auto; gap: 8px; padding: 7px 10px; font-size: 11px; }
-  .election-coalition .ec-source small { grid-column: auto; border-inline-start: 1px solid #3a4b5c; padding-inline-start: 8px; }
+  .election-coalition .ec-source small { grid-column: auto; border-inline-start: 1px solid #cbd9e7; padding-inline-start: 8px; }
   .election-coalition .ec-content { grid-template-columns: 1fr; gap: 12px; }
   .election-coalition .ec-scoreboard { width: min(100%, 360px); margin-inline: auto; }
   .election-coalition .ec-selection { min-height: 21px; margin-top: 12px; }

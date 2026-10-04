@@ -69,10 +69,11 @@ node scripts/dev-server.mjs
 ## עדכון הסקרים
 
 ```bash
-node scripts/update-polls.mjs          # שליפה מהמקור (עשרת הסקרים האחרונים)
-node scripts/update-polls.mjs --full   # סריקת כל סקרי השנה מסייטמאפ המקור
+node scripts/update-polls.mjs          # שליפה מעמוד הסקרים של המדד; skarim.org הוא גיבוי
+node scripts/update-polls.mjs --full   # השלמת סקרי השנה שבמאגר המקור
 node scripts/update-polls.mjs --dry    # בדיקה בלי לכתוב
 node scripts/update-polls.mjs --file raw.json
+node scripts/update-polls.mjs --alternate-file polls.html # בדיקה מקובץ HTML מקומי
 ```
 
 **כלל התצוגה**: סקרים מ-`from` (01.08.2026) ואילך, ולכל היותר `maxPerOutlet` (4)
@@ -81,13 +82,12 @@ node scripts/update-polls.mjs --file raw.json
 `selectDisplayPolls` שבסקריפט ובזו שב-`assets/app.js`, כדי שגם טעינת דף בלי
 הרצת הסקריפט תסנן נכון.
 
-`--full` לא מוריד את כל 185 הסקרים: הוא גוזר מהסלאגים שבסייטמאפ את ארבע
-הכתובות האחרונות לכל ערוץ ומוריד רק אותן.
-
-**לפני ההרצה הראשונה** ערכו את `scripts/config.json` והכניסו את `sourceUrl` של
-מקור הסקרים שלכם. אם המקור מחזיר מבנה JSON שונה — יש להתאים את הפונקציות
-`pickArray()` ו-`normalize()` בראש `scripts/update-polls.mjs`; שתיהן קצרות
-ומתועדות.
+המקור הראשי הוא [עמוד הסקרים של המדד](https://themadad.com/polls26/), שמפרסם
+את טבלת הסקרים בתוך העמוד. הסקריפט מאמת שכל סקר כולל 120 מנדטים ושיוך מכון
+מוכר. אם העמוד אינו זמין, הוא מנסה את דף הבית והסייטמאפ של skarim.org.
+כתובות המקורות מוגדרות ב-`scripts/config.json`; מיפוי המקור החלופי נמצא ב-
+`scripts/themadad-source.mjs`. `--full` קורא מהעמוד את סקרי השנה מ-`from`
+ואילך, בעוד שהריצה הרגילה בוחרת את 21 הימים האחרונים.
 
 הסקריפט:
 
@@ -236,9 +236,8 @@ node scripts/update-polls.mjs --file raw.json
 
 `.github/workflows/update-polls.yml` מריץ את הסקריפט כל יום ב-09:00 וב-21:00
 שעון ישראל, ועושה קומיט אם משהו השתנה — כולל בנייה מחדש של `dist/`.
-ל-cron של GitHub אין אזור זמן והוא לא יודע על מעבר שעון, ולכן מוגדרות ארבע
-הרצות (06/07/18/19 UTC) והשלב הראשון בג'וב מפיל את זו שלא נופלת על 09:00 או
-21:00 בשעון ישראל. לחלופין, ב-cron רגיל על שרת:
+ל-cron של GitHub אין אזור זמן והוא לא יודע על מעבר שעון, ולכן התהליך מנסה
+להשלים את חלונות הבוקר והערב לפי שעון ישראל. לחלופין, ב-cron רגיל על שרת:
 
 ```
 0 5 * * *  cd /path/to/barometer && /usr/bin/node scripts/update-polls.mjs >> logs/polls.log 2>&1

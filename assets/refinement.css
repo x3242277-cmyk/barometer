@@ -56,8 +56,8 @@
   #polls-cards { grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:20px }
   .election-coalition .ec-heading { flex-wrap:wrap }
   .election-coalition .ec-intro { font-size:1rem }
-  .election-coalition .ec-source,.election-coalition .ec-source small { font-size:.8125rem }
-  /* Action controls share geometry; data cards keep their own composition. */
+  .election-coalition .ec-source,.election-coalition .ec-source small { font-size:.8125rem }/* Action controls share geometry; data cards keep their own composition. */
+  
   body :is(.btn,.cover-actions button,.show-btn,.print-btn,.ec-reset,.ps-close,.ps-steps button),
   body .view :is(.switch button,.wall-toggle button,.calib-switch button,.average-days button,.filter-modes button,.controls-view button),
   #view-home :is(.home-switch button,.show-btn),
@@ -129,17 +129,17 @@
   .live-status .live-phase {display:grid;grid-template-columns:8px minmax(0,1fr);align-content:center;gap:6px 8px;text-align:start}
   .live-status .live-phase b {overflow-wrap:normal}
   .live-status .live-phase em {grid-column:2;margin:0}
-}
+}/* Election night is a countdown until 22:00 Israel time. */
 
-/* Election night is a countdown until 22:00 Israel time. */
+
 .view.night-waiting>.wrap {display:none}
 .night-countdown {max-width:900px;margin:0 auto;padding:clamp(48px,9vh,100px) 24px;text-align:center;min-height:65vh}
 .night-countdown h2 {font-size:clamp(2rem,5vw,3.6rem);margin:12px 0;line-height:1.3}
 .night-countdown p {font-size:1.0625rem;color:var(--ink-2);line-height:1.8}
 .night-countdown .kicker {color:var(--gold);font-size:.875rem}
 .night-clock {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:40px auto;max-width:660px}
-.night-clock>div {padding:24px 12px;background:#102438;border:1px solid #30465d;border-radius:12px;display:grid;gap:8px;text-align:center;justify-items:center}
-.night-clock b {font-size:clamp(2rem,6vw,4rem);line-height:1.2;font-variant-numeric:tabular-nums;color:#dfbe76}
+.night-clock>div {padding:24px 12px;background:#f0f7fe;border:1px solid #cad8e7;border-radius:12px;display:grid;gap:8px;text-align:center;justify-items:center}
+.night-clock b {font-size:clamp(2rem,6vw,4rem);line-height:1.2;font-variant-numeric:tabular-nums;color:#5d4609}
 .night-clock span {color:var(--ink-2);font-size:.875rem}
 .night-countdown .night-note {font-size:.9375rem;margin-bottom:24px}
 @media(max-width:480px){.night-clock{gap:8px;margin-block:28px}.night-clock>div{padding:18px 6px}.night-countdown{padding-inline:16px}.night-countdown p{font-size:1rem}}

@@ -22,34 +22,38 @@
 <link rel="apple-touch-icon" href="assets/logo.svg?v=e893fa44">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="assets/styles.css?v=df0f152a">
+<link rel="stylesheet" href="assets/styles.css?v=f57a0da5">
 <link rel="stylesheet" href="assets/upgrade.css?v=d9aa856d">
 <link rel="stylesheet" href="assets/home.css?v=ba378fa4">
 <link rel="stylesheet" href="assets/fit.css?v=06753059">
 <script src="assets/scenario.js?v=232c26c5" defer></script>
 <script src="assets/upgrade.js?v=c3f5bc20" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
-<script src="assets/explore.js?v=af2c1105" defer></script>
+<script src="assets/explore.js?v=09423810" defer></script>
+<script src="assets/poll-tracker.js?v=72928cea" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=33cf42d1" defer></script>
+<script src="assets/app.js?v=26ba1cca" defer></script>
 <script src="assets/intro.js?v=da50cbf0" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=b37a6e0a">
 <link rel="stylesheet" href="assets/editorial.css?v=325f67db">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="" defer></script>
-<link rel="stylesheet" href="assets/pipeline.css?v=60acb053">
+<link rel="stylesheet" href="assets/pipeline.css?v=724592e2">
 <script src="assets/pipeline.js?v=53bf8822" defer></script>
-<link rel="stylesheet" href="assets/election.css?v=7809f249">
-<link rel="stylesheet" href="assets/election-pages.css?v=c6d0825c">
-<link rel="stylesheet" href="assets/election-tools.css?v=edd4d277">
-<link rel="stylesheet" href="assets/refinement.css?v=df6270df">
-<link rel="stylesheet" href="assets/clarity.css?v=80beae47">
+<link rel="stylesheet" href="assets/election.css?v=6b65b3a6">
+<link rel="stylesheet" href="assets/election-pages.css?v=f47d6a9d">
+<link rel="stylesheet" href="assets/election-tools.css?v=777a6e9d">
+<link rel="stylesheet" href="assets/refinement.css?v=aabc8da9">
+<link rel="stylesheet" href="assets/clarity.css?v=bb57cffa">
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
-<link rel="stylesheet" href="assets/usability.css?v=c3fc12bf">
+<link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
+<link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
+<link rel="stylesheet" href="assets/poll-tracker.css?v=9bc7297c">
+<link rel="stylesheet" href="assets/theme.css?v=3cd3e71f">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
-<script src="assets/election.js?v=9a32c578" defer></script>
+<script src="assets/election.js?v=22e6c32f" defer></script>
 </head>
 <body>
 
@@ -66,11 +70,11 @@
     </a>
     <nav class="mainnav" aria-label="ניווט ראשי">
       <div class="tabs">
-        <a class="tab" href="#/" data-view="home">תחזית ברומטר</a>
+        <a class="tab" href="#/" data-view="landing">ראשי</a>
+        <a class="tab" href="#/forecast" data-view="home">תחזית הברומטר</a>
         <a class="tab" href="#/method" data-view="method" data-group="method demography haredi">שיטת החישוב</a>
         <a class="tab" href="#/polls" data-view="polls">כל הסקרים</a>
         <a class="tab" href="#/2022" data-view="e2022">דיוק המכונים</a>
-        <a class="tab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
         <a class="tab" href="#/map" data-view="map">בחירות 2022</a>
         <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
@@ -92,36 +96,47 @@
   <p>מכינים את תמונת הבחירות…</p>
 </div>
 
-<!-- ==================== התחזית ==================== -->
-<section class="view on" id="view-home" aria-label="תחזית ברומטר">
+<!-- ==================== עמוד הבית ==================== -->
+<section class="view on" id="view-landing" aria-label="עמוד הבית">
 
   <section class="election-cover" aria-labelledby="election-title">
     <div class="cover-image" aria-hidden="true"></div>
+    <div class="roof-beams" aria-hidden="true"><span class="roof-beam" data-roof-beam="left"></span><span class="roof-beam" data-roof-beam="right"></span></div>
 
-    <div class="wrap cover-content">
-      <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
-      <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
-      <p class="cover-tagline">מהסקרים ועד לשינויים באוכלוסייה — רואים מה באמת עומד מאחורי התחזית.</p>
-      <p class="cover-purpose">ברומטר משקלל סקרים לפי דיוק המכונים, משווה לבחירות עבר ובודק תרחישי קצה וגידול דמוגרפי — כדי לראות איך כל גורם משנה את חלוקת המנדטים.</p>
-      <ul class="cover-points">
-        <li>סקרים לפי דיוק המכונים</li>
-        <li>נתוני עבר ותרחישי קצה</li>
-        <li>גידול והצבעה של כל אוכלוסייה</li>
-      </ul>
-      <div class="cover-actions"><button type="button" class="cover-primary" data-home-section="forecast-section">לתמונת המנדטים <span aria-hidden="true">↓</span></button><button type="button" class="cover-secondary" data-home-section="election-coalition">בנו קואליציה <span aria-hidden="true">↙</span></button></div>
-      <p class="cover-updated" id="cover-updated">מכינים את נתוני התחזית…</p>
-      <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+    <div class="wrap cover-inner">
+      <div class="cover-content">
+        <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
+        <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
+        <p class="cover-tagline">מהסקרים ועד לשינויים באוכלוסייה — רואים מה באמת עומד מאחורי התחזית.</p>
+        <p class="cover-purpose">ברומטר משקלל סקרים לפי דיוק המכונים, משווה לבחירות עבר ובודק תרחישי קצה וגידול דמוגרפי — כדי לראות איך כל גורם משנה את חלוקת המנדטים.</p>
+        <ul class="cover-points">
+          <li>סקרים לפי דיוק המכונים</li>
+          <li>נתוני עבר ותרחישי קצה</li>
+          <li>גידול והצבעה של כל אוכלוסייה</li>
+        </ul>
+        <div class="cover-actions"><a class="cover-primary" href="#/forecast">לתחזית הברומטר <span aria-hidden="true">←</span></a><a class="cover-secondary" href="#/forecast/coalition">בנו קואליציה <span aria-hidden="true">←</span></a></div>
+        <p class="cover-updated" id="cover-updated">מכינים את נתוני התחזית…</p>
+        <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
+      </div>
+      <aside class="cover-chart" aria-label="מנדטים בתחזית">
+        <div class="cover-gauges" id="cover-gauges" role="img" aria-label="חלוקת המנדטים בין הגושים"></div>
+      </aside>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
     <button type="button" class="section-next" data-home-section="home-discovery" aria-label="לקטע הבא — המספרים שמאחורי הכותרות"><span aria-hidden="true">↓</span></button>
   </section>
   <section class="home-discovery" id="home-discovery" tabindex="-1" aria-labelledby="discovery-title">
     <div class="wrap">
-      <header class="discovery-heading"><p class="kicker">עוד מבט על התמונה</p><h2 id="discovery-title">המספרים שמאחורי הכותרות</h2><p>שלושה נתונים ששווה לעצור עליהם. כל מספר מוביל לסיפור המלא.</p></header>
+      <header class="discovery-heading"><p class="kicker">עוד מבט על התמונה</p><h2 id="discovery-title">המספרים שמאחורי הכותרות</h2><p>תשעה סיפורים מפתיעים בשלושה מבטים. הסיפורים מתחלפים כל תשע שניות, וכל אחד מוביל לנתונים המלאים.</p></header>
+      <div class="discovery-controls" id="discovery-controls" role="group" aria-label="בחירת מקבץ סיפורים"></div>
       <div class="discovery-stories" id="discovery-stories"></div>
-      <button type="button" class="section-next" data-home-section="forecast-section" aria-label="לתמונת המנדטים"><span aria-hidden="true">↓</span></button>
+      <a class="discovery-forecast-link" href="#/forecast">לתחזית הברומטר המלאה <span aria-hidden="true">←</span></a>
     </div>
   </section>
+</section>
+
+<!-- ==================== תחזית הברומטר ==================== -->
+<section class="view" id="view-home" aria-label="תחזית הברומטר">
   <div class="verdict" id="forecast-section" tabindex="-1">
     <div id="hero-art" hidden aria-hidden="true"></div>
     <div class="wrap verdict-in">
@@ -194,20 +209,38 @@
         <h2>מה מראים הסקרים עכשיו?</h2>
         <div class="stats" id="polls-stats"></div>
       </div>
-      <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
-        <button type="button" data-pollview="cards" aria-pressed="true"><span class="view-icon" aria-hidden="true">▦</span><span>כל הסקרים</span></button>
-        <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
-        <button type="button" data-pollview="average" aria-pressed="false"><span class="view-icon" aria-hidden="true">∿</span><span>ממוצע סקרים</span></button>
-      </div>
     </div>
 
+    <div class="polls-layout">
+    <div class="polls-main">
+    <section class="sec tracker-sec" aria-label="מגמות בסקרים">
+      <div id="poll-tracker" class="tracker"></div>
+    </section>
+
+    <section class="sec cross-sec" id="poll-crossover" aria-labelledby="cross-title" tabindex="-1">
+      <div class="tr-card cross-card">
+        <div class="tr-card-head cross-head"><div><p class="kicker">כמה עברו צד</p><h3 id="cross-title">כמה מצביעים עברו מגוש לגוש — לפי כל מכון</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
+        <p class="sec-note" id="crossover-note"></p>
+        <div id="crossover-chart" class="crosschart"></div>
+        <div class="notice warm cross-verdict"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
+        <details class="cross-base"><summary>מאזן הפתיחה — איפה עמדו הגושים ב־2022</summary><div id="crossover-baseline"></div></details>
+      </div>
+    </section>
+
     <section class="sec polls-sec">
+      <div class="sec-head polls-sec-head"><div><p class="kicker">הסקרים עצמם</p><h2>כל סקר בנפרד</h2></div>
+      <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
+        <button type="button" data-pollview="table" aria-pressed="true"><span class="view-icon" aria-hidden="true">☰</span><span>טבלה</span></button>
+        <button type="button" data-pollview="cards" aria-pressed="false"><span class="view-icon" aria-hidden="true">▦</span><span>כרטיסים</span></button>
+        <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
+        <button type="button" data-pollview="average" aria-pressed="false"><span class="view-icon" aria-hidden="true">∿</span><span>ממוצע סקרים</span></button>
+      </div></div>
       <div class="controls" hidden>
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
         <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label>
       </div>
-      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
+      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-table" class="polls-table" hidden></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 
     <section class="sec">
@@ -222,6 +255,12 @@
         <p style="margin:0">העמוד מציג את הסקרים שבמאגר בחלון הזמן הנוכחי. תאריך הפרסום והמכון מוצגים לצד כל סקר.</p>
       </div></div>
     </section>
+    </div>
+    <aside class="polls-feed" aria-labelledby="feed-title">
+      <div class="feed-head"><h2 id="feed-title">הסקרים האחרונים</h2><p>מהחדש לישן. לחצו על סקר לפירוט המלא.</p></div>
+      <div id="polls-feed" class="feed-list"></div>
+    </aside>
+    </div>
   </div>
 </section>
 
@@ -286,28 +325,6 @@
   </div>
 </section>
 
-
-<!-- ==================== כמה עברו צד ==================== -->
-<section class="view" id="view-crossover" aria-label="כמה עברו צד">
-  <div class="wrap">
-
-    <div class="page-head"><div class="page-head-main">
-      <h2>כמה עברו צד?</h2>
-    </div></div>
-    <div id="crossover-highlight"></div>
-    <p class="data-explainer" id="crossover-intro"></p>
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">לשיטת כל מכון</p><h2>השינוי בגושים שמשתמע מכל מכון</h2></div>
-        <p class="sec-note" id="crossover-note"></p></div>
-      <div id="crossover-chart" class="crosschart"></div>
-    </section>
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">מאזן הפתיחה</p><h2>איפה עמדו הגושים ב־2022</h2></div></div>
-      <div id="crossover-baseline"></div>
-    </section>
-    <div class="notice warm" style="margin-top:16px"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
-  </div>
-</section>
 
 
 <!-- ==================== ליל הבחירות ==================== -->
@@ -432,7 +449,6 @@
       <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
       <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
       <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
-      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
     </nav>
     <div class="page-intro">
       <p class="kicker">היסטוריה · אוכלוסייה · הנחות</p>
@@ -743,7 +759,6 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
       <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
       <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
-      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
     </nav>
     <div class="page-intro">
       <p class="kicker">התחזית העצמאית · בלי אף סקר</p>
@@ -913,7 +928,6 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
       <a class="subtab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
       <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
-      <a class="subtab" href="#/crossover" data-view="crossover">כמה עברו צד</a>
     </nav>
     <div class="page-intro">
       <p class="kicker">שיטת החישוב · בפשטות</p>
@@ -927,7 +941,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
         <div class="mstep-num" aria-hidden="true">1</div>
         <div class="mstep-body">
           <div class="mstep-head"><h2>אוספים את כל הסקרים</h2><a class="mstep-link" href="#/polls">לכל הסקרים ↙</a></div>
-          <p>כל סקר שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה — לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 8 הימים האחרונים.</p>
+          <p>כל סקר מנדטים שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה — לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 14 הימים האחרונים.</p>
           <div class="mlive" id="m-live-polls"></div>
           <div class="outlet-icons mstep-outlets" id="m-outlets" aria-label="כלי התקשורת שמהם נאספים הסקרים"></div>
         </div>
@@ -945,13 +959,14 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
           </ul>
           <p>לכל מערכת בחירות מחשבים ציון נפרד, והציון הסופי הוא ממוצע המערכות שבהן המכון פרסם. <b>דוגמה:</b> דיוק בגושים 80, דיוק במפלגות 82 ועקביות 95 נותנים ציון כולל 82. מכון ללא נתוני כיול מקבל ציון ברירת מחדל 70 ונכנס לדרגת המשקל הנמוכה.</p>
           <div class="tablewrap"><table class="mtable" id="m-firms"></table></div>
+          <p class="m-firms-note">המכונים בחלק התחתון נשארים להשוואת ציוני העבר. ללא סקר מנדטים במאגר הנוכחי הם אינם מקבלים משקל בחישוב.</p>
         </div>
       </section>
 
       <section class="mstep" id="mstep-3">
         <div class="mstep-num" aria-hidden="true">3</div>
         <div class="mstep-body">
-          <div class="mstep-head"><h2>ממצעים — ואז משקללים</h2><a class="mstep-link" href="#/">לתמונת המצב ↙</a></div>
+          <div class="mstep-head"><h2>ממצעים — ואז משקללים</h2><a class="mstep-link" href="#/forecast">לתמונת המצב ↙</a></div>
           <p>קודם ממצעים את הסקרים של כל מכון לתוצאה אחת, כדי שמספר הפרסומים שלו לא יקבע את כוחו. אחר כך משקללים בין המכונים לפי דרגות הדיוק ההיסטורי: גבוהה 45, טובה 35, בינונית 20. מכון שציונו השתנה בתוך אותה דרגה שומר על אותו משקל.</p>
           <div class="tablewrap"><table class="mtable" id="m-average"></table></div>
         </div>
@@ -984,7 +999,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
       <section class="mstep" id="mstep-6">
         <div class="mstep-num" aria-hidden="true">6</div>
         <div class="mstep-body">
-          <div class="mstep-head"><h2>מחלקים 120 מנדטים לפי כללי הבחירות</h2><a class="mstep-link" href="#/">לתמונת המצב ↙</a></div>
+          <div class="mstep-head"><h2>מחלקים 120 מנדטים לפי כללי הבחירות</h2><a class="mstep-link" href="#/forecast">לתמונת המצב ↙</a></div>
           <p>בדיוק כמו ועדת הבחירות: <b>אחוז החסימה</b> — רשימה שמתחת ל־3.25% לא מקבלת מנדטים וקולותיה לא נספרים. <b>שיטת באדר-עופר</b> — 120 המנדטים מחולקים אחד־אחד; בכל סיבוב המנדט הבא הולך לרשימה שקולותיה חלקי (מנדטיה עד כה + 1) הם הגבוהים ביותר. <b>הסכמי עודפים</b> — שתי רשימות עם הסכם נחשבות לרשימה אחת בחלוקה, ואז מתחלקות ביניהן באותה שיטה. השיטה מעדיפה מעט את הרשימות הגדולות, ולכן אומדן של 10.5 יכול להסתיים ב־10 ולא ב־11.</p>
           <div class="mlive" id="m-live-result"></div>
           <p class="sec-note" id="m-rules"></p>

@@ -2,9 +2,10 @@
 /**
  * הבארומטר — עדכון סקרי שנת הבחירות
  * ----------------------------------
- *   node scripts/update-polls.mjs                  # דף הבית + סייטמאפ של RECENT_DAYS האחרונים
- *   node scripts/update-polls.mjs --full           # דף הבית + סייטמאפ של כל סקרי השנה
+ *   node scripts/update-polls.mjs                  # עמוד המדד, או skarim.org כגיבוי
+ *   node scripts/update-polls.mjs --full           # כל סקרי השנה מעמוד המקור
  *   node scripts/update-polls.mjs --file raw.json  # מקובץ מקומי (לבדיקה)
+ *   node scripts/update-polls.mjs --alternate-file polls.html # HTML של המדד (לבדיקה)
  *   node scripts/update-polls.mjs --dry            # בלי לכתוב, רק דיווח
  *
  * כלל התצוגה: כל סקרי שנת הבחירות שבמאגר, אבל לכל היותר maxPerOutlet
@@ -15,6 +16,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseTheMadadHtml, THE_MADAD_URL } from "./themadad-source.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const cfg = JSON.parse(await readFile(path.join(ROOT, "scripts/config.json"), "utf8"));
@@ -23,6 +25,7 @@ const argOf = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : nu
 const DRY = args.includes("--dry");
 const FULL = args.includes("--full");
 const FILE = argOf("--file");
+const ALTERNATE_FILE = argOf("--alternate-file");
 const YEAR = Number(argOf("--year")) || cfg.year || new Date().getFullYear();
 const MAX_PER_OUTLET = Number(cfg.maxPerOutlet) || 4;
 /* רצפת תאריך לתצוגה. אותו ערך נמצא גם ב-POLLS_FROM שב-assets/app.js. */
@@ -73,9 +76,8 @@ const nextData = html => {
   return JSON.parse(m[1]);
 };
 
-/* חלון ברירת המחדל לסריקת הסייטמאפ בריצה יומית. מספיק גדול כדי לכסות
-   כמה ימים של תקלות בוט ברצף, קטן מספיק שהסריקה תישאר זולה. --full מתעלם
-   ממנו וסורק את כל השנה. */
+/* חלון האיסוף היומי בשני המקורות. מספיק גדול כדי להשלים כמה ימי תקלה;
+   --full מתעלם ממנו וסורק את כל השנה. */
 const RECENT_DAYS = Number(cfg.recentDays) || 21;
 
 /* ---------- 1. שליפה ----------
@@ -200,36 +202,55 @@ async function main() {
   const archPath = path.join(ROOT, "data/polls-archive.json");
   const archive = existsSync(archPath) ? JSON.parse(await readFile(archPath, "utf8")) : { polls: [] };
   const byId = new Map(archive.polls.map(p => [p.id, p]));
-
-  /* דף הבית הוא קיצור-דרך למהירות בלבד — לא מקור אמת (ראו הערה ליד
-     fetchLatest) — אז כישלון בו לא צריך להפיל את כל הריצה. הוא גם מקור
-     ה-429 בפועל בכל הריצות שנכשלו: זו עמוד ה-SSR הכבד, וסביר שהוא נתקל
-     בהגבלת קצב לפני שהסייטמאפ (קובץ סטטי קליל) נתקל בה בכלל. אם הוא
-     חסום — ממשיכים עם הסייטמאפ בלבד, שמכסה חלון של RECENT_DAYS ולכן
-     תופס בפועל הכל, רק קצת יותר לאט. */
   let incoming = [];
-  try {
-    incoming = pickArray(await fetchLatest()).map(normalize);
-    log(`נשלפו ${incoming.length} סקרים מדף הבית`);
-  } catch (e) {
-    if (FILE) throw e;
-    log(`דף הבית לא זמין (${e.message}) — ממשיכים עם הסייטמאפ בלבד`);
+  let alternateWorked = false;
+  if (!FILE) {
+    try {
+      const firms = JSON.parse(await readFile(path.join(ROOT, "data/pollsters.json"), "utf8"));
+      const firmBySource = Object.fromEntries(Object.entries(firms.sourceMap).map(([source, info]) => [source, info.firm]));
+      const partyMeta = {};
+      for (const poll of archive.polls.slice().sort((a, b) => b.dateTimestamp - a.dateTimestamp))
+        for (const party of poll.parties) if (!partyMeta[party.id]) partyMeta[party.id] = party;
+      const alternateUrl = cfg.alternateUrl || THE_MADAD_URL;
+      log(ALTERNATE_FILE ? `קורא עמוד מדד מקובץ ${ALTERNATE_FILE}` : `שולף מ: ${alternateUrl}`);
+      const html = ALTERNATE_FILE ? await readFile(ALTERNATE_FILE, "utf8") : await get(alternateUrl);
+      const result = parseTheMadadHtml(html, {
+        year: YEAR, from: FROM, recentDays: FULL ? null : RECENT_DAYS, firmBySource, partyMeta
+      });
+      incoming = result.polls;
+      alternateWorked = true;
+      log(`נשלפו ${incoming.length} סקרים מעמוד המדד`);
+      result.skipped.forEach(message => console.warn(`   ! ${message}`));
+    } catch (e) {
+      log(`עמוד המדד לא זמין (${e.message}) — מנסה את skarim.org`);
+    }
   }
-
-  const known = new Set(archive.polls.map(p => p.sourceUrl).filter(Boolean));
-  const scan = FILE ? { polls: [], failed: [] } : await fetchFromSitemap(known, FULL ? null : RECENT_DAYS);
-  const fromSitemap = scan.polls.map(normalize);
-  log(`נשלפו ${fromSitemap.length} סקרים מהסייטמאפ`);
-  incoming.push(...fromSitemap);
-
-  const covered = new Set(incoming.map(p => p.sourceUrl).filter(Boolean));
-  const missing = scan.failed.filter(url => !covered.has(url));
-  if (missing.length) throw new Error(`לא הושלם איסוף של ${missing.length} סקרים: ${missing.join(', ')}. הנתונים הקודמים נשמרו; נדרש ניסיון חוזר.`);
+  if (!alternateWorked) {
+    /* The old source is retained as a fallback. Its poll pages may return 429
+       even while its sitemap remains public, so it cannot be the sole feed. */
+    try {
+      incoming = pickArray(await fetchLatest()).map(normalize);
+      log(`נשלפו ${incoming.length} סקרים מדף הבית`);
+    } catch (e) {
+      if (FILE) throw e;
+      log(`דף הבית לא זמין (${e.message}) — ממשיכים עם הסייטמאפ בלבד`);
+    }
+    const known = new Set(archive.polls.map(p => p.sourceUrl).filter(Boolean));
+    const scan = FILE ? { polls: [], failed: [] } : await fetchFromSitemap(known, FULL ? null : RECENT_DAYS);
+    log(`נשלפו ${scan.polls.length} סקרים מהסייטמאפ`);
+    incoming.push(...scan.polls.map(normalize));
+    const covered = new Set(incoming.map(p => p.sourceUrl).filter(Boolean));
+    const missing = scan.failed.filter(url => !covered.has(url));
+    if (missing.length) throw new Error(`לא הושלם איסוף של ${missing.length} סקרים: ${missing.join(', ')}. הנתונים הקודמים נשמרו; נדרש ניסיון חוזר.`);
+  }
   const incomingProblems = validate(incoming);
   if (incomingProblems.length) throw new Error(incomingProblems.join('\n'));
   let added = 0;
   incoming.forEach(p => {
     const samePoll = [...byId.values()].find(old => old.sourceId === p.sourceId && old.dateTimestamp === p.dateTimestamp);
+    // Existing entries often link to the publisher or the original poll page;
+    // keep those richer records when the secondary database repeats a poll.
+    if (alternateWorked && samePoll && !samePoll.id.startsWith("themadad-")) return;
     if (!byId.has(p.id) && !samePoll) added += 1;
     if (samePoll && samePoll.id !== p.id) byId.delete(samePoll.id);
     byId.set(p.id, { ...byId.get(p.id), ...p });

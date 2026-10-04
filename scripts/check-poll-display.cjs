@@ -12,7 +12,10 @@ context.document = {querySelector:element};
 context.fixtures = Object.fromEntries(['current-polls','historical-polls','pollsters'].map(f=>[f,JSON.parse(fs.readFileSync('data/'+f+'.json','utf8'))]));
 vm.runInContext(`S.cur=fixtures['current-polls'];S.hist=fixtures['historical-polls'];S.firms=fixtures.pollsters;S.stats=scoreFirms(S.hist);S.series=buildSeries(S.cur.polls);renderFirmCards=()=>{};renderPolls();`,context);
 assert.equal((element('#polls-cards').innerHTML.match(/class="poll-result-card"/g)||[]).length,new Set(context.fixtures['current-polls'].polls.map(p=>p.channelHebrewName)).size);
-assert(!element('#polls-cards').hidden);
+// ברירת המחדל היא תצוגת הטבלה (הכרטיסים העדכניים מוצגים בעמודה הצדדית); הכרטיסים מוסתרים עד שבוחרים בהם
+assert(element('#polls-cards').hidden && !element('#polls-table').hidden, 'the table should be the default poll view');
+vm.runInContext("S.pollView='cards';renderPolls();",context);
+assert(!element('#polls-cards').hidden && element('#polls-table').hidden, 'switching to cards did not show them');
 vm.runInContext(`for(const mode of ['weighted','simple']) {const f=forecast(mode);if(JSON.stringify(f.raw)!==JSON.stringify(f.parties))throw Error('Party-specific adjustment');if(Object.values(largestRemainder(f.parties)).reduce((a,b)=>a+b,0)!==120)throw Error('Seat total');}`,context);
 element('#poll-firm').value='missing';
 vm.runInContext('renderPolls()',context);

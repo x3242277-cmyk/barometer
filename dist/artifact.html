@@ -5058,10 +5058,14 @@ body:has(#view-demography.on)>footer{display:none}
 #view-polls #polls-table .tr-table thead th{padding:8px 7px 6px;white-space:normal}
 #view-polls .tr-table .orglogo{width:22px;height:22px}
 /* תצוגת הכרטיסים: כרטיס לכל כלי תקשורת, שלושה בשורה במחשב נייד */
-#view-polls #polls-cards{grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:14px;align-items:stretch}
+#view-polls #polls-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+@media (max-width:1100px){#view-polls #polls-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* כרטיס צר: שני הטורים (ימין / יתר) זה מתחת לזה, כדי ששמות המפלגות לא ייחתכו */
+#view-polls #polls-cards .poll-result-card{container-type:inline-size}
+@container (max-width:500px){.poll-cols{grid-template-columns:1fr!important}}
 #view-polls #polls-cards .poll-result-card{display:flex;flex-direction:column;min-width:0}
 #view-polls #polls-cards .poll-result-card>header{min-height:78px;align-items:center}
-#view-polls #polls-cards .poll-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start;padding:6px 16px 10px}
+#view-polls #polls-cards .poll-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;align-items:start;padding:6px 14px 10px}
 #view-polls #polls-cards .poll-list{display:grid;grid-auto-rows:32px;margin:0;padding:0;list-style:none}
 #view-polls #polls-cards .poll-cols li{display:grid;grid-template-columns:minmax(0,1fr) 30px 42px;align-items:center;gap:4px;min-height:0;height:32px;border-bottom:1px solid var(--rule-2)}
 #view-polls #polls-cards .poll-cols .poll-party-name{display:block;min-width:0;padding:0;font-size:.84rem;text-align:start;line-height:1.2}

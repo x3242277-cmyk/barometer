@@ -5058,10 +5058,17 @@ body:has(#view-demography.on)>footer{display:none}
 #view-polls #polls-table .tr-table thead th{padding:8px 7px 6px;white-space:normal}
 #view-polls .tr-table .orglogo{width:22px;height:22px}
 /* תצוגת הכרטיסים: כרטיס לכל כלי תקשורת, שלושה בשורה במחשב נייד */
-#view-polls #polls-cards{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px;align-items:start}
-#view-polls #polls-cards .poll-cols li{min-height:28px}
-#view-polls #polls-cards .poll-cols .poll-party-name{padding:3px 0;font-size:.78rem}
-#view-polls #polls-cards .poll-list li>b{font-size:1rem}
+#view-polls #polls-cards{grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:14px;align-items:stretch}
+#view-polls #polls-cards .poll-result-card{display:flex;flex-direction:column;min-width:0}
+#view-polls #polls-cards .poll-result-card>header{min-height:78px;align-items:center}
+#view-polls #polls-cards .poll-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start;padding:6px 16px 10px}
+#view-polls #polls-cards .poll-list{display:grid;grid-auto-rows:32px;margin:0;padding:0;list-style:none}
+#view-polls #polls-cards .poll-cols li{display:grid;grid-template-columns:minmax(0,1fr) 30px 42px;align-items:center;gap:4px;min-height:0;height:32px;border-bottom:1px solid var(--rule-2)}
+#view-polls #polls-cards .poll-cols .poll-party-name{display:block;min-width:0;padding:0;font-size:.84rem;text-align:start;line-height:1.2}
+#view-polls #polls-cards .poll-cols .pname{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-polls #polls-cards .poll-list li>b{font-size:1.02rem;text-align:center;font-variant-numeric:tabular-nums}
+#view-polls #polls-cards .poll-list li>em{min-width:0;font-size:.72rem;white-space:nowrap;text-align:start}
+#view-polls #polls-cards .zero-results{margin:auto 16px 10px}
 
 /* ---------- כמה עברו צד: שני הכרטיסים בגובה הלשונית ---------- */
 #view-polls .cross-sec{display:flex;flex-direction:column}

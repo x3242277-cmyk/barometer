@@ -3,7 +3,7 @@
    מבט כולל = הגושים לפי בסיס המספרים שנבחר. ההשוואות לפי ערוץ / מכון / מפלגה
    משתמשות בסקרים כפי שפורסמו: רשימה שלא נמדדה נשארת חסרה (לא 0), והקו נקטע
    כשהרכב הרשימה משתנה. */
-const EXPLORER_COLORS = ['#245fa6', '#c05a36', '#168575', '#805ca3', '#ac801a'];
+const EXPLORER_COLORS = ['#0f7c8a', '#c7871a', '#7c5aa6', '#475569', '#b0467d'];
 const EXPLORER_MODES = { overview: 'מבט כולל', channels: 'ערוצים', firms: 'מכונים', parties: 'מפלגות' };
 const EXPLORER_MAX = 5;
 const EXPLORER_OUTLET_LOGOS = { 'חדשות 12':'assets/logos/channel12.svg', 'חדשות 13':'assets/logos/channel13.svg', 'ערוץ 14':'assets/logos/channel14.png', 'כאן 11':'assets/logos/kan11.svg', 'i24NEWS':'assets/logos/i24news.png', 'ערוץ 16':'assets/logos/channel-16.png', 'וואלה':'assets/logos/walla.png', 'זמן ישראל':'assets/logos/zman-israel.png', 'גלי צה״ל':'assets/logos/galatz.png' };

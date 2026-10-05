@@ -1,12 +1,39 @@
-/* למה הסקרים חלוקים? — שני סקרים, ופירוק של הפער. נטען אחרי polls-workspace.css.
-   הכול על לוח אחד בשלוש עמודות (סקר · הפער · סקר): שורה ראשונה — שני הסקרים; שורה שנייה —
-   הפירוק, ההיסטוריה או השאלה. העמודה האמצעית היא עמוד השדרה של הפער. */
-#poll-gap{--hi:#2563B0;--lo:#b03a2e;--gold:#e5c783;--mid:124px}
-.gap{display:grid;gap:10px;align-content:start;padding:2px 2px 8px}
+/* למה הסקרים חלוקים? — מסלול של קומות. נטען אחרי polls-workspace.css.
+   קומה ראשונה: שני סקרים והשאלה. כל לחיצה על "הלאה" מוסיפה קומה מתחת לקודמת
+   (הפירוק, מי צדק בפעם הקודמת, חקרו בעצמכם), והדף גולל אליה. הקומות שעוד לא נפתחו
+   מופיעות כשלבים עמומים — כדי שיהיה ברור שיש עוד דרך. הקומות מיושרות לאותן שלוש
+   עמודות (סקר · הפער · סקר). */
+#poll-gap{--hi:#0f7c8a;--lo:#a85a0b;--gold:#e5c783;--mid:124px}
+.gap{display:grid;align-content:start;padding:2px 2px 24px}
 .gap-empty{margin:40px auto;color:var(--ink-2)}
 
+/* ---------- המסלול: קו וצמתים בצד ---------- */
+.gap-track{display:grid;gap:16px}
+.gap-floor{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:12px;scroll-margin-top:6px;outline:none}
+.gap-floor:not(:last-child)::before{content:"";position:absolute;inset-inline-start:16px;top:38px;bottom:-16px;width:2px;background:#e5c783aa}
+.gap-floor.is-locked::before{background:repeating-linear-gradient(#e5c78355 0 4px,transparent 4px 9px)}
+.gap-floor.is-locked:last-child::before{display:none}
+.gap-node{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--champagne,#e5c783);color:#14233a;font:900 1rem var(--sans);box-shadow:0 0 0 4px #0b1a2b}
+.gap-floor.is-locked .gap-node{background:#14283f;color:#8d9db0;border:2px dashed #e5c78366;box-shadow:0 0 0 4px #0b1a2b}
+.gap-floor.is-new .gap-node{animation:gap-node 1.6s ease-out}
+.gap-floor.is-new>.gap-floor-body{animation:gap-in .5s ease both}
+.gap-floor-body{min-width:0}
+.gap-stub{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;min-height:34px;padding:4px 14px;border:1px dashed #e5c78355;border-radius:8px;color:#8d9db0}
+.gap-stub b{font-size:.95rem;color:#aebbcb}
+.gap-stub span{font-size:.78rem}
+.gap-floor-title{margin:0 0 8px;font-size:1.3rem;line-height:1.3;color:var(--ink)}
+.gap-floor-title small{margin-inline-start:10px;font-size:.82rem;font-weight:600;color:var(--ink-3)}
+@keyframes gap-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes gap-node{0%{box-shadow:0 0 0 4px #0b1a2b,0 0 0 4px #e5c783}60%{box-shadow:0 0 0 4px #0b1a2b,0 0 0 16px #e5c78300}100%{box-shadow:0 0 0 4px #0b1a2b,0 0 0 16px #e5c78300}}
+
+/* ---------- הכפתור של הקומה הבאה: ברור, אבל לא גונב את ההצגה ---------- */
+.gap-step{display:inline-flex;align-items:center;gap:10px;min-height:42px;margin-top:14px;padding:8px 22px;border:0;border-radius:8px;background:var(--champagne,#e5c783);color:#14233a;font:900 .95rem var(--sans);cursor:pointer;box-shadow:0 2px 0 #b8862b;transition:transform .15s,box-shadow .15s}
+.gap-step span{font-size:1.1rem;line-height:1}
+.gap-step:hover{transform:translateY(-2px);box-shadow:0 4px 0 #b8862b}
+.gap-step:focus-visible,.gap-tool:focus-visible,.gap-redo:focus-visible,.gap-choices button:focus-visible{outline:3px solid #f1d99d;outline-offset:3px}
+
 /* ---------- הכותרת: על הרקע הכהה ---------- */
-.gap-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px 24px;flex-wrap:wrap}
+.gap-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px 24px;flex-wrap:wrap;margin-bottom:10px}
 .gap-head-text{min-width:0;flex:1 1 420px}
 .gap-head h2{margin:0;font-size:clamp(1.3rem,2.3vw,2rem);line-height:1.2;letter-spacing:-.025em;color:var(--ink)}
 .gap-head h2 span{color:var(--gold)}
@@ -14,20 +41,20 @@
 .gap-head p.gap-lead{margin:6px 0 0;font-size:1.02rem;line-height:1.5;color:var(--ink)}
 .gap-head p.gap-lead b{color:var(--gold);font-weight:900}
 .gap-head p.gap-lead .tr-info{color:var(--ink-3)}
+.gap-head .gap-picked{margin:6px 0 0;font-size:.86rem;color:var(--ink-2)}
+.gap-picked b{color:var(--gold)}
+.gap-redo{margin-inline-start:8px;padding:3px 12px;border:1px solid #e5c783aa;border-radius:6px;background:#e5c78318;color:#f6e7bd;font:800 .78rem var(--sans);cursor:pointer}
+.gap-redo:hover{background:#e5c78338}
 .gap-tools{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
-.gap-tool{min-height:34px;padding:5px 14px;border:1px solid #e5c78366;border-radius:8px;background:#e5c78314;color:#f1d99d;font:700 .8rem var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
-.gap-tool:hover{background:#e5c78330}
-.gap-tool:focus-visible,.gap-cta:focus-visible,.gap-back:focus-visible,.gap-redo:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
+.gap-tool{min-height:36px;padding:6px 16px;border:1px solid #e5c783aa;border-radius:8px;background:#e5c78318;color:#f6e7bd;font:800 .84rem var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
+.gap-tool:hover{background:#e5c78338}
 
 /* ---------- הלוח: סקר · הפער · סקר ---------- */
 .gap-board{display:grid;grid-template-columns:minmax(0,1fr) var(--mid) minmax(0,1fr);gap:12px;align-items:stretch}
 .gap-board>.gap-hi{grid-column:1;grid-row:1}
 .gap-board>.gap-diff{grid-column:2;grid-row:1}
 .gap-board>.gap-lo{grid-column:3;grid-row:1}
-.gap-board>.gap-parts{grid-column:1;grid-row:2}
-.gap-board>.gap-scale{grid-column:3;grid-row:2}
-.gap-board>:is(.gap-ask,.gap-record){grid-column:1/-1;grid-row:2}
-.gap.is-parts .gap-diff{grid-row:1/span 2}
+.gap-board>.gap-ask{grid-column:1/-1;grid-row:2}
 
 /* ---------- שני הסקרים ---------- */
 .gap-poll{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:12px 18px 14px;border:2px solid transparent;transition:border-color .2s,box-shadow .2s}
@@ -45,8 +72,10 @@
 .gap-bar span{display:grid;place-items:center;min-width:0;font-size:.74rem;font-weight:800;color:#fff}
 .gap-bar span:first-child{border-radius:0 5px 5px 0}.gap-bar span:last-of-type{border-radius:5px 0 0 5px}
 .gap-61{position:absolute;top:-4px;bottom:-4px;right:calc(61 / 120 * 100%);width:3px;margin-right:-1px;background:#14233a;box-shadow:0 0 0 1.5px #fff}
-.gap-verdict{margin:0;font-size:.86rem;font-weight:800}
-.gap-verdict.yes{color:#1d6f48}.gap-verdict.no{color:#b03a2e}
+.gap-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font-size:.8rem;color:var(--ink-2)}
+.gap-legend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.gap-legend i{width:10px;height:10px;border-radius:2px}
+.gap-legend b{color:var(--ink);font-variant-numeric:tabular-nums}
 
 /* ---------- עמוד השדרה: הפער במנדטים, במצביעים ובאחוזים ---------- */
 .gap-diff{display:grid;place-content:center;justify-items:center;gap:2px;text-align:center}
@@ -59,27 +88,33 @@
 .gap-people em{margin-top:4px;font-style:normal;font-size:1.15rem;font-weight:900;line-height:1.1;color:var(--gold);font-variant-numeric:tabular-nums}
 .gap-people span{font-size:.7rem;font-weight:700;line-height:1.25;color:var(--ink-3)}
 
-/* ---------- השאלה ---------- */
-.gap-ask{display:grid;justify-items:center;align-content:center;gap:12px;padding:18px 0 4px}
-.gap-ask>p{margin:0;font-size:clamp(1.1rem,1.8vw,1.5rem);font-weight:800;color:var(--ink)}
-.gap-choices{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-.gap-choices button{min-height:44px;padding:8px 20px;border:1px solid #e5c78399;border-radius:8px;background:#e5c78318;color:#f6e7bd;font:800 .95rem var(--sans);cursor:pointer;transition:background .15s,transform .15s}
-.gap-choices button:hover{background:#e5c78338;transform:translateY(-1px)}
-.gap-choices button:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
+/* ---------- השאלה: כפתורי תשובה ברורים ---------- */
+.gap-ask{display:grid;justify-items:center;align-content:center;gap:12px;padding:16px 0 4px}
+.gap-ask>p{margin:0;font-size:clamp(1.15rem,1.9vw,1.55rem);font-weight:800;color:var(--ink);text-align:center}
+.gap-ask>p small{display:block;margin-top:2px;font-size:.8rem;font-weight:600;color:var(--ink-3)}
+.gap-choices{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.gap-choices button{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:8px 24px;border:2px solid #fdfbf6;border-radius:10px;background:#fdfbf6;color:#14233a;font:900 1rem var(--sans);cursor:pointer;box-shadow:0 2px 0 #b9ad95;transition:transform .15s,border-color .15s,box-shadow .15s}
+.gap-choices button:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 4px 0 #b8862b}
+.gap-mark{width:12px;height:12px;border-radius:50%}
+.gap-mark.hi{background:var(--hi)}.gap-mark.lo{background:var(--lo)}
 
-/* ---------- הפירוק ---------- */
-.gap-parts,.gap-scale{padding:12px 18px 14px;animation:gap-in .4s ease both}
-.gap-board h3{margin:0;font-size:1.05rem;line-height:1.3;color:var(--ink)}
+/* ---------- קומה 2: הפירוק ---------- */
+.gap-pair{display:grid;grid-template-columns:minmax(0,1fr) var(--mid) minmax(0,1fr);gap:12px;align-items:stretch}
+.gap-pair-mid{justify-self:center;width:2px;background:linear-gradient(#e5c78300,#e5c78399,#e5c78300)}
+.gap-parts,.gap-scale{padding:12px 18px 14px}
+.gap-floor h3:not(.gap-floor-title){margin:0;font-size:1.05rem;line-height:1.3;color:var(--ink)}
 .gap-parts h3 span{color:var(--hi)}
-.gap-board .tr-card p{margin:3px 0 8px;font-size:.8rem;line-height:1.5;color:var(--ink-2)}
+.gap-floor .tr-card p{margin:3px 0 8px;font-size:.8rem;line-height:1.5;color:var(--ink-2)}
 .gap-parts table{width:100%;min-width:0;border-collapse:collapse;font-size:.82rem;table-layout:fixed}
 #poll-gap .gap-parts :is(th,td){padding:3px 6px;border:0;background:none;text-align:start;font-weight:600;color:var(--ink)}
 .gap-parts thead th{font-size:.7rem;font-weight:700;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gap-parts tbody th{width:34%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gap-parts tr.is-top th{font-weight:800}
 .gap-b{display:flex;align-items:center;height:18px}
-.gap-b::before{content:"";height:100%;width:var(--w);min-width:2px;border-radius:0 4px 4px 0;background:#9bb3d1}
-.gap-parts tr.is-top .gap-b::before{background:var(--hi)}
+.gap-b::before{content:"";height:100%;width:var(--w);min-width:2px;border-radius:0 4px 4px 0;background:#8cc3ca}
+.gap-parts td+td .gap-b::before{background:#e2bf91}
+.gap-parts tr.is-top td .gap-b::before{background:var(--hi)}
+.gap-parts tr.is-top td+td .gap-b::before{background:var(--lo)}
 .gap-b b{margin-inline-start:6px;font-size:.82rem;font-variant-numeric:tabular-nums}
 
 /* הציר: כל הסקרים, ואיפה הקצוות והברומטר */
@@ -94,19 +129,13 @@
 .gap-maj em{position:absolute;bottom:-1px;left:5px;font-style:normal;font-size:.68rem;font-weight:800;color:#14233a;white-space:nowrap;direction:rtl}
 .gap-axis{position:absolute;inset-inline:0;bottom:0;height:22px;border-top:1px solid var(--rule-strong)}
 .gap-axis span{position:absolute;top:3px;transform:translateX(-50%);font-size:.7rem;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.gap-baro{position:absolute;bottom:-3px;width:0;height:0;margin-left:-7px;border-inline:7px solid transparent;border-bottom:10px solid #b8862b}
-.gap-baro em{position:absolute;top:12px;left:50%;transform:translateX(-50%);padding:0 6px;border-radius:5px;font-style:normal;font-size:.74rem;font-weight:800;color:#6b4a07;white-space:nowrap;direction:rtl;background:#f3e3b8}
+.gap-baro{position:absolute;bottom:-3px;width:0;height:0;margin-left:-7px;border-inline:7px solid transparent;border-bottom:10px solid #14233a}
+.gap-baro em{position:absolute;top:12px;left:50%;transform:translateX(-50%);padding:0 6px;border-radius:5px;font-style:normal;font-size:.74rem;font-weight:800;color:#14233a;white-space:nowrap;direction:rtl;background:#e6ebf2}
 
-/* ---------- למטה: הניחוש וההזמנה לשלב הבא ---------- */
-.gap-picked{margin:0;font-size:.86rem;color:var(--ink-2)}
-.gap-picked b{color:var(--gold)}
-.gap-redo{margin-inline-start:8px;padding:2px 10px;border:1px solid #e5c78366;border-radius:6px;background:none;color:#f1d99d;font:700 .76rem var(--sans);cursor:pointer}
-.gap-redo:hover{background:#e5c78322}
-
-/* ---------- מי צדק בפעם הקודמת: כל מכון מול התוצאה האמיתית ---------- */
-.gap-record{padding:12px 18px 12px;animation:gap-in .4s ease both}
+/* ---------- קומה 3: מי צדק בפעם הקודמת ---------- */
+.gap-record{padding:12px 18px 12px}
 .gap-record h3 .tr-info{margin-inline-start:6px}
-.gap-board .gap-rec-sub{margin:3px 0 6px;font-size:.78rem}
+.gap-floor .gap-rec-sub{margin:3px 0 6px;font-size:.78rem}
 .gap-rec-row{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:stretch;column-gap:12px}
 .gap-rec-label{display:grid;align-content:center;line-height:1.25}
 .gap-rec-label b{font-size:.88rem;color:var(--ink)}
@@ -124,97 +153,23 @@
 .gap-rec-axis>div:last-child{position:relative;height:20px}
 .gap-rec-axis span{position:absolute;top:3px;transform:translateX(-50%);font-size:.7rem;font-weight:700;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
 .gap-rec-axis span.is-zero{color:var(--ink);font-weight:800}
-.gap-board .gap-rec-foot{margin:8px 0 0;padding:7px 10px;border-radius:6px;background:#f4ead2;border-inline-start:4px solid #c9a24f;font-size:.8rem;line-height:1.5;color:var(--ink)}
+.gap-floor .gap-rec-foot{margin:8px 0 0;padding:7px 10px;border-radius:6px;background:#f4ead2;border-inline-start:4px solid #c9a24f;font-size:.8rem;line-height:1.5;color:var(--ink)}
 .gap-rec-foot b{font-weight:800}
 
-/* ---------- ההזמנה לחקור בעצמך ---------- */
-.gap-invite{display:grid;gap:8px;animation:gap-in .4s ease both}
-.gap-invite-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.gap-invite-head b{font-size:1.05rem;color:var(--gold)}
-.gap-back{padding:4px 12px;border:1px solid #e5c78366;border-radius:6px;background:none;color:#f1d99d;font:700 .78rem var(--sans);cursor:pointer}
-.gap-back:hover{background:#e5c78322}
-.gap-invite-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.gap-go{display:grid;gap:2px;padding:9px 14px;border:1px solid #e5c78366;border-radius:8px;background:#e5c78314;color:var(--ink);text-decoration:none;transition:background .15s,transform .15s}
-.gap-go:hover{background:#e5c78330;transform:translateY(-1px)}
-.gap-go:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
-.gap-go b{font-size:.92rem;color:#f6e7bd}
-.gap-go span{font-size:.74rem;line-height:1.35;color:var(--ink-3)}
-
-@keyframes gap-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-/* ---------- אחרי הבחירה: הכול נכנס למסך אחד ---------- */
-.gap.is-parts{--mid:148px}
-.gap.is-revealed{gap:8px}
-.gap.is-revealed .gap-head h2{font-size:clamp(1.15rem,1.9vw,1.6rem)}
-.gap.is-revealed .gap-head :is(.gap-lead,.gap-note){display:none}
-.gap.is-revealed .gap-poll{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"head num" "bar bar" "verdict verdict";align-content:center;column-gap:12px;row-gap:6px;padding:10px 16px 12px}
-.gap.is-revealed .gap-poll header{grid-area:head}
-.gap.is-revealed .gap-num{grid-area:num}
-.gap.is-revealed .gap-bar{grid-area:bar;height:18px;margin:0}
-.gap.is-revealed .gap-verdict{grid-area:verdict}
-.gap.is-revealed .gap-num b{font-size:2.9rem}
-.gap.is-revealed .gap-num span{font-size:.7rem}
-
-/* שלב "מי צדק בפעם הקודמת": שני הסקרים מתכווצים לפס, והגרף מקבל את המסך */
-.gap.is-record{gap:6px}
-.gap.is-record .gap-poll{padding:7px 14px}
-.gap.is-record .gap-poll :is(.gap-bar,.gap-verdict){display:none}
-.gap.is-record .gap-poll{grid-template-areas:"head num"}
-.gap.is-record .gap-num b{font-size:2rem}
-.gap.is-record .gap-num span{font-size:.66rem}
-.gap.is-record .gap-diff::before,.gap.is-record .gap-diff::after,.gap.is-record .gap-people{display:none}
-.gap.is-record .gap-diff b{font-size:1.7rem}
-
-@media (max-height:720px){
-  .gap.is-revealed{gap:5px}
-  .gap-plot{height:100px;margin-bottom:24px}
-  .gap-rec-plot{height:52px}
-  .gap-rec-caption>div:last-child{padding-block:2px}
-  .gap-invite-head b{font-size:.95rem}
-  .gap-rec-sub{display:none}
-  .gap-board .gap-rec-foot{margin-top:5px;padding:5px 10px}
-  .gap-parts,.gap-scale,.gap-record{padding-block:9px}
-}
-
-@media (max-height:720px){
-  .gap-go span,.gap-rec-caption{display:none}
-  .gap-invite{gap:5px}
-  .gap-go{padding:6px 12px}
-}
+/* ---------- קומה 4: חקרו בעצמכם ---------- */
+.gap-invite-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.gap-go{display:grid;gap:3px;padding:14px 16px;border:1px solid #e5c783aa;border-radius:10px;background:#e5c78318;color:var(--ink);text-decoration:none;transition:background .15s,transform .15s}
+.gap-go:hover{background:#e5c78336;transform:translateY(-2px)}
+.gap-go:focus-visible{outline:3px solid #f1d99d;outline-offset:3px}
+.gap-go b{font-size:1.02rem;color:#f6e7bd}
+.gap-go span{font-size:.8rem;line-height:1.4;color:var(--ink-3)}
 
 /* מסכים צרים (יסודר בסוף) */
 @media (max-width:980px){
-  .gap-board{grid-template-columns:minmax(0,1fr)}
+  .gap-board,.gap-pair{grid-template-columns:minmax(0,1fr)}
   .gap-board>*{grid-column:1!important;grid-row:auto!important}
+  .gap-pair-mid{display:none}
   .gap-invite-links{grid-template-columns:repeat(2,minmax(0,1fr))}
   .gap-rec-row{grid-template-columns:90px minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.gap-parts,.gap-scale,.gap-record,.gap-invite{animation:none}.gap-choices button,.gap-poll,.gap-go,.gap-tool{transition:none}}
-
-/* ---------- הכפתור הגדול באמצע: ומי צדק בפעם הקודמת? ---------- */
-.gap-cta{display:grid;place-content:center;justify-items:center;gap:1px;width:132px;height:132px;margin-top:10px;padding:10px;border:0;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f8e7b6,#d1ad62 72%);color:#14233a;font:900 1rem/1.15 var(--sans);text-align:center;cursor:pointer;animation:gap-pulse 2.6s ease-out infinite;transition:transform .15s}
-.gap-cta:hover{transform:scale(1.07);animation-play-state:paused}
-.gap-cta:focus-visible{outline:3px solid #f1d99d;outline-offset:3px}
-.gap-diff .gap-cta :is(span,b,i){color:#14233a;letter-spacing:normal;line-height:1.15}
-.gap-diff .gap-cta span{font-size:.92rem;font-weight:800}
-.gap-diff .gap-cta b{font-size:1.22rem;font-weight:900}
-.gap-diff .gap-cta i{font-style:normal;font-size:1.5rem;line-height:1}
-.gap-cta-hint{max-width:120px;margin-top:2px;font-size:.68rem;font-weight:700;line-height:1.25;color:var(--gold);text-align:center}
-@keyframes gap-pulse{0%{box-shadow:0 0 0 0 #e5c783aa}70%{box-shadow:0 0 0 16px #e5c78300}100%{box-shadow:0 0 0 0 #e5c78300}}
-.gap-head .gap-picked{margin:4px 0 0;font-size:.82rem;color:var(--ink-2)}
-@media (prefers-reduced-motion:reduce){.gap-cta{animation:none;transition:none}}
-
-/* ---------- מחשב נייד נמוך (עד ~600px גובה) ---------- */
-@media (max-height:620px){
-  .gap-rec-plot{height:48px}
-  .gap-record{padding-block:7px 8px}
-  .gap-board .gap-rec-foot{margin-top:4px;padding:4px 10px;font-size:.76rem}
-  .gap-invite-head b{font-size:.9rem}
-  .gap-go{padding:5px 12px}
-  .gap.is-revealed .gap-poll{padding:8px 14px 10px;row-gap:4px}
-  .gap-parts,.gap-scale{padding-block:8px 9px}
-  .gap-head h2{font-size:1.2rem}
-  .polls-tabbar .pn{padding:8px 16px 9px}
-  .polls-tabbar{margin-bottom:8px}
-  .gap.is-record{gap:4px}
-}
+@media (prefers-reduced-motion:reduce){.gap-floor.is-new>.gap-floor-body,.gap-floor.is-new .gap-node{animation:none}.gap-choices button,.gap-poll,.gap-step,.gap-go,.gap-tool{transition:none}}

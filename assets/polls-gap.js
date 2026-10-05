@@ -9,6 +9,7 @@
    הכול מחושב מהנתונים החיים של האתר; אין כאן טענה על כוונות של מכון. */
 const GAP_WINDOW_DAYS = 14, GAP_MAJORITY = 61, GAP_ROWS = 4;
 const GAP_MINUS = "−";
+const GAP_BLOC_HE = { Right: "ימין וחרדים", Left: "מרכז–שמאל", Arabs: "ערבים", Unknown: "לא משויך" };
 const gapSigned = v => Math.abs(v) < 0.05 ? "0" : `${v < 0 ? GAP_MINUS : "+"}${trFmt(Math.abs(v))}`;
 
 /* הסקר האחרון של כל צירוף מכון + ערוץ בחלון הזמן, מהחדש לישן */
@@ -43,7 +44,7 @@ function gapParties(vHi, vLo) {
     .map(r => ({ ...r, d: r.hi - r.lo })).filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
 }
 
-/* לכל מערכת בחירות: ההפרש של כל מכון בגוש נתניהו — ממוצע סקרי 30 הימים שלפני הבחירות פחות התוצאה */
+/* לכל מערכת בחירות: ההפרש של כל מכון בגוש הימין והחרדים — ממוצע סקרי 30 הימים שלפני הבחירות פחות התוצאה */
 function gapRecordRows(elections) {
   return elections.map(e => {
     const defs = e.data.blocs || BLOCS_2022, actual = histBlocs(e.data.actual, defs).netanyahu, by = {};
@@ -116,20 +117,21 @@ function gapCard(s, kind, picked, m) {
   const other = kind === "hi" ? m.lo : m.hi;
   const bar = ["Right", "Unknown", "Arabs", "Left"].filter(k => s.v.blocs[k] > 0)
     .map(k => `<span style="flex:${s.v.blocs[k]};background:${BLOCS[k].color}">${s.v.blocs[k] >= 7 ? s.v.blocs[k] : ""}</span>`).join("");
-  const win = s.right >= GAP_MAJORITY;
+  const legend = ["Right", "Left", "Arabs", "Unknown"].filter(k => s.v.blocs[k] > 0)
+    .map(k => `<span><i style="background:${BLOCS[k].color}"></i>${GAP_BLOC_HE[k]} <b dir="ltr">${s.v.blocs[k]}</b></span>`).join("");
   return `<article class="tr-card gap-poll gap-${kind}${picked === kind ? " is-picked" : ""}">
     <header>${outletLogo(s.outlet)}<label class="gap-choose"><span class="sr-only">${kind === "hi" ? "הסקר הימני" : "הסקר השמאלי"} — החלפה</span><select data-gap-side="${kind}">${m.options.map(o =>
       `<option value="${esc(o.id)}"${o.id === s.p.id ? " selected" : ""}${o.id === other.p.id ? " disabled" : ""}>${esc(o.label)}</option>`).join("")}</select></label></header>
     <div class="gap-num"><b dir="ltr">${s.right}</b><span>מנדטים לגוש<br>הימין והחרדים</span></div>
     <div class="gap-bar" role="img" aria-label="${esc(["Right", "Unknown", "Arabs", "Left"].filter(k => s.v.blocs[k] > 0).map(k => `${BLOCS[k].he} ${s.v.blocs[k]}`).join(", "))}">${bar}<i class="gap-61" title="${GAP_MAJORITY}"></i></div>
-    <p class="gap-verdict ${win ? "yes" : "no"}">${win ? `יש רוב · ${s.right - GAP_MAJORITY} מעל ${GAP_MAJORITY}` : `אין רוב · חסרים ${GAP_MAJORITY - s.right}`}</p></article>`;
+    <p class="gap-legend">${legend}</p></article>`;
 }
 
 /* הפער במנדטים, ובאנשים: כך וכך מצביעים, כך וכך אחוז מהם */
-function gapDiff(m, cta) {
+function gapDiff(m) {
   const p = m.people;
-  return `<div class="gap-diff"><b>${m.gap}</b><span>מנדטים<br>הפרש</span>
-    <div class="gap-people" title="${esc(GAP_PEOPLE_NOTE)}">${p ? `<strong dir="ltr">≈ ${p.kv(p.voters)}</strong><span>מצביעים</span>` : ""}<em dir="ltr">${gapPctText(m)}</em><span>מהמצביעים</span></div>${cta ? `<button type="button" class="gap-cta" data-gap-stage="record" aria-label="ומי צדק בפעם הקודמת?"><span>ומי צדק</span><b>בפעם הקודמת?</b><i aria-hidden="true">←</i></button><small class="gap-cta-hint">מול שלוש הבחירות האחרונות</small>` : ""}</div>`;
+  return `<div class="gap-diff"><b>${m.gap}</b><span>מנדטים הפרש<br>בגוש הימין והחרדים</span>
+    <div class="gap-people" title="${esc(GAP_PEOPLE_NOTE)}">${p ? `<strong dir="ltr">≈ ${p.kv(p.voters)}</strong><span>מצביעים</span>` : ""}<em dir="ltr">${gapPctText(m)}</em><span>מהמצביעים</span></div></div>`;
 }
 
 function gapParts(m) {
@@ -192,10 +194,10 @@ function gapRecord(m) {
     : st.loCloser === st.compared ? `${loName} היה קרוב יותר לתוצאה מ${hiName} ${both}.`
     : !st.hiCloser && !st.loCloser ? `${hiName} ו${loName} סטו מהתוצאה באותה מידה.`
     : `${hiName} היה קרוב יותר לתוצאה מ${loName} ב־${st.hiCloser} מתוך ${st.compared} בחירות.`;
-  const what = "כל נקודה היא מכון: ההפרש בין ממוצע הסקרים שלו ב־30 הימים שלפני הבחירות לבין מספר המנדטים שקיבל גוש נתניהו.";
-  const how = `${what} מינוס — המכון נתן לגוש פחות ממה שקיבל. המכונים והבחירות לפי ארכיון הסקרים של האתר; במכון עם סקר אחד או שניים הממוצע מבוסס על מעט נתונים.`;
+  const what = "כל נקודה היא מכון: ההפרש בין ממוצע הסקרים שלו ב־30 הימים שלפני הבחירות לבין מספר המנדטים שקיבל גוש הימין והחרדים.";
+  const how = `${what} מינוס — המכון נתן לגוש פחות ממה שקיבל; פלוס — יותר. מה שהסקרים לא נתנו לגוש נרשם אצל יתר הרשימות, כי סך המנדטים קבוע. המכונים והבחירות לפי ארכיון הסקרים של האתר; במכון עם סקר אחד או שניים הממוצע מבוסס על מעט נתונים.`;
   return `<div class="tr-card gap-record">
-    <h3>${st.below} מתוך ${st.total} מדידות של מכונים היו מתחת לתוצאה האמיתית ${gapInfo(how)}</h3>
+    <h3>גוש הימין והחרדים: ${st.below} מתוך ${st.total} מדידות היו מתחת לתוצאה האמיתית${st.total - st.below ? `, ${st.total - st.below} מעליה` : ""} ${gapInfo(how)}</h3>
     <p class="gap-rec-sub">${what}</p>
     <div class="gap-rec-plotwrap">
       <div class="gap-rec-row gap-rec-caption"><div></div><div dir="ltr"><span>← פחות מהתוצאה</span><span>יותר מהתוצאה →</span></div></div>
@@ -206,40 +208,62 @@ function gapRecord(m) {
 }
 
 function gapInvite() {
-  return `<div class="gap-invite"><div class="gap-invite-head"><b>עכשיו תורכם — פתחו את הנתונים וחקרו בעצמכם</b><button type="button" class="gap-back" data-gap-stage="parts">→ חזרה לפירוק הפער</button></div>
+  return `<div class="gap-invite"><h3 class="gap-floor-title">עכשיו תורכם <small>פתחו את הנתונים וחקרו בעצמכם</small></h3>
     <nav class="gap-invite-links" aria-label="המשך לחקור">${GAP_INVITE.map(([t, href, title, line]) => `<a class="gap-go" href="${href}" data-polls-go="${t}"><b>${title}</b><span>${line}</span></a>`).join("")}</nav></div>`;
 }
+
+/* ---------- מסלול של קומות: כל לחיצה מוסיפה קומה מתחת לקודמת ---------- */
+const GAP_FLOORS = [
+  null,
+  { title: "השאלה" },
+  { title: "איפה נוצר הפער?", sub: "פירוק לפי רשימות, ומיקום מול שאר הסקרים", stub: "נפתח אחרי הניחוש" },
+  { title: "ומי צדק בפעם הקודמת?", sub: "אותם מכונים מול התוצאה האמיתית בשלוש הבחירות האחרונות", stub: "נפתח בלחיצה על \"הלאה\"" },
+  { title: "עכשיו תורכם", sub: "חקרו בעצמכם", stub: "נפתח בלחיצה על \"הלאה\"" }
+];
+const gapFloorHead = n => `<h3 class="gap-floor-title">${GAP_FLOORS[n].title} <small>${GAP_FLOORS[n].sub}</small></h3>`;
+const gapStep = (to, label) => `<button type="button" class="gap-step" data-gap-floor="${to}">הלאה: ${label} <span aria-hidden="true">↓</span></button>`;
+const gapFloor = (n, body, fresh) => `<section class="gap-floor${fresh ? " is-new" : ""}" data-floor="${n}" tabindex="-1" aria-label="${esc(GAP_FLOORS[n].title)}"><span class="gap-node" aria-hidden="true">${n}</span><div class="gap-floor-body">${body}</div></section>`;
+const gapStub = n => `<section class="gap-floor is-locked" data-floor="${n}" aria-label="${esc(GAP_FLOORS[n].title)} — נעול"><span class="gap-node" aria-hidden="true">${n}</span><div class="gap-stub"><b>${GAP_FLOORS[n].title}</b><span>${GAP_FLOORS[n].stub}</span></div></section>`;
+
+/* הקומה הגבוהה ביותר שנפתחה: אחרי הניחוש — 2, ואחר כך כל לחיצה על "הלאה" */
+const gapTopFloor = () => S.gapPick ? Math.min(4, Math.max(2, S.gapFloor || 2)) : 1;
 
 function renderPollGap() {
   const box = document.querySelector("#poll-gap"); if (!box) return;
   const m = pollGapModel(S.gapSel);
   if (!m) { box.innerHTML = '<p class="gap-empty">עוד אין מספיק סקרים אחרונים כדי להשוות ביניהם.</p>'; return; }
-  const picked = S.gapPick || null, revealed = !!picked, record = revealed && S.gapStage === "record";
-  box.classList.toggle("is-revealed", revealed);
-  box.classList.toggle("is-record", record);
-  box.classList.toggle("is-parts", revealed && !record);
+  const picked = S.gapPick || null, revealed = !!picked, top = gapTopFloor(), fresh = n => n === top && top > (S.gapShown || 1);
   const label = { hi: m.hi.outlet, lo: m.lo.outlet, none: "אף אחד מהם" }[picked];
-  const people = m.gap === 0 ? "" : m.people ? `כל מנדט שווה בערך <b>${fmt(Math.round(m.people.perSeat / 1000) * 1000)}</b> מצביעים, כך ש־${m.gap} מנדטים הם כ־<b>${m.people.kv(m.people.voters)}</b> איש — <b>${gapPctText(m)}</b> מהמצביעים. ${gapInfo(GAP_PEOPLE_NOTE)}` : `${m.gap} מנדטים הם <b>${gapPctText(m)}</b> מהמצביעים.`;
-  box.innerHTML = `
-    <div class="gap-head"><div class="gap-head-text"><h2>${m.gap ? `<span dir="ltr">${m.gap}</span> מנדטים בין שני סקרים מהשבועיים האחרונים` : `שני הסקרים נותנים לגוש אותו מספר מנדטים`}</h2>
+  const people = m.gap === 0 ? "" : m.people ? `כל מנדט שווה בערך <b>${fmt(Math.round(m.people.perSeat / 1000) * 1000)}</b> מצביעים, כך ש־${m.gap} מנדטים (בגוש הימין והחרדים) הם כ־<b>${m.people.kv(m.people.voters)}</b> איש — <b>${gapPctText(m)}</b> מהמצביעים. ${gapInfo(GAP_PEOPLE_NOTE)}` : `${m.gap} מנדטים בגוש הימין והחרדים הם <b>${gapPctText(m)}</b> מהמצביעים.`;
+  const first = `
+    <div class="gap-head"><div class="gap-head-text"><h2>${m.gap ? `<span dir="ltr">${m.gap}</span> מנדטים בגוש הימין והחרדים בין שני סקרים מהשבועיים האחרונים` : `שני הסקרים נותנים לגוש אותו מספר מנדטים`}</h2>
       ${people ? `<p class="gap-lead">${people}</p>` : ""}
       <p class="gap-note">${m.custom ? "הסקרים שבחרת" : "הקיצוני ביותר לכל כיוון"}, מתוך ${m.n} סקרים אחרונים (אחד לכל מכון וערוץ). המספרים — מנדטים לגוש הימין והחרדים; ${GAP_MAJORITY} הוא רוב.</p>
       ${revealed ? `<p class="gap-picked">הניחוש שלך: <b>${esc(label)}</b> <button type="button" class="gap-redo" data-gap-pick="reset">לנחש שוב</button></p>` : ""}</div>
       <div class="gap-tools"><button type="button" class="gap-tool" data-gap-random>⇄ הגרילו שני סקרים</button>${m.custom ? `<button type="button" class="gap-tool" data-gap-extremes>חזרה לקיצוניים</button>` : ""}</div></div>
-    <div class="gap-board">${gapCard(m.hi, "hi", picked, m)}${gapDiff(m, revealed && !record)}${gapCard(m.lo, "lo", picked, m)}
-      ${!revealed ? `<div class="gap-ask"><p>מי מהם קרוב יותר לאמת?</p><div class="gap-choices" role="group" aria-label="בחירה">
-          <button type="button" data-gap-pick="hi">${esc(m.hi.outlet)} · <span dir="ltr">${m.hi.right}</span></button>
-          <button type="button" data-gap-pick="lo">${esc(m.lo.outlet)} · <span dir="ltr">${m.lo.right}</span></button>
-          <button type="button" data-gap-pick="none">אף אחד מהם</button></div></div>`
-      : record ? gapRecord(m) : `${gapParts(m)}${gapScale(m)}`}</div>
-    ${record ? gapInvite() : ""}`;
+    <div class="gap-board">${gapCard(m.hi, "hi", picked, m)}${gapDiff(m)}${gapCard(m.lo, "lo", picked, m)}
+      ${revealed ? "" : `<div class="gap-ask"><p>מי מהם קרוב יותר לאמת? <small>לחצו על תשובה כדי לפתוח את הקומה הבאה</small></p><div class="gap-choices" role="group" aria-label="בחירה">
+          <button type="button" data-gap-pick="hi"><i class="gap-mark hi"></i>${esc(m.hi.outlet)} · <span dir="ltr">${m.hi.right}</span></button>
+          <button type="button" data-gap-pick="lo"><i class="gap-mark lo"></i>${esc(m.lo.outlet)} · <span dir="ltr">${m.lo.right}</span></button>
+          <button type="button" data-gap-pick="none">אף אחד מהם</button></div></div>`}</div>`;
+  const floors = [gapFloor(1, first, false)];
+  if (top >= 2) floors.push(gapFloor(2, `${gapFloorHead(2)}<div class="gap-pair">${gapParts(m)}<i class="gap-pair-mid" aria-hidden="true"></i>${gapScale(m)}</div>${top === 2 ? gapStep(3, GAP_FLOORS[3].title) : ""}`, fresh(2)));
+  if (top >= 3) floors.push(gapFloor(3, `${gapFloorHead(3)}${gapRecord(m)}${top === 3 ? gapStep(4, GAP_FLOORS[4].title) : ""}`, fresh(3)));
+  if (top >= 4) floors.push(gapFloor(4, gapInvite(), fresh(4)));
+  for (let n = top + 1; n <= 4; n++) floors.push(gapStub(n));
+  box.innerHTML = `<div class="gap-track">${floors.join("")}</div>`;
+  /* קומה חדשה: גוללים אליה ומעבירים אליה את המיקוד, כדי שהעין תישאר על מה שנוסף */
+  if (top > (S.gapShown || 1)) {
+    const el = box.querySelector(`.gap-floor[data-floor="${top}"]`);
+    requestAnimationFrame(() => { el?.focus({ preventScroll: true }); el?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); });
+  }
+  S.gapShown = top;
 }
 
 if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", () => {
-  /* בחירה חדשה של סקרים פותחת את השאלה מחדש */
-  const restart = sel => { S.gapSel = sel; S.gapPick = null; S.gapStage = "parts"; renderPollGap(); };
+  /* בחירה חדשה של סקרים, או ניחוש מחדש, מחזירים את המסלול לקומה הראשונה */
+  const restart = sel => { S.gapSel = sel; S.gapPick = null; S.gapFloor = 1; S.gapShown = 1; renderPollGap(); document.querySelector(".gap-sec")?.scrollTo({ top: 0 }); };
   document.addEventListener("click", e => {
-    const pick = e.target.closest("[data-gap-pick]"), stage = e.target.closest("[data-gap-stage]");
     if (e.target.closest("[data-gap-random]")) {
       const m = pollGapModel(S.gapSel), pair = m && gapRandomPair(m.sources);
       if (pair) restart({ a: pair[0].id, b: pair[1].id });
@@ -247,11 +271,11 @@ if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded
       return;
     }
     if (e.target.closest("[data-gap-extremes]")) { restart(null); document.querySelector("[data-gap-random]")?.focus(); return; }
-    if (!pick && !stage) return;
-    if (pick) { S.gapPick = pick.dataset.gapPick === "reset" ? null : pick.dataset.gapPick; S.gapStage = "parts"; }
-    else S.gapStage = stage.dataset.gapStage;
-    renderPollGap();
-    document.querySelector(stage ? (S.gapStage === "record" ? ".gap-back" : ".gap-cta") : S.gapPick ? ".gap-redo" : "[data-gap-pick]")?.focus();
+    const pick = e.target.closest("[data-gap-pick]"), step = e.target.closest("[data-gap-floor]");
+    if (pick) {
+      if (pick.dataset.gapPick === "reset") { S.gapPick = null; S.gapFloor = 1; S.gapShown = 1; renderPollGap(); document.querySelector(".gap-sec")?.scrollTo({ top: 0 }); document.querySelector("[data-gap-pick]")?.focus(); }
+      else { S.gapPick = pick.dataset.gapPick; S.gapFloor = 2; renderPollGap(); }
+    } else if (step) { S.gapFloor = Number(step.dataset.gapFloor); renderPollGap(); }
   });
   document.addEventListener("change", e => {
     const sel = e.target.closest?.("[data-gap-side]"); if (!sel) return;

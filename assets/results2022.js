@@ -491,7 +491,7 @@ function renderMapBase() {
     <defs><clipPath id="r22-land-clip"><path d="${land}"/></clipPath></defs>
     <path class="r22-landfill" d="${land}"/>
     <g class="r22-layer"></g>
-    ${D.map.terrain ? `<image class="r22-terrain" href="assets/terrain.jpg" x="${D.map.terrain.x}" y="${D.map.terrain.y}" width="${D.map.terrain.w}" height="${D.map.terrain.h}" preserveAspectRatio="none" clip-path="url(#r22-land-clip)"/>` : ""}
+    ${D.map.terrain ? `<image class="r22-terrain" href="assets/relief-bg.jpg" x="${D.map.terrain.x}" y="${D.map.terrain.y}" width="${D.map.terrain.w}" height="${D.map.terrain.h}" preserveAspectRatio="none" clip-path="url(#r22-land-clip)"/>` : ""}
     <path class="r22-water" d="${water}"/>
     <g class="r22-top"></g><g class="r22-labels"></g></svg>
     <div class="r22-zoom" role="group" aria-label="זום"><button type="button" data-zoom="in" aria-label="התקרבות">+</button><button type="button" data-zoom="out" aria-label="התרחקות">−</button><button type="button" data-zoom="reset" aria-label="כל המפה">⟲</button></div>

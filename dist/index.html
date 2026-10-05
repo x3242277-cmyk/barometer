@@ -4984,6 +4984,9 @@ body:has(#view-demography.on)>footer{display:none}
 .polls-tabbar .pn{display:block;padding:10px 14px;border-inline-start:3px solid transparent;border-radius:6px;color:#c3cedb;font:700 .9rem/1.3 var(--sans);text-decoration:none;transition:color .15s,background .15s,border-color .15s}
 .polls-tabbar .pn:hover{color:#f6e7bd;background:#e5c78318}
 .polls-tabbar .pn[aria-current="page"]{color:#f6e7bd;background:#e5c78326;border-inline-start-color:#e5c783}
+.polls-tabbar .pn-key{margin-block:4px;padding-block:12px;border:1px solid #e5c78366;border-inline-start:3px solid #e5c783;color:#f6e7bd;background:linear-gradient(90deg,#e5c78322,#e5c7830d);font-weight:800;font-size:.97rem;box-shadow:0 0 0 1px #e5c78314,0 6px 16px -10px #e5c783}
+.polls-tabbar .pn-key::before{content:"★";margin-inline-end:8px;color:#e5c783}
+.polls-tabbar .pn-key:hover,.polls-tabbar .pn-key[aria-current="page"]{background:linear-gradient(90deg,#e5c78340,#e5c78318);color:#fff3cf}
 .polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:-2px}
 .polls-tabbar .pn-hook::before{content:"";display:inline-block;width:7px;height:7px;margin-inline-end:8px;border-radius:50%;background:#e5c783;vertical-align:.08em}
 
@@ -7184,7 +7187,7 @@ const POLLS_NAV = [
 ];
 function renderPollsNav() {
   const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap";
-  const link = ([t, , href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}>${label}</a>`;
+  const link = ([t, , href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}${t === "cross" ? " pn-key" : ""}" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}>${label}</a>`;
   const html = POLLS_NAV.map(link).join("");
   document.querySelectorAll("[data-polls-nav]").forEach(n => { n.innerHTML = html; });
 }

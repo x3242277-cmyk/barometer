@@ -1,4 +1,4 @@
-"""Topographic relief for the 2022 election map (assets/terrain.jpg).
+"""Topographic relief for the 2022 election map (assets/relief-bg.jpg).
 
 Elevation: AWS Terrain Tiles (Mapzen "terrarium" encoding, zoom 9 ≈ 250 m), public
 open data — attribution "Terrain Tiles: Mapzen, AWS Open Data (SRTM and others)".
@@ -80,10 +80,10 @@ low, high = np.array([255, 255, 255], np.float32), np.array([228, 214, 186], np.
 tint = low * (1 - t) + high * t
 rgb = np.clip(tint * light[..., None], 0, 255).astype(np.uint8)
 
-out = ROOT / "assets" / "terrain.jpg"
+out = ROOT / "assets" / "relief-bg.jpg"
 Image.fromarray(rgb).save(out, quality=80, optimize=True, progressive=True)
 meta = {"x": x0, "y": y0, "w": round(W * UNITS_PER_PX, 1), "h": round(H * UNITS_PER_PX, 1),
         "credit": "תבליט: Terrain Tiles (Mapzen, AWS Open Data)"}
 data["map"]["terrain"] = meta
 (ROOT / "data" / "results-2022.json").write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-print(f"· assets/terrain.jpg — {W}×{H}, {out.stat().st_size // 1024} KB")
+print(f"· assets/relief-bg.jpg — {W}×{H}, {out.stat().st_size // 1024} KB")

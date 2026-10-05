@@ -1,24 +1,89 @@
-/* Accuracy: readable scores with their evidence beside them. Load after theme.css. */
-#view-e2022 :is(#accuracy-method,.accuracy-card,.accuracy-proof-summary),.accuracy-detail {
+/* דיוק המכונים — נטען אחרי theme.css.
+   ראש העמוד בשורה אחת, פס הנוסחה (שהוא גם המקרא של הפסים), ודירוג בשורה לכל מכון.
+   הפירוט המלא של כל מכון — בחלון (.accuracy-detail). */
+#view-e2022 :is(#accuracy-method,#rank-list,.accuracy-proof-summary),.accuracy-detail {
   --paper:#f3eee4;--paper-2:#fdfbf6;--paper-3:#efe9dd;
   --ink:#14233a;--ink-2:#3a4859;--ink-3:#586575;
   --rule:#e6dfd1;--rule-2:#eee8dc;--rule-strong:#d3c9b7;
   --gold:#855a0c;--accent:#855a0c;--navy-text:#12345c;
   color:var(--ink);color-scheme:light;
 }
-#view-e2022 .page-intro {max-width:none;padding-block:18px}
-#view-e2022 .page-intro h2 {font-size:clamp(1.65rem,2.7vw,2.3rem);letter-spacing:-.03em;max-width:30ch}
-#view-e2022 .page-intro>p {max-width:92ch;font-size:.9rem;line-height:1.7}
-#view-e2022 .page-intro .page-facts {margin-top:16px;max-width:none}
-#view-e2022 .accuracy-method-section {padding-top:20px}
-#accuracy-method {background:#fdfbf6;border:1px solid #e6dfd1;border-radius:16px;padding:20px 24px}
-#view-e2022 .accuracy-method-head {display:flex;align-items:center;justify-content:space-between;gap:20px}
-#view-e2022 .accuracy-method-head h3 {color:#14233a;font-size:1.2rem;margin:0}
-#view-e2022 .accuracy-method-head .kicker {color:#855a0c}
-.accuracy-jump,.accuracy-open {display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:44px;padding:11px 15px;border:1px solid #d3c9b7;border-radius:9px;background:#f5ead3;color:#12345c;font:inherit;font-size:.86rem;font-weight:800;cursor:pointer;text-decoration:none}
+
+/* ---------- ראש העמוד ---------- */
+#view-e2022 .acc-head {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;padding:4px 0 12px}
+#view-e2022 .acc-head h2 {margin:0;font-size:1.45rem;letter-spacing:-.02em;color:var(--ink)}
+#view-e2022 .acc-head p {margin:3px 0 0;font-size:.86rem;line-height:1.55;color:var(--ink-2);max-width:86ch}
+#view-e2022 .acc-head .page-facts {display:flex;gap:4px 18px;margin:0;padding:8px 14px;border-radius:10px;box-shadow:none}
+#view-e2022 .acc-head .page-facts>div {display:flex;align-items:baseline;gap:6px;padding:0;border:0;background:none;min-width:0}
+#view-e2022 .acc-head .page-facts b {font-size:1.25rem;line-height:1}
+#view-e2022 .acc-head .page-facts span {font-size:.74rem}
+
+/* ---------- פס הנוסחה ---------- */
+#accuracy-method {background:#fdfbf6;border:1px solid #e6dfd1;border-radius:12px;padding:10px 16px}
+.accuracy-method-band {display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+.accuracy-method-label {display:grid;line-height:1.3}
+.accuracy-method-label strong {font-size:.88rem;color:var(--ink)}
+.accuracy-method-label span {font-size:.72rem;color:var(--ink-3)}
+.accuracy-method-weight {display:flex;align-items:baseline;gap:6px;padding-inline-start:9px;border-inline-start:4px solid var(--component)}
+.accuracy-method-weight b {font-size:1.3rem;font-weight:900;line-height:1;color:var(--component);font-variant-numeric:tabular-nums}
+.accuracy-method-weight span {font-size:.8rem;font-weight:700;color:var(--ink-2)}
+.accuracy-method-grades {display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-inline-start:auto}
+.accuracy-method-grades>span:first-child {font-size:.72rem;font-weight:700;color:var(--ink-3)}
+.accuracy-method-grades .grade {font-size:.7rem;padding:3px 8px}
+
+/* ---------- הדירוג: שורה לכל מכון ---------- */
+#view-e2022 .reliability-ranking {padding:12px 0 0}
+#view-e2022 #rank-list.acc-list {display:block;background:#fdfbf6;border:1px solid #e6dfd1;border-radius:12px;overflow:hidden}
+.acc-row {display:grid;grid-template-columns:22px 34px minmax(130px,1.1fr) 112px 54px minmax(240px,2.4fr) 86px 76px;align-items:center;gap:6px 14px;padding:7px 14px;border-bottom:1px solid #eee8dc}
+.acc-row:last-child {border-bottom:0}
+.acc-row.acc-cols {padding-block:6px;background:#f6f1e7;font-size:.7rem;font-weight:700;color:var(--ink-3)}
+.acc-row .orglogo {width:34px;height:34px;background:#fff;border:1px solid #e6dfd1;border-radius:50%;overflow:hidden}
+.acc-row .orglogo img {padding:4px;object-fit:contain}
+.accuracy-rank-number {font-size:.9rem;font-weight:800;color:var(--ink-3);text-align:center;font-variant-numeric:tabular-nums}
+.accuracy-identity {min-width:0}
+.accuracy-identity h3 {margin:0;font-size:.95rem;line-height:1.3;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-row .grade {justify-self:start;font-size:.72rem;padding:3px 9px}
+.acc-row .grade.none {background:#efe9dd;color:var(--ink-3)}
+.accuracy-score {font-size:1.45rem;font-weight:900;line-height:1;color:#12345c;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.accuracy-contributions {display:grid;gap:5px;min-width:0}
+.accuracy-score-track {display:flex;height:9px;border-radius:5px;overflow:hidden;background:#efe9dd}
+.accuracy-score-track span {background:var(--component)}
+.accuracy-contribution-values {display:flex;flex-wrap:wrap;gap:2px 14px;font-size:.72rem;color:var(--ink-2)}
+.accuracy-contribution-values span {display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
+.accuracy-contribution-values i {align-self:center;width:7px;height:7px;border-radius:2px;background:var(--component)}
+.accuracy-contribution-values b {color:var(--ink);font-variant-numeric:tabular-nums}
+.accuracy-contribution-values small {color:var(--ink-3)}
+.accuracy-sources {font-size:.74rem;color:var(--ink-3);white-space:nowrap}
+.accuracy-sources b {color:var(--ink);font-variant-numeric:tabular-nums}
+.acc-subhead {margin:0;padding:8px 14px 6px;background:#f6f1e7;border-bottom:1px solid #eee8dc;font-size:.74rem;font-weight:700;color:var(--ink-3)}
+.acc-row.is-heir .accuracy-identity h3 {font-weight:600}
+.acc-row.is-neutral .accuracy-score {color:var(--ink-3)}
+.accuracy-neutral-explain {margin:0;font-size:.74rem;line-height:1.45;color:var(--ink-2)}
+
+/* ---------- כפתורים ---------- */
+.accuracy-jump,.accuracy-open {display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #d3c9b7;border-radius:7px;background:#f5ead3;color:#12345c;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+.accuracy-jump {min-height:40px;padding:8px 14px;font-size:.84rem}
+#view-e2022 .accuracy-open {min-height:32px;padding:4px 12px;font-size:.78rem;white-space:nowrap}
 .accuracy-jump:hover,.accuracy-open:hover {background:#ebd6a9;border-color:#966918}
 .accuracy-jump:focus-visible,.accuracy-open:focus-visible {outline:3px solid #17457f;outline-offset:3px}
-.accuracy-method-intro {font-size:.86rem;line-height:1.75;color:var(--ink-2);max-width:118ch;margin:10px 0 16px}
+
+/* ---------- הארכיון: מערכת אחר מערכת, בטבלה שנכנסת לרוחב ---------- */
+#view-e2022 .acc-archive {padding-top:24px}
+#view-e2022 .acc-archive>.sec-head {margin-bottom:8px}
+#view-e2022 .acc-archive>.sec-head h2 {font-size:1.3rem}
+#view-e2022 .page-facts.compact {display:flex;flex-wrap:wrap;gap:4px 22px;margin:0 0 8px;padding:8px 14px;border-radius:10px;box-shadow:none}
+#view-e2022 .page-facts.compact>div {display:flex;align-items:baseline;gap:6px;padding:0;border:0;background:none;min-width:0}
+#view-e2022 .page-facts.compact b {font-size:1.05rem;line-height:1.2}
+#view-e2022 .page-facts.compact span {font-size:.74rem}
+#view-e2022 .acc-archive>.controls:not(#_) {display:flex;flex-wrap:wrap;align-items:end;gap:8px 14px;max-width:none;margin:8px 0;padding:0;background:none;border:0;box-shadow:none}
+#view-e2022 .acc-archive .controls .field select,#view-e2022 .acc-archive .controls .field input {min-height:36px;min-width:0;padding-block:4px}
+#view-e2022 .acc-archive .controls .count {margin-inline-start:auto;font-size:.78rem}
+#view-e2022 .arch {min-width:0}
+#view-e2022 #arch-table :is(th,td) {padding:5px 6px}
+#view-e2022 .arch .accuracy-firm-link {min-height:0;padding:0;white-space:nowrap}
+#view-e2022 .arch .orglogo {width:22px;height:22px}
+
+/* ---------- השיטה (בפס הנוסחה, מקופל) ---------- */
 .accuracy-formula-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .accuracy-formula-grid article {position:relative;padding:16px;background:#f6f1e7;border:1px solid #e6dfd1;border-top:3px solid var(--component);border-radius:10px}
 .accuracy-weight {font-size:2rem;line-height:1;color:var(--component);font-weight:900;font-variant-numeric:tabular-nums}
@@ -28,30 +93,22 @@
 .accuracy-method-foot {display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}
 .accuracy-method-foot p {font-size:.86rem;line-height:1.8;color:var(--ink-2);margin:0}
 .accuracy-method-foot b {display:block;color:var(--ink);margin-bottom:4px}
-.accuracy-method-details {margin-top:20px;border-top:1px solid var(--rule);padding-top:6px}
-.accuracy-method-details summary {cursor:pointer;min-height:44px;display:flex;align-items:center;gap:10px;font-weight:800;font-size:.88rem;color:#12345c}
+.accuracy-method-details {margin-top:8px;border-top:1px solid var(--rule)}
+.accuracy-method-details summary {cursor:pointer;min-height:34px;display:flex;align-items:center;gap:10px;font-weight:800;font-size:.88rem;color:#12345c}
 .accuracy-method-details summary::after {content:"+";margin-inline-start:auto;font-size:1.3rem}
 .accuracy-method-details[open] summary::after {content:"−"}
 .accuracy-method-details>div {max-width:112ch;font-size:.85rem;line-height:1.8;color:var(--ink-2);padding-block:4px 10px}
-#view-e2022 .reliability-ranking>.sec-head {display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px}
-#view-e2022 .reliability-ranking>.sec-head .kicker {display:block}
-#view-e2022 .reliability-ranking>.sec-head h2 {font-size:1.6rem}
-#view-e2022 #rank-list.accuracy-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
-#view-e2022 .accuracy-card {display:flex;flex-direction:column;gap:0;padding:24px;border:1px solid #e6dfd1;border-radius:14px;background:#fdfbf6;box-shadow:0 8px 28px #00000012;min-width:0;overflow:hidden}
-.accuracy-card-head,.accuracy-detail-head {display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:14px}
-.accuracy-card-head .orglogo,.accuracy-detail-head .orglogo {background:#fff;border:1px solid #e6dfd1;border-radius:50%;overflow:hidden;flex:none}
-.accuracy-card-head .orglogo img,.accuracy-detail-head .orglogo img {padding:5px;object-fit:contain}
+
+/* ---------- החלון של כל מכון, והארכיון ---------- */
+.accuracy-detail-head {display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:14px}
+.accuracy-detail-head .orglogo {background:#fff;border:1px solid #e6dfd1;border-radius:50%;overflow:hidden;flex:none}
+.accuracy-detail-head .orglogo img {padding:5px;object-fit:contain}
 .accuracy-card-type {display:block;font-size:.72rem;line-height:1.5;font-weight:700;color:#586575}
-.accuracy-card-head h3 {font-size:1.18rem;margin:4px 0;color:#14233a}
-.accuracy-card-head p,.accuracy-detail-head p {font-size:.8rem;color:#586575;margin:3px 0;line-height:1.5}
+.accuracy-detail-head p {font-size:.8rem;color:#586575;margin:3px 0;line-height:1.5}
 .accuracy-card-score {display:grid;justify-items:end;gap:4px;flex:none}
 .accuracy-card-score b {font-size:2.3rem;font-weight:900;line-height:1.05;color:#12345c;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 .accuracy-card-score span {font-size:.69rem;color:#586575}
-.accuracy-grade-line {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin:17px 0 12px;padding:10px 0;border-block:1px solid #eee8dc;font-size:.76rem;line-height:1.6;color:#586575}
-.accuracy-grade-line .grade {font-size:.76rem;padding:5px 9px}
-.accuracy-grade-line b {color:#12345c;font-variant-numeric:tabular-nums}
 .accuracy-basis {font-size:.85rem;line-height:1.8;color:#3a4859;margin:0 0 16px}
-.accuracy-inherited .accuracy-basis {padding:12px;background:#f5ead3;border-inline-start:3px solid #966918;border-radius:6px}
 .accuracy-runs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .accuracy-runs>div {display:grid;justify-items:center;align-content:start;gap:4px;text-align:center;padding:11px 6px;border:1px solid #e6dfd1;border-radius:8px;background:#f6f1e7}
 .accuracy-runs span {font-size:.75rem;line-height:1.45;font-weight:700;color:#3a4859}
@@ -71,17 +128,6 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .accuracy-breakdown tfoot {background:#f3eee4}
 #view-e2022 .accuracy-breakdown tfoot th,.accuracy-detail .accuracy-breakdown tfoot th {font-weight:800;color:#14233a}
 .accuracy-breakdown tfoot td b {color:#12345c;font-size:1.1rem}
-.accuracy-error-summary {font-size:.78rem;line-height:1.8;color:#3a4859;margin:12px 0 4px}
-.accuracy-source-coverage {font-size:.74rem;line-height:1.75;color:#586575;margin:0 0 16px}
-.accuracy-card-footer {display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:16px;border-top:1px solid #e6dfd1;margin-top:auto}
-.accuracy-card-footer>div {display:grid;gap:7px;min-width:0}
-.accuracy-card-footer>div>span,.accuracy-card-footer small {color:#586575;font-size:.7rem}
-.accuracy-card-footer .outlet-icons {display:flex;flex-wrap:wrap;gap:6px}
-.accuracy-card-footer .outlet-icons span {width:32px;height:32px;border:1px solid #e6dfd1;border-radius:50%;background:#fff;font-size:.65rem;box-shadow:none;overflow:hidden}
-.accuracy-card-footer .outlet-icons img {padding:4px}
-.accuracy-open {font-size:.8rem;white-space:normal;text-align:center}
-.accuracy-neutral-explain {font-size:.93rem;line-height:1.9;color:#3a4859;padding:20px 0 8px}
-#view-e2022 .accuracy-neutral {border-style:dashed;background:#f6f1e7}
 #view-e2022 .accuracy-proof-summary {margin:17px 0;padding:17px 20px;background:#fdfbf6;border:1px solid #e6dfd1;border-inline-start:4px solid #966918;border-radius:9px;scroll-margin-top:100px}
 .accuracy-proof-summary>b {font-size:.98rem}
 .accuracy-proof-summary p {font-size:.85rem;line-height:1.8;color:#3a4859;margin:6px 0 0}
@@ -121,29 +167,25 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .accuracy-evidence .accuracy-source-cell {min-width:150px;white-space:normal}
 .accuracy-source-cell span {font-size:.71rem;color:#586575}
 .accuracy-firm-link {border:0;background:transparent;padding:8px 0;min-height:44px;color:#12345c;font:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:start}
-.accuracy-poll-open {min-height:38px;border:1px solid #d3c9b7;border-radius:6px;padding:6px 10px;background:#f5ead3;color:#12345c;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer;white-space:nowrap}
-.accuracy-archive-proof {min-width:180px}
-.accuracy-archive-proof :is(small,a) {display:block;font-size:.67rem;color:#586575;margin-top:5px;white-space:normal}
+.accuracy-poll-open {min-height:26px;border:1px solid #d3c9b7;border-radius:6px;padding:2px 9px;background:#f5ead3;color:#12345c;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer;white-space:nowrap}
+.accuracy-archive-proof {white-space:nowrap}
+.accuracy-archive-proof :is(small,a) {font-size:.7rem;color:#586575;margin-inline-start:6px}
 .accuracy-archive-proof a {color:#17457f}
 .accuracy-firm-link:focus-visible,.accuracy-poll-open:focus-visible {outline:3px solid #17457f;outline-offset:3px}
 .accuracy-scenario-note {font-size:.8rem;line-height:1.8;color:#586575;padding:12px 0}
-@media(min-width:1600px) {#view-e2022 #rank-list.accuracy-grid {grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:1000px) {
-  #view-e2022 .accuracy-card {padding:19px}
-  .accuracy-card-footer {align-items:start;flex-direction:column}
-  .accuracy-card-footer .accuracy-open {width:100%}
-  .accuracy-card-head {gap:9px;grid-template-columns:44px minmax(0,1fr) auto}
-  .accuracy-card-head .orglogo {width:44px!important;height:44px!important}
-  .accuracy-card-head h3 {font-size:1.08rem}
-  .accuracy-card-score b {font-size:2rem}
+
+/* ---------- מסכים צרים (יסודר בסוף) ---------- */
+@media(max-width:1100px) {
+  .acc-row {grid-template-columns:22px 34px minmax(0,1fr) auto 50px;row-gap:6px}
+  .acc-row>:is(.accuracy-contributions,.accuracy-neutral-explain) {grid-column:3/-1}
+  .acc-row .accuracy-sources {grid-column:3}
+  .acc-row .accuracy-open {grid-column:4/-1;justify-self:end}
+  .acc-row.acc-cols {display:none}
 }
 @media(max-width:760px) {
-  #view-e2022 #rank-list.accuracy-grid {grid-template-columns:1fr;gap:16px}
   #accuracy-method {padding:19px}
   .accuracy-formula-grid,.accuracy-method-foot,.accuracy-run-explain {grid-template-columns:1fr;gap:12px}
   .accuracy-formula-grid article {padding:16px}
-  #view-e2022 .accuracy-method-head {align-items:start;flex-direction:column;gap:8px}
-  #view-e2022 .accuracy-method-head h3 {font-size:1.15rem}
   .accuracy-detail-head {grid-template-columns:44px minmax(0,1fr);padding-inline-end:24px;gap:10px}
   .accuracy-detail-head>.accuracy-card-score {grid-column:1/-1;display:flex;align-items:baseline;gap:9px;justify-content:start;margin-top:9px}
   .accuracy-detail-head h2 {font-size:1.4rem}
@@ -151,18 +193,10 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   .accuracy-detail-run {padding-top:20px}
   .accuracy-detail-total .accuracy-runs {grid-template-columns:repeat(3,minmax(0,1fr))}
   .accuracy-detail .accuracy-runs span {font-size:.66rem}
-  .accuracy-card-footer {flex-direction:row;align-items:center}
-  .accuracy-card-footer .accuracy-open {width:auto}
 }
 @media(max-width:420px) {
-  #view-e2022 .accuracy-card {padding:16px 13px}
-  .accuracy-card-head {grid-template-columns:40px minmax(0,1fr) auto;gap:8px}
-  .accuracy-card-head .orglogo {width:40px!important;height:40px!important}
-  .accuracy-card-head h3 {font-size:1rem}
   .accuracy-card-type {font-size:.66rem}
   .accuracy-card-score b {font-size:1.85rem}
-  .accuracy-card-footer {align-items:start;flex-direction:column}
-  .accuracy-card-footer .accuracy-open {width:100%}
   #view-e2022 .accuracy-breakdown :is(th,td),.accuracy-detail .accuracy-breakdown :is(th,td) {padding:8px 5px;font-size:.73rem}
   #view-e2022 .accuracy-breakdown thead th,.accuracy-detail .accuracy-breakdown thead th {font-size:.65rem}
 }

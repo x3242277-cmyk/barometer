@@ -678,8 +678,9 @@ function homeDelta(id) {
   if (!hist || !Array.isArray(hist.snapshots) || hist.snapshots.length < 2) return null;
   const snaps = hist.snapshots.slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
   const key = S.mode === "weighted" ? "weighted" : "scenario";
-  const now = (snaps[0][key] || snaps[0].parties || {})[id];
-  const prev = (snaps[1][key] || snaps[1].parties || {})[id];
+  /* לפי כללי הבחירות (seats), כמו המספרים שבכרטיסים */
+  const now = (snaps[0].seats?.[key] || snaps[0][key] || snaps[0].parties || {})[id];
+  const prev = (snaps[1].seats?.[key] || snaps[1][key] || snaps[1].parties || {})[id];
   if (now == null || prev == null) return null;
   const d = Math.round(now) - Math.round(prev);
   if (!d) return null;
@@ -914,7 +915,7 @@ function renderHome() {
         rawFull:{ ...Object.fromEntries(Object.entries(snapshotSeats).map(([id, n]) => [id, n * seatScale])),
                   ...Object.fromEntries(Object.entries(snapshotBelow).map(([id, p]) => [id, p * 1.2])) } }
     : forecast(S.mode, HIDE_FROM_HOME);
-  const seats = snapshotSeats ? {...snapshotSeats} : allocateSeats(est.parties);
+  const seats = snapshotSeats ? {...(snapshot.seats?.[S.mode === 'weighted' ? 'weighted' : 'scenario'] || snapshotSeats)} : allocateSeats(est.parties);
   const belowEntries = Object.entries(est.below || {});
   $('#home-eyebrow').textContent = snapshot
     ? `תחזית ארכיון · ${heDate(snapshot.updatedAt)} · ${snapshot.polls || '—'} סקרים`
@@ -1130,15 +1131,6 @@ function renderPolls() {
   const ff = fSel.value, oo = oSel.value;
   const rows = polls.filter(p => (ff === "all" || firmOf(p.sourceId).firm === ff) && (oo === "all" || p.channelHebrewName === oo));
 
-  // stats
-  const days = Math.max(1, Math.round((Math.max(...polls.map(parsePollDate)) - Math.min(...polls.map(parsePollDate))) / 864e5) + 1);
-  $("#polls-stats").innerHTML = [
-    [polls.length, "סקרים"],
-    [new Set(polls.map(p => firmOf(p.sourceId).firm)).size, "מכונים"],
-    [new Set(polls.map(p => p.channelHebrewName)).size, "כלי תקשורת"],
-    [days, "ימים"]
-  ].map(([n, l]) => `<span><b class="num">${n}</b> ${esc(l)}</span>`).join("");
-
   renderPollCards(rows, polls);
   renderPartyProfile(rows);
   renderFirmCards();
@@ -1261,11 +1253,11 @@ function accuracyScoreBasis(st, heir) {
 }
 function renderAccuracyMethod() {
   const box = $("#accuracy-method"); if (!box) return;
-  box.innerHTML = `<div class="accuracy-method-band"><div class="accuracy-method-label"><strong>אותה נוסחה לכולם</strong><span>סקרי העבר מול תוצאות האמת</span></div>
-    <div class="accuracy-method-weight" style="--component:#17457F"><b>60<span>%</span></b><span>דיוק בגושים</span></div>
-    <div class="accuracy-method-weight" style="--component:#966918"><b>30<span>%</span></b><span>דיוק במפלגות</span></div>
-    <div class="accuracy-method-weight" style="--component:#6A5A9C"><b>10<span>%</span></b><span>עקביות הסקרים</span></div></div>
-    <p class="accuracy-method-intro">מחשבים ציון לכל מערכת בחירות וממוצע שווה בין המערכות. <b>זהו מדד של הברומטר: המשקלים והספים הם בחירה שלנו.</b></p>
+  box.innerHTML = `<div class="accuracy-method-band"><div class="accuracy-method-label"><strong>נוסחה אחת לכל מכון</strong><span>ממוצע שווה של מערכות הבחירות</span></div>
+    <div class="accuracy-method-weight" style="--component:#17457F"><b>60%</b><span>דיוק בגושים</span></div>
+    <div class="accuracy-method-weight" style="--component:#966918"><b>30%</b><span>דיוק במפלגות</span></div>
+    <div class="accuracy-method-weight" style="--component:#6A5A9C"><b>10%</b><span>עקביות</span></div>
+    <div class="accuracy-method-grades" aria-label="הדרגה והמשקל בתחזית"><span>משקל בתחזית</span>${GRADES.map(([key, label, min], i) => `<span class="grade ${key}">${esc(label.replace(/^אמינות /, ""))} ${i === GRADES.length - 1 ? `פחות מ־${GRADES[i - 1][2]}` : `${min}+`} · ${TIER_WEIGHT[key].toFixed(2)}</span>`).join("")}</div></div>
     <details class="accuracy-method-details"><summary>איך הגענו לנוסחה? השיטה והמגבלות</summary><div>
       <div class="accuracy-formula-grid">
       <article style="--component:#17457F"><span class="accuracy-weight">60%</span><h3>דיוק בגושים</h3><p>מחשבים לכל גוש את הפער המוחלט בין ממוצע סקרי המכון לתוצאה. מחברים את הפערים ומחלקים ב־3.</p><div class="accuracy-equation">100 − 10 × הפער הממוצע לגוש</div></article>
@@ -1273,7 +1265,6 @@ function renderAccuracyMethod() {
       <article style="--component:#6A5A9C"><span class="accuracy-weight">10%</span><h3>עקביות בין הסקרים</h3><p>65% ליציבות גוש נתניהו ו־35% ליציבות הרשימות. עם סקר אחד מקבלים שליש מהרכיב, ועם שניים — שני שלישים.</p><div class="accuracy-equation">65% × יציבות הגוש + 35% × יציבות הרשימות</div></article>
       </div>
       <div class="accuracy-method-foot"><p><b>למה דווקא המשקלים האלה?</b> הברומטר נותן את רוב המשקל לדיוק בגושים, אחריו לדיוק במפלגות, ומשקל קטן ליציבות הסקרים. זו בחירת שיטה של האתר, ולא מדד רשמי של ועדת הבחירות.</p><p><b>מה הציון אומר — ומה מגבלותיו?</b> הוא מתאר הצלחה בנתוני העבר שבארכיון, ואינו מבטיח דיוק בבחירות הבאות. מעט סקרים מספקים בסיס צר להשוואה. עקביות מודדת יציבות; גם סקר יציב עלול לטעות.</p></div>
-      <p><b>ההשפעה על התחזית:</b> 80 ומעלה — מקדם 0.45; 75 עד פחות מ־80 — 0.35; פחות מ־75 — 0.20. אלה מקדמים יחסיים בממוצע המשוקלל, ולא אחוז התמיכה במכון.</p>
       <p>כל ציון רכיב מוגבל לטווח 0–100. יציבות הגוש = 100 פחות 25 כפול סטיית התקן של מנדטי גוש נתניהו בין הסקרים. יציבות הרשימות = 100 פחות 50 כפול ממוצע סטיות התקן של כל רשימה בין הסקרים.</p>
       <p>רכיב העקביות = (0.65 × יציבות הגוש + 0.35 × יציבות הרשימות) × המינימום בין 1 לבין מספר הסקרים חלקי 3. מספר הסקרים משנה רק את רכיב העקביות; הדיוק בגושים ובמפלגות מחושב כרגיל.</p>
       <p>ציון מערכת = 0.6 × דיוק בגושים + 0.3 × דיוק במפלגות + 0.1 × עקביות. הציון ההיסטורי = סכום ציוני המערכות שבהן המכון נמדד חלקי מספרן. מערכת ללא סקרים של המכון אינה נכנסת לממוצע שלו.</p>
@@ -1303,46 +1294,39 @@ function render2022() {
 
   const activeFirms = new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm));
   const heirsOf = id => S.firms.firms.filter(f => f.calibrationFirm === id && f.id !== id && activeFirms.has(f.id));
-  const cardOf = (st, meta, index, heir) => {
+  const components = [["blocScore", "גושים", .6, "#17457F"], ["partyScore", "מפלגות", .3, "#966918"], ["consistencyScore", "עקביות", .1, "#6A5A9C"]];
+  const rowOf = (st, meta, index, heir) => {
     const runs = accuracyRuns(st), grade = gradeOf(st.score);
     const sourceCount = runs.reduce((n, run) => n + run.polls.filter(p => p.source).length, 0);
-    const components = [["blocScore", "גושים", .6, "#17457F"], ["partyScore", "מפלגות", .3, "#966918"], ["consistencyScore", "עקביות", .1, "#6A5A9C"]];
-    const runCalculation = runs.map(r => r.score.toFixed(2)).join(" + ");
-    return `<article class="accuracy-card${heir ? " accuracy-inherited" : ""}">
-      <div class="accuracy-card-main">
-        <header class="accuracy-card-head"><span class="accuracy-rank-number" aria-label="${heir ? "ללא מקום עצמאי בדירוג" : `מקום ${index + 1}`}">${heir ? "↳" : String(index + 1).padStart(2, "0")}</span>${logoBox(meta, 48)}<div class="accuracy-identity"><h3>${esc(meta.he)}</h3><span class="accuracy-card-type">${heir ? `ציון מועבר מ־${esc(heir.he)}` : `${runs.length} מערכות · ${st.n} סקרי כיול`}</span><span class="accuracy-grade-label ${grade.key}">${esc(grade.label)}</span></div><div class="accuracy-card-score"><b>${r1(st.score)}</b><span>מתוך 100</span></div></header>
-        <div class="accuracy-contributions"><span class="accuracy-contribution-label">הנקודות שמרכיבות את הציון</span><div class="accuracy-score-track" aria-hidden="true">${components.map(([key, , weight, color]) => `<span style="width:${st[key] * weight}%;--component:${color}"></span>`).join("")}</div><div class="accuracy-contribution-values">${components.map(([key, label, weight, color]) => `<span style="--component:${color}"><i aria-hidden="true"></i>${label}<b>${r1(st[key] * weight)}<small> / ${weight * 100}</small></b></span>`).join("")}</div></div>
-        <div class="accuracy-evidence-summary"><span><b>${sourceCount} מתוך ${st.n}</b> קישורי מקור</span><small>${sourceCount < st.n ? `ל־${st.n - sourceCount} סקרים חסר קישור לפרסום המקורי` : "לכל סקר יש קישור לפרסום המקורי"}</small><button class="accuracy-open" type="button" data-firm="${esc(meta.id)}" aria-label="כל הסקרים והחישוב של ${esc(meta.he)}">לסקרים ולמקורות <span aria-hidden="true">↗</span></button></div>
-      </div>
-      <details class="accuracy-card-details"><summary><span>פירוט הציון</span><span class="accuracy-detail-peek">${heir ? "מבוסס על מכון קודם" : runs.length === 1 ? "מערכת בחירות אחת בלבד" : `${runs.length} מערכות במשקל שווה`} · מקדם תחזית ${TIER_WEIGHT[grade.key].toFixed(2)}</span></summary><div class="accuracy-card-expanded"><div>
-      ${accuracyScoreBasis(st, heir)}
-      <div class="accuracy-runs" aria-label="ציונים ומספר סקרים בכל מערכת">${S.elections.map(e => {
-        const run = runs.find(r => r.key === e.key);
-        return `<div${run ? "" : ' class="accuracy-missing"'}><span>${esc(e.short)}</span><b>${run ? r1(run.score) : "—"}</b><small>${run ? `${run.n} סקרים` : "ללא סקרי כיול"}</small></div>`;
-      }).join("")}</div>
-      <p class="accuracy-average">${runs.length > 1 ? `ממוצע המערכות: <span dir="ltr">(${runCalculation}) ÷ ${runs.length} = ${r1(st.score)}</span>` : "הציון נשען על מערכת בחירות אחת בלבד."}</p>
-      <p class="accuracy-error-summary">הטעות הממוצעת לרשימה: <b>${r1(st.partyMae)} מנדטים</b> · הפער הממוצע לגוש: <b>${r1(st.blocAbs / 3)} מנדטים</b>${runs.length > 1 ? " · ממוצע בין המערכות" : ""}.</p>
-      <p class="accuracy-source-coverage">קישורים לפרסומים המקוריים: <b>${sourceCount} מתוך ${st.n}</b>. ${sourceCount < st.n ? "יתר הנתונים שמורים בארכיון האתר; קישור לפרסום המקורי חסר." : "ניתנים לבדיקה בפירוט."}</p>
-      <footer class="accuracy-card-footer"><div><span>${esc(meta.lead || "ערוצי הפרסום כיום")}</span>${(meta.outlets || []).length ? outletIconStrip(meta.outlets) : `<small>ללא ערוץ פעיל רשום</small>`}</div></footer>
-      </div><div>${accuracyBreakdown(st)}<p class="accuracy-rounding">התרומות לציון מוצגות בעיגול. החישוב משתמש בערכים המלאים.</p></div></div></details>
+    return `<article class="acc-row${heir ? " is-heir" : ""}">
+      <span class="accuracy-rank-number" aria-label="${heir ? "ללא מקום עצמאי בדירוג" : `מקום ${index + 1}`}">${heir ? "↳" : index + 1}</span>${logoBox(meta, 34)}
+      <div class="accuracy-identity"><h3>${esc(meta.he)}</h3><span class="accuracy-card-type">${heir ? `ציון מועבר מ־${esc(heir.he)}` : `${runs.length === 1 ? "מערכת אחת" : `${runs.length} מערכות`} · ${st.n} סקרים`}</span></div>
+      <span class="grade ${grade.key}" title="מקדם בתחזית ${TIER_WEIGHT[grade.key].toFixed(2)}">${esc(grade.label)}</span>
+      <b class="accuracy-score">${r1(st.score)}</b>
+      <div class="accuracy-contributions" title="הנקודות שמרכיבות את הציון"><div class="accuracy-score-track" aria-hidden="true">${components.map(([key, , weight, color]) => `<span style="width:${st[key] * weight}%;--component:${color}"></span>`).join("")}</div><div class="accuracy-contribution-values">${components.map(([key, label, weight, color]) => `<span style="--component:${color}"><i aria-hidden="true"></i>${label} <b>${r1(st[key] * weight)}</b><small>/${weight * 100}</small></span>`).join("")}</div></div>
+      <span class="accuracy-sources" title="${sourceCount < st.n ? `ל־${st.n - sourceCount} סקרים חסר קישור לפרסום המקורי` : "לכל סקר יש קישור לפרסום המקורי"}"><b>${sourceCount}/${st.n}</b> עם מקור</span>
+      <button class="accuracy-open" type="button" data-firm="${esc(meta.id)}" aria-label="פירוט הציון, הסקרים והמקורות של ${esc(meta.he)}">פירוט <span aria-hidden="true">↗</span></button>
     </article>`;
   };
   const list = $("#rank-list");
-  list.classList.add("accuracy-grid");
-  list.innerHTML = calibrated.map((st, index) => {
+  list.className = "ranks acc-list";
+  list.innerHTML = `<div class="acc-row acc-cols" aria-hidden="true"><span>#</span><span></span><span>מכון</span><span>דרגה</span><span>ציון</span><span>ממה מורכב הציון</span><span>מקורות</span><span></span></div>` + calibrated.map((st, index) => {
     const meta = S.firms.firms.find(f => f.id === st.firm);
-    return cardOf(st, meta, index, null);
+    return rowOf(st, meta, index, null);
   }).join("");
-  const inherited = calibrated.flatMap((st, index) => heirsOf(st.firm).map(heir => cardOf(st, heir, index, S.firms.firms.find(f => f.id === st.firm))));
+  const inherited = calibrated.flatMap((st, index) => heirsOf(st.firm).map(heir => rowOf(st, heir, index, S.firms.firms.find(f => f.id === st.firm))));
 
   const rankedIds = new Set(calibrated.map(st => st.firm));
   const extras = [...activeFirms].map(id => S.firms.firms.find(f => f.id === id))
     .filter(f => f && !rankedIds.has(f.id) && !(f.calibrationFirm && rankedIds.has(f.calibrationFirm)));
-  if (inherited.length || extras.length) list.insertAdjacentHTML("beforeend", `<div class="accuracy-unranked-heading"><h3>ללא מדידה עצמאית</h3><p>מכונים פעילים שהציון שלהם מועבר ממכון קודם, או מבוסס על ברירת מחדל.</p></div>${inherited.join("")}`);
-  if (extras.length) list.insertAdjacentHTML("beforeend", extras.map(meta => `<article class="accuracy-card accuracy-neutral"><div class="accuracy-card-main">
-    <header class="accuracy-card-head"><span class="accuracy-rank-number" aria-hidden="true">—</span>${logoBox(meta, 48)}<div class="accuracy-identity"><h3>${esc(meta.he)}</h3><span class="accuracy-card-type">ללא כיול היסטורי</span></div><div class="accuracy-card-score"><b>—</b><span>אין מדידה</span></div></header>
-    <p class="accuracy-neutral-explain"><b>70 הוא ערך ברירת מחדל במודל.</b> אין למכון סדרת כיול משויכת מול תוצאות אמת, ולכן אין לו ציון דיוק שנמדד או מקום בדירוג.</p>
-    <div class="accuracy-evidence-summary"><span>מקדם תחזית <b dir="ltr">${firmWeight(meta).toFixed(2)}</b></span><button class="accuracy-open" type="button" data-firm="${esc(meta.id)}">לפרטי המכון <span aria-hidden="true">↗</span></button></div></div>
+  if (inherited.length || extras.length) list.insertAdjacentHTML("beforeend", `<p class="acc-subhead">ללא מדידה עצמאית — ציון שמועבר ממכון קודם, או ערך ברירת מחדל</p>${inherited.join("")}`);
+  if (extras.length) list.insertAdjacentHTML("beforeend", extras.map(meta => `<article class="acc-row is-neutral">
+    <span class="accuracy-rank-number" aria-hidden="true">—</span>${logoBox(meta, 34)}
+    <div class="accuracy-identity"><h3>${esc(meta.he)}</h3><span class="accuracy-card-type">ללא כיול היסטורי</span></div>
+    <span class="grade none">ללא דרגה</span><b class="accuracy-score">—</b>
+    <p class="accuracy-neutral-explain">70 הוא ערך ברירת מחדל במודל, לא ציון שנמדד · מקדם <b dir="ltr">${firmWeight(meta).toFixed(2)}</b></p>
+    <span class="accuracy-sources">—</span>
+    <button class="accuracy-open" type="button" data-firm="${esc(meta.id)}" aria-label="פרטי ${esc(meta.he)}">פירוט <span aria-hidden="true">↗</span></button>
   </article>`).join(""));
   renderBiasNote();
   renderArchive();
@@ -1380,7 +1364,7 @@ function renderArchive() {
       keys.map(k => `<td class="n"><b>${target[k]}</b></td>`).join("")}<td class="n"><b>${tb.netanyahu}</b></td><td></td><td>בסיס ההשוואה</td></tr>`;
   $("#arch-table").innerHTML = `<thead><tr><th>תאריך</th><th>מפרסם</th><th>מכון</th>${
     keys.map(k => `<th class="n party-h">${esc(HIST_PARTY_HE[k] || k)}</th>`).join("")
-  }<th class="n">גוש נתניהו</th><th class="n">טעות לרשימה</th><th>לבדיקת הסקר</th></tr></thead><tbody>${actualRow}${
+  }<th class="n">גוש נתניהו</th><th class="n">טעות לרשימה</th><th>הסקר</th></tr></thead><tbody>${actualRow}${
     shown.map(({ p, i }) => {
       const mae = avg(keys.map(k => Math.abs((p.p[k] || 0) - target[k])));
       const m = S.firms.firms.find(f => f.id === p.firm) || { he: FIRM_HE_FALLBACK[p.firm] || p.firm || "ללא שיוך מכון" };
@@ -1390,7 +1374,7 @@ function renderArchive() {
         <td class="firm">${p.firm ? `<button class="accuracy-firm-link" type="button" data-firm="${esc(p.firm)}">${esc(m.he)}</button>` : `<strong>${esc(m.he)}</strong>`}</td>
         ${keys.map(k => { const v = p.p[k] || 0, d = Math.abs(v - target[k]); return `<td class="n cell ${cellCls(d)}" title="${esc(HIST_PARTY_HE[k] || k)}: ${v} מול ${target[k]}">${v}</td>`; }).join("")}
         <td class="n cell ${cellCls(dev)}"><b>${bn}</b></td>
-        <td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td><td class="accuracy-archive-proof"><button class="accuracy-poll-open" type="button" data-poll="${i}" aria-label="פירוט סקר ${esc(p.publisher)} מ־${esc(heDate(p.date))}">פרטי הסקר ↗</button>${p.source ? `<a href="${esc(p.source)}" target="_blank" rel="noopener">הפרסום המקורי ↗</a>` : `<small>קישור לפרסום המקורי חסר</small>`}</td></tr>`;
+        <td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td><td class="accuracy-archive-proof"><button class="accuracy-poll-open" type="button" data-poll="${i}" aria-label="פירוט סקר ${esc(p.publisher)} מ־${esc(heDate(p.date))}">פרטים</button>${p.source ? `<a href="${esc(p.source)}" target="_blank" rel="noopener">מקור ↗</a>` : `<small title="קישור לפרסום המקורי חסר">אין קישור</small>`}</td></tr>`;
     }).join("") || `<tr><td colspan="${keys.length + 6}" class="empty">לא נמצאו סקרים.</td></tr>`}</tbody>`;
   const more = $("#arch-more");
   if (more) {
@@ -1665,76 +1649,92 @@ function crossExtremes(rows) {
 const heJoin = names => names.length < 2 ? (names[0] || "") : names.slice(0, -1).join(", ") + " ו" + names.at(-1);
 const firmsHe = rs => heJoin(rs.map(r => r.meta.he || r.meta.firm || r.meta.id));
 
-function renderCrossover() {
-  const { valid, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
-  const title = $("#cross-title");
-  if (title) title.textContent = "כמה השתנתה התמיכה בגושים?";
-  $("#crossover-intro").textContent = "מה נשאר מהשינוי מאז 2022 אחרי הגידול הדמוגרפי, וכמה קולות השינוי הזה מייצג לפי כל מכון.";
-  $("#crossover-note").innerHTML = "<b>מה המספר אומר:</b> זהו אומדן של שינוי נטו בתמיכה בגוש הימין. אי אפשר להסיק ממנו כמה אנשים החליפו צד: גם שינוי בשיעור ההצבעה ובזהות המשתתפים בסקר יכול להסביר את הפער.";
+/* תחזית 2026 של המודל הגיאוגרפי (data/trends.json, ברירת המחדל של העמוד): חלק הימין
+   והחרדים מתוך ארבע הקבוצות — אותה הגדרה כמו כאן (רשימות מ־1.5%). נטען בפעם הראשונה. */
+function geoRightShare() {
+  if (S.trendsNat === undefined) {
+    S.trendsNat = null;
+    const inline = window.__BAROMETER_DATA__?.["data/trends.json"];
+    (inline ? Promise.resolve(inline) : loadJSONOptional("data/trends.json")).then(t => {
+      S.trendsNat = t?.national || null;
+      if (S.trendsNat && $("#poll-crossover") && !$("#poll-crossover").hidden) renderCrossover();
+    });
+    return null;
+  }
+  const f = S.trendsNat?.f26;
+  return f ? 100 * (f[0] + f[1]) / (f[0] + f[1] + f[2] + f[3]) : null;
+}
 
-  const conversionBase = votersOf(100);
-  $("#crossover-baseline").innerHTML = `<div class="cross-v2-baseline">
-    <h4>אילו קולות נכללים?</h4>
-    <div class="cross-v2-baseline-values"><div><span>גוש הימין ב־2022</span><b>${r1(rightShare0)}%</b><small>${fmt(right2022)} קולות</small></div><div><span>שאר הרשימות שנכללו</span><b>${r1(100 - rightShare0)}%</b><small>${fmt(tot2022 - right2022)} קולות</small></div></div>
-    <p>גוש הימין ב־2022 כולל את הליכוד, ש״ס, יהדות התורה והציונות הדתית, כולל עוצמה יהודית. בצד השני נספרים גם ${below2022.map(p => `${esc(p.name)} (${p.pct}%)`).join(" ו")} שלא עברו את אחוז החסימה — ${fmt(below2022.reduce((t, p) => t + p.votes, 0))} קולות.</p>
-    <p>רשימות עם 1.5% ומעלה נכללות גם מתחת לאחוז החסימה; רשימות קטנות יותר אינן נכללות. כך נספרים ${fmt(tot2022)} מתוך ${fmt(valid)} הקולות הכשרים ב־2022. בסקרים, חלוקת המנדטים מתורגמת לחלק יחסי בין הרשימות שנכללו, לפי שיוך הגושים באתר.</p>
-    <h4>למה נקודת האפס היא ${r1(base)}%?</h4>
-    <p>המודל הדמוגרפי מעריך שחלק הימין היה ${growth >= 0 ? "גדל" : "קטן"} ב־${pointsHe(growth)} עד 2026, גם בלי מעבר בין גושים. מוסיפים את השינוי הזה ל־${r1(rightShare0)}% של 2022, ומקבלים בסיס השוואה של ${r1(base)}%. זו הנחת מודל, לא תוצאת סקר. <a href="#/demography">ראו את ההנחות הדמוגרפיות</a>.</p>
-    <h4>איך אחוזים הופכים לקולות?</h4>
-    <p>הפער בנקודות אחוז מחולק ב־100 ומוכפל בכ־${fmt(conversionBase)} קולות: מספר הקולות המשוער ב־2026 ברשימות שנכללו, על בסיס 2022 והמודל הדמוגרפי. המספר שמוצג מעוגל לאלף קולות.</p>
-    <h4>איך מחושב הממוצע?</h4>
-    <p>נלקח הסקר האחרון של כל מכון, גם אם לא פורסם בימים האחרונים. משקל כל מכון נקבע לפי דרגת האמינות שלו ומנורמל בין המכונים שנכללו. המשקל של כל מכון מוצג ליד הסקר שלו. <a href="#/2022">ראו את הציונים ודרך קביעת המשקל</a>.</p>
-  </div>`;
+function renderCrossover() {
+  const { valid, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
+  const geo = geoRightShare();
+  const R = BLOCS.Right.color, L = BLOCS.Left.color;
+
+  /* איך מחשבים — מקופל */
+  $("#crossover-baseline").innerHTML =
+    `<p>מודדים את <b>חלק גוש הימין מהקולות</b> (הליכוד, ש״ס, יהדות התורה והציונות הדתית עם עוצמה יהודית). ב־2022: ${fmt(right2022)} מתוך ${fmt(tot2022)} קולות — ${r1(rightShare0)}%. נספרות כל הרשימות מ־1.5%, גם אלה שלא עברו את אחוז החסימה (${below2022.map(p => `${p.name} ${p.pct}%`).join(", ")}); מתחת ל־1.5% — לא נספרות (${fmt(valid - tot2022)} קולות).</p>
+     <p><b>הצפוי בלי שאיש יחליף צד:</b> לפי המודל הדמוגרפי, גידול האוכלוסייה לבדו מזיז את חלק הימין ב־${pointsHe(growth)} עד 2026 — ל־${r1(base)}%. ${geo == null ? "" : `לפי מגמות היישובים (המודל הגיאוגרפי) — ${r1(geo)}%. `}לכן כל מכון נמדד מול ${r1(base)}%, לא מול ${r1(rightShare0)}%.</p>
+     <p><b>מנקודות אחוז לקולות:</b> כל נקודת אחוז ≈ ${kv(votersOf(1))} מצביעים (לפי מספר המצביעים הצפוי ב־2026). זה אומדן של שינוי בתמיכה — לא ספירה של אנשים שעברו צד; חלק מהשינוי יכול להיות מי שיישארו בבית.</p>`;
 
   if (!rows.length) {
-    $("#crossover-chart").innerHTML = `<p class="cross-v2-empty">עדיין אין סקרים להשוואה. בסיס 2022 ודרך החישוב זמינים בהסבר למטה.</p>`;
-    $("#crossover-highlight").innerHTML = "";
-    $("#crossover-verdict").textContent = "אומדן השינוי יוצג כשיתווסף סקר.";
+    $("#cx-lead").textContent = "אין סקרים בחלון הנוכחי.";
+    ["#cx-line", "#crossover-chart", "#crossover-verdict", "#cx-firms-note"].forEach(s => { $(s).innerHTML = ""; });
     return;
   }
+  const less = deltaAvg <= 0, below22 = rows.filter(r => r.share < rightShare0).length;
 
-  const low = rows[0], high = rows.at(-1);
-  const rangeVoters = votersOf(high.share - low.share);
-  const sumWeight = rows.reduce((sum, row) => sum + wOf(row.series), 0) || 1;
-  const direction = delta => Math.abs(delta) < 0.05 ? "כמעט ללא שינוי" : delta < 0 ? "פחות תמיכה בימין" : "יותר תמיכה בימין";
-  const signed = (delta, value) => Math.abs(delta) < 0.05 ? "≈ 0" : `${delta < 0 ? "−" : "+"}${value}`;
-  const name = row => row.meta.he || row.meta.firm || row.meta.id;
-  const namesAt = share => rows.filter(row => Math.abs(row.share - share) < 0.01).map(row => esc(name(row))).join(" / ");
-  const axisMax = Math.ceil(Math.max(...rows.map(row => row.voters), votersAvg, 100000) * 1.1 / 100000) * 100000;
-  // The track has an explicit LTR axis: loss to the left, gain to the right.
-  const position = value => 50 + 50 * value / axisMax;
-  const averagePosition = position(deltaAvg < 0 ? -votersAvg : votersAvg).toFixed(2);
+  /* הכותרת והמשפט — המסר בשורה אחת */
+  $("#cross-title").innerHTML = `לפי ממוצע הסקרים: <span class="${less ? "cx-left" : "cx-right"}">כ־${kv(votersAvg)} קולות ${less ? "פחות" : "יותר"}</span> לגוש הימין ממה שהיה צפוי`;
+  $("#cx-lead").innerHTML = `ב־2022 גוש הימין קיבל <b>${r1(rightShare0)}%</b> מהקולות. הגידול הטבעי לבדו היה מביא אותו ל־<b>${r1(base)}%</b>${geo == null ? "" : ` (ומגמות היישובים — ל־<b>${r1(geo)}%</b>)`}. ממוצע הסקרים היום: <b class="${less ? "cx-left" : "cx-right"}">${r1(shareAvg)}%</b> — פער של ${pointsHe(deltaAvg)}.`;
 
-  $("#crossover-highlight").innerHTML = `<div class="cross-v2-range"><span>הפער בין המכונים</span><strong>≈ ${kv(rangeVoters)}</strong><small>קולות בין שתי קצות ההשוואה</small></div>`;
-  $("#crossover-chart").innerHTML = `<section class="cross-v2-hero ${deltaAvg < 0 ? "is-loss" : "is-gain"}" aria-label="אומדן השינוי המשוקלל">
-    <div class="cross-v2-main"><span class="cross-v2-eyebrow">מאז 2022 · מעבר לגידול הדמוגרפי</span><strong class="cross-v2-number" dir="ltr">≈ ${kv(votersAvg)}</strong><h4>${Math.abs(deltaAvg) < 0.05 ? "קולות · כמעט ללא שינוי" : `קולות ${deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`}</h4><p>לפי ממוצע הסקר האחרון של ${rows.length} מכונים, משוקלל באמינות.</p></div>
-    <div class="cross-v2-impact"><span>שינוי בחלקו של גוש הימין</span><strong dir="ltr">${signed(deltaAvg, r1(Math.abs(deltaAvg)))}</strong><span>נקודות אחוז מול בסיס ההשוואה</span><p>הפער יכול לשקף מעבר בין גושים, הימנעות מהצבעה או שינוי בהרכב המצביעים. הוא אינו מוכיח שכל הקולות האלה עברו לגוש אחר.</p></div>
-  </section>
-  <section class="cross-v2-method" aria-labelledby="cross-v2-method-title"><h4 id="cross-v2-method-title">איך מגיעים לאומדן?</h4><ol>
-    <li><span class="cross-v2-step">1</span><div><strong>מתחילים מתוצאות 2022</strong><b>${r1(rightShare0)}%</b><span>חלק הימין בקולות שנכללו</span></div></li>
-    <li><span class="cross-v2-step">2</span><div><strong>מוסיפים את הגידול הדמוגרפי</strong><b>${r1(base)}%</b><span>בסיס ההשוואה · ${growth >= 0 ? "תוספת" : "הפחתה"} של ${pointsHe(growth)}</span></div></li>
-    <li><span class="cross-v2-step">3</span><div><strong>משווים לממוצע הסקרים</strong><b>${r1(shareAvg)}%</b><span>הפער: ${pointsHe(deltaAvg)} · ≈ ${kv(votersAvg)} קולות ${deltaAvg < 0 ? "פחות" : "יותר"}</span></div></li>
-  </ol></section>
-  <section class="cross-v2-comparison" aria-labelledby="cross-v2-compare-title"><div class="cross-v2-section-head"><div><h4 id="cross-v2-compare-title">אותו בסיס. תמונה אחרת בכל מכון.</h4><p>השינוי במונחי קולות מול ${r1(base)}% לימין. כל שורה היא הסקר האחרון של המכון; התאריכים שונים.</p></div><span class="cross-v2-average-key"><i></i>הקו המקווקו: הממוצע המשוקלל</span></div>
-    <div class="cross-v2-scale" aria-hidden="true"><span>פחות תמיכה בימין</span><span>ללא שינוי</span><span>יותר תמיכה בימין</span></div>
-    <div class="cross-v2-axis" aria-hidden="true"><span dir="ltr">−${fmt(axisMax / 1000)} אלף</span><span>0</span><span dir="ltr">+${fmt(axisMax / 1000)} אלף</span></div>
-    <div class="cross-v2-rows">${rows.map(row => {
-      const loss = row.delta < 0;
-      const width = (50 * row.voters / axisMax).toFixed(2);
-      const source = row.series.polls[0];
-      const sourceLink = /^https?:\/\//i.test(source.sourceUrl || "") ? `<a href="${esc(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">מקור הסקר ↗</a>` : "";
-      const below = row.below.map(id => `${esc(partyMeta(id).name)} ${r1(100 * row.series.parties[id] / 120)}%`).join(", ");
-      return `<article class="cross-v2-row ${loss ? "is-loss" : "is-gain"}"><div class="cross-v2-row-head"><div class="cross-v2-firm">${logoBox(row.meta, 38)}<div><h5>${esc(name(row))}</h5><span>סקר מ־<time>${esc(row.date)}</time>${source.channelHebrewName ? ` · ${esc(source.channelHebrewName)}` : ""}</span></div></div><div class="cross-v2-result"><strong dir="ltr">${signed(row.delta, kv(row.voters))}</strong><span>${direction(row.delta)}</span></div></div>
-        <div class="cross-v2-track" aria-hidden="true"><i class="cross-v2-bar" style="left:${loss ? (50 - Number(width)).toFixed(2) : 50}%;width:${width}%"></i><i class="cross-v2-avg" style="left:${averagePosition}%"></i></div>
-        <div class="cross-v2-row-facts"><span>חלק הימין: <b>${r1(row.share)}%</b></span><span>מול הבסיס: <b dir="ltr">${signed(row.delta, r1(Math.abs(row.delta)))}</b> נק׳ אחוז</span><span>משקל בממוצע: <b>${r1(100 * wOf(row.series) / sumWeight)}%</b></span>${sourceLink}</div>${below ? `<p class="cross-v2-below">נכללו גם מתחת לסף: ${below}.</p>` : ""}</article>`;
-    }).join("")}</div>
-    <p class="cross-v2-chart-note">המספרים מוצגים גם בטקסט לצד כל סרגל. ״פחות״ ו״יותר״ מתייחסים לגוש הימין מול הבסיס הדמוגרפי, ולא למספר אנשים שנמדדו עוברים צד.</p>
-  </section>`;
+  /* ציר אחד של חלק הימין: 2022, שני המודלים, ממוצע הסקרים וכל מכון. הימין מימין. */
+  const vals = [...rows.map(r => r.share), rightShare0, base, shareAvg, ...(geo == null ? [] : [geo])];
+  const lo = Math.floor(Math.min(...vals) - 1), hi = Math.ceil(Math.max(...vals) + 1);
+  const x = v => (100 * (hi - v) / (hi - lo)).toFixed(2);           // מהקצה הימני
+  const tickStep = hi - lo > 12 ? 2 : 1, ticks = [];
+  for (let v = Math.ceil(lo / tickStep) * tickStep; v <= hi; v += tickStep) ticks.push(v);
+  const refs = [
+    { cls: "c22", label: "2022 בפועל", v: rightShare0 },
+    { cls: "cdemo", label: "צפוי · דמוגרפיה", v: base },
+    ...(geo == null ? [] : [{ cls: "cgeo", label: "צפוי · מגמות היישובים", v: geo }])
+  ].sort((a, b) => b.v - a.v);
+  const bandA = Math.min(shareAvg, base), bandB = Math.max(shareAvg, base);
+  $("#cx-line").setAttribute("aria-label", `חלק גוש הימין: 2022 ${r1(rightShare0)}%, צפוי לפי הדמוגרפיה ${r1(base)}%${geo == null ? "" : `, לפי מגמות היישובים ${r1(geo)}%`}, ממוצע הסקרים ${r1(shareAvg)}%, המכונים בין ${r1(rows[0].share)}% ל־${r1(rows.at(-1).share)}%.`);
+  $("#cx-line").innerHTML = `
+    <div class="cx-refs">${refs.map((r, i) => `<span class="${r.cls}" style="inset-inline-start:${x(r.v)}%;--i:${i}"><b>${r1(r.v)}%</b> ${esc(r.label)}</span>`).join("")}</div>
+    <div class="cx-axis">
+      <i class="cx-band ${less ? "is-left" : "is-right"}" style="inset-inline-start:${x(bandB)}%;width:${(100 * (bandB - bandA) / (hi - lo)).toFixed(2)}%"><em>≈ ${kv(votersAvg)}</em></i>
+      ${rows.map(r => `<i class="cx-firm" style="inset-inline-start:${x(r.share)}%;--c:${r.share < base ? L : R}" title="${esc(r.meta.he || r.meta.id)}: ${r1(r.share)}%"></i>`).join("")}
+      ${refs.map(r => `<i class="cx-ref ${r.cls}" style="inset-inline-start:${x(r.v)}%"></i>`).join("")}
+      <i class="cx-avg" style="inset-inline-start:${x(shareAvg)}%;--c:${less ? L : R}"></i>
+    </div>
+    <div class="cx-ticks">${ticks.map(v => `<span style="inset-inline-start:${x(v)}%">${v}%</span>`).join("")}</div>
+    <div class="cx-avg-lbl" style="inset-inline-start:${x(shareAvg)}%"><b class="${less ? "cx-left" : "cx-right"}">${r1(shareAvg)}%</b> ממוצע הסקרים</div>
+    <p class="cx-key"><span><i class="cx-dot"></i>כל נקודה — מכון</span><span>חלק גוש הימין מהקולות · הימין מימין</span></p>`;
 
-  const ext = crossExtremes(rows);
-  const wild = ext.wild[0];
-  const description = row => Math.abs(row.delta) < 0.05 ? "כמעט ללא שינוי" : `כ־${kv(row.voters)} קולות ${row.delta < 0 ? "פחות" : "יותר"} לגוש הימין`;
-  $("#crossover-verdict").innerHTML = `<b>עד כמה התמונה תלויה במכון?</b> בסקרי ${namesAt(low.share)} חלק הימין הוא ${r1(low.share)}%; בסקרי ${namesAt(high.share)} הוא ${r1(high.share)}%. הפער ביניהם שקול לכ־<b>${kv(rangeVoters)} קולות</b>. ההערכה הרחוקה ביותר מבסיס 2022 עם הגידול הדמוגרפי היא של <b>${esc(firmsHe(ext.wild))}</b>: ${description(wild)}. זו מחלוקת בין סקרים מתאריכים שונים, ולא טווח ביטחון סטטיסטי של האומדן.`;
+  /* כל מכון: כמה קולות זזו מהצפוי (הדמוגרפיה). אפס = הצפוי; שמאלה = פחות לימין. */
+  const dmin = Math.min(0, ...rows.map(r => r.delta)), dmax = Math.max(0, ...rows.map(r => r.delta)), span = (dmax - dmin) || 1;
+  const zero = 100 * dmax / span;                                     // מהקצה הימני
+  const pctW = d => 100 * Math.abs(d) / span;
+  const avgAt = zero + 100 * -deltaAvg / span;
+  $("#cx-firms-note").textContent = `אפס = הצפוי (${r1(base)}%)`;
+  $("#crossover-chart").innerHTML = `<div class="cx-rows">${rows.map(r => {
+    const neg = r.delta <= 0, w = pctW(r.delta), lbl = Math.abs(r.delta) < 0.05 ? "0" : `${neg ? "−" : "+"}${kv(r.voters)}`;
+    const start = neg ? zero : zero - w;
+    const belowNote = r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`);
+    return `<div class="cx-row" title="${esc(r.meta.he || r.meta.id)} · ${r.date}: הימין ב־${r1(r.share)}% מול ${r1(base)}% צפוי${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}">
+      <span class="cx-name">${logoBox(r.meta, 22)}<b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b></span>
+      <span class="cx-track"><i class="cx-zero" style="inset-inline-start:${zero.toFixed(2)}%"></i><i class="cx-avgline" style="inset-inline-start:${avgAt.toFixed(2)}%"></i>
+        <i class="cx-bar" style="inset-inline-start:${start.toFixed(2)}%;width:${Math.max(w, .4).toFixed(2)}%;background:${neg ? L : R}"></i></span>
+      <span class="cx-val ${neg ? "cx-left" : "cx-right"}" dir="ltr">${lbl}</span>
+      <span class="cx-share" dir="ltr">${r1(r.share)}%</span>
+    </div>`;
+  }).join("")}</div>
+  <p class="cx-key"><span><i class="cx-k-zero"></i>הצפוי</span><span><i class="cx-k-avg"></i>ממוצע הסקרים</span><span><i style="background:${L}"></i>פחות לימין</span><span><i style="background:${R}"></i>יותר לימין</span></p>`;
+
+  /* המסקנה — במספרים */
+  const above = rows.filter(r => r.delta > 0.05), wild = rows[0], calm = [...rows].sort((a, b) => Math.abs(a.delta) - Math.abs(b.delta))[0];
+  $("#crossover-verdict").innerHTML = `<b>${below22} מתוך ${rows.length} המכונים</b> מראים את הימין מתחת ל־2022${above.length ? ` · ${above.length === 1 ? "רק" : ""} <b>${esc(firmsHe(above))}</b> ${above.length === 1 ? "מראה" : "מראים"} אותו מעל הצפוי` : " · אף מכון לא מראה אותו מעל הצפוי"}. הפער בין הקצוות — <b>כ־${kv(votersOf(rows.at(-1).share - rows[0].share))} קולות</b> (${esc(wild.meta.he || wild.meta.id)} ${r1(wild.share)}%, ${esc(rows.at(-1).meta.he || rows.at(-1).meta.id)} ${r1(rows.at(-1).share)}%) — הם לא יכולים כולם לצדוק.`;
 }
 
 /* ============================================================
@@ -1864,15 +1864,16 @@ const pointsHe = n => Math.abs(Math.round(n * 10) / 10) === 1 ? "נקודת אח
 const kfmt = v => fmt(Math.round(v / 1000) * 1000);          // עיגול לאלפים — מספרים מוערכים
 
 /* שלב 2 — מי גדל ובכמה מאז ספטמבר 2019: פנקס הבוחרים לפי סוג היישוב (data/sector-growth.json,
-   scripts/build-locality-trends.py). הקצב שנמדד מופיע גם ליד כל הנחה בשלב 4. */
+   scripts/build-locality-trends.mjs). הקצב שנמדד מופיע גם ליד כל הנחה בשלב 4. */
 const GROWTH_COLORS = { jewish: "#2563B0", haredi: "#6A5A9C", arab: "#2A7A5E", bedouin: "#8A6318", mixed: "#B8862B" };
 async function renderGrowth2019() {
   const el = $("#growth-2019"); if (!el) return;
   if (!S.growth2019) {
     S.growth2019 = window.__BAROMETER_DATA__?.["data/sector-growth.json"]
       || await fetch("data/sector-growth.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : null).catch(() => null);
-    if (!S.growth2019) { el.closest(".dstep").hidden = true; return; }
+    if (!S.growth2019) { el.closest("[data-dm-panel]").hidden = true; $('[data-dm-tab="growth"]')?.setAttribute("hidden", ""); return; }
     renderDemoControls();
+    renderDemoConclusions();
   }
   const G = S.growth2019, E = G.meta.elections, last = E.length - 1;
   const label = e => e.label.replace("ספטמבר ", "9.");
@@ -1918,7 +1919,70 @@ function renderDemography() {
   const d = (sh(m1, "right") + sh(m1, "haredi")) - (sh(m0, "right") + sh(m0, "haredi"));
   const seats = d / 100 * 120;
   const scen = S.scenarioOptions?.demographic ?? 2;
+  renderDemoConclusions();
   $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים, וזה מה שעומד מאחורי ״התוספת הדמוגרפית״ של ${scen} מנדטים בתחזית הברומטר שבתמונת המצב: ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על תוספת גדולה יותר" : "המודל כאן מצביע על תוספת קטנה יותר"}. הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
+}
+
+/* המסקנות: העמודה שליד הכרטיסיות, משפט הכותרת, ושורת מסקנה בראש כל כרטיסייה.
+   מחושבות מאותו מודל ומאותן הנחות, ומתעדכנות עם כל הזזת ידית. */
+function renderDemoConclusions() {
+  const D = S.demo; if (!D || !$("#dm-conclusions")) return;
+  const years = D.meta.years, P = demoParams();
+  const rh = m => 100 * ((m.campVotes.right || 0) + (m.campVotes.haredi || 0)) / m.campTotal;
+  const m0 = runDemoModel(0), m1 = runDemoModel(years), d = rh(m1) - rh(m0);
+  /* מנדטים לכל גוש לפי כללי הבחירות (בדר־עופר והסכמי העודפים, כמו runDemoModel) */
+  const camp = Object.fromEntries(D.parties2022.map(p => [p.id, p.camp]));
+  const blocs = m => Object.entries(m.seats).reduce((a, [id, n]) => { a[camp[id] === "right" || camp[id] === "haredi" ? 0 : 1] += n; return a; }, [0, 0]);
+  const [R22, L22] = blocs(m0), [R26, L26] = blocs(m1), dR = R26 - R22, seats = dR;
+  /* רגישות: אחוז ההצבעה של האזרחים הערבים ±10 נקודות מההנחה הנוכחית */
+  const withArab = dt => {
+    const keep = S.demoOverrides, base = P.arab?.turnout;
+    if (base == null) return null;
+    S.demoOverrides = { ...keep, arab: { ...(keep.arab || {}), turnout: Math.min(.95, Math.max(.2, base + dt)) } };
+    try { return rh(runDemoModel(years)); } finally { S.demoOverrides = keep; }
+  };
+  const hi = withArab(.10), lo = withArab(-.10), swing = hi == null ? null : Math.abs(lo - hi) * 1.2 / 2;
+  const secs = sectorsBySize(), fast = [...secs].sort((a, b) => P[b.id].growth - P[a.id].growth), slow = fast.at(-1);
+  const ids = S.regions ? secs.map(sc => ({ sc, v: identityVote2022(sc.id) })).filter(x => x.v) : [];
+  const top = ids.length ? ids.reduce((a, b) => b.v.rightShare > a.v.rightShare ? b : a) : null;
+  const low = ids.length ? ids.reduce((a, b) => b.v.rightShare < a.v.rightShare ? b : a) : null;
+  const scen = S.scenarioOptions?.demographic ?? 2;
+  const sgn = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+  const times = fast[0] && slow && P[slow.id].growth > 0 ? P[fast[0].id].growth / P[slow.id].growth : null;
+  const changed = Object.keys(S.demoOverrides).length > 0;
+
+  $("#dm-verdict").innerHTML = `בלי אף סקר: הגידול באוכלוסייה לבדו מביא את הימין והחרדים ל־<b>${R26} מנדטים</b> ב־2026 (${R22} ב־2022)${changed ? " · לפי ההנחות ששונו" : ""}.`;
+  $("#dm-conclusions").innerHTML = `
+    <div class="dm-big" style="--c:${BLOCS.Right.color}"><b>${dR > 0 ? "+" : dR < 0 ? "−" : "±"}${Math.abs(dR)}</b><span>מנדטים לימין ולחרדים עד 2026</span><small>לפי כללי הבחירות · ${sgn(d)} נק׳ אחוז מכלל המצביעים — בלי שאף אחד משנה את דעתו</small></div>
+    <figure class="dm-seats" role="img" aria-label="מנדטים צפויים לפי כללי הבחירות. 2022: ימין וחרדים ${R22}, מרכז־שמאל וערבים ${L22}. 2026: ימין וחרדים ${R26}, מרכז־שמאל וערבים ${L26}.">
+      <figcaption>מנדטים צפויים לכל גוש</figcaption>
+      ${[["2022", R22, L22], ["2026", R26, L26]].map(([y, r, l]) => `<div class="dm-seats-row${y === "2026" ? " is-next" : ""}"><span>${y}</span><div class="dm-seats-bar"><i style="flex:${r};background:${BLOCS.Right.color}"><b>${r}</b></i><i style="flex:${l};background:${BLOCS.Left.color}"><b>${l}</b></i><em aria-hidden="true"></em></div></div>`).join("")}
+      <div class="dm-seats-key"><span><i style="background:${BLOCS.Right.color}"></i>ימין וחרדים</span><span><i style="background:${BLOCS.Left.color}"></i>מרכז־שמאל וערבים</span><span class="dm-61">61 · רוב</span></div>
+    </figure>
+    <ol class="dm-points">
+      ${fast[0] && slow ? `<li><b>${esc(fast[0].name)} גדלים הכי מהר</b> — ${pct(P[fast[0].id].growth * 100)} בשנה, מול ${pct(P[slow.id].growth * 100)} אצל ה${esc(slow.name)}${times && times >= 2 ? ` (פי ${Math.round(times)})` : ""}.</li>` : ""}
+      ${top ? `<li><b>הזהות מכריעה את ההצבעה</b> — ${esc(top.sc.name)}: ${Math.round(top.v.rightShare)}% לימין ולחרדים; ${esc(low.sc.name)}: ${Math.round(low.v.rightShare)}%.</li>` : ""}
+      ${swing != null ? `<li><b>אחוז ההצבעה הערבי רגיש</b> — 10 נקודות למעלה או למטה מזיזות כ־${seatsHe(swing)}.</li>` : ""}
+      <li><b>מול תחזית הברומטר</b> — שם התוספת הדמוגרפית היא ${scen} מנדטים; ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על יותר" : "המודל כאן מצביע על פחות"}.</li>
+    </ol>`;
+
+  const lead = (id, html) => { const el = $("#dm-lead-" + id); if (el) el.innerHTML = html; };
+  lead("result", `120 המנדטים נשארים 120 — אבל קבוצה שגדלה מהר ״לוקחת״ חלק מהקבוצות האחרות. נטו: <b>${dR === 0 ? "בלי שינוי בין הגושים" : `${seatsHe(dR)} ${dR > 0 ? "יותר" : "פחות"} לימין ולחרדים`}</b> (${R22}←${R26}).`);
+  const w = S.regions?.wasted;
+  if (w) lead("base", `ב־2022 גוש השינוי קיבל <b>${fmt(w.blocGap)} קולות יותר</b> — ובכל זאת הפסיד 56 : 64, כי ${fmt(w.total)} מקולותיו נפלו מתחת לאחוז החסימה.`);
+  const G = S.growth2019;
+  if (G) { const hs = G.sectors.find(x => x.id === "haredi"); lead("growth", `מספטמבר 2019 בעלי זכות הבחירה גדלו ב־<b>${pct(G.national.growth)} בשנה</b>${hs ? `; ביישובים החרדיים — <b>${pct(hs.growth)}</b>${G.national.growth > 0 ? `, פי ${r1(hs.growth / G.national.growth)}` : ""}` : ""}.`); }
+  if (top) lead("identity", `הזהות מנבאת את ההצבעה: <b>${esc(top.sc.name)} — ${Math.round(top.v.rightShare)}%</b> לימין ולחרדים, <b>${esc(low.sc.name)} — ${Math.round(low.v.rightShare)}%</b>. לכן שינוי בגודל הקבוצות מזיז את הגושים.`);
+  lead("assume", `רק שני דברים משתנים: <b>גודל כל קבוצה</b> ו<b>שיעור ההצבעה שלה</b>. הרגלי ההצבעה של 2022 נשארים. ${changed ? "ההנחות שונו — המסקנות מימין מחושבות לפיהן." : "הזיזו ידית — המסקנות מימין מתעדכנות."}`);
+}
+
+/* הכרטיסיות של המודל הדמוגרפי */
+function setDemoTab(tab, focus = false) {
+  const tabs = $$("[data-dm-tab]"); if (!tabs.length) return;
+  if (!tabs.some(t => t.dataset.dmTab === tab && !t.hidden)) tab = "result";
+  S.demoTab = tab;
+  tabs.forEach(t => { const on = t.dataset.dmTab === tab; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+  $$("[data-dm-panel]").forEach(p => { p.hidden = p.dataset.dmPanel !== tab; });
 }
 
 /* תא ראשון בכל טבלה: נקודת צבע + שם הקבוצה. אותו סדר שורות בכל שלב. */
@@ -1965,7 +2029,7 @@ function renderDemoControls() {
           <input type="range" min="35" max="95" step="1" value="${(t * 100).toFixed(0)}" data-sec="${s.id}" data-kind="turnout" aria-label="אחוז הצבעה · ${esc(s.name)}"></label></td>
         <td><label><span class="identity-lbl"><b class="num">${(g * 100).toFixed(1)}%</b><small>${fmt(s.eligible2022)} → ${fmt(s.eligible2022 * Math.pow(1 + g, D.meta.years))}</small></span>
           <input type="range" min="-1" max="6" step="0.1" value="${(g * 100).toFixed(1)}" data-sec="${s.id}" data-kind="growth" aria-label="גידול שנתי · ${esc(s.name)}"></label></td>
-        <td class="why"><p><b>גידול אוכלוסייה:</b> ${pct(s.growth * 100)} בשנה${(m => m ? ` · <b>נמדד מאז 9.2019</b> ביישובים ${esc(m.where)}: ${pct(m.rate)}` : "")(measuredGrowth(s.id))}. <b>הצבעה ב־2022:</b> ${pct(s.turnout * 100)}.</p><span class="src">מקור: <a href="${esc(D.sources[s.src].url)}" target="_blank" rel="noopener">${esc(D.sources[s.src].name)} ↗</a></span></td>
+        <td class="why"><p><b>בסיס:</b> גידול של ${pct(s.growth * 100)} בשנה${(m => m ? ` · <b>נמדד מאז 9.2019</b> ביישובים ${esc(m.where)}: ${pct(m.rate)}` : "")(measuredGrowth(s.id))}.</p><span class="src">מקור: <a href="${esc(D.sources[s.src].url)}" target="_blank" rel="noopener">${esc(D.sources[s.src].name)} ↗</a></span></td>
       </tr>`;
     }).join("")}</tbody></table>`;
   const changed = Object.keys(S.demoOverrides).length;
@@ -2399,7 +2463,7 @@ function renderOfficialResults() {
    ============================================================ */
 const VIEWS = { landing:"", home:"forecast", polls:"polls", e2022:"2022", map:"map", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
 /* כתובות ישנות שעדיין עשויות להיות מקושרות מבחוץ */
-const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls", "polls/list":"polls", "polls/trend":"polls" };
+const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls", "polls/list":"polls", "polls/trend":"polls", "polls/channels":"polls", "polls/firms":"polls", "polls/parties":"polls" };
 const rendered = {};
 
 function show(view) {
@@ -2441,8 +2505,9 @@ function routeFromHash() {
   const view = VIEW_ALIASES[h] || Object.keys(VIEWS).find(k => VIEWS[k] === h) || "landing";
   show(view);
   if (h === "forecast/coalition") requestAnimationFrame(() => $("#election-coalition")?.scrollIntoView({ block: "start" }));
-  /* הלשוניות של עמוד הסקרים (גם מהשורה שבעמוד דיוק המכונים): פותחים כשהנתונים מוכנים */
-  const pollsTab = { crossover: "cross", "polls/crossover": "cross", "polls/list": "list", "polls/trend": "trend" }[h];
+  /* הלשוניות של עמוד הסקרים (גם מהתפריט שבעמוד דיוק המכונים): פותחים כשהנתונים מוכנים */
+  const [pollsTab, exMode] = { crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
+  if (exMode) S.exploreMode = exMode;
   if (pollsTab) {
     let tries = 0;
     const go = () => (pollsTab !== "cross" || S.regions) && typeof setPollsTab === "function" ? (setPollsTab(pollsTab), window.scrollTo({ top: 0 })) : (++tries < 40 && setTimeout(go, 100));
@@ -2529,6 +2594,15 @@ function wire() {
     $(`#demo-controls [data-sec="${CSS.escape(sec)}"][data-kind="${CSS.escape(kind)}"]`)?.focus();
   });
   $("#demo-reset").addEventListener("click", () => { S.demoOverrides = {}; renderDemography(); });
+  /* כרטיסיות המודל הדמוגרפי: לחיצה, וחצים בין הכרטיסיות */
+  const dmTabs = $(".dm-tabs");
+  dmTabs?.addEventListener("click", e => { const t = e.target.closest("[data-dm-tab]"); if (t) setDemoTab(t.dataset.dmTab); });
+  dmTabs?.addEventListener("keydown", e => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    const list = $$("[data-dm-tab]").filter(t => !t.hidden), i = list.findIndex(t => t.dataset.dmTab === S.demoTab);
+    const next = e.key === "Home" ? 0 : e.key === "End" ? list.length - 1 : (i + (e.key === "ArrowLeft" ? 1 : -1) + list.length) % list.length;   // RTL: שמאלה = הבאה
+    e.preventDefault(); setDemoTab(list[next].dataset.dmTab, true);
+  });
 
   $("#scen-switch")?.addEventListener("click", e => {
     const b = e.target.closest("[data-scen]"); if (!b) return;

@@ -4,86 +4,158 @@
       "updatedAt": "2026-09-07T08:18:11.220Z",
       "recordedAt": "2026-09-07T13:56:43.876Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 12,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 6,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
         "likud": 24,
         "beyahad": 13,
-        "hademokratim": 10,
+        "hademokratim": 9,
         "yahadut_hatora": 8,
         "ndi": 8,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 8,
         "shas": 8,
         "raam": 5,
-        "zionut_datit": 5
+        "zionut_datit": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.42
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.51
+        }
       },
       "polls": 10,
-      "firms": 8
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 13,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-09-07T08:29:58.654Z",
       "recordedAt": "2026-09-07T14:12:17.952Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 12,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 6,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
         "likud": 24,
         "beyahad": 13,
-        "hademokratim": 10,
+        "hademokratim": 9,
         "yahadut_hatora": 8,
         "ndi": 8,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 8,
         "shas": 8,
         "raam": 5,
-        "zionut_datit": 5
+        "zionut_datit": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.42
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.51
+        }
       },
       "polls": 10,
-      "firms": 8
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 13,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-09-09T20:49:39.960Z",
       "recordedAt": "2026-09-09T20:49:40.027Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 11,
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 12,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 7,
-        "shas": 11,
-        "yahadut_hatora": 8
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
-        "likud": 23,
-        "beyahad": 13,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "yahadut_hatora": 8,
         "ndi": 8,
@@ -93,14 +165,42 @@
         "raam": 5,
         "zionut_datit": 6
       },
-      "polls": 17,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.43
+          "ofer_vinter_party": 2.38
         },
         "weighted": {
-          "ofer_vinter_party": 2.43
+          "ofer_vinter_party": 2.47
+        }
+      },
+      "polls": 17,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -108,22 +208,22 @@
       "updatedAt": "2026-09-09T22:42:55.065Z",
       "recordedAt": "2026-09-09T22:42:55.116Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 11,
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 12,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 7,
-        "shas": 11,
-        "yahadut_hatora": 8
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
-        "likud": 23,
-        "beyahad": 13,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "yahadut_hatora": 8,
         "ndi": 8,
@@ -133,14 +233,42 @@
         "raam": 5,
         "zionut_datit": 6
       },
-      "polls": 17,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.43
+          "ofer_vinter_party": 2.38
         },
         "weighted": {
-          "ofer_vinter_party": 2.43
+          "ofer_vinter_party": 2.47
+        }
+      },
+      "polls": 17,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -148,22 +276,22 @@
       "updatedAt": "2026-09-10T09:00:34.737Z",
       "recordedAt": "2026-09-10T09:00:34.801Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 12,
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 11,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "raam": 5,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
-        "likud": 23,
-        "beyahad": 13,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "yahadut_hatora": 8,
         "ndi": 8,
@@ -173,14 +301,42 @@
         "raam": 6,
         "zionut_datit": 6
       },
-      "polls": 15,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.39
+          "ofer_vinter_party": 2.29
         },
         "weighted": {
-          "ofer_vinter_party": 2.39
+          "ofer_vinter_party": 2.37
+        }
+      },
+      "polls": 15,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -188,22 +344,22 @@
       "updatedAt": "2026-09-10T09:48:40.975Z",
       "recordedAt": "2026-09-10T09:48:41.071Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 12,
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 11,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "raam": 5,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
-        "likud": 23,
-        "beyahad": 13,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "yahadut_hatora": 8,
         "ndi": 8,
@@ -213,14 +369,42 @@
         "raam": 6,
         "zionut_datit": 6
       },
-      "polls": 15,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.39
+          "ofer_vinter_party": 2.29
         },
         "weighted": {
-          "ofer_vinter_party": 2.39
+          "ofer_vinter_party": 2.37
+        }
+      },
+      "polls": 15,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -228,22 +412,22 @@
       "updatedAt": "2026-09-10T20:44:35.492Z",
       "recordedAt": "2026-09-10T20:44:35.556Z",
       "scenario": {
-        "likud": 26,
-        "yashar": 21,
-        "beyahad": 12,
+        "likud": 25,
+        "yashar": 22,
+        "beyahad": 11,
         "ndi": 7,
         "hademokratim": 9,
         "reshima_meshutefet": 7,
         "ozma_yehudit": 8,
-        "raam": 5,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
-        "likud": 23,
+        "likud": 24,
         "yashar": 23,
-        "beyahad": 13,
+        "beyahad": 12,
         "ndi": 8,
         "shas": 8,
         "yahadut_hatora": 8,
@@ -253,14 +437,42 @@
         "raam": 6,
         "zionut_datit": 6
       },
-      "polls": 16,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.39
+          "ofer_vinter_party": 2.29
         },
         "weighted": {
-          "ofer_vinter_party": 2.39
+          "ofer_vinter_party": 2.37
+        }
+      },
+      "polls": 16,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
         }
       }
     },
@@ -268,22 +480,22 @@
       "updatedAt": "2026-09-11T20:50:33.801Z",
       "recordedAt": "2026-09-11T20:50:33.847Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 11,
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 12,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 6,
-        "shas": 11,
-        "yahadut_hatora": 8
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
-        "likud": 23,
-        "beyahad": 13,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "ndi": 8,
         "ozma_yehudit": 8,
@@ -293,14 +505,42 @@
         "raam": 6,
         "zionut_datit": 6
       },
-      "polls": 14,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.43
+          "ofer_vinter_party": 2.31
         },
         "weighted": {
-          "ofer_vinter_party": 2.43
+          "ofer_vinter_party": 2.4
+        }
+      },
+      "polls": 14,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -308,39 +548,67 @@
       "updatedAt": "2026-09-12T20:26:55.582Z",
       "recordedAt": "2026-09-12T20:26:55.649Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 11,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 6,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
-        "yashar": 24,
-        "likud": 23,
-        "beyahad": 13,
+        "yashar": 23,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "ndi": 8,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
         "shas": 8,
         "yahadut_hatora": 8,
-        "raam": 5,
+        "raam": 6,
         "zionut_datit": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.29
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.37
+        }
       },
       "polls": 13,
       "firms": 8,
-      "below": {
+      "seats": {
         "scenario": {
-          "ofer_vinter_party": 2.39
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
         },
         "weighted": {
-          "ofer_vinter_party": 2.39
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -348,39 +616,67 @@
       "updatedAt": "2026-09-13T20:38:09.223Z",
       "recordedAt": "2026-09-13T20:38:09.291Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 11,
         "hademokratim": 9,
         "ndi": 7,
         "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
-        "raam": 5,
         "zionut_datit": 6,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
-        "yashar": 24,
-        "likud": 23,
-        "beyahad": 13,
+        "yashar": 23,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 10,
         "ndi": 8,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
         "shas": 8,
         "yahadut_hatora": 8,
-        "raam": 5,
+        "raam": 6,
         "zionut_datit": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.29
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.37
+        }
       },
       "polls": 13,
       "firms": 8,
-      "below": {
+      "seats": {
         "scenario": {
-          "ofer_vinter_party": 2.39
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
         },
         "weighted": {
-          "ofer_vinter_party": 2.39
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -388,39 +684,67 @@
       "updatedAt": "2026-09-14T19:05:55.700Z",
       "recordedAt": "2026-09-14T19:05:55.753Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 11,
         "hademokratim": 9,
         "ndi": 7,
         "reshima_meshutefet": 7,
         "ozma_yehudit": 9,
         "zionut_datit": 6,
-        "raam": 5,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
-        "likud": 23,
-        "beyahad": 13,
-        "hademokratim": 10,
+        "likud": 24,
+        "beyahad": 12,
+        "hademokratim": 9,
         "ndi": 8,
         "reshima_meshutefet": 8,
         "yahadut_hatora": 8,
-        "shas": 8,
+        "shas": 9,
         "ozma_yehudit": 8,
         "zionut_datit": 6,
         "raam": 5
       },
-      "polls": 14,
-      "firms": 8,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.38
+          "ofer_vinter_party": 2.28
         },
         "weighted": {
-          "ofer_vinter_party": 2.38
+          "ofer_vinter_party": 2.36
+        }
+      },
+      "polls": 14,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
         }
       }
     },
@@ -428,39 +752,67 @@
       "updatedAt": "2026-09-15T17:59:57.135Z",
       "recordedAt": "2026-09-15T17:59:57.187Z",
       "scenario": {
-        "likud": 26,
-        "yashar": 21,
-        "hademokratim": 8,
+        "likud": 25,
+        "yashar": 22,
+        "hademokratim": 9,
         "beyahad": 12,
         "ozma_yehudit": 9,
         "zionut_datit": 6,
         "reshima_meshutefet": 7,
         "ndi": 7,
-        "raam": 5,
-        "shas": 11,
-        "yahadut_hatora": 8
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
-        "likud": 23,
+        "likud": 24,
         "yashar": 23,
-        "shas": 8,
-        "hademokratim": 10,
-        "beyahad": 13,
+        "shas": 9,
+        "hademokratim": 9,
+        "beyahad": 12,
         "ozma_yehudit": 8,
         "yahadut_hatora": 8,
         "zionut_datit": 6,
-        "reshima_meshutefet": 8,
+        "reshima_meshutefet": 7,
         "ndi": 8,
-        "raam": 5
+        "raam": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.29
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.37
+        }
       },
       "polls": 13,
       "firms": 8,
-      "below": {
+      "seats": {
         "scenario": {
-          "ofer_vinter_party": 2.39
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "ndi": 7,
+          "raam": 4
         },
         "weighted": {
-          "ofer_vinter_party": 2.39
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "ndi": 8,
+          "raam": 5
         }
       }
     },
@@ -468,41 +820,67 @@
       "updatedAt": "2026-09-18T20:46:24.986Z",
       "recordedAt": "2026-09-18T20:46:25.038Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 25,
+        "yashar": 22,
+        "likud": 24,
         "beyahad": 11,
         "hademokratim": 9,
-        "ndi": 7,
-        "ozma_yehudit": 9,
+        "ndi": 8,
+        "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
         "zionut_datit": 7,
-        "raam": 5,
         "shas": 11,
-        "yahadut_hatora": 8
+        "yahadut_hatora": 8,
+        "raam": 5
       },
       "weighted": {
         "yashar": 23,
         "likud": 23,
         "beyahad": 12,
-        "hademokratim": 10,
+        "hademokratim": 9,
         "ndi": 8,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 8,
         "shas": 8,
         "yahadut_hatora": 8,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "raam": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.63
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.73
+        }
       },
       "polls": 11,
       "firms": 8,
-      "below": {
+      "seats": {
         "scenario": {
-          "ofer_vinter_party": 2.79,
-          "hendel_zeliha_party": 1.42
+          "likud": 25,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         },
         "weighted": {
-          "ofer_vinter_party": 2.79,
-          "hendel_zeliha_party": 1.42
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -511,38 +889,66 @@
       "recordedAt": "2026-09-22T23:08:09.719Z",
       "scenario": {
         "yashar": 21,
-        "likud": 26,
+        "likud": 25,
         "beyahad": 11,
         "hademokratim": 9,
-        "ndi": 8,
-        "ozma_yehudit": 8,
+        "ndi": 7,
+        "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
         "zionut_datit": 7,
-        "shas": 10,
+        "shas": 11,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
         "yashar": 22,
-        "likud": 25,
-        "beyahad": 11,
+        "likud": 24,
+        "beyahad": 12,
         "hademokratim": 9,
         "ndi": 8,
         "ozma_yehudit": 8,
-        "reshima_meshutefet": 8,
-        "shas": 8,
+        "reshima_meshutefet": 7,
+        "shas": 9,
         "yahadut_hatora": 8,
         "zionut_datit": 7,
         "raam": 6
       },
-      "polls": 8,
-      "firms": 6,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.48
+          "ofer_vinter_party": 2.47
         },
         "weighted": {
-          "ofer_vinter_party": 2.48
+          "ofer_vinter_party": 2.55
+        }
+      },
+      "polls": 8,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -551,14 +957,14 @@
       "recordedAt": "2026-09-23T08:59:08.873Z",
       "scenario": {
         "yashar": 21,
-        "likud": 26,
+        "likud": 25,
         "beyahad": 11,
         "hademokratim": 9,
         "ndi": 8,
         "reshima_meshutefet": 7,
         "ozma_yehudit": 8,
         "zionut_datit": 7,
-        "shas": 10,
+        "shas": 11,
         "yahadut_hatora": 8,
         "raam": 5
       },
@@ -575,14 +981,42 @@
         "raam": 6,
         "zionut_datit": 7
       },
-      "polls": 8,
-      "firms": 7,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.57
+          "ofer_vinter_party": 2.53
         },
         "weighted": {
-          "ofer_vinter_party": 2.57
+          "ofer_vinter_party": 2.62
+        }
+      },
+      "polls": 8,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 12,
+          "hademokratim": 9,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
         }
       }
     },
@@ -591,13 +1025,13 @@
       "recordedAt": "2026-09-30T13:02:11.109Z",
       "scenario": {
         "yashar": 22,
-        "likud": 26,
+        "likud": 25,
         "beyahad": 10,
         "ndi": 8,
         "hademokratim": 9,
         "ozma_yehudit": 8,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 11,
         "yahadut_hatora": 8,
         "raam": 5
@@ -605,9 +1039,9 @@
       "weighted": {
         "yashar": 23,
         "likud": 24,
-        "beyahad": 10,
+        "beyahad": 11,
         "ndi": 8,
-        "hademokratim": 10,
+        "hademokratim": 9,
         "ozma_yehudit": 8,
         "shas": 9,
         "yahadut_hatora": 8,
@@ -615,14 +1049,44 @@
         "zionut_datit": 6,
         "raam": 6
       },
-      "polls": 7,
-      "firms": 7,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.63
+          "ofer_vinter_party": 2.64,
+          "hendel_zeliha_party": 1.67
         },
         "weighted": {
-          "ofer_vinter_party": 2.63
+          "ofer_vinter_party": 2.73,
+          "hendel_zeliha_party": 1.67
+        }
+      },
+      "polls": 7,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 10,
+          "ndi": 8,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 9,
+          "yahadut_hatora": 7,
+          "yashar": 24,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -631,23 +1095,23 @@
       "recordedAt": "2026-09-30T13:18:10.149Z",
       "scenario": {
         "yashar": 22,
-        "likud": 26,
-        "beyahad": 10,
+        "likud": 25,
+        "beyahad": 11,
         "hademokratim": 9,
         "ozma_yehudit": 8,
         "ndi": 8,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
-        "yashar": 22,
+        "yashar": 23,
         "likud": 24,
         "beyahad": 11,
         "hademokratim": 10,
-        "shas": 9,
+        "shas": 8,
         "ozma_yehudit": 8,
         "yahadut_hatora": 8,
         "ndi": 8,
@@ -655,14 +1119,44 @@
         "zionut_datit": 6,
         "raam": 6
       },
-      "polls": 9,
-      "firms": 7,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.7,
+          "hendel_zeliha_party": 1.67
         },
         "weighted": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.79,
+          "hendel_zeliha_party": 1.67
+        }
+      },
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -671,23 +1165,23 @@
       "recordedAt": "2026-09-30T22:07:34.965Z",
       "scenario": {
         "yashar": 22,
-        "likud": 26,
-        "beyahad": 10,
+        "likud": 25,
+        "beyahad": 11,
         "hademokratim": 9,
         "ozma_yehudit": 8,
         "ndi": 8,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
-        "yashar": 22,
+        "yashar": 23,
         "likud": 24,
         "beyahad": 11,
         "hademokratim": 10,
-        "shas": 9,
+        "shas": 8,
         "ozma_yehudit": 8,
         "yahadut_hatora": 8,
         "ndi": 8,
@@ -695,14 +1189,44 @@
         "zionut_datit": 6,
         "raam": 6
       },
-      "polls": 9,
-      "firms": 7,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.7,
+          "hendel_zeliha_party": 1.67
         },
         "weighted": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.79,
+          "hendel_zeliha_party": 1.67
+        }
+      },
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -711,20 +1235,20 @@
       "recordedAt": "2026-10-01T12:33:14.439Z",
       "scenario": {
         "yashar": 22,
-        "likud": 27,
-        "beyahad": 10,
+        "likud": 26,
+        "beyahad": 11,
         "hademokratim": 9,
         "ozma_yehudit": 8,
         "ndi": 7,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
-        "yashar": 22,
-        "likud": 25,
+        "yashar": 23,
+        "likud": 24,
         "beyahad": 11,
         "hademokratim": 9,
         "shas": 9,
@@ -735,14 +1259,42 @@
         "zionut_datit": 6,
         "raam": 6
       },
-      "polls": 7,
-      "firms": 6,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.5
+          "ofer_vinter_party": 2.56
         },
         "weighted": {
-          "ofer_vinter_party": 2.5
+          "ofer_vinter_party": 2.66
+        }
+      },
+      "polls": 7,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "beyahad": 11,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5
         }
       }
     },
@@ -751,9 +1303,9 @@
       "recordedAt": "2026-10-01T12:53:01.397Z",
       "scenario": {
         "yashar": 22,
-        "likud": 26,
+        "likud": 25,
         "hademokratim": 9,
-        "beyahad": 10,
+        "beyahad": 11,
         "ndi": 8,
         "reshima_meshutefet": 7,
         "ozma_yehudit": 8,
@@ -775,14 +1327,42 @@
         "shas": 8,
         "raam": 6
       },
-      "polls": 8,
-      "firms": 7,
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.7
         },
         "weighted": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.79
+        }
+      },
+      "polls": 8,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 10,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
         }
       }
     },
@@ -790,8 +1370,144 @@
       "updatedAt": "2026-10-01T20:54:25.819Z",
       "recordedAt": "2026-10-01T20:54:25.957Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 11,
+        "ndi": 8,
+        "hademokratim": 9,
+        "reshima_meshutefet": 7,
+        "ozma_yehudit": 8,
+        "zionut_datit": 7,
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "yashar": 22,
+        "likud": 24,
+        "beyahad": 11,
+        "ndi": 8,
+        "shas": 8,
+        "yahadut_hatora": 8,
+        "hademokratim": 10,
+        "reshima_meshutefet": 8,
+        "ozma_yehudit": 8,
+        "raam": 6,
+        "zionut_datit": 7
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.7
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.79
+        }
+      },
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 10,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
+    },
+    {
+      "updatedAt": "2026-10-01T20:55:58.729Z",
+      "recordedAt": "2026-10-01T20:55:58.871Z",
+      "scenario": {
+        "yashar": 22,
+        "likud": 25,
+        "beyahad": 11,
+        "ndi": 7,
+        "hademokratim": 9,
+        "reshima_meshutefet": 8,
+        "ozma_yehudit": 8,
+        "zionut_datit": 7,
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "yashar": 22,
+        "likud": 24,
+        "beyahad": 11,
+        "ndi": 8,
+        "shas": 8,
+        "yahadut_hatora": 8,
+        "hademokratim": 10,
+        "reshima_meshutefet": 8,
+        "ozma_yehudit": 8,
+        "raam": 6,
+        "zionut_datit": 7
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.7
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.79
+        }
+      },
+      "polls": 10,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
+    },
+    {
+      "updatedAt": "2026-10-01T20:57:53.554Z",
+      "recordedAt": "2026-10-01T20:57:53.684Z",
+      "scenario": {
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 10,
         "ndi": 8,
         "hademokratim": 9,
@@ -817,114 +1533,62 @@
       },
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.7
         },
         "weighted": {
-          "ofer_vinter_party": 2.68
-        }
-      },
-      "polls": 9,
-      "firms": 7
-    },
-    {
-      "updatedAt": "2026-10-01T20:55:58.729Z",
-      "recordedAt": "2026-10-01T20:55:58.871Z",
-      "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 10,
-        "ndi": 8,
-        "hademokratim": 9,
-        "reshima_meshutefet": 8,
-        "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
-        "yahadut_hatora": 8,
-        "raam": 5
-      },
-      "weighted": {
-        "yashar": 22,
-        "likud": 25,
-        "beyahad": 11,
-        "ndi": 8,
-        "shas": 8,
-        "yahadut_hatora": 8,
-        "hademokratim": 10,
-        "reshima_meshutefet": 8,
-        "ozma_yehudit": 8,
-        "raam": 6,
-        "zionut_datit": 6
-      },
-      "below": {
-        "scenario": {
-          "ofer_vinter_party": 2.68
-        },
-        "weighted": {
-          "ofer_vinter_party": 2.68
-        }
-      },
-      "polls": 10,
-      "firms": 7
-    },
-    {
-      "updatedAt": "2026-10-01T20:57:53.554Z",
-      "recordedAt": "2026-10-01T20:57:53.684Z",
-      "scenario": {
-        "yashar": 21,
-        "likud": 26,
-        "beyahad": 10,
-        "ndi": 8,
-        "hademokratim": 9,
-        "reshima_meshutefet": 8,
-        "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
-        "yahadut_hatora": 8,
-        "raam": 5
-      },
-      "weighted": {
-        "yashar": 22,
-        "likud": 25,
-        "beyahad": 11,
-        "ndi": 8,
-        "shas": 8,
-        "yahadut_hatora": 8,
-        "hademokratim": 10,
-        "reshima_meshutefet": 8,
-        "ozma_yehudit": 8,
-        "raam": 6,
-        "zionut_datit": 6
-      },
-      "below": {
-        "scenario": {
-          "ofer_vinter_party": 2.68
-        },
-        "weighted": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.79
         }
       },
       "polls": 11,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-10-01T22:34:26.679Z",
       "recordedAt": "2026-10-01T22:34:26.730Z",
       "scenario": {
-        "yashar": 21,
-        "likud": 26,
+        "yashar": 22,
+        "likud": 25,
         "beyahad": 10,
         "ndi": 8,
         "hademokratim": 9,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
         "yashar": 22,
-        "likud": 25,
+        "likud": 24,
         "beyahad": 11,
         "ndi": 8,
         "shas": 8,
@@ -933,38 +1597,66 @@
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
         "raam": 6,
-        "zionut_datit": 6
+        "zionut_datit": 7
       },
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.7
         },
         "weighted": {
-          "ofer_vinter_party": 2.68
+          "ofer_vinter_party": 2.79
         }
       },
       "polls": 11,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 7,
+          "ozma_yehudit": 8,
+          "raam": 5
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-10-02T11:58:39.139Z",
       "recordedAt": "2026-10-02T11:58:39.230Z",
       "scenario": {
         "yashar": 21,
-        "likud": 26,
-        "beyahad": 10,
+        "likud": 25,
+        "beyahad": 11,
         "ndi": 8,
         "hademokratim": 9,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
         "yashar": 22,
-        "likud": 25,
+        "likud": 24,
         "beyahad": 11,
         "ndi": 8,
         "shas": 9,
@@ -972,39 +1664,69 @@
         "hademokratim": 10,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "raam": 5,
+        "raam": 6,
         "zionut_datit": 6
       },
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.77,
+          "hendel_zeliha_party": 1.74
         },
         "weighted": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.86,
+          "hendel_zeliha_party": 1.74
         }
       },
       "polls": 8,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-10-02T22:04:00.211Z",
       "recordedAt": "2026-10-02T22:04:00.293Z",
       "scenario": {
         "yashar": 21,
-        "likud": 26,
-        "beyahad": 10,
+        "likud": 25,
+        "beyahad": 11,
         "ndi": 8,
         "hademokratim": 9,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
         "yashar": 22,
-        "likud": 25,
+        "likud": 24,
         "beyahad": 11,
         "ndi": 8,
         "shas": 9,
@@ -1012,39 +1734,69 @@
         "hademokratim": 10,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "raam": 5,
+        "raam": 6,
         "zionut_datit": 6
       },
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.77,
+          "hendel_zeliha_party": 1.74
         },
         "weighted": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.86,
+          "hendel_zeliha_party": 1.74
         }
       },
       "polls": 8,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-10-03T11:11:52.399Z",
       "recordedAt": "2026-10-03T11:11:52.476Z",
       "scenario": {
         "yashar": 21,
-        "likud": 26,
-        "beyahad": 10,
+        "likud": 25,
+        "beyahad": 11,
         "ndi": 8,
         "hademokratim": 9,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
         "yashar": 22,
-        "likud": 25,
+        "likud": 24,
         "beyahad": 11,
         "ndi": 8,
         "shas": 9,
@@ -1052,39 +1804,69 @@
         "hademokratim": 10,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "raam": 5,
+        "raam": 6,
         "zionut_datit": 6
       },
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.77,
+          "hendel_zeliha_party": 1.74
         },
         "weighted": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.86,
+          "hendel_zeliha_party": 1.74
         }
       },
       "polls": 8,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-10-03T20:55:27.091Z",
       "recordedAt": "2026-10-03T20:55:27.184Z",
       "scenario": {
         "yashar": 21,
-        "likud": 26,
-        "beyahad": 10,
+        "likud": 25,
+        "beyahad": 11,
         "ndi": 8,
         "hademokratim": 9,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "zionut_datit": 6,
-        "shas": 11,
+        "zionut_datit": 7,
+        "shas": 10,
         "yahadut_hatora": 8,
         "raam": 5
       },
       "weighted": {
         "yashar": 22,
-        "likud": 25,
+        "likud": 24,
         "beyahad": 11,
         "ndi": 8,
         "shas": 9,
@@ -1092,19 +1874,49 @@
         "hademokratim": 10,
         "reshima_meshutefet": 8,
         "ozma_yehudit": 8,
-        "raam": 5,
+        "raam": 6,
         "zionut_datit": 6
       },
       "below": {
         "scenario": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.77,
+          "hendel_zeliha_party": 1.74
         },
         "weighted": {
-          "ofer_vinter_party": 2.72
+          "ofer_vinter_party": 2.86,
+          "hendel_zeliha_party": 1.74
         }
       },
       "polls": 8,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
     },
     {
       "updatedAt": "2026-10-04T08:39:47.310Z",
@@ -1146,7 +1958,175 @@
         }
       },
       "polls": 8,
-      "firms": 7
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 11,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 10,
+          "ndi": 7,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "reshima_meshutefet": 8,
+          "ozma_yehudit": 8,
+          "raam": 5
+        }
+      }
+    },
+    {
+      "updatedAt": "2026-10-04T21:00:47.000Z",
+      "recordedAt": "2026-10-04T21:00:55.155Z",
+      "scenario": {
+        "yashar": 21,
+        "likud": 25,
+        "beyahad": 11,
+        "ndi": 7,
+        "hademokratim": 9,
+        "ozma_yehudit": 9,
+        "reshima_meshutefet": 8,
+        "zionut_datit": 7,
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "yashar": 22,
+        "likud": 24,
+        "beyahad": 11,
+        "ndi": 8,
+        "hademokratim": 10,
+        "ozma_yehudit": 8,
+        "shas": 9,
+        "yahadut_hatora": 8,
+        "reshima_meshutefet": 8,
+        "zionut_datit": 6,
+        "raam": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.51,
+          "hendel_zeliha_party": 1.74
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.59,
+          "hendel_zeliha_party": 1.74
+        }
+      },
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "ndi": 7,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5
+        }
+      }
+    },
+    {
+      "updatedAt": "2026-10-04T21:11:16.800Z",
+      "recordedAt": "2026-10-04T21:11:16.857Z",
+      "scenario": {
+        "yashar": 21,
+        "likud": 25,
+        "beyahad": 11,
+        "ndi": 7,
+        "hademokratim": 9,
+        "ozma_yehudit": 9,
+        "reshima_meshutefet": 8,
+        "zionut_datit": 7,
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "yashar": 22,
+        "likud": 24,
+        "beyahad": 11,
+        "ndi": 8,
+        "hademokratim": 10,
+        "ozma_yehudit": 8,
+        "shas": 9,
+        "yahadut_hatora": 8,
+        "reshima_meshutefet": 8,
+        "zionut_datit": 6,
+        "raam": 6
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 2.51,
+          "hendel_zeliha_party": 1.74
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.59,
+          "hendel_zeliha_party": 1.74
+        }
+      },
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "beyahad": 11,
+          "ndi": 7,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 8,
+          "raam": 4
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "beyahad": 11,
+          "ndi": 8,
+          "hademokratim": 9,
+          "ozma_yehudit": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5
+        }
+      }
     }
   ],
   "weekly": [

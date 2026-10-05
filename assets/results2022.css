@@ -1,13 +1,17 @@
 /* ============================================================
    בחירות 2022 — לוח נתונים במסך אחד (assets/results2022.js)
-   שולחן העבודה: רשת שממלאת את גובה המסך, בלי גלילת עמוד —
-   הטבלה גוללת בתוך הכרטיס שלה. מתחת ל־1000px הכרטיסים נערמים.
+   שולחן העבודה: העמוד בדיוק בגובה החלון שמתחת לכותרת (flex, בלי מדידה ב־JS),
+   בלי גלילת עמוד — רק טבלת היישובים גוללת בתוך הכרטיס שלה. מתחת ל־1000px
+   הכרטיסים נערמים.
    ============================================================ */
 #view-map .r22{--r22-ink:#14233a;--r22-ink-2:#344456;--r22-ink-3:#4c5b6a;--r22-rule:#d9d1c3;--r22-gold:#765007;
   padding-top:10px;padding-bottom:12px}
 /* כל רוחב המסך — בלי שוליים של עמוד רגיל */
 #view-map>.wrap.r22{width:auto!important;max-width:none!important;margin-inline:0!important;padding-inline:var(--edge,14px)!important}
 body:has(#view-map.on)>footer{display:none}
+/* העמוד בדיוק בגובה החלון — בלי ההזזה של 5px באנימציית הכניסה (editorial.css), שהקפיצה לרגע פס גלילה */
+#view-map.on{animation-name:r22-enter}
+@keyframes r22-enter{from{opacity:.5}to{opacity:1}}
 
 .r22-head{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin-bottom:10px}
 .r22-head .subtabs{margin:0}
@@ -17,8 +21,12 @@ body:has(#view-map.on)>footer{display:none}
 .r22-dash{display:grid;gap:10px;
   grid-template-columns:220px minmax(0,1fr) minmax(0,1fr) minmax(300px,27vw);
   grid-template-rows:minmax(0,1fr) minmax(0,1fr);
-  grid-template-areas:"side table table map" "side kpi bars map";
-  height:var(--r22-h,calc(100dvh - var(--masthead-h,110px) - 74px));min-height:480px}
+  grid-template-areas:"side table table map" "side kpi bars map";position:relative}
+@media (min-width:1001px){
+  #view-map.on>.r22{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:540px}
+  .r22-head{flex:none}
+  .r22-dash{flex:1 1 auto;min-height:0}
+}
 .r22-side{grid-area:side}.r22-table{grid-area:table}.r22-kpi{grid-area:kpi}.r22-bars{grid-area:bars}.r22-map{grid-area:map}
 
 .r22-card{background:var(--ivory,#fdfbf6);color:var(--r22-ink);border:1px solid #d6cebe;border-radius:8px;
@@ -71,7 +79,7 @@ body:has(#view-map.on)>footer{display:none}
 .r22-scroll:focus-visible{outline:2px solid #c9a24f;outline-offset:-2px}
 .r22-scroll.r22-is-nation{overflow:hidden}
 .r22-seatgrid[hidden]{display:none}
-.r22-seatgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr));grid-auto-flow:column;column-gap:12px;height:100%;margin:0;padding:4px 12px 8px;list-style:none}
+.r22-seatgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--rows,7),minmax(0,1fr));grid-auto-flow:column;column-gap:12px;height:100%;margin:0;padding:4px 12px 8px;list-style:none}
 .r22-seatitem{display:flex;align-items:center;gap:7px;min-width:0;padding:4px 6px;border-bottom:1px solid #e7dfd2}
 .r22-seatitem .r22-sw{width:10px;height:10px;margin:0;flex:none}
 .r22-seatname{display:grid;gap:1px;flex:1;min-width:0}
@@ -80,6 +88,14 @@ body:has(#view-map.on)>footer{display:none}
 .r22-seatnum{display:grid;gap:0;min-width:33px;text-align:center;font-variant-numeric:tabular-nums}
 .r22-seatnum small{color:var(--r22-ink-3);font-size:.59rem;line-height:1.15}
 .r22-seatnum b{color:var(--r22-ink);font-size:1.07rem;line-height:1.15}
+.r22-seatgrid:not(.r22-seatgrid-groups) .r22-seatitem{display:grid;grid-template-columns:10px auto minmax(0,1fr) auto;gap:8px;padding:0 6px}
+.r22-seatparty{color:var(--r22-ink);font-size:clamp(.8rem,1.55vh,.95rem);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r22-seatcamp{color:var(--r22-ink-3);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r22-seatcount{min-width:2ch;color:var(--r22-ink);font-size:clamp(.95rem,1.9vh,1.2rem);font-weight:800;text-align:end;font-variant-numeric:tabular-nums}
+.r22-seat-out :is(.r22-seatparty,.r22-seatcount){color:var(--r22-ink-3);font-weight:600}
+.r22-seatgrid-groups{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(4,minmax(0,1fr))}
+.r22-seatgrid-groups .r22-seatname strong{font-size:.95rem}
+.r22-seatgrid-groups .r22-seatnum b{font-size:1.3rem}
 .r22-seat-next{border-inline-start:1px solid #ddd4c5;padding-inline-start:5px}
 .r22-seatitem .r22-seat-delta{min-width:24px;text-align:center;font-size:.7rem;font-variant-numeric:tabular-nums}
 #r22-table{width:100%;border-collapse:collapse;font-size:.74rem;color:var(--r22-ink)}
@@ -106,10 +122,11 @@ body:has(#view-map.on)>footer{display:none}
 .r22-seat-delta.up{color:#176044;font-weight:800}.r22-seat-delta.down{color:#a3352b;font-weight:800}.r22-seat-delta.flat{color:var(--r22-ink-3)}
 
 /* --- כרטיס הבחירה --- */
-.r22-kpi{padding:12px 14px;gap:10px;overflow:auto}
+.r22-kpi{padding:12px 14px;gap:10px;overflow:auto;justify-content:space-between}
 .r22-kicker{margin:0;font-size:.66rem;font-weight:800;letter-spacing:.04em;color:var(--r22-gold)}
-.r22-kpi-head h3{margin:2px 0 2px;font-size:1.15rem;font-weight:800;line-height:1.25;color:var(--r22-ink)}
-.r22-kpi-head p:last-child{margin:0;font-size:.74rem;color:var(--r22-ink-3)}
+.r22-kpi-title{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;min-width:0}
+.r22-kpi-head h3{margin:0;font-size:1.15rem;font-weight:800;line-height:1.25;color:var(--r22-ink)}
+.r22-kpi-sub{margin:2px 0 0;font-size:.74rem;color:var(--r22-ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r22-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .r22-kpis>div{display:grid;gap:1px;padding:8px 10px;background:#f6f1e7;border-radius:5px;min-width:0}
 .r22-kpis b{font-size:clamp(.95rem,1.15vw,1.2rem);font-weight:800;line-height:1.15;color:var(--r22-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -120,11 +137,12 @@ body:has(#view-map.on)>footer{display:none}
 .r22-blocbar span:first-child{border-start-start-radius:3px;border-end-start-radius:3px}
 .r22-blocbar span:last-of-type{border-start-end-radius:3px;border-end-end-radius:3px}
 .r22-natmark{position:absolute;top:-4px;bottom:-4px;width:2px;margin-inline-start:-1px;background:#14233a;box-shadow:0 0 0 1px #fdfbf6}
-.r22-blocs ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:3px}
-.r22-blocs li{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--r22-ink-2)}
+.r22-blocs ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 14px}
+.r22-blocs li{display:flex;align-items:center;gap:6px;min-width:0;font-size:.8rem;color:var(--r22-ink-2);white-space:nowrap}
+.r22-blocs li span{overflow:hidden;text-overflow:ellipsis}
 .r22-blocs li i{width:10px;height:10px;border-radius:2px;background:var(--c);flex:none}
-.r22-blocs li b{margin-inline-start:auto;font-variant-numeric:tabular-nums;color:var(--r22-ink)}
-.r22-blocs li em{min-width:40px;text-align:end}
+.r22-blocs li b{margin-inline-start:2px;font-variant-numeric:tabular-nums;color:var(--r22-ink)}
+.r22-blocs li em{text-align:end}
 .r22-foot{margin:auto 0 0;font-size:.64rem;line-height:1.45;color:var(--r22-ink-3)}
 .r22-foot a{color:#254f83;text-decoration:underline}
 .r22-demo-sectors{display:grid;gap:4px;border-top:1px solid var(--r22-rule);padding-top:8px}
@@ -178,11 +196,26 @@ body:has(#view-map.on)>footer{display:none}
 
 /* --- מסכים נמוכים: מצמצמים ריווח כדי שהכול ייכנס --- */
 @media (min-width:1001px) and (max-height:820px){
-  .r22-head{margin-bottom:6px}.r22-head h2{font-size:1rem}
+  #view-map .r22{padding-top:8px;padding-bottom:10px}
+  .r22-head{margin-bottom:6px}
   .r22-dash{gap:8px}
-  .r22-kpis b{font-size:clamp(.9rem,1vw,1.05rem)}.r22-kpi{gap:6px;padding:10px 12px}.r22-kpi-head h3{font-size:1rem}
-  .r22-side{gap:9px}.r22-modes button{padding:7px 10px}
+  .r22-kpi{gap:6px;padding:10px 12px}.r22-kpis>div{padding:6px 9px}
+  .r22-side{gap:9px;padding:10px}.r22-modes button{padding:6px 10px}
+  .r22-card-head{padding:8px 12px 5px}
   .r22-foot{display:none}
+}
+/* מחשב נייד (עד 820px גובה): העמודה הימנית צריכה להכיל גם את ידיות התחזית בלי גלילה —
+   שלוש התצוגות בשורה אחת, תגיות האוכלוסייה צפופות יותר, וההסבר בשורה אחת */
+@media (min-width:1001px) and (max-height:820px){
+  .r22-modes{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .r22-modes button{padding:7px 2px;justify-items:center;text-align:center}
+  .r22-modes button b{font-size:.78rem;white-space:nowrap}
+  .r22-modes button small{display:none}
+  .r22-field>span:first-child{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .r22-chips{gap:4px}.r22-chips button{padding:3px 7px;font-size:.72rem}
+  .r22-explain{padding-top:6px}.r22-explain summary{min-height:0}
+  .r22-fc{margin-top:4px;padding-top:6px}
+  .r22-duel>div{padding:6px 8px}
 }
 /* --- טאבלט וטלפון: הכרטיסים נערמים, והעמוד גולל כרגיל --- */
 @media (max-width:1000px){
@@ -233,11 +266,20 @@ body:has(#view-map.on)>footer{display:none}
 .r22-bars .r22-card-head h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 /* ידיות התחזית (04.10.2026) */
 .r22-fc{margin:10px 0 0;padding:10px 0 0;border:0;border-top:1px solid #e4dccb;display:grid;gap:2px}
-.r22-fc legend{padding:0;font-size:.78rem;font-weight:800;color:var(--r22-ink)}
+.r22-fc legend{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;white-space:nowrap;padding:0;font-size:.78rem;font-weight:800;color:var(--r22-ink)}
+.r22-fc-reset{padding:2px 7px;border:1px solid #d3c9b7;border-radius:4px;background:transparent;color:var(--r22-ink-2);font:inherit;font-size:.66rem;font-weight:700;cursor:pointer}
+.r22-fc-reset:hover:not(:disabled){border-color:#c9a24f}
+.r22-fc-reset:disabled{opacity:.4;cursor:default}
+.r22-fc-reset:focus-visible{outline:2px solid #a07019;outline-offset:2px}
 .r22-slider{display:grid;grid-template-columns:minmax(0,74px) 1fr 42px;align-items:center;gap:6px;font-size:.76rem;font-weight:700;color:var(--r22-ink)}
 .r22-slider span{border-inline-start:3px solid var(--c,#a07019);padding-inline-start:6px}
 .r22-slider input{width:100%;accent-color:var(--c,#a07019);min-height:22px}
 .r22-slider b{text-align:end;font-variant-numeric:tabular-nums}
 .r22-fc-ref{display:block;margin:-3px 0 4px;padding-inline-start:84px;font-size:.62rem;color:var(--r22-ink-3)}
 .r22-slider-trend{margin-top:6px}
-.r22-fc .r22-reset{margin-top:6px}
+
+
+/* ---------- טעינה (05.10.2026): הלוגו במצב טעינה מעל הלוח עד שהנתונים מגיעים ---------- */
+.r22-loading{position:absolute;inset:0;z-index:5;display:grid;align-content:center;justify-items:center;gap:14px;
+  border-radius:8px;background:color-mix(in srgb,#0a1827 82%,transparent);backdrop-filter:blur(3px)}
+.r22-loading p{margin:0;font-size:.95rem;font-weight:700;color:#e8edf3}

@@ -156,7 +156,26 @@ dialog{border-radius:var(--card-r)!important}
 .masthead .brand-tag{font-size:.66rem;font-weight:500;color:var(--ink-3);line-height:1;margin:0}
 body>footer .fbrand{display:flex;align-items:center}
 body>footer .fbrand>img.brand-logo{width:auto!important;height:28px!important}
-#app-loading>img{width:auto!important;height:56px!important;border-radius:6px}
+/* הלוגו במצב טעינה (05.10.2026): העמודות עולות והקו נמתח — בטעינת האתר ובטעינת
+   המודל הגיאוגרפי (results2022.js משכפל את ה־.bm-loader של #app-loading) */
+.bm-loader{display:block;width:84px;height:84px;border-radius:18px;background:#0a1827;box-shadow:0 0 0 1px #e5c78347,0 18px 40px -18px #000}
+.bm-loader svg{display:block;width:100%;height:100%}
+.bm-loader .bm-bg{fill:#e3bc67;opacity:.16}
+.bm-loader .bm-bar{fill:#e3bc67;transform-box:fill-box;transform-origin:50% 100%;animation:bm-bar 1.8s cubic-bezier(.3,.7,.3,1) infinite}
+.bm-loader .bm-bar:nth-of-type(2){animation-delay:.12s}
+.bm-loader .bm-bar:nth-of-type(3){animation-delay:.24s}
+.bm-loader .bm-line{fill:none;stroke:#f5d995;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:56;stroke-dashoffset:56;animation:bm-line 1.8s ease-in-out infinite}
+.bm-loader .bm-dot{fill:#f5d995;opacity:0;transform-box:fill-box;transform-origin:center;animation:bm-dot 1.8s ease-out infinite}
+.bm-loader .bm-dot:nth-of-type(2){animation-delay:.08s}
+.bm-loader .bm-dot:nth-of-type(3){animation-delay:.16s}
+.bm-loader .bm-dot:nth-of-type(4){animation-delay:.24s}
+@keyframes bm-bar{0%{transform:scaleY(.12)}45%,80%{transform:scaleY(1)}100%{transform:scaleY(.12)}}
+@keyframes bm-line{0%,12%{stroke-dashoffset:56}55%,82%{stroke-dashoffset:0}100%{stroke-dashoffset:-56}}
+@keyframes bm-dot{0%,42%{opacity:0;transform:scale(.3)}58%,82%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.6)}}
+@media (prefers-reduced-motion:reduce){
+  .bm-loader :is(.bm-bar,.bm-line,.bm-dot){animation:none;stroke-dashoffset:0;opacity:1;transform:none}
+}
+#app-loading p{color:#dfe7ef}
 @media(max-width:800px){.masthead .brand>img.brand-logo{height:26px!important}.masthead .brand-tag{display:none}}
 
 /* ---------- כל המסכים מצד לצד (04.10.2026) ----------

@@ -6081,6 +6081,132 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-e2022 .acc-row .orglogo{width:46px;height:46px}
 #view-e2022 .acc-row .orglogo img{padding:6px}
 
+/* תחזית הברומטר (#/forecast) — עיצוב חדש: ראש עמוד בסגנון פוסטר (כותרת ענקית, ספירת הגושים במספרים גדולים, מפת מנדטים בכרטיס בהיר),
+   כותרות גדולות לכל קטע, והקטע הראשון נכנס במסך אחד של מחשב נייד. הצבעים ללא שינוי: נייבי, שמנת וזהב.
+   נטען אחרון, כדי לגבור על שכבות העיצוב הישנות (editorial / election / experience / clarity). */
+
+/* ---------- ראש העמוד: פוסטר כהה ---------- */
+#view-home:not(#_):not(#__).on>.verdict{display:flex;align-items:center;padding:14px 0 12px}
+#view-home:not(#_):not(#__) .verdict>.wrap{width:100%}
+#view-home:not(#_):not(#__) .verdict .verdict-in{position:relative;overflow:hidden;width:100%;padding:14px 36px 0;border:1px solid #e5c78355;border-radius:16px;color:#f6f3ec;
+  background:radial-gradient(110% 130% at 100% 0%,#1d4f86 0%,#12345c 42%,#0a1c33 100%);box-shadow:0 26px 60px -30px #000000cc}
+#view-home:not(#_):not(#__) .verdict .verdict-in::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(115deg,transparent 0 46px,#ffffff07 46px 47px),radial-gradient(38% 55% at 14% 96%,#e5c78333,transparent 70%)}
+#view-home:not(#_):not(#__) .verdict .verdict-in>*{position:relative}
+#view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:10px;border-bottom:1px solid #ffffff1f}
+#view-home:not(#_):not(#__) .verdict .eyebrow{color:#e5c783;font-size:.78rem;font-weight:800;letter-spacing:.05em}
+#view-home:not(#_):not(#__) .verdict .edition-label{color:#9fb4c9}
+#view-home:not(#_):not(#__) .verdict .election-hero{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:44px;align-items:center;padding:14px 0 12px}
+#view-home:not(#_):not(#__) .verdict .hero-overline{margin:0 0 6px;color:#e5c783;font-size:.8rem;font-weight:800;letter-spacing:.05em}
+#view-home:not(#_):not(#__) .verdict #verdict-head{margin:0 0 10px;font-size:clamp(2.7rem,8.4dvh,5.2rem);font-weight:900;line-height:.98;letter-spacing:-.05em;color:#fff}
+#view-home:not(#_):not(#__) .verdict #verdict-head em{display:inline-block;margin-top:4px;font-style:normal;
+  background:linear-gradient(180deg,#f6e7bd 20%,#d9b45f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#view-home:not(#_):not(#__) .verdict .forecast-headline{max-width:none;margin:0 0 6px;font-size:1.05rem;line-height:1.55;font-weight:700;color:#f6e7bd}
+#view-home:not(#_):not(#__) .verdict .forecast-headline em{color:#fff;font-style:normal}
+#view-home:not(#_):not(#__) .verdict .hero-description{max-width:44ch;margin:0 0 12px;font-size:.85rem;line-height:1.7;color:#c3cedb}
+#view-home:not(#_):not(#__) .verdict .hero-cta{margin-top:10px}
+#view-home:not(#_):not(#__) .verdict .show-btn{padding:12px 20px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font-size:.9rem;font-weight:800;
+  box-shadow:0 12px 26px -12px #e5c783}
+#view-home:not(#_):not(#__) .verdict .show-btn:hover{filter:brightness(1.06);background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62))}
+#view-home:not(#_):not(#__) .verdict .show-btn .play{display:inline-grid;place-items:center;width:24px;height:24px;margin-inline-end:6px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:.62rem}
+#view-home:not(#_):not(#__) .verdict .hero-link{color:#dbe5f0;font-size:.85rem;font-weight:700}
+#view-home:not(#_):not(#__) .verdict .hero-link span{border-color:#ffffff44;color:#f6e7bd}
+
+/* מפת המנדטים: כרטיס בהיר על הפוסטר, ספירת הגושים במספרים גדולים */
+#view-home:not(#_):not(#__) .verdict .election-visual{padding:14px 20px 10px;border:1px solid #ffffff55;border-radius:12px;background:linear-gradient(140deg,#fdfbf6,#f3eee4);box-shadow:0 22px 40px -24px #000000d0}
+#view-home:not(#_):not(#__) .verdict .visual-topline{padding-bottom:6px}
+#view-home:not(#_):not(#__) .verdict .home-hemicycle{margin:6px auto 0}
+#view-home:not(#_):not(#__) .verdict .sm-bloc b{font-size:2.9rem;line-height:1;font-weight:900;letter-spacing:-.04em}
+#view-home:not(#_):not(#__) .verdict .sm-bloc span{font-size:.78rem;font-weight:700}
+#view-home:not(#_):not(#__) .verdict .seatmap .hemicycle-total{font-size:62px}
+
+/* בקרות: ממוצע/תחזית ותאריך */
+#view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:10px 0 12px;border-top:1px solid #ffffff1f;color:#c3cedb}
+#view-home:not(#_):not(#__) .verdict .home-switch{border:1px solid #ffffff33;background:#ffffff12}
+#view-home:not(#_):not(#__) .verdict .home-switch button{color:#dbe5f0}
+#view-home:not(#_):not(#__) .verdict .home-switch button[aria-pressed="true"]{background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a}
+#view-home:not(#_):not(#__) .verdict .home-history-pick span{color:#b4c1ce}
+#view-home:not(#_):not(#__) .verdict .home-history-pick select{color-scheme:dark}
+
+/* מחשב נייד: הקטע כולו במסך אחד */
+@media (min-width:901px) and (max-height:800px){
+  #view-home:not(#_):not(#__).on>.verdict{padding:8px 0 6px}
+  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:10px 30px 0}
+  #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:6px}
+  #view-home:not(#_):not(#__) .verdict .election-hero{padding:8px 0 6px;gap:34px}
+  #view-home:not(#_):not(#__) .verdict .hero-description{display:none}
+  #view-home:not(#_):not(#__) .verdict .election-visual{padding:8px 16px 6px}
+  #view-home:not(#_):not(#__) .verdict .visual-topline{display:none}
+  #view-home:not(#_):not(#__) .verdict .sm-votes,#view-home:not(#_):not(#__) .verdict .visual-footnote{display:none}
+  #view-home:not(#_):not(#__) .verdict .sm-bloc b{font-size:2.3rem}
+  #view-home:not(#_):not(#__) .verdict .seatmap svg{max-width:min(430px,calc((100dvh - 330px) * 1.5))}
+  #view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:6px 0 8px}
+  #view-home:not(#_):not(#__) .verdict .home-switch button{min-height:28px;padding:5px 12px}
+}
+@media (max-width:900px){
+  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:14px 18px 0}
+  #view-home:not(#_):not(#__) .verdict .election-hero{grid-template-columns:minmax(0,1fr);gap:20px}
+}
+
+/* ---------- כותרות גדולות לכל קטע ---------- */
+#view-home:not(#_):not(#__) .board-title h2,#view-home:not(#_):not(#__) .ec-title,#view-home:not(#_):not(#__) #ec-title{font-size:clamp(2rem,4.6dvh,2.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.1}
+#view-home:not(#_):not(#__) .board-title .kicker{color:#e5c783;font-size:.78rem;font-weight:800;letter-spacing:.05em}
+#view-home:not(#_):not(#__) .board-title h2{color:#fff}
+#view-home:not(#_):not(#__) .board-title{padding-bottom:12px;border-bottom:2px solid #e5c78366}
+#view-home:not(#_):not(#__) .verdict .home-history-pick select{background:#ffffff14;color:#f6e7bd;border:1px solid #ffffff3a;border-radius:6px}
+#view-home:not(#_):not(#__) .verdict .home-history-pick select option{color:#14233a;background:#fff}
+@media (min-width:901px) and (max-height:800px){
+  #view-home:not(#_):not(#__) .board-title h2{font-size:1.75rem}
+  #view-home:not(#_):not(#__) .board-title{padding-bottom:6px}
+  #view-home:not(#_):not(#__) .board .board-summary{margin-top:6px}
+}
+
+/* ---------- הקואליציה: כותרת פוסטר, ובמחשב נייד הכול במסך אחד ---------- */
+#view-home:not(#_):not(#__) .election-coalition .ec-heading h2{font-size:clamp(2rem,4.6dvh,2.8rem);font-weight:900;letter-spacing:-.04em}
+#view-home:not(#_):not(#__) .election-coalition .ec-eyebrow{font-size:.78rem}
+@media (min-width:901px) and (max-height:800px){
+  #view-home:not(#_):not(#__) .election-coalition{padding-block:10px 12px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-panel{padding:12px 24px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-heading{padding-bottom:8px;margin-bottom:10px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-heading h2{font-size:1.7rem}
+  #view-home:not(#_):not(#__) .election-coalition .ec-eyebrow{margin-bottom:2px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-intro{margin-top:2px;font-size:.85rem}
+  #view-home:not(#_):not(#__) .election-coalition .ec-source{display:none}
+  #view-home:not(#_):not(#__) .election-coalition .ec-map{max-height:170px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-selection{min-height:0;margin-top:6px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-choices-heading{margin-bottom:8px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-parties{gap:7px}
+  #view-home:not(#_):not(#__) .election-coalition .ec-party-image{aspect-ratio:2.1}
+  #view-home:not(#_):not(#__) .election-coalition .ec-note{display:none}
+}
+
+/* ---------- "כך נבנית התמונה": כותרת פוסטר, ובמחשב נייד הכול במסך אחד ---------- */
+#view-home:not(#_):not(#__) #home-story .story-head h2{font-size:clamp(2rem,4.6dvh,2.8rem);font-weight:900;letter-spacing:-.04em}
+@media (min-width:901px) and (max-height:800px){
+  #view-home:not(#_):not(#__) .home-method{padding-block:8px 8px;margin-top:0}
+  #view-home:not(#_):not(#__) #home-story{padding:12px 24px}
+  #view-home:not(#_):not(#__) #home-story .story-head{align-items:center}
+  #view-home:not(#_):not(#__) #home-story .story-head h2{font-size:1.75rem;margin:0}
+  #view-home:not(#_):not(#__) #home-story .story-head p:not(.kicker){display:none}
+  #view-home:not(#_):not(#__) #home-story .story-steps{margin:8px 0 10px}
+  #view-home:not(#_):not(#__) #home-story .story-steps button{padding-block:6px}
+  #view-home:not(#_):not(#__) #home-story .story-layout{min-height:0;gap:28px}
+  #view-home:not(#_):not(#__) #home-story .story-graphs{gap:12px;padding:12px 16px}
+  #view-home:not(#_):not(#__) #home-story .story-controls{margin-top:8px}
+  #view-home:not(#_):not(#__) #home-story .story-controls button{padding-block:5px}
+  #view-home:not(#_):not(#__) #home-story .story-steps button{display:flex;align-items:center;justify-content:center;gap:8px;padding-block:5px;line-height:1.2}
+  #view-home:not(#_):not(#__) #home-story .story-method-link{min-height:0;margin-top:4px;padding-block:4px}
+  #view-home:not(#_):not(#__) #home-story .story-sources{margin-top:8px;padding-top:6px}
+}
+@media (min-width:901px) and (max-height:800px){
+  #view-home:not(#_):not(#__) .home-method{padding-block:4px}
+  #view-home:not(#_):not(#__) #home-story{padding:8px 22px}
+  #view-home:not(#_):not(#__) #home-story .story-graphs{padding:8px 14px;gap:8px}
+  #view-home:not(#_):not(#__) #home-story .story-controls{margin-top:4px}
+  #view-home:not(#_):not(#__) #home-story .story-sources{margin-top:4px;padding-top:2px}
+  #view-home:not(#_):not(#__) #home-story .story-sources summary{padding-block:2px}
+}
+
 </style>
 </head><body>
 

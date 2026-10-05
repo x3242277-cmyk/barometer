@@ -17,7 +17,7 @@
 .gap-tools{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
 .gap-tool{min-height:34px;padding:5px 14px;border:1px solid #e5c78366;border-radius:8px;background:#e5c78314;color:#f1d99d;font:700 .8rem var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
 .gap-tool:hover{background:#e5c78330}
-.gap-tool:focus-visible,.gap-next:focus-visible,.gap-back:focus-visible,.gap-redo:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
+.gap-tool:focus-visible,.gap-cta:focus-visible,.gap-back:focus-visible,.gap-redo:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
 
 /* ---------- הלוח: סקר · הפער · סקר ---------- */
 .gap-board{display:grid;grid-template-columns:minmax(0,1fr) var(--mid) minmax(0,1fr);gap:12px;align-items:stretch}
@@ -98,13 +98,10 @@
 .gap-baro em{position:absolute;top:12px;left:50%;transform:translateX(-50%);padding:0 6px;border-radius:5px;font-style:normal;font-size:.74rem;font-weight:800;color:#6b4a07;white-space:nowrap;direction:rtl;background:#f3e3b8}
 
 /* ---------- למטה: הניחוש וההזמנה לשלב הבא ---------- */
-.gap-foot{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
 .gap-picked{margin:0;font-size:.86rem;color:var(--ink-2)}
 .gap-picked b{color:var(--gold)}
 .gap-redo{margin-inline-start:8px;padding:2px 10px;border:1px solid #e5c78366;border-radius:6px;background:none;color:#f1d99d;font:700 .76rem var(--sans);cursor:pointer}
 .gap-redo:hover{background:#e5c78322}
-.gap-next{flex:none;min-height:40px;padding:6px 22px;border:1px solid #e5c783;border-radius:8px;background:var(--champagne,#e5c783);color:#14233a;font:900 .95rem var(--sans);cursor:pointer;transition:transform .15s,box-shadow .15s}
-.gap-next:hover{transform:translateX(-3px);box-shadow:0 4px 14px #e5c78344}
 
 /* ---------- מי צדק בפעם הקודמת: כל מכון מול התוצאה האמיתית ---------- */
 .gap-record{padding:12px 18px 12px;animation:gap-in .4s ease both}
@@ -146,6 +143,7 @@
 @keyframes gap-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ---------- אחרי הבחירה: הכול נכנס למסך אחד ---------- */
+.gap.is-parts{--mid:148px}
 .gap.is-revealed{gap:8px}
 .gap.is-revealed .gap-head h2{font-size:clamp(1.15rem,1.9vw,1.6rem)}
 .gap.is-revealed .gap-head :is(.gap-lead,.gap-note){display:none}
@@ -178,20 +176,11 @@
   .gap-parts,.gap-scale,.gap-record{padding-block:9px}
 }
 
-@media (max-height:620px){
+@media (max-height:720px){
   .gap-go span,.gap-rec-caption{display:none}
   .gap-invite{gap:5px}
   .gap-go{padding:6px 12px}
 }
-
-/* ---------- הלשונית הזאת בלי עמודת הסקרים האחרונים ---------- */
-@media (min-width:981px){
-  #view-polls[data-tab="gap"] .polls-feed{display:none}
-  #view-polls[data-tab="gap"] .polls-layout{grid-template-columns:148px minmax(0,1fr)!important}
-}
-.polls-sidebar .pn.pn-hook{margin-bottom:6px;border:1px solid #e5c78366;background:#e5c78314;color:#f6e7bd}
-.polls-sidebar .pn.pn-hook:hover{background:#e5c78330}
-.polls-sidebar .pn.pn-hook[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a;border-color:transparent}
 
 /* מסכים צרים (יסודר בסוף) */
 @media (max-width:980px){
@@ -200,4 +189,32 @@
   .gap-invite-links{grid-template-columns:repeat(2,minmax(0,1fr))}
   .gap-rec-row{grid-template-columns:90px minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.gap-parts,.gap-scale,.gap-record,.gap-invite{animation:none}.gap-choices button,.gap-poll,.gap-next,.gap-go,.gap-tool{transition:none}}
+@media (prefers-reduced-motion:reduce){.gap-parts,.gap-scale,.gap-record,.gap-invite{animation:none}.gap-choices button,.gap-poll,.gap-go,.gap-tool{transition:none}}
+
+/* ---------- הכפתור הגדול באמצע: ומי צדק בפעם הקודמת? ---------- */
+.gap-cta{display:grid;place-content:center;justify-items:center;gap:1px;width:132px;height:132px;margin-top:10px;padding:10px;border:0;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f8e7b6,#d1ad62 72%);color:#14233a;font:900 1rem/1.15 var(--sans);text-align:center;cursor:pointer;animation:gap-pulse 2.6s ease-out infinite;transition:transform .15s}
+.gap-cta:hover{transform:scale(1.07);animation-play-state:paused}
+.gap-cta:focus-visible{outline:3px solid #f1d99d;outline-offset:3px}
+.gap-diff .gap-cta :is(span,b,i){color:#14233a;letter-spacing:normal;line-height:1.15}
+.gap-diff .gap-cta span{font-size:.92rem;font-weight:800}
+.gap-diff .gap-cta b{font-size:1.22rem;font-weight:900}
+.gap-diff .gap-cta i{font-style:normal;font-size:1.5rem;line-height:1}
+.gap-cta-hint{max-width:120px;margin-top:2px;font-size:.68rem;font-weight:700;line-height:1.25;color:var(--gold);text-align:center}
+@keyframes gap-pulse{0%{box-shadow:0 0 0 0 #e5c783aa}70%{box-shadow:0 0 0 16px #e5c78300}100%{box-shadow:0 0 0 0 #e5c78300}}
+.gap-head .gap-picked{margin:4px 0 0;font-size:.82rem;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){.gap-cta{animation:none;transition:none}}
+
+/* ---------- מחשב נייד נמוך (עד ~600px גובה) ---------- */
+@media (max-height:620px){
+  .gap-rec-plot{height:48px}
+  .gap-record{padding-block:7px 8px}
+  .gap-board .gap-rec-foot{margin-top:4px;padding:4px 10px;font-size:.76rem}
+  .gap-invite-head b{font-size:.9rem}
+  .gap-go{padding:5px 12px}
+  .gap.is-revealed .gap-poll{padding:8px 14px 10px;row-gap:4px}
+  .gap-parts,.gap-scale{padding-block:8px 9px}
+  .gap-head h2{font-size:1.2rem}
+  .polls-tabbar .pn{padding:8px 16px 9px}
+  .polls-tabbar{margin-bottom:8px}
+  .gap.is-record{gap:4px}
+}

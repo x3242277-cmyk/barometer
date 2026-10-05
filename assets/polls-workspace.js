@@ -61,14 +61,28 @@ function explorerLines(P, state) {
   });
 }
 
+/* מפלגות לפי בסיס המספרים שנבחר: ממוצע נע, משוקלל אמינות או תחזית הברומטר — נקודה אחת ביום (האחרונה).
+   רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר. */
+function explorerPartyLines(M, state) {
+  const end = M.now.t, start = S.trackRange === 'month' ? end - 29 * DAY_MS : -Infinity;
+  const day = t => new Date(t).toLocaleDateString('en-CA', { timeZone: 'Asia/Jerusalem' });
+  const byDay = new Map(); M.series.filter(s => s.t >= start).forEach(s => byDay.set(day(s.t), s));
+  const series = [...byDay.values()];
+  return state.selected.map((e, i) => {
+    const points = series.map(s => ({ t: s.t, v: s.parties[e.key] || 0, n: s.n, firms: s.firms, polls: [], signature: '' }));
+    return { ...e, color: e.color || EXPLORER_COLORS[i], points, last: points.at(-1) };
+  });
+}
+const explorerLinesFor = (P, M, state) => state.mode === 'parties' && M ? explorerPartyLines(M, state) : explorerLines(P, state);
+
 /* כל תאריכי הפרסום בטווח, מהחדש לישן; — = לא נמדד בתאריך הזה */
 function explorerTable(lines, dates) {
   return `<div class="tablewrap ex-data-table" tabindex="0" role="region" aria-label="נתוני ההשוואה"><table><thead><tr><th scope="col">תאריך</th>${lines.map(l => `<th scope="col" style="--c:${l.color}">${esc(l.label)}</th>`).join('')}</tr></thead><tbody>${dates.map(t => `<tr><th scope="row">${trDay(t)}</th>${lines.map(l => { const p = l.points.find(p => p.t === t); return `<td>${p ? `<b>${trFmt(p.v)}</b>${p.n > 1 ? `<small>${p.n} סקרים</small>` : ''}` : '<span class="ex-na" title="אין מדידה בתאריך זה">—</span>'}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 /* הגרף בגודל המקום שקיבל (S.trackWidth × S.trackH), כך שהטקסט לא נמתח */
-function explorerChart(P, state) {
-  const lines = explorerLines(P, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
+function explorerChart(P, state, M) {
+  const lines = explorerLinesFor(P, M, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
   const dates = [...new Set(points.map(p => p.t))].sort((a, b) => b - a), table = explorerTable(lines, dates);
   if (!points.length) return { lines, dates, table, svg: `<div class="ex-empty">${state.selected.length ? 'אין מדידות בטווח הזה. נסו טווח רחב יותר.' : 'בחרו לוגו אחד או יותר כדי להשוות.'}</div>` };
   const W = Math.max(320, S.trackWidth || 850), H = Math.max(160, S.trackH || 260), m = { l: 34, r: 16, t: 14, b: 26 };
@@ -85,7 +99,8 @@ function explorerChart(P, state) {
   for (let i=0;i<=ticks;i++) { const t=t0+(t1-t0)*i/ticks; grid += `<text class="tr-tick" x="${x(t)}" y="${H-8}" text-anchor="middle">${trDay(t)}</text>`; }
   const paths = valid.map(l => `<path class="tr-line ex-line" stroke="${l.color}" d="${l.points.map((p,i) => `${i && p.signature===l.points[i-1].signature?'L':'M'}${x(p.t).toFixed(1)} ${y(p.v).toFixed(1)}`).join('')}"/>${l.points.map(p => `<circle class="ex-point" cx="${x(p.t).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="${l.color}"><title>${esc(l.label)} · ${trDay(p.t)} · ${trFmt(p.v)} מנדטים · ${p.n} סקרים</title></circle>`).join('')}`).join('');
   const svg = `<svg class="tr-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="השוואת ${esc(lines.map(l=>l.label).join(', '))} לאורך זמן, במנדטים. הנתונים המלאים בתצוגת הטבלה.">${grid}${paths}<line class="tr-cursor" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/><rect class="tr-hit" x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}"/></svg>`;
-  return { lines, dates, table, svg, geom: { W, m, t0, t1, x, y } };
+  const sub = state.mode === 'parties' && M ? TRACK_BASES[M.basis || 'avg'].label : '';
+  return { lines, dates, table, svg, sub, geom: { W, m, t0, t1, x, y } };
 }
 
 const exInfo = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
@@ -103,12 +118,13 @@ function explorerKeys(M, state, lines) {
 
 function explorerTools(P, M, state) {
   const out = [exSelect('data-ex-lens', 'מה להשוות', [['overview', 'מבט כולל · הגושים'], ['parties', 'מפלגות'], ['firms', 'מכונים'], ['channels', 'ערוצים']], state.mode)], basis = M.basis || 'avg';
-  if (state.mode === 'overview') out.push(exSelect('data-ex-basis', 'על מה מבוססים המספרים', Object.entries(TRACK_BASES).map(([k, b]) => [k, b.label]), basis));
-  else if (state.mode !== 'parties') out.push(exSelect('data-ex-metric', 'מה משווים', [['Right','ימין וחרדים'],['Left','מרכז–שמאל'],['Arabs','הרשימות הערביות'],...P.parties.map(p=>[p.id,p.name])], state.metric));
-  const first = state.mode === 'overview' ? M.series[0].t : parsePollDate(P.polls[0]), last = state.mode === 'overview' ? M.now.t : parsePollDate(P.polls.at(-1));
-  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', state.mode === 'overview' && basis !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
+  if (state.mode !== 'overview' && state.mode !== 'parties') out.push(exSelect('data-ex-metric', 'מה משווים', [['Right','ימין וחרדים'],['Left','מרכז–שמאל'],['Arabs','הרשימות הערביות'],...P.parties.map(p=>[p.id,p.name])], state.metric));
+  const series = state.mode === 'overview' || state.mode === 'parties';
+  const first = series ? M.series[0].t : parsePollDate(P.polls[0]), last = series ? M.now.t : parsePollDate(P.polls.at(-1));
+  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', series && basis !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
   out.push(`<div class="switch ex-view" role="group" aria-label="תצוגה"><button type="button" data-ex-view="chart" aria-pressed="${state.view === 'chart'}">גרף</button><button type="button" data-ex-view="table" aria-pressed="${state.view === 'table'}">טבלה</button></div>`);
-  out.push(exInfo(state.mode === 'overview' ? `${TRACK_BASES[basis].note} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.` : EXPLORER_NOTE));
+  out.push(exInfo(state.mode === 'overview' ? `${TRACK_BASES[basis].note} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
+    : state.mode === 'parties' ? `${TRACK_BASES[basis].note} כל קו הוא מפלגה אחת; רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר.` : EXPLORER_NOTE));
   return out.join('');
 }
 
@@ -122,9 +138,11 @@ function explorerPicker(state) {
 
 function renderExplorerHTML(P, M) {
   const state = explorerState(P);
-  state.lines = state.mode === 'overview' ? [] : explorerLines(P, state);
+  state.lines = state.mode === 'overview' ? [] : explorerLinesFor(P, M, state);
   S.explorer = { P, M, state };
-  return `<div class="tr-card ex-workspace" data-mode="${state.mode}">
+  const basis = M.basis || 'avg', tabs = state.mode === 'overview' || state.mode === 'parties'
+    ? `<div class="ex-tabs" role="tablist" aria-label="על מה מבוססים המספרים">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" role="tab" data-ex-basis="${k}" aria-selected="${basis === k}" title="${esc(b.note)}">${b.label}</button>`).join('')}</div>` : '';
+  return `<div class="tr-card ex-workspace" data-mode="${state.mode}">${tabs}
     <div class="ex-bar"><div class="ex-keys">${explorerKeys(M, state, state.lines)}</div><div class="ex-tools">${explorerTools(P, M, state)}</div></div>
     ${state.mode === 'overview' ? '' : explorerPicker(state)}
     <div class="ex-body" data-ex-body></div>
@@ -136,7 +154,7 @@ function drawExplorer() {
   const X = S.explorer, body = document.querySelector('#poll-tracker [data-ex-body]'); if (!X || !body) return;
   const w = Math.round(body.clientWidth), h = Math.round(body.clientHeight); if (!w || !h) return;
   S.trackWidth = w; S.trackH = h; S.exDrawn = `${w}x${h}`;
-  const overview = X.state.mode === 'overview', chart = overview ? trackerChart(X.M, 'blocs') : explorerChart(X.P, X.state);
+  const overview = X.state.mode === 'overview', chart = overview ? trackerChart(X.M, 'blocs') : explorerChart(X.P, X.state, X.M);
   if (X.state.view === 'table') { body.innerHTML = chart.table; return; }
   body.innerHTML = `<div class="tr-plot">${chart.svg}<div class="tr-tip" hidden></div></div>`;
   if (chart.geom) (overview ? wireTrackerHover : wireExplorerHover)(body, chart);
@@ -161,7 +179,7 @@ function wireExplorerHover(box, chart) {
     const t=geom.t0+(px-geom.m.l)/(geom.W-geom.m.l-geom.m.r)*(geom.t1-geom.t0);
     const date=chart.dates.reduce((a,b)=>Math.abs(b-t)<Math.abs(a-t)?b:a), sx=geom.x(date);
     cursor.setAttribute('x1',sx);cursor.setAttribute('x2',sx);cursor.removeAttribute('hidden');tip.hidden=false;
-    tip.innerHTML=`<b>${trDay(date)}</b><small>תוצאות שפורסמו בתאריך זה</small>${chart.lines.map(l=>{const p=l.points.find(p=>p.t===date);return `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${p?trFmt(p.v):'—'}</b></span>`;}).join('')}`;
+    tip.innerHTML=`<b>${trDay(date)}</b><small>${chart.sub || 'תוצאות שפורסמו בתאריך זה'}</small>${chart.lines.map(l=>{const p=l.points.find(p=>p.t===date);return `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${p?trFmt(p.v):'—'}</b></span>`;}).join('')}`;
     tip.style.left=Math.max(4,Math.min(r.width-tip.offsetWidth-4,sx/geom.W*r.width-tip.offsetWidth-12))+'px';
   };
   hit.addEventListener('pointermove',show); hit.addEventListener('pointerdown',show);
@@ -194,6 +212,8 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
   document.addEventListener('click',e=>{
     const entity=e.target.closest('[data-ex-entity]');
     if(entity){const key=entity.dataset.exEntity,selected=S.exploreSelections[S.exploreMode];S.exploreSelections[S.exploreMode]=selected.includes(key)?selected.filter(k=>k!==key):selected.concat(key).slice(0,EXPLORER_MAX);renderExplorer();refocus(`[data-ex-entity="${CSS.escape(key)}"]`);return;}
+    const basis=e.target.closest('button[data-ex-basis]');
+    if(basis){S.trackBasis=basis.dataset.exBasis;renderExplorer();refocus(`button[data-ex-basis="${S.trackBasis}"]`);return;}
     const view=e.target.closest('[data-ex-view]');
     if(view){S.exploreView=view.dataset.exView;renderExplorer();refocus(`[data-ex-view="${S.exploreView}"]`);return;}
     const single=e.target.closest('[data-feed-poll]');
@@ -201,7 +221,7 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
     if(e.target.closest('[data-gallery-close]'))$('#poll-gallery').close();
   });
   document.addEventListener('change',e=>{
-    const controls={'data-ex-lens':'exploreMode','data-ex-metric':'exploreMetric','data-ex-range':'trackRange','data-ex-basis':'trackBasis'};
+    const controls={'data-ex-lens':'exploreMode','data-ex-metric':'exploreMetric','data-ex-range':'trackRange'};
     for(const [attr,key] of Object.entries(controls)) if(e.target.hasAttribute?.(attr)){S[key]=e.target.value;renderExplorer();refocus(`[${attr}]`);return;}
   });
   $('#poll-gallery')?.addEventListener('click',e=>{if(e.target===$('#poll-gallery'))$('#poll-gallery').close();});

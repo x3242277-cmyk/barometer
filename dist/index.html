@@ -4964,39 +4964,42 @@ body:has(#view-demography.on)>footer{display:none}
    התפריט משותף לעמוד דיוק המכונים (renderPollsNav ב־poll-tracker.js).
    ============================================================ */
 
-/* ---------- תפריט הצד ---------- */
-.polls-sidebar{display:flex;flex-direction:column;gap:2px;align-self:start;padding:8px;border:1px solid #e5c78333;border-radius:10px;background:#ffffff08;min-width:0}
-.polls-sidebar .pn{display:block;padding:8px 10px;border-radius:6px;color:#dfe6ee;font:700 .84rem/1.3 var(--sans);text-decoration:none;transition:background .15s,color .15s}
-.polls-sidebar .pn:hover{background:#e5c78320;color:#f1d99d}
-.polls-sidebar .pn[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a}
-.polls-sidebar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:1px}
+/* ---------- סרגל הלשוניות: כמו בכל אתר — שורה אחת למעלה, והלשונית הפעילה מודגשת בקו ---------- */
+.polls-tabbar{flex:none;display:flex;gap:2px;margin:0 0 10px;border-bottom:1px solid #ffffff22;overflow-x:auto;scrollbar-width:none}
+.polls-tabbar::-webkit-scrollbar{display:none}
+.polls-tabbar .pn{position:relative;flex:none;padding:10px 18px 11px;margin-bottom:-1px;border-bottom:3px solid transparent;color:#bcc9d8;font:700 .92rem/1.2 var(--sans);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s,border-color .15s}
+.polls-tabbar .pn:hover{color:#f6e7bd;background:#ffffff0c}
+.polls-tabbar .pn[aria-current="page"]{color:#f6e7bd;border-bottom-color:#e5c783}
+.polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:-3px;border-radius:4px}
+.polls-tabbar .pn-hook::before{content:"";display:inline-block;width:7px;height:7px;margin-inline-end:8px;border-radius:50%;background:#e5c783;vertical-align:.08em}
 
 /* ---------- הפריסה במחשב ---------- */
 @media (min-width:981px){
-  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:10px}
-  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin:0;display:grid;grid-template-columns:148px minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
-  #view-polls[data-tab="list"] .polls-layout{grid-template-columns:148px minmax(0,1fr)!important}
-  #view-polls[data-tab="list"] .polls-feed{display:none}
+  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:6px 10px}
+  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
+  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
+  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-feed{display:none}
   #view-polls .polls-main{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
   #view-polls .polls-main>.sec{flex:1 1 auto;min-height:0;margin:0!important;padding:0!important;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
   #view-polls .polls-main>.sec[hidden]{display:none}
   #view-polls .polls-feed{position:static;align-self:stretch;max-height:none;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0}
   #view-polls .feed-list{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#e5c78355 transparent;padding:0 2px 6px 4px}
-  /* דיוק המכונים: אותו תפריט צד, והתוכן לידו */
-  #view-e2022>.wrap{display:grid;grid-template-columns:148px minmax(0,1fr);column-gap:14px;align-items:start;padding-top:10px}
-  #view-e2022>.wrap>.polls-sidebar{grid-column:1;grid-row:1/span 20;position:sticky;top:calc(var(--masthead-h,80px) + 10px)}
-  #view-e2022>.wrap>:not(.polls-sidebar){grid-column:2;min-width:0}
+  #view-e2022>.wrap{padding-top:6px}
 }
 @media (min-width:981px) and (max-width:1300px){
-  #view-polls .polls-layout{grid-template-columns:132px minmax(0,1fr) 270px!important;gap:12px!important}
-  #view-polls[data-tab="list"] .polls-layout{grid-template-columns:132px minmax(0,1fr)!important}
-  #view-e2022>.wrap{grid-template-columns:132px minmax(0,1fr)}
+  #view-polls .polls-layout{grid-template-columns:minmax(0,1fr) 270px!important;gap:12px!important}
+  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
 }
 
 /* ---------- מגמות והשוואות: כרטיס אחד שממלא את הגובה ---------- */
 #view-polls .tracker-sec{display:flex;flex-direction:column}
 #view-polls #poll-tracker{flex:1 1 auto;min-height:0;display:flex;gap:0}
 #view-polls .ex-workspace{flex:1 1 auto;min-width:0;min-height:0;margin:0;display:flex;flex-direction:column;gap:10px;padding:12px 16px 10px}
+.ex-tabs{display:flex;gap:2px;margin:-4px 0 0;border-bottom:1px solid var(--rule)}
+.ex-tabs button{flex:none;padding:8px 18px 9px;margin-bottom:-1px;border:0;border-bottom:3px solid transparent;background:none;color:var(--ink-3);font:800 .9rem var(--sans);cursor:pointer;transition:color .15s,border-color .15s}
+.ex-tabs button:hover{color:var(--ink)}
+.ex-tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:#b8862b}
+.ex-tabs button:focus-visible{outline:2px solid #c9a24f;outline-offset:-2px;border-radius:4px}
 .ex-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px}
 .ex-keys{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;min-width:0}
 /* מקרא = המספרים: פס בצבע הקו, השם, הערך, ומתחתיו השינוי או התאריך */
@@ -5108,12 +5111,10 @@ body:has(#view-demography.on)>footer{display:none}
 /* ---------- טלפון וטאבלט (יסודר בסוף) ---------- */
 @media (max-width:980px){
   #view-polls .polls-layout{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
-  .polls-sidebar{flex-direction:row;flex-wrap:wrap;align-items:center}
   #view-polls[data-tab="list"] .polls-feed{display:none}
   .ex-body{flex:none;height:300px}
-  #view-e2022>.wrap>.polls-sidebar{margin-top:12px}
 }
-@media (prefers-reduced-motion:reduce){.polls-sidebar .pn,.ex-logo-button{transition:none}}
+@media (prefers-reduced-motion:reduce){.polls-tabbar .pn,.ex-logo-button,.ex-tabs button{transition:none}}
 
 /* למה הסקרים חלוקים? — שני סקרים, ופירוק של הפער. נטען אחרי polls-workspace.css.
    הכול על לוח אחד בשלוש עמודות (סקר · הפער · סקר): שורה ראשונה — שני הסקרים; שורה שנייה —
@@ -5134,7 +5135,7 @@ body:has(#view-demography.on)>footer{display:none}
 .gap-tools{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
 .gap-tool{min-height:34px;padding:5px 14px;border:1px solid #e5c78366;border-radius:8px;background:#e5c78314;color:#f1d99d;font:700 .8rem var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
 .gap-tool:hover{background:#e5c78330}
-.gap-tool:focus-visible,.gap-next:focus-visible,.gap-back:focus-visible,.gap-redo:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
+.gap-tool:focus-visible,.gap-cta:focus-visible,.gap-back:focus-visible,.gap-redo:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
 
 /* ---------- הלוח: סקר · הפער · סקר ---------- */
 .gap-board{display:grid;grid-template-columns:minmax(0,1fr) var(--mid) minmax(0,1fr);gap:12px;align-items:stretch}
@@ -5215,13 +5216,10 @@ body:has(#view-demography.on)>footer{display:none}
 .gap-baro em{position:absolute;top:12px;left:50%;transform:translateX(-50%);padding:0 6px;border-radius:5px;font-style:normal;font-size:.74rem;font-weight:800;color:#6b4a07;white-space:nowrap;direction:rtl;background:#f3e3b8}
 
 /* ---------- למטה: הניחוש וההזמנה לשלב הבא ---------- */
-.gap-foot{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
 .gap-picked{margin:0;font-size:.86rem;color:var(--ink-2)}
 .gap-picked b{color:var(--gold)}
 .gap-redo{margin-inline-start:8px;padding:2px 10px;border:1px solid #e5c78366;border-radius:6px;background:none;color:#f1d99d;font:700 .76rem var(--sans);cursor:pointer}
 .gap-redo:hover{background:#e5c78322}
-.gap-next{flex:none;min-height:40px;padding:6px 22px;border:1px solid #e5c783;border-radius:8px;background:var(--champagne,#e5c783);color:#14233a;font:900 .95rem var(--sans);cursor:pointer;transition:transform .15s,box-shadow .15s}
-.gap-next:hover{transform:translateX(-3px);box-shadow:0 4px 14px #e5c78344}
 
 /* ---------- מי צדק בפעם הקודמת: כל מכון מול התוצאה האמיתית ---------- */
 .gap-record{padding:12px 18px 12px;animation:gap-in .4s ease both}
@@ -5263,6 +5261,7 @@ body:has(#view-demography.on)>footer{display:none}
 @keyframes gap-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ---------- אחרי הבחירה: הכול נכנס למסך אחד ---------- */
+.gap.is-parts{--mid:148px}
 .gap.is-revealed{gap:8px}
 .gap.is-revealed .gap-head h2{font-size:clamp(1.15rem,1.9vw,1.6rem)}
 .gap.is-revealed .gap-head :is(.gap-lead,.gap-note){display:none}
@@ -5295,20 +5294,11 @@ body:has(#view-demography.on)>footer{display:none}
   .gap-parts,.gap-scale,.gap-record{padding-block:9px}
 }
 
-@media (max-height:620px){
+@media (max-height:720px){
   .gap-go span,.gap-rec-caption{display:none}
   .gap-invite{gap:5px}
   .gap-go{padding:6px 12px}
 }
-
-/* ---------- הלשונית הזאת בלי עמודת הסקרים האחרונים ---------- */
-@media (min-width:981px){
-  #view-polls[data-tab="gap"] .polls-feed{display:none}
-  #view-polls[data-tab="gap"] .polls-layout{grid-template-columns:148px minmax(0,1fr)!important}
-}
-.polls-sidebar .pn.pn-hook{margin-bottom:6px;border:1px solid #e5c78366;background:#e5c78314;color:#f6e7bd}
-.polls-sidebar .pn.pn-hook:hover{background:#e5c78330}
-.polls-sidebar .pn.pn-hook[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a;border-color:transparent}
 
 /* מסכים צרים (יסודר בסוף) */
 @media (max-width:980px){
@@ -5317,7 +5307,35 @@ body:has(#view-demography.on)>footer{display:none}
   .gap-invite-links{grid-template-columns:repeat(2,minmax(0,1fr))}
   .gap-rec-row{grid-template-columns:90px minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.gap-parts,.gap-scale,.gap-record,.gap-invite{animation:none}.gap-choices button,.gap-poll,.gap-next,.gap-go,.gap-tool{transition:none}}
+@media (prefers-reduced-motion:reduce){.gap-parts,.gap-scale,.gap-record,.gap-invite{animation:none}.gap-choices button,.gap-poll,.gap-go,.gap-tool{transition:none}}
+
+/* ---------- הכפתור הגדול באמצע: ומי צדק בפעם הקודמת? ---------- */
+.gap-cta{display:grid;place-content:center;justify-items:center;gap:1px;width:132px;height:132px;margin-top:10px;padding:10px;border:0;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f8e7b6,#d1ad62 72%);color:#14233a;font:900 1rem/1.15 var(--sans);text-align:center;cursor:pointer;animation:gap-pulse 2.6s ease-out infinite;transition:transform .15s}
+.gap-cta:hover{transform:scale(1.07);animation-play-state:paused}
+.gap-cta:focus-visible{outline:3px solid #f1d99d;outline-offset:3px}
+.gap-diff .gap-cta :is(span,b,i){color:#14233a;letter-spacing:normal;line-height:1.15}
+.gap-diff .gap-cta span{font-size:.92rem;font-weight:800}
+.gap-diff .gap-cta b{font-size:1.22rem;font-weight:900}
+.gap-diff .gap-cta i{font-style:normal;font-size:1.5rem;line-height:1}
+.gap-cta-hint{max-width:120px;margin-top:2px;font-size:.68rem;font-weight:700;line-height:1.25;color:var(--gold);text-align:center}
+@keyframes gap-pulse{0%{box-shadow:0 0 0 0 #e5c783aa}70%{box-shadow:0 0 0 16px #e5c78300}100%{box-shadow:0 0 0 0 #e5c78300}}
+.gap-head .gap-picked{margin:4px 0 0;font-size:.82rem;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){.gap-cta{animation:none;transition:none}}
+
+/* ---------- מחשב נייד נמוך (עד ~600px גובה) ---------- */
+@media (max-height:620px){
+  .gap-rec-plot{height:48px}
+  .gap-record{padding-block:7px 8px}
+  .gap-board .gap-rec-foot{margin-top:4px;padding:4px 10px;font-size:.76rem}
+  .gap-invite-head b{font-size:.9rem}
+  .gap-go{padding:5px 12px}
+  .gap.is-revealed .gap-poll{padding:8px 14px 10px;row-gap:4px}
+  .gap-parts,.gap-scale{padding-block:8px 9px}
+  .gap-head h2{font-size:1.2rem}
+  .polls-tabbar .pn{padding:8px 16px 9px}
+  .polls-tabbar{margin-bottom:8px}
+  .gap.is-record{gap:4px}
+}
 
 /* דיוק המכונים — נטען אחרי theme.css.
    ראש העמוד בשורה אחת, פס הנוסחה (שהוא גם המקרא של הפסים), ודירוג בשורה לכל מכון.
@@ -5671,8 +5689,8 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 <!-- ==================== סקרי 2026 ==================== -->
 <section class="view" id="view-polls" aria-label="כל הסקרים" data-tab="gap">
   <div class="wrap">
+    <nav class="polls-tabbar" data-polls-nav aria-label="כל הסקרים"></nav>
     <div class="polls-layout">
-    <nav class="polls-sidebar" data-polls-nav aria-label="כל הסקרים"></nav>
     <div class="polls-main">
     <section class="sec gap-sec" data-polls-panel="gap" aria-label="למה הסקרים חלוקים"><div id="poll-gap" class="gap"></div></section>
     <section class="sec tracker-sec" data-polls-panel="trend" hidden aria-label="מגמות בסקרים">
@@ -5723,7 +5741,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 <!-- ==================== מדד אמינות המכונים ==================== -->
 <section class="view" id="view-e2022" aria-label="דיוק המכונים">
   <div class="wrap">
-    <nav class="polls-sidebar" data-polls-nav aria-label="כל הסקרים"></nav>
+    <nav class="polls-tabbar" data-polls-nav aria-label="כל הסקרים"></nav>
     <div class="acc-head">
       <div><h2>דיוק המכונים</h2><p>כל מכון נמדד באותה נוסחה מול תוצאות האמת של הבחירות הקודמות, והציון קובע את משקלו בתחזית. הסקרים והחישוב — בפירוט של כל מכון.</p></div>
       <div class="page-facts" id="acc-facts"></div>
@@ -6891,10 +6909,10 @@ function trackerModel() {
 const TRACK_BASES = {
   avg: { label: "ממוצע כל הסקרים", kicker: "ממוצע הסקרים",
     note: "ממוצע נע של 7 ימים: כל מכון נספר פעם אחת, בלי משקלים ובלי תיקונים. כל נקודה בגרף היא סקר." },
-  baro: { label: "תחזית הברומטר", kicker: "תחזית הברומטר", key: "scenario", mode: "scenario",
-    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות הקבועה, ש״ס, יהדות התורה ורע״מ קבועים, והתוספת הדמוגרפית — במנדטים לפי כללי הבחירות." },
   weighted: { label: "משוקלל אמינות", kicker: "משוקלל אמינות", key: "weighted", mode: "weighted",
-    note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון — בלי ההנחות של תחזית הברומטר." }
+    note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון — בלי ההנחות של תחזית הברומטר." },
+  baro: { label: "תחזית הברומטר", kicker: "תחזית הברומטר", key: "scenario", mode: "scenario",
+    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות הקבועה, ש״ס, יהדות התורה ורע״מ קבועים, והתוספת הדמוגרפית — במנדטים לפי כללי הבחירות." }
 };
 function basisModel(P, basis) {
   const B = TRACK_BASES[basis];
@@ -7167,14 +7185,28 @@ function explorerLines(P, state) {
   });
 }
 
+/* מפלגות לפי בסיס המספרים שנבחר: ממוצע נע, משוקלל אמינות או תחזית הברומטר — נקודה אחת ביום (האחרונה).
+   רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר. */
+function explorerPartyLines(M, state) {
+  const end = M.now.t, start = S.trackRange === 'month' ? end - 29 * DAY_MS : -Infinity;
+  const day = t => new Date(t).toLocaleDateString('en-CA', { timeZone: 'Asia/Jerusalem' });
+  const byDay = new Map(); M.series.filter(s => s.t >= start).forEach(s => byDay.set(day(s.t), s));
+  const series = [...byDay.values()];
+  return state.selected.map((e, i) => {
+    const points = series.map(s => ({ t: s.t, v: s.parties[e.key] || 0, n: s.n, firms: s.firms, polls: [], signature: '' }));
+    return { ...e, color: e.color || EXPLORER_COLORS[i], points, last: points.at(-1) };
+  });
+}
+const explorerLinesFor = (P, M, state) => state.mode === 'parties' && M ? explorerPartyLines(M, state) : explorerLines(P, state);
+
 /* כל תאריכי הפרסום בטווח, מהחדש לישן; — = לא נמדד בתאריך הזה */
 function explorerTable(lines, dates) {
   return `<div class="tablewrap ex-data-table" tabindex="0" role="region" aria-label="נתוני ההשוואה"><table><thead><tr><th scope="col">תאריך</th>${lines.map(l => `<th scope="col" style="--c:${l.color}">${esc(l.label)}</th>`).join('')}</tr></thead><tbody>${dates.map(t => `<tr><th scope="row">${trDay(t)}</th>${lines.map(l => { const p = l.points.find(p => p.t === t); return `<td>${p ? `<b>${trFmt(p.v)}</b>${p.n > 1 ? `<small>${p.n} סקרים</small>` : ''}` : '<span class="ex-na" title="אין מדידה בתאריך זה">—</span>'}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 /* הגרף בגודל המקום שקיבל (S.trackWidth × S.trackH), כך שהטקסט לא נמתח */
-function explorerChart(P, state) {
-  const lines = explorerLines(P, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
+function explorerChart(P, state, M) {
+  const lines = explorerLinesFor(P, M, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
   const dates = [...new Set(points.map(p => p.t))].sort((a, b) => b - a), table = explorerTable(lines, dates);
   if (!points.length) return { lines, dates, table, svg: `<div class="ex-empty">${state.selected.length ? 'אין מדידות בטווח הזה. נסו טווח רחב יותר.' : 'בחרו לוגו אחד או יותר כדי להשוות.'}</div>` };
   const W = Math.max(320, S.trackWidth || 850), H = Math.max(160, S.trackH || 260), m = { l: 34, r: 16, t: 14, b: 26 };
@@ -7191,7 +7223,8 @@ function explorerChart(P, state) {
   for (let i=0;i<=ticks;i++) { const t=t0+(t1-t0)*i/ticks; grid += `<text class="tr-tick" x="${x(t)}" y="${H-8}" text-anchor="middle">${trDay(t)}</text>`; }
   const paths = valid.map(l => `<path class="tr-line ex-line" stroke="${l.color}" d="${l.points.map((p,i) => `${i && p.signature===l.points[i-1].signature?'L':'M'}${x(p.t).toFixed(1)} ${y(p.v).toFixed(1)}`).join('')}"/>${l.points.map(p => `<circle class="ex-point" cx="${x(p.t).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="${l.color}"><title>${esc(l.label)} · ${trDay(p.t)} · ${trFmt(p.v)} מנדטים · ${p.n} סקרים</title></circle>`).join('')}`).join('');
   const svg = `<svg class="tr-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="השוואת ${esc(lines.map(l=>l.label).join(', '))} לאורך זמן, במנדטים. הנתונים המלאים בתצוגת הטבלה.">${grid}${paths}<line class="tr-cursor" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/><rect class="tr-hit" x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}"/></svg>`;
-  return { lines, dates, table, svg, geom: { W, m, t0, t1, x, y } };
+  const sub = state.mode === 'parties' && M ? TRACK_BASES[M.basis || 'avg'].label : '';
+  return { lines, dates, table, svg, sub, geom: { W, m, t0, t1, x, y } };
 }
 
 const exInfo = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
@@ -7209,12 +7242,13 @@ function explorerKeys(M, state, lines) {
 
 function explorerTools(P, M, state) {
   const out = [exSelect('data-ex-lens', 'מה להשוות', [['overview', 'מבט כולל · הגושים'], ['parties', 'מפלגות'], ['firms', 'מכונים'], ['channels', 'ערוצים']], state.mode)], basis = M.basis || 'avg';
-  if (state.mode === 'overview') out.push(exSelect('data-ex-basis', 'על מה מבוססים המספרים', Object.entries(TRACK_BASES).map(([k, b]) => [k, b.label]), basis));
-  else if (state.mode !== 'parties') out.push(exSelect('data-ex-metric', 'מה משווים', [['Right','ימין וחרדים'],['Left','מרכז–שמאל'],['Arabs','הרשימות הערביות'],...P.parties.map(p=>[p.id,p.name])], state.metric));
-  const first = state.mode === 'overview' ? M.series[0].t : parsePollDate(P.polls[0]), last = state.mode === 'overview' ? M.now.t : parsePollDate(P.polls.at(-1));
-  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', state.mode === 'overview' && basis !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
+  if (state.mode !== 'overview' && state.mode !== 'parties') out.push(exSelect('data-ex-metric', 'מה משווים', [['Right','ימין וחרדים'],['Left','מרכז–שמאל'],['Arabs','הרשימות הערביות'],...P.parties.map(p=>[p.id,p.name])], state.metric));
+  const series = state.mode === 'overview' || state.mode === 'parties';
+  const first = series ? M.series[0].t : parsePollDate(P.polls[0]), last = series ? M.now.t : parsePollDate(P.polls.at(-1));
+  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', series && basis !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
   out.push(`<div class="switch ex-view" role="group" aria-label="תצוגה"><button type="button" data-ex-view="chart" aria-pressed="${state.view === 'chart'}">גרף</button><button type="button" data-ex-view="table" aria-pressed="${state.view === 'table'}">טבלה</button></div>`);
-  out.push(exInfo(state.mode === 'overview' ? `${TRACK_BASES[basis].note} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.` : EXPLORER_NOTE));
+  out.push(exInfo(state.mode === 'overview' ? `${TRACK_BASES[basis].note} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
+    : state.mode === 'parties' ? `${TRACK_BASES[basis].note} כל קו הוא מפלגה אחת; רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר.` : EXPLORER_NOTE));
   return out.join('');
 }
 
@@ -7228,9 +7262,11 @@ function explorerPicker(state) {
 
 function renderExplorerHTML(P, M) {
   const state = explorerState(P);
-  state.lines = state.mode === 'overview' ? [] : explorerLines(P, state);
+  state.lines = state.mode === 'overview' ? [] : explorerLinesFor(P, M, state);
   S.explorer = { P, M, state };
-  return `<div class="tr-card ex-workspace" data-mode="${state.mode}">
+  const basis = M.basis || 'avg', tabs = state.mode === 'overview' || state.mode === 'parties'
+    ? `<div class="ex-tabs" role="tablist" aria-label="על מה מבוססים המספרים">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" role="tab" data-ex-basis="${k}" aria-selected="${basis === k}" title="${esc(b.note)}">${b.label}</button>`).join('')}</div>` : '';
+  return `<div class="tr-card ex-workspace" data-mode="${state.mode}">${tabs}
     <div class="ex-bar"><div class="ex-keys">${explorerKeys(M, state, state.lines)}</div><div class="ex-tools">${explorerTools(P, M, state)}</div></div>
     ${state.mode === 'overview' ? '' : explorerPicker(state)}
     <div class="ex-body" data-ex-body></div>
@@ -7242,7 +7278,7 @@ function drawExplorer() {
   const X = S.explorer, body = document.querySelector('#poll-tracker [data-ex-body]'); if (!X || !body) return;
   const w = Math.round(body.clientWidth), h = Math.round(body.clientHeight); if (!w || !h) return;
   S.trackWidth = w; S.trackH = h; S.exDrawn = `${w}x${h}`;
-  const overview = X.state.mode === 'overview', chart = overview ? trackerChart(X.M, 'blocs') : explorerChart(X.P, X.state);
+  const overview = X.state.mode === 'overview', chart = overview ? trackerChart(X.M, 'blocs') : explorerChart(X.P, X.state, X.M);
   if (X.state.view === 'table') { body.innerHTML = chart.table; return; }
   body.innerHTML = `<div class="tr-plot">${chart.svg}<div class="tr-tip" hidden></div></div>`;
   if (chart.geom) (overview ? wireTrackerHover : wireExplorerHover)(body, chart);
@@ -7267,7 +7303,7 @@ function wireExplorerHover(box, chart) {
     const t=geom.t0+(px-geom.m.l)/(geom.W-geom.m.l-geom.m.r)*(geom.t1-geom.t0);
     const date=chart.dates.reduce((a,b)=>Math.abs(b-t)<Math.abs(a-t)?b:a), sx=geom.x(date);
     cursor.setAttribute('x1',sx);cursor.setAttribute('x2',sx);cursor.removeAttribute('hidden');tip.hidden=false;
-    tip.innerHTML=`<b>${trDay(date)}</b><small>תוצאות שפורסמו בתאריך זה</small>${chart.lines.map(l=>{const p=l.points.find(p=>p.t===date);return `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${p?trFmt(p.v):'—'}</b></span>`;}).join('')}`;
+    tip.innerHTML=`<b>${trDay(date)}</b><small>${chart.sub || 'תוצאות שפורסמו בתאריך זה'}</small>${chart.lines.map(l=>{const p=l.points.find(p=>p.t===date);return `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${p?trFmt(p.v):'—'}</b></span>`;}).join('')}`;
     tip.style.left=Math.max(4,Math.min(r.width-tip.offsetWidth-4,sx/geom.W*r.width-tip.offsetWidth-12))+'px';
   };
   hit.addEventListener('pointermove',show); hit.addEventListener('pointerdown',show);
@@ -7300,6 +7336,8 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
   document.addEventListener('click',e=>{
     const entity=e.target.closest('[data-ex-entity]');
     if(entity){const key=entity.dataset.exEntity,selected=S.exploreSelections[S.exploreMode];S.exploreSelections[S.exploreMode]=selected.includes(key)?selected.filter(k=>k!==key):selected.concat(key).slice(0,EXPLORER_MAX);renderExplorer();refocus(`[data-ex-entity="${CSS.escape(key)}"]`);return;}
+    const basis=e.target.closest('button[data-ex-basis]');
+    if(basis){S.trackBasis=basis.dataset.exBasis;renderExplorer();refocus(`button[data-ex-basis="${S.trackBasis}"]`);return;}
     const view=e.target.closest('[data-ex-view]');
     if(view){S.exploreView=view.dataset.exView;renderExplorer();refocus(`[data-ex-view="${S.exploreView}"]`);return;}
     const single=e.target.closest('[data-feed-poll]');
@@ -7307,7 +7345,7 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
     if(e.target.closest('[data-gallery-close]'))$('#poll-gallery').close();
   });
   document.addEventListener('change',e=>{
-    const controls={'data-ex-lens':'exploreMode','data-ex-metric':'exploreMetric','data-ex-range':'trackRange','data-ex-basis':'trackBasis'};
+    const controls={'data-ex-lens':'exploreMode','data-ex-metric':'exploreMetric','data-ex-range':'trackRange'};
     for(const [attr,key] of Object.entries(controls)) if(e.target.hasAttribute?.(attr)){S[key]=e.target.value;renderExplorer();refocus(`[${attr}]`);return;}
   });
   $('#poll-gallery')?.addEventListener('click',e=>{if(e.target===$('#poll-gallery'))$('#poll-gallery').close();});
@@ -7441,10 +7479,10 @@ function gapCard(s, kind, picked, m) {
 }
 
 /* הפער במנדטים, ובאנשים: כך וכך מצביעים, כך וכך אחוז מהם */
-function gapDiff(m) {
+function gapDiff(m, cta) {
   const p = m.people;
   return `<div class="gap-diff"><b>${m.gap}</b><span>מנדטים<br>הפרש</span>
-    <div class="gap-people" title="${esc(GAP_PEOPLE_NOTE)}">${p ? `<strong dir="ltr">≈ ${p.kv(p.voters)}</strong><span>מצביעים</span>` : ""}<em dir="ltr">${gapPctText(m)}</em><span>מהמצביעים</span></div></div>`;
+    <div class="gap-people" title="${esc(GAP_PEOPLE_NOTE)}">${p ? `<strong dir="ltr">≈ ${p.kv(p.voters)}</strong><span>מצביעים</span>` : ""}<em dir="ltr">${gapPctText(m)}</em><span>מהמצביעים</span></div>${cta ? `<button type="button" class="gap-cta" data-gap-stage="record" aria-label="ומי צדק בפעם הקודמת?"><span>ומי צדק</span><b>בפעם הקודמת?</b><i aria-hidden="true">←</i></button><small class="gap-cta-hint">מול שלוש הבחירות האחרונות</small>` : ""}</div>`;
 }
 
 function gapParts(m) {
@@ -7538,16 +7576,16 @@ function renderPollGap() {
   box.innerHTML = `
     <div class="gap-head"><div class="gap-head-text"><h2>${m.gap ? `<span dir="ltr">${m.gap}</span> מנדטים בין שני סקרים מהשבועיים האחרונים` : `שני הסקרים נותנים לגוש אותו מספר מנדטים`}</h2>
       ${people ? `<p class="gap-lead">${people}</p>` : ""}
-      <p class="gap-note">${m.custom ? "הסקרים שבחרת" : "הקיצוני ביותר לכל כיוון"}, מתוך ${m.n} סקרים אחרונים (אחד לכל מכון וערוץ). המספרים — מנדטים לגוש הימין והחרדים; ${GAP_MAJORITY} הוא רוב.</p></div>
+      <p class="gap-note">${m.custom ? "הסקרים שבחרת" : "הקיצוני ביותר לכל כיוון"}, מתוך ${m.n} סקרים אחרונים (אחד לכל מכון וערוץ). המספרים — מנדטים לגוש הימין והחרדים; ${GAP_MAJORITY} הוא רוב.</p>
+      ${revealed ? `<p class="gap-picked">הניחוש שלך: <b>${esc(label)}</b> <button type="button" class="gap-redo" data-gap-pick="reset">לנחש שוב</button></p>` : ""}</div>
       <div class="gap-tools"><button type="button" class="gap-tool" data-gap-random>⇄ הגרילו שני סקרים</button>${m.custom ? `<button type="button" class="gap-tool" data-gap-extremes>חזרה לקיצוניים</button>` : ""}</div></div>
-    <div class="gap-board">${gapCard(m.hi, "hi", picked, m)}${gapDiff(m)}${gapCard(m.lo, "lo", picked, m)}
+    <div class="gap-board">${gapCard(m.hi, "hi", picked, m)}${gapDiff(m, revealed && !record)}${gapCard(m.lo, "lo", picked, m)}
       ${!revealed ? `<div class="gap-ask"><p>מי מהם קרוב יותר לאמת?</p><div class="gap-choices" role="group" aria-label="בחירה">
           <button type="button" data-gap-pick="hi">${esc(m.hi.outlet)} · <span dir="ltr">${m.hi.right}</span></button>
           <button type="button" data-gap-pick="lo">${esc(m.lo.outlet)} · <span dir="ltr">${m.lo.right}</span></button>
           <button type="button" data-gap-pick="none">אף אחד מהם</button></div></div>`
       : record ? gapRecord(m) : `${gapParts(m)}${gapScale(m)}`}</div>
-    ${revealed ? (record ? gapInvite() : `<div class="gap-foot"><p class="gap-picked">הניחוש שלך: <b>${esc(label)}</b> <button type="button" class="gap-redo" data-gap-pick="reset">לנחש שוב</button></p>
-        <button type="button" class="gap-next" data-gap-stage="record">ומי צדק בפעם הקודמת? ←</button></div>`) : ""}`;
+    ${record ? gapInvite() : ""}`;
 }
 
 if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", () => {
@@ -7566,7 +7604,7 @@ if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded
     if (pick) { S.gapPick = pick.dataset.gapPick === "reset" ? null : pick.dataset.gapPick; S.gapStage = "parts"; }
     else S.gapStage = stage.dataset.gapStage;
     renderPollGap();
-    document.querySelector(stage ? (S.gapStage === "record" ? ".gap-back" : ".gap-next") : S.gapPick ? ".gap-redo" : "[data-gap-pick]")?.focus();
+    document.querySelector(stage ? (S.gapStage === "record" ? ".gap-back" : ".gap-cta") : S.gapPick ? ".gap-redo" : "[data-gap-pick]")?.focus();
   });
   document.addEventListener("change", e => {
     const sel = e.target.closest?.("[data-gap-side]"); if (!sel) return;

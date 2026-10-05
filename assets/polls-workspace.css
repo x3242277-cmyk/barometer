@@ -5,39 +5,42 @@
    התפריט משותף לעמוד דיוק המכונים (renderPollsNav ב־poll-tracker.js).
    ============================================================ */
 
-/* ---------- תפריט הצד ---------- */
-.polls-sidebar{display:flex;flex-direction:column;gap:2px;align-self:start;padding:8px;border:1px solid #e5c78333;border-radius:10px;background:#ffffff08;min-width:0}
-.polls-sidebar .pn{display:block;padding:8px 10px;border-radius:6px;color:#dfe6ee;font:700 .84rem/1.3 var(--sans);text-decoration:none;transition:background .15s,color .15s}
-.polls-sidebar .pn:hover{background:#e5c78320;color:#f1d99d}
-.polls-sidebar .pn[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a}
-.polls-sidebar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:1px}
+/* ---------- סרגל הלשוניות: כמו בכל אתר — שורה אחת למעלה, והלשונית הפעילה מודגשת בקו ---------- */
+.polls-tabbar{flex:none;display:flex;gap:2px;margin:0 0 10px;border-bottom:1px solid #ffffff22;overflow-x:auto;scrollbar-width:none}
+.polls-tabbar::-webkit-scrollbar{display:none}
+.polls-tabbar .pn{position:relative;flex:none;padding:10px 18px 11px;margin-bottom:-1px;border-bottom:3px solid transparent;color:#bcc9d8;font:700 .92rem/1.2 var(--sans);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s,border-color .15s}
+.polls-tabbar .pn:hover{color:#f6e7bd;background:#ffffff0c}
+.polls-tabbar .pn[aria-current="page"]{color:#f6e7bd;border-bottom-color:#e5c783}
+.polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:-3px;border-radius:4px}
+.polls-tabbar .pn-hook::before{content:"";display:inline-block;width:7px;height:7px;margin-inline-end:8px;border-radius:50%;background:#e5c783;vertical-align:.08em}
 
 /* ---------- הפריסה במחשב ---------- */
 @media (min-width:981px){
-  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:10px}
-  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin:0;display:grid;grid-template-columns:148px minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
-  #view-polls[data-tab="list"] .polls-layout{grid-template-columns:148px minmax(0,1fr)!important}
-  #view-polls[data-tab="list"] .polls-feed{display:none}
+  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:6px 10px}
+  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
+  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
+  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-feed{display:none}
   #view-polls .polls-main{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
   #view-polls .polls-main>.sec{flex:1 1 auto;min-height:0;margin:0!important;padding:0!important;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
   #view-polls .polls-main>.sec[hidden]{display:none}
   #view-polls .polls-feed{position:static;align-self:stretch;max-height:none;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0}
   #view-polls .feed-list{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#e5c78355 transparent;padding:0 2px 6px 4px}
-  /* דיוק המכונים: אותו תפריט צד, והתוכן לידו */
-  #view-e2022>.wrap{display:grid;grid-template-columns:148px minmax(0,1fr);column-gap:14px;align-items:start;padding-top:10px}
-  #view-e2022>.wrap>.polls-sidebar{grid-column:1;grid-row:1/span 20;position:sticky;top:calc(var(--masthead-h,80px) + 10px)}
-  #view-e2022>.wrap>:not(.polls-sidebar){grid-column:2;min-width:0}
+  #view-e2022>.wrap{padding-top:6px}
 }
 @media (min-width:981px) and (max-width:1300px){
-  #view-polls .polls-layout{grid-template-columns:132px minmax(0,1fr) 270px!important;gap:12px!important}
-  #view-polls[data-tab="list"] .polls-layout{grid-template-columns:132px minmax(0,1fr)!important}
-  #view-e2022>.wrap{grid-template-columns:132px minmax(0,1fr)}
+  #view-polls .polls-layout{grid-template-columns:minmax(0,1fr) 270px!important;gap:12px!important}
+  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
 }
 
 /* ---------- מגמות והשוואות: כרטיס אחד שממלא את הגובה ---------- */
 #view-polls .tracker-sec{display:flex;flex-direction:column}
 #view-polls #poll-tracker{flex:1 1 auto;min-height:0;display:flex;gap:0}
 #view-polls .ex-workspace{flex:1 1 auto;min-width:0;min-height:0;margin:0;display:flex;flex-direction:column;gap:10px;padding:12px 16px 10px}
+.ex-tabs{display:flex;gap:2px;margin:-4px 0 0;border-bottom:1px solid var(--rule)}
+.ex-tabs button{flex:none;padding:8px 18px 9px;margin-bottom:-1px;border:0;border-bottom:3px solid transparent;background:none;color:var(--ink-3);font:800 .9rem var(--sans);cursor:pointer;transition:color .15s,border-color .15s}
+.ex-tabs button:hover{color:var(--ink)}
+.ex-tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:#b8862b}
+.ex-tabs button:focus-visible{outline:2px solid #c9a24f;outline-offset:-2px;border-radius:4px}
 .ex-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px}
 .ex-keys{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;min-width:0}
 /* מקרא = המספרים: פס בצבע הקו, השם, הערך, ומתחתיו השינוי או התאריך */
@@ -149,9 +152,7 @@
 /* ---------- טלפון וטאבלט (יסודר בסוף) ---------- */
 @media (max-width:980px){
   #view-polls .polls-layout{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
-  .polls-sidebar{flex-direction:row;flex-wrap:wrap;align-items:center}
   #view-polls[data-tab="list"] .polls-feed{display:none}
   .ex-body{flex:none;height:300px}
-  #view-e2022>.wrap>.polls-sidebar{margin-top:12px}
 }
-@media (prefers-reduced-motion:reduce){.polls-sidebar .pn,.ex-logo-button{transition:none}}
+@media (prefers-reduced-motion:reduce){.polls-tabbar .pn,.ex-logo-button,.ex-tabs button{transition:none}}

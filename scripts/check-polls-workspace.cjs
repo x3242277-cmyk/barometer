@@ -18,6 +18,17 @@ const firms = run(`explorerLines(fixtureModel,{...fixtureState,mode:'firms',sele
 assert.equal(firms[0].v,24,'institute attribution selected the wrong surveys');
 run(`const sameDate=[workspaceFixture('e','2026-09-01','channel_14',24),workspaceFixture('f','2026-09-01','channel_14',28),workspaceFixture('g','2026-09-01','maariv',12)];`);
 assert.equal(run(`explorerLines({...fixtureModel,polls:sameDate},{mode:'parties',selected:[{key:'likud',label:'הליכוד'}],view:'timeline'})[0].points[0].v`),19,'daily party average did not give each institute equal weight');
+/* מפלגות לפי בסיס המספרים (ממוצע / משוקלל / תחזית): נקודה אחת ביום, והאחרונה גוברת; רשימה חסרה = 0 */
+run(`const partyM={now:{t:Date.parse("2026-10-03T12:00:00Z")},basis:"baro",series:[
+  {t:Date.parse("2026-10-02T06:00:00Z"),parties:{likud:20},n:5,firms:4},
+  {t:Date.parse("2026-10-02T18:00:00Z"),parties:{likud:22},n:5,firms:4},
+  {t:Date.parse("2026-10-03T12:00:00Z"),parties:{},n:6,firms:5}]};
+const partyLines=explorerPartyLines(partyM,{selected:[{key:"likud",label:"הליכוד"}]});`);
+assert.equal(run("partyLines[0].points.length"),2,"a forecast series must keep one point per day");
+assert.equal(run("partyLines[0].points[0].v"),22,"the last snapshot of the day wins");
+assert.equal(run("partyLines[0].points[1].v"),0,"a list absent from the series counts as 0, like everywhere else on the site");
+assert.equal(run("explorerLinesFor({polls:[]},partyM,{mode:\"parties\",selected:[{key:\"likud\",label:\"x\"}]})[0].points.length"),2,"the parties lens must follow the chosen basis");
+assert.equal(run("Object.keys(TRACK_BASES).join()"),"avg,weighted,baro","basis order: average, reliability-weighted, Barometer forecast");
 run(`S.exploreMode='channels';S.exploreView='table';S.exploreSelections={channels:['ערוץ 14']};`);
 assert.equal(run('explorerState(fixtureModel).view'),'table','selected comparison view was lost');
 const table=run(`explorerChart(fixtureModel,fixtureState).table`);

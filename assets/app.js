@@ -2838,7 +2838,16 @@ function renderHaredi() {
   $("#haredi-sources").innerHTML = `<ul class="h-src-list">${Object.values(H.sources).map(x =>
     `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>${x.use ? `<span>${esc(x.use)}</span>` : ""}</li>`).join("")}</ul>`;
   /* ההנחות הקבועות של התחזית — אותם ערכים כמו בשיטת החישוב */
-  const fixedChips = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11 מנדטים"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7 מנדטים"], [r1(st.total), "התרחיש הדמוגרפי, ש״ס ויהדות התורה יחד"]];
+  const fixedChips = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11 מנדטים"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7 מנדטים"], [FIXED_SEATS.raam, "רע״ם בתחזית · 2022: 5 מנדטים"], [r1(st.total), "התרחיש הדמוגרפי, ש״ס ויהדות התורה יחד"]];
+  /* ראש העמוד: תמונות הרשימות המקובעות בתחזית */
+  const HP = [["shas", "ש״ס", 11], ["yahadut_hatora", "יהדות התורה", 7], ["raam", "רע״ם", 5]];
+  $("#h-parties").innerHTML = HP.map(([id, name, a22]) => {
+    const photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
+    return `<article class="h-party" style="--c:${partyColor(id, partyMeta(id).alignment)}">
+      <span class="h-party-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "72px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
+      <span class="h-party-body"><b>${esc(name)}</b><small>${esc(PARTY_LEADER[id] || "")}</small></span>
+      <span class="h-party-seats"><b class="num" dir="ltr">${FIXED_SEATS[id]}</b><small>בתחזית · 2022: ${a22}</small></span></article>`;
+  }).join("");
   $("#h-live-fixed").innerHTML = fixedChips.map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   wireHarediDoc();
 

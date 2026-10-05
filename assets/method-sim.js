@@ -397,13 +397,19 @@
   }
 
   function build() {
+    const logoSrc = document.querySelector(".masthead img.brand-logo")?.getAttribute("src") || "assets/logo-wordmark.png";
     root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
     </div>
       <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
       <p class="ms-say" aria-live="polite">לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.</p>
-      <div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><button type="button" class="ms-big-play">▶ הפעלת הסימולציה</button><p>שישה שלבים, כדקה · אפשר להשהות ולדלג בכל רגע</p></div></div>
+      <div class="ms-main"><div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><img class="ms-idle-logo" src="${logoSrc}" alt="" width="756" height="128">
+          <p class="ms-idle-kicker">סימולציה · בזמן אמת, מהנתונים של היום</p>
+          <h3 class="ms-idle-title">איך הברומטר מגיע למספר</h3>
+          <p class="ms-idle-sub">שישה שלבים, כדקה: מהנתונים הגולמיים ועד תחזית הברומטר</p>
+          <button type="button" class="ms-big-play"><span class="ms-big-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת המודל</button>
+          <p class="ms-idle-hint">אפשר לעצור ולדלג בכל רגע</p></div></div>
         <div class="ms-ctl" role="group" aria-label="בקרת הסימולציה"><button type="button" class="ms-prev" aria-label="לשלב הקודם" title="לשלב הקודם">${ICON.right}</button><button type="button" class="ms-play"></button><button type="button" class="ms-next" aria-label="לשלב הבא" title="לשלב הבא">${ICON.left}</button><span class="ms-count" dir="ltr" aria-hidden="true"></span><button type="button" class="ms-speed" aria-label="מהירות הסימולציה" title="מהירות הסימולציה"></button></div></div>
-      <div class="ms-ledger" aria-label="מה כבר חושב"></div>`;
+      <div class="ms-ledger" aria-label="מה כבר חושב"></div></div>`;
     stage = q("#ms-stage"); ledger();
     q(".ms-big-play").onclick = () => { if (st.ready) go(0); };
     q(".ms-play").onclick = () => {

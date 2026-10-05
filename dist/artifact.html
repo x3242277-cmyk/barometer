@@ -5834,6 +5834,91 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .h-src-list span{font-size:.84rem;color:var(--ink-3)}
 .msec{--navy-text:#12345c}
 
+/* מסך הפתיחה של הסימולציה: לוגו וכפתור הפעלה, וכל המודול נכנס במסך של מחשב נייד */
+.ms-bar{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#method-sim:not(.is-running) .ms-say{visibility:hidden}
+.ms-stagebox .ms-stage{min-height:clamp(300px,calc(100dvh - 285px),600px);padding:18px 24px}
+#method-sim:not(.is-running) .ms-stage{background:radial-gradient(120% 90% at 50% 0%,#1b4a7d 0%,#12345c 42%,#0a1c33 100%);border-color:#e5c78344;box-shadow:0 0 0 1px #e5c78322 inset,0 24px 60px -24px #000000b8}
+#method-sim:not(.is-running) .ms-stagebox .ms-stage{padding-bottom:18px}
+.ms-idle{gap:0;color:#dbe5f0}
+.ms-idle::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(46% 38% at 50% 58%,#e5c78333,transparent 70%),repeating-linear-gradient(0deg,transparent 0 47px,#ffffff08 47px 48px)}
+.ms-idle>*{position:relative}
+.ms-idle-logo{width:min(340px,62%);height:auto;margin-bottom:clamp(8px,2.2dvh,20px);filter:drop-shadow(0 6px 22px #00000066)}
+.ms-idle-kicker{margin:0 0 6px;font-size:.78rem!important;font-weight:700;letter-spacing:.04em;color:#e5c783}
+.ms-idle-title{margin:0 0 6px;font-size:clamp(1.5rem,3.4dvh,2.1rem);line-height:1.2;letter-spacing:-.02em;color:#fff}
+.ms-idle-sub{margin:0 0 clamp(14px,3dvh,26px)!important;font-size:.98rem!important;color:#c3cedb}
+.ms-idle .ms-big-play{display:inline-flex;align-items:center;gap:14px;height:62px;padding:0 34px 0 24px;border-radius:999px;border:0;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font:800 1.2rem/1 var(--sans,inherit);box-shadow:0 0 0 0 #e5c78399,0 14px 32px -12px #e5c783;animation:ms-pulse 2.6s ease-out infinite;transition:transform .15s,filter .15s}
+.ms-idle .ms-big-play:hover{transform:translateY(-2px);filter:brightness(1.06);background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62))}
+.ms-idle .ms-big-play:focus-visible{outline:3px solid #fff3cf;outline-offset:3px}
+.ms-big-ico{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#14233a;color:#f6e7bd}
+.ms-idle-hint{margin:12px 0 0!important;font-size:.8rem!important;color:#9fb4c9}
+@keyframes ms-pulse{0%{box-shadow:0 0 0 0 #e5c78388,0 14px 32px -12px #e5c783}70%,100%{box-shadow:0 0 0 22px #e5c78300,0 14px 32px -12px #e5c783}}
+@media (prefers-reduced-motion:reduce){.ms-idle .ms-big-play{animation:none}}
+@media (max-height:780px){
+  #method-sim{margin-top:10px}
+  .ms-nav button{padding:7px 12px 8px}
+  .ms-say{margin-bottom:6px;font-size:.95rem}
+  .ms-ledger{margin-top:6px}
+  .ms-chip{padding:5px 12px}
+  .ms-chip b{font-size:1.12rem}
+  .ms-chip em{display:none}
+}
+.ms-stage .ms-idle-title{color:#fff;margin:0 0 6px}
+.ms-idle .ms-idle-kicker{margin-top:2px}
+
+/* פריסת מחשב נייד: רצועת התוצאות בצד המסך, והסצנות מצטמצמות לגובה המסך */
+.ms-main{display:grid;grid-template-columns:minmax(0,1fr) 176px;gap:10px;align-items:stretch}
+@media (min-width:981px){
+  .ms-main .ms-ledger{grid-template-columns:minmax(0,1fr);grid-auto-rows:1fr;gap:6px;margin-top:0}
+  .ms-main .ms-chip{align-content:center}
+  .ms-main .ms-chip small{font-size:.72rem;line-height:1.25}
+  .ms-main .ms-chip em{font-size:.64rem;line-height:1.25}
+}
+@media (max-width:980px){.ms-main{grid-template-columns:minmax(0,1fr)}}
+.ms-stagebox .ms-stage{min-height:clamp(330px,calc(100dvh - 200px),620px)}
+@media (min-width:981px) and (max-height:780px){
+  .ms-stagebox .ms-stage{padding:12px 18px 56px}
+  #method-sim:not(.is-running) .ms-stagebox .ms-stage{padding-bottom:12px}
+  .ms-stage h3{margin:0 0 8px;font-size:.98rem}
+  .ms-ctl{bottom:8px;padding:4px 8px}
+  .ms-ctl button{width:34px;height:34px}.ms-ctl .ms-play{width:40px;height:40px}
+  .ms-src{gap:6px}
+  .ms-src-row{padding:6px 12px;gap:12px}
+  .ms-src-t{gap:0}.ms-src-t b{font-size:.9rem}.ms-src-t small{font-size:.72rem}
+  .ms-src-v b{font-size:1.05rem}.ms-src-v small{font-size:.68rem}
+  .ms-src-n{width:24px;height:24px}
+  .ms-sec{gap:5px}.ms-sec-bar{height:15px}
+  .ms-big{margin-bottom:8px}.ms-big b{font-size:2.4rem}
+  .ms-split{height:28px}
+  .ms-line{margin-top:8px;font-size:.88rem;line-height:1.5}
+  .ms-note,.ms-foot,.ms-key{margin-top:6px;font-size:.74rem;line-height:1.45}
+  .ms-two{gap:20px}
+  .ms-map{min-height:300px}
+  .ms-wf-in{gap:5px}.ms-wf-t{height:16px}
+  .ms-polls{gap:5px}.ms-pl-rows{gap:0}.ms-pl-row{padding:0 6px}.ms-pl-track{height:16px}.ms-pl-head{padding-bottom:3px}
+  .ms-pl-avg{padding-top:4px}.ms-pl-avg b{font-size:1.35rem}
+  .ms-ax{height:190px;margin-top:4px}
+  .ms-ax-m i{height:calc(22px + var(--lvl) * 34px)}.ms-ax-m span{bottom:calc(24px + var(--lvl) * 34px)}
+  .ms-dv{gap:3px}.ms-dv-t{height:16px}
+  .ms-cl{gap:4px}.ms-cl li{padding-block:5px}.ms-cl li::before{top:7px}
+  .ms-cl b{font-size:.84rem}.ms-cl small{font-size:.72rem;line-height:1.35}
+  .ms-bls{gap:6px}.ms-bl-t{height:20px}.ms-bl b{font-size:1rem}
+  .ms-hemi svg{max-height:150px}
+  .ms-result{margin-top:0;padding:6px 10px;font-size:.84rem}
+}
+
+/* ראש עמוד התרחיש החרדי: הרשימות המקובעות */
+.h-parties{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 4px}
+.h-party{display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;border:1px solid #e5c78344;border-inline-start:4px solid var(--c,#e5c783);background:linear-gradient(110deg,#ffffff12,#ffffff06);color:#f6f3ec}
+.h-party-photo{display:block;width:64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid var(--c,#e5c783);background:#0d2743}
+.h-party-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.h-party-body{display:grid;gap:2px;min-width:0}
+.h-party-body b{font-size:1.15rem}
+.h-party-body small,.h-party-seats small{font-size:.76rem;color:#b4c1ce}
+.h-party-seats{display:grid;justify-items:end;gap:0;text-align:end}
+.h-party-seats b{font-size:2rem;line-height:1;font-weight:800;color:#f6e7bd;font-variant-numeric:tabular-nums}
+@media (max-width:980px){.h-parties{grid-template-columns:minmax(0,1fr)}}
+
 </style>
 <div dir="rtl" lang="he" id="barometer-root">
 
@@ -6192,8 +6277,9 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
     <div class="page-intro">
       <p class="kicker">שיטת החישוב · פירוט מורחב</p>
       <h2>התרחיש החרדי: ש״ס ויהדות התורה לפי אוכלוסייה, השתתפות ונאמנות</h2>
-      <p>תרחיש דמוגרפי לבחינת ההנחות של תחזית הברומטר על שתי הרשימות החרדיות. הוא אינו משנה את ממוצע הסקרים, אינו קובע רצפת מנדטים ואינו מבטיח תוצאת בחירות.</p>
+      <p>תרחיש דמוגרפי לבחינת ההנחות של תחזית הברומטר על שתי הרשימות החרדיות, ועל רע״ם, שגם היא מקובעת בתחזית. הוא אינו משנה את ממוצע הסקרים, אינו קובע רצפת מנדטים ואינו מבטיח תוצאת בחירות.</p>
     </div>
+    <div class="h-parties" id="h-parties" aria-label="הרשימות המקובעות בתחזית"></div>
 
     <div class="mdoc">
       <nav class="mdoc-nav" id="hdoc-nav" aria-label="תוכן העמוד">
@@ -6214,6 +6300,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
             <div class="msec-text">
               <p>בתחזית הברומטר ש״ס מקבלת <b>10.5</b> מנדטים ויהדות התורה <b>7.8</b>, במקום ממוצע הסקרים שלהן. הערכים הם בשברי מנדטים: העיגול למנדטים שלמים נעשה רק בחלוקה הסופית, לפי כללי הבחירות. ב־2022 התוצאה בפועל הייתה 11 ו־7.</p>
               <p>הסיבה היא שמדגם של כמה מאות נשאלים מודד מגזר סגור נמוך מדי, ובאופן שיטתי כלפי מטה, ולא באופן אקראי (סעיף 5). לכן אי אפשר לתקן את זה בהגדלת המדגם.</p>
+              <p>גם <b>רע״ם</b> מקובעת בתחזית (4.8 מנדטים, ב־2022: 5), מאותה סיבה: מדגם קטן מודד נמוך מגזר סגור אחר, הערבי. התרחיש הדמוגרפי בעמוד הזה מחשב רק את שתי הרשימות החרדיות.</p>
               <p class="msec-note"><b>מה זה לא:</b> זו הנחת עבודה גלויה, ולא רצפה. העמוד אינו מוכיח שהרשימות לא ירדו מתחת לערכים האלה, וצמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור. הערכים חלים רק בתחזית הברומטר של העמוד הראשי.</p>
             </div>
             <div class="msec-live"><div class="mlive" id="h-live-fixed"></div></div>
@@ -10630,7 +10717,16 @@ function renderHaredi() {
   $("#haredi-sources").innerHTML = `<ul class="h-src-list">${Object.values(H.sources).map(x =>
     `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>${x.use ? `<span>${esc(x.use)}</span>` : ""}</li>`).join("")}</ul>`;
   /* ההנחות הקבועות של התחזית — אותם ערכים כמו בשיטת החישוב */
-  const fixedChips = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11 מנדטים"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7 מנדטים"], [r1(st.total), "התרחיש הדמוגרפי, ש״ס ויהדות התורה יחד"]];
+  const fixedChips = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11 מנדטים"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7 מנדטים"], [FIXED_SEATS.raam, "רע״ם בתחזית · 2022: 5 מנדטים"], [r1(st.total), "התרחיש הדמוגרפי, ש״ס ויהדות התורה יחד"]];
+  /* ראש העמוד: תמונות הרשימות המקובעות בתחזית */
+  const HP = [["shas", "ש״ס", 11], ["yahadut_hatora", "יהדות התורה", 7], ["raam", "רע״ם", 5]];
+  $("#h-parties").innerHTML = HP.map(([id, name, a22]) => {
+    const photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
+    return `<article class="h-party" style="--c:${partyColor(id, partyMeta(id).alignment)}">
+      <span class="h-party-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "72px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
+      <span class="h-party-body"><b>${esc(name)}</b><small>${esc(PARTY_LEADER[id] || "")}</small></span>
+      <span class="h-party-seats"><b class="num" dir="ltr">${FIXED_SEATS[id]}</b><small>בתחזית · 2022: ${a22}</small></span></article>`;
+  }).join("");
   $("#h-live-fixed").innerHTML = fixedChips.map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   wireHarediDoc();
 
@@ -11292,13 +11388,19 @@ function renderHaredHistory() {
   }
 
   function build() {
+    const logoSrc = document.querySelector(".masthead img.brand-logo")?.getAttribute("src") || "assets/logo-wordmark.png";
     root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
     </div>
       <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
       <p class="ms-say" aria-live="polite">לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.</p>
-      <div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><button type="button" class="ms-big-play">▶ הפעלת הסימולציה</button><p>שישה שלבים, כדקה · אפשר להשהות ולדלג בכל רגע</p></div></div>
+      <div class="ms-main"><div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><img class="ms-idle-logo" src="${logoSrc}" alt="" width="756" height="128">
+          <p class="ms-idle-kicker">סימולציה · בזמן אמת, מהנתונים של היום</p>
+          <h3 class="ms-idle-title">איך הברומטר מגיע למספר</h3>
+          <p class="ms-idle-sub">שישה שלבים, כדקה: מהנתונים הגולמיים ועד תחזית הברומטר</p>
+          <button type="button" class="ms-big-play"><span class="ms-big-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת המודל</button>
+          <p class="ms-idle-hint">אפשר לעצור ולדלג בכל רגע</p></div></div>
         <div class="ms-ctl" role="group" aria-label="בקרת הסימולציה"><button type="button" class="ms-prev" aria-label="לשלב הקודם" title="לשלב הקודם">${ICON.right}</button><button type="button" class="ms-play"></button><button type="button" class="ms-next" aria-label="לשלב הבא" title="לשלב הבא">${ICON.left}</button><span class="ms-count" dir="ltr" aria-hidden="true"></span><button type="button" class="ms-speed" aria-label="מהירות הסימולציה" title="מהירות הסימולציה"></button></div></div>
-      <div class="ms-ledger" aria-label="מה כבר חושב"></div>`;
+      <div class="ms-ledger" aria-label="מה כבר חושב"></div></div>`;
     stage = q("#ms-stage"); ledger();
     q(".ms-big-play").onclick = () => { if (st.ready) go(0); };
     q(".ms-play").onclick = () => {

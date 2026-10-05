@@ -106,12 +106,6 @@ function pollGapModel(sel) {
 const gapInfo = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
 const GAP_PEOPLE_NOTE = "מנדט הוא 1/120 מהקולות שמתורגמים למנדטים. המצביעים מחושבים לפי מספר המצביעים הצפוי ב־2026, באותה הנחה כמו בלשונית \"כמה עברו צד\". זה אומדן של גודל הפער, לא ספירה של אנשים.";
 const gapPctText = m => `${trFmt(Math.round(m.pct * 10) / 10)}%`;
-const GAP_INVITE = [
-  ["trend", "#/polls/trend", "מבט כולל ומגמות", "איך הגושים והמפלגות זזו מאז אוגוסט"],
-  ["list", "#/polls/list", "כל סקר בנפרד", "כל הסקרים בטבלה אחת, מהחדש לישן"],
-  ["cross", "#/crossover", "כמה עברו צד", "כמה מצביעים זזו מאז 2022"],
-  ["acc", "#/2022", "דיוק המכונים", "הציון והראיות לכל מכון"]
-];
 
 function gapCard(s, kind, picked, m) {
   const other = kind === "hi" ? m.lo : m.hi;
@@ -176,15 +170,17 @@ function gapRecord(m) {
   const ticks = []; for (let v = Math.ceil(from / 2) * 2; v <= to; v += 2) ticks.push(v);
   const label = (id, s) => `${nameOf(id)}${s.heir ? ` (היום ${s.meta.he})` : ""}`;
   const hiName = label(hiId, m.hi), loName = label(loId, m.lo);
+  /* מנדטים: כמה כל מכון חזה לגוש הימין והחרדים (התוצאה + ההפרש), ובכל שורה — התוצאה בפועל מתחת לקו המקווקו */
+  const seatTxt = v => String(Math.round(v * 10) / 10).replace(/[.]0$/, "");
   const rowHTML = r => {
     const role = d => d.firm === hiId ? "hi" : d.firm === loId && !same ? "lo" : "";
     const ordered = [...r.dots.filter(d => role(d)), ...r.dots.filter(d => !role(d)).sort((a, b) => a.err - b.err)];
-    const lanes = gapLanes(ordered.map(d => x(d.err)));
-    return `<div class="gap-rec-row"><div class="gap-rec-label"><b>${esc(r.name)}</b><small>${r.key} · התוצאה: ${r.actual}</small></div>
-      <div class="gap-rec-plot" dir="ltr"><i class="gap-rec-zero" style="left:${x(0).toFixed(2)}%"></i>${ordered.map((d, i) => {
-        const cls = role(d), left = x(d.err).toFixed(2), top = 24 + lanes[i] * 10;
-        return `<i class="gap-rec-dot ${cls}" style="left:${left}%;top:${top}px" title="${esc(nameOf(d.firm))}: ${gapSigned(d.err)}"></i>` +
-          (cls ? `<span class="gap-rec-flag ${cls}" style="left:${left}%">${esc(nameOf(d.firm))} <b dir="ltr">${gapSigned(d.err)}</b></span>` : "");
+    const lanes = gapLanes(ordered.map(d => x(d.err)), 13, 3);
+    return `<div class="gap-rec-row"><div class="gap-rec-label"><b>${esc(r.name)}</b><small>${r.key}</small></div>
+      <div class="gap-rec-plot" dir="ltr"><i class="gap-rec-zero" style="left:${x(0).toFixed(2)}%"></i><span class="gap-rec-actual" style="left:${x(0).toFixed(2)}%">התוצאה: <b dir="ltr">${r.actual}</b> מנדטים</span>${ordered.map((d, i) => {
+        const cls = role(d), left = x(d.err).toFixed(2), top = 24 + lanes[i] * 22, pred = seatTxt(r.actual + d.err);
+        return `<i class="gap-rec-dot ${cls}" style="left:${left}%;top:${top}px" title="${esc(nameOf(d.firm))}: חזה ${pred} מנדטים (${gapSigned(d.err)} מהתוצאה)"></i>` +
+          `<span class="gap-rec-tag ${cls}" style="left:${left}%;top:${top + (cls ? 11 : 8)}px">${esc(nameOf(d.firm))} <b dir="ltr">${pred}</b></span>`;
       }).join("")}</div></div>`;
   };
   const both = st.compared === 1 ? "בבחירות שבהן נמדדו שניהם" : `בכל ${st.compared} הבחירות`;
@@ -194,7 +190,7 @@ function gapRecord(m) {
     : st.loCloser === st.compared ? `${loName} היה קרוב יותר לתוצאה מ${hiName} ${both}.`
     : !st.hiCloser && !st.loCloser ? `${hiName} ו${loName} סטו מהתוצאה באותה מידה.`
     : `${hiName} היה קרוב יותר לתוצאה מ${loName} ב־${st.hiCloser} מתוך ${st.compared} בחירות.`;
-  const what = "כל נקודה היא מכון: ההפרש בין ממוצע הסקרים שלו ב־30 הימים שלפני הבחירות לבין מספר המנדטים שקיבל גוש הימין והחרדים.";
+  const what = "כל נקודה היא מכון, ולידה — כמה מנדטים חזה לגוש הימין והחרדים (ממוצע הסקרים שלו ב־30 הימים שלפני הבחירות). הקו המקווקו הוא התוצאה בפועל, והמרחק ממנו הוא הטעות.";
   const how = `${what} מינוס — המכון נתן לגוש פחות ממה שקיבל; פלוס — יותר. מה שהסקרים לא נתנו לגוש נרשם אצל יתר הרשימות, כי סך המנדטים קבוע. המכונים והבחירות לפי ארכיון הסקרים של האתר; במכון עם סקר אחד או שניים הממוצע מבוסס על מעט נתונים.`;
   return `<div class="tr-card gap-record">
     <h3>גוש הימין והחרדים: ${st.below} מתוך ${st.total} מדידות היו מתחת לתוצאה האמיתית${st.total - st.below ? `, ${st.total - st.below} מעליה` : ""} ${gapInfo(how)}</h3>
@@ -207,18 +203,15 @@ function gapRecord(m) {
     ${closer ? `<p class="gap-rec-foot"><b>${closer}</b>${same ? "" : " קרוב יותר בעבר אינו מבטיח שהוא צודק היום."}</p>` : ""}</div>`;
 }
 
-function gapInvite() {
-  return `<div class="gap-invite"><h3 class="gap-floor-title">עכשיו תורכם <small>פתחו את הנתונים וחקרו בעצמכם</small></h3>
-    <nav class="gap-invite-links" aria-label="המשך לחקור">${GAP_INVITE.map(([t, href, title, line]) => `<a class="gap-go" href="${href}" data-polls-go="${t}"><b>${title}</b><span>${line}</span></a>`).join("")}</nav></div>`;
-}
+/* הצעד האחרון: שאלה. התשובה — עמוד דיוק המכונים */
+const gapQuestion = () => `<a class="gap-step gap-question" href="#/2022" data-polls-go="acc"><span class="gap-q-mark" aria-hidden="true">?</span><b>מי הסוקר המדויק ביותר?</b><span class="gap-q-go" aria-hidden="true">←</span></a>`;
 
 /* ---------- מסלול של קומות: כל לחיצה מוסיפה קומה מתחת לקודמת ---------- */
 const GAP_FLOORS = [
   null,
   { title: "השאלה" },
   { title: "איפה נוצר הפער?", sub: "פירוק לפי רשימות, ומיקום מול שאר הסקרים", stub: "נפתח אחרי הניחוש" },
-  { title: "ומי צדק בפעם הקודמת?", sub: "אותם מכונים מול התוצאה האמיתית בשלוש הבחירות האחרונות", stub: "נפתח בלחיצה על \"הלאה\"" },
-  { title: "עכשיו תורכם", sub: "חקרו בעצמכם", stub: "נפתח בלחיצה על \"הלאה\"" }
+  { title: "ומי צדק בפעם הקודמת?", sub: "אותם מכונים מול התוצאה האמיתית בשלוש הבחירות האחרונות", stub: "נפתח בלחיצה על \"הלאה\"" }
 ];
 const gapFloorHead = n => `<h3 class="gap-floor-title">${GAP_FLOORS[n].title} <small>${GAP_FLOORS[n].sub}</small></h3>`;
 const gapStep = (to, label) => `<button type="button" class="gap-step" data-gap-floor="${to}">הלאה: ${label} <span aria-hidden="true">↓</span></button>`;
@@ -226,7 +219,7 @@ const gapFloor = (n, body, fresh) => `<section class="gap-floor${fresh ? " is-ne
 const gapStub = n => `<section class="gap-floor is-locked" data-floor="${n}" aria-label="${esc(GAP_FLOORS[n].title)} — נעול"><span class="gap-node" aria-hidden="true">${n}</span><div class="gap-stub"><b>${GAP_FLOORS[n].title}</b><span>${GAP_FLOORS[n].stub}</span></div></section>`;
 
 /* הקומה הגבוהה ביותר שנפתחה: אחרי הניחוש — 2, ואחר כך כל לחיצה על "הלאה" */
-const gapTopFloor = () => S.gapPick ? Math.min(4, Math.max(2, S.gapFloor || 2)) : 1;
+const gapTopFloor = () => S.gapPick ? Math.min(3, Math.max(2, S.gapFloor || 2)) : 1;
 
 function renderPollGap() {
   const box = document.querySelector("#poll-gap"); if (!box) return;
@@ -248,9 +241,8 @@ function renderPollGap() {
           <button type="button" data-gap-pick="none">אף אחד מהם</button></div></div>`}</div>`;
   const floors = [gapFloor(1, first, false)];
   if (top >= 2) floors.push(gapFloor(2, `${gapFloorHead(2)}<div class="gap-pair">${gapParts(m)}<i class="gap-pair-mid" aria-hidden="true"></i>${gapScale(m)}</div>${top === 2 ? gapStep(3, GAP_FLOORS[3].title) : ""}`, fresh(2)));
-  if (top >= 3) floors.push(gapFloor(3, `${gapFloorHead(3)}${gapRecord(m)}${top === 3 ? gapStep(4, GAP_FLOORS[4].title) : ""}`, fresh(3)));
-  if (top >= 4) floors.push(gapFloor(4, gapInvite(), fresh(4)));
-  for (let n = top + 1; n <= 4; n++) floors.push(gapStub(n));
+  if (top >= 3) floors.push(gapFloor(3, `${gapFloorHead(3)}${gapRecord(m)}${gapQuestion()}`, fresh(3)));
+  for (let n = top + 1; n <= 3; n++) floors.push(gapStub(n));
   box.innerHTML = `<div class="gap-track">${floors.join("")}</div>`;
   /* קומה חדשה: גוללים אליה ומעבירים אליה את המיקוד, כדי שהעין תישאר על מה שנוסף */
   if (top > (S.gapShown || 1)) {

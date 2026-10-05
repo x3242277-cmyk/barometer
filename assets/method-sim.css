@@ -439,3 +439,81 @@
   .ms-cv-list li i{width:19px;height:19px;font-size:.68rem}
   .ms-cv-side .ms-hemi svg{max-height:170px}
 }
+
+/* שלב 6, בלי כפילות וטקסט גדול: כותרת אחת בכרטיס, ומד התקדמות במספרים */
+.ms-cv-list{display:none}
+.ms-cv-steps{display:flex;flex-wrap:wrap;gap:7px;margin:0;padding:0;list-style:none}
+.ms-cv-steps li{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:2px solid #cdbf9f;font-size:.95rem;font-weight:800;color:var(--ink-3);transition:background .2s,border-color .2s,color .2s}
+.ms-cv-steps li.is-on{background:#e5c783;border-color:#e5c783;color:#14233a;transform:scale(1.12)}
+.ms-cv-steps li.is-done{background:#12345c;border-color:#12345c;color:#fff}
+.ms-cv-side.is-final .ms-cv-steps{display:none}
+.ms-cv-now{grid-template-columns:48px minmax(0,1fr);gap:6px 14px;padding:16px 20px}
+.ms-cv-n{width:48px;height:48px;font-size:1.3rem}
+.ms-cv-now b{font-size:clamp(1.35rem,3.2dvh,1.8rem);line-height:1.25}
+.ms-cv-now small{font-size:clamp(1.02rem,2.4dvh,1.25rem);line-height:1.55;color:var(--ink)}
+.ms-cv-names span{font-size:clamp(1.05rem,2.4dvh,1.3rem)}
+.ms-cv-v b{font-size:clamp(2rem,4.6dvh,2.8rem)}
+.ms-cv-v em{font-size:1rem}
+.ms-cv-line span{font-size:.95rem}
+@media (min-width:981px) and (max-height:780px){
+  .ms-cv-now{padding:10px 14px;grid-template-columns:38px minmax(0,1fr)}
+  .ms-cv-n{width:38px;height:38px;font-size:1.05rem}
+  .ms-cv-now b{font-size:1.2rem}
+  .ms-cv-now small{font-size:.98rem;line-height:1.45}
+  .ms-cv-steps li{width:28px;height:28px;font-size:.82rem}
+  .ms-cv-names span{font-size:1rem}
+}
+
+/* שלב 5: שני פסי מושבים (120 ריבועים), ההפרש מודגש, ואחריהם המכונים — הכול במנדטים */
+.ms-sw2{align-items:center}
+.ms-st h3{margin:0 0 8px;font-size:clamp(1.1rem,2.6dvh,1.35rem)}
+.ms-sqs{display:grid;grid-template-columns:repeat(40,minmax(0,1fr));gap:3px;direction:rtl}
+.ms-sq{display:block;aspect-ratio:1;border-radius:2px;background:#d9d4c7}
+.ms-sq.r{background:#2563B0}.ms-sq.a{background:#2a7a5e}.ms-sq.l{background:#C0392B}.ms-sq.n{background:#d9d4c7}
+.ms-sq.is-gap{outline:2px solid #14233a;outline-offset:1px;animation:ms-gapq .9s ease-in-out infinite alternate}
+@keyframes ms-gapq{from{transform:scale(1)}to{transform:scale(1.35)}}
+.ms-st{margin-bottom:clamp(14px,3dvh,26px)}
+.ms-st-n{margin:8px 0 0;font-size:clamp(1.1rem,2.6dvh,1.4rem);color:var(--ink-2)}
+.ms-st-n b{font-size:clamp(1.8rem,4.4dvh,2.6rem);font-weight:900;letter-spacing:-.03em;color:var(--ink)}
+.ms-gapline{margin:0;padding:12px 16px;border-radius:10px;background:#fbf4e3;border:1px solid #d1ad62;font-size:clamp(1.1rem,2.7dvh,1.4rem);line-height:1.5;color:var(--ink)}
+.ms-gapline b{font-size:1.25em;font-weight:900;color:#855a0c}
+.ms-sw2 .ms-dv-row{grid-template-columns:130px minmax(0,1fr) 54px}
+.ms-sw2 .ms-dv-row span{font-size:clamp(.95rem,2.2dvh,1.15rem)}
+.ms-sw2 .ms-dv-row b{font-size:clamp(1rem,2.4dvh,1.2rem)}
+.ms-sw2 .ms-dv-t{height:24px}
+@media (min-width:981px) and (max-height:780px){
+  .ms-st{margin-bottom:12px}
+  .ms-st-n b{font-size:1.6rem}
+  .ms-sqs{gap:2px}
+}
+
+/* תוכן הסצנות ממלא את המסך: ממורכז לגובה, ואלמנטים בגודל שמשתנה לפי גובה המסך — בלי שטח ריק */
+.ms-stagebox .ms-stage{display:flex;flex-direction:column;justify-content:center}
+.ms-stage h3{font-size:clamp(1.1rem,2.6dvh,1.45rem);margin-bottom:clamp(8px,2dvh,18px)}
+.ms-note,.ms-foot,.ms-key{font-size:clamp(.86rem,2dvh,1.05rem)}
+.ms-line{font-size:clamp(1rem,2.4dvh,1.25rem)}
+.ms-big b{font-size:clamp(3rem,8.4dvh,5.2rem)}
+.ms-big small{font-size:clamp(.9rem,2.1dvh,1.1rem)}
+.ms-split{height:clamp(32px,5.4dvh,52px)}
+.ms-split b{font-size:clamp(.95rem,2.2dvh,1.2rem)}
+.ms-sec{gap:clamp(10px,2.6dvh,24px)}
+.ms-sec-row{grid-template-columns:clamp(110px,10vw,160px) minmax(0,1fr) 100px 90px}
+.ms-sec-row b{font-size:clamp(1rem,2.4dvh,1.3rem)}
+.ms-sec-bar{height:clamp(22px,4dvh,38px)}
+.ms-sec-g,.ms-sec-t{font-size:clamp(.85rem,2dvh,1.05rem)}
+.ms-wf-in{gap:clamp(10px,2.4dvh,22px)}
+.ms-wf-row{grid-template-columns:clamp(150px,13vw,210px) minmax(0,1fr) 120px}
+.ms-wf-row span{font-size:clamp(.95rem,2.2dvh,1.2rem)}
+.ms-wf-row b{font-size:clamp(1rem,2.3dvh,1.25rem)}
+.ms-wf-t{height:clamp(22px,4dvh,38px)}
+.ms-map{min-height:clamp(300px,54dvh,560px)}
+.ms-src-t b{font-size:clamp(1rem,2.4dvh,1.25rem)}
+.ms-src-t small{font-size:clamp(.82rem,1.9dvh,1rem)}
+.ms-src-v b{font-size:clamp(1.2rem,3dvh,1.6rem)}
+.ms-src-row{padding-block:clamp(8px,1.8dvh,16px)}
+.ms-src{gap:clamp(8px,1.8dvh,16px)}
+.ms-pl-n b{font-size:clamp(.92rem,2.1dvh,1.12rem)}
+.ms-pl-track{height:clamp(22px,3.6dvh,34px)}
+.ms-pl-rows{gap:clamp(2px,.6dvh,6px)}
+.ms-pl-avg b{font-size:clamp(1.6rem,4dvh,2.2rem)}
+.ms-pl-avg small{font-size:clamp(.82rem,1.9dvh,1rem)}

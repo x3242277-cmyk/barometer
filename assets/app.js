@@ -1281,6 +1281,27 @@ function renderAccuracyMethod() {
   });
 }
 
+/* דיוק המכונים נפתח בתנועה: הפודיום עולה, הציונים נספרים, השורות נכנסות והעמודות נפרשות */
+function playAccEntrance() {
+  const v = $("#view-e2022"); if (!v) return;
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  $$("#rank-list .acc-row").forEach((r, i) => r.style.setProperty("--i", i));
+  if (calm) return;
+  v.classList.remove("acc-enter"); void v.offsetWidth; v.classList.add("acc-enter");
+  /* מספרים שנספרים מאפס */
+  const count = (el, delay, ms = 900) => {
+    const raw = el.dataset.final ?? (el.dataset.final = el.textContent.trim()), to = parseFloat(raw.replace(/,/g, ""));
+    if (!isFinite(to)) return;
+    const dec = (raw.split(".")[1] || "").length, t0 = performance.now() + delay;
+    el.textContent = (0).toFixed(dec);
+    const tick = now => { const p = Math.min(1, Math.max(0, (now - t0) / ms)), e = 1 - Math.pow(1 - p, 3); el.textContent = (to * e).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ","); if (p < 1) requestAnimationFrame(tick); else el.textContent = raw; };
+    requestAnimationFrame(tick);
+  };
+  $$("#acc-podium .acc-pod-score").forEach((el, i) => count(el, 500 + (2 - i) * 150, 1100));
+  $$("#acc-facts b").forEach((el, i) => count(el, 250 + i * 120, 800));
+  $$("#rank-list .accuracy-score").forEach((el, i) => count(el, 1000 + i * 70, 700));
+}
+
 function render2022() {
   const stats = S.stats;
   renderAccuracyMethod();
@@ -1633,7 +1654,11 @@ function crossoverBase() {
     /* הרשימות הערביות — כולל רע״ם, שמשויכת ידנית למרכז־שמאל בלוח המנדטים — מוצגות בנפרד; יתר הרשימות הן מרכז־שמאל */
     const arab = sum(id => partyMeta(id).alignment !== "Right" && ARAB_FAMILY.has(normId(id)));
     const below = ids.filter(id => s.parties[id] < THRESHOLD_MANDATES);
-    return { share: 100 * right / tot, arab: 100 * arab / tot, left: 100 * (tot - right - arab) / tot, below };
+    /* אותו פיצול במנדטים (כל 120): ימין וחרדים, ערבים, מרכז־שמאל */
+    const allIds = Object.keys(s.parties), sumAll = f => allIds.filter(f).reduce((t, id) => t + s.parties[id], 0);
+    const mR = sumAll(id => partyMeta(id).alignment === "Right"), mA = sumAll(id => partyMeta(id).alignment !== "Right" && ARAB_FAMILY.has(normId(id)));
+    const mT = allIds.reduce((t, id) => t + s.parties[id], 0);
+    return { share: 100 * right / tot, arab: 100 * arab / tot, left: 100 * (tot - right - arab) / tot, seats: { right: mR, arab: mA, left: Math.max(0, mT - mR - mA) }, below };
   };
   const wOf = s => firmWeight(s.meta);
   /* כאן — בניגוד לתחזית — אין חלון זמן: כל מכון מיוצג בסקר האחרון שלו,
@@ -1643,21 +1668,24 @@ function crossoverBase() {
     .sort((a, b) => parsePollDate(b) - parsePollDate(a) || (b.publishedAt || 0) - (a.publishedAt || 0))
     .forEach(p => { const k = firmOf(p.sourceId).firm; if (!latest.has(k)) latest.set(k, p); });
   const series = buildSeries([...latest.values()]);
+  /* נקודת האפס במנדטים — אותה נקודת בסיס כמו בתחזית: 2022 כאילו מרצ עברה (COUNTERFACTUAL) ועוד התוספת הדמוגרפית של שני המודלים. */
+  const zeroSeats = histBlocs(COUNTERFACTUAL, defs).netanyahu + (modelDrift()?.mean ?? 0);
+  const perSeat = votersOf(100 / 120);                                // כמה מצביעים שווה מנדט אחד
   const rows = series.map(s => {
     const x = shareOf(s);
-    const delta = x.share - base;                                     // נקודות אחוז; שלילי = הימין הצטמק
-    return { meta: s.meta, series: s, share: x.share, left: x.left, arab: x.arab, delta, voters: votersOf(delta), date: s.polls[0].date, below: x.below };
+    const delta = x.seats.right - zeroSeats;                          // במנדטים; שלילי = לימין ולחרדים פחות ממה שהיה צפוי בלי מעבר צד
+    return { meta: s.meta, series: s, share: x.share, left: x.left, arab: x.arab, seats: x.seats, delta, deltaPts: x.share - base, voters: Math.abs(delta) * perSeat, date: s.polls[0].date, below: x.below };
   }).sort((a, b) => a.delta - b.delta);
   const totW = series.reduce((t, s) => t + wOf(s), 0) || 1;
   const shareAvg = series.reduce((t, s) => t + shareOf(s).share * wOf(s), 0) / totW;
   const wAvg = k => series.reduce((t, x) => t + shareOf(x)[k] * wOf(x), 0) / totW;
   const leftAvg = wAvg("left"), arabAvg = wAvg("arab");
-  const deltaAvg = shareAvg - base;
-  const votersAvg = votersOf(deltaAvg);
-  /* נקודת האפס במנדטים — אותה נקודת בסיס כמו בתחזית: 2022 כאילו מרצ עברה (COUNTERFACTUAL) ועוד התוספת הדמוגרפית של שני המודלים.
-     100 נקודות אחוז מהקולות הנספרים = 120 מנדטים. */
-  const zeroSeats = histBlocs(COUNTERFACTUAL, defs).netanyahu + (modelDrift()?.mean ?? 0), seatsAvg = deltaAvg * 1.2;
-  return { leftAvg, arabAvg, zeroSeats, seatsAvg, nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg };
+  const wSeats = k => series.reduce((t, x) => t + shareOf(x).seats[k] * wOf(x), 0) / totW;
+  const seatsAvgBy = { right: wSeats("right"), arab: wSeats("arab"), left: wSeats("left") };
+  const deltaAvg = seatsAvgBy.right - zeroSeats;                     // מנדטים
+  const votersAvg = Math.abs(deltaAvg) * perSeat;
+  const seatsAvg = deltaAvg;
+  return { perSeat, seatsAvgBy, leftAvg, arabAvg, zeroSeats, seatsAvg, nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg };
 }
 
 /* המכונים שבקצוות — כולם, לא רק הראשון: בתיקו (למשל שני מכונים עם אותו
@@ -1689,43 +1717,46 @@ function geoRightShare() {
 /* הסקרים מול 2022 והצפי הדמוגרפי. חלק כל גוש מהקולות שנספרים, בלי לבחור צד:
    גוש הימין והחרדים מול יתר הרשימות (מרכז–שמאל והרשימות הערביות). כל השורות — אותו מדד. */
 function renderCrossover() {
-  const { valid, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, rows, shareAvg, deltaAvg, votersAvg, zeroSeats, seatsAvg, leftAvg, arabAvg } = crossoverBase();
+  const { valid, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, rows, shareAvg, deltaAvg, votersAvg, zeroSeats, seatsAvg, leftAvg, arabAvg, seatsAvgBy, perSeat } = crossoverBase();
   const geo = geoRightShare(), box = $("#crossover-chart");
   if (!box) return;
   if (!rows.length) { box.innerHTML = `<p class="cx2-empty">אין סקרים בחלון הנוכחי.</p>`; return; }
   const R = BLOCS.Right.color, L = BLOCS.Left.color, sign = d => Math.abs(d) < 0.05 ? "0" : `${d < 0 ? "−" : "+"}${r1(Math.abs(d))}`;
   const name = r => r.meta.he || r.meta.firm || r.meta.id;
-  const split = (v, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(v)}%, יתר הרשימות ${r1(100 - v)}%`)}">
-      <span style="flex:${v};background:${R}"><b dir="ltr">${r1(v)}%</b></span><span style="flex:${100 - v};background:${L}"><b dir="ltr">${r1(100 - v)}%</b></span><i class="cx2-half" title="50%"></i></div>`;
-  const AR = BLOCS.Arabs.color;
-  /* שורת מכון: ימין וחרדים · מרכז־שמאל · ערבים (רע״ם בין הערבים) */
-  const split3 = (r, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(r.share)}%, מרכז־שמאל ${r1(r.left)}%, ערבים ${r1(r.arab)}%`)}">
-      <span style="flex:${r.share};background:${R}"><b dir="ltr">${r1(r.share)}%</b></span><span style="flex:${r.arab};background:${AR}"><b dir="ltr">${r1(r.arab)}%</b></span><span style="flex:${r.left};background:${L}"><b dir="ltr">${r1(r.left)}%</b></span></div>`;
+  const AR = BLOCS.Arabs.color, cfR = histBlocs(COUNTERFACTUAL, S.hist?.blocs || BLOCS_2022).netanyahu;
+  const markS = zeroSeats / 120 * 100;
+  /* שורת מקור: ימין וחרדים מול כל השאר, במנדטים (קו 61 = רוב) */
+  const splitS = (n, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(n)} מנדטים, יתר הרשימות ${r1(120 - n)}`)}">
+      <span style="flex:${n};background:${R}"><b dir="ltr">${r1(n)}</b></span><span style="flex:${120 - n};background:${L}"><b dir="ltr">${r1(120 - n)}</b></span><i class="cx2-half" style="inset-inline-start:${100 * 61 / 120}%" title="61 — רוב"></i></div>`;
+  /* שורת מכון: ימין וחרדים · ערבים (ירוק, באמצע) · מרכז־שמאל — במנדטים, כל 120 */
+  const split3 = (r, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(r.seats.right)}, ערבים ${r1(r.seats.arab)}, מרכז־שמאל ${r1(r.seats.left)} מנדטים`)}">
+      <span style="flex:${r.seats.right};background:${R}"><b dir="ltr">${r1(r.seats.right)}</b></span><span style="flex:${r.seats.arab};background:${AR}"><b dir="ltr">${r1(r.seats.arab)}</b></span><span style="flex:${r.seats.left};background:${L}"><b dir="ltr">${r1(r.seats.left)}</b></span></div>`;
+  const geoS = geoDriftSeats(), demoS = demoDriftSeats();
   const refs = [
-    ["2022 בפועל", rightShare0], ["צפי דמוגרפי ל־2026", base],
-    ...(geo == null ? [] : [["צפי לפי מגמות היישובים", geo]]), ["ממוצע הסקרים (משוקלל לפי אמינות)", shareAvg]
+    ["2022, כאילו מרצ עברה", cfR], ["צפי דמוגרפי (בלי סקרים)", cfR + (demoS ?? 0)],
+    ...(geoS == null ? [] : [["צפי גיאוגרפי (מגמות היישובים)", cfR + geoS]]), ["ממוצע הסקרים, משוקלל לפי אמינות", seatsAvgBy.right]
   ];
-  const sorted = [...rows].sort((a, b) => b.share - a.share);
+  const sorted = [...rows].sort((a, b) => b.seats.right - a.seats.right);
   const above = rows.filter(r => r.delta > 0.05).length, below = rows.filter(r => r.delta < -0.05).length;
-  const spread = sorted[0].share - sorted.at(-1).share;
+  const spread = sorted[0].seats.right - sorted.at(-1).seats.right;
   box.innerHTML = `
-    <header class="cx2-head"><h2 id="cross-title">חלק גוש הימין והחרדים מהקולות: <span>${r1(shareAvg)}%</span> בממוצע הסקרים</h2>
-      <p>הפער בין ממוצע הסקרים לצפי הדמוגרפי ל־2026: ${pointsHe(deltaAvg)}, כ־${kv(votersAvg)} קולות — כ־${seatsHe(seatsAvg)} ${seatsAvg < 0 ? "פחות" : "יותר"} מ־${Math.round(zeroSeats)} המנדטים שהיו לימין ולחרדים אילו איש לא עבר צד. מרכז־שמאל: ${r1(leftAvg)}% · ערבים: ${r1(arabAvg)}% ${gapInfo("אומדן של גודל הפער בתמיכה, לא ספירה של אנשים שעברו בין גושים: חלק מהפער יכול לנבוע משיעור הצבעה או מהרכב הנשאלים.")}</p></header>
+    <header class="cx2-head"><h2 id="cross-title">מנדטים לימין ולחרדים: <span>${r1(seatsAvgBy.right)}</span> בממוצע הסקרים</h2>
+      <p>בלי שאף אחד עובר צד היו לימין ולחרדים כ־<b>${Math.round(zeroSeats)}</b> מנדטים. הסקרים נותנים להם כ־<b>${r1(seatsAvgBy.right)}</b>: <b>${seatsHe(Math.abs(deltaAvg))} ${deltaAvg < 0 ? "פחות" : "יותר"}</b>, כ־<b>${kv(votersAvg)}</b> קולות. מרכז־שמאל: ${r1(seatsAvgBy.left)} · ערבים: ${r1(seatsAvgBy.arab)} מנדטים. ${gapInfo("אומדן של גודל הפער בתמיכה, לא ספירה של אנשים שעברו בין גושים: חלק מהפער יכול לנבוע משיעור הצבעה או מהרכב הנשאלים.")}</p></header>
     <div class="cx2-grid">
       <div class="cx2-side"><section class="tr-card cx2-refs" aria-label="איפה כל מקור מציב את הגושים">
         <h3>איפה כל מקור מציב את הגושים</h3>
-        ${refs.map(([label, v]) => `<div class="cx2-ref"><span>${esc(label)}</span>${split(v, label)}</div>`).join("")}
-        <p class="cx2-legend"><span><i style="background:${R}"></i>ימין וחרדים</span><span><i style="background:${L}"></i>מרכז–שמאל (ובשלושת המקורות העליונים: יתר הרשימות)</span><span><i style="background:${AR}"></i>ערבים (בשורות המכונים)</span><span><i class="cx2-half-key"></i>50%</span></p>
+        ${refs.map(([label, v]) => `<div class="cx2-ref"><span>${esc(label)}</span>${splitS(v, label)}</div>`).join("")}
+        <p class="cx2-legend"><span><i style="background:${R}"></i>ימין וחרדים</span><span><i style="background:${L}"></i>יתר הרשימות (בשורות המכונים: מרכז–שמאל)</span><span><i style="background:${AR}"></i>ערבים</span><span><i class="cx2-half-key"></i>61 = רוב</span></p>
       </section>
-      <details class="tr-card cx2-how"><summary>איך מחשבים · מי בכל גוש</summary><p>חלק הימין והחרדים נמדד מתוך כל הרשימות שמקבלות לפחות ${CROSS_MIN_SHARE}% מהקולות, גם מתחת לאחוז החסימה. יתר הרשימות, מרכז–שמאל והרשימות הערביות, הן המשלים.</p><p><b>נקודת הייחוס:</b> חלק הימין והחרדים ב־2022 (${r1(rightShare0)}%, מתוך ${fmt(Math.round(tot2022 / 1000) * 1000)} קולות שנספרו) ועוד הגידול הדמוגרפי עד 2026 (${pointsHe(growth)}), בסך הכול ${r1(base)}%.</p><p><b>במנדטים:</b> אילו איש לא החליף צד, הימין והחרדים היו מקבלים כ־${Math.round(zeroSeats)} מנדטים: 2022 כאילו מרצ עברה את אחוז החסימה (${histBlocs(COUNTERFACTUAL, S.hist.blocs || BLOCS_2022).netanyahu}), ועוד התוספת הדמוגרפית (${seatsHe(modelDrift()?.mean ?? 0)}). זו נקודת הבסיס של התחזית עצמה. 100 נקודות אחוז מהקולות הנספרים הן 120 מנדטים, ולכן כל נקודת אחוז היא 1.2 מנדטים.</p><p><b>הפער של מכון:</b> חלק הימין והחרדים בסקר האחרון שלו פחות נקודת הייחוס. הוא מתורגם לקולות לפי כ־${fmt(Math.round(votersOf(100) / 1000) * 1000)} המצביעים הצפויים ב־2026. הממוצע משוקלל לפי דרגות האמינות.</p></details></div>
+      <details class="tr-card cx2-how"><summary>איך מחשבים · מי בכל גוש</summary><p><b>נקודת הייחוס — מנדטים:</b> כמה מנדטים היו לימין ולחרדים אילו איש לא עבר צד. מתחילים מ־2022 כאילו מרצ עברה את אחוז החסימה (${cfR}), ומוסיפים את התוספת הדמוגרפית של שני המודלים (${seatsHe(modelDrift()?.mean ?? 0)}): כ־${Math.round(zeroSeats)}.</p><p><b>הפער של מכון:</b> המנדטים שהסקר האחרון שלו נותן לימין ולחרדים, פחות נקודת הייחוס. כל מנדט שווה כ־${fmt(Math.round(perSeat / 1000) * 1000)} קולות, וכך מתקבל מספר המצביעים. הממוצע משוקלל לפי דרגות האמינות. ימין וחרדים — לפי שיוך הרשימות; ערבים — רע״ם והרשימות הערביות; השאר — מרכז–שמאל.</p></details></div>
       <section class="tr-card cx2-firms" aria-label="הסקר האחרון של כל מכון">
         <h3>הסקר האחרון של כל מכון</h3>
-        <div class="cx2-row cx2-cols" aria-hidden="true"><span></span><span>מכון</span><span>ימין וחרדים · יתר הרשימות <small>קו מקווקו = הצפי הדמוגרפי</small></span><span>מול הצפי</span><span>בקולות</span></div>
+        <div class="cx2-row cx2-cols" aria-hidden="true"><span></span><span>מכון</span><span>ימין וחרדים · ערבים · מרכז־שמאל, במנדטים <small>קו מקווקו = הצפי בלי מעבר צד (כ־${Math.round(zeroSeats)})</small></span><span>מנדטים מול הצפי</span><span>בקולות</span></div>
         ${sorted.map(r => `<div class="cx2-row" title="${esc(`${name(r)} · ${r.date}${r.below.length ? " · מתחת לסף אך נספר: " + r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`).join(", ") : ""}`)}">
           ${logoBox(r.meta, 26)}<span class="cx2-name"><b>${esc(name(r))}</b><small>${esc(r.date)}</small></span>
-          <div class="cx2-bar">${split3(r, name(r))}<i class="cx2-exp" style="inset-inline-start:${(100 - base).toFixed(2)}%" title="הצפי הדמוגרפי ${r1(base)}%"></i></div>
+          <div class="cx2-bar">${split3(r, name(r))}<i class="cx2-exp" style="inset-inline-start:${(100 - markS).toFixed(2)}%" title="הצפי בלי מעבר צד: כ־${Math.round(zeroSeats)} מנדטים"></i></div>
           <b class="cx2-d" dir="ltr">${sign(r.delta)}</b><span class="cx2-v" dir="ltr">${Math.abs(r.delta) < 0.05 ? "—" : `≈ ${kv(r.voters)}`}</span></div>`).join("")}
-        <p class="cx2-sum">${above} מכונים מעל הצפי הדמוגרפי ו־${below} מתחתיו. הפער בין הקצוות: ${pointsHe(spread)}, כ־${kv(votersOf(spread))} קולות.</p>
+        <p class="cx2-sum">${above} מכונים מעל הצפי ו־${below} מתחתיו. הפער בין הקצוות: ${seatsHe(spread)}, כ־${kv(spread * perSeat)} קולות.</p>
       </section>
     </div>`;
 }
@@ -2477,6 +2508,7 @@ function show(view) {
   $$(".subtab").forEach(t => t.setAttribute("aria-current", t.dataset.view === view ? "page" : "false"));
   if (view === "haredi" && rendered[view]) renderHaredi();
   if (view === "polls" && rendered[view]) renderPolls();
+  if (view === "e2022" && !rendered[view]) { /* הרינדור הראשון למטה, ואז הכניסה */ }
   if (!rendered[view]) {
     try {
       if (view === "landing" || view === "home") renderHome();
@@ -2491,6 +2523,7 @@ function show(view) {
       rendered[view] = true;
     } catch (e) { console.error(e); }
   }
+  if (view === "e2022") playAccEntrance();
   if (view === "live" || view === "results") refreshLiveResults(true);
   const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"המודל הגיאוגרפי", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
   document.title = `${t} · הברומטר`;

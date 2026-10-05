@@ -145,7 +145,7 @@
 .gap-rec-label b{font-size:.88rem;color:var(--ink)}
 .gap-rec-label small{font-size:.7rem;color:var(--ink-3)}
 .gap-rec-plotwrap{border-top:1px solid var(--rule)}
-.gap-rec-plot{position:relative;height:60px;border-bottom:1px solid var(--rule-2)}
+.gap-rec-plot{position:relative;height:132px;border-bottom:1px solid var(--rule-2)}
 .gap-rec-zero{position:absolute;top:0;bottom:0;width:0;border-inline-start:2px dashed #14233a;opacity:.75}
 .gap-rec-dot{position:absolute;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#8997a8;border:1.5px solid #fff;opacity:.85}
 .gap-rec-dot.hi,.gap-rec-dot.lo{width:17px;height:17px;margin:-8.5px 0 0 -8.5px;opacity:1;z-index:2}
@@ -178,3 +178,21 @@
   .gap-rec-row{grid-template-columns:90px minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){.gap-floor.is-new>.gap-floor-body,.gap-floor.is-new .gap-node{animation:none}.gap-choices button,.gap-poll,.gap-step,.gap-go,.gap-tool{transition:none}}
+
+/* מנדטים בכל נקודה, והתוצאה בפועל מתחת לקו המקווקו */
+.gap-rec-tag{position:absolute;transform:translateX(-50%);padding:0 4px;font-size:.86rem;font-weight:600;line-height:1.35;white-space:nowrap;direction:rtl;unicode-bidi:isolate;color:var(--ink-2);z-index:2}
+.gap-rec-tag b{font-size:1rem;font-weight:800;color:var(--ink)}
+.gap-rec-tag.hi,.gap-rec-tag.lo{padding:0 8px;border-radius:5px;font-weight:700;color:#fff}
+.gap-rec-tag.hi b,.gap-rec-tag.lo b{color:#fff;font-size:.95rem}
+.gap-rec-tag.hi{background:var(--hi)}.gap-rec-tag.lo{background:var(--lo)}
+.gap-rec-actual{position:absolute;bottom:3px;transform:translateX(-50%);z-index:4;padding:2px 9px;border-radius:999px;background:#14233a;color:#f6e7bd;font-size:.76rem;font-weight:700;line-height:1.4;white-space:nowrap;direction:rtl;unicode-bidi:isolate}
+.gap-rec-actual b{font-size:.95rem;color:#fff}
+
+/* הצעד האחרון: שאלה גדולה שמובילה לדיוק המכונים */
+.gap-floor .gap-question{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:72px;margin-top:18px;padding:14px 26px;border-radius:14px;text-decoration:none;color:#14233a;box-shadow:0 5px 0 #b8862b,0 18px 36px -20px #b8862b;animation:gap-q-pulse 2.8s ease-in-out infinite}
+.gap-q-mark{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:1.6rem;font-weight:900}
+.gap-question b{font-size:clamp(1.3rem,3dvh,1.75rem);font-weight:900;letter-spacing:-.02em}
+.gap-q-go{font-size:1.8rem;line-height:1;transition:transform .15s}
+.gap-question:hover .gap-q-go{transform:translateX(-6px)}
+@keyframes gap-q-pulse{0%,100%{transform:none}50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.gap-floor .gap-question{animation:none}}

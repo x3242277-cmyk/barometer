@@ -245,10 +245,10 @@ function renderPollTracker() {
 /* ---------- הניווט של כל הסקרים: אותו תפריט צד בעמוד הסקרים ובדיוק המכונים ---------- */
 const POLLS_NAV = [
   ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?"],
+  ["acc", "", "#/2022", "דיוק המכונים"],
   ["trend", "", "#/polls/trend", "מבט כולל ומגמות"],
   ["list", "", "#/polls/list", "כל סקר בנפרד"],
-  ["cross", "", "#/crossover", "כמה עברו צד"],
-  ["acc", "", "#/2022", "דיוק המכונים"]
+  ["cross", "", "#/crossover", "כמה עברו צד"]
 ];
 function renderPollsNav() {
   const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap";

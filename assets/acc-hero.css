@@ -78,3 +78,35 @@
 #view-e2022 .acc-row{grid-template-columns:30px 46px minmax(130px,1.1fr) 112px 72px minmax(240px,2.4fr) 86px 76px}
 #view-e2022 .acc-row .orglogo{width:46px;height:46px}
 #view-e2022 .acc-row .orglogo img{padding:6px}
+
+/* ---------- כניסה בתנועה (מופעלת בכל פתיחה של העמוד) ---------- */
+@keyframes acc-fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes acc-rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes acc-drop{from{opacity:0;transform:translateY(-26px) scale(.8)}to{opacity:1;transform:none}}
+@keyframes acc-pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes acc-row-in{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+@keyframes acc-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+#view-e2022.acc-enter .acc-kicker{animation:acc-fade-up .5s ease both}
+#view-e2022.acc-enter .acc-title{animation:acc-fade-up .6s .08s ease both}
+#view-e2022.acc-enter .acc-sub{animation:acc-fade-up .6s .18s ease both}
+#view-e2022.acc-enter .acc-facts>div{animation:acc-pop .5s ease both}
+#view-e2022.acc-enter .acc-facts>div:nth-child(1){animation-delay:.25s}
+#view-e2022.acc-enter .acc-facts>div:nth-child(2){animation-delay:.37s}
+#view-e2022.acc-enter .acc-facts>div:nth-child(3){animation-delay:.49s}
+#view-e2022.acc-enter .acc-pod-base{transform-origin:50% 100%;animation:acc-rise .75s cubic-bezier(.2,.8,.2,1) both}
+#view-e2022.acc-enter .acc-pod.p3 .acc-pod-base{animation-delay:.2s}
+#view-e2022.acc-enter .acc-pod.p2 .acc-pod-base{animation-delay:.35s}
+#view-e2022.acc-enter .acc-pod.p1 .acc-pod-base{animation-delay:.5s}
+#view-e2022.acc-enter .acc-pod-logo,#view-e2022.acc-enter .acc-pod-name,#view-e2022.acc-enter .acc-pod .grade{animation:acc-drop .5s ease both}
+#view-e2022.acc-enter .acc-pod.p3 :is(.acc-pod-logo,.acc-pod-name,.grade){animation-delay:.75s}
+#view-e2022.acc-enter .acc-pod.p2 :is(.acc-pod-logo,.acc-pod-name,.grade){animation-delay:.9s}
+#view-e2022.acc-enter .acc-pod.p1 :is(.acc-pod-logo,.acc-pod-name,.grade){animation-delay:1.05s}
+#view-e2022.acc-enter .accuracy-method-band>*{animation:acc-pop .45s ease both}
+#view-e2022.acc-enter .accuracy-method-band>*:nth-child(1){animation-delay:.9s}
+#view-e2022.acc-enter .accuracy-method-band>*:nth-child(2){animation-delay:1.0s}
+#view-e2022.acc-enter .accuracy-method-band>*:nth-child(3){animation-delay:1.1s}
+#view-e2022.acc-enter .accuracy-method-band>*:nth-child(4){animation-delay:1.2s}
+#view-e2022.acc-enter .accuracy-method-band>*:nth-child(5){animation-delay:1.3s}
+#view-e2022.acc-enter .acc-row:not(.acc-cols){animation:acc-row-in .5s ease both;animation-delay:calc(var(--i,0) * 70ms + 1.1s)}
+#view-e2022.acc-enter .acc-row:not(.acc-cols) .accuracy-score-track{transform-origin:100% 50%;animation:acc-grow .7s ease-out both;animation-delay:calc(var(--i,0) * 70ms + 1.5s)}
+@media (prefers-reduced-motion:reduce){#view-e2022.acc-enter *{animation:none!important}}

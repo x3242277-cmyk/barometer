@@ -80,7 +80,7 @@
     const g = { start: right(f0), afterDemo: stepShare(["demography"]), afterTurn: stepShare(["demography", "turnout"]), end: geo26, geo22, seatsPts: (geo26 - right(f0)) * 1.2, seats22: n.base22[0] + n.base22[1], seats26: n.seats26[0] + n.seats26[1], localities: Object.keys(T.loc).filter(c => c !== "99999").length };
 
     /* סקרים: הסקר האחרון של כל מכון, כמו בעמוד הסקרים מול 2022 */
-    const rows = cb.rows.map(r => ({ meta: r.meta, share: r.share, left: r.left, arab: r.arab, date: r.date, delta: r.delta, score: firmScore(r.meta), grade: gradeOf(firmScore(r.meta)), w: firmWeight(r.meta) }))
+    const rows = cb.rows.map(r => ({ meta: r.meta, share: r.share, left: r.left, arab: r.arab, seats: r.seats, date: r.date, delta: r.delta, score: firmScore(r.meta), grade: gradeOf(firmScore(r.meta)), w: firmWeight(r.meta) }))
       .sort((a, b) => b.w - a.w || b.score - a.score);
     const W = rows.reduce((s, r) => s + r.w, 0) || 1;
     const simpleAvg = rows.reduce((s, r) => s + r.share, 0) / (rows.length || 1);
@@ -128,7 +128,7 @@
       .sort((a, b) => armRank(a) - armRank(b) || b.n - a.n);
 
     return {
-      cb, g, rows, W, simpleAvg, stepsCalc, fin, partySeats, simpleBloc: blocOf(allocateSeats(sF.parties)), weightedBloc: blocOf(allocateSeats(wF.parties)),
+      seatsRef: { demo: baseCf.right + (dr?.demographic ?? 0), geo: baseCf.right + (dr?.geographic ?? 0), polls: cb.seatsAvgBy.right }, cb, g, rows, W, simpleAvg, stepsCalc, fin, partySeats, simpleBloc: blocOf(allocateSeats(sF.parties)), weightedBloc: blocOf(allocateSeats(wF.parties)),
       sectors: S.demo.sectors.map(s => ({ id: s.id, name: s.name, e: s.eligible2022, growth: s.growth, turnout: s.turnout })),
       demo: { r22: cb.rightShare0, base: cb.base, pts: cb.growth, seats: demoDriftSeats() ?? 0, years: S.demo.meta.years },
       nVotes: S.regions.national.valid
@@ -196,7 +196,7 @@
     await tween(1500, p => { const v = lerp(D.demo.r22, D.demo.base, p); bar.innerHTML = split(v); big.textContent = pc(v); });
     const l1 = stage.querySelector("#ms-demo-l1"); l1.hidden = false;
     l1.innerHTML = `עד 2026 חלק הימין והחרדים ${D.demo.pts >= 0 ? "עולה" : "יורד"} בערך <b>${pointsHe(D.demo.pts)}</b>, כ־<b>${r1(Math.abs(D.demo.seats))}</b> מנדטים. זה הצפי הדמוגרפי, <b>בלי שום סקר</b>.`;
-    st.ledger.demo = D.demo.base; ledger(); say(`הצפי הדמוגרפי: ${pc(D.demo.base)} לימין ולחרדים`);
+    st.ledger.demo = D.seatsRef.demo; ledger(); say(`הצפי הדמוגרפי: ${r1(D.seatsRef.demo)} מנדטים לימין ולחרדים (${pc(D.demo.base)} מהקולות)`);
     await sleep(2200);
   }
 
@@ -263,65 +263,64 @@
       });
       el.classList.remove("is-on");
     }
-    st.ledger.geo = g.end; ledger(); say(`הצפי הגיאוגרפי: ${pc(g.end)} לימין ולחרדים`);
+    st.ledger.geo = D.seatsRef.geo; ledger(); say(`הצפי הגיאוגרפי: ${r1(D.seatsRef.geo)} מנדטים לימין ולחרדים (${pc(g.end)} מהקולות)`);
     await sleep(2200);
   }
 
   /* ---------- שלב 4: הסקרים, לפי אמינות ---------- */
   async function scenePolls() {
-    const rows = D.rows, base = D.demo.base;
-    const seg = (v, cls) => `<i class="ms-pl-seg ${cls}" style="flex:${v}"><b dir="ltr">${v >= 6 ? pc(v) : ""}</b></i>`;
-    setStage(`<div class="ms-polls"><div class="ms-pl-head"><span></span><span>מכון</span><span>דרגה</span><span class="ms-pl-axis">חלוקת הקולות בסקר האחרון <em class="k-r">ימין וחרדים</em><em class="k-a">ערבים</em><em class="k-l">מרכז־שמאל</em></span><span>משקל</span></div>
+    const rows = D.rows, zero = D.cb.zeroSeats, sn = v => r1(v);
+    /* מנדטים, לא אחוזים: ימין וחרדים | ערבים | מרכז־שמאל — סך הכול 120 בכל סקר */
+    const seg = (v, cls) => `<i class="ms-pl-seg ${cls}" style="flex:${v}"><b dir="ltr">${v >= 3 ? sn(v) : ""}</b></i>`;
+    setStage(`<div class="ms-polls"><div class="ms-pl-head"><span></span><span>מכון</span><span>דרגה</span><span class="ms-pl-axis">חלוקת 120 המנדטים בסקר האחרון <em class="k-r">ימין וחרדים</em><em class="k-a">ערבים</em><em class="k-l">מרכז־שמאל</em></span><span>משקל</span></div>
       <div class="ms-pl-rows">${rows.map((r, i) => `<div class="ms-pl-row" data-i="${i}">${logoBox(r.meta, 26)}<span class="ms-pl-n"><b>${esc(r.meta.he || r.meta.firm)}</b><small>${esc(r.date)}</small></span>
         <span class="ms-pl-g"><em class="grade ${r.grade.key}">${esc(r.grade.label)}</em><small>ציון ${r1(r.score)}</small></span>
-        <div class="ms-pl-track"><span class="ms-pl-bar">${seg(r.share, "r")}${seg(r.arab, "a")}${seg(r.left, "l")}</span><i class="ms-pl-exp" style="left:${base}%"></i></div>
+        <div class="ms-pl-track"><span class="ms-pl-bar">${seg(r.seats.right, "r")}${seg(r.seats.arab, "a")}${seg(r.seats.left, "l")}</span><i class="ms-pl-exp" style="left:${zero / 120 * 100}%"></i></div>
         <span class="ms-pl-w"><i></i><b>${Math.round(100 * r.w / D.W)}%</b></span></div>`).join("")}</div>
-      <div class="ms-pl-avg"><div class="k-r"><small>ימין וחרדים · ממוצע משוקלל</small><b dir="ltr" id="ms-pl-w">—</b></div><div class="k-a"><small>ערבים</small><b dir="ltr" id="ms-pl-a">—</b></div><div class="k-l"><small>מרכז־שמאל</small><b dir="ltr" id="ms-pl-l">—</b></div><p class="ms-note">הקו המקווקו: הצפי הדמוגרפי לימין ולחרדים (${pc(base)})</p></div></div>`);
+      <div class="ms-pl-avg"><div class="k-r"><small>ימין וחרדים · ממוצע משוקלל, מנדטים</small><b dir="ltr" id="ms-pl-w">—</b></div><div class="k-a"><small>ערבים</small><b dir="ltr" id="ms-pl-a">—</b></div><div class="k-l"><small>מרכז־שמאל</small><b dir="ltr" id="ms-pl-l">—</b></div><p class="ms-note">הקו המקווקו: מה שהיה צפוי לימין ולחרדים בלי שאיש עובר צד (כ־${Math.round(zero)} מנדטים)</p></div></div>`);
     let sumW = 0, sumL = 0, sumA = 0, wS = 0;
     for (let i = 0; i < rows.length; i++) {
       const r = rows[i], row = stage.querySelector(`[data-i="${i}"]`);
-      row.classList.add("is-on"); say(`${r.meta.he || r.meta.firm}: ימין וחרדים ${pc(r.share)} · מרכז־שמאל ${pc(r.left)} · ערבים ${pc(r.arab)} (${r.date})`);
+      row.classList.add("is-on"); say(`${r.meta.he || r.meta.firm}: ימין וחרדים ${sn(r.seats.right)} · ערבים ${sn(r.seats.arab)} · מרכז־שמאל ${sn(r.seats.left)} מנדטים (${r.date})`);
       await sleep(380); row.classList.add("is-dot");
       await sleep(380); row.classList.add("is-tier"); row.querySelector(".ms-pl-w i").style.width = `${r.w / .45 * 100}%`;
-      sumW += r.share * r.w; sumL += r.left * r.w; sumA += r.arab * r.w; wS += r.w;
-      stage.querySelector("#ms-pl-w").textContent = pc(sumW / wS); stage.querySelector("#ms-pl-l").textContent = pc(sumL / wS); stage.querySelector("#ms-pl-a").textContent = pc(sumA / wS);
+      sumW += r.seats.right * r.w; sumL += r.seats.left * r.w; sumA += r.seats.arab * r.w; wS += r.w;
+      stage.querySelector("#ms-pl-w").textContent = sn(sumW / wS); stage.querySelector("#ms-pl-l").textContent = sn(sumL / wS); stage.querySelector("#ms-pl-a").textContent = sn(sumA / wS);
       await sleep(430); row.classList.remove("is-on"); row.classList.add("is-done");
     }
     stage.querySelector(".ms-pl-avg").classList.add("is-fin");
-    st.ledger.polls = D.cb.shareAvg; ledger(); say(`ממוצע הסקרים, משוקלל לפי אמינות: ימין וחרדים ${pc(D.cb.shareAvg)} · מרכז־שמאל ${pc(D.cb.leftAvg)} · ערבים ${pc(D.cb.arabAvg)}`);
+    st.ledger.polls = D.seatsRef.polls; ledger(); say(`ממוצע הסקרים, משוקלל לפי אמינות: ימין וחרדים ${sn(D.cb.seatsAvgBy.right)} · ערבים ${sn(D.cb.seatsAvgBy.arab)} · מרכז־שמאל ${sn(D.cb.seatsAvgBy.left)} מנדטים`);
     await sleep(2400);
   }
 
   /* ---------- שלב 5: כמה עברו צד ---------- */
   async function sceneSwitch() {
-    const cb = D.cb, rows = [...D.rows].sort((a, b) => a.delta - b.delta);
-    const refs = [["2022 בפועל", cb.rightShare0, "ms-c22"], ["צפי דמוגרפי", cb.base, "ms-cdemo"], ["צפי גיאוגרפי", D.g.end, "ms-cgeo"], ["ממוצע הסקרים, משוקלל", cb.shareAvg, "ms-cpoll"]];
-    const lo = Math.floor(Math.min(...refs.map(r => r[1])) - 1.5), hi = Math.ceil(Math.max(...refs.map(r => r[1])) + 1.5), pos = v => (v - lo) / (hi - lo) * 100;
-    const dMax = Math.max(1, ...rows.map(r => Math.abs(r.delta)));
-    setStage(`<div class="ms-two ms-sw"><div class="ms-col"><h3>חלק הימין והחרדים מהקולות</h3>
-        <div class="ms-ax"><div class="ms-ax-line"></div>${refs.map(([n, v, c], i) => `<div class="ms-ax-m ${c}" data-r="${i}" style="left:${pos(v)}%;--lvl:${i}"><span><b dir="ltr">${pc(v)}</b>${n}</span><i></i></div>`).join("")}
-        <div class="ms-ax-gap" id="ms-gap" hidden></div></div>
-        <p class="ms-line" id="ms-sw-l" hidden></p></div>
-      <div class="ms-col"><h3>כל מכון מול הצפי הדמוגרפי</h3><div class="ms-dv">${rows.map((r, i) => `<div class="ms-dv-row" data-i="${i}"><span>${esc(r.meta.he || r.meta.firm)}</span><div class="ms-dv-t"><i class="ms-mid"></i><i class="ms-dvb ${r.delta >= 0 ? "is-pos" : "is-neg"}" style="--w:${Math.abs(r.delta) / dMax * 48}%"></i></div><b dir="ltr">${r.delta >= 0 ? "+" : "−"}${r1(Math.abs(r.delta))}</b></div>`).join("")}</div>
-        <p class="ms-key"><i style="background:#2563B0"></i>יותר מהצפי לימין ולחרדים<i style="background:#C0392B"></i>פחות מהצפי<span>· הקו האמצעי: הצפי הדמוגרפי</span></p></div></div>`);
-    for (let i = 0; i < refs.length; i++) {
-      const m = stage.querySelector(`[data-r="${i}"]`); say(`${refs[i][0]}: ${pc(refs[i][1])}`);
-      m.classList.add("is-in"); await sleep(1000);
-    }
-    const gap = stage.querySelector("#ms-gap"), a = cb.base, b = cb.shareAvg;
-    gap.hidden = false; gap.style.left = `${pos(Math.min(a, b))}%`; gap.style.width = `${Math.abs(pos(a) - pos(b))}%`;
-    gap.innerHTML = `<span dir="ltr">${b - a >= 0 ? "+" : "−"}${r1(Math.abs(b - a))}</span>`;
-    say("הפער בין הסקרים לצפי הדמוגרפי הוא מה ש״עבר צד״, או נשאר בבית");
+    const cb = D.cb, Z = Math.round(cb.zeroSeats), Pi = Math.round(cb.seatsAvgBy.right), Ai = Math.round(cb.seatsAvgBy.arab), gapN = Math.max(0, Z - Pi);
+    const rows = [...D.rows].sort((a, b) => a.delta - b.delta), dMax = Math.max(1, ...rows.map(r => Math.abs(r.delta)));
+    const sg = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+    const sq = (cls, i) => `<i class="ms-sq ${cls}${i >= Pi && i < Z ? " gapq" : ""}"></i>`;
+    const stripA = Array.from({ length: 120 }, (_, i) => sq(i < Z ? "r" : "n", i)).join("");
+    const stripB = Array.from({ length: 120 }, (_, i) => sq(i < Pi ? "r" : i < Pi + Ai ? "a" : "l", i)).join("");
+    setStage(`<div class="ms-two ms-sw2"><div class="ms-col">
+        <div class="ms-st" id="ms-stA" hidden><h3>בלי שאף אחד עובר צד</h3><div class="ms-sqs">${stripA}</div><p class="ms-st-n"><b dir="ltr">${Z}</b> מנדטים לימין ולחרדים</p></div>
+        <div class="ms-st" id="ms-stB" hidden><h3>מה שהסקרים אומרים</h3><div class="ms-sqs">${stripB}</div><p class="ms-st-n"><b dir="ltr">${Pi}</b> מנדטים לימין ולחרדים</p></div>
+        <p class="ms-gapline" id="ms-gapline" hidden><b dir="ltr">${gapN}</b> מנדטים חסרים, כ־<b>${cb.kv(cb.votersAvg)}</b> מצביעים שעברו גוש או נשארו בבית</p></div>
+      <div class="ms-col" id="ms-firmcol" hidden><h3>כל מכון: ימין וחרדים, מנדטים יותר או פחות מהצפי</h3><div class="ms-dv">${rows.map((r, i) => `<div class="ms-dv-row" data-i="${i}"><span>${esc(r.meta.he || r.meta.firm)}</span><div class="ms-dv-t"><i class="ms-mid"></i><i class="ms-dvb ${r.delta >= 0 ? "is-pos" : "is-neg"}" style="--w:${Math.abs(r.delta) / dMax * 48}%"></i></div><b dir="ltr">${sg(r.delta)}</b></div>`).join("")}</div>
+        <p class="ms-key"><i style="background:#2563B0"></i>יותר מהצפי<i style="background:#C0392B"></i>פחות מהצפי<span>· הקו האמצעי: הצפי בלי מעבר צד (${Z})</span></p></div></div>`);
+    const reveal = async (id, label, say1) => { const el = stage.querySelector(id); el.hidden = false; say(say1); const sqs = [...el.querySelectorAll(".ms-sq")]; sqs.forEach(e => e.style.opacity = 0); await tween(1100, p => { const n = Math.floor(sqs.length * p); sqs.forEach((e, k) => { e.style.opacity = k < n ? 1 : 0; }); }); };
+    await reveal("#ms-stA", "A", `בלי שאף אחד עובר צד: כ־${Z} מנדטים לימין ולחרדים`);
     await sleep(900);
-    const l = stage.querySelector("#ms-sw-l"); l.hidden = false;
-    const geoGap = b - D.g.end;
-    l.innerHTML = `חלק הימין והחרדים בממוצע הסקרים <b>${b >= a ? "גבוה" : "נמוך"} ב־${pointsHe(b - a)}</b> מהצפי הדמוגרפי (כ־<b>${cb.kv(cb.votersAvg)}</b> קולות), ו<b>${geoGap >= 0 ? "גבוה" : "נמוך"} ב־${pointsHe(geoGap)}</b> מהצפי הגיאוגרפי. באותו שיעור, בכיוון ההפוך, זה חלקן של יתר הרשימות. <small>אומדן לגודל הפער בתמיכה, לא ספירה של אנשים.</small>`;
-    await sleep(900);
-    say("ובכל מכון בנפרד");
+    await reveal("#ms-stB", "B", `ככה הסקרים רואים את זה: ${Pi} מנדטים`);
+    await sleep(500);
+    stage.querySelectorAll(".gapq").forEach(e => e.classList.add("is-gap"));
+    const gl = stage.querySelector("#ms-gapline"); gl.hidden = false;
+    say(`ההפרש: ${gapN} מנדטים, כ־${cb.kv(cb.votersAvg)} מצביעים`);
+    await sleep(2200);
+    stage.querySelector("#ms-firmcol").hidden = false; say("כל מכון נותן פער אחר");
     for (let i = 0; i < rows.length; i++) { stage.querySelector(`.ms-dv-row[data-i="${i}"]`).classList.add("is-in"); await sleep(380); }
     const up = rows.filter(r => r.delta > .05).length, dn = rows.filter(r => r.delta < -.05).length;
-    st.ledger.switch = b - a; ledger(); say(`${up} מכונים מעל הצפי הדמוגרפי, ${dn} מתחתיו`);
-    await sleep(2400);
+    st.ledger.switch = cb.deltaAvg; ledger(); say(`${up} מכונים מעל הצפי, ${dn} מתחתיו`);
+    await sleep(2000);
   }
 
   /* ---------- שלב 6: תחשיב הברומטר ---------- */
@@ -331,14 +330,14 @@
         ${cols.map(([k, , c]) => `<div class="ms-cv-col" data-b="${k}" style="--c:${c}"><i class="ms-cv-ghost"></i><i class="ms-cv-bar"></i><div class="ms-cv-v"><b dir="ltr">0</b><em dir="ltr"></em></div></div>`).join("")}</div>
         <div class="ms-cv-names">${cols.map(([, n, c]) => `<span style="--c:${c}">${n}</span>`).join("")}</div></div>
       <div class="ms-cv-side" id="ms-cv-side"><div class="ms-cv-now"><span class="ms-cv-n" id="ms-cv-n">1</span><b id="ms-cv-t"></b><small id="ms-cv-s"></small></div>
-        <ol class="ms-cv-list">${steps.map((s, i) => `<li data-i="${i}"><i>${i + 1}</i>${esc(s.title)}</li>`).join("")}</ol>
+        <ol class="ms-cv-steps" aria-label="התקדמות">${steps.map((s, i) => `<li data-i="${i}" title="${esc(s.title)}">${i + 1}</li>`).join("")}</ol>
         <div class="ms-hemi" id="ms-hemi" hidden></div></div></div>`);
     const colEl = k => stage.querySelector(`.ms-cv-col[data-b="${k}"]`);
     const paint = (from, to, p) => cols.forEach(([k]) => { const v = from ? lerp(from[k], to[k], p) : to[k] * p, c = colEl(k); c.style.setProperty("--h", `${v / MAX * 100}%`); c.querySelector("b").textContent = r1(v); });
     let prev = null;
     for (let i = 0; i < steps.length; i++) {
       const s = steps[i], li = stage.querySelector(`li[data-i="${i}"]`), last = i === steps.length - 1;
-      li.classList.add("is-on"); say(s.title);
+      li.classList.add("is-on"); say(`שלב ${i + 1} מתוך ${steps.length}`);
       stage.querySelector("#ms-cv-n").textContent = i + 1; stage.querySelector("#ms-cv-t").textContent = s.title; stage.querySelector("#ms-cv-s").textContent = s.note;
       cols.forEach(([k]) => { const c = colEl(k); c.style.setProperty("--gh", prev ? `${prev[k] / MAX * 100}%` : "0%"); c.querySelector("em").textContent = ""; c.querySelector("em").className = ""; });
       await tween(i === 0 ? 1300 : 850, p => paint(prev, s.bloc, p));
@@ -360,10 +359,10 @@
 
   /* ---------- מה כבר חושב — רצועת התוצאות ---------- */
   const CHIPS = [
-    ["demo", "צפי דמוגרפי", v => pc(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
-    ["geo", "צפי גיאוגרפי", v => pc(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
-    ["polls", "ממוצע הסקרים, משוקלל", v => pc(v), "נכנס לחישוב"],
-    ["switch", "הפער מול הצפי הדמוגרפי, נקודות אחוז", v => `${v >= 0 ? "+" : "−"}${r1(Math.abs(v))}`, "מדד לבדיקה, לא משנה מנדט"],
+    ["demo", "צפי דמוגרפי, מנדטים לימין ולחרדים", v => r1(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
+    ["geo", "צפי גיאוגרפי, מנדטים", v => r1(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
+    ["polls", "ממוצע הסקרים, מנדטים", v => r1(v), "משוקלל לפי אמינות"],
+    ["switch", "הפער מול הצפי, מנדטים", v => `${v >= 0 ? "+" : "−"}${r1(Math.abs(v))}`, "מדד לבדיקה, לא משנה מנדט"],
     ["final", "מנדטים לימין ולחרדים", v => String(v), "תחזית הברומטר"]
   ];
   function ledger() {
@@ -372,10 +371,10 @@
   }
   function fillLedgerUpTo(i) {
     st.ledger = {};
-    if (i > 1) st.ledger.demo = D.demo.base;
-    if (i > 2) st.ledger.geo = D.g.end;
-    if (i > 3) st.ledger.polls = D.cb.shareAvg;
-    if (i > 4) st.ledger.switch = D.cb.shareAvg - D.cb.base;
+    if (i > 1) st.ledger.demo = D.seatsRef.demo;
+    if (i > 2) st.ledger.geo = D.seatsRef.geo;
+    if (i > 3) st.ledger.polls = D.seatsRef.polls;
+    if (i > 4) st.ledger.switch = D.cb.deltaAvg;
   }
 
   /* ---------- בקרה ---------- */
@@ -451,7 +450,7 @@
     const g = D.g, cb = D.cb, sg = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
     chips("m-live-geo", [[fmt(g.localities), "יישובים בחישוב"], [pc(g.start), "ימין וחרדים ב־2022, מארבע הקבוצות"], [sg(g.afterDemo - g.start), "נקודות אחוז מהגידול הדמוגרפי"], [sg(g.afterTurn - g.afterDemo), "נקודות אחוז משיעורי ההצבעה"], [sg(g.end - g.afterTurn), "נקודות אחוז ממגמת היישובים"], [pc(g.end), "הצפי ל־2026"], [sg(g.seatsPts), "הערכת מנדטים: שינוי לימין וחרדים"], [String(g.seats26), `ימין וחרדים ב־2026, מנדטים (2022 עם מרצ: ${g.seats22})`]]);
     const above = D.rows.filter(r => r.delta > .05).length, below = D.rows.filter(r => r.delta < -.05).length;
-    chips("m-live-switch", [[sg(cb.shareAvg - cb.base), "הפער מול הצפי הדמוגרפי, נקודות אחוז"], [`≈ ${cb.kv(cb.votersAvg)}`, "קולות"], [sg(cb.seatsAvg), `הפער במנדטים (בלי מעבר צד: כ־${Math.round(cb.zeroSeats)})`], [sg(cb.shareAvg - g.end), "הפער מול הצפי הגיאוגרפי, נקודות אחוז"], [String(above), "מכונים מעל הצפי הדמוגרפי"], [String(below), "מכונים מתחתיו"]]);
+    chips("m-live-switch", [[sg(cb.deltaAvg), `הפער במנדטים (בלי מעבר צד: כ־${Math.round(cb.zeroSeats)})`], [`≈ ${cb.kv(cb.votersAvg)}`, "קולות"], [String(above), "מכונים מעל הצפי"], [String(below), "מכונים מתחתיו"]]);
   }
   function wireDoc() {
     const smooth = reduce() ? "auto" : "smooth";

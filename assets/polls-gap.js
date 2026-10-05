@@ -204,7 +204,7 @@ function gapRecord(m) {
 }
 
 /* הצעד האחרון: שאלה. התשובה — עמוד דיוק המכונים */
-const gapQuestion = () => `<a class="gap-step gap-question" href="#/2022" data-polls-go="acc"><span class="gap-q-mark" aria-hidden="true">?</span><b>מי הסוקר המדויק ביותר?</b><span class="gap-q-go" aria-hidden="true">←</span></a>`;
+const gapQuestion = () => `<a class="gap-step" href="#/2022" data-polls-go="acc">מי הסוקר המדויק ביותר? <span aria-hidden="true">←</span></a>`;
 
 /* ---------- מסלול של קומות: כל לחיצה מוסיפה קומה מתחת לקודמת ---------- */
 const GAP_FLOORS = [

@@ -140,3 +140,12 @@
 .fs-hero.fs-reveal .fs-photo{animation:fs-photo-in .5s ease both;animation-delay:calc(var(--i,0) * 90ms)}
 .fs-hero.fs-reveal .seatmap .seat{transform-box:fill-box;transform-origin:center;animation:fs-seat .45s ease-out both}
 @media (prefers-reduced-motion:reduce){.fs-hero.fs-reveal *{animation:none!important}.fs-teaser::before{animation:none}}
+
+/* כותרת בסגנון לוגו: פתק נכנס לקלפי, ״בחירות 2026״ */
+.fs-ballot{display:block;flex:none;width:clamp(40px,7.4dvh,66px);height:auto;overflow:visible}
+.fs-slip{animation:fs-slip 2.8s ease-in-out infinite}
+@keyframes fs-slip{0%{transform:translateY(-8px);opacity:0}15%{opacity:1}55%{transform:translateY(14px);opacity:1}70%,100%{transform:translateY(20px);opacity:0}}
+.fs-title-text{display:grid;justify-items:start;gap:0;line-height:1}
+.fs-title-word{font-size:clamp(1.3rem,4.2dvh,2.3rem);font-weight:900;letter-spacing:-.02em;color:#f6e7bd}
+.fs-title-year{font-size:clamp(2rem,7dvh,3.8rem);font-weight:900;letter-spacing:.02em;color:#fff;background:linear-gradient(180deg,#fff 30%,#e5c783);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+@media (prefers-reduced-motion:reduce){.fs-slip{animation:none}}

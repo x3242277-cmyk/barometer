@@ -19,15 +19,26 @@ assert.deepEqual(Array.from(rows,r=>r.id),['likud','shas','raam','yesh_atid'],'r
 assert.equal(rows[0].d,14,'the difference is high minus low');
 assert(!rows.some(r=>r.id==='utj'),'a list with no difference must not appear');
 
-/* ניסוח ההיסטוריה */
-const sum = r => run(`gapRunsSummary(${JSON.stringify(r)})`);
-assert.equal(sum([]),'אין למכון היסטוריית כיול');
-assert.equal(sum([{err:-1},{err:-2},{err:-3}]),'פחות מהתוצאה בכל 3 מערכות הבחירות');
-assert.equal(sum([{err:1},{err:2}]),'יותר מהתוצאה בכל 2 מערכות הבחירות');
-assert.equal(sum([{err:0.5},{err:-1},{err:-2}]),'פחות מהתוצאה ב־2 מתוך 3 מערכות בחירות');
+/* מי צדק בפעם הקודמת: כמה מדידות מתחת לתוצאה, ומי משני המכונים היה קרוב יותר */
+const recRows = [
+  { key: "2022", dots: [{ firm: "A", err: -2 }, { firm: "B", err: -4 }, { firm: "C", err: -3 }] },
+  { key: "2021", dots: [{ firm: "A", err: -1 }, { firm: "B", err: -5 }] },
+  { key: "2020", dots: [{ firm: "A", err: 0.5 }, { firm: "C", err: -1 }] }
+];
+const stats = JSON.parse(run(`JSON.stringify(gapRecordStats(${JSON.stringify(recRows)},"A","B"))`));
+assert.equal(stats.total, 7, "every firm-election measurement is counted");
+assert.equal(stats.below, 6, "only measurements below the result are counted as below");
+assert.equal(stats.compared, 2, "only elections in which both firms were measured are compared");
+assert.equal(stats.hiCloser, 2, "the closer firm is the one with the smaller absolute error");
+assert.equal(JSON.parse(run(`JSON.stringify(gapRecordStats(${JSON.stringify(recRows)},"A","Z"))`)).compared, 0, "a firm with no record is never compared");
+
+/* נקודות קרובות עוברות לנתיב אחר; רחוקות נשארות באותו נתיב */
+assert.equal(JSON.stringify(run("gapLanes([10, 11, 12, 30, 31])")), "[0,1,2,0,1]", "close dots must fan out into lanes");
+assert.equal(JSON.stringify(run("gapLanes([10, 10.5, 11, 11.5, 12])")), "[0,1,2,2,2]", "overflow stays in the last lane instead of adding rows");
+assert.equal(JSON.stringify(run("gapLanes([5, 40, 80])")), "[0,0,0]", "far dots share a lane");
 
 /* הסימן: מינוס אמיתי, ואפס בלי סימן */
 assert.equal(run('gapSigned(-3.9)'),'−3.9');
 assert.equal(run('gapSigned(0.5)'),'+0.5');
 assert.equal(run('gapSigned(0)'),'0');
-console.log('Passed: extremes with newest-wins ties, party differences ordered and non-zero, history wording, signed numbers.');
+console.log('Passed: extremes with newest-wins ties, party differences ordered and non-zero, last-time record stats, dot lanes, signed numbers.');

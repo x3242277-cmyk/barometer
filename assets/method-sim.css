@@ -237,6 +237,8 @@
 .msec-live .mlive{box-shadow:none}
 .msec .mlive{margin:12px 0 4px;gap:10px 30px;border-radius:6px}
 .msec-live .mlive{margin:0}
+.msec .mlive>div{justify-items:start;align-content:start}
+.msec .mlive b,.msec .mlive span{text-align:start}
 .msec .mstep-outlets{display:flex;flex-wrap:wrap}
 .msec .tablewrap{margin:10px 0 4px;max-height:none;overflow-x:auto;overflow-y:visible}
 .msec-cards{display:grid;gap:12px;margin:12px 0 16px}

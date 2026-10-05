@@ -179,6 +179,10 @@ const [sTurn] = national(proj, last, "turnout");
 const projDef = DEFAULT_TREND === 1 ? proj : model(last, target, DEFAULT_TREND);
 const [s26, v26] = DEFAULT_TREND ? national(projDef, last, "full") : national(proj, last, "turnout");
 const actual22 = GROUPS.map(g => sum(E[last].parties.filter(p => p.camp === g).map(p => p.seats || 0)));
+/* 2022 כאילו מרצ עברה את אחוז החסימה (חסרו לה 4,062 קולות): חלוקה מחדש של 120 המנדטים, כמו COUNTERFACTUAL ב־assets/app.js.
+   נקודת המוצא של מנדטי 2026 — כדי שהתחזית לא תירש את 4 המנדטים של מרצ שנפלו אל הימין בספירה בפועל. */
+const CF22 = { likud: 31, yesh_atid: 23, national_unity: 12, shas: 11, labor: 5, utj: 7, yisrael_beiteinu: 5, religious_zionism: 13, hadash_taal: 4, meretz: 4, raam: 5 };
+const base22 = GROUPS.map(g => sum(E[last].parties.filter(p => p.camp === g).map(p => CF22[p.id] || 0)));
 
 const home = codes.map(c => c !== ENVELOPES);
 const gtSeries = [...Array(K).keys()].map(k => {
@@ -242,8 +246,8 @@ const data = {
     eligible: [...Array(K).keys()].map(k => sum(elig.map(r => r[k]))),
     f26: r1(s26), votes26: v26.map(Math.round), eligible26: Math.round(sum([...proj.values()].map(p => p.e))),
     defaultTrend: DEFAULT_TREND,
-    // 2022 — המנדטים הרשמיים לפי קבוצה; 2026 — אותם ועוד השינוי במנדטים היחסיים
-    seats22: actual22, prop22: seats(nat22), seats26: actual22.map((a, k) => a + seats(s26)[k] - seats(nat22)[k]),
+    // 2022 — המנדטים הרשמיים לפי קבוצה (seats22) וכאילו מרצ עברה (base22); 2026 — base22 ועוד השינוי במנדטים היחסיים
+    seats22: actual22, base22, prop22: seats(nat22), seats26: base22.map((a, k) => a + seats(s26)[k] - seats(nat22)[k]),
     steps: { demography: r1(sDemo.map((x, j) => x - nat22[j])), turnout: r1(sTurn.map((x, j) => x - sDemo[j])), trend: r1(s26.map((x, j) => x - sTurn[j])) },
     groupTurnout: { series: gtSeries.map(r1), base26: r1(gt26) },
     backtest: { predicted: r1(pred), predictedNoTrend: r1(bt[0][0]), actual: r1(nat22), previous: r1(nat21),

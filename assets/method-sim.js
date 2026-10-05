@@ -77,7 +77,7 @@
     /* החלקים של 2022 מתוך ארבע הקבוצות = התחזית פחות שלושת הצעדים (דמוגרפיה, הצבעה, מגמה) */
     const f0 = n.f26.map((x, i) => x - n.steps.demography[i] - n.steps.turnout[i] - n.steps.trend[i]);
     const stepShare = (extra) => right(f0.map((x, i) => x + extra.reduce((s, e) => s + n.steps[e][i], 0)));
-    const g = { start: right(f0), afterDemo: stepShare(["demography"]), afterTurn: stepShare(["demography", "turnout"]), end: geo26, geo22, localities: Object.keys(T.loc).filter(c => c !== "99999").length };
+    const g = { start: right(f0), afterDemo: stepShare(["demography"]), afterTurn: stepShare(["demography", "turnout"]), end: geo26, geo22, seatsPts: (geo26 - right(f0)) * 1.2, seats22: n.base22[0] + n.base22[1], seats26: n.seats26[0] + n.seats26[1], localities: Object.keys(T.loc).filter(c => c !== "99999").length };
 
     /* סקרים: הסקר האחרון של כל מכון, כמו בעמוד הסקרים מול 2022 */
     const rows = cb.rows.map(r => ({ meta: r.meta, share: r.share, date: r.date, delta: r.delta, score: firmScore(r.meta), grade: gradeOf(firmScore(r.meta)), w: firmWeight(r.meta) }))
@@ -414,7 +414,7 @@
   function fillLive() {
     const chips = (id, items) => { const el = document.getElementById(id); if (el) el.innerHTML = items.map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join(""); };
     const g = D.g, cb = D.cb, sg = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
-    chips("m-live-geo", [[fmt(g.localities), "יישובים בחישוב"], [pc(g.start), "ימין וחרדים ב־2022, מארבע הקבוצות"], [sg(g.afterDemo - g.start), "נקודות אחוז מהגידול הדמוגרפי"], [sg(g.afterTurn - g.afterDemo), "נקודות אחוז משיעורי ההצבעה"], [sg(g.end - g.afterTurn), "נקודות אחוז ממגמת היישובים"], [pc(g.end), "הצפי ל־2026"]]);
+    chips("m-live-geo", [[fmt(g.localities), "יישובים בחישוב"], [pc(g.start), "ימין וחרדים ב־2022, מארבע הקבוצות"], [sg(g.afterDemo - g.start), "נקודות אחוז מהגידול הדמוגרפי"], [sg(g.afterTurn - g.afterDemo), "נקודות אחוז משיעורי ההצבעה"], [sg(g.end - g.afterTurn), "נקודות אחוז ממגמת היישובים"], [pc(g.end), "הצפי ל־2026"], [sg(g.seatsPts), "הערכת מנדטים: שינוי לימין וחרדים"], [String(g.seats26), `ימין וחרדים ב־2026, מנדטים (2022 עם מרצ: ${g.seats22})`]]);
     const above = D.rows.filter(r => r.delta > .05).length, below = D.rows.filter(r => r.delta < -.05).length;
     chips("m-live-switch", [[sg(cb.shareAvg - cb.base), "הפער מול הצפי הדמוגרפי, נקודות אחוז"], [`≈ ${cb.kv(cb.votersAvg)}`, "קולות"], [sg(cb.shareAvg - g.end), "הפער מול הצפי הגיאוגרפי, נקודות אחוז"], [String(above), "מכונים מעל הצפי הדמוגרפי"], [String(below), "מכונים מתחתיו"]]);
   }

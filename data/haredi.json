@@ -1,10 +1,17 @@
 {
   "meta": {
-    "title": "בנק הקולות החרדי",
-    "subtitle": "למה ש״ס לא תרד מ־10.4 ויהדות התורה לא תרד מ־7.8",
-    "floors": { "shas": 10.4, "utj": 7.8 },
-    "floorsSum": 18.2,
-    "actual2022": { "shas": 11, "utj": 7, "sum": 18 }
+    "title": "התרחיש החרדי",
+    "subtitle": "ש״ס ויהדות התורה לפי הנחות אוכלוסייה, השתתפות ונאמנות",
+    "fixed": {
+      "shas": 10.5,
+      "utj": 7.8
+    },
+    "fixedSum": 18.3,
+    "actual2022": {
+      "shas": 11,
+      "utj": 7,
+      "sum": 18
+    }
   },
   "population": {
     "size": 1452350,
@@ -29,23 +36,136 @@
     "settlements2022": 73.3,
     "developmentTowns2022": 66.8,
     "kibbutzim2022": 69.6,
-    "cities": ["אלעד", "ביתר עילית", "מודיעין עילית"],
+    "cities": [
+      "אלעד",
+      "ביתר עילית",
+      "מודיעין עילית"
+    ],
     "src": "idi_patterns"
   },
   "loyalty": [
-    { "year": 2022, "harediLists": 86, "religiousZionism": 7, "other": 7, "src": "idi_religion22" },
-    { "year": 2021, "harediLists": 89, "utj": 60, "shas": 29, "religiousZionism": 4, "likud": 3, "other": 4, "src": "idi_religion21" }
+    {
+      "year": 2022,
+      "harediLists": 86,
+      "religiousZionism": 7,
+      "other": 7,
+      "src": "idi_religion22"
+    },
+    {
+      "year": 2021,
+      "harediLists": 89,
+      "utj": 60,
+      "shas": 29,
+      "religiousZionism": 4,
+      "likud": 3,
+      "other": 4,
+      "src": "idi_religion21"
+    }
   ],
   "history": {
-    "shas":  [
-      {"y":"2003","v":258879,"s":11},{"y":"2006","v":299054,"s":12},{"y":"2009","v":286300,"s":11},
-      {"y":"2013","v":331868,"s":11},{"y":"2015","v":241613,"s":7},{"y":"4.2019","v":258275,"s":8},
-      {"y":"9.2019","v":330199,"s":9},{"y":"2020","v":352853,"s":9},{"y":"2021","v":316008,"s":9},{"y":"2022","v":392964,"s":11}
+    "shas": [
+      {
+        "y": "2003",
+        "v": 258879,
+        "s": 11
+      },
+      {
+        "y": "2006",
+        "v": 299054,
+        "s": 12
+      },
+      {
+        "y": "2009",
+        "v": 286300,
+        "s": 11
+      },
+      {
+        "y": "2013",
+        "v": 331868,
+        "s": 11
+      },
+      {
+        "y": "2015",
+        "v": 241613,
+        "s": 7
+      },
+      {
+        "y": "4.2019",
+        "v": 258275,
+        "s": 8
+      },
+      {
+        "y": "9.2019",
+        "v": 330199,
+        "s": 9
+      },
+      {
+        "y": "2020",
+        "v": 352853,
+        "s": 9
+      },
+      {
+        "y": "2021",
+        "v": 316008,
+        "s": 9
+      },
+      {
+        "y": "2022",
+        "v": 392964,
+        "s": 11
+      }
     ],
     "utj": [
-      {"y":"2003","v":135087,"s":5},{"y":"2006","v":147091,"s":6},{"y":"2009","v":147954,"s":5},
-      {"y":"2013","v":195892,"s":7},{"y":"2015","v":210143,"s":6},{"y":"4.2019","v":249049,"s":8},
-      {"y":"9.2019","v":268775,"s":7},{"y":"2020","v":274437,"s":7},{"y":"2021","v":248391,"s":7},{"y":"2022","v":280194,"s":7}
+      {
+        "y": "2003",
+        "v": 135087,
+        "s": 5
+      },
+      {
+        "y": "2006",
+        "v": 147091,
+        "s": 6
+      },
+      {
+        "y": "2009",
+        "v": 147954,
+        "s": 5
+      },
+      {
+        "y": "2013",
+        "v": 195892,
+        "s": 7
+      },
+      {
+        "y": "2015",
+        "v": 210143,
+        "s": 6
+      },
+      {
+        "y": "4.2019",
+        "v": 249049,
+        "s": 8
+      },
+      {
+        "y": "9.2019",
+        "v": 268775,
+        "s": 7
+      },
+      {
+        "y": "2020",
+        "v": 274437,
+        "s": 7
+      },
+      {
+        "y": "2021",
+        "v": 248391,
+        "s": 7
+      },
+      {
+        "y": "2022",
+        "v": 280194,
+        "s": 7
+      }
     ],
     "src": "idi_parties"
   },
@@ -57,11 +177,45 @@
     "src": "ipf_polling"
   },
   "sources": {
-    "idi_yearbook":   { "name": "המכון הישראלי לדמוקרטיה — שנתון החברה החרדית 2025", "url": "https://www.idi.org.il/haredi/2025/?chapter=62168" },
-    "idi_patterns":   { "name": "המכון הישראלי לדמוקרטיה — דפוסי הצבעה 2022 לעומת 2021", "url": "https://www.idi.org.il/articles/46440" },
-    "idi_religion22": { "name": "המכון הישראלי לדמוקרטיה — הצבעת יהודים 2022 לפי הגדרה דתית", "url": "https://www.idi.org.il/articles/64803" },
-    "idi_religion21": { "name": "המכון הישראלי לדמוקרטיה — דפוסי הצבעה 2021 לפי הגדרה דתית", "url": "https://www.idi.org.il/articles/46138" },
-    "idi_parties":    { "name": "המכון הישראלי לדמוקרטיה — דפי המפלגות ש״ס ויהדות התורה", "url": "https://en.idi.org.il/israeli-elections-and-parties/parties/shas/" },
-    "ipf_polling":    { "name": "Israel Policy Forum — Israeli Election Polls & Pollsters", "url": "https://israelpolicyforum.org/2026/08/20/israeli-election-polls-pollsters/" }
+    "idi_yearbook": {
+      "name": "המכון הישראלי לדמוקרטיה — שנתון החברה החרדית 2025",
+      "url": "https://www.idi.org.il/haredi/2025/?chapter=62168",
+      "use": "גודל האוכלוסייה החרדית, קצב הגידול והגיל (סעיף 2, העמודה הראשונה)"
+    },
+    "idi_patterns": {
+      "name": "המכון הישראלי לדמוקרטיה — דפוסי הצבעה 2022 לעומת 2021",
+      "url": "https://www.idi.org.il/articles/46440",
+      "use": "שיעור ההצבעה בערים החרדיות ב־2021 וב־2022 (סעיף 2)"
+    },
+    "idi_religion22": {
+      "name": "המכון הישראלי לדמוקרטיה — הצבעת יהודים 2022 לפי הגדרה דתית",
+      "url": "https://www.idi.org.il/articles/64803",
+      "use": "נאמנות המצביעים החרדים לרשימות החרדיות ב־2022 (סעיף 2)"
+    },
+    "idi_religion21": {
+      "name": "המכון הישראלי לדמוקרטיה — דפוסי הצבעה 2021 לפי הגדרה דתית",
+      "url": "https://www.idi.org.il/articles/46138",
+      "use": "הנאמנות ב־2021 והפיצול בין יהדות התורה לש״ס (סעיף 2)"
+    },
+    "idi_parties": {
+      "name": "המכון הישראלי לדמוקרטיה — דפי המפלגות ש״ס ויהדות התורה",
+      "url": "https://en.idi.org.il/israeli-elections-and-parties/parties/shas/",
+      "use": "קולות ומנדטים של ש״ס ויהדות התורה בכל מערכות הבחירות מ־2003 (סעיף 4)"
+    },
+    "ipf_polling": {
+      "name": "Israel Policy Forum — Israeli Election Polls & Pollsters",
+      "url": "https://israelpolicyforum.org/2026/08/20/israeli-election-polls-pollsters/",
+      "use": "טעות הדגימה והקושי לדגום מגזר חרדי בסקרים (סעיף 5)"
+    },
+    "cec_2022": {
+      "name": "ועדת הבחירות המרכזית — תוצאות הבחירות לכנסת ה־25",
+      "url": "https://votes25.bechirot.gov.il/",
+      "use": "קולות כשרים ומחיר המנדט ב־2022 (סעיף 3)"
+    },
+    "knesset_threshold": {
+      "name": "הכנסת — מילון מונחים: אחוז החסימה",
+      "url": "https://main.knesset.gov.il/About/Lexicon/pages/qualifying-threshold.aspx",
+      "use": "הגדרת הסף, 3.25% מהקולות הכשרים (סעיף 3)"
+    }
   }
 }

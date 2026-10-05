@@ -364,9 +364,22 @@
 
   /* ---------- בקרה ---------- */
   const SCENES = [sceneData, sceneDemo, sceneGeo, scenePolls, sceneSwitch, sceneCalc];
+  const svg = d => `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">${d}</svg>`;
+  const stroke = d => `<path d="${d}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const ICON = {
+    play: svg(`<path d="M8 5.5v13l11-6.5z" fill="currentColor"/>`),
+    pause: svg(`<rect x="6.5" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1" fill="currentColor"/>`),
+    again: svg(stroke("M19 12a7 7 0 1 1-2.05-4.95M19 4.5v4h-4")),
+    right: svg(stroke("M9 5l7 7-7 7")),
+    left: svg(stroke("M15 5l-7 7 7 7"))
+  };
+  const SPEEDS = [1, 2, 4];
   function paintNav() {
     root.querySelectorAll("[data-ms-stage]").forEach((b, i) => { b.classList.toggle("is-on", i === st.stage); b.classList.toggle("is-done", i < st.done + 1 && i !== st.stage); b.setAttribute("aria-current", i === st.stage ? "step" : "false"); });
-    const play = q(".ms-play"); play.textContent = st.stage < 0 ? "הפעלת הסימולציה" : st.finished ? "הצגה מחדש ↻" : st.paused ? "המשך" : "השהיה";
+    const play = q(".ms-play"), mode = st.stage < 0 ? "play" : st.finished ? "again" : st.paused ? "play" : "pause";
+    const label = { play: st.stage < 0 ? "הפעלת הסימולציה" : "המשך", pause: "עצירה", again: "הצגה מחדש" }[mode];
+    play.innerHTML = ICON[mode]; play.setAttribute("aria-label", label); play.title = label;
+    q(".ms-speed").textContent = `${st.speed}×`;
     q(".ms-prev").disabled = st.stage <= 0; q(".ms-next").disabled = st.stage < 0 || st.stage >= STAGES.length - 1;
     root.classList.toggle("is-running", st.stage >= 0);
   }
@@ -385,11 +398,11 @@
 
   function build() {
     root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
-      <div class="ms-ctl"><button type="button" class="ms-play">הפעלת הסימולציה</button><button type="button" class="ms-prev" aria-label="לשלב הקודם">→</button><button type="button" class="ms-next" aria-label="לשלב הבא">←</button><span class="ms-count" dir="ltr" aria-hidden="true"></span>
-        <label class="ms-speed">מהירות <select aria-label="מהירות הסימולציה"><option value="1">רגילה</option><option value="2">כפולה</option><option value="4">מהירה מאוד</option></select></label></div></div>
+    </div>
       <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
       <p class="ms-say" aria-live="polite">לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.</p>
-      <div class="ms-stage" id="ms-stage"><div class="ms-idle"><button type="button" class="ms-big-play">▶ הפעלת הסימולציה</button><p>שישה שלבים, כדקה · אפשר להשהות ולדלג בכל רגע</p></div></div>
+      <div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><button type="button" class="ms-big-play">▶ הפעלת הסימולציה</button><p>שישה שלבים, כדקה · אפשר להשהות ולדלג בכל רגע</p></div></div>
+        <div class="ms-ctl" role="group" aria-label="בקרת הסימולציה"><button type="button" class="ms-prev" aria-label="לשלב הקודם" title="לשלב הקודם">${ICON.right}</button><button type="button" class="ms-play"></button><button type="button" class="ms-next" aria-label="לשלב הבא" title="לשלב הבא">${ICON.left}</button><span class="ms-count" dir="ltr" aria-hidden="true"></span><button type="button" class="ms-speed" aria-label="מהירות הסימולציה" title="מהירות הסימולציה"></button></div></div>
       <div class="ms-ledger" aria-label="מה כבר חושב"></div>`;
     stage = q("#ms-stage"); ledger();
     q(".ms-big-play").onclick = () => { if (st.ready) go(0); };
@@ -401,7 +414,7 @@
     q(".ms-prev").onclick = () => go(Math.max(0, st.stage - 1));
     q(".ms-next").onclick = () => go(Math.min(STAGES.length - 1, st.stage + 1));
     root.querySelectorAll("[data-ms-stage]").forEach(b => b.onclick = () => st.ready && go(Number(b.dataset.msStage)));
-    q(".ms-speed select").onchange = e => { st.speed = Number(e.target.value); };
+    q(".ms-speed").onclick = () => { st.speed = SPEEDS[(SPEEDS.indexOf(st.speed) + 1) % SPEEDS.length]; paintNav(); };
     paintNav();
     /* rAF לחלקלקות, וטיימר כגיבוי כשהדפדפן מקפיא פריימים (חלונית מוסתרת/מוטמעת); שניהם מחשבים לפי השעון, לכן אין ספירה כפולה */
     const loop = () => { tick(); st.raf = requestAnimationFrame(loop); };

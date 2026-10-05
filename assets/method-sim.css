@@ -3,13 +3,18 @@
 .ms-bar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px;color:#f6f3ec}
 .ms-title .kicker{margin:0 0 4px;color:#e5c783}
 .ms-title h2{margin:0;font-size:clamp(1.5rem,2.6vw,2.2rem);line-height:1.2;letter-spacing:-.03em;max-width:none}
-.ms-ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ms-ctl button,.ms-ctl select{height:36px;padding:0 14px;border-radius:6px;border:1px solid #e5c78366;background:#ffffff0d;color:#f6e7bd;font:700 .86rem/1 var(--sans,inherit);cursor:pointer}
-.ms-ctl .ms-play{background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;border-color:transparent;min-width:150px}
-.ms-ctl button:disabled{opacity:.35;cursor:default}
-.ms-ctl select{padding:0 8px;color-scheme:dark}
-.ms-count{color:#b4c1ce;font-size:.8rem;min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
-.ms-speed{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:#b4c1ce}
+.ms-stagebox{position:relative}
+.ms-stagebox .ms-stage{padding-bottom:74px}
+.ms-ctl{position:absolute;inset-inline:0;bottom:14px;margin-inline:auto;width:max-content;max-width:calc(100% - 24px);z-index:3;display:none;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#14233aeb;box-shadow:0 8px 22px -10px #000000b0,0 0 0 1px #e5c78344;backdrop-filter:blur(4px)}
+#method-sim.is-running .ms-ctl{display:flex}
+.ms-ctl button{display:inline-grid;place-items:center;width:38px;height:38px;padding:0;border-radius:50%;border:0;background:transparent;color:#f6e7bd;cursor:pointer;transition:background .15s,color .15s}
+.ms-ctl button:hover:not(:disabled){background:#e5c78329;color:#fff3cf}
+.ms-ctl button:focus-visible{outline:2px solid #f1d99d;outline-offset:1px}
+.ms-ctl .ms-play{width:44px;height:44px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a}
+.ms-ctl .ms-play:hover:not(:disabled){background:linear-gradient(110deg,#f6e3b2,#dcb86f);color:#14233a}
+.ms-ctl button:disabled{opacity:.3;cursor:default}
+.ms-count{color:#b4c1ce;font-size:.8rem;min-width:40px;text-align:center;font-variant-numeric:tabular-nums}
+.ms-ctl .ms-speed{width:auto;min-width:40px;height:30px;padding:0 9px;border-radius:999px;border:1px solid #e5c78366;font:700 .78rem/1 var(--sans,inherit);font-variant-numeric:tabular-nums}
 
 .ms-nav{display:flex;gap:2px;margin-bottom:10px;border-bottom:1px solid #ffffff22;overflow-x:auto;scrollbar-width:none}
 .ms-nav::-webkit-scrollbar{display:none}
@@ -277,3 +282,19 @@
 .msec .math .body>.kicker:not(:first-child){margin-top:16px!important}
 .msec .math .formula{display:block;margin:0 0 5px;padding:6px 10px;font-size:.76rem;line-height:1.5}
 @media (max-width:1200px){.msec .math .body{column-count:1}}
+
+/* התרחיש החרדי: תקציר בתחתית התחשיב, ודף הפירוט (#/haredi) */
+.msec-sub{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}
+.msec-sub h3{margin:0 0 8px;font-size:1.02rem;color:#12345c}
+.msec-sub p{margin:0 0 10px;max-width:92ch;font-size:.93rem;line-height:1.75;color:var(--ink-2)}
+.msec-more{font-weight:800;color:#12345c;text-decoration:underline;text-underline-offset:3px}
+.msec-more:hover{color:#855a0c}
+#view-haredi .page-intro{max-width:78ch}
+#view-haredi .msec .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){#view-haredi .msec .split{grid-template-columns:minmax(0,1fr)}}
+.h-src-list{display:grid;gap:8px;margin:0 0 18px;padding:0;list-style:none}
+.h-src-list li{display:grid;gap:2px;padding:10px 14px;border:1px solid var(--rule);border-radius:8px;background:#fff}
+#view-haredi .msec .h-src-list a{font-weight:700;color:#12345c;text-decoration:none}
+#view-haredi .msec .h-src-list a:hover{text-decoration:underline;color:#855a0c}
+.h-src-list span{font-size:.84rem;color:var(--ink-3)}
+.msec{--navy-text:#12345c}

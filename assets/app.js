@@ -2118,6 +2118,12 @@ function renderMethod() {
     if (md) $("#m-live-demo").innerHTML = [[md.demographic == null ? "—" : `${md.demographic >= 0 ? "+" : "−"}${r1(Math.abs(md.demographic))}`, "המודל הדמוגרפי, מנדטים"], [md.geographic == null ? "—" : `${md.geographic >= 0 ? "+" : "−"}${r1(Math.abs(md.geographic))}`, "המודל הגיאוגרפי, מנדטים"], [`${md.seats >= 0 ? "+" : "−"}${r1(Math.abs(md.seats))}`, "התוספת בתחזית: הממוצע, מעוגל לרבע מנדט"]]
       .map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   }
+  // תרחיש חרדי — תקציר בתחתית התחשיב
+  try {
+    const hs = harediState();
+    $("#m-live-haredi").innerHTML = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7"], [r1(hs.total), "התרחיש הדמוגרפי, שתיהן יחד"]]
+      .map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
+  } catch (e) { console.error(e); }
   // 6 · result
   const seats = allocateSeats(sc.parties), bt = {};
   Object.entries(seats).forEach(([id, n]) => { const al = partyMeta(id).alignment; bt[al] = (bt[al] || 0) + n; });
@@ -2829,14 +2835,30 @@ function renderHaredi() {
       <span class="v" dir="ltr">${r1(mean)} → ${act}</span></div>`;
   }).join("") + `<p style="margin:10px 0 0;color:var(--ink-2);font-size:.85rem">ממוצע ${S.hist.polls.length} סקרי הכיול מול התוצאה בפועל. ש״ס פוספסה ב־<b>${r1(11 - avg(S.hist.polls.map(p => p.p.shas)))}</b> מנדטים; ג׳ נמדדה במדויק. הפער ההיסטורי אינו מוכיח מה תהיה הטעות בבחירות הבאות.</p>`;
 
-  $("#haredi-sources").innerHTML = Object.values(H.sources).map(x =>
-    `<a class="card pad" href="${esc(x.url)}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;justify-content:space-between;gap:14px;align-items:center">
-      <span style="font-size:.9rem;font-weight:600">${esc(x.name)}</span><span aria-hidden="true" style="color:var(--gold)">↗</span></a>`).join("");
+  $("#haredi-sources").innerHTML = `<ul class="h-src-list">${Object.values(H.sources).map(x =>
+    `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>${x.use ? `<span>${esc(x.use)}</span>` : ""}</li>`).join("")}</ul>`;
+  /* ההנחות הקבועות של התחזית — אותם ערכים כמו בשיטת החישוב */
+  const fixedChips = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11 מנדטים"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7 מנדטים"], [r1(st.total), "התרחיש הדמוגרפי, ש״ס ויהדות התורה יחד"]];
+  $("#h-live-fixed").innerHTML = fixedChips.map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
+  wireHarediDoc();
 
   /* wiring */
   const wire = (id, key) => $(id).addEventListener("change", e => { S[key] = Number(e.target.value); renderHaredi(); $(id)?.focus(); });
   wire("#har-growth", "harGrowth"); wire("#har-turnout", "harTurnout"); wire("#har-loyalty", "harLoyalty"); wire("#har-shas-haredi", "harShasHaredi"); wire("#har-wasted", "harWasted");
   $("#har-reset").addEventListener("click", () => { S.harGrowth = null; S.harTurnout = null; S.harLoyalty = null; S.harShasHaredi = null; S.harWasted = null; renderHaredi(); $("#har-reset").focus(); });
+}
+
+let harediDocWired = false;
+function wireHarediDoc() {
+  if (harediDocWired) return; harediDocWired = true;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  $("#hdoc-nav [data-hgo]").forEach(b => b.addEventListener("click", () => document.getElementById(b.dataset.hgo)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })));
+  if (!("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    $("#hdoc-nav [data-hgo]").forEach(b => b.classList.toggle("is-on", b.dataset.hgo === e.target.id));
+  }), { rootMargin: "-25% 0px -65% 0px" });
+  $("#view-haredi .msec").forEach(sec => io.observe(sec));
 }
 
 function renderHaredHistory() {

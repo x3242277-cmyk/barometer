@@ -410,76 +410,109 @@
 </section>
 
 
-<!-- ==================== בנק הקולות החרדי ==================== -->
-<section class="view" id="view-haredi" aria-label="בנק הקולות החרדי">
+<!-- ==================== התרחיש החרדי ==================== -->
+<section class="view" id="view-haredi" aria-label="התרחיש החרדי">
   <div class="wrap">
-    <nav class="subtabs" aria-label="שיטת החישוב">
-      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
-      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
+    <nav class="subtabs" aria-label="חזרה">
+      <a class="subtab" href="#/method" data-view="method-back">← לשיטת החישוב</a>
     </nav>
     <div class="page-intro">
-      <p class="kicker">היסטוריה · אוכלוסייה · הנחות</p>
-      <h2>מה נתוני העבר אומרים על ההצבעה החרדית?</h2>
-      <p>תרחיש דמוגרפי לש״ס וליהדות התורה לפי הנחות אוכלוסייה, השתתפות ונאמנות. זהו כלי לבחינת הנחות בלבד, והוא אינו משנה את ממוצע הסקרים או מבטיח תוצאת בחירות.</p>
+      <p class="kicker">שיטת החישוב · פירוט מורחב</p>
+      <h2>התרחיש החרדי: ש״ס ויהדות התורה לפי אוכלוסייה, השתתפות ונאמנות</h2>
+      <p>תרחיש דמוגרפי לבחינת ההנחות של תחזית הברומטר על שתי הרשימות החרדיות. הוא אינו משנה את ממוצע הסקרים, אינו קובע רצפת מנדטים ואינו מבטיח תוצאת בחירות.</p>
     </div>
 
-    <section class="sec">
-      <div class="grid g2">
-        <div class="floorcard" style="--c:#4A4A4A">
-          <p class="kicker">הנחה קבועה בתחזית הברומטר</p>
-          <div class="floornum"><b>10.5</b><span>ש״ס</span></div>
-          <p>תוצאת 2022: 11 מנדטים. 10.5 כאן הם הנחת התרחיש (בשברי מנדטים, לפני העיגול בבאדר-עופר), לא מינימום היסטורי.</p>
-        </div>
-        <div class="floorcard" style="--c:#5B4B8A">
-          <p class="kicker">הנחה קבועה בתחזית הברומטר</p>
-          <div class="floornum"><b>7.8</b><span>יהדות התורה</span></div>
-          <p>תוצאת 2022: 7 מנדטים. התרחיש קובע 7.8; ההפרש הוא הנחה לעתיד.</p>
-        </div>
-      </div>
-      <div class="notice warm" style="margin-top:16px"><span class="ic">=</span><p style="margin:0">הערכים חלים רק בבחירת תחזית הברומטר בעמוד הראשי. צמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור.</p></div>
-    </section>
+    <div class="mdoc">
+      <nav class="mdoc-nav" id="hdoc-nav" aria-label="תוכן העמוד">
+        <p class="mdoc-nav-h">בעמוד הזה</p>
+        <button type="button" data-hgo="hsec-1"><span>1</span>מה נקבע בתחזית</button>
+        <button type="button" data-hgo="hsec-2"><span>2</span>הנתונים</button>
+        <button type="button" data-hgo="hsec-3"><span>3</span>החישוב</button>
+        <button type="button" data-hgo="hsec-4"><span>4</span>ההיסטוריה</button>
+        <button type="button" data-hgo="hsec-5"><span>5</span>למה קשה לדגום</button>
+        <button type="button" data-hgo="hsec-6"><span>6</span>המקורות</button>
+      </nav>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">שלושת המספרים</p><h2>הנחות החישוב</h2></div>
-      <p class="sec-note">לכל מדד מקור ושנת ייחוס משלו. אין להסיק מכפל המדדים לבדו רף מנדטים מובטח.</p></div>
-      <div class="grid g3" id="haredi-pillars"></div>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">החשבון</p><h2>כמה מנדטים יוצאים מהמגזר עצמו</h2></div>
-      <p class="sec-note">גררו את הידיות ובדקו מה היה צריך לקרות כדי שהמספרים של הסקרים יתממשו.</p></div>
-      <div class="split">
-        <div class="card pad" id="haredi-calc"></div>
-        <div class="card pad" id="haredi-verdict"></div>
-      </div>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">ההיסטוריה</p><h2>קולות ומנדטים לאורך מערכות הבחירות</h2></div>
-      <p class="sec-note">השוו בין הקולות לבין המנדטים: הסדרה כוללת גם עליות וגם ירידות, ולכן אינה מבטיחה רף מינימלי בעתיד.</p></div>
-      <div class="card pad"><div id="haredi-history"></div></div>
-      <div class="tablewrap" style="margin-top:16px"><table id="haredi-table"></table></div>
-    </section>
-
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">פער בין סקר לתוצאה</p><h2>למה קשה לדגום את ההצבעה החרדית?</h2></div></div>
-      <div class="split">
-        <div class="card pad" id="haredi-why"></div>
-        <div class="grid" style="gap:14px">
-          <div class="card pad" style="border-top:4px solid var(--red)">
-            <p class="kicker">הפער שנמדד ב־2022</p>
-            <div class="lbars" style="margin-top:12px" id="haredi-gap"></div>
+      <div class="mdoc-main">
+        <section class="msec" id="hsec-1">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">1</span>
+            <div class="msec-title"><h2>מה נקבע בתחזית</h2><p>שתי רשימות שהסקרים מודדים נמוך, ולכן התחזית מקבעת להן ערך.</p></div></header>
+          <div class="msec-body">
+            <div class="msec-text">
+              <p>בתחזית הברומטר ש״ס מקבלת <b>10.5</b> מנדטים ויהדות התורה <b>7.8</b>, במקום ממוצע הסקרים שלהן. הערכים הם בשברי מנדטים: העיגול למנדטים שלמים נעשה רק בחלוקה הסופית, לפי כללי הבחירות. ב־2022 התוצאה בפועל הייתה 11 ו־7.</p>
+              <p>הסיבה היא שמדגם של כמה מאות נשאלים מודד מגזר סגור נמוך מדי, ובאופן שיטתי כלפי מטה, ולא באופן אקראי (סעיף 5). לכן אי אפשר לתקן את זה בהגדלת המדגם.</p>
+              <p class="msec-note"><b>מה זה לא:</b> זו הנחת עבודה גלויה, ולא רצפה. העמוד אינו מוכיח שהרשימות לא ירדו מתחת לערכים האלה, וצמיחה באוכלוסייה אינה מבטיחה מספר מנדטים: התוצאה תלויה גם בהשתתפות ובהצבעה של יתר הציבור. הערכים חלים רק בתחזית הברומטר של העמוד הראשי.</p>
+            </div>
+            <div class="msec-live"><div class="mlive" id="h-live-fixed"></div></div>
           </div>
-          <div class="notice"><span class="ic">i</span><p style="margin:0">זהו תרחיש לבחינת הנחות. הנתונים הדמוגרפיים לבדם אינם קובעים תוצאות בחירות ואינם מצדיקים תוספת מנדטים אוטומטית.</p></div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">שקיפות</p><h2>המקורות של העמוד הזה</h2></div></div>
-      <div class="grid g2" id="haredi-sources"></div>
-    </section>
-<section class="sec card pad"><h2>בדיקת המקורות</h2><div id="research-review"></div></section>  </div>
+        <section class="msec" id="hsec-2">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">2</span>
+            <div class="msec-title"><h2>הנתונים</h2><p>שלושה מדדים, ולכל אחד מקור ושנת ייחוס משלו.</p></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <div class="grid g3" id="haredi-pillars"></div>
+              <p class="msec-note">אין להסיק מכפל המדדים לבדו רף מנדטים מובטח. המדדים נמדדו בשנים ובשיטות שונות, והם מוצגים כאן כהנחות הקלט של החישוב בסעיף הבא.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="msec" id="hsec-3">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">3</span>
+            <div class="msec-title"><h2>החישוב: מהאוכלוסייה אל המנדט</h2><p>גררו את הידיות ובדקו מה היה צריך לקרות כדי שהמספרים של הסקרים יתממשו.</p></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <div class="split">
+                <div class="card pad" id="haredi-calc"></div>
+                <div class="card pad" id="haredi-verdict"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="msec" id="hsec-4">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">4</span>
+            <div class="msec-title"><h2>ההיסטוריה: קולות ומנדטים</h2><p>הסדרה כוללת עליות וגם ירידות, ולכן אינה מבטיחה רף מינימלי בעתיד.</p></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <div id="haredi-history"></div>
+              <div class="tablewrap"><table id="haredi-table"></table></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="msec" id="hsec-5">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">5</span>
+            <div class="msec-title"><h2>למה קשה לדגום את ההצבעה החרדית</h2><p>המגבלות של הסקרים הן הסיבה לכך שהתחזית מקבעת ערך.</p></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <div class="split">
+                <div class="card pad" id="haredi-why"></div>
+                <div class="card pad" style="border-top:4px solid var(--red)">
+                  <p class="kicker">הפער שנמדד ב־2022</p>
+                  <div class="lbars" style="margin-top:12px" id="haredi-gap"></div>
+                </div>
+              </div>
+              <p class="msec-note">זהו תרחיש לבחינת הנחות. הנתונים הדמוגרפיים לבדם אינם קובעים תוצאות בחירות ואינם מצדיקים תוספת מנדטים אוטומטית.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="msec" id="hsec-6">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">6</span>
+            <div class="msec-title"><h2>המקורות</h2><p>כל מספר בעמוד מגיע מאחד המקורות האלה. ליד כל מקור כתוב למה הוא משמש.</p></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <div class="h-sources" id="haredi-sources"></div>
+              <h3>בדיקת ספרות נוספת</h3>
+              <div id="research-review"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ==================== המודל הדמוגרפי ==================== -->
@@ -589,10 +622,6 @@
 <!-- ==================== מתודולוגיה ==================== -->
 <section class="view" id="view-method" aria-label="שיטת החישוב">
   <div class="wrap">
-    <nav class="subtabs" aria-label="שיטת החישוב">
-      <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
-      <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
-    </nav>
     <section id="method-sim" aria-label="סימולציה של שיטת החישוב"></section>
     <div class="mdoc">
       <nav class="mdoc-nav" aria-label="תוכן העמוד">
@@ -698,7 +727,7 @@
         <section class="msec" id="msec-6">
           <header class="msec-head"><span class="msec-num" aria-hidden="true">6</span>
             <div class="msec-title"><h2>תחשיב הברומטר</h2><p>מהממוצע המשוקלל, דרך ארבע הנחות גלויות, ועד חלוקה של 120 מנדטים לפי כללי הבחירות.</p></div>
-            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="5">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/haredi">להנחות ↙</a></div></header>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="5">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/haredi">לתרחיש החרדי ↙</a></div></header>
           <div class="msec-body msec-wide">
             <div class="msec-text">
               <h3>ארבע ההנחות של ״תחזית הברומטר״</h3>
@@ -728,6 +757,12 @@
               <p>השיטה מעדיפה מעט את הרשימות הגדולות, ולכן אומדן של 10.5 יכול להסתיים ב־10 ולא ב־11.</p>
               <div class="mlive" id="m-live-result"></div>
               <p class="sec-note" id="m-rules"></p>
+              <div class="msec-sub" id="m-haredi">
+                <h3>התרחיש החרדי</h3>
+                <p>ש״ס ויהדות התורה הן שתי הרשימות שהתחזית מקבעת, כי סקרים מודדים מגזר סגור נמוך מדי. כדי לבדוק את ההנחה אפשר להריץ תרחיש דמוגרפי: גידול האוכלוסייה החרדית, ההשתתפות והנאמנות לרשימות החרדיות, מתורגמים למנדטים. התרחיש הוא כלי לבחינת הנחות, ולא רצפה ולא תחזית.</p>
+                <div class="mlive" id="m-live-haredi"></div>
+                <p><a class="msec-more" href="#/haredi">לפירוט המלא: הנתונים, החישוב, ההיסטוריה והמקורות ↙</a></p>
+              </div>
             </div>
           </div>
         </section>

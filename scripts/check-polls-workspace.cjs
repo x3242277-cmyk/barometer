@@ -1,0 +1,43 @@
+const fs = require('fs'), vm = require('vm'), assert = require('node:assert/strict');
+const context = vm.createContext({ console, Intl, Date, setInterval(){}, clearInterval(){} });
+for (const f of ['explore.js','poll-tracker.js','polls-workspace.js','app.js']) vm.runInContext(fs.readFileSync('assets/'+f,'utf8'),context);
+context.fixtures = Object.fromEntries(['current-polls','polls-archive','pollsters'].map(f=>[f,JSON.parse(fs.readFileSync('data/'+f+'.json','utf8'))]));
+vm.runInContext(`S.cur=fixtures['current-polls'];S.pollsArchive=fixtures['polls-archive'];S.firms=fixtures.pollsters;S.trackRange='all';`,context);
+const run = source => vm.runInContext(source,context);
+run(`
+const workspaceFixture = (id,date,source,value) => ({id,date,dateTimestamp:Date.parse(date),sourceId:source,channelHebrewName:source==='channel_14'?'ערוץ 14':'מעריב',parties:value===null?[]:[{id:'likud',name:'הליכוד',mandates:value,alignment:'Coalition'}]});
+const fixtureRows = [workspaceFixture('a','2026-09-01','channel_14',24),workspaceFixture('b','2026-09-02','channel_14',null),workspaceFixture('c','2026-09-03','channel_14',0),workspaceFixture('d','2026-09-01','maariv',20)];
+const fixtureModel={polls:fixtureRows,parties:[{id:'likud',name:'הליכוד',color:'#245fa6'}]};
+const fixtureState={mode:'channels',selected:[{key:'ערוץ 14',label:'ערוץ 14'}],metric:'likud',view:'timeline'};
+`);
+const series=run('explorerLines(fixtureModel,fixtureState)[0].points');
+assert.equal(series.length,2,'omitted party was manufactured as a zero measurement');
+assert.equal(series[1].v,0,'an explicit zero measurement disappeared');
+assert.equal(series[0].v,24,'channel comparison included another channel');
+const firms = run(`explorerLines(fixtureModel,{...fixtureState,mode:'firms',selected:[{key:'Next Data',label:'נקסט דאטה'}]})[0].points`);
+assert.equal(firms[0].v,24,'institute attribution selected the wrong surveys');
+run(`const sameDate=[workspaceFixture('e','2026-09-01','channel_14',24),workspaceFixture('f','2026-09-01','channel_14',28),workspaceFixture('g','2026-09-01','maariv',12)];`);
+assert.equal(run(`explorerLines({...fixtureModel,polls:sameDate},{mode:'parties',selected:[{key:'likud',label:'הליכוד'}],view:'timeline'})[0].points[0].v`),19,'daily party average did not give each institute equal weight');
+run(`S.exploreMode='channels';S.exploreView='snapshot';S.exploreSelections={channels:['ערוץ 14']};`);
+assert.equal(run('explorerState(fixtureModel).view'),'snapshot','selected comparison view was lost');
+const snapshot=run(`explorerChart(fixtureModel,{...fixtureState,view:'snapshot'}).html`);
+assert(snapshot.includes('ex-snapshot')&&snapshot.includes('3.9'),'snapshot does not show its actual measurement date');
+assert(!snapshot.includes('class="tr-hit"'),'snapshot rendered timeline instead');
+const empty=run(`explorerChart(fixtureModel,{...fixtureState,selected:[]}).html`);
+assert(empty.includes('ex-empty'),'empty selection crashed or manufactured a series');
+run(`const changed=[fixtureRows[0],{...fixtureRows[2],parties:[{id:'likud',name:'רשימה משותפת אחרת',mandates:28,alignment:'Coalition'}]}];`);
+const changedHTML=run(`explorerChart({...fixtureModel,polls:changed},fixtureState).html`);
+const path=changedHTML.match(/class="tr-line"[^>]+d="([^"]+)"/)[1];
+assert.equal((path.match(/M/g)||[]).length,2,'changed alliances are connected into a continuous trend');
+assert.equal((path.match(/L/g)||[]).length,0,'line implies a comparable change across different list definitions');
+run(`S.leaders={};const realP=trackerModel();`);
+for(const mode of ['channels','firms','parties']) {
+  run(`S.exploreMode='${mode}';S.exploreView='timeline';S.exploreSelections={};`);
+  const html=run('renderExplorerHTML(realP,realP)');
+  assert(html.includes('ex-logo-button')&&html.includes('aria-label='),'missing accessible circular picker in '+mode);
+  assert(!/NaN|undefined/.test(html),'invalid value rendered in '+mode);
+}
+const gallery=run('feedCardHTML(realP.polls.at(-1),realP.polls,true)');
+assert(gallery.includes(' open')&&gallery.includes('data-feed-poll='),'gallery card is not expanded or has no individual expansion');
+assert(gallery.includes('מקור'),'gallery lost the original source link');
+console.log('Passed: channels/institutes/party aggregation, missing vs zero, explicit dates, snapshots, empty selections, alliance changes, accessible logo pickers and expanded source cards.');

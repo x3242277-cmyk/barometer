@@ -1181,7 +1181,8 @@ function renderCalibrationStrip() {
       <span>${active ? "פעיל במדד" : "בהכנה"}</span>
       <b>${esc(t.election)}</b>
       <em>${esc(String(t.year))}</em>
-      <p>${active ? `${fmt(t.polls)} סקרי כיול` : esc(t.note || "ממתין לנתונים מלאים")}</p>
+      <p>${active ? `${fmt(t.polls)} סקרים משויכים למכון` : esc(t.note || "ממתין לנתונים מלאים")}</p>
+      ${active && t.note ? `<small>${esc(t.note)}</small>` : ""}
     </article>`;
   }).join("");
 }
@@ -1204,10 +1205,18 @@ function renderCalibSwitch() {
   const e = curElection(), heD = d => d.split("-").reverse().join(".");
   const firms = new Set(e.data.polls.map(p => p.firm).filter(Boolean)).size;
   $("#arch-title").textContent = `${e.election} · ${heD(e.data.meta?.electionDate || e.data.window.to)}`;
-  $("#calib-facts").innerHTML = [[e.data.polls.length, "סקרים בחלון"], [firms, "מכונים"], [`<span dir="ltr">${heD(e.data.window.from)} – ${heD(e.data.window.to)}</span>`, "30 הימים שלפני הבחירות"]]
+  $("#calib-facts").innerHTML = [[e.data.polls.length, "סקרים בארכיון"], [firms, "שיוכי מכון בארכיון"], [`<span dir="ltr">${heD(e.data.window.from)} – ${heD(e.data.window.to)}</span>`, "תאריכי חלון הכיול בפועל"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   const src = e.data.meta?.sourceUrl ? `<a href="${esc(e.data.meta.sourceUrl)}" target="_blank" rel="noopener">${esc(e.data.meta.source)} ↗</a>` : esc(e.data.meta?.source || "");
-  $("#calib-source").innerHTML = `מקור הסקרים: ${src} · תוצאות האמת: ועדת הבחירות המרכזית. ${esc(e.data.meta?.note || "")}`;
+  const dataFile = accuracyDataFile(e);
+  $("#calib-source").innerHTML = `מקור הארכיון: ${src || "ארכיון האתר"} · <a href="${dataFile}" target="_blank" rel="noopener">כל הנתונים לחישוב ↗</a> · <a href="${accuracyElectionSource(e)}" target="_blank" rel="noopener">תוצאות ועדת הבחירות ↗</a>. ${esc(e.data.meta?.note || "")}`;
+  const proof = $("#accuracy-proof-summary");
+  if (proof) {
+    const missing = e.data.polls.filter(p => !p.firm).length;
+    const original = e.data.polls.filter(p => p.source).length;
+    const hypothetical = S.scen === "counterfactual" && counterfactualAvailable();
+    proof.innerHTML = `<b>${hypothetical ? "הארכיון מוצג מול תרחיש מרצ עוברת" : "הנתונים שמהם חושב הציון"}</b><p>${hypothetical ? "זהו תרחיש המחשה. דירוג המכונים למעלה והמשקל בתחזית נשארים מחושבים מול תוצאות האמת." : "בחרו מערכת בחירות ומכון כדי לבדוק את הסקרים מול אותה תוצאת אמת. הדירוג למעלה תמיד משלב את כל מערכות הכיול."} ${missing ? `${missing} סקרים ללא שיוך למכון אינם נכנסים לציון של מכון.` : "כל הסקרים בחלון משויכים למכון."} ${original < e.data.polls.length ? `קישור לפרסום המקורי קיים ב־${original} מתוך ${e.data.polls.length} סקרים; בשאר הרשומות מצוין שהקישור חסר.` : "לכל סקר קיים קישור לפרסום המקורי."}</p>`;
+  }
 }
 
 /* דיוק המכונים: הערה אחת לכל מכון — איפה הוא טועה באופן קבוע (2020–2022). אלה
@@ -1225,76 +1234,119 @@ function houseFirmNote(meta) {
     `<span title="${esc(houseExplain(x, long))}">${esc(short)} ${houseShort(x)}</span>`).join(" · ")}</p>`;
 }
 
+/* Transparent display helpers. The scoring formula and forecast weights are unchanged. */
+function accuracyDataFile(e) {
+  return `data/historical-polls${e.key === "2022" ? "" : `-${e.key}`}.json`;
+}
+function accuracyElectionSource(e) {
+  const knesset = { "2020": 23, "2021": 24, "2022": 25 }[e.key];
+  return knesset ? `https://media${knesset}.bechirot.gov.il/files/expc.csv` : "https://www.gov.il/he/departments/central_elections_committee";
+}
+function accuracyRuns(st) {
+  return (st.elections || []).filter(r => S.elections.some(e => e.key === r.key));
+}
+function accuracyBreakdown(st) {
+  const components = [
+    ["blocScore", "דיוק בגושים", .6, "#17457F"],
+    ["partyScore", "דיוק במפלגות", .3, "#966918"],
+    ["consistencyScore", "עקביות", .1, "#6A5A9C"]
+  ];
+  return `<table class="accuracy-breakdown"><caption>ממה מורכב הציון</caption><thead><tr><th scope="col">רכיב</th><th scope="col">ציון</th><th scope="col">משקל</th><th scope="col">נקודות לציון</th></tr></thead><tbody>${components.map(([key, label, weight, color]) =>
+    `<tr><th scope="row"><i style="--component:${color}"></i>${label}</th><td>${r1(st[key])}</td><td>${weight * 100}%</td><td><b>${(st[key] * weight).toFixed(2)}</b></td></tr>`).join("")}</tbody><tfoot><tr><th scope="row" colspan="3">סך הכול מתוך 100</th><td><b>${r1(st.score)}</b></td></tr></tfoot></table>`;
+}
+function accuracyScoreBasis(st, heir) {
+  const runs = accuracyRuns(st), sparse = runs.filter(r => r.n < 3);
+  const basis = runs.length === 1 ? `נמדד במערכת אחת בלבד (${esc(runs[0].short)})` : `ממוצע שווה של ${runs.length} מערכות בחירות`;
+  return `<p class="accuracy-basis">${heir ? `<b>ציון מועבר מ־${esc(heir.he)}.</b> למכון הזה אין סדרת כיול עצמאית כאן; זו הנחת המשכיות של הברומטר, ולא בדיקה עצמאית של המכון הנוכחי. ` : ""}${basis}. ${sparse.length ? `<b>מעט נתונים:</b> ${sparse.map(r => `${esc(r.short)} — ${r.n === 1 ? "סקר אחד" : `${r.n} סקרים`}`).join("; ")}. רכיב העקביות הוכפל ב־${sparse.map(r => `<span dir="ltr">${r.n}/3</span>`).join(" ו־")} באותן מערכות.` : "בכל מערכת יש לפחות 3 סקרים למדידת העקביות."}</p>`;
+}
+function renderAccuracyMethod() {
+  const box = $("#accuracy-method"); if (!box) return;
+  box.innerHTML = `<div class="accuracy-method-band"><div class="accuracy-method-label"><strong>אותה נוסחה לכולם</strong><span>סקרי העבר מול תוצאות האמת</span></div>
+    <div class="accuracy-method-weight" style="--component:#17457F"><b>60<span>%</span></b><span>דיוק בגושים</span></div>
+    <div class="accuracy-method-weight" style="--component:#966918"><b>30<span>%</span></b><span>דיוק במפלגות</span></div>
+    <div class="accuracy-method-weight" style="--component:#6A5A9C"><b>10<span>%</span></b><span>עקביות הסקרים</span></div></div>
+    <p class="accuracy-method-intro">מחשבים ציון לכל מערכת בחירות וממוצע שווה בין המערכות. <b>זהו מדד של הברומטר: המשקלים והספים הם בחירה שלנו.</b></p>
+    <details class="accuracy-method-details"><summary>איך הגענו לנוסחה? השיטה והמגבלות</summary><div>
+      <div class="accuracy-formula-grid">
+      <article style="--component:#17457F"><span class="accuracy-weight">60%</span><h3>דיוק בגושים</h3><p>מחשבים לכל גוש את הפער המוחלט בין ממוצע סקרי המכון לתוצאה. מחברים את הפערים ומחלקים ב־3.</p><div class="accuracy-equation">100 − 10 × הפער הממוצע לגוש</div></article>
+      <article style="--component:#966918"><span class="accuracy-weight">30%</span><h3>דיוק במפלגות</h3><p>בכל סקר מחשבים את הפער המוחלט לכל רשימה; ממוצעים את כל הפערים, בכל הסקרים והרשימות.</p><div class="accuracy-equation">100 − 15 × הטעות הממוצעת לרשימה</div></article>
+      <article style="--component:#6A5A9C"><span class="accuracy-weight">10%</span><h3>עקביות בין הסקרים</h3><p>65% ליציבות גוש נתניהו ו־35% ליציבות הרשימות. עם סקר אחד מקבלים שליש מהרכיב, ועם שניים — שני שלישים.</p><div class="accuracy-equation">65% × יציבות הגוש + 35% × יציבות הרשימות</div></article>
+      </div>
+      <div class="accuracy-method-foot"><p><b>למה דווקא המשקלים האלה?</b> הברומטר נותן את רוב המשקל לדיוק בגושים, אחריו לדיוק במפלגות, ומשקל קטן ליציבות הסקרים. זו בחירת שיטה של האתר, ולא מדד רשמי של ועדת הבחירות.</p><p><b>מה הציון אומר — ומה מגבלותיו?</b> הוא מתאר הצלחה בנתוני העבר שבארכיון, ואינו מבטיח דיוק בבחירות הבאות. מעט סקרים מספקים בסיס צר להשוואה. עקביות מודדת יציבות; גם סקר יציב עלול לטעות.</p></div>
+      <p><b>ההשפעה על התחזית:</b> 80 ומעלה — מקדם 0.45; 75 עד פחות מ־80 — 0.35; פחות מ־75 — 0.20. אלה מקדמים יחסיים בממוצע המשוקלל, ולא אחוז התמיכה במכון.</p>
+      <p>כל ציון רכיב מוגבל לטווח 0–100. יציבות הגוש = 100 פחות 25 כפול סטיית התקן של מנדטי גוש נתניהו בין הסקרים. יציבות הרשימות = 100 פחות 50 כפול ממוצע סטיות התקן של כל רשימה בין הסקרים.</p>
+      <p>רכיב העקביות = (0.65 × יציבות הגוש + 0.35 × יציבות הרשימות) × המינימום בין 1 לבין מספר הסקרים חלקי 3. מספר הסקרים משנה רק את רכיב העקביות; הדיוק בגושים ובמפלגות מחושב כרגיל.</p>
+      <p>ציון מערכת = 0.6 × דיוק בגושים + 0.3 × דיוק במפלגות + 0.1 × עקביות. הציון ההיסטורי = סכום ציוני המערכות שבהן המכון נמדד חלקי מספרן. מערכת ללא סקרים של המכון אינה נכנסת לממוצע שלו.</p>
+      <p>סקר ללא שיוך למכון נשאר בארכיון ואינו נכנס לציון של מכון. מכון ללא כיול מקבל 70 כערך ניטרלי במודל; 70 אינו ציון דיוק שנמדד. ציון שמועבר ממכון קודם מסומן בנפרד. הגדרת הגושים ורשימת המפלגות מוצגות לכל מערכת בחירות בפירוט המכון.</p>
+      <p>המספרים בתצוגה מעוגלים. החישוב משתמש בנתונים המלאים. בארכיון מסומנים במפורש סקרים שחסר להם קישור לפרסום המקורי.</p>
+      <button class="accuracy-jump" type="button">לכל סקרי הכיול והמקורות <span aria-hidden="true">↓</span></button>
+    </div></details>`;
+  $(".accuracy-jump", box)?.addEventListener("click", () => {
+    const evidence = $("#accuracy-proof-summary") || $("#arch-title");
+    evidence?.scrollIntoView({ behavior: "smooth", block: "start" });
+    $("#arch-firm")?.focus({ preventScroll: true });
+  });
+}
+
 function render2022() {
-  const stats = S.stats, el = curElection(), defs = curBlocDefs(), target = scenActual();
+  const stats = S.stats;
+  renderAccuracyMethod();
   renderCalibSwitch();
   renderCounterfactual();
 
-  // facts strip under the title
   const totalPolls = S.elections.reduce((t, e) => t + e.data.polls.length, 0);
   const calibrated = stats.filter(st => S.firms.firms.find(f => f.id === st.firm)?.calibrated);
-  const best = calibrated[0], facts = $("#acc-facts");
+  const facts = $("#acc-facts");
   if (facts) facts.innerHTML = [
-    [calibrated.length, "מכונים מכוילים"], [totalPolls, "סקרי כיול"], [`${S.elections.length} · <span dir="ltr">${Math.min(...S.elections.map(e => e.year))}–${Math.max(...S.elections.map(e => e.year))}</span>`, "מערכות בחירות"],
-    [best ? `${esc((S.firms.firms.find(f => f.id === best.firm) || { he: best.firm }).he)} · ${r1(best.score)}` : "—", "המדויק ביותר"]
+    [calibrated.length, "מכונים שנמדדו"], [totalPolls, "סקרים בארכיון"], [S.elections.length, "מערכות בחירות"]
   ].map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
 
-  // ranking
-  const comps = [["blocScore", "דיוק בגושים", "#17457F"], ["partyScore", "דיוק במפלגות", "#B8862B"], ["consistencyScore", "עקביות", "#5B4B8A"]];
-  const runsOf = S.elections.slice();
-  /* מכון שיורש ציון (נקסט דאטה ← דירקט פולס: אותו צוות סוקרים) מוצג ככרטיס רגיל, זהה
-     במבנהו לשאר, מיד אחרי המקור; הקשר בין השניים מוסבר בחלון הפירוט בלבד. */
   const activeFirms = new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm));
   const heirsOf = id => S.firms.firms.filter(f => f.calibrationFirm === id && f.id !== id && activeFirms.has(f.id));
-  const cardOf = (it, m, g, runs, rankNo, heirOf) => `<article class="rank grade-${g.key}" data-firm="${esc(m.id)}" role="button" tabindex="0" aria-label="${esc(m.he)} — פירוט הציון">
-      ${scoreTop(it.score, "ציון משוקלל", g.key, g.label, rankNo)}
-      ${logoBox(m, 52)}
-      <div style="min-width:0"><strong style="display:block">${esc(m.he)}</strong>
-        <span style="color:var(--ink-3);font-size:.75rem">${it.n} סקרים ב־${it.elections.length} ${it.elections.length === 1 ? "מערכת" : "מערכות"}</span></div>
-      <div class="runs" aria-label="ציון לפי מערכת בחירות">${runs.map((r, i) => r
-        ? `<span title="${esc(r.election)}: ${r.n} סקרים"><small>${esc(runsOf[i].short)}</small><b>${r1(r.score)}</b></span>`
-        : `<span class="none" title="לא פרסם סקרים בחלון"><small>${esc(runsOf[i].short)}</small><b>—</b></span>`).join("")}</div>
-      <div class="meters">${comps.map(([k, l, c]) => `<div class="meter" style="--c:${c}"><span>${l}<b>${r1(it[k])}</b></span><i style="--v:${clamp(it[k])}%"></i></div>`).join("")}</div>
-      ${houseFirmNote(m)}
-      <div class="final rank-outlets"><span>מפרסם ב־</span>${outletIconStrip(m.outlets || [])}</div>
+  const cardOf = (st, meta, index, heir) => {
+    const runs = accuracyRuns(st), grade = gradeOf(st.score);
+    const sourceCount = runs.reduce((n, run) => n + run.polls.filter(p => p.source).length, 0);
+    const components = [["blocScore", "גושים", .6, "#17457F"], ["partyScore", "מפלגות", .3, "#966918"], ["consistencyScore", "עקביות", .1, "#6A5A9C"]];
+    const runCalculation = runs.map(r => r.score.toFixed(2)).join(" + ");
+    return `<article class="accuracy-card${heir ? " accuracy-inherited" : ""}">
+      <div class="accuracy-card-main">
+        <header class="accuracy-card-head"><span class="accuracy-rank-number" aria-label="${heir ? "ללא מקום עצמאי בדירוג" : `מקום ${index + 1}`}">${heir ? "↳" : String(index + 1).padStart(2, "0")}</span>${logoBox(meta, 48)}<div class="accuracy-identity"><h3>${esc(meta.he)}</h3><span class="accuracy-card-type">${heir ? `ציון מועבר מ־${esc(heir.he)}` : `${runs.length} מערכות · ${st.n} סקרי כיול`}</span><span class="accuracy-grade-label ${grade.key}">${esc(grade.label)}</span></div><div class="accuracy-card-score"><b>${r1(st.score)}</b><span>מתוך 100</span></div></header>
+        <div class="accuracy-contributions"><span class="accuracy-contribution-label">הנקודות שמרכיבות את הציון</span><div class="accuracy-score-track" aria-hidden="true">${components.map(([key, , weight, color]) => `<span style="width:${st[key] * weight}%;--component:${color}"></span>`).join("")}</div><div class="accuracy-contribution-values">${components.map(([key, label, weight, color]) => `<span style="--component:${color}"><i aria-hidden="true"></i>${label}<b>${r1(st[key] * weight)}<small> / ${weight * 100}</small></b></span>`).join("")}</div></div>
+        <div class="accuracy-evidence-summary"><span><b>${sourceCount} מתוך ${st.n}</b> קישורי מקור</span><small>${sourceCount < st.n ? `ל־${st.n - sourceCount} סקרים חסר קישור לפרסום המקורי` : "לכל סקר יש קישור לפרסום המקורי"}</small><button class="accuracy-open" type="button" data-firm="${esc(meta.id)}" aria-label="כל הסקרים והחישוב של ${esc(meta.he)}">לסקרים ולמקורות <span aria-hidden="true">↗</span></button></div>
+      </div>
+      <details class="accuracy-card-details"><summary><span>פירוט הציון</span><span class="accuracy-detail-peek">${heir ? "מבוסס על מכון קודם" : runs.length === 1 ? "מערכת בחירות אחת בלבד" : `${runs.length} מערכות במשקל שווה`} · מקדם תחזית ${TIER_WEIGHT[grade.key].toFixed(2)}</span></summary><div class="accuracy-card-expanded"><div>
+      ${accuracyScoreBasis(st, heir)}
+      <div class="accuracy-runs" aria-label="ציונים ומספר סקרים בכל מערכת">${S.elections.map(e => {
+        const run = runs.find(r => r.key === e.key);
+        return `<div${run ? "" : ' class="accuracy-missing"'}><span>${esc(e.short)}</span><b>${run ? r1(run.score) : "—"}</b><small>${run ? `${run.n} סקרים` : "ללא סקרי כיול"}</small></div>`;
+      }).join("")}</div>
+      <p class="accuracy-average">${runs.length > 1 ? `ממוצע המערכות: <span dir="ltr">(${runCalculation}) ÷ ${runs.length} = ${r1(st.score)}</span>` : "הציון נשען על מערכת בחירות אחת בלבד."}</p>
+      <p class="accuracy-error-summary">הטעות הממוצעת לרשימה: <b>${r1(st.partyMae)} מנדטים</b> · הפער הממוצע לגוש: <b>${r1(st.blocAbs / 3)} מנדטים</b>${runs.length > 1 ? " · ממוצע בין המערכות" : ""}.</p>
+      <p class="accuracy-source-coverage">קישורים לפרסומים המקוריים: <b>${sourceCount} מתוך ${st.n}</b>. ${sourceCount < st.n ? "יתר הנתונים שמורים בארכיון האתר; קישור לפרסום המקורי חסר." : "ניתנים לבדיקה בפירוט."}</p>
+      <footer class="accuracy-card-footer"><div><span>${esc(meta.lead || "ערוצי הפרסום כיום")}</span>${(meta.outlets || []).length ? outletIconStrip(meta.outlets) : `<small>ללא ערוץ פעיל רשום</small>`}</div></footer>
+      </div><div>${accuracyBreakdown(st)}<p class="accuracy-rounding">התרומות לציון מוצגות בעיגול. החישוב משתמש בערכים המלאים.</p></div></div></details>
     </article>`;
-  $("#rank-list").innerHTML = calibrated.map((it, idx) => {
-    const m = S.firms.firms.find(f => f.id === it.firm), g = gradeOf(it.score);
-    const runs = runsOf.map(e => it.elections.find(r => r.key === e.key));
-    const rankNo = String(idx + 1).padStart(2, "0");
-    return cardOf(it, m, g, runs, rankNo, null) + heirsOf(it.firm).map(h => cardOf(it, h, g, runs, rankNo, m)).join("");
+  };
+  const list = $("#rank-list");
+  list.classList.add("accuracy-grid");
+  list.innerHTML = calibrated.map((st, index) => {
+    const meta = S.firms.firms.find(f => f.id === st.firm);
+    return cardOf(st, meta, index, null);
   }).join("");
+  const inherited = calibrated.flatMap((st, index) => heirsOf(st.firm).map(heir => cardOf(st, heir, index, S.firms.firms.find(f => f.id === st.firm))));
 
-  /* מכונים פעילים בתחזית שאין להם סדרת כיול משלהם מ-2022 — כדי שהעמוד
-     יכסה כל מכון שמזין את החישוב, לא רק את שבעת המכוילים. */
-  const rankedIds = new Set(calibrated.map(s => s.firm));
-  const extras = [...new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm))]
-    .map(id => S.firms.firms.find(f => f.id === id))
-    .filter(f => f && !rankedIds.has(f.id) && !(f.calibrationFirm && rankedIds.has(f.calibrationFirm)))
-    .sort((a, b) => firmScore(b) - firmScore(a));
-  /* אותה משבצת כמו המכונים המכוילים, באותה שורה; ההסבר במקום המדדים. */
-  if (extras.length) $("#rank-list").insertAdjacentHTML("beforeend",
-    extras.map(f => {
-      const heir = f.calibrationFirm && rankedIds.has(f.calibrationFirm) ? S.firms.firms.find(x => x.id === f.calibrationFirm) : null;
-      const note = heir
-        ? `<b>ללא סדרת כיול משלו.</b> יורש את ציון ${esc(heir.he)} — אותו צוות סוקרים, ולכן אותו ציון.`
-        : `<b>ללא סדרת כיול.</b> לא פרסם סקרים בחודש שלפני אף אחת משלוש הבחירות, ולכן אין למה להשוות. עד שייבחן מול תוצאות אמת הוא נכנס לתחזית במשקל ניטרלי של 70.`;
-      return `<article class="rank rank-nocalib" data-firm="${esc(f.id)}" role="button" tabindex="0" aria-label="${esc(f.he)} — פירוט הציון">
-        ${scoreTop(firmScore(f), heir ? "ציון בשימוש" : "משקל ניטרלי", "none", heir ? `יורש את ${esc(heir.he)}` : "ללא דירוג")}
-        ${logoBox(f, 52)}
-        <div style="min-width:0"><strong style="display:block">${esc(f.he)}</strong>
-          <span style="color:var(--ink-3);font-size:.75rem">${heir ? "יורש ציון" : "משקל ניטרלי"}</span></div>
-        <div class="meters nocalib-note"><p>${note}</p></div>
-        <div class="final rank-outlets"><span>מפרסם ב־</span>${outletIconStrip(f.outlets || [])}</div>
-      </article>`;
-    }).join(""));
-
-  // the standing-sampling-error note
+  const rankedIds = new Set(calibrated.map(st => st.firm));
+  const extras = [...activeFirms].map(id => S.firms.firms.find(f => f.id === id))
+    .filter(f => f && !rankedIds.has(f.id) && !(f.calibrationFirm && rankedIds.has(f.calibrationFirm)));
+  if (inherited.length || extras.length) list.insertAdjacentHTML("beforeend", `<div class="accuracy-unranked-heading"><h3>ללא מדידה עצמאית</h3><p>מכונים פעילים שהציון שלהם מועבר ממכון קודם, או מבוסס על ברירת מחדל.</p></div>${inherited.join("")}`);
+  if (extras.length) list.insertAdjacentHTML("beforeend", extras.map(meta => `<article class="accuracy-card accuracy-neutral"><div class="accuracy-card-main">
+    <header class="accuracy-card-head"><span class="accuracy-rank-number" aria-hidden="true">—</span>${logoBox(meta, 48)}<div class="accuracy-identity"><h3>${esc(meta.he)}</h3><span class="accuracy-card-type">ללא כיול היסטורי</span></div><div class="accuracy-card-score"><b>—</b><span>אין מדידה</span></div></header>
+    <p class="accuracy-neutral-explain"><b>70 הוא ערך ברירת מחדל במודל.</b> אין למכון סדרת כיול משויכת מול תוצאות אמת, ולכן אין לו ציון דיוק שנמדד או מקום בדירוג.</p>
+    <div class="accuracy-evidence-summary"><span>מקדם תחזית <b dir="ltr">${firmWeight(meta).toFixed(2)}</b></span><button class="accuracy-open" type="button" data-firm="${esc(meta.id)}">לפרטי המכון <span aria-hidden="true">↗</span></button></div></div>
+  </article>`).join(""));
   renderBiasNote();
-
   renderArchive();
 }
-
 function renderArchive() {
   const el = curElection(), defs = curBlocDefs();
   const sel = $("#arch-firm");
@@ -1316,30 +1368,30 @@ function renderArchive() {
   const target = scenActual(), keys = Object.keys(target).sort((a, b) => target[b] - target[a]);
   const rows = el.data.polls.map((p, i) => ({ p, i })).filter(({ p }) => {
     const m = S.firms.firms.find(f => f.id === p.firm);
-    return (ff === "all" || p.firm === ff) && (!q || `${p.date} ${p.firm} ${m ? m.he : ""} ${p.publisher}`.toLowerCase().includes(q));
+    return (ff === "all" || p.firm === ff) && (!q || `${p.date} ${heDate(p.date)} ${p.firm} ${m ? m.he : ""} ${p.publisher}`.toLowerCase().includes(q));
   }).sort((a, b) => b.p.date.localeCompare(a.p.date));
   /* ברירת המחדל: עשרת הסקרים האחרונים; כפתור פותח את כל החלון */
   const LIMIT = 10, shown = S.archAll ? rows : rows.slice(0, LIMIT);
-  $("#arch-count").textContent = `${shown.length} מתוך ${el.data.polls.length} סקרים`;
+  $("#arch-count").textContent = `${shown.length} מתוך ${rows.length} סקרים תואמים · ${el.data.polls.length} בארכיון`;
   const cellCls = d => d === 0 ? "ok" : d === 1 ? "near" : d === 2 ? "off" : "far";
   const tbDefs = curBlocDefs(), tb = histBlocs(target, tbDefs);
   const cf = S.scen === "counterfactual" && counterfactualAvailable();
   const actualRow = `<tr class="actual${cf ? " cf" : ""}"><td class="date">${esc((el.data.meta?.electionDate || "").slice(5).split("-").reverse().join("."))}</td><td colspan="2"><strong>${cf ? "התרחיש: מרצ עוברת" : `תוצאות האמת · ${esc(el.election)}`}</strong></td>${
-      keys.map(k => `<td class="n"><b>${target[k]}</b></td>`).join("")}<td class="n"><b>${tb.netanyahu}</b></td><td></td></tr>`;
+      keys.map(k => `<td class="n"><b>${target[k]}</b></td>`).join("")}<td class="n"><b>${tb.netanyahu}</b></td><td></td><td>בסיס ההשוואה</td></tr>`;
   $("#arch-table").innerHTML = `<thead><tr><th>תאריך</th><th>מפרסם</th><th>מכון</th>${
     keys.map(k => `<th class="n party-h">${esc(HIST_PARTY_HE[k] || k)}</th>`).join("")
-  }<th class="n">גוש נתניהו</th><th class="n">שגיאה ממוצעת</th></tr></thead><tbody>${actualRow}${
-    shown.map(({ p }) => {
+  }<th class="n">גוש נתניהו</th><th class="n">טעות לרשימה</th><th>לבדיקת הסקר</th></tr></thead><tbody>${actualRow}${
+    shown.map(({ p, i }) => {
       const mae = avg(keys.map(k => Math.abs((p.p[k] || 0) - target[k])));
       const m = S.firms.firms.find(f => f.id === p.firm) || { he: FIRM_HE_FALLBACK[p.firm] || p.firm || "ללא שיוך מכון" };
       const bn = histBlocs(p.p, tbDefs).netanyahu, dev = Math.abs(bn - tb.netanyahu);
       return `<tr${p.firm ? "" : ' class="unattributed"'}><td class="date">${esc(p.date.slice(5).split("-").reverse().join("."))}</td>
         <td class="pub"><div class="orgcell">${outletLogo(p.publisher)}<span>${esc(p.publisher)}</span></div></td>
-        <td class="firm"><strong>${esc(m.he)}</strong></td>
+        <td class="firm">${p.firm ? `<button class="accuracy-firm-link" type="button" data-firm="${esc(p.firm)}">${esc(m.he)}</button>` : `<strong>${esc(m.he)}</strong>`}</td>
         ${keys.map(k => { const v = p.p[k] || 0, d = Math.abs(v - target[k]); return `<td class="n cell ${cellCls(d)}" title="${esc(HIST_PARTY_HE[k] || k)}: ${v} מול ${target[k]}">${v}</td>`; }).join("")}
         <td class="n cell ${cellCls(dev)}"><b>${bn}</b></td>
-        <td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td></tr>`;
-    }).join("") || `<tr><td colspan="${keys.length + 5}" class="empty">לא נמצאו סקרים.</td></tr>`}</tbody>`;
+        <td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td><td class="accuracy-archive-proof"><button class="accuracy-poll-open" type="button" data-poll="${i}" aria-label="פירוט סקר ${esc(p.publisher)} מ־${esc(heDate(p.date))}">פרטי הסקר ↗</button>${p.source ? `<a href="${esc(p.source)}" target="_blank" rel="noopener">הפרסום המקורי ↗</a>` : `<small>קישור לפרסום המקורי חסר</small>`}</td></tr>`;
+    }).join("") || `<tr><td colspan="${keys.length + 6}" class="empty">לא נמצאו סקרים.</td></tr>`}</tbody>`;
   const more = $("#arch-more");
   if (more) {
     more.hidden = rows.length <= LIMIT;
@@ -1364,11 +1416,11 @@ function renderBiasNote() {
     .sort((a, b) => Math.abs(b.mean) - Math.abs(a.mean)).slice(0, 2);
   if (!found.length) { box.hidden = true; return; }
   box.hidden = false;
-  box.innerHTML = `<b>טעות דגימה קבועה:</b> ` + found.map(x => {
-    const dir = x.mean > 0 ? `הסקרים נותנים לה בממוצע ${seatsHe(x.mean)} פחות ממה שהיא מקבלת בקלפי` : `הסקרים נותנים לה בממוצע ${seatsHe(x.mean)} יותר ממה שהיא מקבלת בקלפי`;
+  box.innerHTML = `<b>דפוס משותף בסקרי העבר:</b> ` + found.map(x => {
+    const dir = x.mean > 0 ? `במערכות שנבדקו, הסקרים נתנו לה בממוצע ${seatsHe(x.mean)} פחות מתוצאת האמת` : `במערכות שנבדקו, הסקרים נתנו לה בממוצע ${seatsHe(x.mean)} יותר מתוצאת האמת`;
     const list = x.runs.slice().sort((a, b) => b.e.year - a.e.year).map(r => `${esc(r.e.short)}: ${r1(r.mean)} בסקרים מול ${r.actual} בפועל`).join(" · ");
     return `<b>${esc(HIST_PARTY_HE[x.k] || x.k)}</b> — ${dir} (${list})`;
-  }).join("; ") + `. התחזית אינה מתקנת לפי זה.`;
+  }).join("; ") + `. זה תיאור של הארכיון, ואינו רכיב נוסף בציון המכונים או הבטחה לפער דומה בבחירות הבאות.`;
 }
 
 /* התחשיב של 2022: מה היה קורה אילו מרצ הייתה עוברת את אחוז החסימה — במנדטים,
@@ -1386,7 +1438,7 @@ function renderCounterfactual() {
       <div class="scen-pair"><span><small>בפועל</small><b>${aB[k]}</b></span><i>→</i><span class="cf"><small>אילו מרצ עברה</small><b>${cfB[k]}</b></span></div>
     </div>`).join("");
   $("#scen-explain").innerHTML = `<p><b>מרצ קיבלה ${fmt(w.meretz)} קולות — ${fmt(w.meretzGap)} קולות בלבד מתחת לאחוז החסימה.</b> אילו עברה, היא הייתה מקבלת ${COUNTERFACTUAL.meretz} מנדטים, וחלוקת המנדטים כולה הייתה מחושבת מחדש: גוש נתניהו ${aB.netanyahu} → ${cfB.netanyahu}.</p>
-    <p>זה ההבדל בין למדוד את מצב הרוח לבין לחזות את התוצאה: מכון שהראה למרצ 4–5 מנדטים ״טעה״ מול המציאות, אבל היה מדויק מול התרחיש. המתג מודד את כל סקרי 2022 מחדש מול התוצאה ההיפותטית — הטבלה, ההטיה המשותפת וטבלת הציונים שלמטה מגיבות לו.</p>`;
+    <p><b>זהו תרחיש המחשה, ולא תוצאת בחירות.</b> המתג משנה את בסיס ההשוואה של טבלת סקרי 2022. בטבלה כאן אפשר לראות את הציון מול האמת ואת הציון מול התרחיש זה לצד זה. דירוג המכונים למעלה והמשקל בתחזית ממשיכים להשתמש בתוצאות האמת בלבד.</p>`;
   const rows = S.elections.find(e => e.key === "2022").stats.map(a => {
     const c = S.counterStats.find(x => x.firm === a.firm), m = S.firms.firms.find(f => f.id === a.firm) || { he: FIRM_HE_FALLBACK[a.firm] || a.firm };
     return { he: m.he, a: a.score, c: c ? c.score : null, n: a.n };
@@ -1396,95 +1448,58 @@ function renderCounterfactual() {
 }
 
 /* באנר פירוט למכון: מה הוא חזה בחודש הכיול, מה יצא בפועל, ולמה הציון. */
+/* Every score is traceable to its election runs, components, and original poll records. */
 function openFirm(firmId) {
-  const meta = S.firms.firms.find(f => f.id === firmId) || { id: firmId, he: firmId, short: "?" };
-  const calibId = calibrationId(meta);
-  const st = S.stats.find(x => x.firm === calibId);
+  const meta = S.firms.firms.find(f => f.id === firmId) || { id: firmId, he: FIRM_HE_FALLBACK[firmId] || firmId, short: "?" };
+  const st = S.stats.find(x => x.firm === calibrationId(meta));
   const heir = meta.calibrationFirm && meta.calibrationFirm !== meta.id
     ? S.firms.firms.find(f => f.id === meta.calibrationFirm) : null;
-  const dlg = $("#dlg");
+  const measured = Boolean(meta.calibrated && st), dlg = $("#dlg");
   dlg.classList.add("wide");
-
-  const head = `<div class="fd-head">${logoBox(meta, 56)}
-      <div><h2>${esc(meta.he)}</h2><p>${esc(meta.lead || "")}${meta.outlets?.length ? " · מפרסם ב־" + esc(meta.outlets.join(", ")) : ""}</p></div>
-      <div class="fd-score"><b class="num">${r1(firmScore(meta))}</b><span>${meta.calibrated ? "ציון אמינות" : "משקל ניטרלי"}</span></div>
-    </div>
-    <p class="fd-about">${esc(meta.about || "")}</p>`;
-
-  if (!meta.calibrated || !st) {
-    $("#dlg-body").innerHTML = head + `<div class="notice" style="margin-top:14px"><span class="ic">i</span><p style="margin:0">
-      למכון הזה אין סדרת סקרים בחודש הכיול של הכנסת ה־25, ולכן אי אפשר למדוד אותו מול תוצאות האמת. הוא נכנס לתחזית במשקל ניטרלי של 70 מתוך 100 — לא עונש ולא פרס, פשוט חוסר נתונים. ברגע שתהיה תוצאת בחירות חדשה, הוא יכויל כמו כולם.</p></div>`;
-    dlg.showModal();
-    return;
+  const head = `<header class="accuracy-detail-head">${logoBox(meta, 56)}<div><p class="accuracy-card-type">${measured ? heir ? "ציון מועבר ממכון קודם" : "הנתונים שמאחורי הציון" : "ללא כיול היסטורי"}</p><h2>${esc(meta.he)}</h2><p>${esc(meta.lead || "")}</p></div><div class="accuracy-card-score"><b>${r1(firmScore(meta))}</b><span>${measured ? "ציון היסטורי / 100" : "ערך ניטרלי במודל"}</span></div></header>`;
+  if (!measured) {
+    const dataReason = st ? `בארכיון קיימות ${st.n} רשומות תחת תווית זו, אבל היא אינה מסומנת כמכון מכויל ברישום המכונים. הרשומות מוצגות לצורכי ארכיון ואינן משמשות לדירוג.` : "אין למכון הזה סדרת כיול משויכת במערכות הבחירות שבמדד.";
+    $("#dlg-body").innerHTML = `<div class="accuracy-detail">${head}<div class="accuracy-detail-note"><h3>70 הוא ברירת מחדל, ולא תוצאת בדיקת דיוק</h3><p>${dataReason} ערך ברירת המחדל של הברומטר למכון לא מכויל הוא 70, עם מקדם משקל יחסי של ${firmWeight(meta).toFixed(2)} בממוצע המשוקלל. הציון יעודכן כאשר יהיו נתונים מתאימים להשוואה לתוצאות אמת.</p></div><p>${esc(meta.about || "")}</p><p><a href="data/pollsters.json" target="_blank" rel="noopener">רישום המכונים וכללי שיוך הציון ↗</a></p></div>`;
+    dlg.showModal(); dlg.scrollTop = 0; return;
   }
 
-  const heirNote = heir ? `<div class="notice warm" style="margin-top:12px"><span class="ic">↻</span><p style="margin:0">
-      <b>${esc(meta.he)}</b> נמדד לפי סדרת הכיול של <b>${esc(heir.he)}</b> — אותו סוקר ואותה שיטה, תחת שם חדש. הפירוט למטה הוא של ${esc(heir.he)} ב־2022.</p></div>` : "";
+  const runs = accuracyRuns(st), grade = gradeOf(st.score);
+  const aggregate = `<section class="accuracy-detail-total"><h3>הציון ההיסטורי: ${r1(st.score)} מתוך 100</h3>${accuracyScoreBasis(st, heir)}
+    <div class="accuracy-runs">${runs.map(run => `<div><span>${esc(run.election)} · ${esc(run.short)}</span><b>${r1(run.score)}</b><small>${run.n} סקרים</small></div>`).join("")}</div>
+    <p class="accuracy-average">${runs.length > 1 ? `<span dir="ltr">(${runs.map(r => r.score.toFixed(2)).join(" + ")}) ÷ ${runs.length} = ${r1(st.score)}</span>` : "זו מערכת הכיול היחידה של המכון בארכיון."}</p>
+    ${accuracyBreakdown(st)}<p class="accuracy-rounding">ברכיבים למעלה מוצג ממוצע המערכות. כל מערכת מקבלת משקל שווה, גם אם פורסם בה מספר שונה של סקרים. התצוגה מעוגלת; החישוב משתמש בערכים המלאים.</p>
+    <p>לצורך הממוצע המשוקלל בתחזית, הציון נמצא בדרגת <b>${esc(grade.label)}</b> ומקבל מקדם יחסי <b dir="ltr">${TIER_WEIGHT[grade.key].toFixed(2)}</b>. זו דרגה לפי מדד הברומטר; היא אינה הבטחה לדיוק עתידי.</p>${heir ? `<p><a href="data/pollsters.json" target="_blank" rel="noopener">לבדיקת שיוך הציון מ־${esc(heir.he)} ↗</a></p>` : ""}</section>`;
 
-  const comps = [
-    ["blocScore", "דיוק בגושים", "60%", "#17457F"],
-    ["partyScore", "דיוק במפלגות", "30%", "#B8862B"],
-    ["consistencyScore", "עקביות", "10%", "#5B4B8A"]
-  ];
-  const scoreStrip = `<div class="fd-comps">${comps.map(([k, l, w, c]) =>
-      `<div style="--c:${c}"><span>${l} <em>${w}</em></span><b class="num">${r1(st[k])}</b><i><u style="width:${clamp(st[k])}%"></u></i></div>`).join("")}
-    <div class="fd-final"><span>ציון סופי</span><b class="num">${r1(st.score)}</b><small>0.6×${r1(st.blocScore)} + 0.3×${r1(st.partyScore)} + 0.1×${r1(st.consistencyScore)}</small></div>
-  </div>`;
-
-  /* פירוט לכל מערכת בחירות שהמכון כויל עליה (כיום: הכנסת ה־25 בלבד) */
-  const runs = (st.elections || []).filter(r => S.elections.some(e => e.key === r.key));
   const sections = runs.map(run => {
-    const el = S.elections.find(e => e.key === run.key);
-    const actual = el.data.actual, defs = el.data.blocs || BLOCS_2022, aB = histBlocs(actual, defs);
-    const polls = run.polls.slice().sort((a, b) => a.date.localeCompare(b.date));
-    const keys = Object.keys(actual);
-    const pAvg = Object.fromEntries(keys.map(k => [k, avg(polls.map(p => p.p[k]))]));
-    /* לכנסת ה-25 נוספת עמודה "אילו מרצ עברה": כמה מהפער הוא בכלל אחוז החסימה */
-    const cf = run.key === "2022" ? COUNTERFACTUAL : null, cfB = cf ? histBlocs(cf, defs) : null;
-    const gap = (d, bad) => `<span dir="ltr" class="chip ${Math.abs(d) <= 1 ? "good" : Math.abs(d) >= bad ? "bad" : ""}">${d > 0 ? "+" : ""}${r1(d)}</span>`;
-    const blocRows = Object.entries(defs).map(([k, ids]) => {
-      const d = run.blocMean[k] - aB[k];
-      return `<tr class="fd-bloc"><th>${esc(blocLabel(k, ids))}</th><td class="n">${r1(run.blocMean[k])}</td><td class="n">${aB[k]}</td><td class="n">${gap(d, 3)}</td>${
-        cf ? `<td class="n fd-cf">${cfB[k]}</td><td class="n fd-cf">${gap(run.blocMean[k] - cfB[k], 3)}</td>` : ""}</tr>`;
+    const el = S.elections.find(e => e.key === run.key), actual = el.data.actual, defs = el.data.blocs || BLOCS_2022;
+    const actualBlocs = histBlocs(actual, defs), keys = Object.keys(actual).sort((a, b) => actual[b] - actual[a]);
+    const polls = run.polls.slice().sort((a, b) => b.date.localeCompare(a.date));
+    const partyMean = Object.fromEntries(keys.map(k => [k, avg(polls.map(p => p.p[k] || 0))]));
+    const blocSd = sd(polls.map(p => histBlocs(p.p, defs).netanyahu));
+    const partySd = avg(keys.map(k => sd(polls.map(p => p.p[k] || 0))));
+    const confidence = Math.min(1, run.n / 3), linked = polls.filter(p => p.source).length;
+    const signedGap = value => `<span class="accuracy-gap${Math.abs(value) > 2 ? " large" : ""}" dir="ltr">${value > 0 ? "+" : ""}${r1(value)}</span>`;
+    const breakdown = `<div class="accuracy-run-explain"><article><h4>גושים · ${r1(run.blocScore)} נקודות</h4><p>סכום הפערים המוחלטים בגושים: <b>${r1(run.blocAbs)}</b>. מחלקים ב־3: <b>${r1(run.blocAbs / 3)} מנדטים לגוש</b>.</p><p class="accuracy-equation" dir="ltr">100 − 10 × ${ (run.blocAbs / 3).toFixed(3) } = ${r1(run.blocScore)}</p></article>
+      <article><h4>מפלגות · ${r1(run.partyScore)} נקודות</h4><p>ממוצע הטעות המוחלטת בכל ${run.n} הסקרים ובכל ${keys.length} הרשימות: <b>${r1(run.partyMae)} מנדטים לרשימה</b>.</p><p class="accuracy-equation" dir="ltr">100 − 15 × ${run.partyMae.toFixed(3)} = ${r1(run.partyScore)}</p></article>
+      <article><h4>עקביות · ${r1(run.consistencyScore)} נקודות</h4><p>סטיית התקן בגוש נתניהו: <b>${r1(blocSd)}</b>; ממוצע סטיות התקן ברשימות: <b>${r1(partySd)}</b>. מכאן ציוני יציבות של <b>${r1(run.stability)}</b> ו־<b>${r1(run.partyStability)}</b>, בהתאמה.</p><p class="accuracy-equation" dir="ltr">(0.65 × ${r1(run.stability)} + 0.35 × ${r1(run.partyStability)}) × ${confidence.toFixed(3)} = ${r1(run.consistencyScore)}</p><p>${confidence < 1 ? `<b>תיקון למיעוט סקרים:</b> מקדם העקביות הוא ${run.n}/3. כך סקר בודד אינו מקבל עקביות מושלמת רק מפני שאין לו סקר נוסף להשוואה.` : "לפחות 3 סקרים: רכיב העקביות נספר במלואו."}</p></article></div>`;
+    const blocRows = Object.entries(defs).map(([key, ids]) => `<tr class="fd-bloc"><th scope="row">${esc(key === "netanyahu" ? "גוש נתניהו" : key === "outgoing" ? "הגוש היריב" : "מחוץ לגושים")}</th><td class="n">${r1(run.blocMean[key])}</td><td class="n">${actualBlocs[key]}</td><td class="n">${signedGap(run.blocMean[key] - actualBlocs[key])}</td></tr>`).join("");
+    const partyRows = keys.map(k => `<tr><th scope="row">${esc(HIST_PARTY_HE[k] || k)}</th><td class="n">${r1(partyMean[k])}</td><td class="n">${actual[k]}</td><td class="n">${signedGap(partyMean[k] - actual[k])}</td></tr>`).join("");
+    const pollRows = polls.map(p => {
+      const blocs = histBlocs(p.p, defs), mae = avg(keys.map(k => Math.abs((p.p[k] || 0) - actual[k])));
+      return `<tr><th scope="row">${esc(heDate(p.date))}</th><td>${esc(p.publisher || "לא צוין")}</td>${keys.map(k => `<td class="n">${p.p[k] || 0}</td>`).join("")}<td class="n"><b>${blocs.netanyahu}</b></td><td class="n">${r1(mae)}</td><td class="accuracy-source-cell">${p.source ? `<a href="${esc(p.source)}" target="_blank" rel="noopener">לפרסום המקורי ↗</a>` : `<span>קישור לפרסום המקורי חסר</span>`}</td></tr>`;
     }).join("");
-    const partyRows = keys.sort((a, b) => actual[b] - actual[a]).map(k => {
-      const d = pAvg[k] - actual[k];
-      return `<tr><th>${esc(HIST_PARTY_HE[k] || k)}</th><td class="n">${r1(pAvg[k])}</td><td class="n">${actual[k]}</td><td class="n">${gap(d, 2)}</td>${
-        cf ? `<td class="n fd-cf">${cf[k]}</td><td class="n fd-cf">${gap(pAvg[k] - cf[k], 2)}</td>` : ""}</tr>`;
-    }).join("");
-    const cfStat = cf ? S.counterStats.find(x => x.firm === run.firm) : null;
-    const worst = keys.map(k => ({ k, d: pAvg[k] - actual[k] })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d))[0];
-    const nb = run.blocMean.netanyahu - aB.netanyahu;
-    const why = [
-      `<b>גושים (${r1(run.blocScore)}):</b> סכום הפערים המוחלטים בשלושת הגושים הוא ${r1(run.blocAbs)} מנדטים — ${nb === 0 ? "גוש נתניהו נחזה במדויק" : `גוש נתניהו ${nb > 0 ? "הוערך ביתר" : "הוערך בחסר"} ב־${r1(Math.abs(nb))} מנדטים בממוצע`}. כל מנדט פער ממוצע לגוש מוריד 10 נקודות.`,
-      `<b>מפלגות (${r1(run.partyScore)}):</b> הטעות הממוצעת לרשימה היא ${r1(run.partyMae)} מנדטים (15 נקודות לכל מנדט). הפספוס הגדול ביותר: ${esc(HIST_PARTY_HE[worst.k] || worst.k)}, ${worst.d > 0 ? "יותר מדי" : "פחות מדי"} ב־${r1(Math.abs(worst.d))}.`,
-      `<b>עקביות (${r1(run.consistencyScore)}):</b> גוש נתניהו זז בין הסקרים בסטיית תקן של ${r1(100 - run.stability > 0 ? (100 - run.stability) / 25 : 0)} מנדטים (יציבות ${r1(run.stability)}), והרשימות בממוצע ${r1(run.partyStability != null ? (100 - run.partyStability) / 50 : 0)} מנדטים (יציבות ${r1(run.partyStability ?? 0)}). 65% לגוש, 35% למפלגות.`
-    ];
-    const pollList = polls.map(p => {
-      const b = histBlocs(p.p, defs), dev = Math.abs(b.netanyahu - aB.netanyahu);
-      const mae = avg(keys.map(k => Math.abs(p.p[k] - actual[k])));
-      return `<tr><td style="white-space:nowrap">${esc(p.date.slice(5).split("-").reverse().join("."))}</td><td>${esc(p.publisher || "")}</td>
-        <td class="n"><span class="chip ${dev <= 1 ? "good" : dev >= 3 ? "bad" : ""}">${b.netanyahu}</span></td><td class="n"><span class="chip ${mae < 1 ? "good" : mae > 1.6 ? "bad" : ""}">${r1(mae)}</span></td></tr>`;
-    }).join("");
-    return `<section class="fd-sec">
-      <h3>${esc(el.election)} · ${run.n} סקרים בחודש שלפני הבחירות · ציון ${r1(run.score)}</h3>
-      <div class="fd-why">${why.map(t => `<p>${t}</p>`).join("")}</div>
-      <div class="fd-tables">
-        <div class="tablewrap"><table><caption>ממוצע הסקרים של המכון מול התוצאה${cfStat ? ` · אילו מרצ הייתה עוברת, ציון המכון היה <b>${r1(cfStat.score)}</b> במקום ${r1(run.score)}` : ""}</caption>
-          <thead><tr><th>רשימה / גוש</th><th class="n">המכון</th><th class="n">בפועל</th><th class="n">פער</th>${cf ? `<th class="n fd-cf">אילו מרצ עברה</th><th class="n fd-cf">פער</th>` : ""}</tr></thead>
-          <tbody>${blocRows}${partyRows}</tbody></table></div>
-        <div class="tablewrap"><table><caption>הסקרים, אחד־אחד</caption>
-          <thead><tr><th>תאריך</th><th>פרסום</th><th class="n">גוש נתניהו (${aB.netanyahu})</th><th class="n">טעות/רשימה</th></tr></thead>
-          <tbody>${pollList}</tbody></table></div>
-      </div>
-    </section>`;
+    const cfStat = run.key === "2022" ? S.counterStats.find(s => s.firm === run.firm) : null;
+    return `<section class="accuracy-detail-run"><div class="accuracy-run-heading"><div><p class="accuracy-card-type">בדיקה מול תוצאות האמת · ${esc(run.short)}</p><h3>${esc(el.election)}</h3><p>${run.n} סקרים · ${esc(heDate(el.data.window.from))} עד ${esc(heDate(el.data.window.to))}</p></div><div class="accuracy-card-score"><b>${r1(run.score)}</b><span>ציון המערכת</span></div></div>
+      ${breakdown}${accuracyBreakdown(run)}<p class="accuracy-rounding">כל רכיב מוגבל לטווח 0–100. מספרים בנוסחה מוצגים בקירוב; הנתונים המלאים זמינים בקובץ המקושר למטה.</p>
+      <div class="accuracy-bloc-definitions"><b>חלוקת הגושים במערכת זו</b>${Object.entries(defs).map(([key, ids]) => `<p><strong>${esc(key === "netanyahu" ? "גוש נתניהו" : key === "outgoing" ? "הגוש היריב" : "מחוץ לגושים")}:</strong> ${ids.map(id => esc(HIST_PARTY_HE[id] || id)).join(" · ")}</p>`).join("")}</div>
+      <div class="tablewrap accuracy-means-wrap"><table><caption>ממוצע סקרי המכון מול תוצאות האמת · פער חיובי = הערכת יתר; פער שלילי = הערכת חסר</caption><thead><tr><th scope="col">רשימה / גוש</th><th scope="col" class="n">ממוצע המכון</th><th scope="col" class="n">תוצאות אמת</th><th scope="col" class="n">פער במנדטים</th></tr></thead><tbody>${blocRows}${partyRows}</tbody></table></div>
+      <div class="accuracy-detail-note"><b>אילו מקורות קיימים כאן?</b><p>${linked} מתוך ${run.n} סקרים כוללים קישור לפרסום המקורי. ${linked < run.n ? "בשאר הסקרים נשמרו הנתונים בארכיון, אבל הקישור הראשוני חסר. זו מגבלה של האפשרות לבדוק את המקור; אינה משנה את החישוב." : "אפשר לפתוח כל פרסום בטבלת הסקרים."}</p><div class="accuracy-source-links">${el.data.meta?.sourceUrl ? `<a href="${esc(el.data.meta.sourceUrl)}" target="_blank" rel="noopener">${esc(el.data.meta.source)} ↗</a>` : `<span>מקור הרשומות: ${esc(el.data.meta?.source || "ארכיון האתר")}</span>`}<a href="${accuracyDataFile(el)}" target="_blank" rel="noopener">נתוני הכיול המלאים ↗</a><a href="${accuracyElectionSource(el)}" target="_blank" rel="noopener">תוצאות ועדת הבחירות ↗</a></div></div>
+      <div class="tablewrap accuracy-evidence-wrap" role="region" aria-label="כל סקרי ${esc(meta.he)} בשנת ${esc(run.short)}. אפשר לגלול אופקית" tabindex="0"><table class="accuracy-evidence"><caption>כל סקרי הכיול, ללא קיצור · ${esc(run.short)}</caption><thead><tr><th scope="col">תאריך</th><th scope="col">פרסום</th>${keys.map(k => `<th scope="col" class="n">${esc(HIST_PARTY_HE[k] || k)}</th>`).join("")}<th scope="col" class="n">גוש נתניהו</th><th scope="col" class="n">טעות לרשימה</th><th scope="col">מקור ראשוני</th></tr></thead><tbody>${pollRows}</tbody></table></div>
+      ${cfStat ? `<p class="accuracy-scenario-note">להמחשת השפעת אחוז החסימה: מול התרחיש ההיפותטי שבו מרצ עוברת, ציון 2022 היה ${r1(cfStat.score)}. הדירוג והמשקל בתחזית משתמשים בתוצאת האמת ובציון ${r1(run.score)} למערכת הזו.</p>` : ""}</section>`;
   }).join("");
-
-  $("#dlg-body").innerHTML = head + heirNote + scoreStrip + sections;
-  dlg.showModal();
-  dlg.scrollTop = 0;
+  $("#dlg-body").innerHTML = `<div class="accuracy-detail">${head}${aggregate}${sections}</div>`;
+  dlg.showModal(); dlg.scrollTop = 0;
 }
-
 function openPoll(i) {
   const el = curElection();
   const p = el.data.polls[i], m = S.firms.firms.find(f => f.id === p.firm) || { he: p.firm || "ללא שיוך מכון" };
@@ -1651,85 +1666,75 @@ const heJoin = names => names.length < 2 ? (names[0] || "") : names.slice(0, -1)
 const firmsHe = rs => heJoin(rs.map(r => r.meta.he || r.meta.firm || r.meta.id));
 
 function renderCrossover() {
-  const { nat, valid, defs, rightIds2022, counted2022, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, shareOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
+  const { valid, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, wOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
+  const title = $("#cross-title");
+  if (title) title.textContent = "כמה השתנתה התמיכה בגושים?";
+  $("#crossover-intro").textContent = "מה נשאר מהשינוי מאז 2022 אחרי הגידול הדמוגרפי, וכמה קולות השינוי הזה מייצג לפי כל מכון.";
+  $("#crossover-note").innerHTML = "<b>מה המספר אומר:</b> זהו אומדן של שינוי נטו בתמיכה בגוש הימין. אי אפשר להסיק ממנו כמה אנשים החליפו צד: גם שינוי בשיעור ההצבעה ובזהות המשתתפים בסקר יכול להסביר את הפער.";
 
-  $("#crossover-intro").textContent =
-    "השוו כמה קולות מייצג השינוי בגושים לפי הסקר האחרון של כל מכון, מעבר לגידול הטבעי. זהו אומדן על בסיס 2022, ולא מדידה ישירה של אנשים שעברו צד.";
-
-  $("#crossover-baseline").innerHTML =
-    `<div class="crossbar">` +
-    `<span style="flex:0 0 ${rightShare0.toFixed(1)}%;background:${BLOCS.Right.color}">גוש הימין · ${r1(rightShare0)}% · ${fmt(right2022)} קולות</span>` +
-    `<span style="flex:1 1 auto;background:${BLOCS.Left.color}">גוש השינוי · ${r1(100 - rightShare0)}% · ${fmt(tot2022 - right2022)} קולות</span>` +
-    `</div>` +
-    `<p class="sec-note" style="margin-top:8px;max-width:none">גוש הימין 2022 = הליכוד, ש״ס, יהדות התורה והציונות הדתית (כולל עוצמה יהודית). בצד השני נספרות גם ${below2022.map(p => `${p.name} (${p.pct}%)`).join(" ו")} שלא עברו את אחוז החסימה — ${fmt(below2022.reduce((t, p) => t + p.votes, 0))} קולות. רשימות מתחת ל־1.5% אינן נספרות. סה״כ ${fmt(tot2022)} קולות נספרים מתוך ${fmt(valid)} כשרים.</p>` +
-    `<p class="sec-note" style="max-width:none"><b>הגידול הטבעי:</b> לפי המודל הדמוגרפי (בלי סקרים), גם אם איש לא היה מחליף צד, חלק הימין היה ${growth >= 0 ? "עולה" : "יורד"} עד 2026 ב־${pointsHe(growth)} — כ־${kv(votersOf(growth))} קולות. לכן נקודת האפס בגרף היא ${r1(base)}% ולא ${r1(rightShare0)}%.</p>`;
+  const conversionBase = votersOf(100);
+  $("#crossover-baseline").innerHTML = `<div class="cross-v2-baseline">
+    <h4>אילו קולות נכללים?</h4>
+    <div class="cross-v2-baseline-values"><div><span>גוש הימין ב־2022</span><b>${r1(rightShare0)}%</b><small>${fmt(right2022)} קולות</small></div><div><span>שאר הרשימות שנכללו</span><b>${r1(100 - rightShare0)}%</b><small>${fmt(tot2022 - right2022)} קולות</small></div></div>
+    <p>גוש הימין ב־2022 כולל את הליכוד, ש״ס, יהדות התורה והציונות הדתית, כולל עוצמה יהודית. בצד השני נספרים גם ${below2022.map(p => `${esc(p.name)} (${p.pct}%)`).join(" ו")} שלא עברו את אחוז החסימה — ${fmt(below2022.reduce((t, p) => t + p.votes, 0))} קולות.</p>
+    <p>רשימות עם 1.5% ומעלה נכללות גם מתחת לאחוז החסימה; רשימות קטנות יותר אינן נכללות. כך נספרים ${fmt(tot2022)} מתוך ${fmt(valid)} הקולות הכשרים ב־2022. בסקרים, חלוקת המנדטים מתורגמת לחלק יחסי בין הרשימות שנכללו, לפי שיוך הגושים באתר.</p>
+    <h4>למה נקודת האפס היא ${r1(base)}%?</h4>
+    <p>המודל הדמוגרפי מעריך שחלק הימין היה ${growth >= 0 ? "גדל" : "קטן"} ב־${pointsHe(growth)} עד 2026, גם בלי מעבר בין גושים. מוסיפים את השינוי הזה ל־${r1(rightShare0)}% של 2022, ומקבלים בסיס השוואה של ${r1(base)}%. זו הנחת מודל, לא תוצאת סקר. <a href="#/demography">ראו את ההנחות הדמוגרפיות</a>.</p>
+    <h4>איך אחוזים הופכים לקולות?</h4>
+    <p>הפער בנקודות אחוז מחולק ב־100 ומוכפל בכ־${fmt(conversionBase)} קולות: מספר הקולות המשוער ב־2026 ברשימות שנכללו, על בסיס 2022 והמודל הדמוגרפי. המספר שמוצג מעוגל לאלף קולות.</p>
+    <h4>איך מחושב הממוצע?</h4>
+    <p>נלקח הסקר האחרון של כל מכון, גם אם לא פורסם בימים האחרונים. משקל כל מכון נקבע לפי דרגת האמינות שלו ומנורמל בין המכונים שנכללו. המשקל של כל מכון מוצג ליד הסקר שלו. <a href="#/2022">ראו את הציונים ודרך קביעת המשקל</a>.</p>
+  </div>`;
 
   if (!rows.length) {
-    $("#crossover-note").textContent = "אין סקרים בחלון הנוכחי.";
-    $("#crossover-chart").innerHTML = "";
+    $("#crossover-chart").innerHTML = `<p class="cross-v2-empty">עדיין אין סקרים להשוואה. בסיס 2022 ודרך החישוב זמינים בהסבר למטה.</p>`;
     $("#crossover-highlight").innerHTML = "";
-    $("#crossover-verdict").textContent = "";
+    $("#crossover-verdict").textContent = "אומדן השינוי יוצג כשיתווסף סקר.";
     return;
   }
 
-
-  $("#crossover-note").textContent =
-    `ממוצע המכונים, משוקלל לפי אמינות: הימין ב־${r1(shareAvg)}%. מול 2022 בתוספת הגידול הטבעי (${r1(base)}%), השינוי שקול לכ־${kv(votersAvg)} קולות ${deltaAvg <= 0 ? "פחות" : "יותר"}. רשימות עם 1.5% ומעלה נכללות גם מתחת לאחוז החסימה.`;
-
-  /* ציר: עיגול לכפולה נוחה של 100 אלף */
-  const maxV = Math.max(...rows.map(r => r.voters), votersAvg, 100000);
-  const axisMax = Math.ceil(maxV * 1.28 / 100000) * 100000;          // מרווח לתווית מעבר לקצה הסרגל
-  const step = axisMax >= 800000 ? 200000 : 100000;
-  const ticks = [];
-  for (let v = -axisMax; v <= axisMax; v += step) ticks.push(v);
-  /* כיוון הציר תואם לפס 2022 שמעליו: הימין בצד ימין, כל השאר משמאל — מי
-     שעזב את הימין נע שמאלה, מי שהצטרף נע ימינה. */
-  const pos = v => 50 - 50 * v / axisMax;                            // אחוז מהקצה הימני
-  const tickHtml = ticks.map(v => `<span dir="ltr" style="inset-inline-start:${pos(v).toFixed(2)}%" class="${v ? "" : "zero"}">${v ? (v > 0 ? "+" : "−") + Math.abs(v) / 1000 + "K" : r1(base) + "%"}</span>`).join("");
-
   const low = rows[0], high = rows.at(-1);
-  const namesAt = share => rows.filter(r => Math.abs(r.share - share) < 0.01).map(r => esc(r.meta.he)).join(" / ");
-  $("#crossover-highlight").innerHTML =
-    `<div class="cross-range"><span>הפער בין קצות הסקרים</span><strong>כ־${kv(votersOf(high.share - low.share))} קולות</strong><p>${namesAt(low.share)}: ${r1(low.share)}% לימין · ${namesAt(high.share)}: ${r1(high.share)}% לימין</p></div>`;
-  $("#crossover-chart").innerHTML = `<div class="cross-summary">
-      <div><span>גוש הימין ב־2022</span><b class="num">${r1(rightShare0)}%</b></div>
-      <div class="arrow" aria-hidden="true">←</div>
-      <div><span>עם הגידול הטבעי</span><b class="num">${r1(base)}%</b></div>
-      <div class="arrow" aria-hidden="true">←</div>
-      <div><span>ממוצע המכונים היום</span><b class="num">${r1(shareAvg)}%</b></div>
-      <div class="cross-summary-out ${deltaAvg <= 0 ? "left" : "join"}"><span>השינוי המשוקלל, במונחי קולות</span><b class="num">≈ ${kv(votersAvg)}</b><em>${r1(Math.abs(deltaAvg))} נקודות אחוז ${deltaAvg <= 0 ? "פחות" : "יותר"} לימין</em></div>
-    </div>
-    <div class="cross-legend"><span><i style="background:${BLOCS.Left.color}"></i>ירידה בחלק הימין</span><span><i style="background:${BLOCS.Right.color}"></i>עלייה בחלק הימין</span><span><i class="avg"></i>ממוצע המכונים</span><span class="cross-legend-share">משמאל לכל סרגל: חלק הימין היום</span></div>
-    <div class="cross-grid">
-      <div class="cross-axis" aria-hidden="true">${tickHtml}</div>
-      ${rows.map(r => {
-        const shrank = r.delta <= 0;
-        const w = 50 * r.voters / axisMax;
-        const belowNote = r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`);
-        return `<div class="crossrow" title="${esc(r.meta.he)}: הימין ב־${r1(r.share)}% בסקר מ־${r.date} מול ${r1(base)}% (2022 + גידול טבעי)${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}">
-          <span class="crossrow-firm">${logoBox(r.meta, 26)}<span><b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b><em>${r.date}</em></span></span>
-          <span class="crossrow-track">
-            <i class="crossrow-avg" style="inset-inline-start:${pos(deltaAvg <= 0 ? -votersAvg : votersAvg).toFixed(2)}%"></i>
-            <i class="crossrow-fill ${shrank ? "shrank" : "grew"}" style="width:${w.toFixed(2)}%;background:${shrank ? BLOCS.Left.color : BLOCS.Right.color}"><b dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</b></i>
-          </span>
-          <span class="crossrow-share num"><span dir="ltr">${r1(r.share)}%</span><small dir="ltr">${Math.abs(r.delta) < 0.05 ? "0" : (shrank ? "−" : "+") + kv(r.voters)}</small></span>
-        </div>`;
-      }).join("")}
-    </div>`;
+  const rangeVoters = votersOf(high.share - low.share);
+  const sumWeight = rows.reduce((sum, row) => sum + wOf(row.series), 0) || 1;
+  const direction = delta => Math.abs(delta) < 0.05 ? "כמעט ללא שינוי" : delta < 0 ? "פחות תמיכה בימין" : "יותר תמיכה בימין";
+  const signed = (delta, value) => Math.abs(delta) < 0.05 ? "≈ 0" : `${delta < 0 ? "−" : "+"}${value}`;
+  const name = row => row.meta.he || row.meta.firm || row.meta.id;
+  const namesAt = share => rows.filter(row => Math.abs(row.share - share) < 0.01).map(row => esc(name(row))).join(" / ");
+  const axisMax = Math.ceil(Math.max(...rows.map(row => row.voters), votersAvg, 100000) * 1.1 / 100000) * 100000;
+  // The track has an explicit LTR axis: loss to the left, gain to the right.
+  const position = value => 50 + 50 * value / axisMax;
+  const averagePosition = position(deltaAvg < 0 ? -votersAvg : votersAvg).toFixed(2);
 
-  const ext = crossExtremes(rows), wild = ext.wild[0], calm = ext.calm[0];
-  const spanV = Math.max(...rows.map(r => r.delta)) - Math.min(...rows.map(r => r.delta));
-  const signed = r => Math.abs(r.delta) < 0.05 ? "כמעט בלי שינוי"
-    : `כ־${kv(r.voters)} ${r.delta < 0 ? "עזבו את גוש הימין" : "הצטרפו לגוש הימין"}`;
-  const wildScale = scaleOf(wild.voters);
-  const closer = spanV >= 5
-    ? `פער של כ־<b>${kv(votersOf(spanV))}</b> מצביעים בין המכונים — על אותה אוכלוסייה, באותם ימים. הם לא יכולים כולם לצדוק, ורק הבחירות יגידו מי הפריז.`
-    : `הפער בין המכונים צר (כ־${kv(votersOf(spanV))} מצביעים): גם הזהירים מסכימים שמאזן הגושים זז מ־2022.`;
-  $("#crossover-verdict").innerHTML =
-    (ext.wild.length > 1 ? `ההערכה הדרמטית ביותר משותפת ל<b>${esc(firmsHe(ext.wild))}</b> — אצל ${ext.wild.length === 2 ? "שניהם" : "כולם"} ${signed(wild)} ` : `ההערכה הדרמטית ביותר היא של <b>${esc(firmsHe(ext.wild))}</b> — ${signed(wild)} `) +
-    `(${wildScale ? wildScale + ", " : ""}${r1(Math.abs(wild.delta))} נקודות אחוז). ` +
-    `הרגועה ביותר, <b>${esc(firmsHe(ext.calm))}</b> — ${signed(calm)}. ` +
-    `${closer} המספרים מתרגמים פער בתמיכה לאומדן קולות מול 2022 בתוספת הגידול הטבעי; הם אינם מוכיחים שאותם אנשים החליפו גוש.`;
+  $("#crossover-highlight").innerHTML = `<div class="cross-v2-range"><span>הפער בין המכונים</span><strong>≈ ${kv(rangeVoters)}</strong><small>קולות בין שתי קצות ההשוואה</small></div>`;
+  $("#crossover-chart").innerHTML = `<section class="cross-v2-hero ${deltaAvg < 0 ? "is-loss" : "is-gain"}" aria-label="אומדן השינוי המשוקלל">
+    <div class="cross-v2-main"><span class="cross-v2-eyebrow">מאז 2022 · מעבר לגידול הדמוגרפי</span><strong class="cross-v2-number" dir="ltr">≈ ${kv(votersAvg)}</strong><h4>${Math.abs(deltaAvg) < 0.05 ? "קולות · כמעט ללא שינוי" : `קולות ${deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`}</h4><p>לפי ממוצע הסקר האחרון של ${rows.length} מכונים, משוקלל באמינות.</p></div>
+    <div class="cross-v2-impact"><span>שינוי בחלקו של גוש הימין</span><strong dir="ltr">${signed(deltaAvg, r1(Math.abs(deltaAvg)))}</strong><span>נקודות אחוז מול בסיס ההשוואה</span><p>הפער יכול לשקף מעבר בין גושים, הימנעות מהצבעה או שינוי בהרכב המצביעים. הוא אינו מוכיח שכל הקולות האלה עברו לגוש אחר.</p></div>
+  </section>
+  <section class="cross-v2-method" aria-labelledby="cross-v2-method-title"><h4 id="cross-v2-method-title">איך מגיעים לאומדן?</h4><ol>
+    <li><span class="cross-v2-step">1</span><div><strong>מתחילים מתוצאות 2022</strong><b>${r1(rightShare0)}%</b><span>חלק הימין בקולות שנכללו</span></div></li>
+    <li><span class="cross-v2-step">2</span><div><strong>מוסיפים את הגידול הדמוגרפי</strong><b>${r1(base)}%</b><span>בסיס ההשוואה · ${growth >= 0 ? "תוספת" : "הפחתה"} של ${pointsHe(growth)}</span></div></li>
+    <li><span class="cross-v2-step">3</span><div><strong>משווים לממוצע הסקרים</strong><b>${r1(shareAvg)}%</b><span>הפער: ${pointsHe(deltaAvg)} · ≈ ${kv(votersAvg)} קולות ${deltaAvg < 0 ? "פחות" : "יותר"}</span></div></li>
+  </ol></section>
+  <section class="cross-v2-comparison" aria-labelledby="cross-v2-compare-title"><div class="cross-v2-section-head"><div><h4 id="cross-v2-compare-title">אותו בסיס. תמונה אחרת בכל מכון.</h4><p>השינוי במונחי קולות מול ${r1(base)}% לימין. כל שורה היא הסקר האחרון של המכון; התאריכים שונים.</p></div><span class="cross-v2-average-key"><i></i>הקו המקווקו: הממוצע המשוקלל</span></div>
+    <div class="cross-v2-scale" aria-hidden="true"><span>פחות תמיכה בימין</span><span>ללא שינוי</span><span>יותר תמיכה בימין</span></div>
+    <div class="cross-v2-axis" aria-hidden="true"><span dir="ltr">−${fmt(axisMax / 1000)} אלף</span><span>0</span><span dir="ltr">+${fmt(axisMax / 1000)} אלף</span></div>
+    <div class="cross-v2-rows">${rows.map(row => {
+      const loss = row.delta < 0;
+      const width = (50 * row.voters / axisMax).toFixed(2);
+      const source = row.series.polls[0];
+      const sourceLink = /^https?:\/\//i.test(source.sourceUrl || "") ? `<a href="${esc(source.sourceUrl)}" target="_blank" rel="noopener noreferrer">מקור הסקר ↗</a>` : "";
+      const below = row.below.map(id => `${esc(partyMeta(id).name)} ${r1(100 * row.series.parties[id] / 120)}%`).join(", ");
+      return `<article class="cross-v2-row ${loss ? "is-loss" : "is-gain"}"><div class="cross-v2-row-head"><div class="cross-v2-firm">${logoBox(row.meta, 38)}<div><h5>${esc(name(row))}</h5><span>סקר מ־<time>${esc(row.date)}</time>${source.channelHebrewName ? ` · ${esc(source.channelHebrewName)}` : ""}</span></div></div><div class="cross-v2-result"><strong dir="ltr">${signed(row.delta, kv(row.voters))}</strong><span>${direction(row.delta)}</span></div></div>
+        <div class="cross-v2-track" aria-hidden="true"><i class="cross-v2-bar" style="left:${loss ? (50 - Number(width)).toFixed(2) : 50}%;width:${width}%"></i><i class="cross-v2-avg" style="left:${averagePosition}%"></i></div>
+        <div class="cross-v2-row-facts"><span>חלק הימין: <b>${r1(row.share)}%</b></span><span>מול הבסיס: <b dir="ltr">${signed(row.delta, r1(Math.abs(row.delta)))}</b> נק׳ אחוז</span><span>משקל בממוצע: <b>${r1(100 * wOf(row.series) / sumWeight)}%</b></span>${sourceLink}</div>${below ? `<p class="cross-v2-below">נכללו גם מתחת לסף: ${below}.</p>` : ""}</article>`;
+    }).join("")}</div>
+    <p class="cross-v2-chart-note">המספרים מוצגים גם בטקסט לצד כל סרגל. ״פחות״ ו״יותר״ מתייחסים לגוש הימין מול הבסיס הדמוגרפי, ולא למספר אנשים שנמדדו עוברים צד.</p>
+  </section>`;
+
+  const ext = crossExtremes(rows);
+  const wild = ext.wild[0];
+  const description = row => Math.abs(row.delta) < 0.05 ? "כמעט ללא שינוי" : `כ־${kv(row.voters)} קולות ${row.delta < 0 ? "פחות" : "יותר"} לגוש הימין`;
+  $("#crossover-verdict").innerHTML = `<b>עד כמה התמונה תלויה במכון?</b> בסקרי ${namesAt(low.share)} חלק הימין הוא ${r1(low.share)}%; בסקרי ${namesAt(high.share)} הוא ${r1(high.share)}%. הפער ביניהם שקול לכ־<b>${kv(rangeVoters)} קולות</b>. ההערכה הרחוקה ביותר מבסיס 2022 עם הגידול הדמוגרפי היא של <b>${esc(firmsHe(ext.wild))}</b>: ${description(wild)}. זו מחלוקת בין סקרים מתאריכים שונים, ולא טווח ביטחון סטטיסטי של האומדן.`;
 }
 
 /* ============================================================

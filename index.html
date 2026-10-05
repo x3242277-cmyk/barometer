@@ -30,9 +30,10 @@
 <script src="assets/upgrade.js?v=c3f5bc20" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=5f643732" defer></script>
-<script src="assets/poll-tracker.js?v=d66be565" defer></script>
+<script src="assets/poll-tracker.js?v=93fda07b" defer></script>
+<script src="assets/polls-workspace.js?v=cd8d86f5" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=81b7ed43" defer></script>
+<script src="assets/app.js?v=c58f0ee8" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
@@ -54,6 +55,9 @@
 <script src="assets/election.js?v=aba0ee3c" defer></script>
 <link rel="stylesheet" href="assets/results2022.css?v=04d7d22f">
 <script src="assets/results2022.js?v=248f51f8" defer></script>
+<link rel="stylesheet" href="assets/polls-workspace.css?v=249dd8bd">
+<link rel="stylesheet" href="assets/crossover.css?v=392ebf84">
+<link rel="stylesheet" href="assets/accuracy.css?v=12be5de9">
 </head>
 <body>
 
@@ -202,16 +206,16 @@
 <section class="view" id="view-polls" aria-label="הסקרים האחרונים">
   <div class="wrap">
     <div class="polls-layout">
-    <div class="polls-main">
-    <div class="polls-toolbar">
-      <nav class="polls-tabs" aria-label="מודל אמינות הסוקרים">
+      <nav class="polls-tabs polls-sidebar" aria-label="מודל אמינות הסוקרים">
         <div class="polls-tablist" role="tablist" aria-label="מה להציג">
-          <button type="button" role="tab" data-polls-tab="trend" aria-selected="true">המגמה</button>
+          <button type="button" role="tab" data-polls-tab="trend" aria-selected="true">מגמות והשוואות</button>
           <button type="button" role="tab" data-polls-tab="list" aria-selected="false">כל סקר בנפרד</button>
           <button type="button" role="tab" data-polls-tab="cross" aria-selected="false">כמה עברו צד</button>
         </div>
         <a href="#/2022">דיוק המכונים</a>
       </nav>
+    <div class="polls-main">
+    <div class="polls-toolbar">
       <div id="poll-basis" class="tr-basis" role="group" aria-label="על מה מבוססים המספרים"></div>
     </div>
     <section class="sec tracker-sec" data-polls-panel="trend" aria-label="מגמות בסקרים">
@@ -220,11 +224,11 @@
 
     <section class="sec cross-sec" id="poll-crossover" data-polls-panel="cross" hidden aria-labelledby="cross-title" tabindex="-1">
       <div class="tr-card cross-card">
-        <div class="tr-card-head cross-head"><div><h3 id="cross-title">כמה מצביעים עברו מגוש לגוש — לפי כל מכון</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
+        <div class="tr-card-head cross-head"><div><h3 id="cross-title">כמה השתנתה התמיכה בגושים?</h3><p id="crossover-intro"></p></div><div id="crossover-highlight"></div></div>
         <p class="sec-note" id="crossover-note"></p>
         <div id="crossover-chart" class="crosschart"></div>
         <div class="notice warm cross-verdict"><span class="ic">i</span><p id="crossover-verdict" style="margin:0"></p></div>
-        <details class="cross-base"><summary>מאזן הפתיחה — איפה עמדו הגושים ב־2022</summary><div id="crossover-baseline"></div></details>
+        <details class="cross-base"><summary>הבסיס, שיוך הגושים ודרך החישוב</summary><div id="crossover-baseline"></div></details>
       </div>
     </section>
 
@@ -233,7 +237,6 @@
       <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
         <button type="button" data-pollview="table" aria-pressed="true"><span class="view-icon" aria-hidden="true">☰</span><span>טבלה</span></button>
         <button type="button" data-pollview="cards" aria-pressed="false"><span class="view-icon" aria-hidden="true">▦</span><span>כרטיסים</span></button>
-        <button type="button" data-pollview="compare" aria-pressed="false"><span class="view-icon" aria-hidden="true">⇄</span><span>השוואת מכונים</span></button>
       </div></div>
       <div class="controls" hidden>
         <label class="field"><span>סינון לפי מכון</span><select id="poll-firm"><option value="all">כל המכונים</option></select></label>
@@ -246,7 +249,7 @@
 
     </div>
     <aside class="polls-feed" aria-labelledby="feed-title">
-      <div class="feed-head"><h2 id="feed-title">הסקרים האחרונים</h2><div class="feed-stats" id="polls-stats"></div></div>
+      <div class="feed-head"><div class="feed-head-top"><h2 id="feed-title">הסקרים האחרונים</h2><button type="button" class="feed-expand-all" data-feed-gallery>⤢ כל הסקרים במסך מלא</button></div><div class="feed-stats" id="polls-stats"></div></div>
       <div id="polls-feed" class="feed-list"></div>
     </aside>
     </div>
@@ -262,32 +265,25 @@
       </nav>
     </div>
     <div class="page-intro">
-      <p class="kicker">כיול מול תוצאות האמת · 2020 · 2021 · 2022</p>
-      <h2>עד כמה דייקו המכונים בבחירות הקודמות?</h2>
-      <p>כל מכון נמדד על כל הסקרים שפרסם ב־30 הימים שלפני כל אחת משלוש הבחירות האחרונות (2020, 2021, 2022), מול התוצאה הסופית של ועדת הבחירות. הציון קובע כמה משקל מקבל המכון בתחזית.</p>
+      <p class="kicker">בדיקה היסטורית · אותה נוסחה לכל מכון</p>
+      <h2>דיוק המכונים. הציון והראיות.</h2>
+      <p>כל מכון נמדד באותה נוסחה מול תוצאות הבחירות שבארכיון. זה מדד של הברומטר: המשקלים, הסקרים והחישוב גלויים כאן, כך שאפשר לבדוק איך התקבל כל ציון.</p>
       <div class="page-facts" id="acc-facts"></div>
     </div>
 
-    <section class="sec reliability-ranking">
-      <div class="sec-head"><div><p class="kicker">1 · הדירוג</p><h2>דירוג המכונים לפי דיוק היסטורי</h2></div>
-        <div class="grade-legend" aria-label="מפתח דרגות האמינות"><span class="grade high">אמינות גבוהה · 80 ומעלה</span><span class="grade mid">אמינות טובה · 75 עד פחות מ־80</span><span class="grade low">אמינות בינונית · מתחת ל־75</span></div></div>
-      <div class="ranks" id="rank-list"></div>
-    </section>
+    <section class="sec accuracy-method-section"><div id="accuracy-method"></div></section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">2 · הנוסחה</p><h2>איך נמדד מכון</h2></div>
-        <p class="sec-note">כל מערכת בחירות נותנת למכון ציון 0–100; הציון הסופי הוא ממוצע שווה־משקל של המערכות שבהן פרסם. מכון שלא פרסם באף אחת מהמערכות מקבל משקל ניטרלי של 70.</p></div>
-      <div class="fstrip three">
-        <div class="fblock" style="--c:#17457F"><b>60%</b><span>דיוק בגושים — הפער בין ממוצע סקרי המכון לתוצאה, בכל גוש</span></div>
-        <div class="fblock" style="--c:#B8862B"><b>30%</b><span>דיוק במפלגות — השגיאה המוחלטת הממוצעת בכל הרשימות</span></div>
-        <div class="fblock" style="--c:#5B4B8A"><b>10%</b><span>עקביות — כמה יציב היה המכון לאורך החודש</span></div>
-      </div>
+    <section class="sec reliability-ranking">
+      <div class="sec-head"><div><p class="kicker">2 · המכונים</p><h2>למה כל מכון קיבל את הציון שלו?</h2></div>
+        <div class="grade-legend" aria-label="מפתח דרגות האמינות"><span class="grade high">80 ומעלה · משקל 0.45</span><span class="grade mid">75 עד פחות מ־80 · משקל 0.35</span><span class="grade low">מתחת ל־75 · משקל 0.20</span></div></div>
+      <div class="ranks" id="rank-list"></div>
     </section>
 
     <section class="sec">
       <div class="sec-head"><div><p class="kicker">3 · מערכת אחר מערכת</p><h2 id="arch-title">כל הסקרים, כל הבחירות</h2></div>
         <div class="switch calib-switch" id="calib-switch" role="group" aria-label="מערכת הבחירות שמוצגת"></div></div>
       <div class="page-facts compact" id="calib-facts"></div>
+      <div id="accuracy-proof-summary" class="accuracy-proof-summary"></div>
 
 
       <div class="controls">
@@ -1011,6 +1007,7 @@ def predict_seats(party, polls, weights, demographic_adjustment=0):
 </footer>
 
 <dialog id="dlg"><button class="dclose" type="button" aria-label="סגירה">×</button><div id="dlg-body"></div></dialog>
+<dialog id="poll-gallery" aria-labelledby="poll-gallery-title"><div class="poll-gallery-head"><div><h2 id="poll-gallery-title">כל הסקרים, בתמונה מלאה</h2><p id="poll-gallery-count"></p></div><button type="button" data-gallery-close aria-label="סגירת תצוגת הסקרים במסך מלא">×</button></div><div id="poll-gallery-cards" class="poll-gallery-cards"></div></dialog>
 <noscript><p style="margin:20px;padding:16px;background:#B03024;color:#fff;border-radius:10px">כדי לחשב ולהציג את הנתונים יש להפעיל JavaScript בדפדפן.</p></noscript>
 
 </body>

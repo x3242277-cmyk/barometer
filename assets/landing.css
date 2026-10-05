@@ -4,8 +4,6 @@ html[data-initial-route="other"]:not(.app-ready) #view-landing.on{display:none}
 body:has(#view-landing.on) #print-btn{display:none}
 #view-landing .election-cover{position:relative;isolation:isolate;overflow:hidden;min-height:calc(100dvh - var(--masthead-h,80px));display:grid;align-items:center;background:#091b30;border-bottom:1px solid #b597532e}
 #view-landing .cover-image{z-index:-3;animation:none}
-#view-landing .roof-beams{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden;animation:none}
-#view-landing .roof-beam{position:absolute;display:block;background-image:url('election-knesset-beams.png');background-repeat:no-repeat;-webkit-mask-image:radial-gradient(ellipse 70% 105% at 50% 100%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 70% 105% at 50% 100%,#000 55%,transparent 100%)}
 #view-landing .cover-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(174px,210px);align-items:start;gap:clamp(26px,6vw,104px);min-width:0;padding-block:clamp(44px,6vh,82px) clamp(76px,9vh,112px)}
 #view-landing .cover-content{width:auto;min-width:0;margin:0;padding:0}
 #view-landing .cover-credit{position:absolute;left:16px;bottom:9px;padding:0}
@@ -16,15 +14,27 @@ body:has(#view-landing.on) #print-btn{display:none}
 #view-landing .election-cover>.section-next:hover{transform:translateX(50%) translateY(3px)}/* The roof beams live in the photograph; the data remains a compact caption. */
 
 
-#view-landing .cover-chart{position:absolute;inset:0;z-index:2;min-width:0;width:auto;color:#f4f5f7;text-shadow:0 2px 12px #061421;pointer-events:none}
-#view-landing .cover-gauges{position:absolute;inset:0;transform:none;display:block;pointer-events:none;width:auto;padding:0;margin:0;background:none;border:0;box-shadow:none}
-#view-landing .cg-plot{position:absolute;inset:0;display:block}
-#view-landing .cg-stack{position:absolute;left:var(--label-x,0);top:var(--label-y,0);transform:translateX(-50%);display:grid;align-content:start;justify-items:center;gap:4px;min-width:0;width:var(--label-w,110px);z-index:2;text-align:center}
-#view-landing .cg-track{height:auto;width:auto;display:block;border:0;background:none}
-#view-landing .cg-track::before,#view-landing .cg-col,#view-landing .cg-major{display:none}
-#view-landing .cg-num{font-size:1.35rem;line-height:1;font-weight:700;color:#f0d391;text-shadow:0 2px 12px #061421}
-#view-landing .cg-stack--left .cg-num{color:#bdd8eb}
-#view-landing .cg-name{font-size:.68rem;font-weight:600;letter-spacing:0;line-height:1.3;white-space:normal;max-width:13ch;color:#e7edf3;text-align:center;text-shadow:0 2px 12px #061421}
+/* A compact scoreboard floats above the architecture, independently of the photo. */
+#view-landing .cover-chart{position:relative;inset:auto;align-self:center;width:100%;min-width:0;margin:0;padding:28px;border:1px solid #9bb5d02b;border-radius:16px;background:linear-gradient(145deg,#102b46f5,#091b2ff5);box-shadow:0 24px 70px #020c1b40,inset 0 1px 0 #ffffff09;color:#edf3fa;text-shadow:none;backdrop-filter:blur(14px)}
+#view-landing .cover-gauges{position:static;inset:auto;transform:none;display:block;width:100%;padding:0;margin:0;background:none;border:0;box-shadow:none}
+.cover-score-head{display:flex;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid #ffffff18;color:#c1d1e0;font-size:.78rem;font-weight:600}
+.cover-score-head>span:last-child{color:#9fb4c9;font-weight:400}
+.cover-score-pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:26px 0 32px}
+.cover-score{min-width:0;display:grid;align-content:start;gap:12px}
+.cover-score strong{font-size:clamp(3.8rem,5.6vw,5.5rem);font-weight:700;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.05em}
+.cover-score--right strong{color:#ebc777}.cover-score--left strong{color:#a9cfee}
+.cover-score>span{font-size:.85rem;line-height:1.5;color:#e2eaf3;max-width:16ch}
+.cover-score i{display:inline-block;width:7px;height:7px;margin-inline-end:6px;border-radius:50%;vertical-align:middle;background:#ebc777}
+.cover-score--left i{background:#a9cfee}
+.cover-score-scale{position:relative;padding-bottom:43px}
+.cover-score-bar{display:flex;height:10px;overflow:hidden;border-radius:3px;background:#25394e}
+.cover-score-bar>span{height:100%;flex:none}
+.cover-score-fill--right{background:#ebc777}.cover-score-fill--left{background:#a9cfee}.cover-score-fill--other{background:#63778c}
+.cover-score-majority{position:absolute;top:-5px;bottom:0;transform:translateX(50%);padding-top:28px;font-size:.7rem;white-space:nowrap;color:#c1d1e0}
+.cover-score-majority::before{content:"";position:absolute;top:0;left:50%;height:22px;width:1px;background:#fff;box-shadow:0 0 0 2px #10283d}
+.cover-score-majority b{color:#fff;font-weight:800}
+.cover-score-note,.cover-score-other{margin:0;padding-top:16px;border-top:1px solid #ffffff18;color:#a5b9cc;font-size:.7rem;line-height:1.6}
+.cover-score-other{border:0;padding:0 0 12px}
 #view-landing .discovery-forecast-link{display:inline-flex;align-items:center;gap:14px;min-height:46px;padding:10px 18px;color:#081522;background:#dfbe76;border:1px solid #dfbe76;border-radius:6px;font-size:.86rem;font-weight:800;text-decoration:none;transition:background .2s,transform .2s}
 #view-landing .discovery-forecast-link:hover{background:#f3d99d;transform:translateY(-2px)}
 #view-landing .home-discovery{padding-block:clamp(70px,10vh,120px);background:radial-gradient(ellipse at 85% 45%,#fafcff38,transparent 60%),#ecf3fa}
@@ -55,3 +65,24 @@ body:has(#view-landing.on) #print-btn{display:none}
 @media(max-width:480px){#view-landing .cover-image{background-position:32% 65%;opacity:.8}#view-landing .cover-inner{padding-block:34px 78px}#view-landing .cover-actions{flex-wrap:wrap}#view-landing .cover-actions a{font-size:.73rem;gap:14px;padding:10px 13px}#view-landing .election-cover .election-countdown{gap:16px;margin-top:23px;padding-top:15px}#view-landing .cg-name{font-size:.61rem}}
 @media(max-height:680px) and (min-width:761px){#view-landing .cover-inner{padding-block:30px 76px}}
 @media print{#view-landing{display:none!important}}
+
+/* Final layout rules keep the scoreboard clear of both the copy and the roof. */
+#view-landing .cover-inner{grid-template-columns:minmax(0,1.25fr) minmax(290px,.85fr);align-items:center;gap:clamp(32px,6vw,100px);padding-inline:clamp(8px,2vw,36px)}
+@media(min-width:761px){
+  #view-landing .cover-chart{align-self:start;margin-block:0;max-width:360px;padding:22px;justify-self:end;transform:translateY(-40px)}
+  #view-landing .cover-score-head{padding-bottom:12px}
+  #view-landing .cover-score-pair{padding:16px 0 22px;gap:18px}
+  #view-landing .cover-score{gap:8px}
+  #view-landing .cover-score strong{font-size:3.8rem}
+  #view-landing .cover-score>span{font-size:.78rem}
+  #view-landing .cover-score-scale{padding-bottom:35px}
+  #view-landing .cover-score-note{padding-top:10px;font-size:.65rem}
+}
+@media(max-height:680px) and (min-width:761px){#view-landing .cover-chart{transform:translateY(-16px);padding:18px}#view-landing .cover-score-pair{padding-block:12px 16px}#view-landing .cover-score strong{font-size:3.2rem}}
+@media(max-width:760px){#view-landing .cover-inner{grid-template-columns:minmax(0,1fr);gap:28px;padding-inline:0}#view-landing .cover-chart{grid-column:1;grid-row:2;max-width:460px;width:100%;padding:22px;justify-self:start;border-top:1px solid #9bb5d02b}.cover-score-pair{padding:22px 0 28px}.cover-score strong{font-size:4rem}}
+@media(max-width:760px){
+  #view-landing .cover-inner{padding-bottom:310px}
+  #view-landing .cover-image{inset:auto 0 0;height:280px;background-size:cover;background-position:center 65%;opacity:1}
+  #view-landing .election-cover::after{background:linear-gradient(0deg,#08152288,transparent 150px),linear-gradient(180deg,#091b30 0%,#091b3000 45px);inset:auto 0 0;height:280px}
+  #view-landing .election-cover>.section-next{bottom:18px}
+}

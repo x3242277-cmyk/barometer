@@ -5,31 +5,39 @@
    התפריט משותף לעמוד דיוק המכונים (renderPollsNav ב־poll-tracker.js).
    ============================================================ */
 
-/* ---------- סרגל הלשוניות: כמו בכל אתר — שורה אחת למעלה, והלשונית הפעילה מודגשת בקו ---------- */
-.polls-tabbar{flex:none;display:flex;gap:2px;margin:0 0 10px;border-bottom:1px solid #ffffff22;overflow-x:auto;scrollbar-width:none}
-.polls-tabbar::-webkit-scrollbar{display:none}
-.polls-tabbar .pn{position:relative;flex:none;padding:10px 18px 11px;margin-bottom:-1px;border-bottom:3px solid transparent;color:#bcc9d8;font:700 .92rem/1.2 var(--sans);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s,border-color .15s}
-.polls-tabbar .pn:hover{color:#f6e7bd;background:#ffffff0c}
-.polls-tabbar .pn[aria-current="page"]{color:#f6e7bd;border-bottom-color:#e5c783}
-.polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:-3px;border-radius:4px}
+/* ---------- הלשוניות: עמודה בצד ימין, והלשונית הפעילה מודגשת ---------- */
+.polls-tabbar{flex:none;display:flex;flex-direction:column;gap:2px;align-self:start;padding:6px;border:1px solid #e5c78333;border-radius:10px;background:#ffffff08}
+.polls-tabbar .pn{display:block;padding:10px 14px;border-inline-start:3px solid transparent;border-radius:6px;color:#c3cedb;font:700 .9rem/1.3 var(--sans);text-decoration:none;transition:color .15s,background .15s,border-color .15s}
+.polls-tabbar .pn:hover{color:#f6e7bd;background:#e5c78318}
+.polls-tabbar .pn[aria-current="page"]{color:#f6e7bd;background:#e5c78326;border-inline-start-color:#e5c783}
+.polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:-2px}
 .polls-tabbar .pn-hook::before{content:"";display:inline-block;width:7px;height:7px;margin-inline-end:8px;border-radius:50%;background:#e5c783;vertical-align:.08em}
 
 /* ---------- הפריסה במחשב ---------- */
 @media (min-width:981px){
-  #view-polls.on>.wrap{display:flex;flex-direction:column;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:6px 10px}
-  #view-polls .polls-layout{flex:1 1 auto;min-height:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
-  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
-  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-feed{display:none}
+  #view-polls.on>.wrap{display:grid;grid-template-columns:156px minmax(0,1fr);grid-template-rows:minmax(0,1fr);column-gap:14px;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:10px}
+  #view-polls .polls-tabbar{grid-column:1;grid-row:1}
+  #view-polls .polls-layout{grid-column:2;grid-row:1;min-height:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
+  #view-polls:is([data-tab="list"],[data-tab="gap"],[data-tab="cross"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
+  #view-polls:is([data-tab="list"],[data-tab="gap"],[data-tab="cross"]) .polls-feed{display:none}
   #view-polls .polls-main{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
   #view-polls .polls-main>.sec{flex:1 1 auto;min-height:0;margin:0!important;padding:0!important;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
   #view-polls .polls-main>.sec[hidden]{display:none}
   #view-polls .polls-feed{position:static;align-self:stretch;max-height:none;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0}
   #view-polls .feed-list{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#e5c78355 transparent;padding:0 2px 6px 4px}
-  #view-e2022>.wrap{padding-top:6px}
+  /* דיוק המכונים: אותה עמודת לשוניות בצד ימין */
+  #view-e2022>.wrap{display:grid;grid-template-columns:156px minmax(0,1fr);column-gap:14px;align-items:start;padding-top:10px}
+  #view-e2022>.wrap>.polls-tabbar{grid-column:1;grid-row:1/span 30;position:sticky;top:calc(var(--masthead-h,80px) + 10px)}
+  #view-e2022>.wrap>:not(.polls-tabbar){grid-column:2;min-width:0}
 }
 @media (min-width:981px) and (max-width:1300px){
   #view-polls .polls-layout{grid-template-columns:minmax(0,1fr) 270px!important;gap:12px!important}
-  #view-polls:is([data-tab="list"],[data-tab="gap"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
+  #view-polls:is([data-tab="list"],[data-tab="gap"],[data-tab="cross"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
+}
+/* מסך צר: הלשוניות בשורה אחת נגללת */
+@media (max-width:980px){
+  .polls-tabbar{flex-direction:row;overflow-x:auto;margin-bottom:10px;scrollbar-width:none}
+  .polls-tabbar .pn{flex:none;white-space:nowrap}
 }
 
 /* ---------- מגמות והשוואות: כרטיס אחד שממלא את הגובה ---------- */

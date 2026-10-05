@@ -793,85 +793,25 @@ function buildHomePrintSheet(est, seats, blocTot) {
     <p class="pfoot">סיכום גושים: גוש הימין ${blocTot.Right || 0} · מרכז־שמאל והרשימות הערביות ${LA} · דרוש 61 לרוב. החלוקה לפי שיוך הרשימות ואינה תחזית להרכב קואליציה.</p>`;
 }
 
-/* אותו סולם לכל גוש, עם קו רוב משותף. */
-const COVER_BAR_MAJORITY = 61 / 120;
-
-function coverBar(key, value, label) {
-  return `<div class="cg-stack cg-stack--${key}" style="--h:${(Math.max(0, Math.min(120, value)) / 120 * 100).toFixed(2)}%">
-    <span class="cg-track"><b class="cg-num">${value}</b><span class="cg-col"></span></span>
-    <span class="cg-name">${esc(label)}</span>
-  </div>`;
-}
-
-const ROOF_BEAM_IMAGE = { width:1536, height:1024, roofY:496 };
-const ROOF_BEAM_SOURCES = { left:{ x:174, width:136 }, right:{ x:334, width:136 } };
-let roofBeamSeats = { left:0, right:0 };
-let roofBeamObserver;
-function positionRoofBeams() {
-  const image = $("#view-landing .cover-image");
-  if (!image?.clientWidth || !image.clientHeight) return;
-  const scale = Math.max(image.clientWidth / ROOF_BEAM_IMAGE.width, image.clientHeight / ROOF_BEAM_IMAGE.height);
-  const bgW = ROOF_BEAM_IMAGE.width * scale, bgH = ROOF_BEAM_IMAGE.height * scale;
-  const position = getComputedStyle(image).backgroundPosition.split(/\s+/);
-  const xPct = parseFloat(position[0]) / 100 || 0;
-  const yPct = parseFloat(position[1]) / 100 || 0;
-  const offsetX = (image.clientWidth - bgW) * xPct;
-  const offsetY = (image.clientHeight - bgH) * yPct;
-  for (const [side, source] of Object.entries(ROOF_BEAM_SOURCES)) {
-    const beam = document.querySelector(`[data-roof-beam="${side}"]`);
-    if (!beam) continue;
-    // A shared seat scale changes only the top of the light; its source stays on the roof.
-    const height = Math.max(120, Math.min(490, 430 + (roofBeamSeats[side] - 60) * 10));
-    const x = offsetX + source.x * scale;
-    const y = offsetY + (ROOF_BEAM_IMAGE.roofY - height) * scale;
-    beam.style.left = `${x}px`;
-    beam.style.top = `${y}px`;
-    beam.style.width = `${source.width * scale}px`;
-    beam.style.height = `${height * scale}px`;
-    beam.style.backgroundSize = `${bgW}px ${bgH}px`;
-    beam.style.backgroundPosition = `${offsetX - x}px ${offsetY - y}px`;
-  }
-  placeCoverLabels();
-}
-/* כל מספר יושב מעל קצה אלומת האור של הגוש שלו. landing.css ממקם את התוויות לפי
-   --label-x/--label-y; בלי הערכים האלה שתי התוויות נערמו זו על זו בפינה. בטלפון
-   התוויות בשורה רגילה (position:static) ואין מה למקם. */
-function placeCoverLabels() {
-  const plot = $("#view-landing .cg-plot");
-  if (!plot || !plot.clientWidth) return;
-  const box = plot.getBoundingClientRect();
-  const beams = Object.fromEntries(["left", "right"].map(side => [side, document.querySelector(`[data-roof-beam="${side}"]`)?.getBoundingClientRect()]));
-  if (!beams.left?.width || !beams.right?.width) return;
-  const gap = Math.abs((beams.right.left + beams.right.width / 2) - (beams.left.left + beams.left.width / 2));
-  const width = Math.max(84, Math.min(130, gap - 10));
-  for (const side of ["left", "right"]) {
-    const stack = plot.querySelector(`.cg-stack--${side}`), beam = beams[side];
-    if (!stack || getComputedStyle(stack).position !== "absolute") continue;
-    stack.style.setProperty("--label-w", `${width}px`);
-    stack.style.setProperty("--label-x", `${beam.left + beam.width / 2 - box.left}px`);
-    stack.style.setProperty("--label-y", `${Math.max(12, beam.top - box.top - stack.offsetHeight - 6)}px`);
-  }
-}
-function renderRoofBeams(right, left) {
-  roofBeamSeats = { right, left };
-  const image = $("#view-landing .cover-image");
-  if (image && !roofBeamObserver && window.ResizeObserver) {
-    roofBeamObserver = new ResizeObserver(positionRoofBeams);
-    roofBeamObserver.observe(image);
-  }
-  positionRoofBeams();
-}
-
+/* The opening scoreboard uses the same 120-seat scale as the forecast. */
 function renderCoverGauges(blocTot) {
   const host = $("#cover-gauges");
   if (!host) return;
   const right = blocTot.Right || 0, left = (blocTot.Left || 0) + (blocTot.Arabs || 0);
-  host.setAttribute("aria-label", `תחזית המנדטים: גוש הימין ${right}, מרכז־שמאל והרשימות הערביות ${left}.`);
-  host.innerHTML = `<div class="cg-plot" style="--major:${(COVER_BAR_MAJORITY * 100).toFixed(2)}%">
-    <span class="cg-major" aria-hidden="true"><span>61 לרוב</span></span>
-    ${coverBar("right", right, "גוש הימין והחרדים")}${coverBar("left", left, "מרכז־שמאל והרשימות הערביות")}
-  </div>`;
-  renderRoofBeams(right, left);         // אחרי שהתוויות קיימות, כדי למקם אותן מעל האלומות
+  const other = Math.max(0, 120 - right - left);
+  const share = seats => (clamp(seats, 0, 120) / 120 * 100).toFixed(2);
+  host.setAttribute("aria-label", `תחזית המנדטים: גוש הימין והחרדים ${right}, מרכז־שמאל והרשימות הערביות ${left}${other ? `, לא משויך ${other}` : ""}. נדרשים 61 מנדטים לרוב. החלוקה לגושים אינה הרכב קואליציה.`);
+  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span><span>120 מנדטים</span></div>
+    <div class="cover-score-pair">
+      <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>גוש הימין והחרדים</span></div>
+      <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל והרשימות הערביות</span></div>
+    </div>
+    <div class="cover-score-scale" aria-hidden="true">
+      <div class="cover-score-bar"><span class="cover-score-fill--right" style="width:${share(right)}%"></span>${other ? `<span class="cover-score-fill--other" style="width:${share(other)}%"></span>` : ""}<span class="cover-score-fill--left" style="width:${share(left)}%"></span></div>
+      <span class="cover-score-majority" style="inset-inline-start:${share(61)}%"><b>61</b> הרף לרוב</span>
+    </div>
+    ${other ? `<p class="cover-score-other">${other} מנדטים ללא שיוך לגוש</p>` : ""}
+    <p class="cover-score-note">חלוקה לגושים · אינה תחזית להרכב קואליציה</p>`;
 }
 
 function renderHome() {
@@ -1658,78 +1598,45 @@ function geoRightShare() {
   return f ? 100 * (f[0] + f[1]) / (f[0] + f[1] + f[2] + f[3]) : null;
 }
 
+/* הסקרים מול 2022 והצפי הדמוגרפי. חלק כל גוש מהקולות שנספרים, בלי לבחור צד:
+   גוש הימין והחרדים מול יתר הרשימות (מרכז–שמאל והרשימות הערביות). כל השורות — אותו מדד. */
 function renderCrossover() {
   const { valid, tot2022, right2022, rightShare0, growth, base, below2022, kv, votersOf, rows, shareAvg, deltaAvg, votersAvg } = crossoverBase();
-  const geo = geoRightShare();
-  const R = BLOCS.Right.color, L = BLOCS.Left.color;
-
-  /* איך מחשבים — מקופל */
-  $("#crossover-baseline").innerHTML =
-    `<p>מודדים את <b>חלק גוש הימין מהקולות</b> (הליכוד, ש״ס, יהדות התורה והציונות הדתית עם עוצמה יהודית). ב־2022: ${fmt(right2022)} מתוך ${fmt(tot2022)} קולות — ${r1(rightShare0)}%. נספרות כל הרשימות מ־1.5%, גם אלה שלא עברו את אחוז החסימה (${below2022.map(p => `${p.name} ${p.pct}%`).join(", ")}); מתחת ל־1.5% — לא נספרות (${fmt(valid - tot2022)} קולות).</p>
-     <p><b>הצפוי בלי שאיש יחליף צד:</b> לפי המודל הדמוגרפי, גידול האוכלוסייה לבדו מזיז את חלק הימין ב־${pointsHe(growth)} עד 2026 — ל־${r1(base)}%. ${geo == null ? "" : `לפי מגמות היישובים (המודל הגיאוגרפי) — ${r1(geo)}%. `}לכן כל מכון נמדד מול ${r1(base)}%, לא מול ${r1(rightShare0)}%.</p>
-     <p><b>מנקודות אחוז לקולות:</b> כל נקודת אחוז ≈ ${kv(votersOf(1))} מצביעים (לפי מספר המצביעים הצפוי ב־2026). זה אומדן של שינוי בתמיכה — לא ספירה של אנשים שעברו צד; חלק מהשינוי יכול להיות מי שיישארו בבית.</p>`;
-
-  if (!rows.length) {
-    $("#cx-lead").textContent = "אין סקרים בחלון הנוכחי.";
-    ["#cx-line", "#crossover-chart", "#crossover-verdict", "#cx-firms-note"].forEach(s => { $(s).innerHTML = ""; });
-    return;
-  }
-  const less = deltaAvg <= 0, below22 = rows.filter(r => r.share < rightShare0).length;
-
-  /* הכותרת והמשפט — המסר בשורה אחת */
-  $("#cross-title").innerHTML = `לפי ממוצע הסקרים: <span class="${less ? "cx-left" : "cx-right"}">כ־${kv(votersAvg)} קולות ${less ? "פחות" : "יותר"}</span> לגוש הימין ממה שהיה צפוי`;
-  $("#cx-lead").innerHTML = `ב־2022 גוש הימין קיבל <b>${r1(rightShare0)}%</b> מהקולות. הגידול הטבעי לבדו היה מביא אותו ל־<b>${r1(base)}%</b>${geo == null ? "" : ` (ומגמות היישובים — ל־<b>${r1(geo)}%</b>)`}. ממוצע הסקרים היום: <b class="${less ? "cx-left" : "cx-right"}">${r1(shareAvg)}%</b> — פער של ${pointsHe(deltaAvg)}.`;
-
-  /* ציר אחד של חלק הימין: 2022, שני המודלים, ממוצע הסקרים וכל מכון. הימין מימין. */
-  const vals = [...rows.map(r => r.share), rightShare0, base, shareAvg, ...(geo == null ? [] : [geo])];
-  const lo = Math.floor(Math.min(...vals) - 1), hi = Math.ceil(Math.max(...vals) + 1);
-  const x = v => (100 * (hi - v) / (hi - lo)).toFixed(2);           // מהקצה הימני
-  const tickStep = hi - lo > 12 ? 2 : 1, ticks = [];
-  for (let v = Math.ceil(lo / tickStep) * tickStep; v <= hi; v += tickStep) ticks.push(v);
+  const geo = geoRightShare(), box = $("#crossover-chart");
+  if (!box) return;
+  if (!rows.length) { box.innerHTML = `<p class="cx2-empty">אין סקרים בחלון הנוכחי.</p>`; return; }
+  const R = BLOCS.Right.color, L = BLOCS.Left.color, sign = d => Math.abs(d) < 0.05 ? "0" : `${d < 0 ? "−" : "+"}${r1(Math.abs(d))}`;
+  const name = r => r.meta.he || r.meta.firm || r.meta.id;
+  const split = (v, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(v)}%, יתר הרשימות ${r1(100 - v)}%`)}">
+      <span style="flex:${v};background:${R}"><b dir="ltr">${r1(v)}%</b></span><span style="flex:${100 - v};background:${L}"><b dir="ltr">${r1(100 - v)}%</b></span><i class="cx2-half" title="50%"></i></div>`;
   const refs = [
-    { cls: "c22", label: "2022 בפועל", v: rightShare0 },
-    { cls: "cdemo", label: "צפוי · דמוגרפיה", v: base },
-    ...(geo == null ? [] : [{ cls: "cgeo", label: "צפוי · מגמות היישובים", v: geo }])
-  ].sort((a, b) => b.v - a.v);
-  const bandA = Math.min(shareAvg, base), bandB = Math.max(shareAvg, base);
-  $("#cx-line").setAttribute("aria-label", `חלק גוש הימין: 2022 ${r1(rightShare0)}%, צפוי לפי הדמוגרפיה ${r1(base)}%${geo == null ? "" : `, לפי מגמות היישובים ${r1(geo)}%`}, ממוצע הסקרים ${r1(shareAvg)}%, המכונים בין ${r1(rows[0].share)}% ל־${r1(rows.at(-1).share)}%.`);
-  $("#cx-line").innerHTML = `
-    <div class="cx-refs">${refs.map((r, i) => `<span class="${r.cls}" style="inset-inline-start:${x(r.v)}%;--i:${i}"><b>${r1(r.v)}%</b> ${esc(r.label)}</span>`).join("")}</div>
-    <div class="cx-axis">
-      <i class="cx-band ${less ? "is-left" : "is-right"}" style="inset-inline-start:${x(bandB)}%;width:${(100 * (bandB - bandA) / (hi - lo)).toFixed(2)}%"><em>≈ ${kv(votersAvg)}</em></i>
-      ${rows.map(r => `<i class="cx-firm" style="inset-inline-start:${x(r.share)}%;--c:${r.share < base ? L : R}" title="${esc(r.meta.he || r.meta.id)}: ${r1(r.share)}%"></i>`).join("")}
-      ${refs.map(r => `<i class="cx-ref ${r.cls}" style="inset-inline-start:${x(r.v)}%"></i>`).join("")}
-      <i class="cx-avg" style="inset-inline-start:${x(shareAvg)}%;--c:${less ? L : R}"></i>
-    </div>
-    <div class="cx-ticks">${ticks.map(v => `<span style="inset-inline-start:${x(v)}%">${v}%</span>`).join("")}</div>
-    <div class="cx-avg-lbl" style="inset-inline-start:${x(shareAvg)}%"><b class="${less ? "cx-left" : "cx-right"}">${r1(shareAvg)}%</b> ממוצע הסקרים</div>
-    <p class="cx-key"><span><i class="cx-dot"></i>כל נקודה — מכון</span><span>חלק גוש הימין מהקולות · הימין מימין</span></p>`;
-
-  /* כל מכון: כמה קולות זזו מהצפוי (הדמוגרפיה). אפס = הצפוי; שמאלה = פחות לימין. */
-  const dmin = Math.min(0, ...rows.map(r => r.delta)), dmax = Math.max(0, ...rows.map(r => r.delta)), span = (dmax - dmin) || 1;
-  const zero = 100 * dmax / span;                                     // מהקצה הימני
-  const pctW = d => 100 * Math.abs(d) / span;
-  const avgAt = zero + 100 * -deltaAvg / span;
-  $("#cx-firms-note").textContent = `אפס = הצפוי (${r1(base)}%)`;
-  $("#crossover-chart").innerHTML = `<div class="cx-rows">${rows.map(r => {
-    const neg = r.delta <= 0, w = pctW(r.delta), lbl = Math.abs(r.delta) < 0.05 ? "0" : `${neg ? "−" : "+"}${kv(r.voters)}`;
-    const start = neg ? zero : zero - w;
-    const belowNote = r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`);
-    return `<div class="cx-row" title="${esc(r.meta.he || r.meta.id)} · ${r.date}: הימין ב־${r1(r.share)}% מול ${r1(base)}% צפוי${belowNote.length ? " · מתחת לסף אך נספר: " + esc(belowNote.join(", ")) : ""}">
-      <span class="cx-name">${logoBox(r.meta, 22)}<b>${esc(r.meta.he || r.meta.firm || r.meta.id)}</b></span>
-      <span class="cx-track"><i class="cx-zero" style="inset-inline-start:${zero.toFixed(2)}%"></i><i class="cx-avgline" style="inset-inline-start:${avgAt.toFixed(2)}%"></i>
-        <i class="cx-bar" style="inset-inline-start:${start.toFixed(2)}%;width:${Math.max(w, .4).toFixed(2)}%;background:${neg ? L : R}"></i></span>
-      <span class="cx-val ${neg ? "cx-left" : "cx-right"}" dir="ltr">${lbl}</span>
-      <span class="cx-share" dir="ltr">${r1(r.share)}%</span>
+    ["2022 בפועל", rightShare0], ["צפי דמוגרפי ל־2026", base],
+    ...(geo == null ? [] : [["צפי לפי מגמות היישובים", geo]]), ["ממוצע הסקרים (משוקלל לפי אמינות)", shareAvg]
+  ];
+  const sorted = [...rows].sort((a, b) => b.share - a.share);
+  const above = rows.filter(r => r.delta > 0.05).length, below = rows.filter(r => r.delta < -0.05).length;
+  const spread = sorted[0].share - sorted.at(-1).share;
+  box.innerHTML = `
+    <header class="cx2-head"><h2 id="cross-title">חלק גוש הימין והחרדים מהקולות: <span>${r1(shareAvg)}%</span> בממוצע הסקרים</h2>
+      <p>הפער בין ממוצע הסקרים לצפי הדמוגרפי ל־2026: ${pointsHe(deltaAvg)}, כ־${kv(votersAvg)} קולות. יתר הרשימות: ${r1(100 - shareAvg)}% ${gapInfo("אומדן של גודל הפער בתמיכה, לא ספירה של אנשים שעברו בין גושים: חלק מהפער יכול לנבוע משיעור הצבעה או מהרכב הנשאלים.")}</p></header>
+    <div class="cx2-grid">
+      <div class="cx2-side"><section class="tr-card cx2-refs" aria-label="איפה כל מקור מציב את הגושים">
+        <h3>איפה כל מקור מציב את הגושים</h3>
+        ${refs.map(([label, v]) => `<div class="cx2-ref"><span>${esc(label)}</span>${split(v, label)}</div>`).join("")}
+        <p class="cx2-legend"><span><i style="background:${R}"></i>ימין וחרדים</span><span><i style="background:${L}"></i>יתר הרשימות: מרכז–שמאל והרשימות הערביות</span><span><i class="cx2-half-key"></i>50%</span></p>
+      </section>
+      <details class="tr-card cx2-how"><summary>איך מחשבים · מי בכל גוש</summary>HOW</details></div>
+      <section class="tr-card cx2-firms" aria-label="הסקר האחרון של כל מכון">
+        <h3>הסקר האחרון של כל מכון</h3>
+        <div class="cx2-row cx2-cols" aria-hidden="true"><span></span><span>מכון</span><span>ימין וחרדים · יתר הרשימות <small>קו מקווקו = הצפי הדמוגרפי</small></span><span>מול הצפי</span><span>בקולות</span></div>
+        ${sorted.map(r => `<div class="cx2-row" title="${esc(`${name(r)} · ${r.date}${r.below.length ? " · מתחת לסף אך נספר: " + r.below.map(id => `${partyMeta(id).name} ${r1(100 * r.series.parties[id] / 120)}%`).join(", ") : ""}`)}">
+          ${logoBox(r.meta, 26)}<span class="cx2-name"><b>${esc(name(r))}</b><small>${esc(r.date)}</small></span>
+          <div class="cx2-bar">${split(r.share, name(r))}<i class="cx2-exp" style="inset-inline-start:${(100 - base).toFixed(2)}%" title="הצפי הדמוגרפי ${r1(base)}%"></i></div>
+          <b class="cx2-d" dir="ltr">${sign(r.delta)}</b><span class="cx2-v" dir="ltr">${Math.abs(r.delta) < 0.05 ? "—" : `≈ ${kv(r.voters)}`}</span></div>`).join("")}
+        <p class="cx2-sum">${above} מכונים מעל הצפי הדמוגרפי ו־${below} מתחתיו. הפער בין הקצוות: ${pointsHe(spread)}, כ־${kv(votersOf(spread))} קולות.</p>
+      </section>
     </div>`;
-  }).join("")}</div>
-  <p class="cx-key"><span><i class="cx-k-zero"></i>הצפוי</span><span><i class="cx-k-avg"></i>ממוצע הסקרים</span><span><i style="background:${L}"></i>פחות לימין</span><span><i style="background:${R}"></i>יותר לימין</span></p>`;
-
-  /* המסקנה — במספרים */
-  const above = rows.filter(r => r.delta > 0.05), wild = rows[0], calm = [...rows].sort((a, b) => Math.abs(a.delta) - Math.abs(b.delta))[0];
-  $("#crossover-verdict").innerHTML = `<b>${below22} מתוך ${rows.length} המכונים</b> מראים את הימין מתחת ל־2022${above.length ? ` · ${above.length === 1 ? "רק" : ""} <b>${esc(firmsHe(above))}</b> ${above.length === 1 ? "מראה" : "מראים"} אותו מעל הצפוי` : " · אף מכון לא מראה אותו מעל הצפוי"}. הפער בין הקצוות — <b>כ־${kv(votersOf(rows.at(-1).share - rows[0].share))} קולות</b> (${esc(wild.meta.he || wild.meta.id)} ${r1(wild.share)}%, ${esc(rows.at(-1).meta.he || rows.at(-1).meta.id)} ${r1(rows.at(-1).share)}%) — הם לא יכולים כולם לצדוק.`;
 }
-
 /* ============================================================
    7. עמוד פילוח אזורי + מפה
    ============================================================ */

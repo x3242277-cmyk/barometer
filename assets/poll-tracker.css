@@ -100,64 +100,46 @@
 }
 @media print{.tr-tip{display:none}}
 
-/* ---------- כמה עברו צד במסך אחד ----------
-   מימין הסיפור: כותרת במספר אחד, משפט, וציר אחד של חלק הימין עם 2022, שני
-   המודלים, ממוצע הסקרים וכל מכון. משמאל — פס לכל מכון: כמה קולות זזו מהצפוי. */
-.cx{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:12px;align-items:stretch}
-.cx .tr-card{padding:14px 18px;display:flex;flex-direction:column;gap:10px;min-height:0}
-.cx-story .kicker{margin:0;color:var(--gold);font-size:.74rem}
-.cx-story h3{margin:0;font-size:clamp(1.1rem,1.5vw,1.4rem);line-height:1.35;text-wrap:balance}
-.cx-lead{margin:0;font-size:.88rem;line-height:1.6;color:var(--ink-2)}
-.cx-lead b{color:var(--ink)}
-.cx-left{color:#b03a2e!important}.cx-right{color:#1f4f8f!important}
-/* הציר — גדול וממורכז בגובה הכרטיס */
-.cx-line{position:relative;margin-block:auto;padding:0 10px}
-.cx-refs{position:relative;height:66px}
-.cx-refs span{position:absolute;top:calc(var(--i) * 22px);transform:translateX(50%);white-space:nowrap;font-size:.8rem;font-weight:700;line-height:19px;padding:0 4px;border-radius:3px;background:var(--paper-2,#fdfbf6)}
-.cx-refs span b{font-weight:800}
-.cx-refs span::after{content:"";position:absolute;top:100%;inset-inline-start:50%;height:calc(66px - var(--i) * 22px - 19px + 10px);border-inline-start:1px solid currentColor;opacity:.55}
-.cx-refs .c22{color:#5d6773}.cx-refs .cdemo{color:#14233a}.cx-refs .cgeo{color:#8a5d0b}
-.cx-axis{position:relative;height:40px;border-radius:20px;background:#efe9dd}
-.cx-axis i{position:absolute;top:50%}
-.cx-band{top:5px!important;bottom:5px;transform:none!important;border-radius:15px}
-.cx-band.is-left{background:#c0392b26;border:1px dashed #c0392b88}
-.cx-band.is-right{background:#2563b026;border:1px dashed #2563b088}
-.cx-band em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:.84rem;font-weight:800;color:#8e2a20;white-space:nowrap}
-.cx-firm{width:12px;height:12px;margin-top:-6px;transform:translateX(50%);border-radius:50%;background:var(--c);opacity:.55;border:1px solid #fff}
-.cx-ref{width:18px;height:18px;margin-top:-9px;transform:translateX(50%);border-radius:50%;background:#fff;border:4px solid}
-.cx-ref.c22{border-color:#6b7480}.cx-ref.cdemo{border-color:#14233a}.cx-ref.cgeo{border-color:#b8862b}
-.cx-avg{width:26px;height:26px;margin-top:-13px;transform:translateX(50%);border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 1px 4px #0005}
-.cx-ticks{position:relative;height:18px;margin-top:4px}
-.cx-ticks span{position:absolute;transform:translateX(50%);font-size:.72rem;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.cx-avg-lbl{position:absolute;transform:translateX(50%);white-space:nowrap;font-size:.84rem;font-weight:700;color:var(--ink-2);margin-top:4px}
-.cx-avg-lbl b{font-size:1.05rem;font-weight:800}
-.cx-key{display:flex;flex-wrap:wrap;gap:4px 14px;margin:30px 0 0;font-size:.68rem;color:var(--ink-3)}
-.cx-key span{display:inline-flex;align-items:center;gap:5px}
-.cx-key i{display:inline-block;width:10px;height:10px;border-radius:2px}
-.cx-key .cx-dot{border-radius:50%;background:#c0392b;opacity:.55}
-.cx-story .cx-key{margin-top:40px;font-size:.72rem}
-.cx-how{border-top:1px solid var(--rule-2);padding-top:6px}
-.cx-how summary{cursor:pointer;font-size:.76rem;font-weight:800;color:var(--navy)}
-.cx-how p{margin:6px 0 0;font-size:.74rem;line-height:1.55;color:var(--ink-2)}
-/* כל מכון — השורות מתפרסות על גובה הכרטיס */
-.cx-firms-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.cx-firms-head h4{margin:0;font-size:.95rem;color:var(--ink)}
-.cx-firms-head span{font-size:.7rem;color:var(--ink-3);white-space:nowrap}
-.cx-firms #crossover-chart{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
-.cx-rows{flex:1 1 auto;display:grid;gap:2px;grid-auto-rows:minmax(28px,1fr);align-content:stretch}
-.cx-row{display:grid;grid-template-columns:minmax(0,128px) minmax(0,1fr) 54px 42px;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--rule-2)}
-.cx-row:last-child{border-bottom:0}
-.cx-name{display:flex;align-items:center;gap:6px;min-width:0}
-.cx-name b{font-size:.8rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cx-track{position:relative;height:min(22px,70%)}
-.cx-track i{position:absolute}
-.cx-bar{top:2px;bottom:2px;border-radius:3px}
-.cx-zero{top:-3px;bottom:-3px;border-inline-start:2px solid #14233a;z-index:1}
-.cx-avgline{top:-3px;bottom:-3px;border-inline-start:2px dashed #34445699;z-index:1}
-.cx-val{font-size:.8rem;font-weight:800;text-align:end;font-variant-numeric:tabular-nums}
-.cx-share{font-size:.74rem;font-weight:700;color:var(--ink-3);text-align:end;font-variant-numeric:tabular-nums}
-.cx-firms .cx-key{margin-top:4px}
-.cx-k-zero{width:0!important;height:12px!important;border-radius:0!important;border-inline-start:2px solid #14233a}
-.cx-k-avg{width:0!important;height:12px!important;border-radius:0!important;border-inline-start:2px dashed #344456}
-.cx-verdict{margin:auto 0 0;padding:8px 10px;border-radius:6px;background:#f4ead2;border-inline-start:4px solid #c9a24f;font-size:.8rem;line-height:1.5;color:var(--ink)}
-@media (max-width:980px){.cx{grid-template-columns:minmax(0,1fr)}}
+
+
+/* ---------- הסקרים מול 2022 והצפי הדמוגרפי ---------- */
+.cx2{display:grid;gap:12px;align-content:start;padding:2px 2px 16px}
+.cx2-empty{margin:40px auto;color:var(--ink-2)}
+.cx2-head h2{margin:0;font-size:clamp(1.3rem,2.2vw,1.9rem);line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
+.cx2-head h2 span{color:#e5c783}
+.cx2-head p{margin:6px 0 0;font-size:.95rem;line-height:1.5;color:var(--ink-2)}
+.cx2-head .tr-info{color:var(--ink-3)}
+.cx2-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:12px;align-items:start}
+.cx2-side{display:grid;gap:12px}
+.cx2 .tr-card{padding:14px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.cx2 h3{margin:0;font-size:1.05rem;color:var(--ink)}
+/* שורת סיכום של מקור: פס אחד בשני צבעים, ושם מעליו */
+.cx2-ref{display:grid;gap:4px}
+.cx2-ref>span{font-size:.84rem;font-weight:700;color:var(--ink-2)}
+.cx2-split{position:relative;display:flex;height:28px;border-radius:5px;overflow:hidden}
+.cx2-split span{display:grid;place-items:center;min-width:0;color:#fff}
+.cx2-split b{font-size:.82rem;font-variant-numeric:tabular-nums}
+.cx2-half{position:absolute;top:0;bottom:0;inset-inline-start:50%;width:0;border-inline-start:2px dashed #fffc}
+.cx2-legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:4px 0 0;font-size:.76rem;color:var(--ink-3)}
+.cx2-legend span{display:inline-flex;align-items:center;gap:5px}
+.cx2-legend i{width:10px;height:10px;border-radius:2px}
+.cx2-half-key{background:none!important;width:0!important;height:12px!important;border-radius:0!important;border-inline-start:2px dashed var(--ink-3)}
+/* טבלת המכונים */
+.cx2-row{display:grid;grid-template-columns:26px minmax(0,130px) minmax(0,1fr) 54px 92px;align-items:center;gap:10px;padding:3px 0;border-bottom:1px solid var(--rule-2)}
+.cx2-cols{padding:0 0 4px;border-bottom:2px solid var(--rule);font-size:.72rem;font-weight:700;color:var(--ink-3)}
+.cx2-cols small{margin-inline-start:6px;font-weight:600}
+.cx2-name{display:grid;line-height:1.25;min-width:0}
+.cx2-name b{font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cx2-name small{font-size:.7rem;color:var(--ink-3)}
+.cx2-bar{position:relative}
+.cx2-bar .cx2-split{height:24px}
+.cx2-bar .cx2-half{display:none}
+.cx2-exp{position:absolute;top:-4px;bottom:-4px;width:0;border-inline-start:2px dashed #14233a}
+.cx2-d{font-size:.9rem;font-variant-numeric:tabular-nums;color:var(--ink);text-align:center}
+.cx2-v{font-size:.8rem;color:var(--ink-2);font-variant-numeric:tabular-nums;text-align:end}
+.cx2-sum{margin:6px 0 0;padding:8px 10px;border-radius:6px;background:#f4ead2;border-inline-start:4px solid #c9a24f;font-size:.82rem;line-height:1.5;color:var(--ink)}
+.cx2 .cx2-how{display:block;padding:10px 18px}
+.cx2-how summary{cursor:pointer;font-size:.86rem;font-weight:800;color:var(--navy,#12345c)}
+.cx2-how p{margin:8px 0 0;font-size:.8rem;line-height:1.6;color:var(--ink-2)}
+.cx2-how b{color:var(--ink)}
+@media (max-width:980px){.cx2-grid{grid-template-columns:minmax(0,1fr)}.cx2-row{grid-template-columns:30px minmax(0,1fr) 52px}.cx2-bar{grid-column:1/-1}.cx2-v,.cx2-cols span:nth-child(n+4){display:none}}

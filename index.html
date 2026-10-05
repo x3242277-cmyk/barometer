@@ -34,7 +34,7 @@
 <script src="assets/polls-gap.js?v=1760e98b" defer></script>
 <script src="assets/polls-workspace.js?v=936b21e4" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=6ae74b94" defer></script>
+<script src="assets/app.js?v=5463f638" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
@@ -48,8 +48,8 @@
 <link rel="stylesheet" href="assets/clarity.css?v=bb57cffa">
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
-<link rel="stylesheet" href="assets/landing.css?v=8f233c4b">
-<link rel="stylesheet" href="assets/poll-tracker.css?v=284bae1a">
+<link rel="stylesheet" href="assets/landing.css?v=413b043a">
+<link rel="stylesheet" href="assets/poll-tracker.css?v=60c149bc">
 <link rel="stylesheet" href="assets/theme.css?v=2852f412">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
@@ -57,7 +57,7 @@
 <link rel="stylesheet" href="assets/results2022.css?v=226a1e2d">
 <link rel="stylesheet" href="assets/demography.css?v=d9a2c515">
 <script src="assets/results2022.js?v=c13c6ec8" defer></script>
-<link rel="stylesheet" href="assets/polls-workspace.css?v=739017c6">
+<link rel="stylesheet" href="assets/polls-workspace.css?v=d4edba6b">
 <link rel="stylesheet" href="assets/polls-gap.css?v=61dea519">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
 </head>
@@ -104,7 +104,6 @@
 
   <section class="election-cover" aria-labelledby="election-title">
     <div class="cover-image" aria-hidden="true"></div>
-    <div class="roof-beams" aria-hidden="true"><span class="roof-beam" data-roof-beam="left"></span><span class="roof-beam" data-roof-beam="right"></span></div>
 
     <div class="wrap cover-inner">
       <div class="cover-content">
@@ -216,20 +215,7 @@
     </section>
 
     <section class="sec cross-sec" id="poll-crossover" data-polls-panel="cross" hidden aria-labelledby="cross-title" tabindex="-1">
-      <div class="cx">
-        <div class="tr-card cx-story">
-          <p class="kicker">הסקר האחרון של כל מכון, מול 2022</p>
-          <h3 id="cross-title">כמה מצביעים עברו מגוש לגוש</h3>
-          <p class="cx-lead" id="cx-lead"></p>
-          <div class="cx-line" id="cx-line" role="img"></div>
-          <details class="cx-how"><summary>איך מחשבים · מי בכל גוש</summary><div id="crossover-baseline"></div></details>
-        </div>
-        <div class="tr-card cx-firms">
-          <div class="cx-firms-head"><h4 id="cx-firms-title">כל מכון: כמה קולות זזו מהצפוי</h4><span id="cx-firms-note"></span></div>
-          <div id="crossover-chart"></div>
-          <p class="cx-verdict" id="crossover-verdict"></p>
-        </div>
-      </div>
+      <div id="crossover-chart" class="cx2"></div>
     </section>
 
     <section class="sec polls-sec" data-polls-panel="list" hidden>

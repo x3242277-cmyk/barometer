@@ -6154,7 +6154,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .fs-center{display:grid;align-content:center;justify-items:center;gap:6px;min-width:0;text-align:center}
 #view-home:not(#_):not(#__) .fs-center .election-copy{display:grid;justify-items:center;gap:2px;min-width:0}
 #view-home:not(#_):not(#__) .fs-center .hero-overline{margin:0;color:#855a0c;font-size:.78rem;font-weight:800}
-#view-home:not(#_):not(#__) .fs-center #verdict-head{margin:0;font-size:clamp(2.2rem,7.2dvh,4.4rem);font-weight:900;line-height:1;letter-spacing:-.05em;color:#14233a}
+#view-home:not(#_):not(#__) .fs-center #verdict-head{margin:0;font-size:clamp(2.1rem,6.4dvh,4rem);font-weight:900;line-height:1;letter-spacing:-.05em;color:#14233a}
 #view-home:not(#_):not(#__) .fs-center #verdict-head em{display:block;margin-top:2px;font-style:normal;color:#855a0c}
 #view-home:not(#_):not(#__) .fs-center .forecast-headline{max-width:none;margin:4px 0 0;font-size:clamp(.95rem,2.3dvh,1.2rem);line-height:1.45;font-weight:700;color:#3a4859}
 #view-home:not(#_):not(#__) .fs-center .forecast-headline em{color:#14233a;font-style:normal}
@@ -6171,7 +6171,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-home:not(#_):not(#__) .fs-center .seatmap .hemicycle-total{font-size:70px}
 
 /* עמודת גוש */
-.fs-side{--ph:clamp(46px,calc((100dvh - 215px) / 7 - 8px),118px);display:grid;align-content:start;gap:8px;min-width:0}
+.fs-side{--avail:calc(100dvh - var(--masthead-h,81px));--ph:clamp(46px,calc((var(--avail) - 200px) / 7 - 8px),118px);display:grid;align-content:start;gap:8px;min-width:0}
 .fs-head{display:flex;align-items:baseline;gap:12px;padding-bottom:6px;border-bottom:3px solid var(--bc)}
 .fs-total{font-size:clamp(2.4rem,6.4dvh,3.6rem);line-height:.9;font-weight:900;letter-spacing:-.05em;color:var(--bc);font-variant-numeric:tabular-nums}
 .fs-head span{font-size:clamp(1rem,2.4dvh,1.25rem);font-weight:800;color:#14233a;line-height:1.2}
@@ -6212,7 +6212,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:4px}
   #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{padding:4px 0 2px;gap:16px}
   #view-home:not(#_):not(#__) .fs-center .hero-overline{display:none}
-  #view-home:not(#_):not(#__) .fs-center .seatmap svg{max-width:min(100%,calc((100dvh - 300px) * 1.95));max-height:none}
+  #view-home:not(#_):not(#__) .fs-center .seatmap svg{max-width:min(100%,calc((100dvh - var(--masthead-h,81px) - 300px) * 1.95));max-height:none}
   .fs-barline{margin-top:1px}
   #view-home:not(#_):not(#__) .fs-center .sm-votes,#view-home:not(#_):not(#__) .fs-center .sm-bar.thin{display:none}
   #view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:4px 0 6px}
@@ -6231,13 +6231,13 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-home:not(#_):not(#__) .verdict .home-forecast-controls .show-btn .play{display:inline-grid;place-items:center;width:22px;height:22px;margin-inline-end:6px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:.58rem}
 #view-home:not(#_):not(#__) .verdict .home-forecast-controls .hero-link{font-size:.82rem;font-weight:700;color:#3a4859}
 
-/* הכותרת העליונה בעמוד התחזית: מתכווצת, ויורדת כשמרחפים מעל הפס שנשאר ממנה (מחשב עם עכבר בלבד) */
-@media (hover:hover) and (pointer:fine){
-  html.masthead-auto{--masthead-h:0px!important}
-  html.masthead-auto .masthead{position:fixed;inset-inline:0;top:0;width:100%;z-index:90;transform:translateY(calc(-100% + 12px));transition:transform .22s ease .05s}
-  html.masthead-auto .masthead:hover,html.masthead-auto .masthead:focus-within{transform:none;transition-delay:0s}
-  html.masthead-auto .masthead::after{content:"";position:absolute;inset-inline:0;bottom:3px;margin-inline:auto;width:64px;height:4px;border-radius:2px;background:#e5c783;opacity:.85;transition:opacity .15s}
-  html.masthead-auto .masthead:hover::after,html.masthead-auto .masthead:focus-within::after{opacity:0}
+/* מסך נמוך מאוד (כמו 650 פיקסלים): בלי שורת המנהיג, כדי שהכול ייכנס מתחת לכותרת העליונה */
+@media (min-width:901px) and (max-height:700px){
+  .fs-leader{display:none}
+  .fs-rows{gap:3px}
+  .fs-bar{height:max(14px,calc(var(--ph) * .32))}
+  #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:2px}
+  #view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:4px 0 6px}
 }
 
 </style>
@@ -10679,7 +10679,6 @@ const rendered = {};
 function show(view) {
   if (!VIEWS.hasOwnProperty(view)) view = "landing";
   S.view = view;
-  document.documentElement.classList.toggle("masthead-auto", view === "home");
   $$(".view").forEach(v => v.classList.toggle("on", v.id === "view-" + view));
   /* לשונית ראשית מסומנת גם כשמוצג אחד מתתי-הדפים שלה (data-group) */
   $$(".tab").forEach(t => {

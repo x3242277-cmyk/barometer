@@ -2468,7 +2468,6 @@ const rendered = {};
 function show(view) {
   if (!VIEWS.hasOwnProperty(view)) view = "landing";
   S.view = view;
-  document.documentElement.classList.toggle("masthead-auto", view === "home");
   $$(".view").forEach(v => v.classList.toggle("on", v.id === "view-" + view));
   /* לשונית ראשית מסומנת גם כשמוצג אחד מתתי-הדפים שלה (data-group) */
   $$(".tab").forEach(t => {

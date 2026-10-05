@@ -102,7 +102,7 @@ function explorerKeys(M, state, lines) {
 }
 
 function explorerTools(P, M, state) {
-  const out = [], basis = M.basis || 'avg';
+  const out = [exSelect('data-ex-lens', 'מה להשוות', [['overview', 'מבט כולל · הגושים'], ['parties', 'מפלגות'], ['firms', 'מכונים'], ['channels', 'ערוצים']], state.mode)], basis = M.basis || 'avg';
   if (state.mode === 'overview') out.push(exSelect('data-ex-basis', 'על מה מבוססים המספרים', Object.entries(TRACK_BASES).map(([k, b]) => [k, b.label]), basis));
   else if (state.mode !== 'parties') out.push(exSelect('data-ex-metric', 'מה משווים', [['Right','ימין וחרדים'],['Left','מרכז–שמאל'],['Arabs','הרשימות הערביות'],...P.parties.map(p=>[p.id,p.name])], state.metric));
   const first = state.mode === 'overview' ? M.series[0].t : parsePollDate(P.polls[0]), last = state.mode === 'overview' ? M.now.t : parsePollDate(P.polls.at(-1));
@@ -201,7 +201,7 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
     if(e.target.closest('[data-gallery-close]'))$('#poll-gallery').close();
   });
   document.addEventListener('change',e=>{
-    const controls={'data-ex-metric':'exploreMetric','data-ex-range':'trackRange','data-ex-basis':'trackBasis'};
+    const controls={'data-ex-lens':'exploreMode','data-ex-metric':'exploreMetric','data-ex-range':'trackRange','data-ex-basis':'trackBasis'};
     for(const [attr,key] of Object.entries(controls)) if(e.target.hasAttribute?.(attr)){S[key]=e.target.value;renderExplorer();refocus(`[${attr}]`);return;}
   });
   $('#poll-gallery')?.addEventListener('click',e=>{if(e.target===$('#poll-gallery'))$('#poll-gallery').close();});

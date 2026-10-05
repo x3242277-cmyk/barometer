@@ -32,6 +32,20 @@ assert.equal(stats.compared, 2, "only elections in which both firms were measure
 assert.equal(stats.hiCloser, 2, "the closer firm is the one with the smaller absolute error");
 assert.equal(JSON.parse(run(`JSON.stringify(gapRecordStats(${JSON.stringify(recRows)},"A","Z"))`)).compared, 0, "a firm with no record is never compared");
 
+/* מי היה קרוב יותר — גם כשהמרחקים שווים (אף אחד לא נספר כקרוב יותר) */
+const tie = JSON.parse(run(`JSON.stringify(gapRecordStats([{key:"x",dots:[{firm:"A",err:-2},{firm:"B",err:2}]}],"A","B"))`));
+assert.equal(tie.hiCloser + tie.loCloser, 0, "equal distances must not be reported as one being closer");
+assert.equal(stats.loCloser, 0, "the farther firm is never counted as closer");
+
+/* הגרלה: שני סקרים שונים, ואם אפשר משני ערוצים שונים */
+run(`const gsrc=[{id:"a",channelHebrewName:"X"},{id:"b",channelHebrewName:"X"},{id:"c",channelHebrewName:"Y"}];`);
+for (const r of [0, 0.34, 0.67, 0.99]) {
+  const pair = JSON.parse(run(`JSON.stringify(gapRandomPair(gsrc,()=>${r}))`));
+  assert.notEqual(pair[0].id, pair[1].id, "a random pair must be two different polls");
+  assert.notEqual(pair[0].channelHebrewName, pair[1].channelHebrewName, "a random pair must use two outlets when possible");
+}
+assert.equal(run("gapRandomPair([{id:\"a\",channelHebrewName:\"X\"}])"), null, "one poll cannot make a pair");
+
 /* נקודות קרובות עוברות לנתיב אחר; רחוקות נשארות באותו נתיב */
 assert.equal(JSON.stringify(run("gapLanes([10, 11, 12, 30, 31])")), "[0,1,2,0,1]", "close dots must fan out into lanes");
 assert.equal(JSON.stringify(run("gapLanes([10, 10.5, 11, 11.5, 12])")), "[0,1,2,2,2]", "overflow stays in the last lane instead of adding rows");
@@ -41,4 +55,4 @@ assert.equal(JSON.stringify(run("gapLanes([5, 40, 80])")), "[0,0,0]", "far dots 
 assert.equal(run('gapSigned(-3.9)'),'−3.9');
 assert.equal(run('gapSigned(0.5)'),'+0.5');
 assert.equal(run('gapSigned(0)'),'0');
-console.log('Passed: extremes with newest-wins ties, party differences ordered and non-zero, last-time record stats, dot lanes, signed numbers.');
+console.log('Passed: extremes with newest-wins ties, party differences ordered and non-zero, last-time record stats and ties, random pairs, dot lanes, signed numbers.');

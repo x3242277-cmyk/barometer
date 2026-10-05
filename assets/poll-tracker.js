@@ -245,18 +245,15 @@ function renderPollTracker() {
 /* ---------- הניווט של כל הסקרים: אותו תפריט צד בעמוד הסקרים ובדיוק המכונים ---------- */
 const POLLS_NAV = [
   ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?"],
-  ["trend", "overview", "#/polls/trend", "מבט כולל"],
-  ["trend", "channels", "#/polls/channels", "ערוצים"],
-  ["trend", "firms", "#/polls/firms", "מכונים"],
-  ["trend", "parties", "#/polls/parties", "מפלגות"],
+  ["trend", "", "#/polls/trend", "מבט כולל ומגמות"],
   ["list", "", "#/polls/list", "כל סקר בנפרד"],
   ["cross", "", "#/crossover", "כמה עברו צד"],
   ["acc", "", "#/2022", "דיוק המכונים"]
 ];
 function renderPollsNav() {
-  const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap", mode = S.exploreMode || "overview";
-  const link = ([t, m, href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}" href="${href}" data-polls-go="${t}"${m ? ` data-ex-mode="${m}"` : ""}${t === tab && (!m || m === mode) ? ' aria-current="page"' : ""}>${label}</a>`;
-  const html = `${link(POLLS_NAV[0])}<p class="polls-nav-group">מגמות והשוואות</p><div class="polls-nav-sub">${POLLS_NAV.slice(1, 5).map(link).join("")}</div>${POLLS_NAV.slice(5).map(link).join("")}`;
+  const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap";
+  const link = ([t, , href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}>${label}</a>`;
+  const html = POLLS_NAV.map(link).join("");
   document.querySelectorAll("[data-polls-nav]").forEach(n => { n.innerHTML = html; });
 }
 

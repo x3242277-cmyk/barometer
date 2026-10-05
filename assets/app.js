@@ -381,6 +381,26 @@ function firmOf(sourceId) {
    להציג את כל החלון (S.cur.polls). אם 8 הימים האחרונים דלים מדי (פחות מ-3
    מכונים), נשמר כל החלון — עדיף על תחזית שנשענת על סקר בודד. */
 const FORECAST_MAX_AGE_DAYS = 8;
+/* המודל מתעדכן פעמיים ביום, ב־10:00 וב־22:00 (שעון ישראל) — לא בכל פעם שעולה סקר */
+const MODEL_UPDATE_HOURS = [10, 22], MODEL_TZ = "Asia/Jerusalem", MODEL_TEASER_MIN = 60;
+const tzParts = ms => Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: MODEL_TZ, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }).formatToParts(new Date(ms)).map(p => [p.type, p.value]));
+const tzOffsetMs = ms => { const o = tzParts(ms); return Date.UTC(o.year, o.month - 1, o.day, o.hour, o.minute, o.second) - Math.floor(ms / 1000) * 1000; };
+const jerusalemMs = (y, m, d, hh) => { const t0 = Date.UTC(y, m - 1, d, hh), o1 = tzOffsetMs(t0); let t = t0 - o1; const o2 = tzOffsetMs(t); if (o2 !== o1) t = t0 - o2; return t; };
+/* העדכון האחרון שהיה (≤ עכשיו) והבא (> עכשיו) */
+function modelSchedule(now = Date.now()) {
+  const p = tzParts(now), slots = [];
+  for (let dd = -1; dd <= 1; dd++) { const base = new Date(Date.UTC(p.year, p.month - 1, +p.day + dd)); MODEL_UPDATE_HOURS.forEach(hh => slots.push(jerusalemMs(base.getUTCFullYear(), base.getUTCMonth() + 1, base.getUTCDate(), hh))); }
+  slots.sort((a, b) => a - b);
+  return { last: [...slots].reverse().find(t => t <= now), next: slots.find(t => t > now) };
+}
+const tzDay = ms => { const o = tzParts(ms); return `${o.year}-${o.month}-${o.day}`; };
+const tzHM = ms => { const o = tzParts(ms); return `${o.hour}:${o.minute}`; };
+function modelUpdatedLine(now = Date.now()) {
+  const { last, next } = modelSchedule(now), today = tzDay(now), tomorrow = tzDay(now + 864e5);
+  const rel = ms => tzDay(ms) === today ? "היום" : tzDay(ms) === tomorrow ? "מחר" : tzDay(ms) === tzDay(now - 864e5) ? "אתמול" : heDate(ms);
+  const part = ms => { const hh = +tzHM(ms).slice(0, 2); return hh < 12 ? " בבוקר" : ""; };
+  return `מעודכן ל${rel(last) === "היום" ? "היום" : rel(last)} בשעה ${tzHM(last)} · העדכון הבא ${rel(next)} ב־${tzHM(next)}${part(next)} · כך בכל יום`;
+}
 /* התחזיות השבועיות (כל מוצאי שבת ב־20:00) כ"סקרים" — באותו מבנה של סקר, לתצוגה בלבד */
 function barometerWeeklyPolls() {
   return (S.forecastHistory?.weekly || []).map(w => {
@@ -393,7 +413,9 @@ function barometerWeeklyPolls() {
 }
 
 function recentForForecast(polls) {
-  const cutoff = Date.now() - FORECAST_MAX_AGE_DAYS * 864e5;
+  const cutoff = Date.now() - FORECAST_MAX_AGE_DAYS * 864e5, upTo = modelSchedule().last;
+  /* סקר שפורסם אחרי העדכון האחרון ממתין לעדכון הבא */
+  polls = polls.filter(p => !p.publishedAt || p.publishedAt <= upTo);
   const recent = polls.filter(p => parsePollDate(p) >= cutoff);
   return new Set(recent.map(p => firmOf(p.sourceId).firm)).size >= 3 ? recent : polls;
 }
@@ -939,6 +961,7 @@ function renderHome() {
   $(".wall").classList.toggle("has-mid", byRow.mid.length > 0);
 
   renderForecastSides(byRow, seats, est, R, U, LA);
+  startModelClock();
   renderWallPoster(seats, est, blocTot, belowEntries);
   buildHomePrintSheet(est, seats, blocTot);
   const electionHeadline = $("#election-headline");
@@ -948,24 +971,86 @@ function renderHome() {
 
 /* תחזית הברומטר: הגושים משני צידי מפת המושבים — דיוקנאות גדולים, ופס עבה לכיוון האמצע (בלי רקע אפור מתחת).
    גוש הימין והחרדים מימין; מרכז־שמאל והרשימות הערביות (וגם הלא־משויכות) משמאל. */
+/* ---- שעון המודל: שורת העדכון, קדימון שעה לפני, והרצה (ידנית או בשעת העדכון) ---- */
+const MODEL_STEPS = ["אוספים את הסקרים החדשים", "משקללים לפי אמינות המכונים", "מתקנים את הטעות הקבועה של כל מכון", "מוסיפים את ההנחות הדמוגרפיות", "מחלקים 120 מנדטים לפי כללי הבחירות"];
+const waitMs = ms => new Promise(r => setTimeout(r, ms));
+function paintModelClock() {
+  const up = $("#fs-updated"), tz = $("#fs-teaser"); if (!up) return;
+  const now = Date.now(), { next } = modelSchedule(now), left = next - now, mins = Math.ceil(left / 60000);
+  const line = modelUpdatedLine(now); if (up.textContent !== line) up.textContent = line;
+  if (!tz) return;
+  if (left <= MODEL_TEASER_MIN * 60000 && !S.modelRunning) {
+    tz.hidden = false;
+    tz.textContent = mins > 1 ? `בעוד ${mins} דקות המודל מתעדכן, וסקרים חדשים ייכנסו לחישוב` : "המודל מתעדכן בעוד רגע";
+  } else tz.hidden = true;
+}
+function startModelClock() {
+  if (S.modelClock) return;
+  S.nextModelMs = modelSchedule().next;
+  paintModelClock();
+  S.modelClock = setInterval(() => {
+    if (document.hidden) return;
+    paintModelClock();
+    if (Date.now() >= S.nextModelMs) { S.nextModelMs = modelSchedule().next; if (S.view === "home") runModelUpdate(); else rebuildForecastSet(true); }
+  }, 1000);
+}
+function rebuildForecastSet(rerender) {
+  S.forecastPolls = recentForForecast(S.cur.polls);
+  S.series = buildSeries(S.forecastPolls);
+  S.seriesScenario = buildSeries(S.forecastPolls.map(correctWithinBlocs));
+  if (rerender) renderHome();
+}
+async function runModelUpdate() {
+  if (S.modelRunning) return;
+  const host = $(".verdict-in"); if (!host) return;
+  S.modelRunning = true; paintModelClock();
+  const logo = $(".fs-title-logo")?.getAttribute("src") || "assets/logo-wordmark.png";
+  const ov = document.createElement("div");
+  ov.className = "fs-run"; ov.setAttribute("role", "status");
+  ov.innerHTML = `<div class="fs-run-box"><span class="fs-run-logo"><img src="${esc(logo)}" alt="" width="756" height="128"></span><b>מריצים את מודל הברומטר</b>
+    <ol>${MODEL_STEPS.map(t => `<li><i aria-hidden="true">✓</i>${esc(t)}</li>`).join("")}</ol><div class="fs-run-bar"><i></i></div></div>`;
+  host.appendChild(ov);
+  const lis = [...ov.querySelectorAll("li")], bar = ov.querySelector(".fs-run-bar i");
+  for (let i = 0; i < lis.length; i++) { lis[i].classList.add("is-on"); bar.style.width = `${(i + 1) / lis.length * 100}%`; await waitMs(720); lis[i].classList.remove("is-on"); lis[i].classList.add("is-done"); }
+  rebuildForecastSet(true);
+  ov.classList.add("is-out"); await waitMs(450); ov.remove();
+  S.modelRunning = false;
+  playForecastReveal();
+  paintModelClock();
+}
+/* אחרי ההרצה: הפסים גדלים, המספרים נספרים והמושבים נדלקים */
+function playForecastReveal() {
+  const hero = $(".fs-hero"); if (!hero || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  $$(".fs-center .seat").forEach((c, i) => { c.style.animationDelay = `${i * 14}ms`; });
+  hero.classList.remove("fs-reveal"); void hero.offsetWidth; hero.classList.add("fs-reveal");
+  $$(".fs-total, .fs-n", hero).forEach((el, i) => {
+    const raw = el.textContent.trim(), to = parseFloat(raw); if (!isFinite(to) || /%/.test(raw)) return;
+    const t0 = performance.now() + 250 + i * 40; el.textContent = "0";
+    const tick = now => { const p = Math.min(1, Math.max(0, (now - t0) / 800)); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); else el.textContent = raw; };
+    requestAnimationFrame(tick);
+  });
+  setTimeout(() => hero.classList.remove("fs-reveal"), 4200);
+}
+
 function renderForecastSides(byRow, seats, est, R, U, LA) {
   const right = $("#fs-right"), left = $("#fs-left");
   if (!right || !left) return;
   const maxSeats = Math.max(1, ...Object.values(seats));
   const belowOf = id => est.below && est.below[id];
-  const order = ids => ids.slice().sort((a, b) => (seats[b] || 0) - (seats[a] || 0) || (belowOf(b) || 0) - (belowOf(a) || 0));
-  const row = id => {
+  const order = ids => ids.filter(id => seats[id] != null || (belowOf(id) || 0) >= 2).sort((a, b) => (seats[b] || 0) - (seats[a] || 0) || (belowOf(b) || 0) - (belowOf(a) || 0));
+  const row = (id, i = 0) => {
     const m = partyMeta(id), color = partyHue(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER, leader = PARTY_LEADER[normId(id)] || "";
     const belowPct = belowOf(id), isBelow = seats[id] == null && belowPct != null, n = isBelow ? 0 : (seats[id] || 0), d = isBelow ? null : homeDelta(id);
     const aria = isBelow ? `${m.name}, מתחת לאחוז החסימה, כ־${r1(belowPct)}%` : `${m.name}, ${n} מנדטים${d ? `, ${d.cls === "up" ? "עלייה" : "ירידה"} של ${Math.abs(n - d.prev)} מהעדכון הקודם` : ""}`;
-    return `<button type="button" class="fs-row${isBelow ? " is-below" : ""}" style="--bc:${color};--wf:${isBelow ? 0 : (n / maxSeats).toFixed(3)}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
+    return `<button type="button" class="fs-row${isBelow ? " is-below" : ""}" style="--i:${i};--bc:${color};--wf:${isBelow ? 0 : (n / maxSeats).toFixed(3)}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
       <span class="fs-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "96px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
       <span class="fs-info"><span class="fs-name">${esc(m.name)}</span>${leader ? `<span class="fs-leader">${esc(leader)}</span>` : ""}
         <span class="fs-barline"><i class="fs-bar"></i><b class="fs-n num">${isBelow ? `${r1(belowPct)}%` : n}</b>${d ? `<em class="fs-d ${d.cls}" title="בעדכון הקודם: ${d.prev}">${esc(d.txt)}</em>` : ""}</span></span></button>`;
   };
   const side = (box, title, total, color, ids) => {
     box.style.setProperty("--bc", color);
-    box.innerHTML = `<div class="fs-head"><b class="fs-total num">${total}</b><span>${esc(title)}</span></div><div class="fs-rows">${order(ids).map(row).join("")}</div>`;
+    box.style.setProperty("--rows", String(Math.max(order(byRow.right).length, order(byRow.left.concat(byRow.mid)).length, 4)));
+    box.innerHTML = `<div class="fs-head"><b class="fs-total num">${total}</b><span>${esc(title)}</span></div><div class="fs-rows">${order(ids).map((id, i) => row(id, i)).join("")}</div>`;
   };
   side(right, "גוש הימין והחרדים", R, BLOCS.Right.color, byRow.right);
   side(left, "מרכז־שמאל והרשימות הערביות", LA + U, BLOCS.Left.color, byRow.left.concat(byRow.mid));
@@ -2568,6 +2653,7 @@ function wire() {
     $$("[data-mode]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     renderHome();
   }));
+  $("#run-model")?.addEventListener("click", () => runModelUpdate());
   $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
   /* לוח לפי גושים כברירת מחדל; בחירה מפורשת של הגולש נשמרת. */
   const applyWallLayout = () => { $(".board").classList.toggle("layout-size", S.wallLayout === "size"); $$("[data-wall-layout]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.wallLayout === S.wallLayout))); };

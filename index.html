@@ -34,7 +34,7 @@
 <script src="assets/polls-gap.js?v=1204926a" defer></script>
 <script src="assets/polls-workspace.js?v=936b21e4" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=a8ecec1a" defer></script>
+<script src="assets/app.js?v=9eeec7ac" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <script src="assets/method-sim.js?v=6fc98a7f" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
@@ -63,7 +63,7 @@
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
 <link rel="stylesheet" href="assets/method-sim.css?v=b65092d3">
 <link rel="stylesheet" href="assets/acc-hero.css?v=8d9090ad">
-<link rel="stylesheet" href="assets/forecast.css?v=9fba1860">
+<link rel="stylesheet" href="assets/forecast.css?v=e0a051f6">
 <link rel="stylesheet" href="assets/board.css?v=f51617ed">
 </head>
 <body>
@@ -156,8 +156,9 @@
         <aside class="fs-side fs-right" id="fs-right" aria-label="גוש הימין והחרדים"></aside>
         <div class="fs-center">
         <div class="election-copy">
-          <p class="hero-overline">תמונת המצב</p>
-          <h2 id="verdict-head" tabindex="-1">120 מנדטים.<br><em>מי בדרך לרוב?</em></h2>
+          <h2 id="verdict-head" class="fs-title" tabindex="-1" aria-label="תחזית הברומטר"><span class="fs-title-word">תחזית</span><img class="fs-title-logo" src="assets/logo-wordmark.png?v=52e13ba5" alt="הברומטר" width="756" height="128"></h2>
+          <p class="fs-updated" id="fs-updated"></p>
+          <p class="fs-teaser" id="fs-teaser" hidden role="status"></p>
           <p class="forecast-headline" id="election-headline"></p>
           <p class="hero-description">זו התמונה שמתקבלת אחרי שבודקים את הסקרים מול העבר, משקללים את המכונים ומוסיפים בדיקות של אחוז החסימה והדמוגרפיה. אפשר לעבור בין ממוצע המכונים לתחזית המלאה.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
@@ -178,7 +179,7 @@
           <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
         </div>
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
-        <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> לראות איך התמונה נבנית</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
+        <div class="hero-cta"><button type="button" class="btn show-btn" id="run-model"><span class="play" aria-hidden="true">▶</span> להרצת מודל הברומטר</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
       </div>
     </div>
     <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — בניית קואליציה"><span aria-hidden="true">↓</span></button>

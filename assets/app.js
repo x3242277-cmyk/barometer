@@ -399,7 +399,7 @@ function modelUpdatedLine(now = Date.now()) {
   const { last, next } = modelSchedule(now), today = tzDay(now), tomorrow = tzDay(now + 864e5);
   const rel = ms => tzDay(ms) === today ? "היום" : tzDay(ms) === tomorrow ? "מחר" : tzDay(ms) === tzDay(now - 864e5) ? "אתמול" : heDate(ms);
   const part = ms => { const hh = +tzHM(ms).slice(0, 2); return hh < 12 ? " בבוקר" : ""; };
-  return `מעודכן ל${rel(last) === "היום" ? "היום" : rel(last)} בשעה ${tzHM(last)} · העדכון הבא ${rel(next)} ב־${tzHM(next)}${part(next)} · כך בכל יום`;
+  return `העדכון הבא ${rel(next)} ב־${tzHM(next)}${part(next)}`;
 }
 /* התחזיות השבועיות (כל מוצאי שבת ב־20:00) כ"סקרים" — באותו מבנה של סקר, לתצוגה בלבד */
 function barometerWeeklyPolls() {
@@ -818,7 +818,7 @@ function renderHomeHemicycle(seats, blocTot, est) {
     <div class="sm-top"><div class="sm-bloc right"><b class="num">${R}</b><span>גוש הימין והחרדים</span></div>${midTop}<div class="sm-bloc left"><b class="num">${LA}</b><span>מרכז־שמאל והרשימות הערביות</span></div></div>
     <div class="sm-bar" role="img" aria-label="גוש הימין ${R}, הרשימות הערביות ${bs.arab}${U ? `, לא משויכות ${U}` : ""}, מרכז־שמאל ${bs.left}"><span style="width:${100 * R / total}%;background:${BLOCS.Right.color}"></span>${bs.arab ? `<span style="width:${100 * bs.arab / total}%;background:${BLOCS.Arabs.color}"></span>` : ""}${midBar}<span style="width:${100 * bs.left / total}%;background:${BLOCS.Left.color}"></span><i class="sm-61" style="inset-inline-start:${100 * 61 / 120}%" title="61 — רוב"></i><i class="sm-61 end" style="inset-inline-end:${100 * 61 / 120}%"></i></div>
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`חלוקת ${total} המנדטים. ${items.map(i => i.label).join("; ")}`)}">${dots}
-      <g class="hemi-logo" aria-hidden="true"><rect x="${cx - 118}" y="${cy - 78}" width="236" height="62" rx="14" fill="#12345c"/><image href="${esc(document.querySelector(".masthead img.brand-logo")?.getAttribute("src") || "assets/logo-wordmark.png")}" x="${cx - 104}" y="${cy - 69}" width="208" height="44" preserveAspectRatio="xMidYMid meet"/></g></svg>
+      <defs><mask id="hemiLogoMask" maskUnits="userSpaceOnUse" x="${cx - 52}" y="${cy - 118}" width="104" height="104"><image href="assets/logo-icon.png" x="${cx - 52}" y="${cy - 118}" width="104" height="104"/></mask></defs><rect class="hemi-logo" x="${cx - 52}" y="${cy - 118}" width="104" height="104" fill="#b8862b" mask="url(#hemiLogoMask)" aria-hidden="true"/></svg>
     <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>
     <div class="sm-votes">
       <div class="sm-votes-labels" aria-hidden="true">

@@ -149,3 +149,11 @@
 .fs-title-word{font-size:clamp(1.3rem,4.2dvh,2.3rem);font-weight:900;letter-spacing:-.02em;color:#f6e7bd}
 .fs-title-year{font-size:clamp(2rem,7dvh,3.8rem);font-weight:900;letter-spacing:.02em;color:#fff;background:linear-gradient(180deg,#fff 30%,#e5c783);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 @media (prefers-reduced-motion:reduce){.fs-slip{animation:none}}
+
+/* כותרת על רקע בהיר: קלפי כחולה עם פתק, ״בחירות 2026״ בכחול */
+#view-home:not(#_):not(#__) .fs-center .fs-title{background:none;box-shadow:none;padding:0;gap:clamp(10px,1.4vw,18px)}
+.fs-ballot{width:clamp(56px,10dvh,92px)}
+.fs-title-word{color:#17457F}
+.fs-title-year{background:none;-webkit-text-fill-color:#17457F;color:#17457F;letter-spacing:0}
+.fs-slip{animation:fs-env 2.8s ease-in-out infinite}
+@keyframes fs-env{0%{transform:translateY(-6px);opacity:0}15%{opacity:1}60%{transform:translateY(12px);opacity:1}75%,100%{transform:translateY(18px);opacity:0}}

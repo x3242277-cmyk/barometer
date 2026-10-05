@@ -120,7 +120,7 @@ function gapCard(s, kind, picked, m) {
   const legend = ["Right", "Left", "Arabs", "Unknown"].filter(k => s.v.blocs[k] > 0)
     .map(k => `<span><i style="background:${BLOCS[k].color}"></i>${GAP_BLOC_HE[k]} <b dir="ltr">${s.v.blocs[k]}</b></span>`).join("");
   return `<article class="tr-card gap-poll gap-${kind}${picked === kind ? " is-picked" : ""}">
-    <header>${outletLogo(s.outlet)}<label class="gap-choose"><span class="sr-only">${kind === "hi" ? "הסקר הימני" : "הסקר השמאלי"} — החלפה</span><select data-gap-side="${kind}">${m.options.map(o =>
+    <span class="gap-logo">${outletLogo(s.outlet)}</span><header><label class="gap-choose"><span class="sr-only">${kind === "hi" ? "הסקר הימני" : "הסקר השמאלי"} — החלפה</span><select data-gap-side="${kind}">${m.options.map(o =>
       `<option value="${esc(o.id)}"${o.id === s.p.id ? " selected" : ""}${o.id === other.p.id ? " disabled" : ""}>${esc(o.label)}</option>`).join("")}</select></label></header>
     <div class="gap-num"><b dir="ltr">${s.right}</b><span>מנדטים לגוש<br>הימין והחרדים</span></div>
     <div class="gap-bar" role="img" aria-label="${esc(["Right", "Unknown", "Arabs", "Left"].filter(k => s.v.blocs[k] > 0).map(k => `${BLOCS[k].he} ${s.v.blocs[k]}`).join(", "))}">${bar}<i class="gap-61" title="${GAP_MAJORITY}"></i></div>

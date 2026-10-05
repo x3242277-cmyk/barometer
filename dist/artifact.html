@@ -5122,6 +5122,140 @@ body:has(#view-demography.on)>footer{display:none}
 }
 @media (prefers-reduced-motion:reduce){.polls-sidebar .pn,.ex-logo-button{transition:none}}
 
+/* למה הסקרים חלוקים? — שני סקרים קיצוניים, ופירוק של הפער. נטען אחרי polls-workspace.css. */
+#poll-gap{--hi:#2563B0;--gold:#e5c783}
+.gap{display:grid;gap:12px;align-content:start;padding:2px 2px 8px}
+.gap-empty{margin:40px auto;color:var(--ink-2)}
+
+/* ---------- הכותרת: על הרקע הכהה ---------- */
+.gap-head h2{margin:0;font-size:clamp(1.3rem,2.3vw,2rem);line-height:1.2;letter-spacing:-.025em;color:var(--ink)}
+.gap-head h2 span{color:var(--gold)}
+.gap-head p{margin:4px 0 0;font-size:.84rem;color:var(--ink-3)}
+
+/* ---------- שני הסקרים ---------- */
+.gap-duel{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:stretch}
+.gap-poll{display:flex;flex-direction:column;gap:8px;padding:12px 18px 14px;border:2px solid transparent;transition:border-color .2s,box-shadow .2s}
+.gap-poll.is-picked{border-color:var(--gold);box-shadow:0 0 0 3px #e5c78333}
+.gap-poll header{display:flex;align-items:center;gap:10px}
+.gap-poll header .orglogo{width:34px;height:34px;flex:none}
+.gap-poll header span:last-child{display:grid;line-height:1.25}
+.gap-poll header b{font-size:1rem;color:var(--ink)}
+.gap-poll header small{font-size:.76rem;color:var(--ink-3)}
+.gap-num{display:flex;align-items:center;gap:12px}
+.gap-num b{font-size:clamp(2.8rem,5vw,4.4rem);font-weight:900;line-height:.95;letter-spacing:-.05em;color:var(--hi);font-variant-numeric:tabular-nums}
+.gap-num span{font-size:.8rem;font-weight:700;line-height:1.3;color:var(--ink-2)}
+.gap-bar{position:relative;display:flex;height:24px;border-radius:5px;margin-top:2px}
+.gap-bar span{display:grid;place-items:center;min-width:0;font-size:.74rem;font-weight:800;color:#fff}
+.gap-bar span:first-child{border-radius:0 5px 5px 0}.gap-bar span:last-of-type{border-radius:5px 0 0 5px}
+.gap-61{position:absolute;top:-4px;bottom:-4px;right:calc(61 / 120 * 100%);width:3px;margin-right:-1px;background:#14233a;box-shadow:0 0 0 1.5px #fff}
+.gap-verdict{margin:0;font-size:.86rem;font-weight:800}
+.gap-verdict.yes{color:#1d6f48}.gap-verdict.no{color:#b03a2e}
+
+/* מי מהם טעה בעבר */
+.gap-hist{margin-top:auto;padding-top:8px;border-top:1px solid var(--rule)}
+.gap-hist p{margin:0;font-size:.76rem;color:var(--ink-2)}
+.gap-hist ul{display:flex;gap:8px;margin:6px 0 4px;padding:0;list-style:none}
+.gap-hist li{display:grid;justify-items:center;min-width:56px;padding:4px 8px;border-radius:6px;background:#f3eee4;border:1px solid var(--rule)}
+.gap-hist li b{font-size:1.05rem;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink)}
+.gap-hist li small{font-size:.68rem;color:var(--ink-3)}
+.gap-hist li.low b{color:#b03a2e}.gap-hist li.high b{color:#1f4f8f}
+.gap-hist strong{font-size:.8rem;color:var(--ink)}
+
+/* ההפרש בין שני הסקרים */
+.gap-diff{display:grid;place-content:center;justify-items:center;gap:2px;min-width:78px;text-align:center}
+.gap-diff::before,.gap-diff::after{content:"";width:2px;height:22px;background:linear-gradient(var(--gold),transparent);opacity:.7}
+.gap-diff::after{transform:scaleY(-1)}
+.gap-diff b{font-size:2.6rem;font-weight:900;line-height:1;letter-spacing:-.04em;color:var(--gold);font-variant-numeric:tabular-nums}
+.gap-diff span{font-size:.72rem;font-weight:700;line-height:1.2;color:var(--ink-3)}
+
+/* ---------- השאלה ---------- */
+.gap-ask{display:grid;justify-items:center;gap:10px;padding:6px 0 2px}
+.gap-ask>p{margin:0;font-size:clamp(1.1rem,1.8vw,1.5rem);font-weight:800;color:var(--ink)}
+.gap-choices{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.gap-choices button{min-height:44px;padding:8px 20px;border:1px solid #e5c78399;border-radius:8px;background:#e5c78318;color:#f6e7bd;font:800 .95rem var(--sans);cursor:pointer;transition:background .15s,transform .15s}
+.gap-choices button:hover{background:#e5c78338;transform:translateY(-1px)}
+.gap-choices button:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
+.gap-picked{margin:0;font-size:.86rem;color:var(--ink-2)}
+.gap-picked b{color:var(--gold)}
+.gap-redo{margin-inline-start:8px;padding:2px 10px;border:1px solid #e5c78366;border-radius:6px;background:none;color:#f1d99d;font:700 .76rem var(--sans);cursor:pointer}
+.gap-redo:hover{background:#e5c78322}
+
+/* ---------- הפירוק ---------- */
+.gap-reveal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px;animation:gap-in .4s ease both}
+.gap-reveal .tr-card{padding:12px 18px 14px}
+.gap-reveal h3{margin:0;font-size:1.05rem;line-height:1.3;color:var(--ink)}
+.gap-reveal h3 span{color:var(--hi)}
+.gap-reveal p{margin:3px 0 8px;font-size:.8rem;line-height:1.5;color:var(--ink-2)}
+.gap-parts table{width:100%;min-width:0;border-collapse:collapse;font-size:.82rem;table-layout:fixed}
+#poll-gap .gap-parts :is(th,td){padding:4px 6px;border:0;background:none;text-align:start;font-weight:600;color:var(--ink)}
+.gap-parts thead th{font-size:.7rem;font-weight:700;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gap-parts tbody th{width:34%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gap-parts tr.is-top th{color:var(--ink);font-weight:800}
+.gap-b{display:flex;align-items:center;height:20px}
+.gap-b::before{content:"";height:100%;width:var(--w);min-width:2px;border-radius:0 4px 4px 0;background:#9bb3d1}
+.gap-parts tr.is-top .gap-b::before{background:var(--hi)}
+.gap-b b{margin-inline-start:6px;font-size:.82rem;font-variant-numeric:tabular-nums}
+
+/* הציר: כל הסקרים, ואיפה הקצוות והברומטר */
+.gap-plot{position:relative;height:158px;margin-top:2px}
+.gap-flag{position:absolute;top:0;transform:translateX(-50%);padding:1px 7px;border-radius:5px;font-size:.74rem;font-weight:700;line-height:1.5;white-space:nowrap;direction:rtl;unicode-bidi:isolate;background:#14233a;color:#fff}
+.gap-flag b{font-size:.85rem}
+.gap-flag.hi{background:var(--hi)}.gap-flag.lo{background:#b03a2e}
+.gap-pin{position:absolute;top:22px;bottom:22px;width:0;border-inline-start:2px solid}
+.gap-pin.hi{border-color:var(--hi)}.gap-pin.lo{border-color:#b03a2e}
+.gap-dot{position:absolute;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#7d8b9c;opacity:.75;border:1px solid #fff}
+.gap-maj{position:absolute;top:26px;bottom:22px;width:0;border-inline-start:2px dashed #14233a;opacity:.7}
+.gap-maj em{position:absolute;bottom:-1px;left:5px;font-style:normal;font-size:.68rem;font-weight:800;color:#14233a;white-space:nowrap;direction:rtl}
+.gap-axis{position:absolute;inset-inline:0;bottom:0;height:22px;border-top:1px solid var(--rule-strong)}
+.gap-axis span{position:absolute;top:3px;transform:translateX(-50%);font-size:.7rem;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.gap-baro{position:absolute;bottom:-3px;width:0;height:0;margin-left:-7px;border-inline:7px solid transparent;border-bottom:10px solid #b8862b;transform:translateY(0)}
+.gap-baro em{position:absolute;top:12px;left:50%;transform:translateX(-50%);padding:0 6px;border-radius:5px;font-style:normal;font-size:.74rem;font-weight:800;color:#6b4a07;white-space:nowrap;direction:rtl;background:#f3e3b8}
+.gap-more{display:inline-block;margin-top:6px;font-size:.82rem;font-weight:800;color:var(--navy);text-decoration:none}
+.gap-more:hover{text-decoration:underline}
+@keyframes gap-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- הלשונית הזאת בלי עמודת הסקרים האחרונים ---------- */
+@media (min-width:981px){
+  #view-polls[data-tab="gap"] .polls-feed{display:none}
+  #view-polls[data-tab="gap"] .polls-layout{grid-template-columns:148px minmax(0,1fr)!important}
+}
+.polls-sidebar .pn.pn-hook{margin-bottom:6px;border:1px solid #e5c78366;background:#e5c78314;color:#f6e7bd}
+.polls-sidebar .pn.pn-hook:hover{background:#e5c78330}
+.polls-sidebar .pn.pn-hook[aria-current="page"]{background:var(--champagne,#e5c783);color:#14233a;border-color:transparent}
+
+/* מסכים צרים (יסודר בסוף) */
+@media (max-width:980px){
+  .gap-duel,.gap-reveal{grid-template-columns:minmax(0,1fr)}
+  .gap-diff{grid-auto-flow:column;min-width:0}
+  .gap-diff::before,.gap-diff::after{width:22px;height:2px}
+}
+@media (prefers-reduced-motion:reduce){.gap-reveal{animation:none}.gap-choices button,.gap-poll{transition:none}}
+
+/* ---------- אחרי הבחירה: הכול נכנס למסך אחד ---------- */
+.gap.is-revealed{gap:8px}
+.gap.is-revealed .gap-head h2{font-size:clamp(1.15rem,1.9vw,1.6rem)}
+.gap.is-revealed .gap-head p{display:none}
+.gap.is-revealed .gap-poll{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"head num" "bar bar" "verdict verdict" "hist hist";column-gap:12px;row-gap:6px;padding:10px 16px 12px}
+.gap.is-revealed .gap-poll header{grid-area:head}
+.gap.is-revealed .gap-num{grid-area:num}
+.gap.is-revealed .gap-bar{grid-area:bar;height:18px;margin:0}
+.gap.is-revealed .gap-verdict{grid-area:verdict}
+.gap.is-revealed .gap-hist{grid-area:hist;margin-top:2px;padding-top:6px;display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:12px}
+.gap.is-revealed .gap-hist p{grid-column:1/-1}
+.gap.is-revealed .gap-hist ul{margin:4px 0 0}
+.gap.is-revealed .gap-hist strong{margin-top:4px}
+.gap.is-revealed .gap-num b{font-size:2.7rem}
+.gap.is-revealed .gap-num span{font-size:.7rem}
+.gap.is-revealed .gap-diff b{font-size:2.1rem}
+.gap.is-revealed .gap-diff::before,.gap.is-revealed .gap-diff::after{height:14px}
+.gap-reveal .gap-b{height:17px}
+.gap-parts p{margin-bottom:4px}
+.gap-parts :is(th,td){padding:2px 6px}
+.gap-scale{position:relative}
+.gap-scale .gap-more{position:absolute;top:13px;inset-inline-end:18px;margin:0}
+.gap-plot{height:124px;margin:0 52px 26px}
+@media (max-height:640px){.gap.is-revealed{gap:4px}.gap.is-revealed .gap-picked{font-size:.78rem}.gap-plot{height:100px;margin-bottom:24px}.gap-reveal .tr-card{padding:10px 16px 10px}}
+
 /* דיוק המכונים — נטען אחרי theme.css.
    ראש העמוד בשורה אחת, פס הנוסחה (שהוא גם המקרא של הפסים), ודירוג בשורה לכל מכון.
    הפירוט המלא של כל מכון — בחלון (.accuracy-detail). */
@@ -5472,12 +5606,13 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 </section>
 
 <!-- ==================== סקרי 2026 ==================== -->
-<section class="view" id="view-polls" aria-label="כל הסקרים" data-tab="trend">
+<section class="view" id="view-polls" aria-label="כל הסקרים" data-tab="gap">
   <div class="wrap">
     <div class="polls-layout">
     <nav class="polls-sidebar" data-polls-nav aria-label="כל הסקרים"></nav>
     <div class="polls-main">
-    <section class="sec tracker-sec" data-polls-panel="trend" aria-label="מגמות בסקרים">
+    <section class="sec gap-sec" data-polls-panel="gap" aria-label="למה הסקרים חלוקים"><div id="poll-gap" class="gap"></div></section>
+    <section class="sec tracker-sec" data-polls-panel="trend" hidden aria-label="מגמות בסקרים">
       <div id="poll-tracker" class="tracker"></div>
     </section>
 
@@ -6857,8 +6992,9 @@ function renderPollTracker() {
   const P = trackerModel();
   if (!P) { root.hidden = true; return; }
   root.hidden = false;
-  $("#view-polls")?.setAttribute("data-tab", S.pollsTab || "trend");
+  $("#view-polls")?.setAttribute("data-tab", S.pollsTab || "gap");
   renderExplorer();
+  if (typeof renderPollGap === "function") renderPollGap();
   renderTrackerTable(P);
   renderPollFeed(P);
   renderPollsNav();
@@ -6866,6 +7002,7 @@ function renderPollTracker() {
 
 /* ---------- הניווט של כל הסקרים: אותו תפריט צד בעמוד הסקרים ובדיוק המכונים ---------- */
 const POLLS_NAV = [
+  ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?"],
   ["trend", "overview", "#/polls/trend", "מבט כולל"],
   ["trend", "channels", "#/polls/channels", "ערוצים"],
   ["trend", "firms", "#/polls/firms", "מכונים"],
@@ -6875,9 +7012,9 @@ const POLLS_NAV = [
   ["acc", "", "#/2022", "דיוק המכונים"]
 ];
 function renderPollsNav() {
-  const tab = S.view === "e2022" ? "acc" : S.pollsTab || "trend", mode = S.exploreMode || "overview";
-  const link = ([t, m, href, label]) => `<a class="pn" href="${href}" data-polls-go="${t}"${m ? ` data-ex-mode="${m}"` : ""}${t === tab && (!m || m === mode) ? ' aria-current="page"' : ""}>${label}</a>`;
-  const html = `<p class="polls-nav-group">מגמות והשוואות</p><div class="polls-nav-sub">${POLLS_NAV.slice(0, 4).map(link).join("")}</div>${POLLS_NAV.slice(4).map(link).join("")}`;
+  const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap", mode = S.exploreMode || "overview";
+  const link = ([t, m, href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}" href="${href}" data-polls-go="${t}"${m ? ` data-ex-mode="${m}"` : ""}${t === tab && (!m || m === mode) ? ' aria-current="page"' : ""}>${label}</a>`;
+  const html = `${link(POLLS_NAV[0])}<p class="polls-nav-group">מגמות והשוואות</p><div class="polls-nav-sub">${POLLS_NAV.slice(1, 5).map(link).join("")}</div>${POLLS_NAV.slice(5).map(link).join("")}`;
   document.querySelectorAll("[data-polls-nav]").forEach(n => { n.innerHTML = html; });
 }
 
@@ -6889,6 +7026,7 @@ function setPollsTab(tab) {
   renderPollsNav();
   /* גרפים שמחושבים לפי הגודל — מציירים כשהלשונית גלויה */
   if (tab === "trend") renderExplorer();
+  if (tab === "gap" && typeof renderPollGap === "function") renderPollGap();
   if (tab === "cross" && S.regions && typeof renderCrossover === "function") renderCrossover();
 }
 
@@ -7114,6 +7252,137 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
     for(const [attr,key] of Object.entries(controls)) if(e.target.hasAttribute?.(attr)){S[key]=e.target.value;renderExplorer();refocus(`[${attr}]`);return;}
   });
   $('#poll-gallery')?.addEventListener('click',e=>{if(e.target===$('#poll-gallery'))$('#poll-gallery').close();});
+});
+
+/* למה הסקרים חלוקים? — הלשונית הראשונה בכל הסקרים.
+   פותחים בשני הסקרים הקיצוניים של השבועיים האחרונים (הכי הרבה והכי מעט מנדטים
+   לגוש הימין והחרדים), שואלים מי מהם קרוב יותר לאמת, ואז מפרקים את הפער:
+   באיזו רשימה הוא נוצר, איך כל אחד מהמכונים טעה בשלוש הבחירות האחרונות,
+   ואיפה הם יושבים מול שאר הסקרים ומול תחזית הברומטר.
+   הכול מחושב מהנתונים החיים של האתר; אין כאן טענה על כוונות של מכון. */
+const GAP_WINDOW_DAYS = 14, GAP_MAJORITY = 61, GAP_ROWS = 4;
+const GAP_MINUS = "−";
+const gapSigned = v => Math.abs(v) < 0.05 ? "0" : `${v < 0 ? GAP_MINUS : "+"}${trFmt(Math.abs(v))}`;
+
+/* הסקר הגבוה והנמוך ביותר לגוש; בשוויון — החדש יותר */
+function gapPick(pool, rightOf) {
+  const t = p => parsePollDate(p);
+  return {
+    hi: [...pool].sort((a, b) => rightOf(b) - rightOf(a) || t(b) - t(a))[0],
+    lo: [...pool].sort((a, b) => rightOf(a) - rightOf(b) || t(b) - t(a))[0]
+  };
+}
+
+/* הרשימות שבהן שני הסקרים נבדלים ביותר, מהפער הגדול לקטן */
+function gapParties(vHi, vLo) {
+  const ids = [...new Set([...Object.keys(vHi.parties), ...Object.keys(vLo.parties)])];
+  return ids.map(id => ({ id, name: NAME_OVERRIDE[id] || partyMeta(id).name, right: partyMeta(id).alignment === "Right", hi: vHi.parties[id] || 0, lo: vLo.parties[id] || 0 }))
+    .map(r => ({ ...r, d: r.hi - r.lo })).filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
+}
+
+function gapRunsSummary(runs) {
+  const n = runs.length, below = runs.filter(r => r.err < -0.05).length, above = runs.filter(r => r.err > 0.05).length;
+  if (!n) return "אין למכון היסטוריית כיול";
+  if (below === n) return n === 1 ? "פחות מהתוצאה בבחירות שבהן נמדד" : `פחות מהתוצאה בכל ${n} מערכות הבחירות`;
+  if (above === n) return n === 1 ? "יותר מהתוצאה בבחירות שבהן נמדד" : `יותר מהתוצאה בכל ${n} מערכות הבחירות`;
+  return `פחות מהתוצאה ב־${below} מתוך ${n} מערכות בחירות`;
+}
+
+function pollGapModel() {
+  const P = trackerModel();
+  if (!P || !S.house) return null;
+  const rightOf = p => P.vec.get(p.id).blocs.Right;
+  const last = Math.max(...P.polls.map(parsePollDate));
+  let pool = P.polls.filter(p => parsePollDate(p) >= last - GAP_WINDOW_DAYS * DAY_MS);
+  if (pool.length < 4) pool = P.polls.filter(p => parsePollDate(p) >= last - 30 * DAY_MS);
+  if (pool.length < 2) return null;
+  const { hi, lo } = gapPick(pool, rightOf);
+  if (hi.id === lo.id) return null;
+  const side = p => {
+    const meta = firmOf(p.sourceId).meta, v = P.vec.get(p.id);
+    const heir = meta.calibrationFirm && meta.calibrationFirm !== meta.id ? S.firms.firms.find(x => x.id === meta.calibrationFirm) : null;
+    return { p, v, meta, heir, right: v.blocs.Right, outlet: p.channelHebrewName, runs: houseOf(meta)?.bloc.runs || [] };
+  };
+  const vals = pool.map(rightOf).sort((a, b) => a - b);
+  let baro = null;
+  try { const m = basisModel(P, "baro"); if (m.basis === "baro") baro = m.now.blocs.Right; } catch { /* בלי תחזית חיה */ }
+  return { hi: side(hi), lo: side(lo), gap: rightOf(hi) - rightOf(lo), n: pool.length, vals, median: (vals[(vals.length - 1) >> 1] + vals[vals.length >> 1]) / 2, baro, parties: gapParties(P.vec.get(hi.id), P.vec.get(lo.id)) };
+}
+
+/* ---------- ציור ---------- */
+const gapInfo = text => `<span class="tr-info" tabindex="0" role="note" title="${esc(text)}" aria-label="${esc(text)}">ⓘ</span>`;
+
+function gapCard(s, kind, picked, revealed) {
+  const bar = ["Right", "Unknown", "Arabs", "Left"].filter(k => s.v.blocs[k] > 0)
+    .map(k => `<span style="flex:${s.v.blocs[k]};background:${BLOCS[k].color}">${s.v.blocs[k] >= 7 ? s.v.blocs[k] : ""}</span>`).join("");
+  const win = s.right >= GAP_MAJORITY;
+  const verdict = win ? `יש רוב · ${s.right - GAP_MAJORITY} מעל ${GAP_MAJORITY}` : `אין רוב · חסרים ${GAP_MAJORITY - s.right}`;
+  const hist = !revealed ? "" : `<div class="gap-hist">
+      <p>ההפרש מהתוצאה האמיתית בגוש הימין, בשלוש הבחירות האחרונות${s.heir ? ` · נתוני ${esc(s.heir.he)}` : ""} ${gapInfo("ההפרש בין ממוצע הסקרים של המכון ב־30 הימים שלפני כל בחירות לבין התוצאה האמיתית של גוש נתניהו, במנדטים. מינוס — נתן לגוש פחות ממה שקיבל." + (s.heir ? ` ${s.meta.he} ממשיך את ${s.heir.he}, ולכן מוצגת ההיסטוריה של ${s.heir.he}.` : ""))}</p>
+      <ul>${s.runs.map(r => `<li class="${r.err < -0.05 ? "low" : r.err > 0.05 ? "high" : ""}"><b dir="ltr">${gapSigned(r.err)}</b><small>${r.year}</small></li>`).join("")}</ul>
+      <strong>${gapRunsSummary(s.runs)}</strong></div>`;
+  return `<article class="tr-card gap-poll gap-${kind}${picked === kind ? " is-picked" : ""}">
+    <header>${outletLogo(s.outlet)}<span><b>${esc(s.outlet)}</b><small>${esc(s.meta.he)} · ${trDay(parsePollDate(s.p))}</small></span></header>
+    <div class="gap-num"><b dir="ltr">${s.right}</b><span>מנדטים לגוש<br>הימין והחרדים</span></div>
+    <div class="gap-bar" role="img" aria-label="${esc(["Right", "Unknown", "Arabs", "Left"].filter(k => s.v.blocs[k] > 0).map(k => `${BLOCS[k].he} ${s.v.blocs[k]}`).join(", "))}">${bar}<i class="gap-61" title="${GAP_MAJORITY}"></i></div>
+    <p class="gap-verdict ${win ? "yes" : "no"}">${verdict}</p>${hist}</article>`;
+}
+
+function gapParts(m) {
+  const rows = m.parties.slice(0, GAP_ROWS), top = rows[0], max = Math.max(...rows.flatMap(r => [r.hi, r.lo]), 1);
+  const inBloc = top.right && Math.sign(top.d) === Math.sign(m.gap);
+  return `<div class="tr-card gap-parts">
+    <h3>${esc(top.name)}: <span dir="ltr">${top.hi}</span> מול <span dir="ltr">${top.lo}</span></h3>
+    <p>${inBloc ? `${Math.abs(top.d)} מתוך ${m.gap} המנדטים שמפרידים בין הסקרים נמצאים ברשימה אחת.` : `זה ההפרש הגדול ביותר בין שני הסקרים.`}</p>
+    <table><thead><tr><th scope="col"><span class="sr-only">רשימה</span></th><th scope="col">${esc(m.hi.outlet)}</th><th scope="col">${esc(m.lo.outlet)}</th></tr></thead><tbody>${rows.map((r, i) =>
+      `<tr${i ? "" : ' class="is-top"'}><th scope="row">${esc(r.name)}</th><td><span class="gap-b" style="--w:${(100 * r.hi / max).toFixed(1)}%"><b>${r.hi}</b></span></td><td><span class="gap-b" style="--w:${(100 * r.lo / max).toFixed(1)}%"><b>${r.lo}</b></span></td></tr>`).join("")}</tbody></table></div>`;
+}
+
+function gapScale(m) {
+  const marks = [...m.vals, GAP_MAJORITY, ...(m.baro == null ? [] : [m.baro])];
+  const from = Math.floor((Math.min(...marks) - 1) / 5) * 5, to = Math.ceil((Math.max(...marks) + 1) / 5) * 5;
+  const x = v => (100 * (v - from) / (to - from)).toFixed(2);
+  const seen = {}, dots = m.vals.map(v => { const k = seen[v] = (seen[v] || 0) + 1; return `<i class="gap-dot" style="left:${x(v)}%;bottom:${22 + (k - 1) * 11}px"></i>`; }).join("");
+  const ticks = []; for (let v = from; v <= to; v += 5) ticks.push(v);
+  const flag = (s, cls) => `<span class="gap-flag ${cls}" style="left:${x(s.right)}%"><b dir="ltr">${s.right}</b> ${esc(s.outlet)}</span><i class="gap-pin ${cls}" style="left:${x(s.right)}%"></i>`;
+  return `<div class="tr-card gap-scale">
+    <h3>${m.n} סקרים בשבועיים האחרונים · החציון <span dir="ltr">${trFmt(m.median)}</span></h3>
+    <p>${m.baro == null ? "כל נקודה היא סקר." : `כל נקודה היא סקר. תחזית הברומטר: <b>${m.baro}</b> — משוקללת לפי דיוק המכונים בעבר ${gapInfo("סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון, עם תיקון הטעות הקבועה שלו ועם חלוקת המנדטים לפי כללי הבחירות.")}`}</p>
+    <div class="gap-plot" dir="ltr" role="img" aria-label="${esc(`סקרים לפי מנדטים לגוש הימין: ${m.lo.outlet} ${m.lo.right}, ${m.hi.outlet} ${m.hi.right}, החציון ${trFmt(m.median)}${m.baro == null ? "" : `, תחזית הברומטר ${m.baro}`}`)}">
+      <i class="gap-maj" style="left:${x(GAP_MAJORITY)}%"><em>${GAP_MAJORITY} · רוב</em></i>
+      ${dots}${flag(m.hi, "hi")}${flag(m.lo, "lo")}
+      <div class="gap-axis">${ticks.map(v => `<span style="left:${x(v)}%">${v}</span>`).join("")}</div>
+      ${m.baro == null ? "" : `<i class="gap-baro" style="left:${x(m.baro)}%"><em>הברומטר ${m.baro}</em></i>`}
+    </div>
+    <a class="gap-more" href="#/polls/trend" data-polls-go="trend" data-ex-mode="overview">לכל הסקרים והמגמות ←</a></div>`;
+}
+
+function renderPollGap() {
+  const box = document.querySelector("#poll-gap"); if (!box) return;
+  const m = pollGapModel();
+  if (!m) { box.innerHTML = '<p class="gap-empty">עוד אין מספיק סקרים אחרונים כדי להשוות ביניהם.</p>'; return; }
+  const picked = S.gapPick || null, revealed = !!picked;
+  box.classList.toggle("is-revealed", revealed);
+  const label = { hi: m.hi.outlet, lo: m.lo.outlet, none: "אף אחד מהם" }[picked];
+  box.innerHTML = `
+    <div class="gap-head"><h2><span dir="ltr">${m.gap}</span> מנדטים בין שני סקרים מהשבועיים האחרונים</h2>
+      <p>הקיצוני ביותר לכל כיוון, מתוך ${m.n} סקרים. המספרים — מנדטים לגוש הימין והחרדים; ${GAP_MAJORITY} הוא רוב.</p></div>
+    <div class="gap-duel">${gapCard(m.hi, "hi", picked, revealed)}<div class="gap-diff" aria-hidden="true"><b>${m.gap}</b><span>מנדטים<br>הפרש</span></div>${gapCard(m.lo, "lo", picked, revealed)}</div>
+    ${revealed ? `<p class="gap-picked">הניחוש שלך: <b>${esc(label)}</b>. הנה מה שאפשר לדעת <button type="button" class="gap-redo" data-gap-pick="reset">לנחש שוב</button></p>
+      <div class="gap-reveal">${gapParts(m)}${gapScale(m)}</div>`
+    : `<div class="gap-ask"><p>מי מהם קרוב יותר לאמת?</p><div class="gap-choices" role="group" aria-label="בחירה">
+        <button type="button" data-gap-pick="hi">${esc(m.hi.outlet)} · <span dir="ltr">${m.hi.right}</span></button>
+        <button type="button" data-gap-pick="lo">${esc(m.lo.outlet)} · <span dir="ltr">${m.lo.right}</span></button>
+        <button type="button" data-gap-pick="none">אף אחד מהם</button></div></div>`}`;
+}
+
+if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-gap-pick]"); if (!b) return;
+    S.gapPick = b.dataset.gapPick === "reset" ? null : b.dataset.gapPick;
+    renderPollGap();
+    document.querySelector(S.gapPick ? ".gap-redo" : "[data-gap-pick]")?.focus();
+  });
 });
 
 /* ============================================================
@@ -8664,6 +8933,8 @@ function renderDiscovery() {
   const dates = [...new Set(ext.wild.map(r => r.date).filter(Boolean))];
   const dateLabel = dates.length ? ` · ${dates.join(", ")}` : "";
   const rightFirms = S.series.map(s => ({ name:s.meta.he || s.meta.id, value:s.blocs.Right || 0 })).sort((a, b) => a.value - b.value);
+  let gapM = null;
+  try { gapM = typeof pollGapModel === "function" ? pollGapModel() : null; } catch { /* בלי הכרטיס הזה */ }
   const rightGap = rightFirms.length > 1 ? rightFirms.at(-1).value - rightFirms[0].value : 0;
   const partyIds = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
   const thresholds = partyIds.map(id => {
@@ -8679,7 +8950,8 @@ function renderDiscovery() {
   const displayed = value => String(r1(value)).replace(/\.0$/, "");
   discoveryGroups = [
     [
-      { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב הברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
+      gapM ? { eyebrow:"שני סקרים מהשבועיים האחרונים", number:String(gapM.gap), title:`מנדטים: ${gapM.lo.outlet} מול ${gapM.hi.outlet}`, description:`${gapM.hi.outlet} נותן לגוש הימין והחרדים ${gapM.hi.right}, ${gapM.lo.outlet} — ${gapM.lo.right}. מי מהם קרוב יותר לאמת?`, source:`מקור: הסקרים הקיצוניים מבין ${gapM.n} סקרים אחרונים`, href:"#/polls/gap", link:"נסו לנחש" }
+        : { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב הברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
       { eyebrow:"ממוצע המכונים", number:`≈ ${c.kv(c.votersAvg)}`, title:`קולות ${c.deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`, description:"שינוי התמיכה המשוקלל לעומת 2022 בתוספת הגידול הטבעי, במונחי מצביעים. זהו אומדן, לא מעקב אחרי מצביעים בודדים.", source:"מקור: הסקר האחרון של כל מכון · חישוב הברומטר", href:"#/polls/crossover", link:"ראו את דרך ההשוואה" },
       { eyebrow:"כשסופרים גם קולות שלא עברו", number:fmt(S.regions.wasted.blocGap), title:"קולות בלבד בין שני המחנות ב־2022", description:"הפער בין הגושים קטן בהרבה כשמוסיפים את מצביעי מרצ ובל״ד שנותרו מחוץ לכנסת.", source:"מקור: ועדת הבחירות · תוצאות 2022 · לפי שיוך הגושים באתר", href:"#/polls/crossover", link:"ראו את חישוב הגושים" }
     ],
@@ -8690,7 +8962,7 @@ function renderDiscovery() {
     ],
     [
       { eyebrow:"והסיפור של היישוב שלכם?", number:fmt(S.regions.localitiesFull?.length || 0), title:"יישובים. כל אחד מצביע אחרת.", description:"חפשו יישוב וגלו מי הוביל בו וכמה בעלי זכות בחירה הגיעו לקלפי.", source:"מקור: תוצאות האמת · בחירות 2022", href:"#/map", link:"חפשו את היישוב שלכם" },
-      { eyebrow:"המכונים רואים גושים שונים", number:displayed(rightGap), title:"מנדטים מפרידים בין קצות ההערכות לימין", description:rightFirms.length > 1 ? `ממוצעי סקרי ${rightFirms[0].name} ו${rightFirms.at(-1).name} מציבים את הגוש בקצוות הטווח.` : "השוו את הערכות המכונים לגוש הימין.", source:"מקור: ממוצע סקרי כל מכון בחלון התחזית", href:"#/polls", link:"פתחו את הסקרים" },
+      { eyebrow:"המכונים רואים גושים שונים", number:displayed(rightGap), title:"מנדטים מפרידים בין קצות ההערכות לימין", description:rightFirms.length > 1 ? `ממוצעי סקרי ${rightFirms[0].name} ו${rightFirms.at(-1).name} מציבים את הגוש בקצוות הטווח.` : "השוו את הערכות המכונים לגוש הימין.", source:"מקור: ממוצע סקרי כל מכון בחלון התחזית", href:"#/polls/trend", link:"פתחו את הסקרים" },
       { eyebrow:"על איזו רשימה אין הסכמה?", number:partyGap ? displayed(partyGap.gap) : "—", title:partyGap ? `מנדטים מפרידים בהערכת ${partyMeta(partyGap.id).name}` : "פערים בין המכונים", description:"המרחק בין ממוצע המכון הגבוה לנמוך עבור אותה רשימה בחלון התחזית.", source:"מקור: ממוצע סקרי כל מכון בחלון התחזית", href:"#/polls", link:"ראו את כל נתוני הסקרים" }
     ]
   ];
@@ -9581,7 +9853,7 @@ function renderOfficialResults() {
    ============================================================ */
 const VIEWS = { landing:"", home:"forecast", polls:"polls", e2022:"2022", map:"map", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
 /* כתובות ישנות שעדיין עשויות להיות מקושרות מבחוץ */
-const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls", "polls/list":"polls", "polls/trend":"polls", "polls/channels":"polls", "polls/firms":"polls", "polls/parties":"polls" };
+const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls", "polls/list":"polls", "polls/trend":"polls", "polls/gap":"polls", "polls/channels":"polls", "polls/firms":"polls", "polls/parties":"polls" };
 const rendered = {};
 
 function show(view) {
@@ -9624,7 +9896,7 @@ function routeFromHash() {
   show(view);
   if (h === "forecast/coalition") requestAnimationFrame(() => $("#election-coalition")?.scrollIntoView({ block: "start" }));
   /* הלשוניות של עמוד הסקרים (גם מהתפריט שבעמוד דיוק המכונים): פותחים כשהנתונים מוכנים */
-  const [pollsTab, exMode] = { crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
+  const [pollsTab, exMode] = { polls: ["gap"], "polls/gap": ["gap"], crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
   if (exMode) S.exploreMode = exMode;
   if (pollsTab) {
     let tries = 0;

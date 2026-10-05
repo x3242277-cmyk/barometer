@@ -1546,6 +1546,8 @@ function renderDiscovery() {
   const dates = [...new Set(ext.wild.map(r => r.date).filter(Boolean))];
   const dateLabel = dates.length ? ` · ${dates.join(", ")}` : "";
   const rightFirms = S.series.map(s => ({ name:s.meta.he || s.meta.id, value:s.blocs.Right || 0 })).sort((a, b) => a.value - b.value);
+  let gapM = null;
+  try { gapM = typeof pollGapModel === "function" ? pollGapModel() : null; } catch { /* בלי הכרטיס הזה */ }
   const rightGap = rightFirms.length > 1 ? rightFirms.at(-1).value - rightFirms[0].value : 0;
   const partyIds = [...new Set(S.series.flatMap(s => Object.keys(s.parties)))];
   const thresholds = partyIds.map(id => {
@@ -1561,7 +1563,8 @@ function renderDiscovery() {
   const displayed = value => String(r1(value)).replace(/\.0$/, "");
   discoveryGroups = [
     [
-      { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב הברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
+      gapM ? { eyebrow:"שני סקרים מהשבועיים האחרונים", number:String(gapM.gap), title:`מנדטים: ${gapM.lo.outlet} מול ${gapM.hi.outlet}`, description:`${gapM.hi.outlet} נותן לגוש הימין והחרדים ${gapM.hi.right}, ${gapM.lo.outlet} — ${gapM.lo.right}. מי מהם קרוב יותר לאמת?`, source:`מקור: הסקרים הקיצוניים מבין ${gapM.n} סקרים אחרונים`, href:"#/polls/gap", link:"נסו לנחש" }
+        : { eyebrow:panels ? `ההערכה הקיצונית ביותר: ${wildNames}` : "כמה השתנתה התמיכה בגושים?", number:panels ? `≈ ${c.kv(panels.voters)}` : "—", title:panels ? `קולות ${panels.delta < 0 ? "פחות" : "יותר"} לגוש הימין` : "כמה השתנתה התמיכה בגושים?", description:`${comparison} אומדן שינוי בתמיכה, לא ספירה של אנשים שעברו צד.`, source:`מקור: סקרי ${wildNames}${dateLabel} · חישוב הברומטר מול 2022 והגידול הטבעי`, href:"#/polls/crossover", link:"השוו בין המכונים" },
       { eyebrow:"ממוצע המכונים", number:`≈ ${c.kv(c.votersAvg)}`, title:`קולות ${c.deltaAvg < 0 ? "פחות" : "יותר"} לגוש הימין`, description:"שינוי התמיכה המשוקלל לעומת 2022 בתוספת הגידול הטבעי, במונחי מצביעים. זהו אומדן, לא מעקב אחרי מצביעים בודדים.", source:"מקור: הסקר האחרון של כל מכון · חישוב הברומטר", href:"#/polls/crossover", link:"ראו את דרך ההשוואה" },
       { eyebrow:"כשסופרים גם קולות שלא עברו", number:fmt(S.regions.wasted.blocGap), title:"קולות בלבד בין שני המחנות ב־2022", description:"הפער בין הגושים קטן בהרבה כשמוסיפים את מצביעי מרצ ובל״ד שנותרו מחוץ לכנסת.", source:"מקור: ועדת הבחירות · תוצאות 2022 · לפי שיוך הגושים באתר", href:"#/polls/crossover", link:"ראו את חישוב הגושים" }
     ],
@@ -1572,7 +1575,7 @@ function renderDiscovery() {
     ],
     [
       { eyebrow:"והסיפור של היישוב שלכם?", number:fmt(S.regions.localitiesFull?.length || 0), title:"יישובים. כל אחד מצביע אחרת.", description:"חפשו יישוב וגלו מי הוביל בו וכמה בעלי זכות בחירה הגיעו לקלפי.", source:"מקור: תוצאות האמת · בחירות 2022", href:"#/map", link:"חפשו את היישוב שלכם" },
-      { eyebrow:"המכונים רואים גושים שונים", number:displayed(rightGap), title:"מנדטים מפרידים בין קצות ההערכות לימין", description:rightFirms.length > 1 ? `ממוצעי סקרי ${rightFirms[0].name} ו${rightFirms.at(-1).name} מציבים את הגוש בקצוות הטווח.` : "השוו את הערכות המכונים לגוש הימין.", source:"מקור: ממוצע סקרי כל מכון בחלון התחזית", href:"#/polls", link:"פתחו את הסקרים" },
+      { eyebrow:"המכונים רואים גושים שונים", number:displayed(rightGap), title:"מנדטים מפרידים בין קצות ההערכות לימין", description:rightFirms.length > 1 ? `ממוצעי סקרי ${rightFirms[0].name} ו${rightFirms.at(-1).name} מציבים את הגוש בקצוות הטווח.` : "השוו את הערכות המכונים לגוש הימין.", source:"מקור: ממוצע סקרי כל מכון בחלון התחזית", href:"#/polls/trend", link:"פתחו את הסקרים" },
       { eyebrow:"על איזו רשימה אין הסכמה?", number:partyGap ? displayed(partyGap.gap) : "—", title:partyGap ? `מנדטים מפרידים בהערכת ${partyMeta(partyGap.id).name}` : "פערים בין המכונים", description:"המרחק בין ממוצע המכון הגבוה לנמוך עבור אותה רשימה בחלון התחזית.", source:"מקור: ממוצע סקרי כל מכון בחלון התחזית", href:"#/polls", link:"ראו את כל נתוני הסקרים" }
     ]
   ];
@@ -2463,7 +2466,7 @@ function renderOfficialResults() {
    ============================================================ */
 const VIEWS = { landing:"", home:"forecast", polls:"polls", e2022:"2022", map:"map", live:"live", results:"results", haredi:"haredi", demography:"demography", method:"method" };
 /* כתובות ישנות שעדיין עשויות להיות מקושרות מבחוץ */
-const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls", "polls/list":"polls", "polls/trend":"polls", "polls/channels":"polls", "polls/firms":"polls", "polls/parties":"polls" };
+const VIEW_ALIASES = { regions:"map", swing:"map", "map/areas":"map", "forecast/coalition":"home", crossover:"polls", "polls/crossover":"polls", "polls/list":"polls", "polls/trend":"polls", "polls/gap":"polls", "polls/channels":"polls", "polls/firms":"polls", "polls/parties":"polls" };
 const rendered = {};
 
 function show(view) {
@@ -2506,7 +2509,7 @@ function routeFromHash() {
   show(view);
   if (h === "forecast/coalition") requestAnimationFrame(() => $("#election-coalition")?.scrollIntoView({ block: "start" }));
   /* הלשוניות של עמוד הסקרים (גם מהתפריט שבעמוד דיוק המכונים): פותחים כשהנתונים מוכנים */
-  const [pollsTab, exMode] = { crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
+  const [pollsTab, exMode] = { polls: ["gap"], "polls/gap": ["gap"], crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
   if (exMode) S.exploreMode = exMode;
   if (pollsTab) {
     let tries = 0;

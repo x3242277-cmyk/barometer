@@ -234,8 +234,9 @@ function renderPollTracker() {
   const P = trackerModel();
   if (!P) { root.hidden = true; return; }
   root.hidden = false;
-  $("#view-polls")?.setAttribute("data-tab", S.pollsTab || "trend");
+  $("#view-polls")?.setAttribute("data-tab", S.pollsTab || "gap");
   renderExplorer();
+  if (typeof renderPollGap === "function") renderPollGap();
   renderTrackerTable(P);
   renderPollFeed(P);
   renderPollsNav();
@@ -243,6 +244,7 @@ function renderPollTracker() {
 
 /* ---------- הניווט של כל הסקרים: אותו תפריט צד בעמוד הסקרים ובדיוק המכונים ---------- */
 const POLLS_NAV = [
+  ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?"],
   ["trend", "overview", "#/polls/trend", "מבט כולל"],
   ["trend", "channels", "#/polls/channels", "ערוצים"],
   ["trend", "firms", "#/polls/firms", "מכונים"],
@@ -252,9 +254,9 @@ const POLLS_NAV = [
   ["acc", "", "#/2022", "דיוק המכונים"]
 ];
 function renderPollsNav() {
-  const tab = S.view === "e2022" ? "acc" : S.pollsTab || "trend", mode = S.exploreMode || "overview";
-  const link = ([t, m, href, label]) => `<a class="pn" href="${href}" data-polls-go="${t}"${m ? ` data-ex-mode="${m}"` : ""}${t === tab && (!m || m === mode) ? ' aria-current="page"' : ""}>${label}</a>`;
-  const html = `<p class="polls-nav-group">מגמות והשוואות</p><div class="polls-nav-sub">${POLLS_NAV.slice(0, 4).map(link).join("")}</div>${POLLS_NAV.slice(4).map(link).join("")}`;
+  const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap", mode = S.exploreMode || "overview";
+  const link = ([t, m, href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}" href="${href}" data-polls-go="${t}"${m ? ` data-ex-mode="${m}"` : ""}${t === tab && (!m || m === mode) ? ' aria-current="page"' : ""}>${label}</a>`;
+  const html = `${link(POLLS_NAV[0])}<p class="polls-nav-group">מגמות והשוואות</p><div class="polls-nav-sub">${POLLS_NAV.slice(1, 5).map(link).join("")}</div>${POLLS_NAV.slice(5).map(link).join("")}`;
   document.querySelectorAll("[data-polls-nav]").forEach(n => { n.innerHTML = html; });
 }
 
@@ -266,6 +268,7 @@ function setPollsTab(tab) {
   renderPollsNav();
   /* גרפים שמחושבים לפי הגודל — מציירים כשהלשונית גלויה */
   if (tab === "trend") renderExplorer();
+  if (tab === "gap" && typeof renderPollGap === "function") renderPollGap();
   if (tab === "cross" && S.regions && typeof renderCrossover === "function") renderCrossover();
 }
 

@@ -218,6 +218,7 @@ function renderTrackerTable(M) {
   const rows = [...M.polls, ...weeklyBaro()].filter(p => (ff === "all" || firmOf(p.sourceId).firm === ff) && (oo === "all" || p.channelHebrewName === oo))
     .sort((a, b) => parsePollDate(b) - parsePollDate(a) || (b.publishedAt || 0) - (a.publishedAt || 0));
   const cols = M.parties.filter(x => x.now >= 3).slice(0, 12), c = pollsCount(M), info = $("#polls-list-info");
+  const allN = $("#allpolls-n"); if (allN) allN.textContent = c.n;
   if (info) info.innerHTML = `<b>${c.n}</b> סקרים · ${c.firms} מכונים · ${c.outlets} כלי תקשורת · מהחדש לישן, במנדטים <span class="tr-info" tabindex="0" role="note" title="תא מודגש: המכון נתן למפלגה 2 מנדטים או יותר מעל (כחול) או מתחת (כתום) לממוצע של 7 הימים האחרונים. בשורות הזהב — הניתוח השבועי של הברומטר (לא סקר).">ⓘ</span>`;
   box.innerHTML = `<div class="tablewrap tr-table-wrap" tabindex="0" role="region" aria-label="כל הסקרים בטבלה"><table class="tr-table"><thead><tr><th scope="col">תאריך</th><th scope="col">פורסם ב־</th><th scope="col">מכון</th>${cols.map(c => `<th scope="col" class="n" style="--c:${c.color}"><span>${esc(c.name)}</span></th>`).join("")}<th scope="col" class="n bloc">ימין וחרדים</th></tr></thead><tbody>${
     `<tr class="tr-avg-row"><td>${trDay(M.now.t)}</td><td colspan="2"><b>ממוצע 7 הימים האחרונים</b></td>${cols.map(c => `<td class="n"><b>${trFmt(c.now)}</b></td>`).join("")}<td class="n bloc"><b>${trFmt(M.now.blocs.Right)}</b></td></tr>` +
@@ -246,8 +247,6 @@ function renderPollTracker() {
 const POLLS_NAV = [
   ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?"],
   ["acc", "", "#/2022", "דיוק המכונים"],
-  ["trend", "", "#/polls/trend", "מבט כולל ומגמות"],
-  ["list", "", "#/polls/list", "כל סקר בנפרד"],
   ["cross", "", "#/crossover", "כמה עברו צד"]
 ];
 function renderPollsNav() {
@@ -258,10 +257,18 @@ function renderPollsNav() {
 }
 
 /* לשונית אחת גלויה בכל פעם; ברשימת כל הסקרים עמודת הסקרים האחרונים מוסתרת (אותו תוכן) */
+/* ״כל הסקרים״ (מבט כולל ומגמות + רשימת הסקרים) הם כרטיסייה בפני עצמה; מדד האמינות — השאר */
+const pollsSectionOf = tab => (tab === "trend" || tab === "list") ? "all" : "rel";
+function syncPollTabs() {
+  const sec = pollsSectionOf(S.pollsTab || "gap");
+  $("#view-polls")?.setAttribute("data-section", sec);
+  document.querySelectorAll(".tab[data-section]").forEach(t => t.setAttribute("aria-current", (S.view === "polls" && t.dataset.section === sec) || (S.view === "e2022" && t.dataset.section === "rel") ? "page" : "false"));
+}
 function setPollsTab(tab) {
   S.pollsTab = tab;
   document.querySelectorAll("[data-polls-panel]").forEach(p => { p.hidden = p.dataset.pollsPanel !== tab; });
   $("#view-polls")?.setAttribute("data-tab", tab);
+  syncPollTabs();
   renderPollsNav();
   /* גרפים שמחושבים לפי הגודל — מציירים כשהלשונית גלויה */
   if (tab === "trend") renderExplorer();
@@ -280,6 +287,6 @@ function wirePollTracker() {
     setPollsTab(a.dataset.pollsGo);
     $(`[data-polls-nav] a[aria-current="page"]`)?.focus();
   });
-  document.addEventListener("barometer:view", renderPollsNav);
+  document.addEventListener("barometer:view", () => { renderPollsNav(); syncPollTabs(); });
 }
 if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", wirePollTracker);

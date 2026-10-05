@@ -2538,7 +2538,7 @@ function routeFromHash() {
   show(view);
   if (h === "forecast/coalition") requestAnimationFrame(() => $("#election-coalition")?.scrollIntoView({ block: "start" }));
   /* הלשוניות של עמוד הסקרים (גם מהתפריט שבעמוד דיוק המכונים): פותחים כשהנתונים מוכנים */
-  const [pollsTab, exMode] = { polls: ["gap"], "polls/gap": ["gap"], crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
+  const [pollsTab, exMode] = { polls: ["trend", "overview"], "polls/gap": ["gap"], crossover: ["cross"], "polls/crossover": ["cross"], "polls/list": ["list"], "polls/trend": ["trend", "overview"], "polls/channels": ["trend", "channels"], "polls/firms": ["trend", "firms"], "polls/parties": ["trend", "parties"] }[h] || [];
   if (exMode) S.exploreMode = exMode;
   if (pollsTab) {
     let tries = 0;

@@ -175,3 +175,15 @@
   .ex-body{flex:none;height:300px}
 }
 @media (prefers-reduced-motion:reduce){.polls-tabbar .pn,.ex-logo-button,.ex-tabs button{transition:none}}
+
+/* ״כל הסקרים״: כרטיסייה משלה, בלי תפריט הצד של מדד האמינות */
+#view-polls[data-section="all"] .polls-tabbar{display:none}
+@media (min-width:981px){
+  #view-polls[data-section="all"].on>.wrap{grid-template-columns:minmax(0,1fr)}
+  #view-polls[data-section="all"] .polls-layout{grid-column:1}
+}
+.allpolls-cta{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;margin:12px 16px 0;padding:10px 20px;border-radius:8px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font:800 .95rem var(--sans);text-decoration:none;box-shadow:0 3px 0 #b8862b}
+.allpolls-cta b{font-weight:900}
+.allpolls-cta:hover{transform:translateY(-1px);box-shadow:0 5px 0 #b8862b}
+.allpolls-back{display:inline-block;margin:10px 16px 0;color:var(--ink-2,#3a4859);font:800 .9rem var(--sans);text-decoration:none}
+.allpolls-back:hover{color:var(--ink,#14233a);text-decoration:underline}

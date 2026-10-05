@@ -103,18 +103,15 @@
 /* תצוגת הכרטיסים: כרטיס לכל כלי תקשורת, שלושה בשורה במחשב נייד */
 #view-polls #polls-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
 @media (max-width:1100px){#view-polls #polls-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-/* כרטיס צר: שני הטורים (ימין / יתר) זה מתחת לזה, כדי ששמות המפלגות לא ייחתכו */
-#view-polls #polls-cards .poll-result-card{container-type:inline-size}
-@container (max-width:500px){.poll-cols{grid-template-columns:1fr!important}}
 #view-polls #polls-cards .poll-result-card{display:flex;flex-direction:column;min-width:0}
 #view-polls #polls-cards .poll-result-card>header{min-height:78px;align-items:center}
-#view-polls #polls-cards .poll-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;align-items:start;padding:6px 14px 10px}
-#view-polls #polls-cards .poll-list{display:grid;grid-auto-rows:32px;margin:0;padding:0;list-style:none}
-#view-polls #polls-cards .poll-cols li{display:grid;grid-template-columns:minmax(0,1fr) 30px 42px;align-items:center;gap:4px;min-height:0;height:32px;border-bottom:1px solid var(--rule-2)}
-#view-polls #polls-cards .poll-cols .poll-party-name{display:block;min-width:0;padding:0;font-size:.84rem;text-align:start;line-height:1.2}
-#view-polls #polls-cards .poll-cols .pname{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#view-polls #polls-cards .poll-list li>b{font-size:1.02rem;text-align:center;font-variant-numeric:tabular-nums}
-#view-polls #polls-cards .poll-list li>em{min-width:0;font-size:.72rem;white-space:nowrap;text-align:start}
+#view-polls #polls-cards .poll-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;align-items:start;padding:6px 10px 10px}
+#view-polls #polls-cards .poll-list{display:grid;grid-auto-rows:36px;margin:0;padding:0;list-style:none}
+#view-polls #polls-cards .poll-cols li{display:grid;grid-template-columns:minmax(0,1fr) 24px 30px;align-items:center;gap:3px;min-height:0;height:36px;border-bottom:1px solid var(--rule-2)}
+#view-polls #polls-cards .poll-cols .poll-party-name{display:block;min-width:0;padding:0;font-size:.76rem;text-align:start;line-height:1.15}
+#view-polls #polls-cards .poll-cols .pname{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;white-space:normal;overflow-wrap:anywhere}
+#view-polls #polls-cards .poll-list li>b{font-size:1rem;text-align:center;font-variant-numeric:tabular-nums}
+#view-polls #polls-cards .poll-list li>em{min-width:0;font-size:.68rem;white-space:nowrap;text-align:start}
 #view-polls #polls-cards .zero-results{margin:auto 16px 10px}
 
 /* ---------- כמה עברו צד: שני הכרטיסים בגובה הלשונית ---------- */

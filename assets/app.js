@@ -71,7 +71,7 @@ const ELECTION_TIMELINE = {
 
 const S = { hist:null, cur:null, firms:null, regions:null, demo:null,
             stats:[], counterStats:[], series:[], mode:"scenario", scen:"actual",
-            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"table", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
+            homeView:"bars", homeHistory:"current", focusParty:"", compareIds:null, trendParty:"", pollView:"cards", avgDays:7, avgWeight:"simple", cardPoll:{}, view:"home", demoOverrides:{}, live:null, liveTimer:null, countdownTimer:null,
             calibrations:[], elections:[], calibKey:"2022", leaders:{}, anecTimer:null };
 
 /* ---------- SVG building blocks ---------- */

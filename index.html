@@ -30,11 +30,11 @@
 <script src="assets/upgrade.js?v=ad968bb2" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=5f643732" defer></script>
-<script src="assets/poll-tracker.js?v=6be92078" defer></script>
+<script src="assets/poll-tracker.js?v=7ff86eaf" defer></script>
 <script src="assets/polls-gap.js?v=1760e98b" defer></script>
 <script src="assets/polls-workspace.js?v=936b21e4" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=ce07d07d" defer></script>
+<script src="assets/app.js?v=45e5377d" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <script src="assets/method-sim.js?v=2216cbd1" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
@@ -62,6 +62,7 @@
 <link rel="stylesheet" href="assets/polls-gap.css?v=61dea519">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
 <link rel="stylesheet" href="assets/method-sim.css?v=cee074cd">
+<link rel="stylesheet" href="assets/acc-hero.css?v=f3908f90">
 <link rel="stylesheet" href="assets/board.css?v=f51617ed">
 </head>
 <body>
@@ -250,10 +251,15 @@
 <section class="view" id="view-e2022" aria-label="דיוק המכונים">
   <div class="wrap">
     <nav class="polls-tabbar" data-polls-nav aria-label="כל הסקרים"></nav>
-    <div class="acc-head">
-      <div><h2>דיוק המכונים</h2><p>כל מכון נמדד באותה נוסחה מול תוצאות האמת של הבחירות הקודמות, והציון קובע את משקלו בתחזית. הסקרים והחישוב — בפירוט של כל מכון.</p></div>
-      <div class="page-facts" id="acc-facts"></div>
-    </div>
+    <header class="acc-hero" id="acc-hero">
+      <div class="acc-hero-main">
+        <p class="acc-kicker"><span aria-hidden="true">★</span> דיוק המכונים · המדד המרכזי של הברומטר</p>
+        <h2 class="acc-title">מי דייק?</h2>
+        <p class="acc-sub">כל מכון נמדד באותה נוסחה מול תוצאות האמת של הבחירות הקודמות, והציון קובע את משקלו בתחזית. הסקרים והחישוב, בפירוט של כל מכון.</p>
+        <div class="acc-facts" id="acc-facts"></div>
+      </div>
+      <ol class="acc-podium" id="acc-podium" aria-label="שלושת המכונים המדויקים ביותר"></ol>
+    </header>
     <div id="accuracy-method"></div>
     <section class="sec reliability-ranking" aria-label="דירוג המכונים">
       <div class="ranks" id="rank-list"></div>

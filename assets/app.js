@@ -1260,6 +1260,14 @@ function render2022() {
     [calibrated.length, "מכונים שנמדדו"], [totalPolls, "סקרים בארכיון"], [S.elections.length, "מערכות בחירות"]
   ].map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
 
+  /* הפודיום: שלושת המכונים המדויקים ביותר, הציון בגדול */
+  const podium = $("#acc-podium");
+  if (podium) podium.innerHTML = calibrated.slice(0, 3).map((st, i) => {
+    const meta = S.firms.firms.find(f => f.id === st.firm), grade = gradeOf(st.score);
+    return `<li class="acc-pod p${i + 1}"><span class="acc-pod-logo">${logoBox(meta, 54)}</span><b class="acc-pod-name">${esc(meta.he)}</b><span class="grade ${grade.key}">${esc(grade.label)}</span>
+      <span class="acc-pod-base"><i class="acc-pod-place">${i + 1}</i><b class="acc-pod-score num">${r1(st.score)}</b></span></li>`;
+  }).join("");
+
   const activeFirms = new Set(S.cur.polls.map(p => firmOf(p.sourceId).firm));
   const heirsOf = id => S.firms.firms.filter(f => f.calibrationFirm === id && f.id !== id && activeFirms.has(f.id));
   const components = [["blocScore", "גושים", .6, "#17457F"], ["partyScore", "מפלגות", .3, "#966918"], ["consistencyScore", "עקביות", .1, "#6A5A9C"]];

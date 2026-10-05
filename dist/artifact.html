@@ -5919,6 +5919,85 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .h-party-seats b{font-size:2rem;line-height:1;font-weight:800;color:#f6e7bd;font-variant-numeric:tabular-nums}
 @media (max-width:980px){.h-parties{grid-template-columns:minmax(0,1fr)}}
 
+/* לוח המנדטים (#/forecast) — עיצוב לפי גושים: סיכום מעל, כרטיס לכל גוש, מספר המנדטים הוא האלמנט הבולט,
+   צבע הגוש כעוגן עדין (פס, מסגרת תמונה), שינוי מהעדכון הקודם קטן ועמום, ורמז לחיצה בסוף כל שורה.
+   נטען אחרון, כדי לגבור על שכבות הלוח הישנות (editorial / election / experience). */
+
+#view-home .board .board-summary{grid-column:1/-1;display:grid;gap:10px;margin:14px 0 2px;padding:14px 20px 12px;border:1px solid #d9d2c3;border-radius:10px;background:#fdfbf6;color:#14233a;box-shadow:0 10px 26px -20px #000000a0}
+#view-home .board .layout-size-hide,#view-home .board.layout-size .board-summary{display:none}
+.bsum-nums{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 34px}
+.bsum-n{display:flex;align-items:baseline;gap:10px;color:#3a4859}
+.bsum-n b{font-size:2.3rem;line-height:1;font-weight:900;letter-spacing:-.03em;color:var(--c,#14233a);font-variant-numeric:tabular-nums}
+.bsum-n span{font-size:.92rem;font-weight:700}
+.bsum-n.is-lead span{color:#14233a}
+.bsum-bar{position:relative;display:flex;gap:2px;height:12px}
+.bsum-bar i{display:block;min-width:3px;height:100%}
+.bsum-bar i:first-of-type{border-start-start-radius:6px;border-end-start-radius:6px}
+.bsum-bar i:last-of-type{border-start-end-radius:6px;border-end-end-radius:6px}
+.bsum-bar u{position:absolute;top:-6px;bottom:-6px;width:0;border-inline-start:2px dashed #14233a;text-decoration:none}
+.bsum-note{margin:0;font-size:.78rem;color:#586575}
+
+/* כרטיס גוש */
+#view-home .board .wall{gap:16px;margin-top:14px;align-items:start}
+#view-home .board .wall .bloc,#view-home .board .wall .bloc+.bloc{padding:0 0 8px;border:1px solid #d9d2c3;border-top:4px solid var(--bc);border-radius:10px;overflow:hidden;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--bc) 8%,#fdfbf6) 0,#fdfbf6 150px);box-shadow:0 10px 26px -20px #000000a0}
+#view-home .board .wall .bloc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px 10px;border-bottom:1px solid #1023461f}
+#view-home .board .wall .bloc-head .kicker{margin:0;font-size:.95rem;font-weight:800;letter-spacing:0;color:#14233a}
+#view-home .board .wall .bloc-head h3{margin:2px 0 0;font-size:.74rem;font-weight:600;color:#586575}
+#view-home .board .wall .tally{font-size:2.7rem;line-height:1;font-weight:900;letter-spacing:-.04em;color:var(--bc);font-variant-numeric:tabular-nums}
+#view-home .board .wall .bloc-mid .tally{color:#586575}
+
+/* שורת מפלגה */
+#view-home .board .wall .wall-rows{display:grid;padding:2px 8px 0}
+#view-home .board .wall .hcard{position:relative;display:grid;min-height:0;grid-template-columns:46px minmax(0,1fr) auto 16px;align-items:center;gap:12px;width:100%;
+  padding:8px 10px 8px 6px;margin:0;border:0;border-bottom:1px solid #1023461a;border-radius:8px;background:transparent;text-align:start;cursor:pointer;
+  transition:background .15s,box-shadow .15s,transform .15s}
+#view-home .board .wall .hcard:last-child{border-bottom-color:transparent}
+#view-home .board .wall .hcard::before{content:"";position:absolute;inset-block:8px;inset-inline-start:0;width:3px;height:auto;border-radius:2px;background:var(--bc);opacity:.85}
+#view-home .board .wall .hcard:hover,#view-home .board .wall .hcard:focus-visible{background:color-mix(in srgb,var(--bc) 9%,#ffffff);box-shadow:0 4px 14px -8px #0a1c3399;transform:translateY(-1px);border-bottom-color:transparent}
+#view-home .board .wall .hcard:focus-visible{outline:2px solid var(--bc);outline-offset:-2px}
+#view-home .board .wall .hcard-photo{display:block;width:46px;height:46px;margin-inline-start:8px;border:2px solid var(--bc);border-radius:50%;overflow:hidden;background:#f2ede2}
+#view-home .board .wall .hcard-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%}
+#view-home .board .wall .hcard-body{display:grid;gap:1px;min-width:0}
+#view-home .board .wall .hcard-name{font-size:1rem;font-weight:700;line-height:1.25;color:#14233a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-home .board .wall .hcard-leader{font-size:.72rem;line-height:1.3;color:#5b6877;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-home .board .wall .hcard-track{display:block;height:3px;margin-top:4px;border-radius:2px;background:#10234616}
+#view-home .board .wall .hcard-track>span{background:var(--bc);opacity:.75}
+#view-home .board .wall .hcard-seatline{display:grid;justify-items:end;align-content:center;gap:1px;min-width:54px}
+#view-home .board .wall .hcard-seat{font-size:2.1rem;line-height:1;font-weight:900;letter-spacing:-.03em;color:#14233a;font-variant-numeric:tabular-nums}
+#view-home .board .wall .hcard-delta{padding:0;border:0;background:none;font-size:.7rem;font-style:italic;font-weight:700;color:#6b7683}
+#view-home .board .wall .hcard-delta.up{color:#3b8a68}
+#view-home .board .wall .hcard-delta.down{color:#b4524a}
+#view-home .board .wall .hcard-action{display:block;font-size:1.5rem;line-height:1;color:#b6ad9a;transition:color .15s,transform .15s}
+#view-home .board .wall .hcard:hover .hcard-action,#view-home .board .wall .hcard:focus-visible .hcard-action{color:var(--bc);transform:translateX(-3px)}
+#view-home .board .wall .hcard.is-below{opacity:.82}
+#view-home .board .wall .hcard.is-below .hcard-seat{color:#7b8591;font-size:1.5rem}
+#view-home .board .wall .hcard.is-below .hcard-pct{padding:0;border:0;background:none;font-size:.72rem;font-weight:700;color:#6b7683}
+#view-home .board .wall .hcard.is-below::before{opacity:.35}
+
+@media (max-width:900px){
+  #view-home .board .wall{grid-template-columns:minmax(0,1fr)}
+  .bsum-n b{font-size:1.9rem}
+}
+/* מחשב נייד: הלוח כולו נכנס במסך אחד */
+@media (min-width:901px) and (max-height:800px){
+  #view-home .board{padding-block:10px 14px}
+  #view-home .board .board-title{padding-bottom:10px}
+  #view-home .board .board-title h2{font-size:1.4rem}
+  #view-home .board .board-summary{margin-top:8px;padding:8px 18px 8px;gap:6px}
+  .bsum-n b{font-size:1.8rem}
+  .bsum-note{display:none}
+  #view-home .board .wall{margin-top:10px;gap:12px}
+  #view-home .board .wall .bloc-head{padding:8px 16px 6px}
+  #view-home .board .wall .tally{font-size:2.1rem}
+  #view-home .board .wall .hcard{padding-block:4px;gap:10px}
+  #view-home .board .wall .hcard::before{inset-block:5px}
+  #view-home .board .wall .hcard-photo{width:36px;height:36px}
+  #view-home .board .wall .hcard{grid-template-columns:36px minmax(0,1fr) auto 14px}
+  #view-home .board .wall .hcard-seat{font-size:1.7rem}
+  #view-home .board .wall .hcard-track{margin-top:2px}
+}
+
 </style>
 <div dir="rtl" lang="he" id="barometer-root">
 
@@ -6035,6 +6114,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   <div class="wrap board" id="election-parties" tabindex="-1">
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
       <div class="wall-toggle" role="group" aria-label="פריסת הלוח"><button type="button" data-wall-layout="blocs" aria-pressed="true">לפי גושים</button><button type="button" data-wall-layout="size" aria-pressed="false">לפי גודל</button></div></div>
+    <div class="board-summary" id="board-summary" aria-label="סיכום הגושים"></div>
     <div class="wall-poster" id="wall-poster"></div>
     <div class="wall">
       <section class="bloc bloc-right" style="--bc:#17457F">
@@ -8584,7 +8664,7 @@ function homeDelta(id) {
 
 function homeCard(id, seats, est, maxSeats = 30) {
   const m = partyMeta(id);
-  const color = partyColor(id, m.alignment);
+  const color = partyHue(id);
   const photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
   const leader = PARTY_LEADER[normId(id)] || "";
   const belowPct = est.below && est.below[id];
@@ -8602,6 +8682,7 @@ function homeCard(id, seats, est, maxSeats = 30) {
       <span class="hcard-track" aria-hidden="true"><span style="width:${isBelow ? 0 : Math.max(4, 100 * n / maxSeats)}%"></span></span>
     </span>
     <span class="hcard-seatline"><span class="hcard-seat num">${n}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}${isBelow ? `<span class="hcard-pct num" title="מתחת לאחוז החסימה">${r1(belowPct)}%</span>` : ""}</span>
+    <span class="hcard-action" aria-hidden="true">‹</span>
   </button>`;
 }
 
@@ -8789,6 +8870,7 @@ function renderHome() {
     const m = partyMeta(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
     return `<span class="face" style="--bc:${partyColor(id, m.alignment)}" title="${esc(m.name)}"><img src="${esc(photo)}"${leaderSrcset(photo, "52px")} alt=""></span>`;
   }).join("");
+  renderBoardSummary(R, U, LA);
   $('[data-tally="Right"]').textContent = R;
   $('[data-tally="Mid"]').textContent = U;
   $('[data-tally="LeftArabs"]').textContent = LA;
@@ -8812,6 +8894,16 @@ function renderHome() {
   const electionHeadline = $("#election-headline");
   if (electionHeadline) electionHeadline.innerHTML = homeHeadline(est, seats, blocTot).h;
   window.renderElectionTools?.(seats, est, blocTot);
+}
+
+/* רצועת הסיכום מעל לוח המנדטים: שלושת הגושים כמספרים גדולים, ופס של 120 המושבים עם קו הרוב */
+function renderBoardSummary(R, U, LA) {
+  const box = $("#board-summary"); if (!box) return;
+  const parts = [["right", "גוש הימין והחרדים", R, BLOCS.Right.color], ["mid", "לא משויכות לגוש", U, BLOCS.Unknown.color], ["left", "מרכז־שמאל והרשימות הערביות", LA, BLOCS.Left.color]].filter(p => p[2] > 0);
+  const lead = R >= LA ? "right" : "left", short = Math.max(0, 61 - Math.max(R, LA));
+  box.innerHTML = `<div class="bsum-nums">${parts.map(([k, l, n, c]) => `<div class="bsum-n${k === lead ? " is-lead" : ""}" style="--c:${c}"><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("")}</div>
+    <div class="bsum-bar" role="img" aria-label="${esc(parts.map(p => p[1] + " " + p[2]).join(", "))}">${parts.map(([, , n, c]) => `<i style="flex:${n};background:${c}"></i>`).join("")}<u title="61 דרושים לרוב" style="inset-inline-start:${(100 * 61 / 120).toFixed(2)}%"></u></div>
+    <p class="bsum-note">אף גוש לא מגיע ל־61 המנדטים הדרושים לרוב${short ? `: חסרים ${short} לגוש המוביל` : ""}</p>`;
 }
 
 /* פריסת "פוסטר" כמו בגרפיקת הסקרים בטלוויזיה (כאן חדשות): כל הרשימות ברצף
@@ -10352,9 +10444,9 @@ function wire() {
     renderHome();
   }));
   $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
-  /* Portrait board by default; retain the visitor's explicit layout choice. */
+  /* לוח לפי גושים כברירת מחדל; בחירה מפורשת של הגולש נשמרת. */
   const applyWallLayout = () => { $(".board").classList.toggle("layout-size", S.wallLayout === "size"); $$("[data-wall-layout]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.wallLayout === S.wallLayout))); };
-  try { S.wallLayout = localStorage.getItem("wallLayout") === "blocs" ? "blocs" : "size"; } catch { S.wallLayout = "size"; }
+  try { S.wallLayout = localStorage.getItem("wallLayout") === "size" ? "size" : "blocs"; } catch { S.wallLayout = "blocs"; }
   applyWallLayout();
   $$("[data-wall-layout]").forEach(b => b.addEventListener("click", () => { S.wallLayout = b.dataset.wallLayout; try { localStorage.setItem("wallLayout", S.wallLayout); } catch {} applyWallLayout(); }));
 
@@ -10740,13 +10832,13 @@ let harediDocWired = false;
 function wireHarediDoc() {
   if (harediDocWired) return; harediDocWired = true;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  $("#hdoc-nav [data-hgo]").forEach(b => b.addEventListener("click", () => document.getElementById(b.dataset.hgo)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })));
+  $$("#hdoc-nav [data-hgo]").forEach(b => b.addEventListener("click", () => document.getElementById(b.dataset.hgo)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })));
   if (!("IntersectionObserver" in window)) return;
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
-    $("#hdoc-nav [data-hgo]").forEach(b => b.classList.toggle("is-on", b.dataset.hgo === e.target.id));
+    $$("#hdoc-nav [data-hgo]").forEach(b => b.classList.toggle("is-on", b.dataset.hgo === e.target.id));
   }), { rootMargin: "-25% 0px -65% 0px" });
-  $("#view-haredi .msec").forEach(sec => io.observe(sec));
+  $$("#view-haredi .msec").forEach(sec => io.observe(sec));
 }
 
 function renderHaredHistory() {

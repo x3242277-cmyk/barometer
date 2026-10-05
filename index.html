@@ -30,13 +30,13 @@
 <script src="assets/upgrade.js?v=ad968bb2" defer></script>
 <script src="assets/analytics.js?v=6076f79f" defer></script>
 <script src="assets/explore.js?v=5f643732" defer></script>
-<script src="assets/poll-tracker.js?v=12bb5ba9" defer></script>
+<script src="assets/poll-tracker.js?v=6be92078" defer></script>
 <script src="assets/polls-gap.js?v=1760e98b" defer></script>
 <script src="assets/polls-workspace.js?v=936b21e4" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=1ca9e907" defer></script>
+<script src="assets/app.js?v=ce07d07d" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
-<script src="assets/method-sim.js?v=d75139dd" defer></script>
+<script src="assets/method-sim.js?v=2216cbd1" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -55,13 +55,14 @@
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
 <script src="assets/election-tools.js?v=e91c490a" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
-<link rel="stylesheet" href="assets/results2022.css?v=226a1e2d">
+<link rel="stylesheet" href="assets/results2022.css?v=a4fa5d4b">
 <link rel="stylesheet" href="assets/demography.css?v=d9a2c515">
-<script src="assets/results2022.js?v=c13c6ec8" defer></script>
-<link rel="stylesheet" href="assets/polls-workspace.css?v=d4edba6b">
+<script src="assets/results2022.js?v=8d4fdb48" defer></script>
+<link rel="stylesheet" href="assets/polls-workspace.css?v=0cccf1ed">
 <link rel="stylesheet" href="assets/polls-gap.css?v=61dea519">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
-<link rel="stylesheet" href="assets/method-sim.css?v=6711ab2e">
+<link rel="stylesheet" href="assets/method-sim.css?v=cee074cd">
+<link rel="stylesheet" href="assets/board.css?v=f51617ed">
 </head>
 <body>
 
@@ -177,6 +178,7 @@
   <div class="wrap board" id="election-parties" tabindex="-1">
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
       <div class="wall-toggle" role="group" aria-label="פריסת הלוח"><button type="button" data-wall-layout="blocs" aria-pressed="true">לפי גושים</button><button type="button" data-wall-layout="size" aria-pressed="false">לפי גודל</button></div></div>
+    <div class="board-summary" id="board-summary" aria-label="סיכום הגושים"></div>
     <div class="wall-poster" id="wall-poster"></div>
     <div class="wall">
       <section class="bloc bloc-right" style="--bc:#17457F">

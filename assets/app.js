@@ -705,7 +705,7 @@ function homeDelta(id) {
 
 function homeCard(id, seats, est, maxSeats = 30) {
   const m = partyMeta(id);
-  const color = partyColor(id, m.alignment);
+  const color = partyHue(id);
   const photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
   const leader = PARTY_LEADER[normId(id)] || "";
   const belowPct = est.below && est.below[id];
@@ -723,6 +723,7 @@ function homeCard(id, seats, est, maxSeats = 30) {
       <span class="hcard-track" aria-hidden="true"><span style="width:${isBelow ? 0 : Math.max(4, 100 * n / maxSeats)}%"></span></span>
     </span>
     <span class="hcard-seatline"><span class="hcard-seat num">${n}</span>${d ? `<span class="hcard-delta ${d.cls}" title="בעדכון הקודם: ${d.prev}">${d.txt}</span>` : ""}${isBelow ? `<span class="hcard-pct num" title="מתחת לאחוז החסימה">${r1(belowPct)}%</span>` : ""}</span>
+    <span class="hcard-action" aria-hidden="true">‹</span>
   </button>`;
 }
 
@@ -910,6 +911,7 @@ function renderHome() {
     const m = partyMeta(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
     return `<span class="face" style="--bc:${partyColor(id, m.alignment)}" title="${esc(m.name)}"><img src="${esc(photo)}"${leaderSrcset(photo, "52px")} alt=""></span>`;
   }).join("");
+  renderBoardSummary(R, U, LA);
   $('[data-tally="Right"]').textContent = R;
   $('[data-tally="Mid"]').textContent = U;
   $('[data-tally="LeftArabs"]').textContent = LA;
@@ -933,6 +935,16 @@ function renderHome() {
   const electionHeadline = $("#election-headline");
   if (electionHeadline) electionHeadline.innerHTML = homeHeadline(est, seats, blocTot).h;
   window.renderElectionTools?.(seats, est, blocTot);
+}
+
+/* רצועת הסיכום מעל לוח המנדטים: שלושת הגושים כמספרים גדולים, ופס של 120 המושבים עם קו הרוב */
+function renderBoardSummary(R, U, LA) {
+  const box = $("#board-summary"); if (!box) return;
+  const parts = [["right", "גוש הימין והחרדים", R, BLOCS.Right.color], ["mid", "לא משויכות לגוש", U, BLOCS.Unknown.color], ["left", "מרכז־שמאל והרשימות הערביות", LA, BLOCS.Left.color]].filter(p => p[2] > 0);
+  const lead = R >= LA ? "right" : "left", short = Math.max(0, 61 - Math.max(R, LA));
+  box.innerHTML = `<div class="bsum-nums">${parts.map(([k, l, n, c]) => `<div class="bsum-n${k === lead ? " is-lead" : ""}" style="--c:${c}"><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("")}</div>
+    <div class="bsum-bar" role="img" aria-label="${esc(parts.map(p => p[1] + " " + p[2]).join(", "))}">${parts.map(([, , n, c]) => `<i style="flex:${n};background:${c}"></i>`).join("")}<u title="61 דרושים לרוב" style="inset-inline-start:${(100 * 61 / 120).toFixed(2)}%"></u></div>
+    <p class="bsum-note">אף גוש לא מגיע ל־61 המנדטים הדרושים לרוב${short ? `: חסרים ${short} לגוש המוביל` : ""}</p>`;
 }
 
 /* פריסת "פוסטר" כמו בגרפיקת הסקרים בטלוויזיה (כאן חדשות): כל הרשימות ברצף
@@ -2473,9 +2485,9 @@ function wire() {
     renderHome();
   }));
   $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
-  /* Portrait board by default; retain the visitor's explicit layout choice. */
+  /* לוח לפי גושים כברירת מחדל; בחירה מפורשת של הגולש נשמרת. */
   const applyWallLayout = () => { $(".board").classList.toggle("layout-size", S.wallLayout === "size"); $$("[data-wall-layout]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.wallLayout === S.wallLayout))); };
-  try { S.wallLayout = localStorage.getItem("wallLayout") === "blocs" ? "blocs" : "size"; } catch { S.wallLayout = "size"; }
+  try { S.wallLayout = localStorage.getItem("wallLayout") === "size" ? "size" : "blocs"; } catch { S.wallLayout = "blocs"; }
   applyWallLayout();
   $$("[data-wall-layout]").forEach(b => b.addEventListener("click", () => { S.wallLayout = b.dataset.wallLayout; try { localStorage.setItem("wallLayout", S.wallLayout); } catch {} applyWallLayout(); }));
 
@@ -2861,13 +2873,13 @@ let harediDocWired = false;
 function wireHarediDoc() {
   if (harediDocWired) return; harediDocWired = true;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  $("#hdoc-nav [data-hgo]").forEach(b => b.addEventListener("click", () => document.getElementById(b.dataset.hgo)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })));
+  $$("#hdoc-nav [data-hgo]").forEach(b => b.addEventListener("click", () => document.getElementById(b.dataset.hgo)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })));
   if (!("IntersectionObserver" in window)) return;
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
-    $("#hdoc-nav [data-hgo]").forEach(b => b.classList.toggle("is-on", b.dataset.hgo === e.target.id));
+    $$("#hdoc-nav [data-hgo]").forEach(b => b.classList.toggle("is-on", b.dataset.hgo === e.target.id));
   }), { rootMargin: "-25% 0px -65% 0px" });
-  $("#view-haredi .msec").forEach(sec => io.observe(sec));
+  $$("#view-haredi .msec").forEach(sec => io.observe(sec));
 }
 
 function renderHaredHistory() {

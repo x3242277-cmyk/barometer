@@ -326,7 +326,7 @@
 
   /* ---------- שלב 6: תחשיב הברומטר ---------- */
   async function sceneCalc() {
-    const steps = D.stepsCalc, MAX = 76, cols = [["right", "ימין וחרדים", R_COL()], ["arab", "ערבים", A_COL()], ["left", "מרכז־שמאל", L_COL()]];
+    const steps = D.stepsCalc, MAX = 80, cols = [["right", "ימין וחרדים", R_COL()], ["arab", "ערבים", A_COL()], ["left", "מרכז־שמאל", L_COL()]];
     setStage(`<div class="ms-cv"><div class="ms-cv-chart"><div class="ms-cv-plots"><i class="ms-cv-line" style="bottom:${61 / MAX * 100}%"><span>61 · רוב</span></i>
         ${cols.map(([k, , c]) => `<div class="ms-cv-col" data-b="${k}" style="--c:${c}"><i class="ms-cv-ghost"></i><i class="ms-cv-bar"></i><div class="ms-cv-v"><b dir="ltr">0</b><em dir="ltr"></em></div></div>`).join("")}</div>
         <div class="ms-cv-names">${cols.map(([, n, c]) => `<span style="--c:${c}">${n}</span>`).join("")}</div></div>

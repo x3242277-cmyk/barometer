@@ -671,8 +671,15 @@ const PARTY_LEADER = {
 };
 
 /* כותרת עמוד הבית נגזרת מהמספרים לפי כלל קבוע — לא נכתבת ידנית בכל עדכון. */
+/* ימין וחרדים | הרשימות הערביות (כולל רע״ם) | מרכז־שמאל — אותו סדר בפס, בכותרת ובמפת המושבים */
+function blocSplit(seats, blocTot) {
+  const R = blocTot.Right || 0, U = blocTot.Unknown || 0;
+  const arab = Object.entries(seats).filter(([id]) => ARAB_FAMILY.has(normId(id)) || partyMeta(id).alignment === "Arabs").reduce((t, [, n]) => t + n, 0);
+  const left = Math.max(0, (blocTot.Left || 0) + (blocTot.Arabs || 0) - arab);
+  return { R, U, arab, left };
+}
 function homeHeadline(est, seats, blocTot) {
-  const R = blocTot.Right || 0, L = blocTot.Left || 0, A = blocTot.Arabs || 0;
+  const R = blocTot.Right || 0, L = blocTot.Left || 0, sp = blocSplit(seats, blocTot);
   const lead = R >= L ? "גוש הימין והחרדים" : "גוש מרכז־שמאל", hi = Math.max(R, L);
   const edge = Object.entries(est.below || {}).filter(([, p]) => p >= 3.0 && p < 3.25).map(([id]) => partyMeta(id).name);
   const top = Object.entries(seats).sort((a, b) => b[1] - a[1])[0];
@@ -682,7 +689,7 @@ function homeHeadline(est, seats, blocTot) {
   };
   if (hi >= 61) return { h: `${lead}: <em>${hi} מנדטים</em>`, s: "מעל 61 — רוב בכנסת ה־26 בכוחות הגוש עצמו." };
   return {
-    h: `אף גוש לא מגיע ל־61: <em>ימין וחרדים ${R} · מרכז־שמאל ${L}${A ? ` · ערבים ${A}` : ""}</em>`,
+    h: `אף גוש לא מגיע ל־61: <em>ימין וחרדים ${R}${sp.arab ? ` · ערבים ${sp.arab}` : ""} · מרכז־שמאל ${sp.left}</em>`,
     s: top ? `${esc(partyMeta(top[0]).name)} היא המפלגה הגדולה, ${top[1]} מנדטים. הרשימות הערביות אינן משויכות לגוש.` : "הרשימות הערביות אינן משויכות לגוש."
   };
 }
@@ -782,11 +789,12 @@ function renderHomeHemicycle(seats, blocTot, est) {
   const dots = pts.map((p, idx) => { const it = seq[idx] || { color: "#D9DFE9", label: "" }; const x = cx + Math.cos(p.ang) * Rr * p.r, y = cy - Math.sin(p.ang) * Rr * p.r;
     return `<circle class="seat" data-k="${esc(it.key || "")}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" fill="${it.color}"><title>${esc(it.label)}</title></circle>`; }).join("");
   const partyRow = list => list.map(id => { const d = homeDelta(id); return `<div class="sm-party" style="--c:${partyHue(id)}" title="${esc(partyMeta(id).name)}"><b class="num">${seats[id]}</b><i class="sm-swatch"></i><span class="sm-name">${esc(partyMeta(id).name)}</span><small class="${d ? d.cls : ""}">${d ? `${d.txt.startsWith("▲") ? "+" : "−"}${Math.abs(seats[id] - d.prev)}` : ""}</small></div>`; }).join("");
+  const bs = blocSplit(seats, blocTot);
   const midTop = U ? `<div class="sm-bloc mid"><b class="num">${U}</b><span>לא משויכות לגוש</span></div>` : "";
   const midBar = U ? `<span style="width:${100 * U / total}%;background:${BLOCS.Unknown.color}"></span>` : "";
   box.innerHTML = `<div class="seatmap">
     <div class="sm-top"><div class="sm-bloc right"><b class="num">${R}</b><span>גוש הימין והחרדים</span></div>${midTop}<div class="sm-bloc left"><b class="num">${LA}</b><span>מרכז־שמאל והרשימות הערביות</span></div></div>
-    <div class="sm-bar" role="img" aria-label="גוש הימין ${R}${U ? `, לא משויכות ${U}` : ""}, מרכז־שמאל והרשימות הערביות ${LA}"><span style="width:${100 * R / total}%;background:${BLOCS.Right.color}"></span>${midBar}<span style="width:${100 * LA / total}%;background:${BLOCS.Left.color}"></span><i class="sm-61" style="inset-inline-start:${100 * 61 / 120}%" title="61 — רוב"></i><i class="sm-61 end" style="inset-inline-end:${100 * 61 / 120}%"></i></div>
+    <div class="sm-bar" role="img" aria-label="גוש הימין ${R}, הרשימות הערביות ${bs.arab}${U ? `, לא משויכות ${U}` : ""}, מרכז־שמאל ${bs.left}"><span style="width:${100 * R / total}%;background:${BLOCS.Right.color}"></span>${bs.arab ? `<span style="width:${100 * bs.arab / total}%;background:${BLOCS.Arabs.color}"></span>` : ""}${midBar}<span style="width:${100 * bs.left / total}%;background:${BLOCS.Left.color}"></span><i class="sm-61" style="inset-inline-start:${100 * 61 / 120}%" title="61 — רוב"></i><i class="sm-61 end" style="inset-inline-end:${100 * 61 / 120}%"></i></div>
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`חלוקת ${total} המנדטים. ${items.map(i => i.label).join("; ")}`)}">${dots}
       <text x="${cx}" y="${cy - 38}" text-anchor="middle" class="hemicycle-total">${total}</text><text x="${cx}" y="${cy - 12}" text-anchor="middle" class="hemicycle-caption">מנדטים</text></svg>
     <div class="sm-parties"><div class="sm-side">${partyRow(side.right)}</div>${side.mid.length ? `<div class="sm-side mid">${partyRow(side.mid)}</div>` : ""}<div class="sm-side">${partyRow(side.left)}</div></div>

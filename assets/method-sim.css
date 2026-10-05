@@ -396,42 +396,46 @@
 .ms-pl-avg>div{border-inline-start:4px solid var(--k);padding-inline-start:10px}
 .ms-pl-avg b{color:var(--k)}
 
-/* שלב 6: עמודות עומדות וגדולות — רואים איך כל גוש זז משלב לשלב */
-.ms-cv{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:26px;align-items:stretch;height:100%}
-.ms-cv-chart{display:grid;grid-template-rows:auto auto;gap:6px;align-content:end}
-.ms-cv-plots{--cvh:clamp(220px,calc(100dvh - 400px),380px);position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;height:var(--cvh);border-bottom:3px solid #14233a33}
-.ms-cv-line{position:absolute;inset-inline:0;height:0;border-top:2px dashed #14233a;z-index:2}
-.ms-cv-line span{position:absolute;inset-inline-start:0;bottom:3px;font-style:normal;font-size:.74rem;font-weight:800;color:#14233a;background:#fdfbf6;padding-inline:4px}
+/* שלב 6: עמודות עומדות, בפרופורציות: גרף בינוני וטקסט קריא, שניהם ממלאים את הלוח */
+.ms-cv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,3vw,44px);align-items:center;height:100%}
+.ms-cv-chart{display:grid;gap:8px;align-content:center;width:100%;max-width:520px;margin-inline:auto}
+.ms-cv-plots{--cvh:clamp(190px,34dvh,300px);position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px);height:var(--cvh);border-bottom:3px solid #14233a33}
+.ms-cv-line{position:absolute;inset-inline:0;height:0;border-top:2px dashed #14233a99;z-index:2}
+.ms-cv-line span{position:absolute;inset-inline-end:0;bottom:3px;font-style:normal;font-size:.8rem;font-weight:800;color:#14233a;background:#fdfbf6;padding-inline:5px}
 .ms-cv-col{position:relative;min-width:0}
-.ms-cv-bar,.ms-cv-ghost{position:absolute;bottom:0;inset-inline:14%;display:block;border-radius:10px 10px 0 0}
-.ms-cv-bar{height:var(--h,0%);background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 78%,#0a1c33))}
-.ms-cv-ghost{height:var(--gh,0%);border:2px dashed var(--c);border-bottom:0;opacity:.55}
+.ms-cv-bar,.ms-cv-ghost{position:absolute;bottom:0;inset-inline:0;margin-inline:auto;width:min(92px,72%);display:block;border-radius:8px 8px 0 0}
+.ms-cv-bar{height:var(--h,0%);background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 80%,#0a1c33))}
+.ms-cv-ghost{height:var(--gh,0%);border:2px dashed var(--c);border-bottom:0;opacity:.5}
 .ms-cv-v{position:absolute;inset-inline:0;bottom:calc(var(--h,0%) + 6px);display:grid;justify-items:center;gap:0;z-index:3;text-align:center}
-.ms-cv-v b{font-size:clamp(1.9rem,5.6dvh,3rem);line-height:1;font-weight:900;letter-spacing:-.04em;color:var(--c);font-variant-numeric:tabular-nums}
-.ms-cv-v em{min-height:1.1em;font-style:normal;font-size:.8rem;font-weight:800}
+.ms-cv-v b{font-size:clamp(1.7rem,3.8dvh,2.4rem);line-height:1;font-weight:900;letter-spacing:-.03em;color:var(--c);font-variant-numeric:tabular-nums}
+.ms-cv-v em{min-height:1.15em;font-style:normal;font-size:.86rem;font-weight:800}
 .ms-cv-v em.up{color:#2a7a5e}.ms-cv-v em.down{color:#C0392B}
-.ms-cv-names{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;text-align:center}
-.ms-cv-names span{font-size:.95rem;font-weight:800;color:var(--c)}
-.ms-cv-side{display:grid;align-content:start;gap:8px;min-width:0}
-.ms-cv-now{display:grid;grid-template-columns:30px minmax(0,1fr);gap:2px 10px;align-items:center;padding:10px 14px;border:1px solid #d1ad62;border-radius:8px;background:#fbf4e3}
-.ms-cv-n{grid-row:span 2;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#12345c;color:#fff;font-size:.86rem;font-weight:800}
-.ms-cv-now b{font-size:1.02rem;line-height:1.25;color:var(--ink)}
-.ms-cv-now small{grid-column:2;font-size:.78rem;line-height:1.45;color:var(--ink-2)}
-.ms-cv-list{margin:0;padding:0;list-style:none;display:grid;gap:1px}
-.ms-cv-list li{display:flex;align-items:center;gap:8px;padding:2px 6px;border-radius:5px;font-size:.78rem;line-height:1.35;color:var(--ink-3);opacity:.45;transition:opacity .25s,background .25s}
-.ms-cv-list li i{display:grid;place-items:center;flex:none;width:18px;height:18px;border-radius:50%;border:1px solid #c9bda4;font-style:normal;font-size:.66rem;font-weight:800}
+.ms-cv-names{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px);text-align:center}
+.ms-cv-names span{font-size:1rem;font-weight:800;color:var(--c)}
+.ms-cv-side{display:grid;align-content:center;gap:12px;min-width:0}
+.ms-cv-now{display:grid;grid-template-columns:38px minmax(0,1fr);gap:3px 12px;align-items:center;padding:12px 16px;border:1px solid #d1ad62;border-radius:10px;background:#fbf4e3}
+.ms-cv-n{grid-row:span 2;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#12345c;color:#fff;font-size:1rem;font-weight:800}
+.ms-cv-now b{font-size:1.2rem;line-height:1.25;color:var(--ink)}
+.ms-cv-now small{grid-column:2;font-size:.92rem;line-height:1.5;color:var(--ink-2)}
+.ms-cv-list{margin:0;padding:0;list-style:none;display:grid;gap:2px}
+.ms-cv-list li{display:flex;align-items:center;gap:10px;padding:4px 8px;border-radius:6px;font-size:.95rem;line-height:1.35;color:var(--ink-3);opacity:.5;transition:opacity .25s,background .25s}
+.ms-cv-list li i{display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;border:1px solid #c9bda4;font-style:normal;font-size:.74rem;font-weight:800}
 .ms-cv-list li.is-on{opacity:1;background:#fbf4e3;color:var(--ink);font-weight:800}
 .ms-cv-list li.is-on i{background:#e5c783;border-color:#e5c783;color:#14233a}
 .ms-cv-list li.is-done{opacity:1}
 .ms-cv-list li.is-done i{background:#12345c;border-color:#12345c;color:#fff}
 .ms-cv-side.is-final .ms-cv-list{display:none}
-.ms-cv-side .ms-hemi{margin-top:2px}
-@media (max-width:980px){.ms-cv{grid-template-columns:minmax(0,1fr)}.ms-cv-plots{--cvh:240px}}
+.ms-cv-side .ms-hemi{margin-top:4px}
+.ms-cv-side .ms-hemi svg{max-height:min(280px,38dvh)}
+@media (max-width:980px){.ms-cv{grid-template-columns:minmax(0,1fr)}.ms-cv-plots{--cvh:230px}}
 @media (min-width:981px) and (max-height:780px){
-  .ms-cv{gap:20px}
-  .ms-cv-plots{--cvh:clamp(200px,calc(100dvh - 405px),380px);gap:16px}
-  .ms-cv-now{padding:6px 12px}
-  .ms-cv-now small{font-size:.74rem;line-height:1.35}
-  .ms-cv-list li{padding-block:1px;font-size:.74rem}
+  .ms-cv{gap:22px}
+  .ms-cv-plots{--cvh:clamp(180px,calc(100dvh - 440px),260px);gap:16px}
+  .ms-cv-side{gap:8px}
+  .ms-cv-now{padding:8px 12px}
+  .ms-cv-now b{font-size:1.05rem}
+  .ms-cv-now small{font-size:.82rem;line-height:1.4}
+  .ms-cv-list li{padding-block:1px;font-size:.84rem}
+  .ms-cv-list li i{width:19px;height:19px;font-size:.68rem}
   .ms-cv-side .ms-hemi svg{max-height:170px}
 }

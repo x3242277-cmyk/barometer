@@ -930,11 +930,37 @@ function renderHome() {
   $("#cards-left").innerHTML = byRow.left.map(id => homeCard(id, seats, est, maxSeats)).join("");
   $(".wall").classList.toggle("has-mid", byRow.mid.length > 0);
 
+  renderForecastSides(byRow, seats, est, R, U, LA);
   renderWallPoster(seats, est, blocTot, belowEntries);
   buildHomePrintSheet(est, seats, blocTot);
   const electionHeadline = $("#election-headline");
   if (electionHeadline) electionHeadline.innerHTML = homeHeadline(est, seats, blocTot).h;
   window.renderElectionTools?.(seats, est, blocTot);
+}
+
+/* תחזית הברומטר: הגושים משני צידי מפת המושבים — דיוקנאות גדולים, ופס עבה לכיוון האמצע (בלי רקע אפור מתחת).
+   גוש הימין והחרדים מימין; מרכז־שמאל והרשימות הערביות (וגם הלא־משויכות) משמאל. */
+function renderForecastSides(byRow, seats, est, R, U, LA) {
+  const right = $("#fs-right"), left = $("#fs-left");
+  if (!right || !left) return;
+  const maxSeats = Math.max(1, ...Object.values(seats));
+  const belowOf = id => est.below && est.below[id];
+  const order = ids => ids.slice().sort((a, b) => (seats[b] || 0) - (seats[a] || 0) || (belowOf(b) || 0) - (belowOf(a) || 0));
+  const row = id => {
+    const m = partyMeta(id), color = partyHue(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER, leader = PARTY_LEADER[normId(id)] || "";
+    const belowPct = belowOf(id), isBelow = seats[id] == null && belowPct != null, n = isBelow ? 0 : (seats[id] || 0), d = isBelow ? null : homeDelta(id);
+    const aria = isBelow ? `${m.name}, מתחת לאחוז החסימה, כ־${r1(belowPct)}%` : `${m.name}, ${n} מנדטים${d ? `, ${d.cls === "up" ? "עלייה" : "ירידה"} של ${Math.abs(n - d.prev)} מהעדכון הקודם` : ""}`;
+    return `<button type="button" class="fs-row${isBelow ? " is-below" : ""}" style="--bc:${color};--wf:${isBelow ? 0 : (n / maxSeats).toFixed(3)}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
+      <span class="fs-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "96px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
+      <span class="fs-info"><span class="fs-name">${esc(m.name)}</span>${leader ? `<span class="fs-leader">${esc(leader)}</span>` : ""}
+        <span class="fs-barline"><i class="fs-bar"></i><b class="fs-n num">${isBelow ? `${r1(belowPct)}%` : n}</b>${d ? `<em class="fs-d ${d.cls}" title="בעדכון הקודם: ${d.prev}">${esc(d.txt)}</em>` : ""}</span></span></button>`;
+  };
+  const side = (box, title, total, color, ids) => {
+    box.style.setProperty("--bc", color);
+    box.innerHTML = `<div class="fs-head"><b class="fs-total num">${total}</b><span>${esc(title)}</span></div><div class="fs-rows">${order(ids).map(row).join("")}</div>`;
+  };
+  side(right, "גוש הימין והחרדים", R, BLOCS.Right.color, byRow.right);
+  side(left, "מרכז־שמאל והרשימות הערביות", LA + U, BLOCS.Left.color, byRow.left.concat(byRow.mid));
 }
 
 /* רצועת הסיכום מעל לוח המנדטים: שלושת הגושים כמספרים גדולים, ופס של 120 המושבים עם קו הרוב */

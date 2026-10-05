@@ -34,7 +34,7 @@
 <script src="assets/polls-gap.js?v=1760e98b" defer></script>
 <script src="assets/polls-workspace.js?v=936b21e4" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=2d82b368" defer></script>
+<script src="assets/app.js?v=84d52a54" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
 <script src="assets/method-sim.js?v=fad57710" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
@@ -63,7 +63,7 @@
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
 <link rel="stylesheet" href="assets/method-sim.css?v=5c59d7d0">
 <link rel="stylesheet" href="assets/acc-hero.css?v=d6b3edc5">
-<link rel="stylesheet" href="assets/forecast.css?v=094ffae9">
+<link rel="stylesheet" href="assets/forecast.css?v=c0e44910">
 <link rel="stylesheet" href="assets/board.css?v=f51617ed">
 </head>
 <body>
@@ -151,14 +151,15 @@
         <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26</p>
         <span class="edition-label" lang="en" dir="ltr">ISRAEL / ELECTIONS 2026</span>
       </div>
-      <div class="election-hero">
+      <div class="election-hero fs-hero">
+        <aside class="fs-side fs-right" id="fs-right" aria-label="גוש הימין והחרדים"></aside>
+        <div class="fs-center">
         <div class="election-copy">
           <p class="hero-overline">תמונת המצב</p>
           <h2 id="verdict-head" tabindex="-1">120 מנדטים.<br><em>מי בדרך לרוב?</em></h2>
           <p class="forecast-headline" id="election-headline"></p>
           <p class="hero-description">זו התמונה שמתקבלת אחרי שבודקים את הסקרים מול העבר, משקללים את המכונים ומוסיפים בדיקות של אחוז החסימה והדמוגרפיה. אפשר לעבור בין ממוצע המכונים לתחזית המלאה.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
-          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> לראות איך התמונה נבנית</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
         </div>
         <div class="election-visual">
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
@@ -166,6 +167,9 @@
           <div class="readout" id="home-readout"></div>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
         </div>
+
+        </div>
+        <aside class="fs-side fs-left" id="fs-left" aria-label="מרכז־שמאל והרשימות הערביות"></aside>
       </div>
       <div class="home-forecast-controls">
         <div class="switch home-switch" role="group" aria-label="אופן החישוב">
@@ -173,11 +177,12 @@
           <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
         </div>
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
+        <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> לראות איך התמונה נבנית</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
       </div>
     </div>
-    <button type="button" class="section-next" data-home-section="election-parties" aria-label="לקטע הבא — לוח המנדטים"><span aria-hidden="true">↓</span></button>
+    <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — בניית קואליציה"><span aria-hidden="true">↓</span></button>
   </div>
-  <div class="wrap board" id="election-parties" tabindex="-1">
+  <div class="wrap board" id="election-parties" tabindex="-1" hidden>
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
       <div class="wall-toggle" role="group" aria-label="פריסת הלוח"><button type="button" data-wall-layout="blocs" aria-pressed="true">לפי גושים</button><button type="button" data-wall-layout="size" aria-pressed="false">לפי גודל</button></div></div>
     <div class="board-summary" id="board-summary" aria-label="סיכום הגושים"></div>

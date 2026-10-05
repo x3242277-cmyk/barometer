@@ -6133,71 +6133,96 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-e2022 .acc-row .orglogo{width:46px;height:46px}
 #view-e2022 .acc-row .orglogo img{padding:6px}
 
-/* תחזית הברומטר (#/forecast) — עיצוב חדש: ראש עמוד בסגנון פוסטר (כותרת ענקית, ספירת הגושים במספרים גדולים, מפת מנדטים בכרטיס בהיר),
-   כותרות גדולות לכל קטע, והקטע הראשון נכנס במסך אחד של מחשב נייד. הצבעים ללא שינוי: נייבי, שמנת וזהב.
-   נטען אחרון, כדי לגבור על שכבות העיצוב הישנות (editorial / election / experience / clarity). */
+/* תחזית הברומטר (#/forecast) — הקטע הראשי: מפת המושבים באמצע, והגושים משני הצדדים בדיוקנאות גדולים,
+   עם פס עבה לכיוון האמצע ובלי רקע אפור מתחתיו. כותרות גדולות לכל קטע, וכל קטע נכנס במסך אחד של מחשב נייד.
+   הצבעים ללא שינוי: נייבי, שמנת וזהב. נטען אחרון, כדי לגבור על שכבות העיצוב הישנות. */
 
-/* ---------- ראש העמוד: פוסטר כהה ---------- */
-#view-home:not(#_):not(#__).on>.verdict{display:flex;align-items:center;padding:14px 0 12px}
+/* ---------- הקטע הראשי ---------- */
+#view-home:not(#_):not(#__).on>.verdict{display:flex;align-items:center;padding:12px 0}
 #view-home:not(#_):not(#__) .verdict>.wrap{width:100%}
-#view-home:not(#_):not(#__) .verdict .verdict-in{position:relative;overflow:hidden;width:100%;padding:14px 36px 0;border:1px solid #e5c78355;border-radius:16px;color:#f6f3ec;
-  background:radial-gradient(110% 130% at 100% 0%,#1d4f86 0%,#12345c 42%,#0a1c33 100%);box-shadow:0 26px 60px -30px #000000cc}
-#view-home:not(#_):not(#__) .verdict .verdict-in::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(115deg,transparent 0 46px,#ffffff07 46px 47px),radial-gradient(38% 55% at 14% 96%,#e5c78333,transparent 70%)}
-#view-home:not(#_):not(#__) .verdict .verdict-in>*{position:relative}
-#view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:10px;border-bottom:1px solid #ffffff1f}
-#view-home:not(#_):not(#__) .verdict .eyebrow{color:#e5c783;font-size:.78rem;font-weight:800;letter-spacing:.05em}
-#view-home:not(#_):not(#__) .verdict .edition-label{color:#9fb4c9}
-#view-home:not(#_):not(#__) .verdict .election-hero{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:44px;align-items:center;padding:14px 0 12px}
-#view-home:not(#_):not(#__) .verdict .hero-overline{margin:0 0 6px;color:#e5c783;font-size:.8rem;font-weight:800;letter-spacing:.05em}
-#view-home:not(#_):not(#__) .verdict #verdict-head{margin:0 0 10px;font-size:clamp(2.7rem,8.4dvh,5.2rem);font-weight:900;line-height:.98;letter-spacing:-.05em;color:#fff}
-#view-home:not(#_):not(#__) .verdict #verdict-head em{display:inline-block;margin-top:4px;font-style:normal;
-  background:linear-gradient(180deg,#f6e7bd 20%,#d9b45f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-#view-home:not(#_):not(#__) .verdict .forecast-headline{max-width:none;margin:0 0 6px;font-size:1.05rem;line-height:1.55;font-weight:700;color:#f6e7bd}
-#view-home:not(#_):not(#__) .verdict .forecast-headline em{color:#fff;font-style:normal}
-#view-home:not(#_):not(#__) .verdict .hero-description{max-width:44ch;margin:0 0 12px;font-size:.85rem;line-height:1.7;color:#c3cedb}
-#view-home:not(#_):not(#__) .verdict .hero-cta{margin-top:10px}
-#view-home:not(#_):not(#__) .verdict .show-btn{padding:12px 20px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font-size:.9rem;font-weight:800;
-  box-shadow:0 12px 26px -12px #e5c783}
-#view-home:not(#_):not(#__) .verdict .show-btn:hover{filter:brightness(1.06);background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62))}
-#view-home:not(#_):not(#__) .verdict .show-btn .play{display:inline-grid;place-items:center;width:24px;height:24px;margin-inline-end:6px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:.62rem}
-#view-home:not(#_):not(#__) .verdict .hero-link{color:#dbe5f0;font-size:.85rem;font-weight:700}
-#view-home:not(#_):not(#__) .verdict .hero-link span{border-color:#ffffff44;color:#f6e7bd}
+#view-home:not(#_):not(#__) .verdict .verdict-in{position:relative;width:100%;padding:12px 28px 0;border:1px solid #d9d2c3;border-radius:16px;background:#fdfbf6;color:#14233a;box-shadow:0 26px 60px -34px #000000d0;overflow:hidden}
+#view-home:not(#_):not(#__) .verdict .verdict-in::before{content:"";position:absolute;inset-inline:0;top:0;height:5px;background:linear-gradient(90deg,#17457F 0 49%,#e5c783 49% 51%,#C0392B 51% 100%)}
+#view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:6px;border-bottom:1px solid #1023461a}
+#view-home:not(#_):not(#__) .verdict .eyebrow{color:#855a0c;font-size:.78rem;font-weight:800;letter-spacing:.05em}
+#view-home:not(#_):not(#__) .verdict .edition-label{color:#586575}
 
-/* מפת המנדטים: כרטיס בהיר על הפוסטר, ספירת הגושים במספרים גדולים */
-#view-home:not(#_):not(#__) .verdict .election-visual{padding:14px 20px 10px;border:1px solid #ffffff55;border-radius:12px;background:linear-gradient(140deg,#fdfbf6,#f3eee4);box-shadow:0 22px 40px -24px #000000d0}
-#view-home:not(#_):not(#__) .verdict .visual-topline{padding-bottom:6px}
-#view-home:not(#_):not(#__) .verdict .home-hemicycle{margin:6px auto 0}
-#view-home:not(#_):not(#__) .verdict .sm-bloc b{font-size:2.9rem;line-height:1;font-weight:900;letter-spacing:-.04em}
-#view-home:not(#_):not(#__) .verdict .sm-bloc span{font-size:.78rem;font-weight:700}
-#view-home:not(#_):not(#__) .verdict .seatmap .hemicycle-total{font-size:62px}
+/* שלוש עמודות: גוש ימין | מרכז | גוש שמאל */
+#view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) minmax(0,1fr);gap:22px;align-items:stretch;padding:8px 0 4px}
+.fs-center{display:grid;align-content:center;justify-items:center;gap:6px;min-width:0;text-align:center}
+#view-home:not(#_):not(#__) .fs-center .election-copy{display:grid;justify-items:center;gap:2px;min-width:0}
+#view-home:not(#_):not(#__) .fs-center .hero-overline{margin:0;color:#855a0c;font-size:.78rem;font-weight:800}
+#view-home:not(#_):not(#__) .fs-center #verdict-head{margin:0;font-size:clamp(2rem,6dvh,3.6rem);font-weight:900;line-height:1;letter-spacing:-.05em;color:#14233a}
+#view-home:not(#_):not(#__) .fs-center #verdict-head em{display:block;margin-top:2px;font-style:normal;color:#855a0c}
+#view-home:not(#_):not(#__) .fs-center .forecast-headline{max-width:none;margin:4px 0 0;font-size:.95rem;line-height:1.45;font-weight:700;color:#3a4859}
+#view-home:not(#_):not(#__) .fs-center .forecast-headline em{color:#14233a;font-style:normal}
+#view-home:not(#_):not(#__) .fs-center .hero-description{display:none}
+#view-home:not(#_):not(#__) .fs-center .hero-cta{justify-content:center;margin-top:6px}
+#view-home:not(#_):not(#__) .fs-center .show-btn{padding:10px 18px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font-size:.86rem;font-weight:800;box-shadow:0 10px 22px -12px #b8862b}
+#view-home:not(#_):not(#__) .fs-center .show-btn .play{display:inline-grid;place-items:center;width:22px;height:22px;margin-inline-end:6px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:.58rem}
+#view-home:not(#_):not(#__) .fs-center .hero-link{font-size:.82rem;font-weight:700;color:#3a4859}
+#view-home:not(#_):not(#__) .fs-center .election-visual{width:100%;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+#view-home:not(#_):not(#__) .fs-center .visual-topline,#view-home:not(#_):not(#__) .fs-center .visual-footnote,#view-home:not(#_):not(#__) .fs-center .sm-top,#view-home:not(#_):not(#__) .fs-center .sm-parties{display:none}
+#view-home:not(#_):not(#__) .fs-center .home-hemicycle{margin:0 auto;max-width:none}
+#view-home:not(#_):not(#__) .fs-center .seatmap{gap:6px}
+#view-home:not(#_):not(#__) .fs-center .seatmap svg{width:100%;max-width:none;height:auto}
+#view-home:not(#_):not(#__) .fs-center .seatmap .hemicycle-total{font-size:70px}
 
-/* בקרות: ממוצע/תחזית ותאריך */
-#view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:10px 0 12px;border-top:1px solid #ffffff1f;color:#c3cedb}
-#view-home:not(#_):not(#__) .verdict .home-switch{border:1px solid #ffffff33;background:#ffffff12}
-#view-home:not(#_):not(#__) .verdict .home-switch button{color:#dbe5f0}
+/* עמודת גוש */
+.fs-side{--ph:clamp(46px,calc((100dvh - 350px) / 7),92px);display:grid;align-content:start;gap:8px;min-width:0}
+.fs-head{display:flex;align-items:baseline;gap:12px;padding-bottom:6px;border-bottom:3px solid var(--bc)}
+.fs-total{font-size:clamp(2.4rem,6.4dvh,3.6rem);line-height:.9;font-weight:900;letter-spacing:-.05em;color:var(--bc);font-variant-numeric:tabular-nums}
+.fs-head span{font-size:.95rem;font-weight:800;color:#14233a;line-height:1.2}
+.fs-rows{display:grid;gap:clamp(3px,.8dvh,8px)}
+.fs-row{display:grid;grid-template-columns:var(--ph) minmax(0,1fr);align-items:center;gap:12px;width:100%;padding:2px 6px 2px 2px;border:0;border-radius:12px;background:transparent;font:inherit;color:inherit;text-align:start;cursor:pointer;transition:background .15s,box-shadow .15s,transform .15s}
+.fs-row:hover,.fs-row:focus-visible{background:color-mix(in srgb,var(--bc) 9%,#fff);box-shadow:0 6px 16px -10px #0a1c33a0;transform:translateY(-1px)}
+.fs-row:focus-visible{outline:2px solid var(--bc);outline-offset:1px}
+.fs-photo{display:block;width:var(--ph);height:var(--ph);border:3px solid var(--bc);border-radius:14px;overflow:hidden;background:#f2ede2}
+.fs-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 14%}
+.fs-info{display:grid;gap:0;min-width:0;align-content:center}
+.fs-name{font-size:clamp(.92rem,2.1dvh,1.12rem);font-weight:800;line-height:1.2;color:#14233a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-leader{font-size:.72rem;line-height:1.25;color:#5b6877;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-barline{display:flex;align-items:center;gap:8px;margin-top:3px;min-width:0}
+.fs-bar{flex:none;display:block;width:calc((100% - 74px) * var(--wf));min-width:0;height:clamp(14px,3dvh,26px);border-radius:5px;background:var(--bc)}
+.fs-row:not(.is-below) .fs-bar{min-width:6px}
+.fs-n{flex:none;font-size:clamp(1.3rem,3.6dvh,2rem);line-height:1;font-weight:900;letter-spacing:-.03em;color:#14233a;font-variant-numeric:tabular-nums}
+.fs-d{flex:none;font-style:normal;font-size:.72rem;font-weight:800;color:#6b7683}
+.fs-d.up{color:#3b8a68}.fs-d.down{color:#b4524a}
+.fs-row.is-below .fs-n{font-size:1rem;color:#7b8591}
+.fs-row.is-below .fs-photo{opacity:.7;filter:grayscale(.4)}
+/* גוש שמאל: ראי — הדיוקן בקצה השמאלי, והפס גדל ימינה לכיוון האמצע */
+.fs-left .fs-row{direction:ltr}
+.fs-left .fs-name,.fs-left .fs-leader{direction:rtl;text-align:left}
+.fs-left .fs-head{direction:ltr;justify-content:flex-start}
+.fs-left .fs-head span{direction:rtl}
+#view-home:not(#_):not(#__) .board[hidden]{display:none!important}
+
+/* בקרות: תחזית/משוקלל ותאריך */
+#view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:8px 0 10px;border-top:1px solid #1023461a;color:#3a4859}
+#view-home:not(#_):not(#__) .verdict .home-switch{border:1px solid #d3c9b7;background:#f3eee4}
+#view-home:not(#_):not(#__) .verdict .home-switch button{color:#3a4859}
 #view-home:not(#_):not(#__) .verdict .home-switch button[aria-pressed="true"]{background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a}
-#view-home:not(#_):not(#__) .verdict .home-history-pick span{color:#b4c1ce}
-#view-home:not(#_):not(#__) .verdict .home-history-pick select{color-scheme:dark}
+#view-home:not(#_):not(#__) .verdict .home-history-pick span{color:#586575}
 
 /* מחשב נייד: הקטע כולו במסך אחד */
 @media (min-width:901px) and (max-height:800px){
-  #view-home:not(#_):not(#__).on>.verdict{padding:8px 0 6px}
-  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:10px 30px 0}
-  #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:6px}
-  #view-home:not(#_):not(#__) .verdict .election-hero{padding:8px 0 6px;gap:34px}
-  #view-home:not(#_):not(#__) .verdict .hero-description{display:none}
-  #view-home:not(#_):not(#__) .verdict .election-visual{padding:8px 16px 6px}
-  #view-home:not(#_):not(#__) .verdict .visual-topline{display:none}
-  #view-home:not(#_):not(#__) .verdict .sm-votes,#view-home:not(#_):not(#__) .verdict .visual-footnote{display:none}
-  #view-home:not(#_):not(#__) .verdict .sm-bloc b{font-size:2.3rem}
-  #view-home:not(#_):not(#__) .verdict .seatmap svg{max-width:min(430px,calc((100dvh - 330px) * 1.5))}
-  #view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:6px 0 8px}
-  #view-home:not(#_):not(#__) .verdict .home-switch button{min-height:28px;padding:5px 12px}
+  #view-home:not(#_):not(#__).on>.verdict{padding:6px 0 4px}
+  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:8px 24px 0}
+  #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:4px}
+  #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{padding:4px 0 2px;gap:16px}
+  #view-home:not(#_):not(#__) .fs-center .hero-overline{display:none}
+  #view-home:not(#_):not(#__) .fs-center .seatmap svg{max-width:min(540px,calc((100dvh - 385px) * 1.95))}
+  .fs-leader{display:none}
+  .fs-side{--ph:46px}
+  .fs-barline{margin-top:1px}
+  #view-home:not(#_):not(#__) .fs-center .sm-votes,#view-home:not(#_):not(#__) .fs-center .sm-bar.thin{display:none}
+  #view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:4px 0 6px}
+  #view-home:not(#_):not(#__) .verdict .home-switch button{min-height:26px;padding:4px 12px}
+  .fs-head{padding-bottom:3px}
 }
 @media (max-width:900px){
-  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:14px 18px 0}
-  #view-home:not(#_):not(#__) .verdict .election-hero{grid-template-columns:minmax(0,1fr);gap:20px}
+  #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{grid-template-columns:minmax(0,1fr)}
+  .fs-center{order:-1}
+  .fs-side{--ph:64px}
 }
 
 /* ---------- כותרות גדולות לכל קטע ---------- */
@@ -6258,6 +6283,12 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-home:not(#_):not(#__) #home-story .story-sources{margin-top:4px;padding-top:2px}
   #view-home:not(#_):not(#__) #home-story .story-sources summary{padding-block:2px}
 }
+
+/* הכפתור הראשי יושב בשורת הבקרות, כדי שהקטע כולו ייכנס במסך אחד */
+#view-home:not(#_):not(#__) .verdict .home-forecast-controls .hero-cta{margin:0 auto 0 0;justify-content:flex-end;gap:14px}
+#view-home:not(#_):not(#__) .verdict .home-forecast-controls .show-btn{padding:10px 18px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font-size:.86rem;font-weight:800;box-shadow:0 10px 22px -12px #b8862b}
+#view-home:not(#_):not(#__) .verdict .home-forecast-controls .show-btn .play{display:inline-grid;place-items:center;width:22px;height:22px;margin-inline-end:6px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:.58rem}
+#view-home:not(#_):not(#__) .verdict .home-forecast-controls .hero-link{font-size:.82rem;font-weight:700;color:#3a4859}
 
 </style>
 </head><body>
@@ -6346,14 +6377,15 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
         <p class="eyebrow" id="home-eyebrow">תחזית הברומטר · הכנסת ה־26</p>
         <span class="edition-label" lang="en" dir="ltr">ISRAEL / ELECTIONS 2026</span>
       </div>
-      <div class="election-hero">
+      <div class="election-hero fs-hero">
+        <aside class="fs-side fs-right" id="fs-right" aria-label="גוש הימין והחרדים"></aside>
+        <div class="fs-center">
         <div class="election-copy">
           <p class="hero-overline">תמונת המצב</p>
           <h2 id="verdict-head" tabindex="-1">120 מנדטים.<br><em>מי בדרך לרוב?</em></h2>
           <p class="forecast-headline" id="election-headline"></p>
           <p class="hero-description">זו התמונה שמתקבלת אחרי שבודקים את הסקרים מול העבר, משקללים את המכונים ומוסיפים בדיקות של אחוז החסימה והדמוגרפיה. אפשר לעבור בין ממוצע המכונים לתחזית המלאה.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
-          <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> לראות איך התמונה נבנית</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
         </div>
         <div class="election-visual">
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
@@ -6361,6 +6393,9 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
           <div class="readout" id="home-readout"></div>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
         </div>
+
+        </div>
+        <aside class="fs-side fs-left" id="fs-left" aria-label="מרכז־שמאל והרשימות הערביות"></aside>
       </div>
       <div class="home-forecast-controls">
         <div class="switch home-switch" role="group" aria-label="אופן החישוב">
@@ -6368,11 +6403,12 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
           <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
         </div>
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
+        <div class="hero-cta"><button type="button" class="btn show-btn" data-open-show><span class="play" aria-hidden="true">▶</span> לראות איך התמונה נבנית</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
       </div>
     </div>
-    <button type="button" class="section-next" data-home-section="election-parties" aria-label="לקטע הבא — לוח המנדטים"><span aria-hidden="true">↓</span></button>
+    <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — בניית קואליציה"><span aria-hidden="true">↓</span></button>
   </div>
-  <div class="wrap board" id="election-parties" tabindex="-1">
+  <div class="wrap board" id="election-parties" tabindex="-1" hidden>
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
       <div class="wall-toggle" role="group" aria-label="פריסת הלוח"><button type="button" data-wall-layout="blocs" aria-pressed="true">לפי גושים</button><button type="button" data-wall-layout="size" aria-pressed="false">לפי גודל</button></div></div>
     <div class="board-summary" id="board-summary" aria-label="סיכום הגושים"></div>
@@ -9154,11 +9190,37 @@ function renderHome() {
   $("#cards-left").innerHTML = byRow.left.map(id => homeCard(id, seats, est, maxSeats)).join("");
   $(".wall").classList.toggle("has-mid", byRow.mid.length > 0);
 
+  renderForecastSides(byRow, seats, est, R, U, LA);
   renderWallPoster(seats, est, blocTot, belowEntries);
   buildHomePrintSheet(est, seats, blocTot);
   const electionHeadline = $("#election-headline");
   if (electionHeadline) electionHeadline.innerHTML = homeHeadline(est, seats, blocTot).h;
   window.renderElectionTools?.(seats, est, blocTot);
+}
+
+/* תחזית הברומטר: הגושים משני צידי מפת המושבים — דיוקנאות גדולים, ופס עבה לכיוון האמצע (בלי רקע אפור מתחת).
+   גוש הימין והחרדים מימין; מרכז־שמאל והרשימות הערביות (וגם הלא־משויכות) משמאל. */
+function renderForecastSides(byRow, seats, est, R, U, LA) {
+  const right = $("#fs-right"), left = $("#fs-left");
+  if (!right || !left) return;
+  const maxSeats = Math.max(1, ...Object.values(seats));
+  const belowOf = id => est.below && est.below[id];
+  const order = ids => ids.slice().sort((a, b) => (seats[b] || 0) - (seats[a] || 0) || (belowOf(b) || 0) - (belowOf(a) || 0));
+  const row = id => {
+    const m = partyMeta(id), color = partyHue(id), photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER, leader = PARTY_LEADER[normId(id)] || "";
+    const belowPct = belowOf(id), isBelow = seats[id] == null && belowPct != null, n = isBelow ? 0 : (seats[id] || 0), d = isBelow ? null : homeDelta(id);
+    const aria = isBelow ? `${m.name}, מתחת לאחוז החסימה, כ־${r1(belowPct)}%` : `${m.name}, ${n} מנדטים${d ? `, ${d.cls === "up" ? "עלייה" : "ירידה"} של ${Math.abs(n - d.prev)} מהעדכון הקודם` : ""}`;
+    return `<button type="button" class="fs-row${isBelow ? " is-below" : ""}" style="--bc:${color};--wf:${isBelow ? 0 : (n / maxSeats).toFixed(3)}" data-focus-party="${esc(id)}" aria-label="${esc(aria)}. מעבר לסקרים">
+      <span class="fs-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "96px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
+      <span class="fs-info"><span class="fs-name">${esc(m.name)}</span>${leader ? `<span class="fs-leader">${esc(leader)}</span>` : ""}
+        <span class="fs-barline"><i class="fs-bar"></i><b class="fs-n num">${isBelow ? `${r1(belowPct)}%` : n}</b>${d ? `<em class="fs-d ${d.cls}" title="בעדכון הקודם: ${d.prev}">${esc(d.txt)}</em>` : ""}</span></span></button>`;
+  };
+  const side = (box, title, total, color, ids) => {
+    box.style.setProperty("--bc", color);
+    box.innerHTML = `<div class="fs-head"><b class="fs-total num">${total}</b><span>${esc(title)}</span></div><div class="fs-rows">${order(ids).map(row).join("")}</div>`;
+  };
+  side(right, "גוש הימין והחרדים", R, BLOCS.Right.color, byRow.right);
+  side(left, "מרכז־שמאל והרשימות הערביות", LA + U, BLOCS.Left.color, byRow.left.concat(byRow.mid));
 }
 
 /* רצועת הסיכום מעל לוח המנדטים: שלושת הגושים כמספרים גדולים, ופס של 120 המושבים עם קו הרוב */

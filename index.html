@@ -36,6 +36,7 @@
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
 <script src="assets/app.js?v=6f07e0f8" defer></script>
 <script src="assets/intro.js?v=e2e945a9" defer></script>
+<script src="assets/method-sim.js" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -60,6 +61,7 @@
 <link rel="stylesheet" href="assets/polls-workspace.css?v=d4edba6b">
 <link rel="stylesheet" href="assets/polls-gap.css?v=61dea519">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
+<link rel="stylesheet" href="assets/method-sim.css">
 </head>
 <body>
 
@@ -590,93 +592,156 @@
       <a class="subtab" href="#/method" data-view="method">איך מחשבים</a>
       <a class="subtab" href="#/haredi" data-view="haredi">התרחיש החרדי</a>
     </nav>
-    <div class="page-intro">
-      <p class="kicker">שיטת החישוב · בפשטות</p>
-      <h2>איך הנתונים הופכים לתחזית?</h2>
-      <p>שישה שלבים. ליד כל שלב — המספר האמיתי של היום, וקישור למקום שבו אפשר לבדוק אותו בעצמכם.</p>
-    </div>
+    <section id="method-sim" aria-label="סימולציה של שיטת החישוב"></section>
+    <div class="mdoc">
+      <nav class="mdoc-nav" aria-label="תוכן העמוד">
+        <p class="mdoc-nav-h">בכתב, עם המספרים של היום</p>
+        <button type="button" data-go="msec-1"><span>1</span>הנתונים</button>
+        <button type="button" data-go="msec-2"><span>2</span>המודל הדמוגרפי</button>
+        <button type="button" data-go="msec-3"><span>3</span>המודל הגיאוגרפי</button>
+        <button type="button" data-go="msec-4"><span>4</span>סקרים לפי אמינות</button>
+        <button type="button" data-go="msec-5"><span>5</span>כמה עברו צד</button>
+        <button type="button" data-go="msec-6"><span>6</span>תחשיב הברומטר</button>
+        <button type="button" data-go="msec-7" class="mdoc-aux">מקורות הנתונים</button>
+        <button type="button" data-go="msec-8" class="mdoc-aux">הנוסחאות המדויקות</button>
+      </nav>
 
-    <div class="method-steps" id="method-steps">
+      <div class="mdoc-main" id="method-steps">
 
-      <section class="mstep" id="mstep-1">
-        <div class="mstep-num" aria-hidden="true">1</div>
-        <div class="mstep-body">
-          <div class="mstep-head"><h2>אוספים את כל הסקרים</h2><a class="mstep-link" href="#/polls">לכל הסקרים ↙</a></div>
-          <p>כל סקר מנדטים שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה — לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 8 הימים האחרונים.</p>
-          <div class="mlive" id="m-live-polls"></div>
-          <div class="outlet-icons mstep-outlets" id="m-outlets" aria-label="כלי התקשורת שמהם נאספים הסקרים"></div>
-        </div>
-      </section>
+        <section class="msec" id="msec-1">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">1</span>
+            <div class="msec-title"><h2>הנתונים שנכנסים לחישוב</h2><p>סקרי מנדטים של 8 הימים האחרונים, ומולם נתוני אמת של ארבע מערכות בחירות ושל האוכלוסייה.</p></div>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="0">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/polls">לכל הסקרים ↙</a></div></header>
+          <div class="msec-body">
+            <div class="msec-text">
+              <p><b>סקרים.</b> כל סקר מנדטים שפורסם בכלי תקשורת ישראלי ושמו של המכון שביצע אותו ידוע. סקר בלי מכון מזוהה לא נכנס. הנתונים נשאבים אוטומטית פעמיים ביום, והתחזית משתמשת בסקרי 8 הימים האחרונים.</p>
+              <p><b>נתוני אמת.</b> תוצאות 2022 לפי יישוב, ותוצאות ארבע מערכות הבחירות האחרונות לצורך המגמות (ועדת הבחירות). את גודל קבוצות האוכלוסייה וקצב גידולן מספקים מרכז טאוב והמכון הישראלי לדמוקרטיה. הסקרים של החודש שלפני 2020, 2021 ו־2022 משמשים לכיול המכונים. הרשימה המלאה בסוף העמוד.</p>
+            </div>
+            <div class="msec-live"><div class="mlive" id="m-live-polls"></div>
+              <div class="outlet-icons mstep-outlets" id="m-outlets" aria-label="כלי התקשורת שמהם נאספים הסקרים"></div></div>
+          </div>
+        </section>
 
-      <section class="mstep" id="mstep-2">
-        <div class="mstep-num" aria-hidden="true">2</div>
-        <div class="mstep-body">
-          <div class="mstep-head"><h2>נותנים לכל מכון ציון</h2><a class="mstep-link" href="#/2022">לדיוק המכונים ↙</a></div>
-          <p>הציון (0–100) נקבע רק לפי העבר: לוקחים את כל הסקרים שהמכון פרסם ב־30 הימים שלפני כל אחת משלוש מערכות הבחירות האחרונות — 2020, 2021 ו־2022 — ומשווים אותם לתוצאה הסופית של ועדת הבחירות המרכזית. ההשוואה נעשית בשלוש רמות:</p>
-          <ul class="mlist">
-            <li><b>דיוק בגושים — 60% מהציון.</b> ממצעים את סקרי המכון באותו חודש, ובודקים בכמה מנדטים הממוצע טעה בגודל גוש הימין והחרדים, גוש מרכז–שמאל והרשימות שמחוץ לגושים. כל 3 מנדטי טעות (במצטבר) מורידים 10 נקודות.</li>
-            <li><b>דיוק במפלגות — 30%.</b> הטעות הממוצעת במנדטים לכל מפלגה, בכל סקר בנפרד. כל מנדט טעות ממוצע מוריד 15 נקודות.</li>
-            <li><b>עקביות — 10%.</b> כמה סקרי המכון קפצו במהלך החודש (סטיית התקן של גוש הימין והחרדים ושל כל מפלגה). מכון שנע עם המגמה במקום לקפוץ הלוך ושוב — לא נענש.</li>
-          </ul>
-          <p>לכל מערכת בחירות מחשבים ציון נפרד, והציון הסופי הוא ממוצע המערכות שבהן המכון פרסם. <b>דוגמה:</b> דיוק בגושים 80, דיוק במפלגות 82 ועקביות 95 נותנים ציון כולל 82. מכון ללא נתוני כיול מקבל ציון ברירת מחדל 70 ונכנס לדרגת המשקל הנמוכה.</p>
-          <div class="tablewrap"><table class="mtable" id="m-firms"></table></div>
-          <p class="m-firms-note">המכונים בחלק התחתון נשארים להשוואת ציוני העבר. ללא סקר מנדטים במאגר הנוכחי הם אינם מקבלים משקל בחישוב.</p>
-        </div>
-      </section>
+        <section class="msec" id="msec-2">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">2</span>
+            <div class="msec-title"><h2>המודל הדמוגרפי</h2><p>מודל שלא מסתכל על אף סקר: מי גדל מאז 2022, ומה זה עושה לחלק הגושים.</p></div>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="1">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/demography">למודל הדמוגרפי ↙</a></div></header>
+          <div class="msec-body">
+            <div class="msec-text">
+              <p>המודל לוקח את תוצאות ההצבעה בפועל של כל קבוצת אוכלוסייה ב־2022 (איך הצביע כל מגזר, לא איך שהוא ״אמור״ להצביע), ומריץ אותן קדימה עד 2026 לפי קצב הגידול ושינוי אחוז ההצבעה הצפויים של כל קבוצה בנפרד, למשל שהמגזר החרדי גדל מהר יותר מהממוצע.</p>
+              <p>את התוצאה המוקרנת מחלקים שוב ל־120 מנדטים באותם כללי בחירות (אחוז חסימה, באדר־עופר), ובודקים כמה מנדטים עברו בין 2022 לתחזית מ״ימין+חרדים״ יחד אל מול שאר הגושים. את האומדן הזה משווים לסקרים בשלב 5, והוא קובע, יחד עם המודל הגיאוגרפי, את התוספת הדמוגרפית בשלב 6.</p>
+            </div>
+            <div class="msec-live"><div class="mlive" id="m-live-demo"></div></div>
+          </div>
+        </section>
 
-      <section class="mstep" id="mstep-3">
-        <div class="mstep-num" aria-hidden="true">3</div>
-        <div class="mstep-body">
-          <div class="mstep-head"><h2>ממצעים — ואז משקללים</h2><a class="mstep-link" href="#/forecast">לתמונת המצב ↙</a></div>
-          <p>קודם ממצעים את הסקרים של כל מכון לתוצאה אחת, כדי שמספר הפרסומים שלו לא יקבע את כוחו. אחר כך משקללים בין המכונים לפי דרגות הדיוק ההיסטורי: גבוהה 45, טובה 35, בינונית 20. מכון שציונו השתנה בתוך אותה דרגה שומר על אותו משקל.</p>
-          <div class="tablewrap"><table class="mtable" id="m-average"></table></div>
-        </div>
-      </section>
+        <section class="msec" id="msec-3">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">3</span>
+            <div class="msec-title"><h2>המודל הגיאוגרפי</h2><p>כל יישוב ממשיך את הקו שלו, והסכום הוא תחזית ארצית שנייה, גם היא בלי סקרים.</p></div>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="2">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/map">למודל הגיאוגרפי ↙</a></div></header>
+          <div class="msec-body">
+            <div class="msec-text">
+              <ul class="mlist">
+                <li><b>מגמה לכל יישוב.</b> חלקה של כל קבוצה (ימין, חרדים, מרכז–שמאל, ערבים) ב־2022 ועוד המגמה של היישוב: קו ישר דרך ארבע מערכות הבחירות מספטמבר 2019, לכל היותר 8 נקודות אחוז לקבוצה. יישוב קטן נשען על מגמת האזור שלו.</li>
+                <li><b>גידול והצבעה.</b> בעלי זכות הבחירה בכל יישוב גדלים בקצב שלו בין ספטמבר 2019 ל־2022, ואחוז ההצבעה הוא הממוצע שלו בארבע הבחירות.</li>
+                <li><b>מי נספר.</b> רשימה נספרת בקבוצה שלה מ־1.5% מהקולות, גם אם לא עברה את אחוז החסימה. רשימות קטנות יותר מושמטות, והחלקים הם מתוך ארבע הקבוצות.</li>
+                <li><b>סכום.</b> סכום כל היישובים והמעטפות החיצוניות הוא התחזית הארצית, ומפורק לשלושה צעדים: דמוגרפיה, הצבעה ומגמה.</li>
+              </ul>
+              <p class="msec-note"><b>מקומו בחישוב:</b> אומדן המודל הגיאוגרפי לשינוי חלק הימין והחרדים עד 2026 נכנס בממוצע עם אומדן המודל הדמוגרפי, והממוצע קובע את התוספת הדמוגרפית בתחזית הברומטר (שלב 6). הוא גם נקודת ייחוס שנייה לסקרים בשלב 5.</p>
+            </div>
+            <div class="msec-live"><div class="mlive" id="m-live-geo"></div></div>
+          </div>
+        </section>
 
-      <section class="mstep" id="mstep-4">
-        <div class="mstep-num" aria-hidden="true">4</div>
-        <div class="mstep-body">
-          <div class="mstep-head"><h2>מוסיפים את ההנחות של ״תחזית הברומטר״</h2><a class="mstep-link" href="#/haredi">להנחות ↙</a></div>
-          <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו ארבעה צעדים גלויים:</p>
-          <ul class="mlist">
-            <li><b>תיקון הטעות הקבועה של כל מכון — רק בתוך הגוש.</b> לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״ם, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 2, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע "משוקלל אמינות" אינו מתוקן.</li>
-            <li><b>ש״ס 10.5, יהדות התורה 7.8 ורע״מ 4.8 — מספר קבוע, לא ממוצע הסקרים שלהן.</b> מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בשלב 6, ביחד עם כל שאר הרשימות.</li>
-            <li><b>קירוב למאזן 2022 — היעד הוא 62 מנדטים לגוש הימין והחרדים, לא 64.</b> בפועל הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד, וקולותיה התחלקו בהסכמי העודפים בין הרשימות שכן עברו — מקרה קצה חד־פעמי בספירה, לא סימן לגודל האמיתי של הגוש (אפשר לבדוק ב״אילו מרצ עברה את אחוז החסימה״ בתמונת המצב). באותו היגיון ההפוך: רשימות ימין שנמצאות היום מתחת לאחוז החסימה (למשל רשימתו של עופר וינטר) לא נמחקות מהחישוב הזה — התמיכה בהן נספרת כשמודדים כמה גדול גוש הימין והחרדים בפועל בסקרים, גם שהן עדיין לא מקבלות מנדט בחלוקה הסופית. מהפער שנשאר בין הסקרים לעוגן, התחזית סוגרת <b>רק חצי</b> — לא את כולו — ומורידה מזה את מה שקיבוע ש״ס ויהדות התורה כבר תרם לימין, כדי לא לספור את אותה הנחה פעמיים.</li>
-            <li><b>תוספת דמוגרפית משוערת — 2 מנדטים כברירת מחדל.</b> היא מועברת בין הגושים לפי המפלגות, ואז נבדקת מול מודל דמוגרפי נפרד בשלב הבא.</li>
-          </ul>
-          <div class="mlive" id="m-live-scenario"></div>
-        </div>
-      </section>
+        <section class="msec" id="msec-4">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">4</span>
+            <div class="msec-title"><h2>סקרים לפי אמינות</h2><p>כל מכון מקבל ציון לפי הדיוק שלו בעבר, והציון קובע את דרגתו ואת משקלו בממוצע.</p></div>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="3">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/2022">לדיוק המכונים ↙</a></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <h3>ציון לכל מכון</h3>
+              <p>הציון (0–100) נקבע רק לפי העבר: לוקחים את כל הסקרים שהמכון פרסם ב־30 הימים שלפני כל אחת משלוש מערכות הבחירות האחרונות — 2020, 2021 ו־2022 — ומשווים אותם לתוצאה הסופית של ועדת הבחירות המרכזית. ההשוואה נעשית בשלוש רמות:</p>
+              <div class="msec-cards msec-cards-3">
+                <div class="msec-card"><b class="msec-pct">60%</b><h4>דיוק בגושים</h4><p>ממצעים את סקרי המכון באותו חודש, ובודקים בכמה מנדטים הממוצע טעה בגודל גוש הימין והחרדים, גוש מרכז–שמאל והרשימות שמחוץ לגושים. כל 3 מנדטי טעות (במצטבר) מורידים 10 נקודות.</p></div>
+                <div class="msec-card"><b class="msec-pct">30%</b><h4>דיוק במפלגות</h4><p>הטעות הממוצעת במנדטים לכל מפלגה, בכל סקר בנפרד. כל מנדט טעות ממוצע מוריד 15 נקודות.</p></div>
+                <div class="msec-card"><b class="msec-pct">10%</b><h4>עקביות</h4><p>כמה סקרי המכון קפצו במהלך החודש (סטיית התקן של גוש הימין והחרדים ושל כל מפלגה). מכון שנע עם המגמה במקום לקפוץ הלוך ושוב לא נענש.</p></div>
+              </div>
+              <p>לכל מערכת בחירות מחשבים ציון נפרד, והציון הסופי הוא ממוצע המערכות שבהן המכון פרסם. <b>דוגמה:</b> דיוק בגושים 80, דיוק במפלגות 82 ועקביות 95 נותנים ציון כולל 82. מכון ללא נתוני כיול מקבל ציון ברירת מחדל 70 ונכנס לדרגת המשקל הנמוכה.</p>
+              <div class="tablewrap"><table class="mtable" id="m-firms"></table></div>
+              <p class="m-firms-note">המכונים בחלק התחתון נשארים להשוואת ציוני העבר. ללא סקר מנדטים במאגר הנוכחי הם אינם מקבלים משקל בחישוב.</p>
+              <h3>ממצעים, ואז משקללים</h3>
+              <p>קודם ממצעים את הסקרים של כל מכון לתוצאה אחת, כדי שמספר הפרסומים שלו לא יקבע את כוחו. אחר כך משקללים בין המכונים לפי דרגות הדיוק ההיסטורי: גבוהה 45, טובה 35, בינונית 20. מכון שציונו השתנה בתוך אותה דרגה שומר על אותו משקל.</p>
+              <div class="tablewrap"><table class="mtable" id="m-average"></table></div>
+            </div>
+          </div>
+        </section>
 
-      <section class="mstep" id="mstep-5">
-        <div class="mstep-num" aria-hidden="true">5</div>
-        <div class="mstep-body">
-          <div class="mstep-head"><h2>בודקים מול הדמוגרפיה</h2><a class="mstep-link" href="#/demography">למודל הדמוגרפי ↙</a></div>
-          <p>מודל נפרד לגמרי, שלא מסתכל על אף סקר: לוקח את תוצאות ההצבעה בפועל של כל קבוצת אוכלוסייה ב־2022 (איך הצביע כל מגזר, לא איך שהוא ״אמור״ להצביע), ומריץ אותן קדימה עד 2026 לפי קצב הגידול ושינוי אחוז ההצבעה הצפויים של כל קבוצה בנפרד — למשל שהמגזר החרדי גדל מהר יותר מהממוצע. את התוצאה המוקרנת מחלקים שוב ל־120 מנדטים באותם כללי בחירות (אחוז חסימה, באדר-עופר), ובודקים כמה מנדטים עברו בין 2022 לתחזית מ״ימין+חרדים״ יחד אל מול שאר הגושים.</p>
-          <p>אומדן המודל בודק את ההנחה הדמוגרפית משלב 4. אם ההפרש עולה על מנדט אחד, התחזית מחליפה את ההנחה באומדן המודל, מעוגל לרבע מנדט. כך הדמוגרפיה אינה רק הסבר לצד התחזית — היא משתתפת בחישוב.</p>
-          <div class="mlive" id="m-live-demo"></div>
-        </div>
-      </section>
+        <section class="msec" id="msec-5">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">5</span>
+            <div class="msec-title"><h2>כמה עברו צד</h2><p>הפער בין חלק הימין והחרדים בסקרים לבין מה שהיה צפוי בלי שאיש יחליף צד.</p></div>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="4">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/crossover">לסקרים מול 2022 ↙</a></div></header>
+          <div class="msec-body">
+            <div class="msec-text">
+              <ul class="mlist">
+                <li><b>נקודת האפס.</b> חלק הימין והחרדים מהקולות שנספרים ב־2022, ועוד הגידול הדמוגרפי עד 2026 מהשלב השני. זה מה שהיה קורה אילו כל מצביע נשאר במקומו.</li>
+                <li><b>הפער.</b> לכל מכון: חלק הימין והחרדים בסקר האחרון שלו פחות נקודת האפס. הממוצע משוקלל לפי דרגות האמינות. בשלב הזה אין חלון זמן, וכל מכון מיוצג בסקר האחרון שלו.</li>
+                <li><b>קולות.</b> נקודות האחוז מתורגמות לקולות לפי מספר המצביעים הצפוי ב־2026. יתר הרשימות, מרכז–שמאל והרשימות הערביות, זזות באותו שיעור בכיוון ההפוך.</li>
+                <li><b>הצפי הגיאוגרפי.</b> הסקרים מושווים גם לצפי של המודל הגיאוגרפי, כדי לראות אם שתי נקודות הייחוס מצביעות לאותו כיוון.</li>
+              </ul>
+              <p class="msec-note"><b>איך לקרוא:</b> זה אומדן לגודל הפער בתמיכה, לא ספירה של אנשים שעברו בין גושים. חלק מהפער יכול לנבוע משיעור הצבעה או מהרכב הנשאלים. המדד אינו משנה מנדט בתחזית.</p>
+            </div>
+            <div class="msec-live"><div class="mlive" id="m-live-switch"></div></div>
+          </div>
+        </section>
 
-      <section class="mstep" id="mstep-6">
-        <div class="mstep-num" aria-hidden="true">6</div>
-        <div class="mstep-body">
-          <div class="mstep-head"><h2>מחלקים 120 מנדטים לפי כללי הבחירות</h2><a class="mstep-link" href="#/forecast">לתמונת המצב ↙</a></div>
-          <p>בדיוק כמו ועדת הבחירות: <b>אחוז החסימה</b> — רשימה שמתחת ל־3.25% לא מקבלת מנדטים וקולותיה לא נספרים. <b>שיטת באדר-עופר</b> — 120 המנדטים מחולקים אחד־אחד; בכל סיבוב המנדט הבא הולך לרשימה שקולותיה חלקי (מנדטיה עד כה + 1) הם הגבוהים ביותר. <b>הסכמי עודפים</b> — שתי רשימות עם הסכם נחשבות לרשימה אחת בחלוקה, ואז מתחלקות ביניהן באותה שיטה. השיטה מעדיפה מעט את הרשימות הגדולות, ולכן אומדן של 10.5 יכול להסתיים ב־10 ולא ב־11.</p>
-          <div class="mlive" id="m-live-result"></div>
-          <p class="sec-note" id="m-rules"></p>
-        </div>
-      </section>
-    </div>
+        <section class="msec" id="msec-6">
+          <header class="msec-head"><span class="msec-num" aria-hidden="true">6</span>
+            <div class="msec-title"><h2>תחשיב הברומטר</h2><p>מהממוצע המשוקלל, דרך ארבע הנחות גלויות, ועד חלוקה של 120 מנדטים לפי כללי הבחירות.</p></div>
+            <div class="msec-actions"><button type="button" class="msec-sim" data-sim="5">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/haredi">להנחות ↙</a></div></header>
+          <div class="msec-body msec-wide">
+            <div class="msec-text">
+              <h3>ארבע ההנחות של ״תחזית הברומטר״</h3>
+              <p>עד כאן חושב ממוצע הסקרים לפי דירוג המכונים. תחזית הברומטר מוסיפה עליו ארבעה צעדים גלויים:</p>
+              <div class="msec-cards msec-cards-2">
+                <div class="msec-card"><span class="msec-step">א</span><h4>תיקון הטעות הקבועה של כל מכון, רק בתוך הגוש</h4>
+                  <p>כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022. התיקון מדייק את החלוקה בתוך הגוש ואינו מזיז מנדטים בין הגושים.</p>
+                  <details><summary>הפירוט המלא</summary><p>לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״מ, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 4, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע ״משוקלל אמינות״ אינו מתוקן.</p></details></div>
+                <div class="msec-card"><span class="msec-step">ב</span><h4>ש״ס 10.5, יהדות התורה 7.8 ורע״ם 4.8: מספר קבוע</h4>
+                  <p>במקום ממוצע הסקרים של שלוש הרשימות האלה. מדגם קטן מודד מגזרים סגורים כמו החרדי או הערבי נמוך מדי, באופן שיטתי.</p>
+                  <details><summary>הפירוט המלא</summary><p>מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בסוף, ביחד עם כל שאר הרשימות.</p></details></div>
+                <div class="msec-card"><span class="msec-step">ג</span><h4>קירוב למאזן 2022: היעד 62 לגוש הימין והחרדים, לא 64</h4>
+                  <p>הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד. מהפער שנשאר בין הסקרים לעוגן סוגרים רק חצי.</p>
+                  <details><summary>הפירוט המלא</summary><p>בפועל הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד, וקולותיה התחלקו בהסכמי העודפים בין הרשימות שכן עברו — מקרה קצה חד־פעמי בספירה, לא סימן לגודל האמיתי של הגוש (אפשר לבדוק ב״אילו מרצ עברה את אחוז החסימה״ בתמונת המצב). באותו היגיון ההפוך: רשימות ימין שנמצאות היום מתחת לאחוז החסימה (למשל רשימתו של עופר וינטר) לא נמחקות מהחישוב הזה — התמיכה בהן נספרת כשמודדים כמה גדול גוש הימין והחרדים בפועל בסקרים, גם שהן עדיין לא מקבלות מנדט בחלוקה הסופית. מהפער שנשאר בין הסקרים לעוגן, התחזית סוגרת <b>רק חצי</b> — לא את כולו — ומורידה מזה את מה שקיבוע ש״ס ויהדות התורה כבר תרם לימין, כדי לא לספור את אותה הנחה פעמיים.</p></details></div>
+                <div class="msec-card"><span class="msec-step">ד</span><h4>תוספת דמוגרפית: ממוצע המודל הדמוגרפי והגיאוגרפי</h4>
+                  <p>שני המודלים שלא מסתכלים על סקרים מעריכים כמה מנדטים יעברו לימין ולחרדים עד 2026. הממוצע שלהם, מעוגל לרבע מנדט, מועבר בין הגושים לפי המפלגות.</p>
+                  <details><summary>הפירוט המלא</summary><p>המודל הדמוגרפי (שלב 2) מעריך את השינוי בחלק הימין והחרדים מגידול האוכלוסייה בלבד, והמודל הגיאוגרפי (שלב 3) מעריך אותו מהמגמה של כל יישוב, מהגידול ומאחוז ההצבעה. כל אחד מתורגם למנדטים (נקודות אחוז חלקי 100, כפול 120), ולוקחים את הממוצע של שניהם. התוצאה, מעוגלת לרבע מנדט, מועברת מהרשימות של מרכז–שמאל לרשימות הימין, לפי חלקה של כל רשימה. הערכים של שני המודלים והממוצע מוצגים למעלה, ובשלב 6 בסימולציה.</p></details></div>
+              </div>
+              <div class="mlive" id="m-live-scenario"></div>
+              <h3>חלוקה של 120 מנדטים</h3>
+              <p>בדיוק כמו ועדת הבחירות:</p>
+              <div class="msec-cards msec-cards-3">
+                <div class="msec-card"><h4>אחוז החסימה</h4><p>רשימה שמתחת ל־3.25% לא מקבלת מנדטים, וקולותיה לא נספרים.</p></div>
+                <div class="msec-card"><h4>שיטת באדר־עופר</h4><p>120 המנדטים מחולקים אחד־אחד. בכל סיבוב המנדט הבא הולך לרשימה שקולותיה חלקי (מנדטיה עד כה + 1) הם הגבוהים ביותר.</p></div>
+                <div class="msec-card"><h4>הסכמי עודפים</h4><p>שתי רשימות עם הסכם נחשבות לרשימה אחת בחלוקה, ואז מתחלקות ביניהן באותה שיטה.</p></div>
+              </div>
+              <p>השיטה מעדיפה מעט את הרשימות הגדולות, ולכן אומדן של 10.5 יכול להסתיים ב־10 ולא ב־11.</p>
+              <div class="mlive" id="m-live-result"></div>
+              <p class="sec-note" id="m-rules"></p>
+            </div>
+          </div>
+        </section>
 
-    <section class="sec">
-      <div class="sec-head"><div><p class="kicker">שקיפות</p><h2>מקורות הנתונים</h2></div>
-        <p class="sec-note">כל מספר באתר מגיע מאחד המקורות האלה. ליד כל מקור — למה הוא משמש.</p></div>
-      <div class="sources-groups" id="method-sources"></div>
-    </section>
+        <section class="msec" id="msec-7">
+          <header class="msec-head"><span class="msec-num msec-num-aux" aria-hidden="true">↳</span>
+            <div class="msec-title"><h2>מקורות הנתונים</h2><p>כל מספר באתר מגיע מאחד המקורות האלה. ליד כל מקור כתוב למה הוא משמש.</p></div></header>
+          <div class="msec-body msec-wide"><div class="sources-groups" id="method-sources"></div></div>
+        </section>
 
-    <section class="sec">
-      <details class="math">
+        <section class="msec" id="msec-8">
+          <header class="msec-head"><span class="msec-num msec-num-aux" aria-hidden="true">∑</span>
+            <div class="msec-title"><h2>הנוסחאות המדויקות</h2><p>למי שרוצה לבדוק את החישוב בעצמו.</p></div></header>
+          <div class="msec-body msec-wide">
+            <details class="math" open>
         <summary>הנוסחאות המדויקות, למי שרוצה</summary>
         <div class="body">
           <p class="kicker">ציון האמינות של מכון</p>
@@ -691,12 +756,22 @@
           <span class="formula">w(f)          = tier(SCORE(f)) : high 0.45 · mid 0.35 · low 0.20</span>
           <span class="formula">raw(party)    = Σ seriesAvg(f).party × w(f) / Σ w(f)</span>
           <span class="formula">seats         = BaderOfer(raw ≥ 3.25%, surplus agreements 2026, 120)</span>
+          <p class="kicker" style="margin-top:14px">המודל הגיאוגרפי</p>
+          <span class="formula">share2026(locality, group) = normalize( share2022 + trend(locality, group) )  ·  trend = line through 2019b–2022, capped ±8 pts</span>
+          <span class="formula">votes2026(locality)         = eligible2026 × avgTurnout × share2026 &nbsp;·&nbsp; national = Σ localities</span>
+          <p class="kicker" style="margin-top:14px">כמה עברו צד</p>
+          <span class="formula">zeroPoint = rightShare2022 + demographicDrift &nbsp;·&nbsp; gap(f) = rightShare(f) − zeroPoint</span>
+          <span class="formula">voters   ≈ gap × validVoters2026 &nbsp;·&nbsp; average gap weighted by tier(SCORE)</span>
           <p class="kicker" style="margin-top:14px">המודל הדמוגרפי</p>
           <span class="formula">votes2026(party) = Σ_sector votes2022(party) × mix[sector] × (1 + growth[sector])^4 × turnout2026[sector] / turnout2022[sector]</span>
           <span class="formula">seats            = BaderOfer(passing parties ≥ 3.25%, surplus agreements, 120)</span>
         </div>
       </details>
-    </section>
+          </div>
+        </section>
+
+      </div>
+    </div>
   </div>
 </section>
 

@@ -61,9 +61,11 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
   }
   /* אותן מערכות כיול כמו בדפדפן (2022, 2021, 2020) — כדי שהמשקלים ותיקון
      הטעות הקבועה בתחזית הברומטר יהיו בצילום זהים למה שהאתר מציג */
-  ctx.fx = { polls, select, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters") };
+  ctx.fx = { polls, select, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters"), demo: read("demographics"), trends: read("trends") };
   return JSON.parse(vm.runInContext(`
     S.hist = fx.hist; S.firms = fx.firms;
+    /* התוספת הדמוגרפית היא ממוצע שני המודלים — אותם נתונים כמו בדפדפן */
+    S.demo = fx.demo; S.trendsNat = fx.trends.national;
     S.cur = { polls: fx.select ? selectDisplayPolls(fx.polls) : fx.polls };
     S.elections = [[2022, fx.hist], [2021, fx.hist2021], [2020, fx.hist2020]].map(([year, data]) => ({ year, data, stats: scoreFirms(data) }));
     S.stats = combineCalibrations(S.elections);

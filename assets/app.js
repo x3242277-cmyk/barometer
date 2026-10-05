@@ -563,20 +563,23 @@ function forecast(mode, exclude) {
     if (blocs[al] != null) blocs[al] = Math.max(0, blocs[al] - (rawFull[id] || 0));
   });
   if (mode === 'scenario') {
-    /* שלב 5: המודל הדמוגרפי מאשר או מתקן את ההנחה הדמוגרפית — אם ההנחה רחוקה
-       מאומדן המודל ביותר ממנדט אחד, התחזית משתמשת באומדן המודל במקומה. */
+    /* התוספת הדמוגרפית נקבעת מממוצע שני המודלים שלא מסתכלים על סקרים — הדמוגרפי
+       והגיאוגרפי — לשינוי חלק הימין והחרדים עד 2026, מעוגל לרבע מנדט (modelDrift).
+       ערך שהוגדר ידנית ב־S.scenarioOptions.demographic גובר, ובלי אף מודל נשארת ברירת המחדל. */
     const opts = { ...(S.scenarioOptions || {}), rawFull };
-    const want = opts.demographic ?? 2, model = demoDriftSeats();
-    if (model != null && Math.abs(model - want) > DEMO_TOLERANCE) { opts.demographic = Math.round(model * 4) / 4; opts.demographicCorrected = { from: want, model, to: opts.demographic }; }
+    const drift = modelDrift();
+    if (opts.demographic == null) opts.demographic = drift ? drift.seats : DEMO_FALLBACK;
     const scenario = scenarioForecast(raw, opts);
-    return { raw, rawFull, parties: scenario.parties, blocs, fix, scenario, below: belowShare };
+    return { raw, rawFull, parties: scenario.parties, blocs, fix, scenario, below: belowShare, drift };
   }
   return { raw, rawFull, parties: fix.parties, blocs, fix, below: belowShare };
 }
 
 /* אומדן המודל הדמוגרפי (בלי סקרים) לשינוי כוח הימין והחרדים עד 2026 — בנקודות
-   אחוז (demoDriftPoints) ובמנדטים (demoDriftSeats) */
-const DEMO_TOLERANCE = 1;
+   אחוז (demoDriftPoints) ובמנדטים (demoDriftSeats). אומדן המודל הגיאוגרפי לאותו שינוי
+   (geoDriftPoints/Seats) בא מ־data/trends.json. ממוצע שניהם הוא התוספת הדמוגרפית של
+   תחזית הברומטר (modelDrift). */
+const DEMO_FALLBACK = 2;      // רק כשאין אף מודל טעון
 function demoDriftPoints() {
   if (!S.demo) return null;
   const m0 = runDemoModel(0), m1 = runDemoModel(S.demo.meta.years), sh = (m, c) => 100 * (m.campVotes[c] || 0) / m.campTotal;
@@ -585,6 +588,29 @@ function demoDriftPoints() {
 function demoDriftSeats() {
   const pts = demoDriftPoints();
   return pts == null ? null : pts / 100 * 120;
+}
+/* המודל הגיאוגרפי: חלק הימין והחרדים (מתוך ארבע הקבוצות) ב־2026 פחות 2022 —
+   2022 היא התחזית פחות שלושת הצעדים (דמוגרפיה, הצבעה, מגמה) */
+function geoRightPoints(n) {
+  const right = a => 100 * (a[0] + a[1]) / (a[0] + a[1] + a[2] + a[3]);
+  const f0 = n.f26.map((x, i) => x - n.steps.demography[i] - n.steps.turnout[i] - n.steps.trend[i]);
+  return { start: right(f0), end: right(n.f26) };
+}
+function geoDriftPoints() {
+  const n = S.trendsNat; if (!n?.f26 || !n.steps) return null;
+  const g = geoRightPoints(n);
+  return g.end - g.start;
+}
+function geoDriftSeats() {
+  const pts = geoDriftPoints();
+  return pts == null ? null : pts / 100 * 120;
+}
+function modelDrift() {
+  const demographic = demoDriftSeats(), geographic = geoDriftSeats();
+  const parts = [demographic, geographic].filter(x => x != null);
+  if (!parts.length) return null;
+  const mean = parts.reduce((t, x) => t + x, 0) / parts.length;
+  return { demographic, geographic, mean, seats: Math.round(mean * 4) / 4 };
 }
 
 function partyMeta(id) {
@@ -1625,7 +1651,7 @@ function renderCrossover() {
         ${refs.map(([label, v]) => `<div class="cx2-ref"><span>${esc(label)}</span>${split(v, label)}</div>`).join("")}
         <p class="cx2-legend"><span><i style="background:${R}"></i>ימין וחרדים</span><span><i style="background:${L}"></i>יתר הרשימות: מרכז–שמאל והרשימות הערביות</span><span><i class="cx2-half-key"></i>50%</span></p>
       </section>
-      <details class="tr-card cx2-how"><summary>איך מחשבים · מי בכל גוש</summary>HOW</details></div>
+      <details class="tr-card cx2-how"><summary>איך מחשבים · מי בכל גוש</summary><p>חלק הימין והחרדים נמדד מתוך כל הרשימות שמקבלות לפחות ${CROSS_MIN_SHARE}% מהקולות, גם מתחת לאחוז החסימה. יתר הרשימות, מרכז–שמאל והרשימות הערביות, הן המשלים.</p><p><b>נקודת הייחוס:</b> חלק הימין והחרדים ב־2022 (${r1(rightShare0)}%, מתוך ${fmt(Math.round(tot2022 / 1000) * 1000)} קולות שנספרו) ועוד הגידול הדמוגרפי עד 2026 (${pointsHe(growth)}), בסך הכול ${r1(base)}%.</p><p><b>הפער של מכון:</b> חלק הימין והחרדים בסקר האחרון שלו פחות נקודת הייחוס. הוא מתורגם לקולות לפי כ־${fmt(Math.round(votersOf(100) / 1000) * 1000)} המצביעים הצפויים ב־2026. הממוצע משוקלל לפי דרגות האמינות.</p></details></div>
       <section class="tr-card cx2-firms" aria-label="הסקר האחרון של כל מכון">
         <h3>הסקר האחרון של כל מכון</h3>
         <div class="cx2-row cx2-cols" aria-hidden="true"><span></span><span>מכון</span><span>ימין וחרדים · יתר הרשימות <small>קו מקווקו = הצפי הדמוגרפי</small></span><span>מול הצפי</span><span>בקולות</span></div>
@@ -1818,9 +1844,9 @@ function renderDemography() {
   const sh = (m, c) => 100 * (m.campVotes[c] || 0) / m.campTotal;
   const d = (sh(m1, "right") + sh(m1, "haredi")) - (sh(m0, "right") + sh(m0, "haredi"));
   const seats = d / 100 * 120;
-  const scen = S.scenarioOptions?.demographic ?? 2;
+  const md = modelDrift();
   renderDemoConclusions();
-  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים, וזה מה שעומד מאחורי ״התוספת הדמוגרפית״ של ${scen} מנדטים בתחזית הברומטר שבתמונת המצב: ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על תוספת גדולה יותר" : "המודל כאן מצביע על תוספת קטנה יותר"}. הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
+  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים. ${md && md.geographic != null ? `יחד עם המודל הגיאוגרפי (${seatsHe(md.geographic)}) היא קובעת את ״התוספת הדמוגרפית״ בתחזית הברומטר: הממוצע, ${seatsHe(md.seats)}.` : ""} הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
 }
 
 /* המסקנות: העמודה שליד הכרטיסיות, משפט הכותרת, ושורת מסקנה בראש כל כרטיסייה.
@@ -1846,7 +1872,7 @@ function renderDemoConclusions() {
   const ids = S.regions ? secs.map(sc => ({ sc, v: identityVote2022(sc.id) })).filter(x => x.v) : [];
   const top = ids.length ? ids.reduce((a, b) => b.v.rightShare > a.v.rightShare ? b : a) : null;
   const low = ids.length ? ids.reduce((a, b) => b.v.rightShare < a.v.rightShare ? b : a) : null;
-  const scen = S.scenarioOptions?.demographic ?? 2;
+  const md = modelDrift();
   const sgn = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
   const times = fast[0] && slow && P[slow.id].growth > 0 ? P[fast[0].id].growth / P[slow.id].growth : null;
   const changed = Object.keys(S.demoOverrides).length > 0;
@@ -1863,7 +1889,7 @@ function renderDemoConclusions() {
       ${fast[0] && slow ? `<li><b>${esc(fast[0].name)} גדלים הכי מהר</b> — ${pct(P[fast[0].id].growth * 100)} בשנה, מול ${pct(P[slow.id].growth * 100)} אצל ה${esc(slow.name)}${times && times >= 2 ? ` (פי ${Math.round(times)})` : ""}.</li>` : ""}
       ${top ? `<li><b>הזהות מכריעה את ההצבעה</b> — ${esc(top.sc.name)}: ${Math.round(top.v.rightShare)}% לימין ולחרדים; ${esc(low.sc.name)}: ${Math.round(low.v.rightShare)}%.</li>` : ""}
       ${swing != null ? `<li><b>אחוז ההצבעה הערבי רגיש</b> — 10 נקודות למעלה או למטה מזיזות כ־${seatsHe(swing)}.</li>` : ""}
-      <li><b>מול תחזית הברומטר</b> — שם התוספת הדמוגרפית היא ${scen} מנדטים; ${Math.abs(seats - scen) <= 1 ? "המודל כאן מאשר אותה בערך" : seats > scen ? "המודל כאן מצביע על יותר" : "המודל כאן מצביע על פחות"}.</li>
+      <li><b>מול תחזית הברומטר</b> — שם התוספת הדמוגרפית היא ממוצע שני המודלים${md ? `: ${seatsHe(md.mean)}, מעוגל ל־${seatsHe(md.seats)}` : ""}.</li>
     </ol>`;
 
   const lead = (id, html) => { const el = $("#dm-lead-" + id); if (el) el.innerHTML = html; };
@@ -2081,21 +2107,22 @@ function renderMethod() {
   // 4 · scenario assumptions (live)
   const sc = forecast("scenario", HIDE_FROM_HOME), o = S.scenarioOptions || {};
   const fx = sc.scenario?.fixed || FIXED_SEATS;
-  $("#m-live-scenario").innerHTML = [[`${fx.shas} · ${fx.yahadut_hatora} · ${fx.raam}`, "ש״ס · יהדות התורה · רע״מ, קבועות"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${o.demographic ?? 2}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
+  $("#m-live-scenario").innerHTML = [[`${fx.shas} · ${fx.yahadut_hatora} · ${fx.raam}`, "ש״ס · יהדות התורה · רע״מ, קבועות"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
-  // 5 · demography check
-  if (S.demo) {
-    const ms = demoDriftSeats(), d = ms / 120 * 100, corr = sc.scenario?.demographicCorrected, want = o.demographic ?? 2;
-    $("#m-live-demo").innerHTML = [[`${d >= 0 ? "+" : "−"}${r1(Math.abs(d))} נק׳`, "לימין ולחרדים עד 2026, מהדמוגרפיה בלבד"], [`≈ ${ms >= 0 ? "+" : "−"}${r1(Math.abs(ms))}`, "מנדטים"], [`${want}`, "ההנחה בשלב 4"], [corr ? `מתקן ל־${corr.to}` : "מאשר", corr ? "המודל החליף את ההנחה" : "המודל את ההנחה · הפער קטן ממנדט"]]
-      .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
+  // 5 · demographic addition = mean of the demographic and geographic models
+  {
+    const md = sc.drift;
+    if (md) $("#m-live-demo").innerHTML = [[md.demographic == null ? "—" : `${md.demographic >= 0 ? "+" : "−"}${r1(Math.abs(md.demographic))}`, "המודל הדמוגרפי, מנדטים"], [md.geographic == null ? "—" : `${md.geographic >= 0 ? "+" : "−"}${r1(Math.abs(md.geographic))}`, "המודל הגיאוגרפי, מנדטים"], [`${md.seats >= 0 ? "+" : "−"}${r1(Math.abs(md.seats))}`, "התוספת בתחזית: הממוצע, מעוגל לרבע מנדט"]]
+      .map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   }
   // 6 · result
   const seats = allocateSeats(sc.parties), bt = {};
   Object.entries(seats).forEach(([id, n]) => { const al = partyMeta(id).alignment; bt[al] = (bt[al] || 0) + n; });
-  $("#m-live-result").innerHTML = [[bt.Right || 0, "גוש הימין"], [bt.Left || 0, "מרכז־שמאל"], [bt.Arabs || 0, "הרשימות הערביות"], [Object.values(seats).reduce((t, v) => t + v, 0), "סך הכול מנדטים"]]
+  $("#m-live-result").innerHTML = [[bt.Right || 0, "ימין וחרדים"], [bt.Left || 0, "מרכז־שמאל"], [bt.Arabs || 0, "הרשימות הערביות"], [Object.values(seats).reduce((t, v) => t + v, 0), "סך הכול מנדטים"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   const pairs = activeAgreements(sc.parties), rules = $("#m-rules");
   if (rules) rules.innerHTML = `<b>הסכמי עודפים בחישוב:</b> ${pairs.length ? pairs.map(([a, b]) => `${esc(partyMeta(a).name)}–${esc(partyMeta(b).name)}`).join(" · ") : "אין"}. ${esc(ELECTION_RULES.agreementsStatus)}.`;
+  window.initMethodSim?.();
 }
 
 /* ============================================================
@@ -2537,13 +2564,14 @@ async function boot() {
     const EXTRA_CALIB = [[2021, "2021", "2021", "data/historical-polls-2021.json"], [2020, "2020", "2020", "data/historical-polls-2020.json"]];
     /* Optional resources start alongside the core files. Waiting for them in
        series used to keep every view hidden even after the main data arrived. */
-    const optionalData = ["data/leaders.json", "data/forecast-history.json", "data/polls-archive.json"]
+    const optionalData = ["data/leaders.json", "data/forecast-history.json", "data/polls-archive.json", "data/trends.json"]
       .map(u => window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u] || null) : loadJSONOptional(u));
     const [hist, cur, firms, regions, demo, haredi, ...extra] = await Promise.all(
       ["data/historical-polls.json", "data/current-polls.json", "data/pollsters.json", "data/regions.json", "data/demographics.json", "data/haredi.json"]
         .map(u => (window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u]) : fetch(u, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(u); return r.json(); })))
         .concat(EXTRA_CALIB.map(([, , , u]) => window.__BAROMETER_DATA__ ? Promise.resolve(window.__BAROMETER_DATA__[u] || null) : loadJSONOptional(u))));
-    const [leaders, forecastHistory, pollsArchive] = await Promise.all(optionalData);
+    const [leaders, forecastHistory, pollsArchive, trends] = await Promise.all(optionalData);
+    if (trends?.national) S.trendsNat = trends.national;
     /* current-polls.json כבר מוגבל ל-MAX_PER_OUTLET לכל ערוץ (גם בשרת וגם
        פה בלקוח) — לתצוגת "כל ההיסטוריה" בכרטיס הסקר צריך את הארכיון
        המלא, שלא מוגבל. אופציונלי: אם נכשל, בורר התאריך בכרטיס פשוט נשאר

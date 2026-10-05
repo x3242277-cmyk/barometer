@@ -24,7 +24,7 @@
       {title:'מה אומר סקר אחד?',caption:`${poll.channelHebrewName} · ${poll.date}`,detail:`הנה סקר של ${featured.he}. סקר יחיד נותן צילום רגעי; מיד נראה מה קורה כשמחברים את המדידות.`,...blocValues(pollParties),key:poll.channelHebrewName,keyLabel:featured.he,link:poll.sourceUrl||'#/polls',linkLabel:'לסקר המקורי'},
       {title:'מה מראה הממוצע?',caption:`${firms} מכונים בחישוב`,detail:'ממצעים את הסקרים בתוך כל מכון, ואז נותנים לכל מכון חלק שווה.',...blocValues(allocateSeats(simple.parties)),key:String(firms),keyLabel:'מכונים בחישוב',link:'#/polls',linkLabel:'לסקרים ולממוצע'},
       {title:'למי נותנים יותר משקל?',caption:'דירוג לפי בחירות קודמות',detail:'דיוק המכונים בעבר קובע את מדרגת המשקל שלהם: 45, 35 או 20. כך מתקבל הממוצע המשוקלל.',...blocValues(allocateSeats(weighted.parties)),key:'45 · 35 · 20',keyLabel:'יחסי המשקל לפי דרגה',link:'#/2022',linkLabel:'לציוני המכונים'},
-      {title:'מה משתנה בתחזית הברומטר?',caption:'בדיקת דמוגרפיה ואחוז חסימה',detail:'בודקים את השפעת אחוז החסימה, משווים ל־2022 ומתקנים את ההנחה הדמוגרפית לפי גידול והצבעה בכל אוכלוסייה.',...blocValues(allocateSeats(scenario.parties)),key:'120',keyLabel:'מנדטים בתחזית',link:'#/method',linkLabel:'לכל שיטת החישוב'}
+      {title:'מה משתנה בתחזית הברומטר?',caption:'בדיקת דמוגרפיה ואחוז חסימה',detail:'בודקים את השפעת אחוז החסימה, משווים ל־2022 ומוסיפים תוספת דמוגרפית שהיא ממוצע של המודל הדמוגרפי והגיאוגרפי.',...blocValues(allocateSeats(scenario.parties)),key:'120',keyLabel:'מנדטים בתחזית',link:'#/method',linkLabel:'לכל שיטת החישוב'}
     ];
   }
   function renderStep(n,user=false){

@@ -1692,7 +1692,7 @@ function renderCrossover() {
   const AR = BLOCS.Arabs.color;
   /* שורת מכון: ימין וחרדים · מרכז־שמאל · ערבים (רע״ם בין הערבים) */
   const split3 = (r, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(r.share)}%, מרכז־שמאל ${r1(r.left)}%, ערבים ${r1(r.arab)}%`)}">
-      <span style="flex:${r.share};background:${R}"><b dir="ltr">${r1(r.share)}%</b></span><span style="flex:${r.left};background:${L}"><b dir="ltr">${r1(r.left)}%</b></span><span style="flex:${r.arab};background:${AR}"><b dir="ltr">${r1(r.arab)}%</b></span></div>`;
+      <span style="flex:${r.share};background:${R}"><b dir="ltr">${r1(r.share)}%</b></span><span style="flex:${r.arab};background:${AR}"><b dir="ltr">${r1(r.arab)}%</b></span><span style="flex:${r.left};background:${L}"><b dir="ltr">${r1(r.left)}%</b></span></div>`;
   const refs = [
     ["2022 בפועל", rightShare0], ["צפי דמוגרפי ל־2026", base],
     ...(geo == null ? [] : [["צפי לפי מגמות היישובים", geo]]), ["ממוצע הסקרים (משוקלל לפי אמינות)", shareAvg]
@@ -2460,6 +2460,7 @@ const rendered = {};
 function show(view) {
   if (!VIEWS.hasOwnProperty(view)) view = "landing";
   S.view = view;
+  document.documentElement.classList.toggle("masthead-auto", view === "home");
   $$(".view").forEach(v => v.classList.toggle("on", v.id === "view-" + view));
   /* לשונית ראשית מסומנת גם כשמוצג אחד מתתי-הדפים שלה (data-group) */
   $$(".tab").forEach(t => {

@@ -122,8 +122,10 @@
     stepsCalc[iHouse].bloc = stepsCalc[iHouse - 1].bloc;           // התיקון זז בתוך הגושים בלבד
     const seats = allocateSeats(scF.parties), fin = blocOf(seats);
     stepsCalc[stepsCalc.length - 1].bloc = fin;
+    /* הקשת: ימין וחרדים | הרשימות הערביות (ירוק, באמצע) | מרכז־שמאל */
+    const armRank = p => p.al === "Right" || p.al === "Haredi" ? 0 : (p.al === "Arabs" || ARAB_FAMILY.has(normId(p.id))) ? 1 : 2;
     const partySeats = Object.entries(seats).filter(([, n]) => n > 0).map(([id, n]) => ({ id, n, name: partyMeta(id).name, color: partyHue(id), al: partyMeta(id).alignment }))
-      .sort((a, b) => ({ Right: 0, Haredi: 0, Unknown: 1, Left: 2, Arabs: 3 }[a.al] ?? 1) - ({ Right: 0, Haredi: 0, Unknown: 1, Left: 2, Arabs: 3 }[b.al] ?? 1) || b.n - a.n);
+      .sort((a, b) => armRank(a) - armRank(b) || b.n - a.n);
 
     return {
       cb, g, rows, W, simpleAvg, stepsCalc, fin, partySeats, simpleBloc: blocOf(allocateSeats(sF.parties)), weightedBloc: blocOf(allocateSeats(wF.parties)),
@@ -269,12 +271,12 @@
   async function scenePolls() {
     const rows = D.rows, base = D.demo.base;
     const seg = (v, cls) => `<i class="ms-pl-seg ${cls}" style="flex:${v}"><b dir="ltr">${v >= 6 ? pc(v) : ""}</b></i>`;
-    setStage(`<div class="ms-polls"><div class="ms-pl-head"><span></span><span>מכון</span><span>דרגה</span><span class="ms-pl-axis">חלוקת הקולות בסקר האחרון <em class="k-r">ימין וחרדים</em><em class="k-l">מרכז־שמאל</em><em class="k-a">ערבים</em></span><span>משקל</span></div>
+    setStage(`<div class="ms-polls"><div class="ms-pl-head"><span></span><span>מכון</span><span>דרגה</span><span class="ms-pl-axis">חלוקת הקולות בסקר האחרון <em class="k-r">ימין וחרדים</em><em class="k-a">ערבים</em><em class="k-l">מרכז־שמאל</em></span><span>משקל</span></div>
       <div class="ms-pl-rows">${rows.map((r, i) => `<div class="ms-pl-row" data-i="${i}">${logoBox(r.meta, 26)}<span class="ms-pl-n"><b>${esc(r.meta.he || r.meta.firm)}</b><small>${esc(r.date)}</small></span>
         <span class="ms-pl-g"><em class="grade ${r.grade.key}">${esc(r.grade.label)}</em><small>ציון ${r1(r.score)}</small></span>
-        <div class="ms-pl-track"><span class="ms-pl-bar">${seg(r.share, "r")}${seg(r.left, "l")}${seg(r.arab, "a")}</span><i class="ms-pl-exp" style="left:${base}%"></i></div>
+        <div class="ms-pl-track"><span class="ms-pl-bar">${seg(r.share, "r")}${seg(r.arab, "a")}${seg(r.left, "l")}</span><i class="ms-pl-exp" style="left:${base}%"></i></div>
         <span class="ms-pl-w"><i></i><b>${Math.round(100 * r.w / D.W)}%</b></span></div>`).join("")}</div>
-      <div class="ms-pl-avg"><div class="k-r"><small>ימין וחרדים · ממוצע משוקלל</small><b dir="ltr" id="ms-pl-w">—</b></div><div class="k-l"><small>מרכז־שמאל</small><b dir="ltr" id="ms-pl-l">—</b></div><div class="k-a"><small>ערבים</small><b dir="ltr" id="ms-pl-a">—</b></div><p class="ms-note">הקו המקווקו: הצפי הדמוגרפי לימין ולחרדים (${pc(base)})</p></div></div>`);
+      <div class="ms-pl-avg"><div class="k-r"><small>ימין וחרדים · ממוצע משוקלל</small><b dir="ltr" id="ms-pl-w">—</b></div><div class="k-a"><small>ערבים</small><b dir="ltr" id="ms-pl-a">—</b></div><div class="k-l"><small>מרכז־שמאל</small><b dir="ltr" id="ms-pl-l">—</b></div><p class="ms-note">הקו המקווקו: הצפי הדמוגרפי לימין ולחרדים (${pc(base)})</p></div></div>`);
     let sumW = 0, sumL = 0, sumA = 0, wS = 0;
     for (let i = 0; i < rows.length; i++) {
       const r = rows[i], row = stage.querySelector(`[data-i="${i}"]`);
@@ -324,7 +326,7 @@
 
   /* ---------- שלב 6: תחשיב הברומטר ---------- */
   async function sceneCalc() {
-    const steps = D.stepsCalc, MAX = 76, cols = [["right", "ימין וחרדים", R_COL()], ["left", "מרכז־שמאל", L_COL()], ["arab", "ערבים", A_COL()]];
+    const steps = D.stepsCalc, MAX = 76, cols = [["right", "ימין וחרדים", R_COL()], ["arab", "ערבים", A_COL()], ["left", "מרכז־שמאל", L_COL()]];
     setStage(`<div class="ms-cv"><div class="ms-cv-chart"><div class="ms-cv-plots"><i class="ms-cv-line" style="bottom:${61 / MAX * 100}%"><span>61 · רוב</span></i>
         ${cols.map(([k, , c]) => `<div class="ms-cv-col" data-b="${k}" style="--c:${c}"><i class="ms-cv-ghost"></i><i class="ms-cv-bar"></i><div class="ms-cv-v"><b dir="ltr">0</b><em dir="ltr"></em></div></div>`).join("")}</div>
         <div class="ms-cv-names">${cols.map(([, n, c]) => `<span style="--c:${c}">${n}</span>`).join("")}</div></div>

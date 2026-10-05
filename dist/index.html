@@ -6138,10 +6138,11 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
    הצבעים ללא שינוי: נייבי, שמנת וזהב. נטען אחרון, כדי לגבור על שכבות העיצוב הישנות. */
 
 /* ---------- הקטע הראשי ---------- */
-#view-home:not(#_):not(#__).on>.verdict{display:flex;align-items:center;padding:12px 0}
-#view-home:not(#_):not(#__) .verdict>.wrap{width:100%}
-#view-home:not(#_):not(#__) .verdict .verdict-in{position:relative;width:100%;padding:12px 28px 0;border:1px solid #d9d2c3;border-radius:16px;background:#fdfbf6;color:#14233a;box-shadow:0 26px 60px -34px #000000d0;overflow:hidden}
-#view-home:not(#_):not(#__) .verdict .verdict-in::before{content:"";position:absolute;inset-inline:0;top:0;height:5px;background:linear-gradient(90deg,#17457F 0 49%,#e5c783 49% 51%,#C0392B 51% 100%)}
+#view-home:not(#_):not(#__).on>.verdict{position:relative;display:flex;align-items:center;padding:0;background:#fdfbf6;color:#14233a}
+#view-home:not(#_):not(#__).on>.verdict::before{content:"";position:absolute;inset-inline:0;top:0;height:5px;background:linear-gradient(90deg,#17457F 0 49%,#e5c783 49% 51%,#C0392B 51% 100%)}
+#view-home:not(#_):not(#__) .verdict>.wrap{width:100%;max-width:none;padding-inline:clamp(14px,2vw,32px)}
+#view-home:not(#_):not(#__) .verdict .verdict-in{position:relative;width:100%;padding:12px 0 0;border:0;border-radius:0;background:none;color:#14233a;box-shadow:none;overflow:visible}
+#view-home:not(#_):not(#__) .verdict .verdict-in::before{content:none}
 #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:6px;border-bottom:1px solid #1023461a}
 #view-home:not(#_):not(#__) .verdict .eyebrow{color:#855a0c;font-size:.78rem;font-weight:800;letter-spacing:.05em}
 #view-home:not(#_):not(#__) .verdict .edition-label{color:#586575}
@@ -6168,7 +6169,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-home:not(#_):not(#__) .fs-center .seatmap .hemicycle-total{font-size:70px}
 
 /* עמודת גוש */
-.fs-side{--ph:clamp(46px,calc((100dvh - 350px) / 7),92px);display:grid;align-content:start;gap:8px;min-width:0}
+.fs-side{--ph:clamp(46px,calc((100dvh - 215px) / 7 - 8px),118px);display:grid;align-content:start;gap:8px;min-width:0}
 .fs-head{display:flex;align-items:baseline;gap:12px;padding-bottom:6px;border-bottom:3px solid var(--bc)}
 .fs-total{font-size:clamp(2.4rem,6.4dvh,3.6rem);line-height:.9;font-weight:900;letter-spacing:-.05em;color:var(--bc);font-variant-numeric:tabular-nums}
 .fs-head span{font-size:.95rem;font-weight:800;color:#14233a;line-height:1.2}
@@ -6205,14 +6206,11 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 
 /* מחשב נייד: הקטע כולו במסך אחד */
 @media (min-width:901px) and (max-height:800px){
-  #view-home:not(#_):not(#__).on>.verdict{padding:6px 0 4px}
-  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:8px 24px 0}
+  #view-home:not(#_):not(#__) .verdict .verdict-in{padding:6px 0 0}
   #view-home:not(#_):not(#__) .verdict .verdict-top{padding-bottom:4px}
   #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{padding:4px 0 2px;gap:16px}
   #view-home:not(#_):not(#__) .fs-center .hero-overline{display:none}
-  #view-home:not(#_):not(#__) .fs-center .seatmap svg{max-width:min(540px,calc((100dvh - 385px) * 1.95))}
-  .fs-leader{display:none}
-  .fs-side{--ph:46px}
+  #view-home:not(#_):not(#__) .fs-center .seatmap svg{max-width:min(100%,calc((100dvh - 285px) * 1.95))}
   .fs-barline{margin-top:1px}
   #view-home:not(#_):not(#__) .fs-center .sm-votes,#view-home:not(#_):not(#__) .fs-center .sm-bar.thin{display:none}
   #view-home:not(#_):not(#__) .verdict .home-forecast-controls{padding:4px 0 6px}
@@ -6289,6 +6287,15 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-home:not(#_):not(#__) .verdict .home-forecast-controls .show-btn{padding:10px 18px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font-size:.86rem;font-weight:800;box-shadow:0 10px 22px -12px #b8862b}
 #view-home:not(#_):not(#__) .verdict .home-forecast-controls .show-btn .play{display:inline-grid;place-items:center;width:22px;height:22px;margin-inline-end:6px;border-radius:50%;background:#14233a;color:#f6e7bd;font-size:.58rem}
 #view-home:not(#_):not(#__) .verdict .home-forecast-controls .hero-link{font-size:.82rem;font-weight:700;color:#3a4859}
+
+/* הכותרת העליונה בעמוד התחזית: מתכווצת, ויורדת כשמרחפים מעל הפס שנשאר ממנה (מחשב עם עכבר בלבד) */
+@media (hover:hover) and (pointer:fine){
+  html.masthead-auto{--masthead-h:0px!important}
+  html.masthead-auto .masthead{position:fixed;inset-inline:0;top:0;width:100%;z-index:90;transform:translateY(calc(-100% + 12px));transition:transform .22s ease .05s}
+  html.masthead-auto .masthead:hover,html.masthead-auto .masthead:focus-within{transform:none;transition-delay:0s}
+  html.masthead-auto .masthead::after{content:"";position:absolute;inset-inline:0;bottom:3px;margin-inline:auto;width:64px;height:4px;border-radius:2px;background:#e5c783;opacity:.85;transition:opacity .15s}
+  html.masthead-auto .masthead:hover::after,html.masthead-auto .masthead:focus-within::after{opacity:0}
+}
 
 </style>
 </head><body>
@@ -9952,7 +9959,7 @@ function renderCrossover() {
   const AR = BLOCS.Arabs.color;
   /* שורת מכון: ימין וחרדים · מרכז־שמאל · ערבים (רע״ם בין הערבים) */
   const split3 = (r, label) => `<div class="cx2-split" role="img" aria-label="${esc(`${label}: ימין וחרדים ${r1(r.share)}%, מרכז־שמאל ${r1(r.left)}%, ערבים ${r1(r.arab)}%`)}">
-      <span style="flex:${r.share};background:${R}"><b dir="ltr">${r1(r.share)}%</b></span><span style="flex:${r.left};background:${L}"><b dir="ltr">${r1(r.left)}%</b></span><span style="flex:${r.arab};background:${AR}"><b dir="ltr">${r1(r.arab)}%</b></span></div>`;
+      <span style="flex:${r.share};background:${R}"><b dir="ltr">${r1(r.share)}%</b></span><span style="flex:${r.arab};background:${AR}"><b dir="ltr">${r1(r.arab)}%</b></span><span style="flex:${r.left};background:${L}"><b dir="ltr">${r1(r.left)}%</b></span></div>`;
   const refs = [
     ["2022 בפועל", rightShare0], ["צפי דמוגרפי ל־2026", base],
     ...(geo == null ? [] : [["צפי לפי מגמות היישובים", geo]]), ["ממוצע הסקרים (משוקלל לפי אמינות)", shareAvg]
@@ -10720,6 +10727,7 @@ const rendered = {};
 function show(view) {
   if (!VIEWS.hasOwnProperty(view)) view = "landing";
   S.view = view;
+  document.documentElement.classList.toggle("masthead-auto", view === "home");
   $$(".view").forEach(v => v.classList.toggle("on", v.id === "view-" + view));
   /* לשונית ראשית מסומנת גם כשמוצג אחד מתתי-הדפים שלה (data-group) */
   $$(".tab").forEach(t => {
@@ -11549,8 +11557,10 @@ function renderHaredHistory() {
     stepsCalc[iHouse].bloc = stepsCalc[iHouse - 1].bloc;           // התיקון זז בתוך הגושים בלבד
     const seats = allocateSeats(scF.parties), fin = blocOf(seats);
     stepsCalc[stepsCalc.length - 1].bloc = fin;
+    /* הקשת: ימין וחרדים | הרשימות הערביות (ירוק, באמצע) | מרכז־שמאל */
+    const armRank = p => p.al === "Right" || p.al === "Haredi" ? 0 : (p.al === "Arabs" || ARAB_FAMILY.has(normId(p.id))) ? 1 : 2;
     const partySeats = Object.entries(seats).filter(([, n]) => n > 0).map(([id, n]) => ({ id, n, name: partyMeta(id).name, color: partyHue(id), al: partyMeta(id).alignment }))
-      .sort((a, b) => ({ Right: 0, Haredi: 0, Unknown: 1, Left: 2, Arabs: 3 }[a.al] ?? 1) - ({ Right: 0, Haredi: 0, Unknown: 1, Left: 2, Arabs: 3 }[b.al] ?? 1) || b.n - a.n);
+      .sort((a, b) => armRank(a) - armRank(b) || b.n - a.n);
 
     return {
       cb, g, rows, W, simpleAvg, stepsCalc, fin, partySeats, simpleBloc: blocOf(allocateSeats(sF.parties)), weightedBloc: blocOf(allocateSeats(wF.parties)),
@@ -11696,12 +11706,12 @@ function renderHaredHistory() {
   async function scenePolls() {
     const rows = D.rows, base = D.demo.base;
     const seg = (v, cls) => `<i class="ms-pl-seg ${cls}" style="flex:${v}"><b dir="ltr">${v >= 6 ? pc(v) : ""}</b></i>`;
-    setStage(`<div class="ms-polls"><div class="ms-pl-head"><span></span><span>מכון</span><span>דרגה</span><span class="ms-pl-axis">חלוקת הקולות בסקר האחרון <em class="k-r">ימין וחרדים</em><em class="k-l">מרכז־שמאל</em><em class="k-a">ערבים</em></span><span>משקל</span></div>
+    setStage(`<div class="ms-polls"><div class="ms-pl-head"><span></span><span>מכון</span><span>דרגה</span><span class="ms-pl-axis">חלוקת הקולות בסקר האחרון <em class="k-r">ימין וחרדים</em><em class="k-a">ערבים</em><em class="k-l">מרכז־שמאל</em></span><span>משקל</span></div>
       <div class="ms-pl-rows">${rows.map((r, i) => `<div class="ms-pl-row" data-i="${i}">${logoBox(r.meta, 26)}<span class="ms-pl-n"><b>${esc(r.meta.he || r.meta.firm)}</b><small>${esc(r.date)}</small></span>
         <span class="ms-pl-g"><em class="grade ${r.grade.key}">${esc(r.grade.label)}</em><small>ציון ${r1(r.score)}</small></span>
-        <div class="ms-pl-track"><span class="ms-pl-bar">${seg(r.share, "r")}${seg(r.left, "l")}${seg(r.arab, "a")}</span><i class="ms-pl-exp" style="left:${base}%"></i></div>
+        <div class="ms-pl-track"><span class="ms-pl-bar">${seg(r.share, "r")}${seg(r.arab, "a")}${seg(r.left, "l")}</span><i class="ms-pl-exp" style="left:${base}%"></i></div>
         <span class="ms-pl-w"><i></i><b>${Math.round(100 * r.w / D.W)}%</b></span></div>`).join("")}</div>
-      <div class="ms-pl-avg"><div class="k-r"><small>ימין וחרדים · ממוצע משוקלל</small><b dir="ltr" id="ms-pl-w">—</b></div><div class="k-l"><small>מרכז־שמאל</small><b dir="ltr" id="ms-pl-l">—</b></div><div class="k-a"><small>ערבים</small><b dir="ltr" id="ms-pl-a">—</b></div><p class="ms-note">הקו המקווקו: הצפי הדמוגרפי לימין ולחרדים (${pc(base)})</p></div></div>`);
+      <div class="ms-pl-avg"><div class="k-r"><small>ימין וחרדים · ממוצע משוקלל</small><b dir="ltr" id="ms-pl-w">—</b></div><div class="k-a"><small>ערבים</small><b dir="ltr" id="ms-pl-a">—</b></div><div class="k-l"><small>מרכז־שמאל</small><b dir="ltr" id="ms-pl-l">—</b></div><p class="ms-note">הקו המקווקו: הצפי הדמוגרפי לימין ולחרדים (${pc(base)})</p></div></div>`);
     let sumW = 0, sumL = 0, sumA = 0, wS = 0;
     for (let i = 0; i < rows.length; i++) {
       const r = rows[i], row = stage.querySelector(`[data-i="${i}"]`);
@@ -11751,7 +11761,7 @@ function renderHaredHistory() {
 
   /* ---------- שלב 6: תחשיב הברומטר ---------- */
   async function sceneCalc() {
-    const steps = D.stepsCalc, MAX = 76, cols = [["right", "ימין וחרדים", R_COL()], ["left", "מרכז־שמאל", L_COL()], ["arab", "ערבים", A_COL()]];
+    const steps = D.stepsCalc, MAX = 76, cols = [["right", "ימין וחרדים", R_COL()], ["arab", "ערבים", A_COL()], ["left", "מרכז־שמאל", L_COL()]];
     setStage(`<div class="ms-cv"><div class="ms-cv-chart"><div class="ms-cv-plots"><i class="ms-cv-line" style="bottom:${61 / MAX * 100}%"><span>61 · רוב</span></i>
         ${cols.map(([k, , c]) => `<div class="ms-cv-col" data-b="${k}" style="--c:${c}"><i class="ms-cv-ghost"></i><i class="ms-cv-bar"></i><div class="ms-cv-v"><b dir="ltr">0</b><em dir="ltr"></em></div></div>`).join("")}</div>
         <div class="ms-cv-names">${cols.map(([, n, c]) => `<span style="--c:${c}">${n}</span>`).join("")}</div></div>

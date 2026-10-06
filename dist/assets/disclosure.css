@@ -100,3 +100,16 @@ html.consent-open,html.consent-open body{overflow:hidden!important}
 body>footer .inline-admin #admin-trigger{min-height:0;border:0;background:none;padding:0;font:inherit;font-weight:400;color:inherit;cursor:pointer}
 .inline-admin #admin-submit{font-weight:400}
 @media print{.info-page .info-header{display:none}}
+
+/* One narrow footer row: logo, then sources · about · admin as plain text. */
+body>footer{padding:12px 0!important}
+body>footer .wrap{display:flex!important;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 24px}
+body>footer .fbrand{margin:0}
+body>footer .fbrand>img.brand-logo{height:22px!important}
+body>footer .footer-utility{margin:0;gap:10px;font-size:.82rem;align-items:center}
+body>footer .footer-utility .footer-details{margin:0;padding:0;border:0}
+body>footer .footer-utility .footer-details>summary{display:inline;min-height:0;padding:0;border:0;font-size:inherit;font-weight:400;cursor:pointer;list-style:none}
+body>footer .footer-utility .footer-details>summary::-webkit-details-marker{display:none}
+body>footer .footer-utility .inline-admin{min-height:0}
+body>footer .admin-inline-status{flex:0 0 100%;margin:0}
+body>footer .footer-details[open]{flex:0 0 100%}

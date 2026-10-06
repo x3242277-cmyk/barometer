@@ -580,14 +580,10 @@
      The page links repeat the menu, so they are left to it. */
   body>footer{padding:16px 16px calc(14px + env(safe-area-inset-bottom));box-sizing:border-box}
   body>footer .wrap{width:100%;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 8px}
-  body>footer .wrap>div{display:contents}
   body>footer .fbrand{flex:0 0 100%;margin:0}
   body>footer .fbrand .brand-logo{height:22px;width:auto}
-  body>footer .wrap>div:first-child>p,body>footer .footer-nav{display:none}
-  body>footer .wrap>div:last-child>p:not(.admin-inline-status){flex:0 0 100%;order:2;margin:0;font-size:.7rem;line-height:1.5;color:#9fb0c2}
-  body>footer .footer-details{flex:1 1 0;min-width:0;margin:0;padding:0;border:0}
-  body>footer .footer-details[open]{flex-basis:100%;order:1}
-  body>footer .footer-details summary{min-height:38px;display:flex;align-items:center;justify-content:center;padding:4px 10px;border:1px solid #ffffff26;border-radius:9px;font-size:.76rem;line-height:1.3;text-align:center}
+  body>footer .footer-details{flex:0 0 auto;min-width:0;margin:0;padding:0;border:0}
+  body>footer .footer-details[open]{flex-basis:100%}
   body>footer .footer-utility{flex:0 0 100%;order:2;display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;font-size:.72rem}
   body>footer .footer-utility a{display:inline-flex;align-items:center;min-height:32px}
   body>footer .footer-utility #admin-trigger{min-height:32px;padding:0;font-size:.72rem}

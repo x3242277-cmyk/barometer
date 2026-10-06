@@ -93,3 +93,20 @@ body:has(#view-landing.on) #print-btn{display:none}
 #view-landing .cover-chart{transition:border-color .2s,transform .2s}
 #view-landing .cover-chart:has(.cover-chart-link:hover),#view-landing .cover-chart:has(.cover-chart-link:focus-visible){border-color:#e5c783aa}
 #view-landing .cover-score-go{color:#e5c783;font-size:1rem;line-height:1}
+
+/* Compact discovery cards (desktop): number and small sketch on one line, then the story. */
+@media(min-width:761px){
+#view-landing .home-discovery{padding-block:clamp(36px,6vh,64px)}
+#view-landing .discovery-controls{margin-bottom:14px}
+#view-landing .discovery-stories{gap:14px;align-items:stretch}
+#view-landing .discovery-card{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 104px;grid-template-areas:"eye art" "num art" "ttl ttl" "txt txt" "src src" "lnk lnk";column-gap:12px;grid-template-rows:auto auto auto 1fr auto auto;padding:15px 18px 13px;border:1px solid #d3dfeb;border-top:1px solid #d3dfeb;border-radius:10px;background:#f6fafe;box-shadow:0 1px 2px #12263a0d}
+#view-landing .discovery-card:hover{transform:translateY(-2px);border-color:#d5b773;background:#fff;box-shadow:0 6px 16px #12263a14}
+#view-landing .discovery-art{grid-area:art;height:56px;margin:0;border:0;align-self:center;opacity:.85}
+#view-landing .discovery-art svg{height:56px}
+#view-landing .discovery-eyebrow{grid-area:eye;align-self:end;font-size:.72rem}
+#view-landing .discovery-number{grid-area:num;margin:2px 0 0;font-size:clamp(1.8rem,2.5vw,2.3rem);line-height:1.1}
+#view-landing .discovery-card h3{grid-area:ttl;margin-top:10px;font-size:1rem;line-height:1.35}
+#view-landing .discovery-card p{grid-area:txt;margin:6px 0 8px;font-size:.84rem;line-height:1.5}
+#view-landing .discovery-source{grid-area:src;margin-top:0;font-size:.68rem}
+#view-landing .discovery-link{grid-area:lnk;margin-top:9px;padding-top:8px;font-size:.78rem}
+}

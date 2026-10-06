@@ -8,14 +8,25 @@
 /* ---------- הלשוניות: עמודה בצד ימין, והלשונית הפעילה מודגשת ---------- */
 .polls-tabbar{flex:none;display:flex;flex-direction:column;gap:2px;align-self:start;padding:6px;border:1px solid #e5c78333;border-radius:10px;background:#ffffff08}
 .polls-tabbar{gap:6px}
-.polls-tabbar .pn{display:block;padding:12px 16px;border:1px solid #e5c78333;border-inline-start:3px solid #e5c78355;border-radius:8px;background:#ffffff0a;color:#c3cedb;font:700 .92rem/1.3 var(--sans);text-decoration:none;transition:color .15s,background .15s,border-color .15s}
-.polls-tabbar .pn:hover{color:#f6e7bd;background:#e5c78318;border-color:#e5c78366}
-.polls-tabbar .pn[aria-current="page"]{color:#fff3cf;background:linear-gradient(90deg,#e5c78340,#e5c78318);border-color:#e5c783;border-inline-start-width:3px;font-weight:800;box-shadow:0 6px 16px -10px #e5c783}
-.polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:-2px}
+.polls-tabbar{max-height:100%;overflow-y:auto;scrollbar-width:thin}
+.polls-tabbar .pn-head{margin:2px 4px 2px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:#9fb0c4;font:600 .72rem/1.3 var(--sans)}
+.polls-tabbar .pn-head b{color:#f6e7bd;font-size:.8rem}
+.polls-tabbar .pn{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid #e5c78333;border-radius:10px;background:#ffffff0a;color:#dbe4ee;text-decoration:none;transition:color .15s,background .15s,border-color .15s,transform .15s}
+.polls-tabbar .pn:hover{color:#fff;background:#e5c78322;border-color:#e5c78366;transform:translateX(-2px)}
+.polls-tabbar .pn[aria-current="page"]{color:#fff3cf;background:linear-gradient(90deg,#e5c78340,#e5c78318);border-color:#e5c783;box-shadow:0 6px 16px -10px #e5c783}
+.polls-tabbar .pn:focus-visible{outline:2px solid #f1d99d;outline-offset:2px}
+.polls-tabbar .pn-num{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px solid #e5c783;color:#e5c783;font:800 .76rem/1 var(--sans)}
+.polls-tabbar .pn[aria-current="page"] .pn-num{background:#e5c783;color:#14233a}
+.polls-tabbar .pn.is-seen:not([aria-current="page"]) .pn-num{border-color:#ffffff40;color:#ffffff80}
+.polls-tabbar .pn-text{display:flex;flex-direction:column;gap:3px;min-width:0}
+.polls-tabbar .pn-text b{font:800 .92rem/1.25 var(--sans)}
+.polls-tabbar .pn-text small{color:#e5c783;font:600 .76rem/1.35 var(--sans)}
+.polls-tabbar .pn.is-seen:not([aria-current="page"]) .pn-text small{color:#9fb0c4}
+.polls-tabbar .pn:not([aria-current="page"]):not(.is-seen) .pn-text small::after{content:" ←";font-weight:800}
 
 /* ---------- הפריסה במחשב ---------- */
 @media (min-width:981px){
-  #view-polls.on>.wrap{display:grid;grid-template-columns:156px minmax(0,1fr);grid-template-rows:minmax(0,1fr);column-gap:14px;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:10px}
+  #view-polls.on>.wrap{display:grid;grid-template-columns:236px minmax(0,1fr);grid-template-rows:minmax(0,1fr);column-gap:14px;box-sizing:border-box;height:calc(100dvh - var(--masthead-h,80px));min-height:480px;padding-block:10px}
   #view-polls .polls-tabbar{grid-column:1;grid-row:1}
   #view-polls .polls-layout{grid-column:2;grid-row:1;min-height:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,23vw,360px)!important;gap:14px!important;align-items:stretch}
   #view-polls:is([data-tab="list"],[data-tab="gap"],[data-tab="cross"]) .polls-layout{grid-template-columns:minmax(0,1fr)!important}
@@ -26,7 +37,7 @@
   #view-polls .polls-feed{position:static;align-self:stretch;max-height:none;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0}
   #view-polls .feed-list{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#e5c78355 transparent;padding:0 2px 6px 4px}
   /* דיוק המכונים: אותה עמודת לשוניות בצד ימין */
-  #view-e2022>.wrap{display:grid;grid-template-columns:156px minmax(0,1fr);column-gap:14px;align-items:start;padding-top:10px}
+  #view-e2022>.wrap{display:grid;grid-template-columns:236px minmax(0,1fr);column-gap:14px;align-items:start;padding-top:10px}
   #view-e2022>.wrap>.polls-tabbar{grid-column:1;grid-row:1/span 30;position:sticky;top:calc(var(--masthead-h,80px) + 10px)}
   #view-e2022>.wrap>:not(.polls-tabbar){grid-column:2;min-width:0}
 }
@@ -36,8 +47,9 @@
 }
 /* מסך צר: הלשוניות בשורה אחת נגללת */
 @media (max-width:980px){
-  .polls-tabbar{flex-direction:row;overflow-x:auto;margin-bottom:10px;scrollbar-width:none}
-  .polls-tabbar .pn{flex:none;white-space:nowrap}
+  .polls-tabbar{flex-direction:row;align-items:stretch;overflow-x:auto;margin-bottom:10px;scrollbar-width:none}
+  .polls-tabbar .pn-head{display:none}
+  .polls-tabbar .pn{flex:none;width:210px}
 }
 
 /* ---------- מגמות והשוואות: כרטיס אחד שממלא את הגובה ---------- */
@@ -171,7 +183,7 @@
   #view-polls[data-tab="list"] .polls-feed{display:none}
   .ex-body{flex:none;height:300px}
 }
-@media (prefers-reduced-motion:reduce){.polls-tabbar .pn,.ex-logo-button,.ex-tabs button{transition:none}}
+@media (prefers-reduced-motion:reduce){.polls-tabbar .pn:hover{transform:none}.polls-tabbar .pn,.ex-logo-button,.ex-tabs button{transition:none}}
 
 /* ״כל הסקרים״: כרטיסייה משלה, בלי תפריט הצד של מדד האמינות */
 #view-polls[data-section="all"] .polls-tabbar{display:none}

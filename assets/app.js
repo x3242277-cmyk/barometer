@@ -1010,6 +1010,13 @@ function rebuildForecastSet(rerender) {
   S.seriesScenario = buildSeries(S.forecastPolls.map(correctWithinBlocs));
   if (rerender) renderHome();
 }
+/* פתיחת התחזית היא הרצת המודל: בכניסה הראשונה בביקור מופעלת אותה אנימציה, בלי כפתור */
+function autoRunModel() {
+  let seen = false; try { seen = sessionStorage.getItem("modelRunSeen") === "1"; } catch {}
+  if (seen || !S.cur || S.modelRunning) return;
+  try { sessionStorage.setItem("modelRunSeen", "1"); } catch {}
+  setTimeout(() => { if (S.view === "home") runModelUpdate(); }, 300);
+}
 async function runModelUpdate() {
   if (S.modelRunning) return;
   const host = $(".verdict-in"); if (!host) return;
@@ -2621,7 +2628,7 @@ function show(view) {
   const t = { landing:"התמונה הגדולה", home:"תחזית הברומטר", polls:"כל הסקרים", e2022:"דיוק המכונים", live:"ליל הבחירות · המדגמים", results:"ליל הבחירות · תוצאות האמת", haredi:"התרחיש החרדי", map:"המודל הגיאוגרפי", demography:"המודל הדמוגרפי", method:"שיטת החישוב" }[view];
   document.title = `${t} · הברומטר`;
   document.dispatchEvent(new Event("barometer:view"));
-  if (view === "home") $("#view-home").scrollTop = 0;
+  if (view === "home") { $("#view-home").scrollTop = 0; autoRunModel(); }
   window.scrollTo({ top: 0, behavior: rendered[view] ? "auto" : "auto" });
 }
 
@@ -2661,7 +2668,6 @@ function wire() {
     $$("[data-mode]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     renderHome();
   }));
-  $("#run-model")?.addEventListener("click", () => runModelUpdate());
   $("#home-history").addEventListener("change", e => { S.homeHistory = e.target.value; renderHome(); });
   /* לוח לפי גושים כברירת מחדל; בחירה מפורשת של הגולש נשמרת. */
   const applyWallLayout = () => { $(".board").classList.toggle("layout-size", S.wallLayout === "size"); $$("[data-wall-layout]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.wallLayout === S.wallLayout))); };

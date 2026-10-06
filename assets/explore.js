@@ -219,7 +219,14 @@ function wireExploration() {
     const select=e.target.closest('[data-select-party]');
     if(select){S.focusParty=S.focusParty===select.dataset.selectParty?'':select.dataset.selectParty;renderPolls();$('#poll-party').focus();}
     const focus=e.target.closest('[data-focus-party]');
-    if(focus){S.focusParty=focus.dataset.focusParty;S.trendParty=S.focusParty;location.hash='#/polls';}
+    if(focus){
+      /* לחיצה על מפלגה פותחת את הגרף של אותה מפלגה: מצב "מפלגות", המפלגה בלבד */
+      const id=focus.dataset.focusParty;
+      S.focusParty=id;S.trendParty=id;
+      S.exploreMode='parties';S.exploreSelections={...S.exploreSelections,parties:[id]};
+      if(location.hash==='#/polls/parties'&&S.view==='polls'){setPollsTab('trend');renderExplorer();window.scrollTo({top:0});}
+      else location.hash='#/polls/parties';
+    }
     
   });
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.nav-more')?.open){$('.nav-more').open=false;$('.nav-more summary').focus();}});

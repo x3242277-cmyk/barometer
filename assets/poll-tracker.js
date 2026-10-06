@@ -247,14 +247,33 @@ function renderPollTracker() {
 
 /* ---------- הניווט של כל הסקרים: אותו תפריט צד בעמוד הסקרים ובדיוק המכונים ---------- */
 const POLLS_NAV = [
-  ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?"],
-  ["acc", "", "#/2022", "דיוק המכונים"],
-  ["cross", "", "#/crossover", "כמה עברו צד"]
+  ["gap", "", "#/polls/gap", "למה הסקרים חלוקים?", "לחצו כדי לראות למה שני סקרים מאותו שבוע מראים תמונה אחרת"],
+  ["acc", "", "#/2022", "דיוק המכונים", "לחצו כדי לראות מי הסוקר הדייקן בישראל"],
+  ["cross", "", "#/crossover", "כמה עברו צד", "לחצו כדי לראות איזה מכון מעריך שמאות אלפי מצביעים החליפו צד"]
 ];
+/* שורות ההזמנה בלשוניות: ב״כמה עברו צד״ המספר חי מהנתונים (המכון עם הפער הגדול ביותר) */
+function pollsNavTeasers() {
+  const key = S.cur?.polls, cache = S.navTeasers;
+  if (cache && cache.key === key && cache.regions === !!S.regions) return cache.map;
+  const map = {};
+  try {
+    if (S.regions && typeof crossoverBase === "function") {
+      const { rows, kv } = crossoverBase(), top = Math.max(...rows.map(r => Math.abs(r.voters)));
+      if (top >= 1000) map.cross = `לחצו כדי לראות איזה מכון מעריך שעד כ־${kv(top)} מצביעים החליפו צד`;
+    }
+  } catch { /* נשארים עם הנוסח הקבוע */ }
+  S.navTeasers = { key, regions: !!S.regions, map };
+  return map;
+}
+/* אילו לשוניות כבר נפתחו בביקור הזה — כדי שהצופה יראה מה נשאר לו */
+const pollsSeen = (() => { let seen = []; try { seen = JSON.parse(sessionStorage.getItem("pollsTabsSeen") || "[]"); } catch {} return new Set(Array.isArray(seen) ? seen : []); })();
 function renderPollsNav() {
   const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap";
-  const link = ([t, , href, label]) => `<a class="pn" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}>${label}</a>`;
-  const html = POLLS_NAV.map(link).join("");
+  if (S.view === "polls" || S.view === "e2022") { pollsSeen.add(tab); try { sessionStorage.setItem("pollsTabsSeen", JSON.stringify([...pollsSeen])); } catch {} }
+  const teasers = pollsNavTeasers();
+  const link = ([t, , href, label, teaser], i) => `<a class="pn${pollsSeen.has(t) ? " is-seen" : ""}" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}><span class="pn-num" aria-hidden="true">${i + 1}</span><span class="pn-text"><b>${label}</b>${t === tab ? "" : `<small>${esc(teasers[t] || teaser)}</small>`}</span></a>`;
+  const seen = POLLS_NAV.filter(n => pollsSeen.has(n[0])).length;
+  const html = `<p class="pn-head"><b>${POLLS_NAV.length} כרטיסיות</b><span>ראיתם ${seen} מתוך ${POLLS_NAV.length}</span></p>` + POLLS_NAV.map(link).join("");
   document.querySelectorAll("[data-polls-nav]").forEach(n => { n.innerHTML = html; });
 }
 

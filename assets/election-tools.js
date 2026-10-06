@@ -99,7 +99,7 @@
     root.setAttribute("aria-labelledby", "ec-title");
     root.innerHTML = `<div class="ec-panel">
       <header class="ec-heading">
-        <div><p class="ec-eyebrow">הדרך ל־61</p><h2 id="ec-title">הקואליציה בידיים שלכם</h2><p class="ec-intro">בחרו מפלגות וראו אילו צירופים מגיעים לרוב בכנסת.</p></div>
+        <div><p class="ec-eyebrow">הדרך ל־61</p><h2 id="ec-title">מרכיבים קואליציה</h2><p class="ec-intro">בחרו מפלגות וראו אילו צירופים מגיעים לרוב בכנסת.</p></div>
         <span class="ec-source"><span aria-hidden="true"></span>${esc(historyLabel)}<small>${esc(modeLabel)}</small></span>
       </header>
       <div class="ec-content">

@@ -5188,6 +5188,11 @@ body:has(#view-demography.on)>footer{display:none}
 /* לוגו הברומטר: כהה, בלי רקע, בתוך העיגול */
 .ex-logo-button[data-ex-src="baro"] .ex-avatar{background:#fff}
 .ex-logo-button[data-ex-src="baro"] .ex-avatar img{padding:5px}
+/* המפלגות: גם הן בשתי שורות שוות, מוצמדות לשמאל; הלוגואים מצטמצמים לפי הרוחב */
+.ex-pickers .ex-sub .ex-picker-icons{display:grid;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:minmax(44px,68px);justify-content:end;gap:6px;width:100%}
+.ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special){width:100%;max-width:68px}
+.ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special) .ex-avatar{width:calc(100% - 10px);max-width:58px}
+.ex-pickers .ex-sub .ex-logo-special{justify-self:center}
 
 /* למה הסקרים חלוקים? — מסלול של קומות. נטען אחרי polls-workspace.css.
    קומה ראשונה: שני סקרים והשאלה. כל לחיצה על "הלאה" מוסיפה קומה מתחת לקודמת

@@ -441,6 +441,7 @@
     const loop = () => { tick(); st.raf = requestAnimationFrame(loop); };
     st.raf = requestAnimationFrame(loop); st.timer = setInterval(tick, 40);
     document.addEventListener("barometer:view", () => { if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
+    document.addEventListener("barometer:simulation-hidden", () => { if (st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
   }
 
 
@@ -459,7 +460,7 @@
       if (!st.ready) return;
       /* הסימולטור יושב בעמוד התחזית: עוברים אליו ומתחילים מהשלב שנבחר */
       if (S.view !== "home") location.hash = "#/forecast";
-      setTimeout(() => { root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
+      setTimeout(() => { document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'simulation'})); root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
     });
     const secs = [...document.querySelectorAll(".msec")];
     if (secs.length && "IntersectionObserver" in window) {

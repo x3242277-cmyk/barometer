@@ -63,6 +63,7 @@ async function fits(selector) {
   await page.locator('.home-switch [data-mode="scenario"]').tap();
   const options=await page.locator('#home-history option').evaluateAll(xs=>xs.map(x=>x.value));
   if(options.length>1){await page.locator('#home-history').selectOption(options[1]);await page.locator('#home-history').selectOption('current');}
+  await page.locator('[data-mobile-forecast="parties"]').tap();
   await page.locator('.fs-row').first().tap();
   await page.waitForTimeout(200);assert.equal(await page.locator('#view-polls').evaluate(e=>e.classList.contains('on')),true);
   assert.match(await page.locator('#poll-tracker .ex-key').first().textContent(),/הליכוד/);
@@ -161,7 +162,7 @@ async function fits(selector) {
   await cdp.detach();await page.locator('.mobile-map-pan').tap();
  });
  await check('simulation: all six stages fit the phone and can be paused',async()=>{
-  await go('forecast');await page.locator('#method-sim .ms-big-play').tap();
+  await go('forecast');await page.locator('[data-mobile-forecast="simulation"]').tap();await page.locator('#method-sim .ms-big-play').tap();
   for(let i=0;i<6;i++){
    await page.locator(`[data-ms-stage="${i}"]`).tap();await page.waitForTimeout(150);
    await page.locator('.ms-play').tap();
@@ -184,10 +185,22 @@ async function fits(selector) {
   await page.locator('#har-reset').tap();assert.equal(await page.locator('#har-growth').inputValue(),start);
   await fits('#haredi-calc');
  });
- await check('print action remains available in mobile menu',async()=>{
-  await go('forecast');await page.evaluate(()=>{window.__printCalled=0;window.print=()=>window.__printCalled++;});
-  await page.locator('.mobile-menu-toggle').tap();await page.locator('#mobile-menu button.mobile-menu-link').tap();
-  assert.equal(await page.evaluate(()=>window.__printCalled),1);
+ await check('mobile menu has no print action',async()=>{
+  await go('forecast');await page.locator('.mobile-menu-toggle').tap();
+  assert.equal(await page.locator('#mobile-menu button.mobile-menu-link').count(),0);
+  assert.equal(await page.locator('#mobile-menu').getByText('הדפסה').count()+await page.locator('#mobile-menu').getByText('הדפסת').count(),0);
+  await page.locator('.mobile-menu-close').tap();
+ });
+ await check('simulation fits one phone screen in every stage',async()=>{
+  await go('forecast');await page.locator('[data-mobile-forecast=simulation]').tap();await page.waitForTimeout(300);
+  // The start button pulses, so Playwright never sees it as stable for a tap.
+  await page.evaluate(()=>document.querySelector('#method-sim .ms-big-play')?.click());
+  await page.waitForTimeout(300);
+  for(let i=0;i<6;i++){
+   await page.locator('#method-sim [data-ms-stage]').nth(i).tap();await page.waitForTimeout(2500);
+   const r=await page.evaluate(()=>{const st=document.querySelector('#ms-stage'),box=document.querySelector('#method-sim .ms-stagebox').getBoundingClientRect();return {over:st.scrollHeight-st.clientHeight,bottom:box.bottom,h:innerHeight};});
+   assert.ok(r.over<=1&&r.bottom<=r.h,`stage ${i+1}: ${JSON.stringify(r)}`);
+  }
  });
  await check('landscape phone: navigation and map panels',async()=>{
   await page.setViewportSize({width:844,height:390});await go('map');

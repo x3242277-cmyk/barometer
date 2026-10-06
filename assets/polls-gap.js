@@ -181,7 +181,7 @@ function gapRecord(m) {
         const cls = role(d), left = x(d.err).toFixed(2), top = 24 + lanes[i] * 22, pred = seatTxt(r.actual + d.err);
         return `<i class="gap-rec-dot ${cls}" style="left:${left}%;top:${top}px" title="${esc(nameOf(d.firm))}: חזה ${pred} מנדטים (${gapSigned(d.err)} מהתוצאה)"></i>` +
           `<span class="gap-rec-tag ${cls}" style="left:${left}%;top:${top + (cls ? 11 : 8)}px">${esc(nameOf(d.firm))} <b dir="ltr">${pred}</b></span>`;
-      }).join("")}</div></div>`;
+      }).join("")}</div><div class="gap-rec-mobile"><p>התוצאה בפועל: <b>${r.actual} מנדטים</b></p><ul>${ordered.map(d => `<li class="${role(d)}"><span>${esc(nameOf(d.firm))}</span><b dir="ltr">${seatTxt(r.actual + d.err)}</b><small>פער: <span dir="ltr">${gapSigned(d.err)}</span></small></li>`).join("")}</ul></div></div>`;
   };
   const both = st.compared === 1 ? "בבחירות שבהן נמדדו שניהם" : `בכל ${st.compared} הבחירות`;
   const closer = same ? `שני הסקרים הם של אותו מכון — ${hiName}.`
@@ -195,6 +195,7 @@ function gapRecord(m) {
   return `<div class="tr-card gap-record">
     <h3>גוש הימין והחרדים: ${st.below} מתוך ${st.total} מדידות היו מתחת לתוצאה האמיתית${st.total - st.below ? `, ${st.total - st.below} מעליה` : ""} ${gapInfo(how)}</h3>
     <p class="gap-rec-sub">${what}</p>
+    <p class="gap-rec-mobile-note">המנדטים שחזה כל מכון, ולצדם הפער מתוצאת הבחירות. המכונים שבחרתם מודגשים בצבע.</p>
     <div class="gap-rec-plotwrap">
       <div class="gap-rec-row gap-rec-caption"><div></div><div dir="ltr"><span>← פחות מהתוצאה</span><span>יותר מהתוצאה →</span></div></div>
       ${rows.map(rowHTML).join("")}

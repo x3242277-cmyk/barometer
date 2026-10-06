@@ -22,14 +22,15 @@ body:has(#view-landing.on) #print-btn{display:none}
 .cover-score-pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:26px 0 32px}
 .cover-score{min-width:0;display:grid;align-content:start;gap:12px}
 .cover-score strong{font-size:clamp(3.8rem,5.6vw,5.5rem);font-weight:700;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.05em}
-.cover-score--right strong{color:#ebc777}.cover-score--left strong{color:#a9cfee}
+/* Bloc colours as on the forecast page; the numerals use lighter tints of the same hues to read on navy. */
+.cover-score--right strong{color:#6aa5ef}.cover-score--left strong{color:#ee7366}
 .cover-score>span{font-size:.85rem;line-height:1.5;color:#e2eaf3;max-width:16ch}
-.cover-score i{display:inline-block;width:7px;height:7px;margin-inline-end:6px;border-radius:50%;vertical-align:middle;background:#ebc777}
-.cover-score--left i{background:#a9cfee}
+.cover-score i{display:inline-block;width:7px;height:7px;margin-inline-end:6px;border-radius:50%;vertical-align:middle;background:#2563B0}
+.cover-score--left i{background:#C0392B}
 .cover-score-scale{position:relative;padding-bottom:43px}
 .cover-score-bar{display:flex;height:10px;overflow:hidden;border-radius:3px;background:#25394e}
 .cover-score-bar>span{height:100%;flex:none}
-.cover-score-fill--right{background:#ebc777}.cover-score-fill--left{background:#a9cfee}.cover-score-fill--other{background:#63778c}
+.cover-score-fill--right{background:#2563B0}.cover-score-fill--left{background:#C0392B}.cover-score-fill--arab{background:#2A7A5E}.cover-score-fill--other{background:#63778c}
 .cover-score-majority{position:absolute;top:-5px;bottom:0;transform:translateX(50%);padding-top:28px;font-size:.7rem;white-space:nowrap;color:#c1d1e0}
 .cover-score-majority::before{content:"";position:absolute;top:0;left:50%;height:22px;width:1px;background:#fff;box-shadow:0 0 0 2px #10283d}
 .cover-score-majority b{color:#fff;font-weight:800}
@@ -69,13 +70,13 @@ body:has(#view-landing.on) #print-btn{display:none}
 /* Final layout rules keep the scoreboard clear of both the copy and the roof. */
 #view-landing .cover-inner{grid-template-columns:minmax(0,1.25fr) minmax(290px,.85fr);align-items:center;gap:clamp(32px,6vw,100px);padding-inline:clamp(8px,2vw,36px)}
 @media(min-width:761px){
-  #view-landing .cover-chart{align-self:start;margin-block:0;max-width:360px;padding:22px;justify-self:end;transform:translateY(-40px)}
-  #view-landing .cover-score-head{padding-bottom:12px}
-  #view-landing .cover-score-pair{padding:16px 0 22px;gap:18px}
-  #view-landing .cover-score{gap:8px}
-  #view-landing .cover-score strong{font-size:3.8rem}
+  #view-landing .cover-chart{align-self:start;margin-block:0;max-width:290px;padding:18px;justify-self:end;transform:translateY(-40px)}
+  #view-landing .cover-score-head{padding-bottom:10px}
+  #view-landing .cover-score-pair{padding:12px 0 16px;gap:14px}
+  #view-landing .cover-score{gap:6px}
+  #view-landing .cover-score strong{font-size:3rem}
   #view-landing .cover-score>span{font-size:.78rem}
-  #view-landing .cover-score-scale{padding-bottom:35px}
+  #view-landing .cover-score-scale{padding-bottom:30px}
   #view-landing .cover-score-note{padding-top:10px;font-size:.65rem}
 }
 @media(max-height:680px) and (min-width:761px){#view-landing .cover-chart{transform:translateY(-16px);padding:18px}#view-landing .cover-score-pair{padding-block:12px 16px}#view-landing .cover-score strong{font-size:3.2rem}}

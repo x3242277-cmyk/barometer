@@ -863,21 +863,21 @@ function buildHomePrintSheet(est, seats, blocTot) {
 function renderCoverGauges(blocTot) {
   const host = $("#cover-gauges");
   if (!host) return;
-  const right = blocTot.Right || 0, left = (blocTot.Left || 0) + (blocTot.Arabs || 0);
+  const arab = blocTot.Arabs || 0, right = blocTot.Right || 0, left = (blocTot.Left || 0) + arab;
   const other = Math.max(0, 120 - right - left);
   const share = seats => (clamp(seats, 0, 120) / 120 * 100).toFixed(2);
   host.setAttribute("aria-label", `תחזית המנדטים: גוש הימין והחרדים ${right}, מרכז־שמאל והרשימות הערביות ${left}${other ? `, לא משויך ${other}` : ""}. נדרשים 61 מנדטים לרוב. החלוקה לגושים אינה הרכב קואליציה.`);
-  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span><span>120 מנדטים</span></div>
+  /* Bloc colours as on the forecast page; the bar shows the Arab lists inside the 61 side. */
+  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span></div>
     <div class="cover-score-pair">
-      <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>גוש הימין והחרדים</span></div>
-      <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל והרשימות הערביות</span></div>
+      <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>ימין וחרדים</span></div>
+      <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל וערבים</span></div>
     </div>
     <div class="cover-score-scale" aria-hidden="true">
-      <div class="cover-score-bar"><span class="cover-score-fill--right" style="width:${share(right)}%"></span>${other ? `<span class="cover-score-fill--other" style="width:${share(other)}%"></span>` : ""}<span class="cover-score-fill--left" style="width:${share(left)}%"></span></div>
-      <span class="cover-score-majority" style="inset-inline-start:${share(61)}%"><b>61</b> הרף לרוב</span>
+      <div class="cover-score-bar"><span class="cover-score-fill--right" style="width:${share(right)}%"></span>${other ? `<span class="cover-score-fill--other" style="width:${share(other)}%"></span>` : ""}<span class="cover-score-fill--arab" style="width:${share(arab)}%"></span><span class="cover-score-fill--left" style="width:${share(left - arab)}%"></span></div>
+      <span class="cover-score-majority" style="inset-inline-start:${share(61)}%"><b>61</b> לרוב</span>
     </div>
-    ${other ? `<p class="cover-score-other">${other} מנדטים ללא שיוך לגוש</p>` : ""}
-    <p class="cover-score-note">חלוקה לגושים · אינה תחזית להרכב קואליציה</p>`;
+    ${other ? `<p class="cover-score-other">${other} מנדטים ללא שיוך לגוש</p>` : ""}`;
 }
 
 function renderHome() {

@@ -4105,14 +4105,15 @@ body:has(#view-landing.on) #print-btn{display:none}
 .cover-score-pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:26px 0 32px}
 .cover-score{min-width:0;display:grid;align-content:start;gap:12px}
 .cover-score strong{font-size:clamp(3.8rem,5.6vw,5.5rem);font-weight:700;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.05em}
-.cover-score--right strong{color:#ebc777}.cover-score--left strong{color:#a9cfee}
+/* Bloc colours as on the forecast page; the numerals use lighter tints of the same hues to read on navy. */
+.cover-score--right strong{color:#6aa5ef}.cover-score--left strong{color:#ee7366}
 .cover-score>span{font-size:.85rem;line-height:1.5;color:#e2eaf3;max-width:16ch}
-.cover-score i{display:inline-block;width:7px;height:7px;margin-inline-end:6px;border-radius:50%;vertical-align:middle;background:#ebc777}
-.cover-score--left i{background:#a9cfee}
+.cover-score i{display:inline-block;width:7px;height:7px;margin-inline-end:6px;border-radius:50%;vertical-align:middle;background:#2563B0}
+.cover-score--left i{background:#C0392B}
 .cover-score-scale{position:relative;padding-bottom:43px}
 .cover-score-bar{display:flex;height:10px;overflow:hidden;border-radius:3px;background:#25394e}
 .cover-score-bar>span{height:100%;flex:none}
-.cover-score-fill--right{background:#ebc777}.cover-score-fill--left{background:#a9cfee}.cover-score-fill--other{background:#63778c}
+.cover-score-fill--right{background:#2563B0}.cover-score-fill--left{background:#C0392B}.cover-score-fill--arab{background:#2A7A5E}.cover-score-fill--other{background:#63778c}
 .cover-score-majority{position:absolute;top:-5px;bottom:0;transform:translateX(50%);padding-top:28px;font-size:.7rem;white-space:nowrap;color:#c1d1e0}
 .cover-score-majority::before{content:"";position:absolute;top:0;left:50%;height:22px;width:1px;background:#fff;box-shadow:0 0 0 2px #10283d}
 .cover-score-majority b{color:#fff;font-weight:800}
@@ -4152,13 +4153,13 @@ body:has(#view-landing.on) #print-btn{display:none}
 /* Final layout rules keep the scoreboard clear of both the copy and the roof. */
 #view-landing .cover-inner{grid-template-columns:minmax(0,1.25fr) minmax(290px,.85fr);align-items:center;gap:clamp(32px,6vw,100px);padding-inline:clamp(8px,2vw,36px)}
 @media(min-width:761px){
-  #view-landing .cover-chart{align-self:start;margin-block:0;max-width:360px;padding:22px;justify-self:end;transform:translateY(-40px)}
-  #view-landing .cover-score-head{padding-bottom:12px}
-  #view-landing .cover-score-pair{padding:16px 0 22px;gap:18px}
-  #view-landing .cover-score{gap:8px}
-  #view-landing .cover-score strong{font-size:3.8rem}
+  #view-landing .cover-chart{align-self:start;margin-block:0;max-width:290px;padding:18px;justify-self:end;transform:translateY(-40px)}
+  #view-landing .cover-score-head{padding-bottom:10px}
+  #view-landing .cover-score-pair{padding:12px 0 16px;gap:14px}
+  #view-landing .cover-score{gap:6px}
+  #view-landing .cover-score strong{font-size:3rem}
   #view-landing .cover-score>span{font-size:.78rem}
-  #view-landing .cover-score-scale{padding-bottom:35px}
+  #view-landing .cover-score-scale{padding-bottom:30px}
   #view-landing .cover-score-note{padding-top:10px;font-size:.65rem}
 }
 @media(max-height:680px) and (min-width:761px){#view-landing .cover-chart{transform:translateY(-16px);padding:18px}#view-landing .cover-score-pair{padding-block:12px 16px}#view-landing .cover-score strong{font-size:3.2rem}}
@@ -6554,9 +6555,11 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 }
 .model-disclosure{margin:8px 0 10px;max-width:67ch;padding:8px 12px;border-inline-start:3px solid #ad812f;background:#f6efe2;color:#36465a;font-size:.84rem;line-height:1.45}
 .model-disclosure a,.poll-publication-note a{font-weight:800;text-decoration:underline;text-underline-offset:2px}
+/* Cream notes sit inside the navy frame, whose --navy-text is light blue: links stay navy here. */
+.model-disclosure:not(.model-disclosure--dark),.poll-publication-note{--navy-text:#12345C;--ink:#14233a;--ink-2:#3a4859;--ink-3:#586575;--gold:#855a0c;--accent:#855a0c}
+.model-disclosure:not(.model-disclosure--dark) a,.poll-publication-note a{color:#12345C}
 .model-disclosure--dark{max-width:66ch;margin:10px 0 0;background:#091a2bdb;border-color:#ebc777;color:#ecf2f8}
 .model-disclosure--dark a{color:#f5d894}
-#view-landing .cover-estimate{margin:4px 0 0;color:#c3d3e4;font-size:.77rem;line-height:1.35}
 #view-landing .cover-inner{padding-block:clamp(26px,3.5vh,48px) clamp(48px,6vh,76px)}
 #view-home .model-disclosure{max-width:62ch;margin:0 auto;padding:0;border:0;background:none;font-size:.78rem;line-height:1.5;color:#69778a;text-align:center}
 .mainnav .tabs{gap:clamp(12px,1.45vw,24px)}
@@ -6631,16 +6634,22 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 @media print{.info-page .info-header{display:none}}
 
 /* Shared phone layout, loaded after the desktop design layers. */
-.mobile-menu-toggle,.mobile-map-nav,.mobile-map-pan,.mobile-polls-nav{display:none}
+.mobile-menu-toggle,.mobile-map-nav,.mobile-map-pan,.mobile-polls-nav,.mobile-forecast-nav{display:none}
 .mobile-disclosure{border:0;margin:0;padding:0;min-width:0}
 .mobile-disclosure>summary{display:none}
 .mobile-menu:not([open]){display:none}
 .ec-mobile-total{display:none}
+.gap-rec-mobile,.gap-rec-mobile-note{display:none}
 @media (min-width:901px){.mobile-disclosure{display:contents}}
 @media (max-width:900px){
   :root{--edge:16px;--mobile-header:64px}
   html{scroll-padding-top:calc(var(--masthead-h,64px) + 12px)}
   body{min-width:0}
+  .view.on :is(article,section,aside,header,nav,figure,fieldset){min-width:0;box-sizing:border-box}
+  .view.on :is(p,li,h2,h3,h4){overflow-wrap:break-word}
+  .view.on :is(img,canvas){max-width:100%}
+  .view.on :is(button,a,input,select,summary):focus-visible{outline:3px solid #bf923f;outline-offset:3px}
+  #view-home{scroll-margin-top:var(--masthead-h,64px)}
   .view.on:not(#_):not(#__){height:auto;max-height:none;min-height:0;overflow:visible}
   .view:not(#_):not(#__)>.wrap{width:100%;max-width:none;padding-inline:var(--edge);box-sizing:border-box}
   .view:not(#_):not(#__) :is(.grid,.two,.three,.card,.sec,.dm-card){min-width:0}
@@ -6697,23 +6706,54 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   .mobile-disclosure>.ex-pickers{padding:12px;box-sizing:border-box}
 
   /* Landing: content flows with the screen; no desktop viewport lock. */
-  #view-landing .election-cover{height:auto!important;min-height:0!important;padding:28px 0 24px}
-  #view-landing .cover-inner{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px;min-height:0!important;padding-inline:16px}
-  #view-landing .cover-content{padding:0}
-  #view-landing #election-title{font-size:clamp(2.5rem,10vw,4rem);line-height:1.06;margin-block:14px}
-  #view-landing .cover-tagline{font-size:1rem;line-height:1.65;max-width:36ch}
-  #view-landing .cover-actions{display:grid;grid-template-columns:1fr;gap:10px}
-  #view-landing .cover-actions a{min-height:48px;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;box-sizing:border-box}
-  #view-landing .cover-chart{width:100%;margin:0;padding:0;max-width:none}
+  /* The first screen is one composition: photo behind the title, the forecast
+     numbers, two actions and the timing line, without scrolling. */
+  #view-landing .election-cover{display:flex;flex-direction:column;height:auto!important;min-height:calc(100svh - var(--masthead-h,64px))!important;padding:0}
+  #view-landing .cover-image{position:absolute;inset:0 0 auto!important;height:min(62svh,460px)!important;background-size:cover;background-position:34% 62%!important;opacity:.62!important;z-index:-3}
+  #view-landing .election-cover::after{content:'';position:absolute;inset:0!important;height:auto!important;z-index:-2;pointer-events:none;background:linear-gradient(180deg,#091b30f2 0%,#091b30b8 22%,#091b3070 40%,#091b30d9 56%,#091b30 68%)!important}
+  #view-landing .cover-inner{flex:1;display:flex!important;flex-direction:column;justify-content:center;align-items:stretch;gap:14px;min-height:0!important;padding:20px 16px 18px!important;box-sizing:border-box}
+  #view-landing .cover-content{display:contents}
+  #view-landing .cover-edition{order:1;font-size:.72rem}
+  #view-landing #election-title{order:2;font-size:clamp(2.3rem,10.5vw,3.4rem);line-height:1.05;margin:0;text-shadow:0 2px 18px #020c1b99}
+  #view-landing .cover-tagline{order:3;font-size:.95rem;line-height:1.55;max-width:34ch;margin:0;color:#e6edf5}
+  #view-landing .cover-chart{order:4;width:100%;max-width:none;margin:4px 0 0;padding:12px 16px 8px;box-sizing:border-box;border-radius:14px;transform:none;justify-self:auto}
   #view-landing .cover-gauges{max-width:100%}
-  #view-landing .section-next{position:static;margin:18px auto 0}
-  #view-landing .cover-credit{position:static;display:block;padding:12px 16px 0;text-align:center}
+  #view-landing .cover-score-head{padding-bottom:8px;font-size:.74rem}
+  #view-landing .cover-score-pair{gap:14px;padding:8px 0 12px}
+  #view-landing .cover-score{gap:4px}
+  #view-landing .cover-score strong{font-size:2.6rem;letter-spacing:-.03em}
+  #view-landing .cover-score>span{font-size:.76rem;line-height:1.35;max-width:none}
+  #view-landing .cover-score-scale{padding-bottom:24px}
+  #view-landing .cover-score-majority{padding-top:18px;font-size:.66rem}
+  #view-landing .cover-score-majority::before{height:16px}
+  #view-landing .cover-actions{order:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
+  #view-landing .cover-actions a{min-height:48px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;box-sizing:border-box;font-size:.86rem}
+  #view-landing .cover-updated{order:6;margin:0;font-size:.74rem;color:#a9b8c8}
+  #view-landing .election-cover .election-countdown.hero-countdown{order:6;width:auto;margin:-8px 0 0;padding:0;border:0;gap:10px}
+  #view-landing .election-cover .countdown-cells{gap:8px}
+  #view-landing .election-cover .countdown-cells b{flex-direction:row;align-items:baseline;gap:4px;min-width:0}
+  #view-landing .election-cover .countdown-cells .num{font-size:1.15rem}
+  #view-landing .election-cover .countdown-cells em{font-size:.74rem}
+  #view-landing .model-disclosure{order:7;margin:0;padding:8px 10px;font-size:.7rem;line-height:1.5}
+  #view-landing .election-cover>.section-next{display:none}
+  #view-landing .cover-credit{position:static;display:block;padding:0 16px 8px;text-align:center;font-size:.6rem}
   #view-landing .home-discovery{padding-block:28px}
   #view-landing .discovery-stories{grid-template-columns:minmax(0,1fr)!important;gap:12px}
   #view-landing .discovery-heading h2{font-size:1.65rem;line-height:1.25}
   #view-landing .discovery-heading p{font-size:.9rem;line-height:1.55}
 
   /* Forecast: result first, compact party rows grouped by bloc below. */
+  .mobile-forecast-nav{position:sticky;top:calc(var(--masthead-h,64px) - 1px);z-index:20;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:8px 12px;background:#0d2034;border-bottom:1px solid #ffffff20}
+  .mobile-forecast-nav button{min-width:0;min-height:44px;padding:8px 2px;border:0;border-radius:8px;background:transparent;color:#cbd6e1;font:700 .8rem var(--sans);white-space:nowrap}
+  .mobile-forecast-nav button[aria-pressed=true]{background:#e5c783;color:#14233a}
+  #view-home[data-mobile-forecast]>.section-next,#view-home[data-mobile-forecast] .verdict>.section-next{display:none}
+  #view-home[data-mobile-forecast=overview] :is(.fs-side,.home-method,.election-coalition),
+  #view-home[data-mobile-forecast=parties] :is(.election-copy,.election-visual,.home-method,.election-coalition),
+  #view-home[data-mobile-forecast=simulation]>:is(.verdict,.election-coalition),
+  #view-home[data-mobile-forecast=coalition]>:is(.verdict,.home-method){display:none!important}
+  #view-home[data-mobile-forecast=parties] .verdict-top{display:none}
+  #view-home[data-mobile-forecast=parties] .fs-center{padding:0;gap:0}
+  #view-home[data-mobile-forecast=parties] .home-forecast-controls{padding-top:0!important}
   #view-home:not(#_):not(#__).on>.verdict{min-height:0;height:auto;padding:0 0 20px}
   #view-home:not(#_):not(#__) .verdict>.wrap{padding-inline:16px}
   #view-home:not(#_):not(#__) .verdict .verdict-in{padding-top:14px}
@@ -6725,13 +6765,13 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-home:not(#_):not(#__) .fs-center .readout .rd{padding-inline:8px;gap:4px}
   #view-home:not(#_):not(#__) .fs-center .readout .rd b{font-size:2.1rem}
   #view-home:not(#_):not(#__) .fs-center .readout .rd .rd-lbl{font-size:.78rem}
-  #view-home .fs-side{--ph:48px;--bc:#17457f;padding:14px;border:1px solid #dce1e6;border-top:3px solid var(--bc);border-radius:12px;background:#fff;gap:12px}
+  #view-home .fs-side{--ph:40px;--bc:#17457f;padding:14px;border:1px solid #dce1e6;border-top:3px solid var(--bc);border-radius:12px;background:#fff;gap:10px}
   #view-home .fs-left{--bc:#C0392B}
   #view-home .fs-head{gap:10px;padding-bottom:10px;border-bottom:1px solid #e6dfd1}
   #view-home .fs-total{font-size:2rem}
   #view-home .fs-head span{font-size:1rem}
   #view-home .fs-rows{gap:6px}
-  #view-home .fs-row{min-height:66px;padding:6px 0;gap:12px;border-radius:8px}
+  #view-home .fs-row{min-height:58px;padding:6px 0;gap:10px;border-radius:8px}
   #view-home .fs-photo{border-width:2px;border-radius:10px}
   #view-home .fs-name{font-size:1rem;white-space:normal;line-height:1.25}
   #view-home .fs-leader{font-size:.76rem}
@@ -6756,10 +6796,21 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-home .ec-heading{display:grid;gap:10px}
   #view-home .ec-heading h2{font-size:1.65rem}
   #view-home .ec-content{display:grid;grid-template-columns:minmax(0,1fr)!important;gap:16px}
-  #view-home .ec-map{max-height:210px}
-  #view-home .ec-parties{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  #view-home .ec-party{min-width:0}
-  #view-home .ec-choices-heading{position:sticky;top:var(--masthead-h,64px);z-index:5;background:#fdfbf6;padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid #e6dfd1}
+  #view-home .ec-map{max-height:160px}
+  #view-home .ec-panel{overflow:visible}
+  #view-home .election-coalition{scroll-margin-top:calc(var(--masthead-h,64px) + 66px)}
+  #view-home .ec-heading{padding-bottom:12px;margin-bottom:12px}
+  #view-home .ec-parties{grid-template-columns:minmax(0,1fr);gap:8px}
+  #view-home .ec-party{display:grid;grid-template-columns:44px minmax(0,1fr) 40px;grid-template-rows:auto auto;align-items:center;column-gap:12px;min-height:66px;padding:8px 12px;border-radius:10px;text-align:start;box-sizing:border-box}
+  #view-home .ec-party-image{grid-column:1;grid-row:1/3;width:44px;height:44px;aspect-ratio:auto;border-radius:50%;overflow:visible}
+  #view-home .ec-party-image img{border-radius:50%}
+  #view-home .ec-party-image::after{display:none}
+  #view-home .ec-check{inset:auto -5px -3px auto;width:20px;height:20px;line-height:18px;box-sizing:border-box;background:#fdfbf6}
+  #view-home .ec-party-seats{grid-column:3;grid-row:1/3;margin:0;padding:0;height:auto;min-width:0;border:0;background:none;color:#173c65;font-size:1.65rem;text-align:end;line-height:1.2}
+  #view-home .ec-party-name{grid-column:2;grid-row:1;font-size:.95rem;margin:0;align-self:end}
+  #view-home .ec-party-leader{grid-column:2;grid-row:2;display:block;font-size:.75rem;margin:0;align-self:start}
+  #view-home .ec-party[aria-pressed=true]{background:#fbefd1;border-color:#b78d3f}
+  #view-home .ec-choices-heading{position:sticky;top:125px;z-index:5;background:#eef5fc;padding:8px 0;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid #d3dce7}
   #view-home .ec-choices-heading h3{font-size:.95rem;margin:0}
   #view-home .ec-mobile-total{display:block;margin-inline-start:auto;font-size:1rem;font-weight:800;color:#12345c;white-space:nowrap}
   #view-home .ec-reset{min-height:44px}
@@ -6769,6 +6820,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-polls[data-section=all] .mobile-polls-nav{display:flex;gap:6px;padding:4px 0 12px}
   .mobile-polls-nav a{flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #e5c78344;border-radius:8px;text-decoration:none;color:#d5dce5;font-size:.83rem;font-weight:700;text-align:center;padding:6px;box-sizing:border-box}
   .mobile-polls-nav a[aria-current=page]{background:#e5c783;color:#14233a;border-color:#e5c783}
+  #view-polls .mobile-polls-nav a[aria-current=page]{color:#14233a!important}
   .polls-tabbar{display:flex;flex-direction:row;align-items:stretch;gap:6px;padding:4px 0 8px;border:0;border-radius:0;background:none;overflow-x:auto;max-width:100%;scrollbar-width:thin}
   .polls-tabbar .pn{flex:0 0 auto;width:auto;min-height:44px;align-items:center;padding:8px 12px;gap:8px;border-radius:8px}
   .polls-tabbar .pn-text b{font-size:.85rem;white-space:nowrap}
@@ -6807,6 +6859,12 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-polls:not(#_):not(#__) .pollcards{display:grid;grid-template-columns:minmax(0,1fr)!important;gap:14px;max-height:none;overflow:visible}
   #view-polls:not(#_):not(#__) .poll-result-card{min-width:0;padding:14px}
   #view-polls .poll-result-card :is(select,button){min-height:44px}
+  #view-polls .poll-result-card>header{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  #view-polls .poll-result-card .orgcell{width:100%;min-width:0}
+  #view-polls .poll-result-card .orgcell>div{min-width:0;flex:1}
+  #view-polls .poll-result-card .orgcell :is(h3,p,.grade){white-space:normal;max-width:100%;box-sizing:border-box}
+  #view-polls .poll-result-card>header select{width:100%;height:44px}
+  #view-polls:is([data-tab=gap],[data-tab=cross],[data-tab=list]) .polls-feed{display:none}
   #view-polls .poll-result-card .poll-result-head{flex-wrap:wrap;gap:10px}
   #view-polls .feed-item{padding:14px}
   #view-polls .feed-head-top{gap:8px;flex-wrap:wrap}
@@ -6818,19 +6876,54 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-polls .gap-choices{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
   #view-polls .gap-choices button{justify-content:center;padding:12px}
   #view-polls .gap-rec-plot{overflow:hidden}
+  #view-polls .gap-record{padding:14px}
+  #view-polls .gap-rec-row{display:block;padding-block:12px;border-bottom:1px solid #e6dfd1}
+  #view-polls :is(.gap-rec-plot,.gap-rec-caption,.gap-rec-axis,.gap-rec-sub){display:none}
+  #view-polls .gap-rec-label{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+  #view-polls .gap-rec-label b{font-size:.95rem}
+  #view-polls .gap-rec-mobile{display:block}
+  #view-polls .gap-rec-mobile-note{display:block;font-size:.82rem;line-height:1.6}
+  #view-polls .gap-rec-mobile p{padding:8px 10px;background:#edf1f6;border-radius:6px;font-size:.85rem}
+  #view-polls .gap-rec-mobile ul{display:grid;gap:6px;padding:0;margin:10px 0 0;list-style:none}
+  #view-polls .gap-rec-mobile li{display:grid;grid-template-columns:minmax(0,1fr) 42px 64px;gap:6px;align-items:center;padding:8px;border-radius:6px;font-size:.8rem;box-sizing:border-box}
+  #view-polls .gap-rec-mobile li b{font-size:.95rem;text-align:center}
+  #view-polls .gap-rec-mobile li small{font-size:.7rem;text-align:end}
+  #view-polls .gap-rec-mobile li.hi{background:#e3f2f2;border-inline-start:3px solid var(--hi)}
+  #view-polls .gap-rec-mobile li.lo{background:#faeddb;border-inline-start:3px solid var(--lo)}
   #view-polls .gap-go{padding:14px}
+  #view-polls .cx2 .tr-card{padding:14px;gap:12px;border-radius:12px}
+  #view-polls .cx2-cols{display:block;padding-bottom:12px;line-height:1.6}
+  #view-polls .cx2-cols>span:not(:nth-child(3)){display:none}
+  #view-polls .cx2-cols>span:nth-child(3){display:block;font-size:.78rem}
+  #view-polls .cx2-row:not(.cx2-cols){grid-template-columns:28px minmax(0,1fr) auto;gap:8px;padding:12px 0}
+  #view-polls .cx2-name b{font-size:.92rem;white-space:normal}
+  #view-polls .cx2-name small{font-size:.74rem}
+  #view-polls .cx2-bar{grid-row:2;grid-column:1/-1}
+  #view-polls .cx2-d{grid-column:3;grid-row:1;font-size:.95rem}
+  #view-polls .cx2-v{display:block;grid-column:1/-1;grid-row:3;text-align:end;font-size:.76rem}
+  #view-polls .cx2-v::before{content:'פער בקולות: ';font-size:.7rem}
 
   /* Accuracy rows become readable cards, without losing their breakdown. */
   #view-e2022 .acc-hero{grid-template-columns:minmax(0,1fr);padding:20px 16px 0;gap:20px}
-  #view-e2022 .acc-title{font-size:2.8rem;line-height:1.08}
-  #view-e2022 .acc-pod-logo .orglogo{width:64px!important;height:64px!important}
-  #view-e2022 .acc-pod.p1 .acc-pod-logo .orglogo{width:76px!important;height:76px!important}
+  #view-e2022 .acc-title{font-size:2.1rem;line-height:1.08}
+  #view-e2022 .acc-hero-main{padding-bottom:0}
+  #view-e2022 .acc-facts{gap:8px 18px}
+  #view-e2022 .acc-facts b{font-size:1.9rem}
+  #view-e2022 .acc-pod-logo .orglogo{width:42px!important;height:42px!important}
+  #view-e2022 .acc-pod.p1 .acc-pod-logo .orglogo{width:50px!important;height:50px!important}
+  #view-e2022 .acc-pod-base{width:100%;box-sizing:border-box;padding:12px 2px 8px}
+  #view-e2022 .acc-pod.p1 .acc-pod-base{min-height:74px}
+  #view-e2022 .acc-pod.p2 .acc-pod-base{min-height:64px}
+  #view-e2022 .acc-pod.p3 .acc-pod-base{min-height:54px}
+  #view-e2022 .acc-pod .acc-pod-score{font-size:1.65rem}
+  #view-e2022 .acc-pod.p1 .acc-pod-score{font-size:1.9rem}
   #view-e2022 .acc-pod-name{font-size:.78rem;white-space:normal}
   #view-e2022 #accuracy-method{padding:14px}
   #view-e2022 .accuracy-method-band{gap:12px}
   #view-e2022 .accuracy-method-weight b{font-size:1.7rem}
   #view-e2022 .accuracy-method-weight span{font-size:.8rem}
-  #view-e2022 #rank-list.acc-list{display:grid;gap:12px;background:none;border:0;overflow:visible}
+  #view-e2022 #rank-list.acc-list{display:grid;grid-template-columns:minmax(0,1fr)!important;gap:12px;background:none;border:0;overflow:visible}
+  #view-e2022 .acc-row{width:100%;box-sizing:border-box;min-width:0}
   #view-e2022 .acc-row:not(.acc-cols){display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto!important;gap:10px 8px;padding:16px 12px;background:#fdfbf6;border:1px solid #e6dfd1;border-radius:12px;align-items:center;animation:none!important;opacity:1!important;transform:none!important}
   #view-e2022 .acc-cols{display:none!important}
   #view-e2022 .accuracy-rank-number{grid-column:1;grid-row:1}
@@ -6863,7 +6956,27 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-demography .dm-lead{font-size:.9rem;line-height:1.6;padding:10px}
   #view-demography .dm-result-grid,#view-demography .dm-result-pies{grid-template-columns:minmax(0,1fr)!important}
   #view-demography .dm .tablewrap{overflow:auto;max-height:none}
-  #view-demography .dm .dtable{min-width:560px}
+  #view-demography .dm .dtable{min-width:0}
+  #view-demography .dm-head{margin-top:10px}
+  #view-demography .dm-title h2{font-size:1.3rem}
+  #view-demography .dm-verdict{font-size:.88rem;line-height:1.6}
+  #view-demography .dm-panel{padding:12px}
+  #view-demography .dm .tablewrap:has(.mobile-record-table){border:0;background:none;box-shadow:none;overflow:visible}
+  #view-demography:not(#_):not(#__) .tablewrap:has(.mobile-record-table)::after{display:none}
+  #view-demography .dm .mobile-record-table{display:block;min-width:0!important;width:100%;table-layout:auto}
+  #view-demography .mobile-record-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  #view-demography .mobile-record-table :is(tbody,tfoot){display:grid;gap:10px}
+  #view-demography .mobile-record-table tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;padding:12px;border:1px solid #ded8cc;border-radius:10px;background:#fff;box-sizing:border-box}
+  #view-demography .mobile-record-table tr:hover{background:#fff}
+  #view-demography .mobile-record-table :is(td,th){display:block;position:static!important;min-width:0;width:auto!important;padding:0!important;border:0;background:none!important;white-space:normal;text-align:start;line-height:1.45!important;overflow-wrap:anywhere;font-size:.9rem!important}
+  #view-demography .mobile-record-table :is(td,th):first-child{grid-column:1/-1;font-size:.95rem!important;font-weight:800;padding-bottom:8px!important;border-bottom:1px solid #eee7db}
+  #view-demography .mobile-record-table [data-mobile-label]::before{content:attr(data-mobile-label);display:block;color:#536273;font-size:.72rem;font-weight:600;line-height:1.4;margin-bottom:4px}
+  #view-demography .mobile-record-table .mobile-wide-cell{grid-column:1/-1}
+  #view-demography .mobile-record-table small{font-size:.75rem!important;line-height:1.5!important}
+  #view-demography #identity-table .dtable :is(th,td):nth-child(4){display:none}
+  #view-demography #demo-controls td>label{grid-template-columns:68px minmax(0,1fr);gap:10px}
+  #view-demography #demo-controls .why{font-size:.8rem;line-height:1.6}
+  #view-demography .identity-foot{flex-wrap:wrap}
 
   /* Map: three mobile panels, with search/filter controls tucked away. */
   #view-map.on>.r22{height:auto;min-height:0;padding-top:16px}
@@ -6900,6 +7013,9 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-map .r22-kpis>div{padding:10px 6px}
   #view-map .r22-kpis b{font-size:1.05rem;white-space:normal}
   #view-map .r22-kpi-sub{white-space:normal;font-size:.8rem}
+  #view-map .r22-card-head{flex-wrap:wrap;gap:8px;padding:12px;min-width:0}
+  #view-map .r22-bars .r22-card-head h3{white-space:normal;overflow:visible;font-size:.95rem}
+  #view-map #r22-bars-legend{display:flex;flex-wrap:wrap;max-width:100%;gap:6px;font-size:.75rem}
   #view-map .r22-map-legend{flex-wrap:wrap;font-size:.75rem;gap:6px 12px}
   #view-map .r22-zoom button{width:44px;height:44px;font-size:1.3rem}
   #view-map .r22-map-plot.touch-navigation{touch-action:none}
@@ -6948,12 +7064,120 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #method-sim .ms-note,#method-sim .ms-foot,#method-sim .ms-key{font-size:.83rem;line-height:1.6}
   #method-sim .ms-st{flex-wrap:wrap}
 
-  /* Election night: touch carousel with a visible next card. */
+  /* Scenes use content-sized cards. Desktop viewport typography must not spill
+     out of their smaller phone tracks, including while counters animate. */
+  #view-home .home-method{padding-block:12px!important;scroll-margin-top:calc(var(--masthead-h,64px) + 66px)}
+  #view-home #method-sim{padding:0;margin:0;scroll-margin-top:calc(var(--masthead-h,64px) + 66px)}
+  #method-sim :is(.ms-main,.ms-stagebox,.ms-stage,.ms-two,.ms-col,.ms-cv,.ms-cv-chart,.ms-cv-side){min-width:0;box-sizing:border-box}
+  #method-sim .ms-stagebox .ms-stage{display:block;height:auto;min-height:0;max-height:none;padding:16px;overflow:visible;border-radius:12px}
+  #method-sim:not(.is-running) .ms-stagebox .ms-stage{min-height:0;padding:28px 16px}
+  #method-sim .ms-idle{position:relative;inset:auto;gap:8px}
+  #method-sim .ms-idle-logo{width:190px;max-width:85%;margin-bottom:8px}
+  #method-sim .ms-idle-title{font-size:1.35rem;line-height:1.35}
+  #method-sim .ms-idle-sub{font-size:.88rem!important;line-height:1.65;margin-bottom:10px!important}
+  #method-sim .ms-idle .ms-big-play{font-size:1rem;height:54px;padding:0 20px;max-width:100%}
+  #method-sim .ms-say{font-size:.95rem;line-height:1.6;margin:12px 0}
+  #method-sim:not(.is-running) .ms-say{display:none}
+  #method-sim .ms-nav{padding:0 0 6px;gap:6px;margin-bottom:0}
+  #method-sim .ms-nav button{padding:8px 10px;border:1px solid #ffffff22;border-radius:8px;gap:6px;margin:0;white-space:nowrap}
+  #method-sim .ms-nav button.is-on{background:#e5c78322;border-color:#e5c783;color:#f6e7bd}
+  #method-sim .ms-nav button span{width:20px;height:20px}
+  #method-sim .ms-stage h3{font-size:1rem;line-height:1.5;margin-bottom:12px}
+  #method-sim .ms-two{grid-template-columns:minmax(0,1fr);gap:22px}
+  #method-sim .ms-big b{font-size:2.65rem;line-height:1.1;overflow-wrap:anywhere}
+  #method-sim .ms-big small{font-size:.8rem}
+  #method-sim .ms-line{font-size:.9rem;line-height:1.6}
+  #method-sim .ms-split{height:34px}
+  #method-sim .ms-split b{font-size:.9rem}
+  #method-sim .ms-src{gap:10px}
+  #method-sim .ms-src-row{grid-template-columns:26px minmax(0,1fr) 24px;gap:6px 10px;padding:12px;box-sizing:border-box}
+  #method-sim .ms-src-n{grid-column:1;grid-row:1;width:26px;height:26px}
+  #method-sim .ms-src-t{grid-column:2;grid-row:1;min-width:0}
+  #method-sim .ms-src-t b{font-size:.9rem;line-height:1.4}
+  #method-sim .ms-src-t small{font-size:.72rem;line-height:1.6}
+  #method-sim .ms-src-v{grid-column:2;grid-row:2;text-align:start;min-width:0}
+  #method-sim .ms-src-v b{font-size:1.4rem;line-height:1.25;font-variant-numeric:tabular-nums}
+  #method-sim .ms-src-v small{display:block;font-size:.72rem}
+  #method-sim .ms-src-ok{grid-column:3;grid-row:1;width:22px;height:22px}
+  #method-sim .ms-sec{gap:14px}
+  #method-sim .ms-sec-row{grid-template-columns:76px minmax(0,1fr) 62px;gap:8px}
+  #method-sim .ms-sec-bar{height:22px}
+  #method-sim .ms-sec-g{font-size:.76rem}
+  #method-sim .ms-map{min-height:0;padding-bottom:32px}
+  #method-sim .ms-map canvas{height:280px!important;width:auto!important;max-width:100%;object-fit:contain}
+  #method-sim .ms-map-key{flex-wrap:wrap;gap:6px;font-size:.65rem}
+  #method-sim .ms-grad{width:65px}
+  #method-sim .ms-wf-in{gap:12px}
+  #method-sim .ms-wf-row{grid-template-columns:82px minmax(0,1fr) 72px;gap:6px}
+  #method-sim .ms-wf-t{height:24px}
+  #method-sim .ms-pl-head{display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;padding:0 0 10px}
+  #method-sim .ms-pl-head>span:first-child{display:none}
+  #method-sim .ms-pl-axis{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+  #method-sim .ms-pl-axis em{margin:0;font-size:.7rem}
+  #method-sim .ms-pl-row{grid-template-columns:28px minmax(0,1fr);gap:7px 10px;padding:10px 0}
+  #method-sim .ms-pl-n{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  #method-sim .ms-pl-n b{font-size:.9rem;white-space:normal}
+  #method-sim .ms-pl-track{grid-column:1/-1;height:28px}
+  #method-sim .ms-pl-g,#method-sim .ms-pl-w{display:flex;opacity:1;font-size:.72rem;gap:6px;grid-column:1/-1;min-width:0;flex-wrap:wrap}
+  #method-sim .ms-pl-w{display:none}
+  #method-sim .ms-pl-avg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 6px;padding:12px 0 0}
+  #method-sim .ms-pl-avg small{font-size:.7rem;line-height:1.5}
+  #method-sim .ms-pl-avg b{font-size:1.65rem}
+  #method-sim .ms-pl-avg>div{padding-inline-start:6px;min-width:0}
+  #method-sim .ms-pl-avg .ms-note{grid-column:1/-1;font-size:.78rem}
+  #method-sim .ms-sqs{grid-template-columns:repeat(20,minmax(0,1fr));gap:3px}
+  #method-sim .ms-st-n{font-size:.88rem;line-height:1.6;margin-top:10px}
+  #method-sim .ms-st-n b{font-size:1.6rem}
+  #method-sim .ms-gapline{font-size:.95rem;padding:12px;line-height:1.6}
+  #method-sim .ms-sw2 .ms-dv-row{grid-template-columns:96px minmax(0,1fr) 44px;gap:6px}
+  #method-sim .ms-sw2 .ms-dv-row span{font-size:.8rem}
+  #method-sim .ms-sw2 .ms-dv-row b{font-size:.9rem}
+  #method-sim .ms-cv{grid-template-columns:minmax(0,1fr);gap:20px}
+  #method-sim .ms-cv-chart{padding-top:60px}
+  #method-sim .ms-cv-plots{--cvh:190px;gap:10px}
+  #method-sim .ms-cv-names{gap:10px}
+  #method-sim .ms-cv-names span{font-size:.82rem;line-height:1.5}
+  #method-sim .ms-cv-v b{font-size:1.85rem}
+  #method-sim .ms-cv-v em{font-size:.82rem}
+  #method-sim .ms-cv-line span{font-size:.72rem}
+  #method-sim .ms-cv-line span{display:none}
+  #method-sim .ms-cv-chart::after{content:'קו מקווקו: 61 מנדטים לרוב';font-size:.72rem;color:#536273;text-align:center;line-height:1.5}
+  #method-sim .ms-cv-now{grid-template-columns:32px minmax(0,1fr);gap:6px 10px;padding:12px}
+  #method-sim .ms-cv-n{width:32px;height:32px;font-size:1rem}
+  #method-sim .ms-cv-now b{font-size:1.05rem}
+  #method-sim .ms-cv-now small{font-size:.88rem;line-height:1.6}
+  #method-sim .ms-cv-steps{gap:6px;justify-content:center}
+  #method-sim .ms-cv-steps li{width:28px;height:28px;font-size:.8rem;box-sizing:border-box}
+  #view-home #method-sim .ms-ctl{order:-1;position:sticky;top:calc(var(--masthead-h,64px) + 66px);bottom:auto;margin:0 auto 12px;padding:6px;max-width:100%;box-sizing:border-box;z-index:12;background:#14233a}
+  #method-sim .ms-stagebox{display:flex;flex-direction:column;padding-bottom:4px}
+  #method-sim .ms-ledger{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+  #method-sim .ms-chip{padding:10px;min-width:0;gap:4px}
+  #method-sim .ms-chip:last-child{grid-column:1/-1}
+  #method-sim .ms-chip small{font-size:.74rem;line-height:1.5}
+  #method-sim .ms-chip b{font-size:1.4rem}
+  #method-sim .ms-chip em{font-size:.7rem;line-height:1.5}
+  #method-sim .ms-main>.mobile-disclosure{margin-top:12px;background:#14283d;border-color:#ffffff25;color:#e5c783}
+  #method-sim .ms-main>.mobile-disclosure>summary{border-color:#ffffff25}
+  #method-sim .ms-main>.mobile-disclosure .ms-ledger{padding:10px;margin:0}
+  #method-sim:not(.is-running) .ms-main>.mobile-disclosure{display:none}
+  #view-method .sources-groups{grid-template-columns:minmax(0,1fr)!important}
+  #view-method .sources-group{min-width:0;width:auto}
+  #view-method .msec-head{display:grid;grid-template-columns:32px minmax(0,1fr);padding:14px;gap:10px}
+  #view-method .msec-num{width:32px;height:32px;font-size:.9rem}
+  #view-method .msec-title h2{font-size:1.08rem}
+  #view-method .msec-title p{font-size:.83rem}
+  #view-method .msec-actions{grid-column:1/-1;gap:10px}
+  #view-method .msec>.mobile-disclosure{border:0;border-radius:0;box-shadow:none}
+  #view-method .msec>.mobile-disclosure>summary{background:#f6f1e7}
+  #view-method .msec-body{padding:14px;gap:16px}
+  #view-method .msec-body :is(a,.formula){overflow-wrap:anywhere;white-space:normal}
+
+  /* Election night: the channels' exit polls stacked one above the other. */
   #view-live.on,#view-results.on{height:auto!important;min-height:0!important;overflow:visible!important}
   #view-live .exit-showcase{height:auto!important;min-height:0!important;padding:20px 16px}
-  #view-live .exit-showcase-grid{display:flex;max-width:100%;overflow:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:14px;scrollbar-width:thin}
-  #view-live .es-card{flex:0 0 88%;min-width:0;scroll-snap-align:center}
-  #view-live .es-stage{height:260px}
+  #view-live .exit-showcase-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:auto!important;max-width:100%;overflow:visible;gap:14px;padding-bottom:4px}
+  #view-live .es-card{width:auto;min-width:0;height:auto}
+  #view-live .es-stage{height:auto;aspect-ratio:16/10}
   #view-live .exit-showcase-heading h2{font-size:1.5rem}
   #view-live .exit-showcase-disclaimer{margin-top:16px}
 
@@ -6985,12 +7209,105 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   .admin-wrap :is(input,select,button){min-height:44px;font-size:16px;max-width:100%}
   .admin-wrap .tablewrap{overflow:auto}
 }
+/* Ivory surfaces outside the theme's card list re-declare the light tokens, so
+   links and secondary text stay dark (the frame's --navy-text is light blue). */
+@media (max-width:900px){
+  .view .acc-subhead,.mobile-disclosure:not(#method-sim *){--navy-text:#12345C;--ink:#14233a;--ink-2:#3a4859;--ink-3:#586575;--gold:#855a0c;--accent:#855a0c}
+  #view-e2022 .acc-subhead{color:#586575}}
+/* Phone simulation player: one screen, no page scroll. mobile.js sets the stage
+   box height from the viewport and scales a tall scene to fit (is-phone-fit). */
+@media (max-width:900px){
+  #view-home[data-mobile-forecast=simulation] .home-method{padding:10px 0 0!important;margin:0!important}
+  #method-sim.is-phone-fit:not(.is-running) .ms-say{display:none}
+  #method-sim.is-phone-fit{display:flex;flex-direction:column;gap:8px}
+  #method-sim.is-phone-fit .ms-bar{display:none}
+  #method-sim.is-phone-fit .ms-nav{display:flex;flex-wrap:nowrap;gap:4px;overflow:hidden;padding:0;margin:0;border:0}
+  #method-sim.is-phone-fit .ms-nav button{flex:0 0 36px;width:36px;height:36px;min-height:36px;padding:0;border:1px solid #ffffff22;border-radius:9px;justify-content:center;gap:0;font-size:0;margin:0}
+  #method-sim.is-phone-fit .ms-nav button span{width:24px;height:24px;font-size:.78rem}
+  #method-sim.is-phone-fit .ms-nav button.is-on{flex:1 1 auto;width:auto;min-width:0;padding:0 8px;gap:6px;font-size:.8rem;overflow:hidden;text-overflow:ellipsis}
+  #method-sim.is-phone-fit:not(.is-running) .ms-nav{display:none}
+  #method-sim.is-phone-fit .ms-say{margin:0;font-size:.86rem;line-height:1.45;min-height:2.9em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  #method-sim.is-phone-fit .ms-main{display:flex;flex-direction:column;gap:0}
+  #method-sim.is-phone-fit .ms-stagebox{display:flex;flex-direction:column;gap:8px;padding:0}
+  #method-sim.is-phone-fit .ms-stagebox .ms-stage{flex:1 1 auto;min-height:0;max-height:none;height:auto;overflow:hidden;padding:12px}
+  #method-sim.is-phone-fit:not(.is-running) .ms-stagebox .ms-stage{display:grid;place-items:center;padding:20px 16px}
+  #view-home #method-sim.is-phone-fit .ms-ctl{order:0;position:static;flex:none;margin:0 auto;padding:4px 8px;background:#14233a}
+  #method-sim.is-phone-fit .is-measuring [hidden]{display:block!important}
+  /* Room reserved for parts a scene adds later, so the scale is chosen once. */
+  #method-sim.is-phone-fit .ms-wf:not(:has(.ms-wf-row)){min-height:136px}
+  /* Dense scenes get a phone composition, so the fit scale stays readable. */
+  #method-sim.is-phone-fit .ms-src{gap:6px}
+  #method-sim.is-phone-fit .ms-src-row{grid-template-columns:24px minmax(0,1fr) auto 20px;grid-template-areas:"n t v ok" "bar bar bar bar";gap:4px 8px;padding:8px 10px;align-items:center}
+  #method-sim.is-phone-fit .ms-src-n{grid-area:n;width:24px;height:24px}
+  #method-sim.is-phone-fit .ms-src-t{grid-area:t;min-width:0}
+  #method-sim.is-phone-fit .ms-src-t b{display:block;font-size:.84rem;line-height:1.3}
+  #method-sim.is-phone-fit .ms-src-t small{display:block;font-size:.66rem;line-height:1.35}
+  #method-sim.is-phone-fit .ms-src-v{grid-area:v;text-align:end}
+  #method-sim.is-phone-fit .ms-src-v b{font-size:1.1rem}
+  #method-sim.is-phone-fit .ms-src-v small{font-size:.62rem;max-width:84px;line-height:1.3}
+  #method-sim.is-phone-fit .ms-src-ok{grid-area:ok;width:20px;height:20px}
+  #method-sim.is-phone-fit .ms-src-bar{grid-area:bar;height:3px;display:block}
+  #method-sim.is-phone-fit .ms-foot{font-size:.8rem;margin:8px 0 0}
+  #method-sim.is-phone-fit .ms-stage h3{font-size:.92rem;margin:0 0 8px}
+  #method-sim.is-phone-fit .ms-geo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"h map" "big map" "wf wf";gap:6px 12px;align-items:start}
+  #method-sim.is-phone-fit .ms-geo .ms-res{display:contents}
+  #method-sim.is-phone-fit .ms-geo #ms-geo-h{grid-area:h;margin:0}
+  #method-sim.is-phone-fit .ms-geo .ms-big{grid-area:big}
+  #method-sim.is-phone-fit .ms-geo .ms-big small{display:block;font-size:.74rem;line-height:1.45}
+  #method-sim.is-phone-fit .ms-geo .ms-wf{grid-area:wf;margin-top:6px}
+  #method-sim.is-phone-fit .ms-geo .ms-map{grid-area:map;min-height:0;padding:0}
+  #method-sim.is-phone-fit .ms-geo .ms-map canvas{height:240px!important;width:100%!important;max-width:100%;object-fit:cover}
+  #method-sim.is-phone-fit .ms-geo .ms-map-key{position:static;justify-content:center;gap:4px;font-size:.62rem;margin-top:4px}
+  #method-sim.is-phone-fit .ms-geo .ms-grad{width:34px}
+  #method-sim.is-phone-fit .ms-wf-in{gap:6px}
+  #method-sim.is-phone-fit .ms-wf-row{grid-template-columns:118px minmax(0,1fr) 78px;gap:6px}
+  #method-sim.is-phone-fit .ms-wf-row span{font-size:.76rem;line-height:1.3}
+  #method-sim.is-phone-fit .ms-wf-t{height:18px}
+  #method-sim.is-phone-fit .ms-polls{display:grid;gap:4px}
+  #method-sim.is-phone-fit .ms-pl-head{padding:0 0 6px;font-size:.7rem}
+  #method-sim.is-phone-fit .ms-pl-head>span:not(.ms-pl-axis){display:none}
+  #method-sim.is-phone-fit .ms-pl-row{display:grid;grid-template-columns:20px 84px minmax(0,1fr);grid-template-areas:"logo name track" "logo grade track";gap:1px 8px;align-items:center;padding:4px 0}
+  #method-sim.is-phone-fit .ms-pl-row>:first-child{grid-area:logo;width:20px;height:20px}
+  #method-sim.is-phone-fit .ms-pl-n{grid-area:name;display:block;min-width:0}
+  #method-sim.is-phone-fit .ms-pl-n b{display:block;font-size:.8rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #method-sim.is-phone-fit .ms-pl-n small{display:none}
+  #method-sim.is-phone-fit .ms-pl-g{grid-area:grade;display:flex;flex-wrap:nowrap;gap:0;min-width:0}
+  #method-sim.is-phone-fit .ms-pl-g small{display:none}
+  #method-sim.is-phone-fit .ms-pl-g em{font-size:.62rem;padding:1px 6px;white-space:nowrap}
+  #method-sim.is-phone-fit .ms-pl-track{grid-area:track;height:22px}
+  #method-sim.is-phone-fit .ms-pl-seg b{font-size:.68rem}
+  #method-sim.is-phone-fit .ms-pl-avg{gap:6px;padding:8px 0 0}
+  #method-sim.is-phone-fit .ms-pl-avg b{font-size:1.4rem}
+  #method-sim.is-phone-fit .ms-pl-avg small{font-size:.66rem;line-height:1.35}
+  #method-sim.is-phone-fit .ms-pl-avg .ms-note{font-size:.7rem;line-height:1.45;margin:0}
+  #method-sim.is-phone-fit .ms-sw2{gap:12px}
+  #method-sim.is-phone-fit .ms-sqs{grid-template-columns:repeat(30,minmax(0,1fr));gap:2px}
+  #method-sim.is-phone-fit .ms-st-n{margin:4px 0 8px;font-size:.8rem}
+  #method-sim.is-phone-fit .ms-st-n b{font-size:1.25rem}
+  #method-sim.is-phone-fit .ms-gapline{padding:8px 10px;font-size:.84rem;margin:0}
+  #method-sim.is-phone-fit .ms-dv{display:grid;gap:3px}
+  #method-sim.is-phone-fit .ms-sw2 .ms-dv-row{min-height:0}
+  #method-sim.is-phone-fit .ms-key{font-size:.7rem;margin-top:6px}
+  #method-sim.is-phone-fit .ms-cv{gap:10px}
+  #method-sim.is-phone-fit .ms-cv-chart{padding-top:34px;gap:4px}
+  #method-sim.is-phone-fit .ms-cv-plots{--cvh:150px}
+  #method-sim.is-phone-fit .ms-cv-chart::after{display:none}
+  #method-sim.is-phone-fit .ms-cv-now{padding:8px 10px}
+  #method-sim.is-phone-fit .ms-cv-now small{font-size:.8rem;line-height:1.45}
+  #method-sim.is-phone-fit .ms-cv-side .ms-hemi svg{max-height:140px}
+  #method-sim.is-phone-fit .ms-hemi:empty{min-height:150px}
+  #method-sim.is-phone-fit .ms-result{font-size:.82rem;padding:6px 10px}
+}
 @media (max-width:360px){
   :root{--edge:12px}
   .masthead .brand-logo{width:140px!important}
   #view-polls .ex-keys{grid-template-columns:repeat(2,minmax(0,1fr))}
   #view-home .fs-side{padding:12px}
   #view-home:not(#_):not(#__) .fs-center .readout .rd b{font-size:1.8rem}
+  /* Two party columns leave ~60px per name here; one column keeps joint-list names whole. */
+  #view-polls #polls-cards .poll-cols{grid-template-columns:minmax(0,1fr)}
+  #view-polls #polls-cards .poll-cols .poll-list:first-child{border-inline-end:0;padding-inline-end:0}
+  #view-polls #polls-cards .poll-cols li{height:32px}
 }
 @media (prefers-reduced-motion:reduce){
   .mobile-menu[open]{animation:none!important}
@@ -7054,9 +7371,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
         <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
       </div>
       <aside class="cover-chart" aria-label="מנדטים בתחזית">
-        <div class="cover-gauges" id="cover-gauges" role="img" aria-label="חלוקת המנדטים בין הגושים"></div>
-        <p class="cover-estimate">אומדן של הברומטר · חלוקת גושים לפי הגדרת האתר</p>
-      </aside>
+        <div class="cover-gauges" id="cover-gauges" role="img" aria-label="חלוקת המנדטים בין הגושים"></div>      </aside>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
     <button type="button" class="section-next" data-home-section="home-discovery" aria-label="לקטע הבא — המספרים שמאחורי הכותרות"><span aria-hidden="true">↓</span></button>
@@ -9004,7 +9319,7 @@ function gapRecord(m) {
         const cls = role(d), left = x(d.err).toFixed(2), top = 24 + lanes[i] * 22, pred = seatTxt(r.actual + d.err);
         return `<i class="gap-rec-dot ${cls}" style="left:${left}%;top:${top}px" title="${esc(nameOf(d.firm))}: חזה ${pred} מנדטים (${gapSigned(d.err)} מהתוצאה)"></i>` +
           `<span class="gap-rec-tag ${cls}" style="left:${left}%;top:${top + (cls ? 11 : 8)}px">${esc(nameOf(d.firm))} <b dir="ltr">${pred}</b></span>`;
-      }).join("")}</div></div>`;
+      }).join("")}</div><div class="gap-rec-mobile"><p>התוצאה בפועל: <b>${r.actual} מנדטים</b></p><ul>${ordered.map(d => `<li class="${role(d)}"><span>${esc(nameOf(d.firm))}</span><b dir="ltr">${seatTxt(r.actual + d.err)}</b><small>פער: <span dir="ltr">${gapSigned(d.err)}</span></small></li>`).join("")}</ul></div></div>`;
   };
   const both = st.compared === 1 ? "בבחירות שבהן נמדדו שניהם" : `בכל ${st.compared} הבחירות`;
   const closer = same ? `שני הסקרים הם של אותו מכון — ${hiName}.`
@@ -9018,6 +9333,7 @@ function gapRecord(m) {
   return `<div class="tr-card gap-record">
     <h3>גוש הימין והחרדים: ${st.below} מתוך ${st.total} מדידות היו מתחת לתוצאה האמיתית${st.total - st.below ? `, ${st.total - st.below} מעליה` : ""} ${gapInfo(how)}</h3>
     <p class="gap-rec-sub">${what}</p>
+    <p class="gap-rec-mobile-note">המנדטים שחזה כל מכון, ולצדם הפער מתוצאת הבחירות. המכונים שבחרתם מודגשים בצבע.</p>
     <div class="gap-rec-plotwrap">
       <div class="gap-rec-row gap-rec-caption"><div></div><div dir="ltr"><span>← פחות מהתוצאה</span><span>יותר מהתוצאה →</span></div></div>
       ${rows.map(rowHTML).join("")}
@@ -9965,21 +10281,21 @@ function buildHomePrintSheet(est, seats, blocTot) {
 function renderCoverGauges(blocTot) {
   const host = $("#cover-gauges");
   if (!host) return;
-  const right = blocTot.Right || 0, left = (blocTot.Left || 0) + (blocTot.Arabs || 0);
+  const arab = blocTot.Arabs || 0, right = blocTot.Right || 0, left = (blocTot.Left || 0) + arab;
   const other = Math.max(0, 120 - right - left);
   const share = seats => (clamp(seats, 0, 120) / 120 * 100).toFixed(2);
   host.setAttribute("aria-label", `תחזית המנדטים: גוש הימין והחרדים ${right}, מרכז־שמאל והרשימות הערביות ${left}${other ? `, לא משויך ${other}` : ""}. נדרשים 61 מנדטים לרוב. החלוקה לגושים אינה הרכב קואליציה.`);
-  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span><span>120 מנדטים</span></div>
+  /* Bloc colours as on the forecast page; the bar shows the Arab lists inside the 61 side. */
+  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span></div>
     <div class="cover-score-pair">
-      <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>גוש הימין והחרדים</span></div>
-      <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל והרשימות הערביות</span></div>
+      <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>ימין וחרדים</span></div>
+      <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל וערבים</span></div>
     </div>
     <div class="cover-score-scale" aria-hidden="true">
-      <div class="cover-score-bar"><span class="cover-score-fill--right" style="width:${share(right)}%"></span>${other ? `<span class="cover-score-fill--other" style="width:${share(other)}%"></span>` : ""}<span class="cover-score-fill--left" style="width:${share(left)}%"></span></div>
-      <span class="cover-score-majority" style="inset-inline-start:${share(61)}%"><b>61</b> הרף לרוב</span>
+      <div class="cover-score-bar"><span class="cover-score-fill--right" style="width:${share(right)}%"></span>${other ? `<span class="cover-score-fill--other" style="width:${share(other)}%"></span>` : ""}<span class="cover-score-fill--arab" style="width:${share(arab)}%"></span><span class="cover-score-fill--left" style="width:${share(left - arab)}%"></span></div>
+      <span class="cover-score-majority" style="inset-inline-start:${share(61)}%"><b>61</b> לרוב</span>
     </div>
-    ${other ? `<p class="cover-score-other">${other} מנדטים ללא שיוך לגוש</p>` : ""}
-    <p class="cover-score-note">חלוקה לגושים · אינה תחזית להרכב קואליציה</p>`;
+    ${other ? `<p class="cover-score-other">${other} מנדטים ללא שיוך לגוש</p>` : ""}`;
 }
 
 function renderHome() {
@@ -12855,6 +13171,7 @@ function renderHaredHistory() {
     const loop = () => { tick(); st.raf = requestAnimationFrame(loop); };
     st.raf = requestAnimationFrame(loop); st.timer = setInterval(tick, 40);
     document.addEventListener("barometer:view", () => { if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
+    document.addEventListener("barometer:simulation-hidden", () => { if (st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
   }
 
 
@@ -12873,7 +13190,7 @@ function renderHaredHistory() {
       if (!st.ready) return;
       /* הסימולטור יושב בעמוד התחזית: עוברים אליו ומתחילים מהשלב שנבחר */
       if (S.view !== "home") location.hash = "#/forecast";
-      setTimeout(() => { root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
+      setTimeout(() => { document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'simulation'})); root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
     });
     const secs = [...document.querySelectorAll(".msec")];
     if (secs.length && "IntersectionObserver" in window) {
@@ -14004,6 +14321,16 @@ if (q("#view-map.on")) window.renderR22();
   const $ = s => document.querySelector(s);
   const states = new Map();
   let forecastControlsHome;
+  let lastForecastHash;
+  function selectForecast(panel, scroll = false) {
+    const home = $('#view-home');
+    if (!home) return;
+    home.dataset.mobileForecast = panel;
+    home.querySelectorAll('[data-mobile-forecast]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mobileForecast === panel)));
+    if (mobile.matches && panel !== 'simulation') document.dispatchEvent(new Event('barometer:simulation-hidden'));
+    if (scroll) home.scrollIntoView({block:'start', behavior:'auto'});
+  }
+  document.addEventListener('barometer:forecast-panel', e => selectForecast(e.detail));
   const masthead = $('.masthead-in');
   if (masthead) {
     const toggle = document.createElement('button');
@@ -14018,16 +14345,12 @@ if (q("#view-map.on")) window.renderR22();
     menu.setAttribute('aria-labelledby', 'mobile-menu-title');
     menu.innerHTML = '<header><h2 id="mobile-menu-title">לאן ממשיכים?</h2><button type="button" class="mobile-menu-close" aria-label="סגירת התפריט">×</button></header><nav aria-label="ניווט לטלפון"></nav><p class="mobile-menu-update"></p>';
     document.body.append(menu);
-    const print = document.createElement('button'); print.type = 'button'; print.className = 'mobile-menu-link';
-    print.textContent = 'הדפסת נתוני התחזית';
-    print.addEventListener('click', () => { menu.close(); document.getElementById('print-btn')?.click(); });
     const syncMenu = () => {
       const nav = menu.querySelector('nav'); nav.replaceChildren();
       document.querySelectorAll('.mainnav .tab').forEach(link => {
         const copy = link.cloneNode(true); copy.className = 'mobile-menu-link';
         nav.append(copy);
       });
-      nav.append(print);
       menu.querySelector('.mobile-menu-update').textContent = $('#stamp-updated')?.textContent || '';
       const current = document.querySelector('.mainnav .tab[aria-current="page"]');
       toggle.setAttribute('aria-label', `פתיחת תפריט האתר${current ? ' · ' + current.textContent : ''}`);
@@ -14057,6 +14380,21 @@ if (q("#view-map.on")) window.renderR22();
     detail.addEventListener('toggle', () => { if (mobile.matches && detail.isConnected) states.set(key, detail.open); });
   }
   function prepare() {
+    const home = $('#view-home');
+    if (home && !home.querySelector('.mobile-forecast-nav')) {
+      const nav = document.createElement('nav'); nav.className = 'mobile-forecast-nav';
+      nav.setAttribute('aria-label', 'מה מציגים בתחזית');
+      nav.innerHTML = [['overview','תמונת מצב'],['parties','מפלגות'],['simulation','הסימולציה'],['coalition','קואליציה']].map(([key,label]) => `<button type="button" data-mobile-forecast="${key}" aria-pressed="false">${label}</button>`).join('');
+      home.prepend(nav);
+      nav.addEventListener('click', e => {
+        const b = e.target.closest('[data-mobile-forecast]'); if (!b) return;
+        selectForecast(b.dataset.mobileForecast, true);
+      });
+    }
+    if (home && lastForecastHash !== location.hash) {
+      lastForecastHash = location.hash;
+      selectForecast(location.hash === '#/forecast/coalition' ? 'coalition' : 'overview');
+    }
     const controls = $('#view-home .home-forecast-controls'), center = $('#view-home .fs-center');
     if (controls && center) {
       if (!forecastControlsHome) { forecastControlsHome = document.createComment('forecast controls'); controls.before(forecastControlsHome); }
@@ -14066,6 +14404,25 @@ if (q("#view-map.on")) window.renderR22();
     fold($('.ex-pickers'), 'explorer', 'בחירת ערוצים ומפלגות');
     fold($('.dm-side'), 'demography', 'המסקנות של המודל');
     fold($('.r22-mode-controls'), 'map-controls', 'חיפוש, סינון ואפשרויות');
+    fold($('#method-sim .ms-ledger'), 'simulation-results', 'סיכום המספרים שחושבו');
+    document.querySelectorAll('#view-method .msec-body').forEach(body => fold(body, 'method-' + body.closest('.msec').id, 'הסבר ונתונים'));
+    // Give each demographic record its own labelled card on a phone. The same
+    // table cells and live inputs remain in place, preserving their handlers.
+    document.querySelectorAll('#view-demography .dtable').forEach(table => {
+      if (table.classList.contains('mobile-record-table')) return;
+      const headings = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+      if (!headings.length) return;
+      table.classList.add('mobile-record-table'); table.setAttribute('role','table');
+      table.querySelectorAll('thead,tbody,tfoot').forEach(g => g.setAttribute('role','rowgroup'));
+      table.querySelectorAll('tr').forEach(row => {
+        row.setAttribute('role','row');
+        [...row.children].forEach((cell, i) => {
+          cell.setAttribute('role',cell.tagName === 'TH' ? 'columnheader' : 'cell');
+          if (i > 0) cell.dataset.mobileLabel = headings[i] || '';
+          if (cell.matches('.why') || cell.querySelector('input,.pbar,.plegend,.why') || cell.colSpan > 1) cell.classList.add('mobile-wide-cell');
+        });
+      });
+    });
     const polls = $('#view-polls .polls-layout');
     if (polls && !$('.mobile-polls-nav')) {
       const nav = document.createElement('nav');nav.className = 'mobile-polls-nav';nav.setAttribute('aria-label','תצוגת הסקרים');
@@ -14104,6 +14461,7 @@ if (q("#view-map.on")) window.renderR22();
   const schedule = () => { if (scheduled) return; scheduled = true; requestAnimationFrame(() => { scheduled = false; prepare(); }); };
   new MutationObserver(schedule).observe(document.getElementById('main') || document.body, {childList:true, subtree:true});
   document.addEventListener('barometer:view', schedule);
+  window.addEventListener('hashchange', () => document.querySelectorAll('dialog[open]').forEach(d => d.close()));
   document.addEventListener('pointerdown', e => {
     if (e.pointerType !== 'touch' || e.target.closest('.tr-plot')) return;
     document.querySelectorAll('.tr-tip,.tr-cursor').forEach(t => { t.hidden = true; t.setAttribute('hidden',''); });
@@ -14118,9 +14476,58 @@ if (q("#view-map.on")) window.renderR22();
     if (tab && mobile.matches) tab.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'});
   });
   document.addEventListener('click', e => {
+    if (mobile.matches) {
+      const jump = e.target.closest('[data-home-section]');
+      if (jump) selectForecast(jump.dataset.homeSection === 'election-coalition' ? 'coalition' : jump.dataset.homeSection === 'home-method-section' ? 'simulation' : 'overview');
+      const docJump = e.target.closest('.mdoc-nav [data-go]');
+      if (docJump) { const d = document.getElementById(docJump.dataset.go)?.querySelector('.mobile-disclosure'); if (d) d.open = true; }
+    }
     const detail = e.target.closest('.mobile-disclosure');
     if (detail && mobile.matches) states.set(detail.dataset.mobileFold, e.target.closest('summary') === detail.firstElementChild ? !detail.open : detail.open);
   }, true);
+  // Phone simulation: steps, caption, stage and controls share one screen. The
+  // stage takes the height that is left; a scene that needs more room is scaled
+  // with CSS zoom (which reflows, unlike transform) instead of growing the page.
+  const sim = document.getElementById('method-sim');
+  if (sim) {
+    let fitFirst = null, fitZoom = 1, fitQueued = false;
+    const mastH = () => $('.masthead')?.offsetHeight || 64;
+    const fitSim = () => {
+      fitQueued = false;
+      const home = $('#view-home'), box = sim.querySelector('.ms-stagebox'), stage = sim.querySelector('#ms-stage');
+      const on = !!(mobile.matches && home?.classList.contains('on') && home.dataset.mobileForecast === 'simulation');
+      sim.classList.toggle('is-phone-fit', on);
+      if (!box || !stage) return;
+      const kids = [...stage.children], zoom = z => kids.forEach(c => { c.style.zoom = z === 1 ? '' : String(z); });
+      if (!on) { box.style.height = ''; zoom(1); fitFirst = null; return; }
+      // Height that is left when the forecast tabs sit right under the masthead.
+      const offset = box.getBoundingClientRect().top - home.getBoundingClientRect().top;
+      const viewH = window.visualViewport?.height || innerHeight;
+      box.style.height = `${Math.max(300, Math.floor(viewH - mastH() - offset - 12))}px`;
+      const fresh = stage.firstElementChild !== fitFirst;
+      if (!fresh && stage.scrollHeight <= stage.clientHeight + 1) return;
+      if (fresh) { fitFirst = stage.firstElementChild; fitZoom = 1; }
+      // Measure with the scene's later reveals shown, so the scale is chosen once.
+      stage.classList.add('is-measuring'); zoom(1);
+      let z = 1;
+      for (let i = 0; i < 5; i++) {
+        const need = stage.scrollHeight, room = stage.clientHeight;
+        if (need <= room + 1) break;
+        z = Math.max(.55, z * room / need * .985); zoom(z);
+      }
+      stage.classList.remove('is-measuring');
+      fitZoom = Math.min(z, fitZoom); zoom(fitZoom);
+    };
+    const queueFit = () => { if (fitQueued) return; fitQueued = true; setTimeout(fitSim, 0); };
+    new MutationObserver(queueFit).observe(sim, {childList:true, subtree:true, attributes:true, attributeFilter:['hidden','class']});
+    document.addEventListener('barometer:forecast-panel', queueFit);
+    document.addEventListener('barometer:view', queueFit);
+    $('#view-home')?.addEventListener('click', e => { if (e.target.closest('[data-mobile-forecast]')) queueFit(); });
+    window.addEventListener('resize', queueFit);
+    window.visualViewport?.addEventListener('resize', queueFit);
+    mobile.addEventListener('change', queueFit);
+    queueFit();
+  }
   prepare();
 })();
 

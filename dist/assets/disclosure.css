@@ -19,9 +19,11 @@
 }
 .model-disclosure{margin:8px 0 10px;max-width:67ch;padding:8px 12px;border-inline-start:3px solid #ad812f;background:#f6efe2;color:#36465a;font-size:.84rem;line-height:1.45}
 .model-disclosure a,.poll-publication-note a{font-weight:800;text-decoration:underline;text-underline-offset:2px}
+/* Cream notes sit inside the navy frame, whose --navy-text is light blue: links stay navy here. */
+.model-disclosure:not(.model-disclosure--dark),.poll-publication-note{--navy-text:#12345C;--ink:#14233a;--ink-2:#3a4859;--ink-3:#586575;--gold:#855a0c;--accent:#855a0c}
+.model-disclosure:not(.model-disclosure--dark) a,.poll-publication-note a{color:#12345C}
 .model-disclosure--dark{max-width:66ch;margin:10px 0 0;background:#091a2bdb;border-color:#ebc777;color:#ecf2f8}
 .model-disclosure--dark a{color:#f5d894}
-#view-landing .cover-estimate{margin:4px 0 0;color:#c3d3e4;font-size:.77rem;line-height:1.35}
 #view-landing .cover-inner{padding-block:clamp(26px,3.5vh,48px) clamp(48px,6vh,76px)}
 #view-home .model-disclosure{max-width:62ch;margin:0 auto;padding:0;border:0;background:none;font-size:.78rem;line-height:1.5;color:#69778a;text-align:center}
 .mainnav .tabs{gap:clamp(12px,1.45vw,24px)}

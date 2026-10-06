@@ -440,7 +440,7 @@
     /* rAF לחלקלקות, וטיימר כגיבוי כשהדפדפן מקפיא פריימים (חלונית מוסתרת/מוטמעת); שניהם מחשבים לפי השעון, לכן אין ספירה כפולה */
     const loop = () => { tick(); st.raf = requestAnimationFrame(loop); };
     st.raf = requestAnimationFrame(loop); st.timer = setInterval(tick, 40);
-    document.addEventListener("barometer:view", () => { if (S.view !== "method" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
+    document.addEventListener("barometer:view", () => { if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
   }
 
 
@@ -457,8 +457,9 @@
     document.querySelectorAll(".mdoc-nav [data-go]").forEach(b => b.onclick = () => document.getElementById(b.dataset.go)?.scrollIntoView({ behavior: smooth, block: "start" }));
     document.querySelectorAll(".msec-sim").forEach(b => b.onclick = () => {
       if (!st.ready) return;
-      root.scrollIntoView({ behavior: smooth, block: "start" });
-      go(Number(b.dataset.sim));
+      /* הסימולטור יושב בעמוד התחזית: עוברים אליו ומתחילים מהשלב שנבחר */
+      if (S.view !== "home") location.hash = "#/forecast";
+      setTimeout(() => { root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
     });
     const secs = [...document.querySelectorAll(".msec")];
     if (secs.length && "IntersectionObserver" in window) {
@@ -481,4 +482,5 @@
     catch (e) { console.error(e); q(".ms-idle p").textContent = "הסימולציה לא נטענה כרגע"; }
   }
   window.initMethodSim = init;
+  if (S.cur) init();
 })();

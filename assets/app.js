@@ -1107,7 +1107,7 @@ function renderWallPoster(seats, est, blocTot, belowEntries) {
 
 /* הפתיח: חמשת המכלולים שנבדקים — כל אחד עם מספר חי מהנתונים — שמתנקזים לתחזית אחת */
 function renderHomePipeline() {
-  if (typeof window !== 'undefined') window.initPipelineStory?.();
+  if (typeof window !== 'undefined') window.initMethodSim?.();
   const box = $("#home-pipeline"); if (!box) return;
   const nodes = [];
   try {

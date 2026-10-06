@@ -253,7 +253,7 @@ const POLLS_NAV = [
 ];
 function renderPollsNav() {
   const tab = S.view === "e2022" ? "acc" : S.pollsTab || "gap";
-  const link = ([t, , href, label]) => `<a class="pn${t === "gap" ? " pn-hook" : ""}${t === "acc" ? " pn-key" : ""}" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}>${label}</a>`;
+  const link = ([t, , href, label]) => `<a class="pn" href="${href}" data-polls-go="${t}"${t === tab ? ' aria-current="page"' : ""}>${label}</a>`;
   const html = POLLS_NAV.map(link).join("");
   document.querySelectorAll("[data-polls-nav]").forEach(n => { n.innerHTML = html; });
 }

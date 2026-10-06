@@ -157,8 +157,10 @@ function explorerKeys(M, state, lines) {
 function explorerTools(P, M, state) {
   const out = [];
   const model = state.hasChannel ? null : state.model;
-  const first = model ? model.series[0].t : parsePollDate(P.polls[0]), last = model ? model.now.t : parsePollDate(P.polls.at(-1));
-  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', model && (model.basis || 'avg') !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
+  /* ״משוקלל דיוק״ מצויר על המסגרת של הממוצע, ולכן בורר הטווח לא משתנה בין השניים */
+  const span = model && model.basis === 'weighted' ? P : model;
+  const first = span ? span.series[0].t : parsePollDate(P.polls[0]), last = span ? span.now.t : parsePollDate(P.polls.at(-1));
+  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', span && (span.basis || 'avg') !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
   out.push(`<div class="switch ex-view" role="group" aria-label="תצוגה"><button type="button" data-ex-view="chart" aria-pressed="${state.view === 'chart'}">גרף</button><button type="button" data-ex-view="table" aria-pressed="${state.view === 'table'}">טבלה</button></div>`);
   const modelNote = TRACK_BASES[((model || M).basis) || 'avg'].note;
   out.push(exInfo(state.overview ? `${modelNote} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
@@ -210,7 +212,7 @@ function drawExplorer() {
   const X = S.explorer, body = document.querySelector('#poll-tracker [data-ex-body]'); if (!X || !body) return;
   const w = Math.round(body.clientWidth), h = Math.round(body.clientHeight); if (!w || !h) return;
   S.trackWidth = w; S.trackH = h; S.exDrawn = `${w}x${h}`;
-  const overview = X.state.overview, chart = overview ? trackerChart(X.state.model, 'blocs') : explorerChart(X.P, X.state, X.M);
+  const overview = X.state.overview, chart = overview ? trackerChart(X.state.model, 'blocs', X.P) : explorerChart(X.P, X.state, X.M);
   if (X.state.view === 'table') { body.innerHTML = chart.table; return; }
   body.innerHTML = `<div class="tr-plot">${chart.svg}<div class="tr-tip" hidden></div></div>`;
   if (chart.geom) (overview ? wireTrackerHover : wireExplorerHover)(body, chart);

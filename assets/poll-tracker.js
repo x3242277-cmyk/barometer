@@ -130,25 +130,28 @@ function smoothPath(pts) {
 }
 
 /* ---------- גרף הקווים (גושים או מפלגה אחת) ---------- */
-function trackerChart(M, mode) {
+function trackerChart(M, mode, base) {
+  /* במעבר ל״משוקלל דיוק״ המסגרת נשארת של הממוצע (אותו ציר זמן, אותו טווח ערכים, אותן נקודות סקרים) — רק הקווים מתחלפים */
+  const useBase = !!base && base !== M && M.basis === "weighted";
   /* ה־viewBox בגודל המקום שהגרף קיבל בפועל (drawExplorer), כך שהטקסט לא נמתח */
   const W = Math.max(320, S.trackWidth || 920), H = Math.max(160, S.trackH || 260), m = { l: 30, r: 18, t: 14, b: 26 + (S.exBasisOn ? 34 : 0) };
   const days = S.trackRange === "month" ? 30 : 400;
-  const tMin = Math.max(M.series[0].t, M.now.t - (days - 1) * DAY_MS);
-  const S2 = M.series.filter(s => s.t >= tMin), polls = (M.dotPolls || M.polls).filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);
+  const tMin = useBase ? Math.max(base.series[0].t, base.now.t - (days - 1) * DAY_MS) : Math.max(M.series[0].t, M.now.t - (days - 1) * DAY_MS);
+  const S2 = M.series.filter(s => s.t >= tMin), polls = (useBase ? base.polls : (M.dotPolls || M.polls)).filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);
+  const Sb = useBase ? base.series.filter(s => s.t >= Math.max(base.series[0].t, base.now.t - (days - 1) * DAY_MS)) : [];
   const party = mode !== "blocs" ? M.parties.find(x => x.id === mode) : null;
   const lines = party
     ? [{ key: party.id, label: party.name, color: party.color, get: s => s.parties[party.id], dot: p => M.vec.get(p.id).parties[party.id] || 0 }]
     : TRACK_BLOCS.filter(([k]) => k !== "Arabs").map(([k, label]) => ({ key: k, label, color: BLOCS[k].color, get: s => s.blocs[k], dot: p => M.vec.get(p.id).blocs[k] }));
-  const vals = lines.flatMap(l => [...S2.map(l.get), ...polls.map(l.dot)]);
+  const vals = lines.flatMap(l => [...S2.map(l.get), ...Sb.map(l.get), ...polls.map(l.dot)]);
   let lo = Math.floor(Math.min(...vals) - 1), hi = Math.ceil(Math.max(...vals) + 1);
   if (!party) { lo = Math.min(lo, 58); hi = Math.max(hi, 64); }
   else if (lo < 9) lo = Math.max(0, Math.min(lo, 3));      /* מפלגה קטנה: רואים גם את אחוז החסימה */
   else { lo = Math.max(0, lo - 3); hi += 2; }
   const step = hi - lo > 40 ? 10 : hi - lo > 16 ? 5 : 2;
   lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
-  const t0 = Math.min(S2[0].t, ...polls.map(parsePollDate)), t1 = Math.max(S2.at(-1).t, t0 + DAY_MS);
-  const x = t => m.l + (W - m.l - m.r) * (t - t0) / (t1 - t0);
+  const t0 = Math.min(S2[0].t, ...Sb.slice(0, 1).map(s => s.t), ...polls.map(parsePollDate)), t1 = useBase ? Math.max(Sb.at(-1).t, t0 + DAY_MS) : Math.max(S2.at(-1).t, t0 + DAY_MS);
+  const x = t => m.l + (W - m.l - m.r) * (Math.min(t, t1) - t0) / (t1 - t0);
   const y = v => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
   let g = "";
   for (let v = lo; v <= hi; v += step) g += `<line class="tr-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="tr-tick" text-anchor="end" x="${m.l - 8}" y="${y(v) + 4}">${v}</text>`;

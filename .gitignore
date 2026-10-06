@@ -18,3 +18,5 @@ redesign/
 .site-stage/
 *.tar.gz
 /ChatGPT Image*.png
+/.mobile-audit/
+/.sites-checkout/

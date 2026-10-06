@@ -6630,6 +6630,372 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .analytics-consent button{padding:7px 12px;font-size:.84rem}
 @media print{.info-page .info-header{display:none}}
 
+/* Shared phone layout, loaded after the desktop design layers. */
+.mobile-menu-toggle,.mobile-map-nav,.mobile-map-pan,.mobile-polls-nav{display:none}
+.mobile-disclosure{border:0;margin:0;padding:0;min-width:0}
+.mobile-disclosure>summary{display:none}
+.mobile-menu:not([open]){display:none}
+.ec-mobile-total{display:none}
+@media (min-width:901px){.mobile-disclosure{display:contents}}
+@media (max-width:900px){
+  :root{--edge:16px;--mobile-header:64px}
+  html{scroll-padding-top:calc(var(--masthead-h,64px) + 12px)}
+  body{min-width:0}
+  .view.on:not(#_):not(#__){height:auto;max-height:none;min-height:0;overflow:visible}
+  .view:not(#_):not(#__)>.wrap{width:100%;max-width:none;padding-inline:var(--edge);box-sizing:border-box}
+  .view:not(#_):not(#__) :is(.grid,.two,.three,.card,.sec,.dm-card){min-width:0}
+  .view:not(#_):not(#__) :is(.page-head,.page-intro){padding-block:20px 16px;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+  .view:not(#_):not(#__) :is(.page-head,.page-intro) h2{font-size:1.6rem;line-height:1.25}
+  .view:not(#_):not(#__) :is(.page-head,.page-intro) p{font-size:.9rem;line-height:1.6}
+  .view:not(#_):not(#__) :is(.sec-head,.controls,.toolbar,.section-heading){flex-wrap:wrap;gap:10px;min-width:0}
+  .view:not(#_):not(#__) :is(button,.btn,select,summary){touch-action:manipulation}
+  .view:not(#_):not(#__) :is(.btn,.switch button,.subtab,.chip,select,.field input){min-height:44px}
+  .view:not(#_):not(#__) :is(input:not([type=range]),select,textarea){font-size:16px;max-width:100%;box-sizing:border-box}
+  .view:not(#_):not(#__) input[type=range]{min-height:40px;touch-action:pan-y}
+  .view:not(#_):not(#__) .switch{max-width:100%;flex-wrap:wrap}
+  .view:not(#_):not(#__) .sec{padding-block:16px;margin-block:0}
+  .view:not(#_):not(#__) .tablewrap{max-width:100%;overflow:auto;overscroll-behavior-x:contain;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .view:not(#_):not(#__) .tablewrap table{min-width:max-content}
+  .view:not(#_):not(#__) .tablewrap th:first-child{position:sticky;inset-inline-start:0;z-index:2;background:#f6f1e7}
+  .view:not(#_):not(#__) .tablewrap td:first-child{position:sticky;inset-inline-start:0;z-index:1;background:#fdfbf6}
+  .view:not(#_):not(#__) .tablewrap :is(th,td){padding:10px 12px;font-size:.83rem}
+  .view:not(#_):not(#__) .tablewrap::after{content:'↔ החליקו לצדדים לצפייה בכל הנתונים';display:block;position:sticky;inset-inline-start:0;width:100%;box-sizing:border-box;padding:8px 12px;color:#586575;background:#f6f1e7;font-size:.73rem;text-align:center}
+  .subtabs{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;max-width:100%;padding-bottom:4px}
+  .subtabs .subtab{flex:0 0 auto}
+  [hidden]{display:none!important}
+
+  /* A small, persistent header and a native modal menu. */
+  .masthead{position:sticky;top:0;z-index:100}
+  .masthead .masthead-in{height:64px;min-height:64px;display:flex!important;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px;width:100%;box-sizing:border-box}
+  .masthead .brand{min-width:0;display:block;flex:0 1 auto}
+  .masthead .brand-logo{width:156px!important;max-width:100%;height:auto!important;display:block}
+  .masthead .brand-tag,.masthead .mainnav,.masthead .masthead-side{display:none!important}
+  .mobile-menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:none;min-height:44px;padding:6px 12px;border:1px solid #e5c78355;border-radius:9px;background:#ffffff0a;color:#f6e7bd;font:700 .85rem var(--sans)}
+  .mobile-menu-toggle>span{font-size:1.2rem}
+  #mobile-menu.mobile-menu[open]{position:fixed;inset:0 0 0 auto;margin:0;width:min(350px,92vw);max-width:none;height:100dvh;max-height:100dvh;padding:20px 18px calc(20px + env(safe-area-inset-bottom));box-sizing:border-box;border:0;border-radius:16px 0 0 16px;background:#0d2034!important;color:#f6f3ec;overflow:auto;animation:mobile-menu-in .2s ease-out}
+  dialog.mobile-menu::backdrop{background:#020b16b8;backdrop-filter:blur(3px)}
+  .mobile-menu header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  #mobile-menu h2{font-size:1.2rem;margin:0;color:#f6e7bd!important}
+  .mobile-menu-close{width:44px;height:44px;border:1px solid #ffffff30;border-radius:50%;background:#ffffff0a;color:#fff;font-size:1.8rem;line-height:1}
+  .mobile-menu nav{display:grid;gap:8px}
+  #mobile-menu .mobile-menu-link{display:flex;align-items:center;min-height:52px;padding:10px 16px;border:1px solid #ffffff20;border-radius:10px;color:#dce5ef;font-weight:700;text-decoration:none;box-sizing:border-box}
+  .mobile-menu .mobile-menu-link::after{content:'←';margin-inline-start:auto;color:#e5c783}
+  #mobile-menu .mobile-menu-link[aria-current=page]{background:#e5c783;color:#14233a;border-color:#e5c783}
+  .mobile-menu .mobile-menu-link[aria-current=page]::after{color:#14233a}
+  .mobile-menu-update{font-size:.8rem;line-height:1.6;color:#b4c1ce;margin-top:20px}
+  body:has(#mobile-menu[open]){overflow:hidden}
+  .mobile-menu button.mobile-menu-link{width:100%;text-align:start;background:#ffffff08;font:700 .9rem var(--sans)}
+  @keyframes mobile-menu-in{from{transform:translateX(100%)}to{transform:none}}
+
+  /* Fold secondary controls, keeping selections and results intact. */
+  .mobile-disclosure{border:1px solid #d3c9b7;border-radius:10px;background:#fdfbf6;color:#14233a;overflow:hidden}
+  .mobile-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:46px;padding:10px 14px;box-sizing:border-box;list-style:none;font-size:.87rem;font-weight:800;cursor:pointer}
+  .mobile-disclosure>summary::-webkit-details-marker{display:none}
+  .mobile-disclosure>summary::after{content:'+';font-size:1.35rem;font-weight:500;line-height:1}
+  .mobile-disclosure[open]>summary{border-bottom:1px solid #e6dfd1}
+  .mobile-disclosure[open]>summary::after{content:'−'}
+  .mobile-disclosure>.ex-pickers{padding:12px;box-sizing:border-box}
+
+  /* Landing: content flows with the screen; no desktop viewport lock. */
+  #view-landing .election-cover{height:auto!important;min-height:0!important;padding:28px 0 24px}
+  #view-landing .cover-inner{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px;min-height:0!important;padding-inline:16px}
+  #view-landing .cover-content{padding:0}
+  #view-landing #election-title{font-size:clamp(2.5rem,10vw,4rem);line-height:1.06;margin-block:14px}
+  #view-landing .cover-tagline{font-size:1rem;line-height:1.65;max-width:36ch}
+  #view-landing .cover-actions{display:grid;grid-template-columns:1fr;gap:10px}
+  #view-landing .cover-actions a{min-height:48px;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;box-sizing:border-box}
+  #view-landing .cover-chart{width:100%;margin:0;padding:0;max-width:none}
+  #view-landing .cover-gauges{max-width:100%}
+  #view-landing .section-next{position:static;margin:18px auto 0}
+  #view-landing .cover-credit{position:static;display:block;padding:12px 16px 0;text-align:center}
+  #view-landing .home-discovery{padding-block:28px}
+  #view-landing .discovery-stories{grid-template-columns:minmax(0,1fr)!important;gap:12px}
+  #view-landing .discovery-heading h2{font-size:1.65rem;line-height:1.25}
+  #view-landing .discovery-heading p{font-size:.9rem;line-height:1.55}
+
+  /* Forecast: result first, compact party rows grouped by bloc below. */
+  #view-home:not(#_):not(#__).on>.verdict{min-height:0;height:auto;padding:0 0 20px}
+  #view-home:not(#_):not(#__) .verdict>.wrap{padding-inline:16px}
+  #view-home:not(#_):not(#__) .verdict .verdict-in{padding-top:14px}
+  #view-home .edition-label{display:none}
+  #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{display:flex;flex-direction:column;gap:18px;padding-top:12px}
+  #view-home:not(#_):not(#__) .fs-center{order:-1;gap:16px;padding:4px 0 8px}
+  #view-home:not(#_):not(#__) .fs-center .forecast-headline{font-size:1.5rem;max-width:28ch;line-height:1.3}
+  #view-home:not(#_):not(#__) .fs-center .election-visual{gap:14px}
+  #view-home:not(#_):not(#__) .fs-center .readout .rd{padding-inline:8px;gap:4px}
+  #view-home:not(#_):not(#__) .fs-center .readout .rd b{font-size:2.1rem}
+  #view-home:not(#_):not(#__) .fs-center .readout .rd .rd-lbl{font-size:.78rem}
+  #view-home .fs-side{--ph:48px;--bc:#17457f;padding:14px;border:1px solid #dce1e6;border-top:3px solid var(--bc);border-radius:12px;background:#fff;gap:12px}
+  #view-home .fs-left{--bc:#C0392B}
+  #view-home .fs-head{gap:10px;padding-bottom:10px;border-bottom:1px solid #e6dfd1}
+  #view-home .fs-total{font-size:2rem}
+  #view-home .fs-head span{font-size:1rem}
+  #view-home .fs-rows{gap:6px}
+  #view-home .fs-row{min-height:66px;padding:6px 0;gap:12px;border-radius:8px}
+  #view-home .fs-photo{border-width:2px;border-radius:10px}
+  #view-home .fs-name{font-size:1rem;white-space:normal;line-height:1.25}
+  #view-home .fs-leader{font-size:.76rem}
+  #view-home .fs-n{font-size:1.55rem}
+  #view-home .fs-bar{height:14px}
+  #view-home .fs-left .fs-row,#view-home .fs-left .fs-head{direction:rtl}
+  #view-home .fs-left .fs-name,#view-home .fs-left .fs-leader{text-align:start}
+  #view-home:not(#_):not(#__) .home-forecast-controls{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;padding-top:16px!important}
+  #view-home:not(#_):not(#__) .fs-center .home-forecast-controls{width:100%;margin-top:0;padding-bottom:0!important}
+  #view-home .home-history-pick{width:100%;justify-content:center;flex-wrap:wrap}
+  #view-home .home-history-pick select{flex:1;min-width:0}
+  #view-home .fs-run{position:fixed;inset:var(--masthead-h,64px) 0 0;overflow:auto;align-content:center;padding:24px 0;z-index:99}
+  #view-home .fs-run-box{max-width:360px;width:calc(100% - 40px)}
+  #view-home .home-floor{min-height:0!important;height:auto!important;padding-block:24px!important}
+  #view-home .home-story{height:auto!important;min-height:0!important}
+  #view-home .board{height:auto!important;min-height:0!important}
+  #view-home .board .wall{display:grid;grid-template-columns:minmax(0,1fr)!important;gap:14px}
+  #view-home .board .board-summary{padding:14px}
+
+  /* Coalition: a compact score stays by the choices. */
+  #view-home .ec-panel{padding:16px;border-radius:12px}
+  #view-home .ec-heading{display:grid;gap:10px}
+  #view-home .ec-heading h2{font-size:1.65rem}
+  #view-home .ec-content{display:grid;grid-template-columns:minmax(0,1fr)!important;gap:16px}
+  #view-home .ec-map{max-height:210px}
+  #view-home .ec-parties{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #view-home .ec-party{min-width:0}
+  #view-home .ec-choices-heading{position:sticky;top:var(--masthead-h,64px);z-index:5;background:#fdfbf6;padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid #e6dfd1}
+  #view-home .ec-choices-heading h3{font-size:.95rem;margin:0}
+  #view-home .ec-mobile-total{display:block;margin-inline-start:auto;font-size:1rem;font-weight:800;color:#12345c;white-space:nowrap}
+  #view-home .ec-reset{min-height:44px}
+
+  /* Polls: short tabs, one continuous page, a real chart viewport. */
+  #view-polls.on>.wrap,#view-e2022>.wrap{display:block!important;height:auto!important;min-height:0!important;padding-top:12px}
+  #view-polls[data-section=all] .mobile-polls-nav{display:flex;gap:6px;padding:4px 0 12px}
+  .mobile-polls-nav a{flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #e5c78344;border-radius:8px;text-decoration:none;color:#d5dce5;font-size:.83rem;font-weight:700;text-align:center;padding:6px;box-sizing:border-box}
+  .mobile-polls-nav a[aria-current=page]{background:#e5c783;color:#14233a;border-color:#e5c783}
+  .polls-tabbar{display:flex;flex-direction:row;align-items:stretch;gap:6px;padding:4px 0 8px;border:0;border-radius:0;background:none;overflow-x:auto;max-width:100%;scrollbar-width:thin}
+  .polls-tabbar .pn{flex:0 0 auto;width:auto;min-height:44px;align-items:center;padding:8px 12px;gap:8px;border-radius:8px}
+  .polls-tabbar .pn-text b{font-size:.85rem;white-space:nowrap}
+  .polls-tabbar .pn-text small,.polls-tabbar .pn-head,.polls-tabbar .pn-num{display:none}
+  #view-polls .polls-layout{display:block!important;margin:0!important}
+  #view-polls .polls-main,#view-polls .polls-main>.sec{height:auto;max-height:none;overflow:visible}
+  #view-polls #poll-tracker{display:block}
+  #view-polls .ex-workspace{padding:14px 12px;display:flex;flex-direction:column;gap:12px}
+  #view-polls .ex-bar{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+  #view-polls .ex-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  #view-polls .ex-key{padding-inline-start:7px;min-width:0}
+  #view-polls .ex-key>span{white-space:normal;font-size:.75rem;max-width:none}
+  #view-polls .ex-key>b{font-size:1.35rem}
+  #view-polls .ex-key>:is(em,small){white-space:normal}
+  #view-polls .ex-tools{margin:0;display:flex;flex-wrap:wrap;gap:8px}
+  #view-polls .ex-tools select{flex:1;max-width:none;min-height:44px;height:44px}
+  #view-polls .ex-tools .switch{flex:none}
+  #view-polls .ex-tools .switch button{min-height:36px;padding:6px 12px}
+  #view-polls .ex-picker{display:block;padding:0;border:0}
+  #view-polls .ex-pickers{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;min-width:0;width:100%}
+  #view-polls .ex-picker+.ex-picker{padding-top:14px}
+  #view-polls .ex-picker-label{display:block;margin-bottom:10px}
+  #view-polls .ex-picker-icons{display:flex;flex-wrap:wrap;gap:8px;padding:2px}
+  #view-polls .ex-logo-button{width:44px;height:44px}
+  #view-polls .ex-avatar{width:34px;height:34px}
+  #view-polls .ex-stage{flex:none;height:320px;min-height:320px;max-height:none}
+  #view-polls .ex-body{height:100%;min-height:0;overflow:visible}
+  #view-polls .ex-stage:has(.ex-data-table){height:auto;min-height:0}
+  #view-polls .ex-stage:has(.ex-data-table) .ex-body{height:auto}
+  #view-polls .ex-basis{bottom:34px}
+  #view-polls .polls-feed{position:static;max-height:none;padding:20px 0 0}
+  #view-polls .feed-list{max-height:none;overflow:visible}
+  #view-polls .allpolls-toolbar{display:flex;flex-wrap:wrap;gap:10px}
+  #view-polls .allpolls-toolbar input{width:100%;min-height:44px}
+  #view-polls .allpolls-grid{grid-template-columns:minmax(0,1fr)!important;gap:12px;max-height:none;overflow:visible}
+  #view-polls:not(#_):not(#__) .pollcards{display:grid;grid-template-columns:minmax(0,1fr)!important;gap:14px;max-height:none;overflow:visible}
+  #view-polls:not(#_):not(#__) .poll-result-card{min-width:0;padding:14px}
+  #view-polls .poll-result-card :is(select,button){min-height:44px}
+  #view-polls .poll-result-card .poll-result-head{flex-wrap:wrap;gap:10px}
+  #view-polls .feed-item{padding:14px}
+  #view-polls .feed-head-top{gap:8px;flex-wrap:wrap}
+  #view-polls .feed-party{min-height:36px}
+  #view-polls .gap-floor-body{padding:12px}
+  #view-polls .gap-poll{padding:14px;gap:10px;grid-template-columns:64px minmax(0,1fr)}
+  #view-polls .gap-logo .orglogo{width:64px;height:64px}
+  #view-polls .gap-choose select{height:44px;min-height:44px;font-size:16px}
+  #view-polls .gap-choices{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+  #view-polls .gap-choices button{justify-content:center;padding:12px}
+  #view-polls .gap-rec-plot{overflow:hidden}
+  #view-polls .gap-go{padding:14px}
+
+  /* Accuracy rows become readable cards, without losing their breakdown. */
+  #view-e2022 .acc-hero{grid-template-columns:minmax(0,1fr);padding:20px 16px 0;gap:20px}
+  #view-e2022 .acc-title{font-size:2.8rem;line-height:1.08}
+  #view-e2022 .acc-pod-logo .orglogo{width:64px!important;height:64px!important}
+  #view-e2022 .acc-pod.p1 .acc-pod-logo .orglogo{width:76px!important;height:76px!important}
+  #view-e2022 .acc-pod-name{font-size:.78rem;white-space:normal}
+  #view-e2022 #accuracy-method{padding:14px}
+  #view-e2022 .accuracy-method-band{gap:12px}
+  #view-e2022 .accuracy-method-weight b{font-size:1.7rem}
+  #view-e2022 .accuracy-method-weight span{font-size:.8rem}
+  #view-e2022 #rank-list.acc-list{display:grid;gap:12px;background:none;border:0;overflow:visible}
+  #view-e2022 .acc-row:not(.acc-cols){display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto!important;gap:10px 8px;padding:16px 12px;background:#fdfbf6;border:1px solid #e6dfd1;border-radius:12px;align-items:center;animation:none!important;opacity:1!important;transform:none!important}
+  #view-e2022 .acc-cols{display:none!important}
+  #view-e2022 .accuracy-rank-number{grid-column:1;grid-row:1}
+  #view-e2022 .acc-row>.orglogo{grid-column:2;grid-row:1;width:40px!important;height:40px!important}
+  #view-e2022 .accuracy-identity{grid-column:3;grid-row:1;min-width:0}
+  #view-e2022 .accuracy-identity h3{font-size:.95rem;white-space:normal;margin:0}
+  #view-e2022 .accuracy-card-type{font-size:.72rem;white-space:normal}
+  #view-e2022 .accuracy-score{grid-column:4;grid-row:1;width:auto;font-size:1.8rem;line-height:1}
+  #view-e2022 .acc-row>.grade{grid-column:1/4;grid-row:2;justify-self:start;max-width:100%}
+  #view-e2022 .accuracy-contributions,#view-e2022 .accuracy-neutral-explain{grid-column:1/-1;grid-row:3;min-width:0;width:100%;margin:0}
+  #view-e2022 .accuracy-contribution-values{display:flex;flex-wrap:wrap;gap:8px 12px;width:100%;font-size:.75rem}
+  #view-e2022 .accuracy-contribution-values>span{white-space:normal}
+  #view-e2022 .accuracy-sources{grid-column:1/4;grid-row:4;font-size:.75rem}
+  #view-e2022 .accuracy-open{grid-column:4;grid-row:4;min-height:44px;padding:8px 12px;width:auto}
+  #view-e2022 .accuracy-proof-grid{grid-template-columns:minmax(0,1fr)}
+  #view-e2022 .acc-subhead{color:#d5dce5;font-size:.85rem;margin:6px 0}
+
+  /* Demography: tabbed primary content; conclusions on demand. */
+  #view-demography .dm{height:auto;min-height:0}
+  #view-demography .dm-head{display:block;margin-block:16px}
+  #view-demography .dm-title h2{font-size:1.55rem;line-height:1.3}
+  #view-demography .dm-verdict{font-size:.95rem;margin-top:12px}
+  #view-demography .dm-dash{display:flex;flex-direction:column;gap:14px;height:auto}
+  #view-demography .dm-dash>.mobile-disclosure{order:1}
+  #view-demography .dm-side{border:0;padding:14px;box-shadow:none}
+  #view-demography .dm-main{min-height:0;overflow:visible}
+  #view-demography .dm-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:8px;gap:6px;max-width:100%}
+  #view-demography .dm-tabs button{flex:none;min-height:44px;padding:8px 12px;font-size:.83rem}
+  #view-demography .dm-panel{overflow:visible;padding:14px 12px;gap:14px;height:auto}
+  #view-demography .dm-lead{font-size:.9rem;line-height:1.6;padding:10px}
+  #view-demography .dm-result-grid,#view-demography .dm-result-pies{grid-template-columns:minmax(0,1fr)!important}
+  #view-demography .dm .tablewrap{overflow:auto;max-height:none}
+  #view-demography .dm .dtable{min-width:560px}
+
+  /* Map: three mobile panels, with search/filter controls tucked away. */
+  #view-map.on>.r22{height:auto;min-height:0;padding-top:16px}
+  #view-map .r22-head{display:block;margin-bottom:12px}
+  #view-map .r22-head h2{font-size:1.3rem;line-height:1.35;margin-bottom:12px}
+  #view-map .r22-years{flex-wrap:nowrap;overflow:auto;scrollbar-width:thin;gap:6px;padding-bottom:8px}
+  #view-map .r22-years button{flex:none;min-height:44px;padding:8px 12px;font-size:.83rem}
+  .mobile-map-nav{display:flex;gap:4px;padding:4px;background:#fdfbf6;border-radius:10px;margin-bottom:12px;position:sticky;top:calc(var(--masthead-h,64px) + 6px);z-index:10;border:1px solid #d3c9b7}
+  .mobile-map-nav button{flex:1;min-width:0;min-height:44px;border:0;border-radius:7px;background:none;color:#3a4859;font:700 .85rem var(--sans)}
+  .mobile-map-nav button[aria-pressed=true]{background:#14233a;color:#f6e7bd}
+  #view-map .r22-dash{display:flex;flex-direction:column;gap:12px;height:auto;min-height:0}
+  #view-map .r22-side{padding:12px;gap:12px;overflow:visible}
+  #view-map .r22-modes{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  #view-map .r22-modes button{min-height:44px;padding:8px 4px;align-content:center;text-align:center}
+  #view-map .r22-modes button b{font-size:.83rem}
+  #view-map .r22-modes button small{display:none}
+  #view-map .r22-mode-controls{padding:12px;gap:12px}
+  #view-map .r22-field input{height:44px;min-width:0;width:100%;box-sizing:border-box}
+  #view-map .r22-chips{gap:6px}
+  #view-map .r22-chips button{min-height:40px;padding:7px 10px}
+  #view-map .r22-map{order:1;height:clamp(370px,55dvh,520px);min-height:370px;padding:8px}
+  #view-map .r22-kpi{order:2;overflow:visible;padding:14px}
+  #view-map .r22-bars{order:3;height:auto;min-height:360px}
+  #view-map .r22-table{order:3}
+  #view-map .r22-dash[data-mobile-map-panel=map] :is(.r22-table,.r22-bars),
+  #view-map .r22-dash[data-mobile-map-panel=list] :is(.r22-map,.r22-bars),
+  #view-map .r22-dash[data-mobile-map-panel=detail] :is(.r22-map,.r22-table){display:none}
+  #view-map .r22-bars-plot{min-height:330px;padding:10px 12px}
+  #view-map .r22-row{grid-template-columns:90px minmax(0,1fr) 44px;min-height:26px;gap:6px}
+  #view-map .r22-scroll{max-height:60dvh;overflow:auto}
+  #view-map #r22-table{min-width:500px}
+  #view-map #r22-table th button{min-height:40px}
+  #view-map .r22-kpis{gap:6px}
+  #view-map .r22-kpis>div{padding:10px 6px}
+  #view-map .r22-kpis b{font-size:1.05rem;white-space:normal}
+  #view-map .r22-kpi-sub{white-space:normal;font-size:.8rem}
+  #view-map .r22-map-legend{flex-wrap:wrap;font-size:.75rem;gap:6px 12px}
+  #view-map .r22-zoom button{width:44px;height:44px;font-size:1.3rem}
+  #view-map .r22-map-plot.touch-navigation{touch-action:none}
+  .mobile-map-pan{display:block;position:absolute;inset-inline-start:6px;top:26px;min-height:44px;padding:8px 12px;border:1px solid #d3c9b7;border-radius:8px;background:#fdfbf6ed;color:#14233a;font:700 .78rem var(--sans);z-index:4}
+  .mobile-map-pan[aria-pressed=true]{background:#14233a;color:#fff}
+
+  /* Method and simulations: scrollable step tabs and flowing content. */
+  #view-method .mdoc-nav,#view-haredi .mdoc-nav{display:flex;flex-wrap:nowrap;overflow:auto;scrollbar-width:thin;max-width:100%;gap:6px;padding:6px 0}
+  #view-method .mdoc-nav button,#view-haredi .mdoc-nav button{flex:none;min-height:44px;font-size:.82rem}
+  #view-method .mdoc,#view-haredi .mdoc{min-width:0;max-width:100%}
+  #view-method .mdoc-nav,#view-haredi .mdoc-nav{width:100%;height:auto;position:static;box-sizing:border-box}
+  #view-method .mdoc-nav-h,#view-haredi .mdoc-nav-h{display:none}
+  #view-method .msec-head,#view-haredi .msec-head{display:flex;flex-wrap:wrap;gap:12px}
+  #view-method .msec-actions{display:flex;flex-wrap:wrap;gap:8px;max-width:100%}
+  #view-method .msec-actions button{min-height:44px}
+  #view-method .msec-grid,#view-method .mcalc,#view-haredi .haredi-grid{grid-template-columns:minmax(0,1fr)!important}
+  #view-method #method-sim{padding:16px 12px}
+  #view-method .ms-nav{gap:4px;padding-bottom:6px;max-width:100%}
+  #view-method .ms-nav button{min-height:44px;padding:8px 12px;font-size:.83rem}
+  #view-method .ms-stage{padding:16px 12px;min-height:220px;overflow:visible}
+  #view-method .ms-say{font-size:.95rem;line-height:1.6}
+  #view-method .ms-two{gap:20px}
+  #view-method .ms-map{min-height:320px}
+  #view-method .ms-map canvas{max-width:100%;height:auto!important}
+  #view-method .ms-ctl{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom));width:max-content;max-width:100%;margin:14px auto 0;z-index:8}
+  #view-method .ms-ctl button{width:44px;height:44px;flex:none}
+  #view-method .ms-sec-row{grid-template-columns:82px minmax(0,1fr) 68px;gap:8px}
+  #view-method .ms-wf-row{grid-template-columns:90px minmax(0,1fr) 82px;gap:6px}
+  #view-method .ms-ledger{gap:8px}
+  #view-home .home-method{min-height:0!important;padding-block:24px!important}
+  #view-home #method-sim{padding:16px 12px}
+  #view-home #method-sim:not(.is-running) .ms-ledger{display:none}
+  #view-home #method-sim:not(.is-running) .ms-stage{min-height:220px}
+  #view-home .ms-nav{overflow:auto;max-width:100%;gap:4px}
+  #view-home .ms-nav button{min-height:44px;padding:8px 12px;font-size:.8rem}
+  #view-home .ms-ctl{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom));width:max-content;max-width:100%;margin:14px auto 0;z-index:8}
+  #view-home .ms-ctl button{width:44px;height:44px;flex:none}
+  #method-sim .ms-stage{height:auto;max-height:none;min-height:240px;padding:16px 12px}
+  #method-sim .ms-sec-row{grid-template-columns:82px minmax(0,1fr) 68px;gap:8px}
+  #method-sim .ms-sec-t{display:none}
+  #method-sim .ms-sec-row b,#method-sim .ms-wf-row span{font-size:.85rem;line-height:1.4}
+  #method-sim .ms-wf-row{grid-template-columns:88px minmax(0,1fr) 78px;gap:6px}
+  #method-sim .ms-wf-row b{font-size:.8rem;white-space:normal}
+  #method-sim .ms-map canvas{max-width:100%;height:auto!important}
+  #method-sim .ms-map{min-height:320px}
+  #method-sim .ms-note,#method-sim .ms-foot,#method-sim .ms-key{font-size:.83rem;line-height:1.6}
+  #method-sim .ms-st{flex-wrap:wrap}
+
+  /* Election night: touch carousel with a visible next card. */
+  #view-live.on,#view-results.on{height:auto!important;min-height:0!important;overflow:visible!important}
+  #view-live .exit-showcase{height:auto!important;min-height:0!important;padding:20px 16px}
+  #view-live .exit-showcase-grid{display:flex;max-width:100%;overflow:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:14px;scrollbar-width:thin}
+  #view-live .es-card{flex:0 0 88%;min-width:0;scroll-snap-align:center}
+  #view-live .es-stage{height:260px}
+  #view-live .exit-showcase-heading h2{font-size:1.5rem}
+  #view-live .exit-showcase-disclaimer{margin-top:16px}
+
+  /* Details open as full-width sheets with a reachable close button. */
+  dialog:not(.mobile-menu){width:calc(100% - 16px)!important;max-width:620px!important;max-height:calc(100dvh - 24px)!important;margin:auto!important;padding:20px 14px!important;border-radius:16px!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain}
+  dialog .dclose{position:sticky!important;top:0;inset-inline-start:0;display:grid;place-items:center;margin-inline-start:auto;width:44px;height:44px;min-height:44px;z-index:8;background:#fdfbf6!important;color:#14233a!important;border:1px solid #d3c9b7;border-radius:50%;font-size:1.8rem}
+  dialog :is(.grid,.two,.three,.accuracy-detail-grid){grid-template-columns:minmax(0,1fr)!important}
+  dialog .tablewrap{max-width:100%;overflow:auto}
+  dialog .tablewrap table{min-width:max-content}
+  #poll-gallery .poll-gallery-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:0 0 14px}
+  #poll-gallery [data-gallery-close]{width:44px;height:44px;flex:none}
+  #poll-gallery .poll-gallery-cards{display:block}
+  #poll-gallery .feed-item{padding:12px}
+  .tr-tip,.average-tooltip{max-width:calc(100% - 16px)!important;box-sizing:border-box;font-size:.8rem}
+  .analytics-consent{inset-inline:10px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;padding:0!important}
+  .analytics-consent-inner{padding:12px!important;max-width:none!important}
+  .analytics-consent p{font-size:.83rem!important;line-height:1.5}
+  .analytics-consent-actions button{min-height:44px!important}
+  body>footer{padding:26px 16px calc(26px + env(safe-area-inset-bottom));box-sizing:border-box}
+  body>footer .wrap{width:100%;padding:0}
+  body>footer .footer-nav{gap:6px 14px}
+  body>footer .footer-nav a{display:inline-flex;align-items:center;min-height:44px;font-size:.85rem}
+  body>footer .footer-details summary{min-height:44px;display:flex;align-items:center}
+  .admin-wrap,.info-wrap{width:100%;padding:20px 16px;box-sizing:border-box}
+  .admin-heading,.admin-toolbar,.section-heading{flex-wrap:wrap;gap:12px}
+  .admin-card,.info-card{padding:16px}
+  .admin-fields,.admin-stats,.login-fields{grid-template-columns:minmax(0,1fr)}
+  .party-inputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admin-wrap :is(input,select,button){min-height:44px;font-size:16px;max-width:100%}
+  .admin-wrap .tablewrap{overflow:auto}
+}
+@media (max-width:360px){
+  :root{--edge:12px}
+  .masthead .brand-logo{width:140px!important}
+  #view-polls .ex-keys{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #view-home .fs-side{padding:12px}
+  #view-home:not(#_):not(#__) .fs-center .readout .rd b{font-size:1.8rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .mobile-menu[open]{animation:none!important}
+}
+
 </style>
 </head><body>
 
@@ -8016,7 +8382,7 @@ function wireTrackerHover(box, chart) {
   };
   hit.addEventListener("pointermove", show);
   hit.addEventListener("pointerdown", show);
-  hit.addEventListener("pointerleave", () => { cur.setAttribute("hidden", ""); tip.hidden = true; });
+  hit.addEventListener("pointerleave", e => { if(e.pointerType === "touch") return; cur.setAttribute("hidden", ""); tip.hidden = true; });
 }
 
 /* ---------- העמודה השמאלית: הסקרים האחרונים, מהחדש לישן ---------- */
@@ -8403,7 +8769,7 @@ function wireExplorerHover(box, chart) {
     tip.style.left=Math.max(4,Math.min(r.width-tip.offsetWidth-4,sx/geom.W*r.width-tip.offsetWidth-12))+'px';
   };
   hit.addEventListener('pointermove',show); hit.addEventListener('pointerdown',show);
-  hit.addEventListener('pointerleave',()=>{cursor.setAttribute('hidden','');tip.hidden=true;});
+  hit.addEventListener('pointerleave',e=>{if(e.pointerType==='touch')return;cursor.setAttribute('hidden','');tip.hidden=true;});
 }
 
 /* ---------- כרטיס סקר בעמודת הסקרים האחרונים (ובתצוגה המוגדלת) ---------- */
@@ -9748,6 +10114,8 @@ function rebuildForecastSet(rerender) {
 }
 /* פתיחת התחזית היא הרצת המודל: בכניסה הראשונה בביקור מופעלת אותה אנימציה, בלי כפתור */
 function autoRunModel() {
+  // Phones open directly on the result. The model can still be run on demand.
+  if (matchMedia("(max-width: 900px)").matches) return;
   let seen = false; try { seen = sessionStorage.getItem("modelRunSeen") === "1"; } catch {}
   if (seen || !S.cur || S.modelRunning) return;
   try { sessionStorage.setItem("modelRunSeen", "1"); } catch {}
@@ -12602,6 +12970,7 @@ function renderHaredHistory() {
       dot.classList.toggle("is-selected", chosen.has(dot.dataset.ecSeat));
     });
     root.querySelector(".ec-total").textContent = total;
+    root.querySelector(".ec-mobile-total").textContent = `${total} / 61 מנדטים`;
     root.querySelector(".ec-map").setAttribute("aria-label", `120 מושבים בכנסת. ${total} מנדטים בקואליציה שבחרת. ${majority ? "הגעת לרוב" : `חסרים ${61 - total} לרוב`}.`);
     root.querySelector(".ec-meter-fill").style.width = `${Math.min(100, total / 120 * 100)}%`;
     root.querySelector(".ec-result").textContent = total === 0
@@ -12667,7 +13036,7 @@ function renderHaredHistory() {
           <p class="ec-selection">לחצו על המפלגות שתרצו לצרף</p>
         </div>
         <div class="ec-choices">
-          <div class="ec-choices-heading"><h3>המפלגות שלכם</h3><button class="ec-reset" type="button" aria-disabled="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6a7 7 0 1 1-1 6M4 2v4h4"/></svg>איפוס בחירה</button></div>
+          <div class="ec-choices-heading"><h3>המפלגות שלכם</h3><output class="ec-mobile-total" aria-label="מנדטים שנבחרו מול הרוב הנדרש">0 / 61 מנדטים</output><button class="ec-reset" type="button" aria-disabled="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6a7 7 0 1 1-1 6M4 2v4h4"/></svg>איפוס בחירה</button></div>
           <div class="ec-parties" role="group" aria-label="בחירת מפלגות לקואליציה">${entries.map(card).join("")}</div>
         </div>
       </div>
@@ -13454,20 +13823,51 @@ function wireMap() {
     const r = svgEl().getBoundingClientRect();
     zoomAt(Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018)), e.clientX - r.left, e.clientY - r.top);
   }, { passive: false });
-  let drag = null;
-  host.addEventListener("pointerdown", e => { if (!svgEl()?.contains(e.target) || e.button !== 0) return; drag = { x: e.clientX, y: e.clientY, vb: MAP.vb.slice(), moved: false }; });
+  let drag = null, pinch = null;
+  const touches = new Map();
+  const touchEnabled = () => host.classList.contains("touch-navigation") || matchMedia("(min-width:1001px)").matches;
+  host.addEventListener("pointerdown", e => {
+    if (!svgEl()?.contains(e.target) || e.button !== 0) return;
+    if (e.pointerType === "touch") {
+      if (!touchEnabled()) return;
+      touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      host.setPointerCapture(e.pointerId);
+      if (touches.size === 2) {
+        const [a, b] = [...touches.values()];
+        pinch = { distance: Math.hypot(a.x - b.x, a.y - b.y) };
+        drag = null; host.classList.add("dragging"); return;
+      }
+    }
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, vb: MAP.vb.slice(), moved: false };
+  });
   window.addEventListener("pointermove", e => {
+    if (touches.has(e.pointerId)) {
+      touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinch && touches.size === 2) {
+        const [a, b] = [...touches.values()], distance = Math.hypot(a.x - b.x, a.y - b.y);
+        const r = svgEl().getBoundingClientRect();
+        if (pinch.distance > 0 && distance > 0) zoomAt(distance / pinch.distance, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top);
+        pinch.distance = distance; return;
+      }
+    }
     if (!drag) return;
+    if (e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if (!drag.moved && Math.hypot(dx, dy) < 4) return;
     if (!drag.moved) { drag.moved = true; host.classList.add("dragging"); cancelAnimationFrame(MAP.anim); }
     const r = svgEl().getBoundingClientRect(), s = Math.min(r.width / drag.vb[2], r.height / drag.vb[3]);
     setVB([drag.vb[0] - dx / s, drag.vb[1] - dy / s, drag.vb[2], drag.vb[3]]);
   });
-  window.addEventListener("pointerup", () => {
-    if (drag?.moved) { host.classList.remove("dragging"); host.dataset.justDragged = "1"; setTimeout(() => delete host.dataset.justDragged, 0); }
-    drag = null;
-  });
+  const endPointer = e => {
+    const moved = drag?.moved || pinch;
+    touches.delete(e.pointerId);
+    if (host.hasPointerCapture(e.pointerId)) host.releasePointerCapture(e.pointerId);
+    if (moved) { host.classList.remove("dragging"); host.dataset.justDragged = "1"; setTimeout(() => delete host.dataset.justDragged, 0); afterZoom(); }
+    if (e.pointerId === drag?.id || pinch) drag = null;
+    if (touches.size < 2) pinch = null;
+  };
+  window.addEventListener("pointerup", endPointer);
+  window.addEventListener("pointercancel", endPointer);
   host.addEventListener("click", e => {
     if (host.dataset.justDragged) return;
     const z = e.target.closest("[data-zoom]");
@@ -13594,6 +13994,134 @@ async function renderR22() {
 /* app.js מתחיל לטעון לפני הקובץ הזה; כשהנתונים במטמון הוא מציג את #/map עוד לפני
    ש־renderR22 קיים — והמפה נשארה ריקה. אם העמוד כבר פתוח, מציירים עכשיו. */
 if (q("#view-map.on")) window.renderR22();
+})();
+
+/* Phone navigation and progressive disclosure. Existing data controls keep their
+   original handlers; only their presentation changes below the mobile breakpoint. */
+(() => {
+  'use strict';
+  const mobile = matchMedia('(max-width: 900px)');
+  const $ = s => document.querySelector(s);
+  const states = new Map();
+  let forecastControlsHome;
+  const masthead = $('.masthead-in');
+  if (masthead) {
+    const toggle = document.createElement('button');
+    toggle.type = 'button'; toggle.className = 'mobile-menu-toggle';
+    toggle.setAttribute('aria-haspopup', 'dialog');
+    toggle.setAttribute('aria-controls', 'mobile-menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<span aria-hidden="true">☰</span> תפריט';
+    masthead.append(toggle);
+    const menu = document.createElement('dialog');
+    menu.id = 'mobile-menu'; menu.className = 'mobile-menu';
+    menu.setAttribute('aria-labelledby', 'mobile-menu-title');
+    menu.innerHTML = '<header><h2 id="mobile-menu-title">לאן ממשיכים?</h2><button type="button" class="mobile-menu-close" aria-label="סגירת התפריט">×</button></header><nav aria-label="ניווט לטלפון"></nav><p class="mobile-menu-update"></p>';
+    document.body.append(menu);
+    const print = document.createElement('button'); print.type = 'button'; print.className = 'mobile-menu-link';
+    print.textContent = 'הדפסת נתוני התחזית';
+    print.addEventListener('click', () => { menu.close(); document.getElementById('print-btn')?.click(); });
+    const syncMenu = () => {
+      const nav = menu.querySelector('nav'); nav.replaceChildren();
+      document.querySelectorAll('.mainnav .tab').forEach(link => {
+        const copy = link.cloneNode(true); copy.className = 'mobile-menu-link';
+        nav.append(copy);
+      });
+      nav.append(print);
+      menu.querySelector('.mobile-menu-update').textContent = $('#stamp-updated')?.textContent || '';
+      const current = document.querySelector('.mainnav .tab[aria-current="page"]');
+      toggle.setAttribute('aria-label', `פתיחת תפריט האתר${current ? ' · ' + current.textContent : ''}`);
+    };
+    const close = () => menu.close();
+    toggle.addEventListener('click', () => { syncMenu(); menu.showModal(); toggle.setAttribute('aria-expanded','true'); });
+    menu.querySelector('.mobile-menu-close').addEventListener('click', close);
+    menu.addEventListener('click', e => {
+      if (e.target.closest('a')) close();
+      if (e.target === menu) { const r = menu.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) close(); }
+    });
+    menu.addEventListener('close', () => { toggle.setAttribute('aria-expanded','false'); });
+    document.addEventListener('barometer:view', syncMenu);
+    window.addEventListener('hashchange', () => { if (menu.open) close(); });
+    mobile.addEventListener('change', () => { if (menu.open) close(); });
+    syncMenu();
+  }
+
+  // Native details provide touch, keyboard and screen-reader support.
+  function fold(element, key, label) {
+    if (!element || element.parentElement.classList.contains('mobile-disclosure')) return;
+    const detail = document.createElement('details'); detail.className = 'mobile-disclosure';
+    detail.dataset.mobileFold = key;
+    detail.open = mobile.matches ? (states.get(key) || false) : true;
+    const summary = document.createElement('summary'); summary.textContent = label;
+    element.before(detail); detail.append(summary, element);
+    detail.addEventListener('toggle', () => { if (mobile.matches && detail.isConnected) states.set(key, detail.open); });
+  }
+  function prepare() {
+    const controls = $('#view-home .home-forecast-controls'), center = $('#view-home .fs-center');
+    if (controls && center) {
+      if (!forecastControlsHome) { forecastControlsHome = document.createComment('forecast controls'); controls.before(forecastControlsHome); }
+      if (mobile.matches && controls.parentElement !== center) center.append(controls);
+      if (!mobile.matches && controls.previousSibling !== forecastControlsHome) forecastControlsHome.after(controls);
+    }
+    fold($('.ex-pickers'), 'explorer', 'בחירת ערוצים ומפלגות');
+    fold($('.dm-side'), 'demography', 'המסקנות של המודל');
+    fold($('.r22-mode-controls'), 'map-controls', 'חיפוש, סינון ואפשרויות');
+    const polls = $('#view-polls .polls-layout');
+    if (polls && !$('.mobile-polls-nav')) {
+      const nav = document.createElement('nav');nav.className = 'mobile-polls-nav';nav.setAttribute('aria-label','תצוגת הסקרים');
+      nav.innerHTML = '<a href="#/polls">מבט כולל ומגמות</a><a href="#/polls/list">רשימת הסקרים</a>';
+      polls.before(nav);
+    }
+    document.querySelectorAll('.mobile-polls-nav a').forEach(a => a.setAttribute('aria-current', (location.hash === '#/polls/list') === (a.hash === '#/polls/list') ? 'page' : 'false'));
+    const dash = $('#r22-dash');
+    if (dash && !$('.mobile-map-nav')) {
+      dash.dataset.mobileMapPanel = 'map';
+      const nav = document.createElement('div'); nav.className = 'mobile-map-nav';
+      nav.setAttribute('role','group'); nav.setAttribute('aria-label','תצוגת נתוני המפה בטלפון');
+      nav.innerHTML = '<button type="button" data-mobile-map="map" aria-pressed="true">מפה</button><button type="button" data-mobile-map="list" aria-pressed="false">רשימה</button><button type="button" data-mobile-map="detail" aria-pressed="false">נתונים וגרף</button>';
+      dash.before(nav);
+      nav.addEventListener('click', e => {
+        const b = e.target.closest('[data-mobile-map]'); if (!b) return;
+        dash.dataset.mobileMapPanel = b.dataset.mobileMap;
+        nav.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed',String(x === b)));
+        // Restore the map's viewport after its hidden panel becomes visible.
+        if (b.dataset.mobileMap === 'map') window.dispatchEvent(new Event('resize'));
+      });
+    }
+    const map = $('#r22-map');
+    if (map && !map.querySelector('.mobile-map-pan')) {
+      const pan = document.createElement('button'); pan.type = 'button'; pan.className = 'mobile-map-pan';
+      pan.setAttribute('aria-pressed','false'); pan.textContent = 'הזזת מפה';
+      pan.addEventListener('click', () => {
+        const enabled = map.classList.toggle('touch-navigation');
+        pan.setAttribute('aria-pressed',String(enabled));
+        pan.textContent = enabled ? 'סיום הזזה' : 'הזזת מפה';
+      });
+      map.append(pan);
+    }
+  }
+  let scheduled = false;
+  const schedule = () => { if (scheduled) return; scheduled = true; requestAnimationFrame(() => { scheduled = false; prepare(); }); };
+  new MutationObserver(schedule).observe(document.getElementById('main') || document.body, {childList:true, subtree:true});
+  document.addEventListener('barometer:view', schedule);
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch' || e.target.closest('.tr-plot')) return;
+    document.querySelectorAll('.tr-tip,.tr-cursor').forEach(t => { t.hidden = true; t.setAttribute('hidden',''); });
+  });
+  mobile.addEventListener('change', () => {
+    document.querySelectorAll('.mobile-disclosure').forEach(d => { d.open = mobile.matches ? (states.get(d.dataset.mobileFold) || false) : true; });
+    schedule();
+  });
+  // Keep the active item visible in horizontal navigation without moving the page.
+  document.addEventListener('click', e => {
+    const tab = e.target.closest('.dm-tabs button,.mdoc-nav button,.r22-years button');
+    if (tab && mobile.matches) tab.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'});
+  });
+  document.addEventListener('click', e => {
+    const detail = e.target.closest('.mobile-disclosure');
+    if (detail && mobile.matches) states.set(detail.dataset.mobileFold, e.target.closest('summary') === detail.firstElementChild ? !detail.open : detail.open);
+  }, true);
+  prepare();
 })();
 
 </script>

@@ -1012,6 +1012,8 @@ function rebuildForecastSet(rerender) {
 }
 /* פתיחת התחזית היא הרצת המודל: בכניסה הראשונה בביקור מופעלת אותה אנימציה, בלי כפתור */
 function autoRunModel() {
+  // Phones open directly on the result. The model can still be run on demand.
+  if (matchMedia("(max-width: 900px)").matches) return;
   let seen = false; try { seen = sessionStorage.getItem("modelRunSeen") === "1"; } catch {}
   if (seen || !S.cur || S.modelRunning) return;
   try { sessionStorage.setItem("modelRunSeen", "1"); } catch {}

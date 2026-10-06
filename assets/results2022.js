@@ -659,20 +659,51 @@ function wireMap() {
     const r = svgEl().getBoundingClientRect();
     zoomAt(Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018)), e.clientX - r.left, e.clientY - r.top);
   }, { passive: false });
-  let drag = null;
-  host.addEventListener("pointerdown", e => { if (!svgEl()?.contains(e.target) || e.button !== 0) return; drag = { x: e.clientX, y: e.clientY, vb: MAP.vb.slice(), moved: false }; });
+  let drag = null, pinch = null;
+  const touches = new Map();
+  const touchEnabled = () => host.classList.contains("touch-navigation") || matchMedia("(min-width:1001px)").matches;
+  host.addEventListener("pointerdown", e => {
+    if (!svgEl()?.contains(e.target) || e.button !== 0) return;
+    if (e.pointerType === "touch") {
+      if (!touchEnabled()) return;
+      touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      host.setPointerCapture(e.pointerId);
+      if (touches.size === 2) {
+        const [a, b] = [...touches.values()];
+        pinch = { distance: Math.hypot(a.x - b.x, a.y - b.y) };
+        drag = null; host.classList.add("dragging"); return;
+      }
+    }
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, vb: MAP.vb.slice(), moved: false };
+  });
   window.addEventListener("pointermove", e => {
+    if (touches.has(e.pointerId)) {
+      touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinch && touches.size === 2) {
+        const [a, b] = [...touches.values()], distance = Math.hypot(a.x - b.x, a.y - b.y);
+        const r = svgEl().getBoundingClientRect();
+        if (pinch.distance > 0 && distance > 0) zoomAt(distance / pinch.distance, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top);
+        pinch.distance = distance; return;
+      }
+    }
     if (!drag) return;
+    if (e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if (!drag.moved && Math.hypot(dx, dy) < 4) return;
     if (!drag.moved) { drag.moved = true; host.classList.add("dragging"); cancelAnimationFrame(MAP.anim); }
     const r = svgEl().getBoundingClientRect(), s = Math.min(r.width / drag.vb[2], r.height / drag.vb[3]);
     setVB([drag.vb[0] - dx / s, drag.vb[1] - dy / s, drag.vb[2], drag.vb[3]]);
   });
-  window.addEventListener("pointerup", () => {
-    if (drag?.moved) { host.classList.remove("dragging"); host.dataset.justDragged = "1"; setTimeout(() => delete host.dataset.justDragged, 0); }
-    drag = null;
-  });
+  const endPointer = e => {
+    const moved = drag?.moved || pinch;
+    touches.delete(e.pointerId);
+    if (host.hasPointerCapture(e.pointerId)) host.releasePointerCapture(e.pointerId);
+    if (moved) { host.classList.remove("dragging"); host.dataset.justDragged = "1"; setTimeout(() => delete host.dataset.justDragged, 0); afterZoom(); }
+    if (e.pointerId === drag?.id || pinch) drag = null;
+    if (touches.size < 2) pinch = null;
+  };
+  window.addEventListener("pointerup", endPointer);
+  window.addEventListener("pointercancel", endPointer);
   host.addEventListener("click", e => {
     if (host.dataset.justDragged) return;
     const z = e.target.closest("[data-zoom]");

@@ -259,7 +259,7 @@ function wireExplorerHover(box, chart) {
     tip.style.left=Math.max(4,Math.min(r.width-tip.offsetWidth-4,sx/geom.W*r.width-tip.offsetWidth-12))+'px';
   };
   hit.addEventListener('pointermove',show); hit.addEventListener('pointerdown',show);
-  hit.addEventListener('pointerleave',()=>{cursor.setAttribute('hidden','');tip.hidden=true;});
+  hit.addEventListener('pointerleave',e=>{if(e.pointerType==='touch')return;cursor.setAttribute('hidden','');tip.hidden=true;});
 }
 
 /* ---------- כרטיס סקר בעמודת הסקרים האחרונים (ובתצוגה המוגדלת) ---------- */

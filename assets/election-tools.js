@@ -50,6 +50,7 @@
       dot.classList.toggle("is-selected", chosen.has(dot.dataset.ecSeat));
     });
     root.querySelector(".ec-total").textContent = total;
+    root.querySelector(".ec-mobile-total").textContent = `${total} / 61 מנדטים`;
     root.querySelector(".ec-map").setAttribute("aria-label", `120 מושבים בכנסת. ${total} מנדטים בקואליציה שבחרת. ${majority ? "הגעת לרוב" : `חסרים ${61 - total} לרוב`}.`);
     root.querySelector(".ec-meter-fill").style.width = `${Math.min(100, total / 120 * 100)}%`;
     root.querySelector(".ec-result").textContent = total === 0
@@ -115,7 +116,7 @@
           <p class="ec-selection">לחצו על המפלגות שתרצו לצרף</p>
         </div>
         <div class="ec-choices">
-          <div class="ec-choices-heading"><h3>המפלגות שלכם</h3><button class="ec-reset" type="button" aria-disabled="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6a7 7 0 1 1-1 6M4 2v4h4"/></svg>איפוס בחירה</button></div>
+          <div class="ec-choices-heading"><h3>המפלגות שלכם</h3><output class="ec-mobile-total" aria-label="מנדטים שנבחרו מול הרוב הנדרש">0 / 61 מנדטים</output><button class="ec-reset" type="button" aria-disabled="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6a7 7 0 1 1-1 6M4 2v4h4"/></svg>איפוס בחירה</button></div>
           <div class="ec-parties" role="group" aria-label="בחירת מפלגות לקואליציה">${entries.map(card).join("")}</div>
         </div>
       </div>

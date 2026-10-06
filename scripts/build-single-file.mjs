@@ -12,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "election", "election-pages", "election-tools", "refinement", "clarity", "exit-showcase", "usability", "landing", "poll-tracker", "theme", "results2022", "demography", "polls-workspace", "polls-gap", "accuracy", "method-sim", "acc-hero", "forecast", "board", "disclosure"];
+const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "election", "election-pages", "election-tools", "refinement", "clarity", "exit-showcase", "usability", "landing", "poll-tracker", "theme", "results2022", "demography", "polls-workspace", "polls-gap", "accuracy", "method-sim", "acc-hero", "forecast", "board", "disclosure", "mobile"];
 let css = (await Promise.all(stylesheets.map(name => rd(`assets/${name}.css`)))).join("\n");
 // Imports must precede CSS rules, including imports from the final design layer.
 // Font URLs themselves contain semicolons (weight lists), so keep each whole line.
@@ -28,7 +28,7 @@ const electionBackdropDataUri = `data:image/png;base64,${electionBackdrop.toStri
 css = css.replace(/url\(\s*(['"]?)(?:\.\/|assets\/)?election-knesset\.png(?:\?[^'"\)\s]*)?\1\s*\)/g, `url("${electionBackdropDataUri}")`);
 const beamBackdrop = await readFile(path.join(ROOT, "assets/election-knesset-beams.png"));
 css = css.replaceAll("election-knesset-beams.png", `data:image/png;base64,${beamBackdrop.toString("base64")}`);
-const scripts = ["scenario", "upgrade", "analytics", "explore", "poll-tracker", "polls-workspace", "polls-gap", "app", "intro", "method-sim", "inline-admin", "election-tools", "election", "results2022"];
+const scripts = ["scenario", "upgrade", "analytics", "explore", "poll-tracker", "polls-workspace", "polls-gap", "app", "intro", "method-sim", "inline-admin", "election-tools", "election", "results2022", "mobile"];
 let js = (await Promise.all(scripts.map(name => rd(`assets/${name}.js`)))).join("\n");
 for (const file of ["exit-2022-kan11.png","exit-2022-channel12.png","exit-2022-channel13.png","exit-2022-channel14.png","logos/kan11.svg","logos/channel12.svg","logos/channel13.svg","logos/channel14.png","logos/i24news.png"]) {
   const image = await readFile(path.join(ROOT, "assets", file));

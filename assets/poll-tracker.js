@@ -193,7 +193,7 @@ function wireTrackerHover(box, chart) {
   };
   hit.addEventListener("pointermove", show);
   hit.addEventListener("pointerdown", show);
-  hit.addEventListener("pointerleave", () => { cur.setAttribute("hidden", ""); tip.hidden = true; });
+  hit.addEventListener("pointerleave", e => { if(e.pointerType === "touch") return; cur.setAttribute("hidden", ""); tip.hidden = true; });
 }
 
 /* ---------- העמודה השמאלית: הסקרים האחרונים, מהחדש לישן ---------- */

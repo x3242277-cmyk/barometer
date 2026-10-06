@@ -7,7 +7,7 @@ const EXPLORER_MODES = { overview: 'מבט כולל', channels: 'ערוצים', 
 const EXPLORER_MAX = 5;
 /* שתי שורות אייקונים: מימין המקורות (ערוצים + הברומטר; בלי בחירה — ממוצע כל הסקרים),
    משמאל הנושאים (מפלגות + סמל הכנסת = הגושים; ברירת המחדל). */
-const EXPLORER_BARO = { key: 'baro', label: 'תחזית הברומטר', logo: 'assets/logo-icon.png', short: 'ה' };
+const EXPLORER_BARO = { key: 'baro', label: 'תחזית הברומטר', logo: 'assets/logos/barometer-mark.png', short: 'ה' };
 const EXPLORER_BLOCS = { key: 'blocs', label: 'הכנסת · הגושים (ברירת מחדל)', logo: 'assets/logos/knesset-emblem.svg', short: 'כנסת', special: true };
 const EXPLORER_METRICS = { Right: 'ימין וחרדים', Left: 'מרכז–שמאל', Arabs: 'הרשימות הערביות' };
 const EXPLORER_OUTLET_LOGOS = { 'חדשות 12':'assets/logos/channel12.svg', 'חדשות 13':'assets/logos/channel13.svg', 'ערוץ 14':'assets/logos/channel14.png', 'כאן 11':'assets/logos/kan11.svg', 'i24NEWS':'assets/logos/i24news.png', 'ערוץ 16':'assets/logos/channel-16.png', 'וואלה':'assets/logos/walla.png', 'זמן ישראל':'assets/logos/zman-israel.png', 'גלי צה״ל':'assets/logos/galatz.png' };
@@ -37,12 +37,16 @@ function explorerState(P) {
   let subs = (S.exSubjects || ['blocs']).filter(k => k === 'blocs' || pKeys.has(k));
   if (subs.length > 1) subs = subs.filter(k => k !== 'blocs');
   S.exSubjects = (subs.length ? subs : ['blocs']).slice(0, EXPLORER_MAX);
+  /* בגושים כל מקור מוסיף שני קווים, אז לא יותר ממה שנכנס */
+  if (S.exSubjects[0] === 'blocs') S.exSources = S.exSources.slice(0, Math.floor(EXPLORER_MAX / EXPLORER_BLOC_LINES.length));
   if (!EXPLORER_METRICS[S.exploreMetric]) S.exploreMetric = 'Right';
   const sources = S.exSources, subjects = S.exSubjects, hasChannel = sources.some(k => k !== 'baro');
   return { channels, parties, sources, subjects, hasChannel, overview: subjects[0] === 'blocs' && !hasChannel, metric: S.exploreMetric, view: S.exploreView };
 }
 /* כמה קווים יצטרכו אם מוסיפים בחירה: מקורות (או ממוצע) כפול נושאים (או גוש אחד) */
-const explorerLineCount = (sources, subjects) => Math.max(1, sources.length) * (subjects[0] === 'blocs' ? 1 : subjects.length);
+/* גושים = שני קווים לכל מקור (ימין וחרדים, מרכז–שמאל), מפלגות = קו לכל מפלגה */
+const EXPLORER_BLOC_LINES = ['Right', 'Left'];
+const explorerLineCount = (sources, subjects) => Math.max(1, sources.length) * (subjects[0] === 'blocs' ? EXPLORER_BLOC_LINES.length : subjects.length);
 
 function explorerLines(P, state) {
   const end = parsePollDate(P.polls.at(-1)), start = S.trackRange === 'month' ? end - 29 * DAY_MS : parsePollDate(P.polls[0]);
@@ -85,7 +89,7 @@ function explorerPartyLines(M, state) {
 /* הקווים של ההשוואה: לכל מקור שנבחר (ערוץ, הברומטר, או הממוצע) ולכל נושא (גוש או מפלגה) */
 function explorerCompareLines(P, M, Mb, state) {
   const srcs = state.sources.length ? state.sources : ['agg'];
-  const metrics = state.subjects[0] === 'blocs' ? [state.metric] : state.subjects;
+  const metrics = state.subjects[0] === 'blocs' ? EXPLORER_BLOC_LINES : state.subjects;
   const partyOf = id => state.parties.find(e => e.key === id);
   const lines = [];
   srcs.forEach((src, si) => metrics.forEach((metric, mi) => {
@@ -98,9 +102,12 @@ function explorerCompareLines(P, M, Mb, state) {
       const model = src === 'baro' ? Mb : M;
       points = explorerSeriesDays(model).map(s => ({ t: s.t, v: EXPLORER_METRICS[metric] ? s.blocs[metric] : (s.parties[metric] || 0), n: s.n, firms: s.firms, polls: [], signature: '' }));
     }
-    const label = srcs.length > 1 && (metrics.length > 1 || EXPLORER_METRICS[metric]) ? `${subject.label} · ${source.label}` : srcs.length > 1 ? source.label : subject.label;
-    const color = srcs.length === 1 ? subject.color : metrics.length === 1 ? EXPLORER_COLORS[si % EXPLORER_COLORS.length] : EXPLORER_COLORS[(si * metrics.length + mi) % EXPLORER_COLORS.length];
-    lines.push({ key: `${src}|${metric}`, source: src, subject: metric, label, color: color || EXPLORER_COLORS[lines.length % EXPLORER_COLORS.length], points, last: points.at(-1) });
+    const label = srcs.length > 1 ? `${subject.label} · ${source.label}` : subject.label;
+    /* גושים: הצבע לפי הגוש, והמקור הבא מסומן בקו מקווקו; מפלגות: צבע המפלגה, ובכמה מקורות — צבע לפי מקור */
+    const bloc = !!EXPLORER_METRICS[metric];
+    const color = bloc || srcs.length === 1 ? subject.color : metrics.length === 1 ? EXPLORER_COLORS[si % EXPLORER_COLORS.length] : EXPLORER_COLORS[(si * metrics.length + mi) % EXPLORER_COLORS.length];
+    const dash = bloc && si > 0 ? ['', '7 5', '2 5'][si % 3] : '';
+    lines.push({ key: `${src}|${metric}`, source: src, subject: metric, dash, label, color: color || EXPLORER_COLORS[lines.length % EXPLORER_COLORS.length], points, last: points.at(-1) });
   }));
   return lines;
 }
@@ -128,7 +135,7 @@ function explorerChart(P, state, M) {
   if (isRight) grid += `<line class="tr-ref" x1="${m.l}" x2="${W-m.r}" y1="${y(61)}" y2="${y(61)}"/><text class="tr-ref-label" x="${W-m.r}" y="${y(61)-7}" text-anchor="end">61 · רוב</text>`;
   const ticks = Math.max(2, Math.floor(W/110));
   for (let i=0;i<=ticks;i++) { const t=t0+(t1-t0)*i/ticks; grid += `<text class="tr-tick" x="${x(t)}" y="${H-8}" text-anchor="middle">${trDay(t)}</text>`; }
-  const paths = valid.map(l => `<path class="tr-line ex-line" stroke="${l.color}" d="${l.points.map((p,i) => `${i && p.signature===l.points[i-1].signature?'L':'M'}${x(p.t).toFixed(1)} ${y(p.v).toFixed(1)}`).join('')}"/>${l.points.map(p => `<circle class="ex-point" cx="${x(p.t).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="${l.color}"><title>${esc(l.label)} · ${trDay(p.t)} · ${trFmt(p.v)} מנדטים · ${p.n} סקרים</title></circle>`).join('')}`).join('');
+  const paths = valid.map(l => `<path class="tr-line ex-line" stroke="${l.color}"${l.dash ? ` stroke-dasharray="${l.dash}"` : ''} d="${l.points.map((p,i) => `${i && p.signature===l.points[i-1].signature?'L':'M'}${x(p.t).toFixed(1)} ${y(p.v).toFixed(1)}`).join('')}"/>${l.points.map(p => `<circle class="ex-point" cx="${x(p.t).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="${l.color}"><title>${esc(l.label)} · ${trDay(p.t)} · ${trFmt(p.v)} מנדטים · ${p.n} סקרים</title></circle>`).join('')}`).join('');
   const svg = `<svg class="tr-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="השוואת ${esc(lines.map(l=>l.label).join(', '))} לאורך זמן, במנדטים. הנתונים המלאים בתצוגת הטבלה.">${grid}${paths}<line class="tr-cursor" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/><rect class="tr-hit" x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}"/></svg>`;
   const sub = state.sub ?? (state.mode === 'parties' && M ? TRACK_BASES[M.basis || 'avg'].label : '');
   return { lines, dates, table, svg, sub, geom: { W, m, t0, t1, x, y } };
@@ -149,7 +156,6 @@ function explorerKeys(M, state, lines) {
 
 function explorerTools(P, M, state) {
   const out = [];
-  if (!state.overview && state.subjects[0] === 'blocs') out.push(exSelect('data-ex-metric', 'איזה גוש', Object.entries(EXPLORER_METRICS), state.metric));
   const model = state.hasChannel ? null : state.model;
   const first = model ? model.series[0].t : parsePollDate(P.polls[0]), last = model ? model.now.t : parsePollDate(P.polls.at(-1));
   if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', model && (model.basis || 'avg') !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
@@ -183,7 +189,7 @@ function renderExplorerHTML(P, M, Mb) {
   /* הדגם של הקווים המצטברים: הברומטר אם נבחר, אחרת הממוצע שנבחר בלשונית */
   state.model = state.sources.includes('baro') && !state.hasChannel ? Mb : M;
   state.lines = state.overview ? [] : explorerCompareLines(P, M, hasBaro ? Mb : M, state);
-  state.isRight = state.subjects[0] === 'blocs' && state.metric === 'Right';
+  state.isRight = state.subjects[0] === 'blocs';
   state.sub = state.hasChannel ? '' : TRACK_BASES[state.model.basis || 'avg'].label;
   S.explorer = { P, M, Mb, state };
   const basis = M.basis || 'avg', tabs = state.sources.length ? ''

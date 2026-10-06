@@ -217,3 +217,12 @@
 .ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special){width:68px;height:46px;border-radius:12px}
 .ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special) .ex-avatar{width:58px;height:36px;border-radius:7px}
 .ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special) .ex-avatar img{padding:1px}
+/* הערוצים (והברומטר): שתי שורות שוות, בלי שורה שנשברת באמצע */
+.ex-pickers .ex-src{flex:0 0 auto}
+.ex-pickers .ex-src .ex-picker-icons{display:grid;grid-template-rows:repeat(2,auto);grid-auto-flow:column;justify-content:start;gap:6px}
+.ex-pickers .ex-src .ex-logo-button{width:44px;height:44px}
+.ex-pickers .ex-src .ex-avatar{width:36px;height:36px}
+.ex-pickers .ex-sub{flex:1 1 280px}
+/* לוגו הברומטר: כהה, בלי רקע, בתוך העיגול */
+.ex-logo-button[data-ex-src="baro"] .ex-avatar{background:#fff}
+.ex-logo-button[data-ex-src="baro"] .ex-avatar img{padding:5px}

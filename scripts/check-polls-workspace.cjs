@@ -63,7 +63,7 @@ run(`S.exSources=[];S.exSubjects=['blocs'];S.exploreView='chart';renderExplorerH
 assert.equal(run('S.explorer.state.overview'),true,'default view must be the blocs average');
 run(`S.exSources=['ערוץ 14','כאן 11'];S.exSubjects=['likud','shas','noam'];renderExplorerHTML(realP,realP,realP)`);
 assert(run('explorerLineCount(S.explorer.state.sources,S.explorer.state.subjects)')>=1,'line counter broke');
-assert.equal(run(`explorerLineCount(['a','b'],['blocs'])`),2,'bloc subject should count one line per source');
+assert.equal(run(`explorerLineCount(['a','b'],['blocs'])`),4,'bloc subject should count two lines (both blocs) per source');
 assert.equal(run(`explorerLineCount([],['x','y'])`),2,'no source means one aggregated source');
 run(`S.exSources=[];S.exSubjects=['blocs'];`);
 const gallery=run('feedCardHTML(realP.polls.at(-1),realP.polls,true)');

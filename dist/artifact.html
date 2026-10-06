@@ -9587,9 +9587,11 @@ async function runModelUpdate() {
   const lis = [...ov.querySelectorAll("li")], bar = ov.querySelector(".fs-run-bar i");
   for (let i = 0; i < lis.length; i++) { lis[i].classList.add("is-on"); bar.style.width = `${(i + 1) / lis.length * 100}%`; await waitMs(720); lis[i].classList.remove("is-on"); lis[i].classList.add("is-done"); }
   rebuildForecastSet(true);
+  /* האנימציה מתחילה (המספרים מאופסים) כשהכיסוי עדיין סוגר את המסך, ורק אז הוא נעלם — אחרת המסך המלא נראה לרגע ואז קופץ */
+  playForecastReveal();
+  await waitMs(120);
   ov.classList.add("is-out"); await waitMs(450); ov.remove();
   S.modelRunning = false;
-  playForecastReveal();
   paintModelClock();
 }
 /* אחרי ההרצה: הפסים גדלים, המספרים נספרים והמושבים נדלקים */

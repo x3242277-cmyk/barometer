@@ -6073,6 +6073,11 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 .ms-pl-avg b{font-size:clamp(1.6rem,4dvh,2.2rem)}
 .ms-pl-avg small{font-size:clamp(.82rem,1.9dvh,1rem)}
 
+/* חלון קבוע: אותו רוחב ואותו גובה במסך הפתיחה ובכל שלבי ההרצה (הרצועה הצדדית מוצגת תמיד) */
+@media (min-width:981px){
+  .ms-stagebox .ms-stage{height:clamp(480px,calc(100dvh - 190px),740px);min-height:0;max-height:none}
+}
+
 /* דיוק המכונים (#/2022) — ראש עמוד בסגנון פוסטר: כותרת ענקית, פודיום, ונוסחה במספרים גדולים.
    אחד המדדים המרכזיים של האתר, ולכן בכוונה בשפה גרפית אחרת מיתר העמודים. הצבעים ללא שינוי: נייבי, שמנת וזהב. */
 
@@ -6365,6 +6370,12 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-home:not(#_):not(#__) .fs-center .readout .rd .rd-lbl{font-size:.8rem;line-height:1.4;font-weight:600;color:#526074;white-space:normal}
 #view-home:not(#_):not(#__) .fs-center .readout .rd-lbl i{width:6px;height:6px;border-radius:50%}
 
+/* קישור טקסט פשוט מתחת למפת המושבים: יורד לסימולציה */
+#view-home .fs-learn{margin:6px 0 0;text-align:center}
+#view-home .hero-link.hero-learn{appearance:none;display:inline;background:none;border:0;padding:0;min-height:0;font:inherit;font-size:.9rem;font-weight:800;color:#855a0c;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#view-home .hero-link.hero-learn:hover{color:#14233a}
+#view-home .hero-link.hero-learn span{display:inline;width:auto;height:auto;border:0;font-size:1em}
+
 /* לוח המנדטים (#/forecast) — עיצוב לפי גושים: סיכום מעל, כרטיס לכל גוש, מספר המנדטים הוא האלמנט הבולט,
    צבע הגוש כעוגן עדין (פס, מסגרת תמונה), שינוי מהעדכון הקודם קטן ועמום, ורמז לחיצה בסוף כל שורה.
    נטען אחרון, כדי לגבור על שכבות הלוח הישנות (editorial / election / experience). */
@@ -6459,11 +6470,8 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-haredi .page-intro{padding-top:18px;padding-bottom:16px}
 #view-haredi .page-intro h2{font-size:clamp(2rem,2.7vw,2.55rem);line-height:1.16;max-width:32ch}
 #view-haredi .page-intro>p:not(.kicker){margin-top:10px;line-height:1.6}
-/* The method intro is a compact invitation; the full canvas appears during playback. */
+/* הסימולציה בגודל קבוע מההתחלה (ראו method-sim.css) — בלי חלון שמתרחב בהפעלה */
 @media (min-width:1100px){
-  #method-sim:not(.is-running) .ms-main{grid-template-columns:minmax(0,1fr)}
-  #method-sim:not(.is-running) .ms-ledger{display:none}
-  #method-sim:not(.is-running) .ms-stagebox .ms-stage{min-height:350px;max-height:350px}
   #method-sim:not(.is-running) .ms-idle::before{background:radial-gradient(46% 60% at 50% 52%,#e5c78324,transparent 75%)}
 }
 .model-disclosure{margin:8px 0 10px;max-width:67ch;padding:8px 12px;border-inline-start:3px solid #ad812f;background:#f6efe2;color:#36465a;font-size:.84rem;line-height:1.45}
@@ -6642,6 +6650,7 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
           <div class="readout" id="home-readout"></div>
           <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
+          <p class="fs-learn"><button type="button" class="hero-link hero-learn" data-home-section="home-method-section">לחצו כאן כדי ללמוד איך המודל עובד <span aria-hidden="true">↓</span></button></p>
           <p class="model-disclosure">אומדן ופרשנות עצמאיים; אינם נתונים רשמיים. <a href="about.html">מקורות ומגבלות</a></p>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
         </div>

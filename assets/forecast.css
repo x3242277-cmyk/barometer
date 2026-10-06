@@ -176,3 +176,9 @@
 #view-home:not(#_):not(#__) .fs-center .readout .rd b{order:-1;font-size:2.5rem;line-height:1;font-weight:800;color:var(--dot);letter-spacing:-.03em}
 #view-home:not(#_):not(#__) .fs-center .readout .rd .rd-lbl{font-size:.8rem;line-height:1.4;font-weight:600;color:#526074;white-space:normal}
 #view-home:not(#_):not(#__) .fs-center .readout .rd-lbl i{width:6px;height:6px;border-radius:50%}
+
+/* קישור טקסט פשוט מתחת למפת המושבים: יורד לסימולציה */
+#view-home .fs-learn{margin:6px 0 0;text-align:center}
+#view-home .hero-link.hero-learn{appearance:none;display:inline;background:none;border:0;padding:0;min-height:0;font:inherit;font-size:.9rem;font-weight:800;color:#855a0c;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#view-home .hero-link.hero-learn:hover{color:#14233a}
+#view-home .hero-link.hero-learn span{display:inline;width:auto;height:auto;border:0;font-size:1em}

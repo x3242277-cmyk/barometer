@@ -13,11 +13,8 @@
 #view-haredi .page-intro{padding-top:18px;padding-bottom:16px}
 #view-haredi .page-intro h2{font-size:clamp(2rem,2.7vw,2.55rem);line-height:1.16;max-width:32ch}
 #view-haredi .page-intro>p:not(.kicker){margin-top:10px;line-height:1.6}
-/* The method intro is a compact invitation; the full canvas appears during playback. */
+/* הסימולציה בגודל קבוע מההתחלה (ראו method-sim.css) — בלי חלון שמתרחב בהפעלה */
 @media (min-width:1100px){
-  #method-sim:not(.is-running) .ms-main{grid-template-columns:minmax(0,1fr)}
-  #method-sim:not(.is-running) .ms-ledger{display:none}
-  #method-sim:not(.is-running) .ms-stagebox .ms-stage{min-height:350px;max-height:350px}
   #method-sim:not(.is-running) .ms-idle::before{background:radial-gradient(46% 60% at 50% 52%,#e5c78324,transparent 75%)}
 }
 .model-disclosure{margin:8px 0 10px;max-width:67ch;padding:8px 12px;border-inline-start:3px solid #ad812f;background:#f6efe2;color:#36465a;font-size:.84rem;line-height:1.45}

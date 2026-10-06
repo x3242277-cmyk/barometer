@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>פרטיות ומדידת שימוש · הברומטר</title>
+<link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="assets/editorial.css"><link rel="stylesheet" href="assets/disclosure.css">
+</head>
+<body class="info-page">
+<a class="skip" href="#content">דלגו לתוכן</a>
+<header class="info-header"><div class="wrap"><strong>הברומטר · פרטיות</strong><a href="index.html">חזרה לאתר ←</a></div></header>
+<main class="info-main" id="content">
+<h1>פרטיות ומדידת שימוש</h1>
+<p class="info-lede">אפשר להשתמש באתר גם בלי להסכים למדידת שימוש. הבחירה חלה על מדידת השימוש הפנימית של הברומטר, ואפשר לשנות אותה כאן בכל עת.</p>
+<section class="info-card"><h2>הבחירה שלך</h2>
+<p id="analytics-choice-state" role="status">בודקים את הבחירה השמורה בדפדפן…</p>
+<div class="privacy-actions"><button type="button" data-analytics-choice="no">ללא מדידת שימוש</button><button type="button" data-analytics-choice="yes">אישור מדידת שימוש</button></div>
+<p>הבחירה נשמרת בדפדפן הזה. דחייה עוצרת איסוף עתידי בדפדפן; היא אינה מוחקת רשומות שכבר נקלטו בשרת.</p></section>
+<section class="info-card"><h2>מה נאסף ולשם מה</h2>
+<p>אם מאשרים מדידה, האתר שולח לשרת שלו מזהה אקראי להפעלת הגלישה, מזהה אקראי לצפייה בדף, שם המדור, זמן הצפייה המשוער וחותמת זמן. המידע משמש לספירת צפיות ולזיהוי מדורים שדורשים שיפור. אין במערכת המדידה שדה לשם, לכתובת דוא״ל, לבחירת מפלגה או לכתובת IP. מזהה ההפעלה נשמר באחסון הזמני של הדפדפן, והבחירה על מדידה נשמרת באחסון המקומי. אין באתר פרסום מותאם אישית.</p>
+<p>ללא אישור, לא יישלחו אירועי מדידת שימוש מהדפדפן. השרת וספק האירוח עשויים לעבד נתוני גישה ותפעול הדרושים להצגת האתר, לאבטחה ולמניעת תקלות, לרבות כתובת IP, לפי הגדרותיהם. גופני האתר נטענים מ־Google Fonts; הדפדפן פונה גם לשירות זה לצורך הצגתם.</p></section>
+<section class="info-card"><h2>שמירה, גישה וזכויות</h2>
+<p>רשומות המדידה נשמרות אצל ספק האירוח של האתר (Netlify) ונמחקות כעבור כ־90 יום באמצעות משימת מחיקה יומית. גישה לסיכום הנתונים מוגנת בהרשאת ניהול. פרטי שמירת יומני השירות של ספק האירוח כפופים למדיניותו ולהתקשרות עמו.</p>
+<p>ניתן לפנות למפעיל האתר בבקשת עיון או תיקון של מידע אישי, ככל שקיים מידע שניתן לקשר לפונה, ולדווח על טעות. המזהים האקראיים אינם כוללים שם או כתובת דוא״ל, ולכן ייתכן שלא ניתן יהיה לאתר רשומה של אדם מסוים בלי המזהה הרלוונטי. אין חובה למסור מידע למדידת שימוש; אי־אישור לא מונע גלישה באתר.</p>
+<p class="info-note"><strong>להשלמה לפני פרסום:</strong> שם מפעיל האתר וכתובת דוא״ל ציבורית לפניות פרטיות, נגישות ותיקוני מידע.</p></section>
+<p><a href="about.html">על המקורות, המודלים והנגישות</a> · <a href="index.html">חזרה לאתר</a></p>
+</main>
+<script>
+(() => {
+  const key='barometer-analytics-choice', state=document.getElementById('analytics-choice-state');
+  const update=()=>{let choice=null;try{choice=localStorage.getItem(key)}catch{}state.textContent=choice==='yes'?'מדידת שימוש מאושרת בדפדפן הזה.':choice==='no'?'מדידת שימוש כבויה בדפדפן הזה.':'לא נבחרה עדיין העדפה; המדידה כבויה.'};
+  document.querySelectorAll('[data-analytics-choice]').forEach(button=>button.addEventListener('click',()=>{try{localStorage.setItem(key,button.dataset.analyticsChoice)}catch{}update()}));
+  update();
+})();
+</script>
+</body></html>

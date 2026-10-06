@@ -170,7 +170,9 @@ function explorerTools(P, M, state) {
 function explorerPicker(state, hasBaro) {
   const colorOf = (kind, key) => state.lines?.find(l => l[kind] === key)?.color;
   const count = explorerLineCount(state.sources, state.subjects);
-  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.special || e.key === 'baro' ? ' ex-logo-special' : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
+  /* המקור שהקו שלו מקווקו מקבל מסגרת מקווקת באותו סגנון, כדי שיהיה ברור מי מי */
+  const dashOf = (kind, key) => kind === 'source' ? state.lines?.find(l => l.source === key)?.dash : '';
+  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.special || e.key === 'baro' ? ' ex-logo-special' : ''}${on && dashOf(kind, e.key) ? (dashOf(kind, e.key) === '2 5' ? ' is-dotted' : ' is-dashed') : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
   const canSrc = k => state.sources.includes(k) || explorerLineCount([...state.sources, k], state.subjects) <= EXPLORER_MAX;
   const canSub = k => state.subjects.includes(k) || (state.subjects[0] === 'blocs' ? explorerLineCount(state.sources, [k]) : explorerLineCount(state.sources, [...state.subjects, k])) <= EXPLORER_MAX;
   const sources = [hasBaro ? btn('data-ex-src', EXPLORER_BARO, state.sources.includes('baro'), 'source', !canSrc('baro')) : '', ...state.channels.map(e => btn('data-ex-src', e, state.sources.includes(e.key), 'source', !canSrc(e.key)))].join('');

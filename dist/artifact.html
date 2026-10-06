@@ -5193,6 +5193,9 @@ body:has(#view-demography.on)>footer{display:none}
 .ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special){width:100%;max-width:68px}
 .ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special) .ex-avatar{width:calc(100% - 10px);max-width:58px}
 .ex-pickers .ex-sub .ex-logo-special{justify-self:center}
+/* מקור מקווקו בגרף = עיגול מקווקו סביב הלוגו שלו */
+.ex-logo-button.is-dashed[aria-pressed="true"]{border:3px dashed var(--c,#b0842a);box-shadow:none}
+.ex-logo-button.is-dotted[aria-pressed="true"]{border:3px dotted var(--c,#b0842a);box-shadow:none}
 
 /* למה הסקרים חלוקים? — מסלול של קומות. נטען אחרי polls-workspace.css.
    קומה ראשונה: שני סקרים והשאלה. כל לחיצה על "הלאה" מוסיפה קומה מתחת לקודמת
@@ -8266,7 +8269,9 @@ function explorerTools(P, M, state) {
 function explorerPicker(state, hasBaro) {
   const colorOf = (kind, key) => state.lines?.find(l => l[kind] === key)?.color;
   const count = explorerLineCount(state.sources, state.subjects);
-  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.special || e.key === 'baro' ? ' ex-logo-special' : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
+  /* המקור שהקו שלו מקווקו מקבל מסגרת מקווקת באותו סגנון, כדי שיהיה ברור מי מי */
+  const dashOf = (kind, key) => kind === 'source' ? state.lines?.find(l => l.source === key)?.dash : '';
+  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.special || e.key === 'baro' ? ' ex-logo-special' : ''}${on && dashOf(kind, e.key) ? (dashOf(kind, e.key) === '2 5' ? ' is-dotted' : ' is-dashed') : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
   const canSrc = k => state.sources.includes(k) || explorerLineCount([...state.sources, k], state.subjects) <= EXPLORER_MAX;
   const canSub = k => state.subjects.includes(k) || (state.subjects[0] === 'blocs' ? explorerLineCount(state.sources, [k]) : explorerLineCount(state.sources, [...state.subjects, k])) <= EXPLORER_MAX;
   const sources = [hasBaro ? btn('data-ex-src', EXPLORER_BARO, state.sources.includes('baro'), 'source', !canSrc('baro')) : '', ...state.channels.map(e => btn('data-ex-src', e, state.sources.includes(e.key), 'source', !canSrc(e.key)))].join('');

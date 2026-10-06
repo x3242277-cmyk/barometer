@@ -151,7 +151,7 @@
       ["תוצאות לפי יישובים", "ועדת הבחירות · ספטמבר 2019 עד 2022 · ארבע מערכות", D.g.localities, "יישובים"],
       ["אוכלוסיות ובעלי זכות בחירה", "מרכז טאוב · המכון הישראלי לדמוקרטיה · פנקס הבוחרים", eligible, "בעלי זכות בחירה ב־5 קבוצות"],
       ["סקרי מנדטים", `${outlets} כלי תקשורת · ${firmsN} מכונים · ${FORECAST_MAX_AGE_DAYS} הימים האחרונים`, (S.forecastPolls || []).length, "סקרים"],
-      ["ציוני הדיוק של המכונים", "סקרי החודש שלפני 2020, 2021 ו־2022 מול התוצאה", S.stats.length, "מכונים עם ציון"]
+      ["ציוני הדיוק של המכונים", "ויקיפדיה · סקרי החודש שלפני בחירות 2020, 2021 ו־2022 מול התוצאה", S.stats.length, "מכונים עם ציון"]
     ];
     setStage(`<div class="ms-src">${srcs.map(([n, d, v, u], i) => `<div class="ms-src-row" data-i="${i}"><span class="ms-src-n">${i + 1}</span><div class="ms-src-t"><b>${esc(n)}</b><small>${esc(d)}</small></div><div class="ms-src-bar"><i></i></div><div class="ms-src-v"><b class="num">0</b><small>${esc(u)}</small></div><span class="ms-src-ok" aria-hidden="true">✓</span></div>`).join("")}</div>
       <p class="ms-foot" id="ms-data-foot"></p>`);

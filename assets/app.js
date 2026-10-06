@@ -868,7 +868,7 @@ function renderCoverGauges(blocTot) {
   const share = seats => (clamp(seats, 0, 120) / 120 * 100).toFixed(2);
   host.setAttribute("aria-label", `תחזית המנדטים: גוש הימין והחרדים ${right}, מרכז־שמאל והרשימות הערביות ${left}${other ? `, לא משויך ${other}` : ""}. נדרשים 61 מנדטים לרוב. החלוקה לגושים אינה הרכב קואליציה.`);
   /* Bloc colours as on the forecast page; the bar shows the Arab lists inside the 61 side. */
-  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span></div>
+  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span><span class="cover-score-go" aria-hidden="true">←</span></div>
     <div class="cover-score-pair">
       <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>ימין וחרדים</span></div>
       <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל וערבים</span></div>

@@ -162,7 +162,7 @@ async function fits(selector) {
   await cdp.detach();await page.locator('.mobile-map-pan').tap();
  });
  await check('simulation: all six stages fit the phone and can be paused',async()=>{
-  await go('forecast');await page.locator('[data-mobile-forecast="simulation"]').tap();await page.locator('#method-sim .ms-big-play').tap();
+  await go('forecast');await page.locator('#method-sim').scrollIntoViewIfNeeded();await page.evaluate(()=>document.querySelector('#method-sim .ms-big-play')?.click());
   for(let i=0;i<6;i++){
    await page.locator(`[data-ms-stage="${i}"]`).tap();await page.waitForTimeout(150);
    await page.locator('.ms-play').tap();
@@ -191,8 +191,29 @@ async function fits(selector) {
   assert.equal(await page.locator('#mobile-menu').getByText('הדפסה').count()+await page.locator('#mobile-menu').getByText('הדפסת').count(),0);
   await page.locator('.mobile-menu-close').tap();
  });
+ await check('home: scoreboard links to the forecast; actions are ranking and map; rows, short footer',async()=>{
+  await go('');
+  assert.equal(await page.locator('#view-landing .cover-chart-link').getAttribute('href'),'#/forecast');
+  assert.deepEqual(await page.locator('#view-landing .cover-actions a').evaluateAll(a=>a.map(x=>x.getAttribute('href')+'|'+x.textContent.trim())),['#/2022|לדירוג מכוני הסקרים','#/map|למפת הבחירות']);
+  assert.equal(await page.locator('.discovery-forecast-link').count(),0);
+  const r=await page.evaluate(()=>({sh:document.querySelector('#view-landing .cover-chart').getBoundingClientRect().bottom,acts:document.querySelector('#view-landing .cover-actions').getBoundingClientRect().top,card:document.querySelector('.discovery-card').getBoundingClientRect().height,foot:document.querySelector('body>footer').getBoundingClientRect().height,vh:innerHeight}));
+  assert.ok(r.sh<=r.vh,'scoreboard on the first screen: '+JSON.stringify(r));
+  assert.ok(r.card<=90,'story rows are compact: '+r.card);
+  assert.ok(r.foot<=260,'footer is short: '+r.foot);
+ });
+ await check('election night page scrolls so every exit poll can be reached',async()=>{
+  await go('live');
+  const r=await page.evaluate(async()=>{const se=document.scrollingElement;se.scrollTop=99999;await new Promise(r=>setTimeout(r,200));return {y:se.scrollTop,sh:se.scrollHeight,vh:innerHeight};});
+  assert.ok(r.y>=r.sh-r.vh-2&&r.y>300,'scrolled to the end: '+JSON.stringify(r));
+ });
+ await check('simulation sits inside the forecast card under the seat map, no separate tab',async()=>{
+  await go('forecast');
+  assert.equal(await page.locator('.mobile-forecast-nav button').count(),3);
+  const r=await page.evaluate(()=>{const card=document.querySelector('#forecast-section'),sim=document.querySelector('#method-sim'),map=document.querySelector('#home-hemicycle');return {inCard:card.contains(sim),below:sim.getBoundingClientRect().top>map.getBoundingClientRect().bottom,visible:sim.checkVisibility()};});
+  assert.deepEqual(r,{inCard:true,below:true,visible:true});
+ });
  await check('simulation fits one phone screen in every stage',async()=>{
-  await go('forecast');await page.locator('[data-mobile-forecast=simulation]').tap();await page.waitForTimeout(300);
+  await go('forecast');await page.waitForTimeout(300);
   // The start button pulses, so Playwright never sees it as stable for a tap.
   await page.evaluate(()=>document.querySelector('#method-sim .ms-big-play')?.click());
   await page.waitForTimeout(300);

@@ -40,10 +40,10 @@ async function check(name,fn){try{await fn();checks.push(name);}catch(e){issues.
    await page.locator('[data-mobile-forecast=coalition]').tap();
    for(const party of await page.locator('[data-ec-party]').all())await party.tap();
    await frames('.ec-panel,.ec-party');await page.locator('.ec-reset').tap();
-   await page.locator('[data-mobile-forecast=overview]').tap();assert.equal(await page.locator('.fs-center .election-visual').isVisible(),true);
+   await page.locator('.mobile-forecast-nav [data-mobile-forecast=overview]').tap();assert.equal(await page.locator('.fs-center .election-visual').isVisible(),true);
   });
   await check(width+' six simulation stages and animated values',async()=>{
-   await page.locator('[data-mobile-forecast=simulation]').tap();await page.locator('.ms-big-play').tap();
+   await page.locator('#method-sim').scrollIntoViewIfNeeded();await page.evaluate(()=>document.querySelector('.ms-big-play')?.click());
    await page.locator('[data-mobile-fold="simulation-results"] > summary').tap();
    for(let i=0;i<6;i++){
     await page.locator(`[data-ms-stage="${i}"]`).tap();
@@ -55,7 +55,7 @@ async function check(name,fn){try{await fn();checks.push(name);}catch(e){issues.
    for(let t=0;t<16;t++){await page.waitForTimeout(280);await frames('#ms-stage,.ms-cv-now');}
    await page.waitForSelector('#ms-hemi:not([hidden])');
    await frames('#ms-stage');
-   await page.locator('[data-mobile-forecast=overview]').tap();
+   await page.locator('.mobile-forecast-nav [data-mobile-forecast=overview]').tap();
   });
   await check(width+' all demographic records and live sliders',async()=>{
    await go('demography');

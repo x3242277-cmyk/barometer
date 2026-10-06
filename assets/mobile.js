@@ -5,15 +5,28 @@
   const mobile = matchMedia('(max-width: 900px)');
   const $ = s => document.querySelector(s);
   const states = new Map();
-  let forecastControlsHome;
+  let forecastControlsHome, methodHome;
   let lastForecastHash;
+  // On a phone the simulation lives inside the forecast card, under the seat map,
+  // so "simulation" is a place on the overview, not a panel of its own.
   function selectForecast(panel, scroll = false) {
     const home = $('#view-home');
     if (!home) return;
+    const toSim = panel === 'simulation';
+    if (toSim) panel = 'overview';
     home.dataset.mobileForecast = panel;
     home.querySelectorAll('[data-mobile-forecast]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mobileForecast === panel)));
-    if (mobile.matches && panel !== 'simulation') document.dispatchEvent(new Event('barometer:simulation-hidden'));
-    if (scroll) home.scrollIntoView({block:'start', behavior:'auto'});
+    if (mobile.matches && panel !== 'overview') document.dispatchEvent(new Event('barometer:simulation-hidden'));
+    if (toSim) setTimeout(() => showSim(), 60);
+    else if (scroll) home.scrollIntoView({block:'start', behavior:'auto'});
+  }
+  // Put the simulation right under the sticky bars (masthead + forecast tabs).
+  function showSim(force = true) {
+    const sim = $('#method-sim');
+    if (!sim || !mobile.matches) return;
+    const bars = ($('.masthead')?.offsetHeight || 64) + ($('#view-home .mobile-forecast-nav')?.offsetHeight || 0);
+    const top = sim.getBoundingClientRect().top - bars - 8;
+    if (force || top < -4 || top > 60) window.scrollBy({top, behavior:'auto'});
   }
   document.addEventListener('barometer:forecast-panel', e => selectForecast(e.detail));
   const masthead = $('.masthead-in');
@@ -69,7 +82,7 @@
     if (home && !home.querySelector('.mobile-forecast-nav')) {
       const nav = document.createElement('nav'); nav.className = 'mobile-forecast-nav';
       nav.setAttribute('aria-label', 'מה מציגים בתחזית');
-      nav.innerHTML = [['overview','תמונת מצב'],['parties','מפלגות'],['simulation','הסימולציה'],['coalition','קואליציה']].map(([key,label]) => `<button type="button" data-mobile-forecast="${key}" aria-pressed="false">${label}</button>`).join('');
+      nav.innerHTML = [['overview','תמונת מצב'],['parties','מפלגות'],['coalition','קואליציה']].map(([key,label]) => `<button type="button" data-mobile-forecast="${key}" aria-pressed="false">${label}</button>`).join('');
       home.prepend(nav);
       nav.addEventListener('click', e => {
         const b = e.target.closest('[data-mobile-forecast]'); if (!b) return;
@@ -85,6 +98,12 @@
       if (!forecastControlsHome) { forecastControlsHome = document.createComment('forecast controls'); controls.before(forecastControlsHome); }
       if (mobile.matches && controls.parentElement !== center) center.append(controls);
       if (!mobile.matches && controls.previousSibling !== forecastControlsHome) forecastControlsHome.after(controls);
+    }
+    const method = $('#home-method-section'), card = $('#forecast-section .verdict-in');
+    if (method && card) {
+      if (!methodHome) { methodHome = document.createComment('home method'); method.before(methodHome); }
+      if (mobile.matches && method.parentElement !== card) card.append(method);
+      if (!mobile.matches && method.previousSibling !== methodHome) methodHome.after(method);
     }
     fold($('.ex-pickers'), 'explorer', 'בחירת ערוצים ומפלגות');
     fold($('.dm-side'), 'demography', 'המסקנות של המודל');
@@ -164,6 +183,7 @@
     if (mobile.matches) {
       const jump = e.target.closest('[data-home-section]');
       if (jump) selectForecast(jump.dataset.homeSection === 'election-coalition' ? 'coalition' : jump.dataset.homeSection === 'home-method-section' ? 'simulation' : 'overview');
+      if (jump && jump.dataset.homeSection === 'home-method-section') e.stopImmediatePropagation();
       const docJump = e.target.closest('.mdoc-nav [data-go]');
       if (docJump) { const d = document.getElementById(docJump.dataset.go)?.querySelector('.mobile-disclosure'); if (d) d.open = true; }
     }
@@ -180,15 +200,18 @@
     const fitSim = () => {
       fitQueued = false;
       const home = $('#view-home'), box = sim.querySelector('.ms-stagebox'), stage = sim.querySelector('#ms-stage');
-      const on = !!(mobile.matches && home?.classList.contains('on') && home.dataset.mobileForecast === 'simulation');
-      sim.classList.toggle('is-phone-fit', on);
+      const embedded = !!(mobile.matches && home?.classList.contains('on') && home.dataset.mobileForecast === 'overview' && sim.closest('#forecast-section'));
+      const on = embedded && sim.classList.contains('is-running');
+      sim.classList.toggle('is-phone-fit', embedded);
       if (!box || !stage) return;
       const kids = [...stage.children], zoom = z => kids.forEach(c => { c.style.zoom = z === 1 ? '' : String(z); });
       if (!on) { box.style.height = ''; zoom(1); fitFirst = null; return; }
-      // Height that is left when the forecast tabs sit right under the masthead.
-      const offset = box.getBoundingClientRect().top - home.getBoundingClientRect().top;
+      // Height left when the sim sits right under the masthead and the forecast tabs.
+      const offset = box.getBoundingClientRect().top - sim.getBoundingClientRect().top;
       const viewH = window.visualViewport?.height || innerHeight;
-      box.style.height = `${Math.max(300, Math.floor(viewH - mastH() - offset - 12))}px`;
+      const bars = mastH() + (home.querySelector('.mobile-forecast-nav')?.offsetHeight || 0);
+      const pad = parseFloat(getComputedStyle(sim).paddingBottom) || 0;
+      box.style.height = `${Math.max(300, Math.floor(viewH - bars - offset - pad - 16))}px`;
       const fresh = stage.firstElementChild !== fitFirst;
       if (!fresh && stage.scrollHeight <= stage.clientHeight + 1) return;
       if (fresh) { fitFirst = stage.firstElementChild; fitZoom = 1; }
@@ -208,6 +231,8 @@
     document.addEventListener('barometer:forecast-panel', queueFit);
     document.addEventListener('barometer:view', queueFit);
     $('#view-home')?.addEventListener('click', e => { if (e.target.closest('[data-mobile-forecast]')) queueFit(); });
+    // Starting or stepping the player brings it to the top of the screen.
+    sim.addEventListener('click', e => { if (e.target.closest('.ms-big-play,[data-ms-stage],.ms-prev,.ms-next')) setTimeout(() => showSim(false), 140); });
     window.addEventListener('resize', queueFit);
     window.visualViewport?.addEventListener('resize', queueFit);
     mobile.addEventListener('change', queueFit);

@@ -7,7 +7,7 @@ body:has(#view-landing.on) #print-btn{display:none}
 #view-landing .cover-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(174px,210px);align-items:start;gap:clamp(26px,6vw,104px);min-width:0;padding-block:clamp(44px,6vh,82px) clamp(76px,9vh,112px)}
 #view-landing .cover-content{width:auto;min-width:0;margin:0;padding:0}
 #view-landing .cover-credit{position:absolute;left:16px;bottom:9px;padding:0}
-#view-landing .cover-actions a{font:700 .8rem var(--sans);min-height:43px;padding:10px 18px;border-radius:5px;display:inline-flex;gap:26px;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,transform .2s}
+#view-landing .cover-actions a{font:700 .8rem var(--sans);min-height:43px;padding:10px 18px;border-radius:5px;display:inline-flex;gap:10px;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,transform .2s}
 #view-landing .cover-actions a:hover{transform:translateY(-2px);background:#f0d8a4;color:#0b1c2e}
 #view-landing .election-cover .election-countdown{display:flex;justify-content:flex-start;align-items:center;gap:26px;width:fit-content;max-width:100%;margin:27px 0 0;padding:15px 0 0;border:0;border-top:1px solid #dfbe7636;border-radius:0;background:none;box-shadow:none;color:#f4f5f7;flex-wrap:wrap}
 #view-landing .election-cover>.section-next{position:absolute;bottom:15px;right:50%;transform:translateX(50%);z-index:2}
@@ -87,3 +87,9 @@ body:has(#view-landing.on) #print-btn{display:none}
   #view-landing .election-cover::after{background:linear-gradient(0deg,#08152288,transparent 150px),linear-gradient(180deg,#091b30 0%,#091b3000 45px);inset:auto 0 0;height:280px}
   #view-landing .election-cover>.section-next{bottom:18px}
 }
+/* The scoreboard is one link to the full forecast; the actions carry an icon. */
+#view-landing .cover-ico{width:19px;height:19px;flex:none}
+#view-landing .cover-chart-link{position:absolute;inset:0;z-index:2;border-radius:inherit}
+#view-landing .cover-chart{transition:border-color .2s,transform .2s}
+#view-landing .cover-chart:has(.cover-chart-link:hover),#view-landing .cover-chart:has(.cover-chart-link:focus-visible){border-color:#e5c783aa}
+#view-landing .cover-score-go{color:#e5c783;font-size:1rem;line-height:1}

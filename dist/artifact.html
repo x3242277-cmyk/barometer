@@ -4088,7 +4088,7 @@ body:has(#view-landing.on) #print-btn{display:none}
 #view-landing .cover-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(174px,210px);align-items:start;gap:clamp(26px,6vw,104px);min-width:0;padding-block:clamp(44px,6vh,82px) clamp(76px,9vh,112px)}
 #view-landing .cover-content{width:auto;min-width:0;margin:0;padding:0}
 #view-landing .cover-credit{position:absolute;left:16px;bottom:9px;padding:0}
-#view-landing .cover-actions a{font:700 .8rem var(--sans);min-height:43px;padding:10px 18px;border-radius:5px;display:inline-flex;gap:26px;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,transform .2s}
+#view-landing .cover-actions a{font:700 .8rem var(--sans);min-height:43px;padding:10px 18px;border-radius:5px;display:inline-flex;gap:10px;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,transform .2s}
 #view-landing .cover-actions a:hover{transform:translateY(-2px);background:#f0d8a4;color:#0b1c2e}
 #view-landing .election-cover .election-countdown{display:flex;justify-content:flex-start;align-items:center;gap:26px;width:fit-content;max-width:100%;margin:27px 0 0;padding:15px 0 0;border:0;border-top:1px solid #dfbe7636;border-radius:0;background:none;box-shadow:none;color:#f4f5f7;flex-wrap:wrap}
 #view-landing .election-cover>.section-next{position:absolute;bottom:15px;right:50%;transform:translateX(50%);z-index:2}
@@ -4168,6 +4168,12 @@ body:has(#view-landing.on) #print-btn{display:none}
   #view-landing .election-cover::after{background:linear-gradient(0deg,#08152288,transparent 150px),linear-gradient(180deg,#091b30 0%,#091b3000 45px);inset:auto 0 0;height:280px}
   #view-landing .election-cover>.section-next{bottom:18px}
 }
+/* The scoreboard is one link to the full forecast; the actions carry an icon. */
+#view-landing .cover-ico{width:19px;height:19px;flex:none}
+#view-landing .cover-chart-link{position:absolute;inset:0;z-index:2;border-radius:inherit}
+#view-landing .cover-chart{transition:border-color .2s,transform .2s}
+#view-landing .cover-chart:has(.cover-chart-link:hover),#view-landing .cover-chart:has(.cover-chart-link:focus-visible){border-color:#e5c783aa}
+#view-landing .cover-score-go{color:#e5c783;font-size:1rem;line-height:1}
 
 /* כל הסקרים — הגרפים, עמודת הסקרים האחרונים, טבלת כל הסקרים, וכמה עברו צד.
    פריסת העמוד, תפריט הצד וכרטיס המגמות וההשוואות — ב־polls-workspace.css. */
@@ -6704,50 +6710,64 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   .mobile-disclosure>.ex-pickers{padding:12px;box-sizing:border-box}
 
   /* Landing: content flows with the screen; no desktop viewport lock. */
-  /* The first screen is one composition: photo behind the title, the forecast
-     numbers, two actions and the timing line, without scrolling. */
-  #view-landing .election-cover{display:flex;flex-direction:column;height:auto!important;min-height:calc(100svh - var(--masthead-h,64px))!important;padding:0}
-  #view-landing .cover-image{position:absolute;inset:0 0 auto!important;height:min(62svh,460px)!important;background-size:cover;background-position:34% 62%!important;opacity:.62!important;z-index:-3}
-  #view-landing .election-cover::after{content:'';position:absolute;inset:0!important;height:auto!important;z-index:-2;pointer-events:none;background:linear-gradient(180deg,#091b30f2 0%,#091b30b8 22%,#091b3070 40%,#091b30d9 56%,#091b30 68%)!important}
-  #view-landing .cover-inner{flex:1;display:flex!important;flex-direction:column;justify-content:center;align-items:stretch;gap:14px;min-height:0!important;padding:20px 16px 18px!important;box-sizing:border-box}
+  /* The first screen: the title over the night sky, the whole Knesset, then the
+     scoreboard (one link to the forecast). The two actions start just below the fold. */
+  #view-landing .election-cover{--hero-img:calc(100svh - var(--masthead-h,64px) - 111px);display:flex;flex-direction:column;height:auto!important;min-height:calc(100svh - var(--masthead-h,64px) + 181px)!important;padding:0;background:#091b30}
+  #view-landing .cover-image{position:absolute;inset:0 0 auto!important;height:var(--hero-img)!important;background-size:170vw auto!important;background-position:11% 57%!important;background-repeat:no-repeat;opacity:1!important;z-index:-3;animation:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,transparent 14%,#000 38%,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,transparent 14%,#000 38%,#000 78%,transparent 100%)}
+  #view-landing .election-cover::after{content:'';position:absolute;inset:0 0 auto!important;height:var(--hero-img)!important;z-index:-2;pointer-events:none;background:linear-gradient(180deg,#091b30e6 0,#091b3040 22%,#091b3000 40%,#091b3000 66%,#091b30 100%)!important}
+  #view-landing .cover-inner{flex:1;display:flex!important;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:10px;min-height:0!important;padding:18px 16px 14px!important;box-sizing:border-box}
   #view-landing .cover-content{display:contents}
-  #view-landing .cover-edition{order:1;font-size:.72rem}
-  #view-landing #election-title{order:2;font-size:clamp(2.3rem,10.5vw,3.4rem);line-height:1.05;margin:0;text-shadow:0 2px 18px #020c1b99}
-  #view-landing .cover-tagline{order:3;font-size:.95rem;line-height:1.55;max-width:34ch;margin:0;color:#e6edf5}
-  #view-landing .cover-chart{order:4;width:100%;max-width:none;margin:4px 0 0;padding:12px 16px 8px;box-sizing:border-box;border-radius:14px;transform:none;justify-self:auto}
+  #view-landing .cover-edition{order:1;font-size:.7rem}
+  #view-landing #election-title{order:2;font-size:clamp(2.1rem,9.6vw,3rem);line-height:1.05;margin:0;text-shadow:0 2px 16px #020c1bcc}
+  #view-landing .cover-tagline{display:none}
+  #view-landing .cover-chart{order:4;position:relative;margin:auto 0 0;width:100%;max-width:none;padding:10px 14px 8px;box-sizing:border-box;border-radius:14px;transform:none;justify-self:auto;background:#0b1d33d9;backdrop-filter:blur(10px)}
   #view-landing .cover-gauges{max-width:100%}
-  #view-landing .cover-score-head{padding-bottom:8px;font-size:.74rem}
-  #view-landing .cover-score-pair{gap:14px;padding:8px 0 12px}
-  #view-landing .cover-score{gap:4px}
-  #view-landing .cover-score strong{font-size:2.6rem;letter-spacing:-.03em}
-  #view-landing .cover-score>span{font-size:.76rem;line-height:1.35;max-width:none}
-  #view-landing .cover-score-scale{padding-bottom:24px}
-  #view-landing .cover-score-majority{padding-top:18px;font-size:.66rem}
-  #view-landing .cover-score-majority::before{height:16px}
-  #view-landing .cover-actions{order:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
-  #view-landing .cover-actions a{min-height:48px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;box-sizing:border-box;font-size:.86rem}
-  #view-landing .cover-updated{order:6;margin:0;font-size:.74rem;color:#a9b8c8}
-  #view-landing .election-cover .election-countdown.hero-countdown{order:6;width:auto;margin:-8px 0 0;padding:0;border:0;gap:10px}
-  #view-landing .election-cover .countdown-cells{gap:8px}
-  #view-landing .election-cover .countdown-cells b{flex-direction:row;align-items:baseline;gap:4px;min-width:0}
-  #view-landing .election-cover .countdown-cells .num{font-size:1.15rem}
-  #view-landing .election-cover .countdown-cells em{font-size:.74rem}
-  #view-landing .model-disclosure{order:7;margin:0;padding:8px 10px;font-size:.7rem;line-height:1.5}
+  #view-landing .cover-score-head{padding:0 0 4px;border:0;font-size:.68rem}
+  #view-landing .cover-score-pair{gap:12px;padding:0 0 8px}
+  #view-landing .cover-score{display:flex;align-items:baseline;gap:8px;min-width:0}
+  #view-landing .cover-score--left{justify-content:flex-end}
+  #view-landing .cover-score strong{font-size:2.3rem;letter-spacing:-.03em}
+  #view-landing .cover-score>span{font-size:.72rem;line-height:1.3;max-width:none}
+  #view-landing .cover-score-scale{padding-bottom:18px}
+  #view-landing .cover-score-bar{height:8px}
+  #view-landing .cover-score-majority{top:-4px;padding-top:14px;font-size:.62rem}
+  #view-landing .cover-score-majority::before{height:14px}
+  #view-landing .cover-actions{order:5;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0}
+  #view-landing .cover-actions a{min-height:46px;display:flex;justify-content:flex-start;align-items:center;gap:12px;padding:8px 16px;box-sizing:border-box;font-size:.88rem}
+  /* The update time and the countdown share one short line. */
+  #view-landing .cover-updated{order:6;align-self:flex-start;margin:0;font-size:.7rem;line-height:22px;color:#a9b8c8}
+  #view-landing .election-cover .election-countdown.hero-countdown{order:7;align-self:flex-end;width:auto;margin:-32px 0 0;padding:0;border:0;gap:8px;line-height:22px}
+  #view-landing .election-cover .countdown-cells{gap:6px}
+  #view-landing .election-cover .countdown-cells b{flex-direction:row;align-items:baseline;gap:3px;min-width:0}
+  #view-landing .election-cover .countdown-cells .num{font-size:1rem}
+  #view-landing .election-cover .countdown-cells em{font-size:.68rem}
+  #view-landing .model-disclosure{order:8;margin:0;padding:6px 10px;font-size:.66rem;line-height:1.45}
   #view-landing .election-cover>.section-next{display:none}
-  #view-landing .cover-credit{position:static;display:block;padding:0 16px 8px;text-align:center;font-size:.6rem}
-  #view-landing .home-discovery{padding-block:28px}
-  #view-landing .discovery-stories{grid-template-columns:minmax(0,1fr)!important;gap:12px}
-  #view-landing .discovery-heading h2{font-size:1.65rem;line-height:1.25}
-  #view-landing .discovery-heading p{font-size:.9rem;line-height:1.55}
+  #view-landing .cover-credit{position:absolute;top:calc(var(--hero-img) - 66px);left:12px;padding:0;font-size:.56rem;color:#d5dfed99;z-index:1}
+  /* "The numbers behind the headlines": three one-line rows, only what is needed. */
+  #view-landing .home-discovery{padding-block:20px 22px}
+  #view-landing .discovery-heading{margin-bottom:10px}
+  #view-landing .discovery-heading .kicker,#view-landing .discovery-heading>p:last-child{display:none}
+  #view-landing .discovery-heading h2{font-size:1.2rem;line-height:1.3;margin:0}
+  #view-landing .discovery-controls{margin-bottom:10px;gap:6px}
+  #view-landing .discovery-controls button{width:20px;height:5px}
+  #view-landing .discovery-controls button[aria-pressed="true"]{width:34px}
+  #view-landing .discovery-stories{grid-template-columns:minmax(0,1fr)!important;gap:8px}
+  #view-landing .discovery-card{display:grid;grid-template-columns:minmax(58px,auto) minmax(0,1fr) 14px;grid-template-areas:"num eye arr" "num ttl arr";align-items:center;gap:1px 12px;min-height:0;padding:10px 12px;border-radius:10px}
+  #view-landing .discovery-card:hover{transform:none}
+  #view-landing .discovery-art,#view-landing .discovery-card p,#view-landing .discovery-source,#view-landing .discovery-link{display:none}
+  #view-landing .discovery-number{grid-area:num;margin:0;font-size:1.45rem;line-height:1.1;text-align:center;white-space:nowrap}
+  #view-landing .discovery-eyebrow{grid-area:eye;font-size:.66rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #view-landing .discovery-card h3{grid-area:ttl;font-size:.86rem;line-height:1.35}
+  #view-landing .discovery-card::after{content:'←';grid-area:arr;color:#8c5e0c;font-size:.95rem}
 
   /* Forecast: result first, compact party rows grouped by bloc below. */
-  .mobile-forecast-nav{position:sticky;top:calc(var(--masthead-h,64px) - 1px);z-index:20;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:8px 12px;background:#0d2034;border-bottom:1px solid #ffffff20}
+  .mobile-forecast-nav{position:sticky;top:calc(var(--masthead-h,64px) - 1px);z-index:20;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;padding:8px 12px;background:#0d2034;border-bottom:1px solid #ffffff20}
   .mobile-forecast-nav button{min-width:0;min-height:44px;padding:8px 2px;border:0;border-radius:8px;background:transparent;color:#cbd6e1;font:700 .8rem var(--sans);white-space:nowrap}
   .mobile-forecast-nav button[aria-pressed=true]{background:#e5c783;color:#14233a}
   #view-home[data-mobile-forecast]>.section-next,#view-home[data-mobile-forecast] .verdict>.section-next{display:none}
-  #view-home[data-mobile-forecast=overview] :is(.fs-side,.home-method,.election-coalition),
+  #view-home[data-mobile-forecast=overview] :is(.fs-side,.election-coalition),
   #view-home[data-mobile-forecast=parties] :is(.election-copy,.election-visual,.home-method,.election-coalition),
-  #view-home[data-mobile-forecast=simulation]>:is(.verdict,.election-coalition),
   #view-home[data-mobile-forecast=coalition]>:is(.verdict,.home-method){display:none!important}
   #view-home[data-mobile-forecast=parties] .verdict-top{display:none}
   #view-home[data-mobile-forecast=parties] .fs-center{padding:0;gap:0}
@@ -7172,6 +7192,8 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 
   /* Election night: the channels' exit polls stacked one above the other. */
   #view-live.on,#view-results.on{height:auto!important;min-height:0!important;overflow:visible!important}
+  /* The desktop one-screen lock (body overflow hidden) would freeze the stacked list. */
+  body:has(#view-live.on),body:has(#view-results.on){overflow:visible!important}
   #view-live .exit-showcase{height:auto!important;min-height:0!important;padding:20px 16px}
   #view-live .exit-showcase-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:auto!important;max-width:100%;overflow:visible;gap:14px;padding-bottom:4px}
   #view-live .es-card{width:auto;min-width:0;height:auto}
@@ -7194,11 +7216,23 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   .analytics-consent-inner{padding:12px!important;max-width:none!important}
   .analytics-consent p{font-size:.83rem!important;line-height:1.5}
   .analytics-consent-actions button{min-height:44px!important}
-  body>footer{padding:26px 16px calc(26px + env(safe-area-inset-bottom));box-sizing:border-box}
-  body>footer .wrap{width:100%;padding:0}
-  body>footer .footer-nav{gap:6px 14px}
-  body>footer .footer-nav a{display:inline-flex;align-items:center;min-height:44px;font-size:.85rem}
-  body>footer .footer-details summary{min-height:44px;display:flex;align-items:center}
+  /* A short footer: logo, the two fold-outs side by side, one note and one link row.
+     The page links repeat the menu, so they are left to it. */
+  body>footer{padding:16px 16px calc(14px + env(safe-area-inset-bottom));box-sizing:border-box}
+  body>footer .wrap{width:100%;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 8px}
+  body>footer .wrap>div{display:contents}
+  body>footer .fbrand{flex:0 0 100%;margin:0}
+  body>footer .fbrand .brand-logo{height:22px;width:auto}
+  body>footer .wrap>div:first-child>p,body>footer .footer-nav{display:none}
+  body>footer .wrap>div:last-child>p:not(.admin-inline-status){flex:0 0 100%;order:2;margin:0;font-size:.7rem;line-height:1.5;color:#9fb0c2}
+  body>footer .footer-details{flex:1 1 0;min-width:0;margin:0;padding:0;border:0}
+  body>footer .footer-details[open]{flex-basis:100%;order:1}
+  body>footer .footer-details summary{min-height:38px;display:flex;align-items:center;justify-content:center;padding:4px 10px;border:1px solid #ffffff26;border-radius:9px;font-size:.76rem;line-height:1.3;text-align:center}
+  body>footer .footer-utility{flex:0 0 100%;order:2;display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;font-size:.72rem}
+  body>footer .footer-utility a{display:inline-flex;align-items:center;min-height:32px}
+  body>footer .footer-utility #admin-trigger{min-height:32px;padding:4px 10px;font-size:.72rem}
+  body>footer .admin-inline-status{flex:0 0 100%;order:3;margin:0}
+  body>footer .admin-inline-status:empty{display:none}
   .admin-wrap,.info-wrap{width:100%;padding:20px 16px;box-sizing:border-box}
   .admin-heading,.admin-toolbar,.section-heading{flex-wrap:wrap;gap:12px}
   .admin-card,.info-card{padding:16px}
@@ -7215,14 +7249,19 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 /* Phone simulation player: one screen, no page scroll. mobile.js sets the stage
    box height from the viewport and scales a tall scene to fit (is-phone-fit). */
 @media (max-width:900px){
-  #view-home[data-mobile-forecast=simulation] .home-method{padding:10px 0 0!important;margin:0!important}
+  /* The simulation is a dark panel at the end of the forecast card, under the seat map. */
+  #view-home .verdict .home-method{display:block;margin:18px 0 0!important;padding:0!important;min-height:0!important;background:none!important}
+  #view-home .verdict .home-method>.wrap{width:100%;max-width:none;margin:0;padding:0}
+  #view-home .verdict #method-sim{margin:0;padding:10px;border-radius:14px;background:linear-gradient(160deg,#12345c,#0b1d33 70%);box-shadow:0 12px 28px -16px #000a;color:#f6f3ec}
+  #view-home .verdict #method-sim:not(.is-running){padding:0;background:none;box-shadow:none}
   #method-sim.is-phone-fit:not(.is-running) .ms-say{display:none}
   #method-sim.is-phone-fit{display:flex;flex-direction:column;gap:8px}
   #method-sim.is-phone-fit .ms-bar{display:none}
-  #method-sim.is-phone-fit .ms-nav{display:flex;flex-wrap:nowrap;gap:4px;overflow:hidden;padding:0;margin:0;border:0}
-  #method-sim.is-phone-fit .ms-nav button{flex:0 0 36px;width:36px;height:36px;min-height:36px;padding:0;border:1px solid #ffffff22;border-radius:9px;justify-content:center;gap:0;font-size:0;margin:0}
-  #method-sim.is-phone-fit .ms-nav button span{width:24px;height:24px;font-size:.78rem}
-  #method-sim.is-phone-fit .ms-nav button.is-on{flex:1 1 auto;width:auto;min-width:0;padding:0 8px;gap:6px;font-size:.8rem;overflow:hidden;text-overflow:ellipsis}
+  #method-sim.is-phone-fit .ms-nav{display:flex;flex-wrap:nowrap;gap:3px;overflow:hidden;padding:0;margin:0;border:0}
+  #method-sim.is-phone-fit .ms-nav button{flex:0 0 32px;width:32px;height:36px;min-height:36px;padding:0;border:1px solid #ffffff22;border-radius:9px;justify-content:center;gap:0;font-size:0;margin:0}
+  #method-sim.is-phone-fit .ms-nav button span{width:22px;height:22px;font-size:.74rem}
+  #method-sim.is-phone-fit .ms-nav button.is-on{flex:1 1 auto;width:auto;min-width:0;padding:0 6px;gap:0;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #method-sim.is-phone-fit .ms-nav button.is-on span{display:none}
   #method-sim.is-phone-fit:not(.is-running) .ms-nav{display:none}
   #method-sim.is-phone-fit .ms-say{margin:0;font-size:.86rem;line-height:1.45;min-height:2.9em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   #method-sim.is-phone-fit .ms-main{display:flex;flex-direction:column;gap:0}
@@ -7363,12 +7402,13 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
         <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
         <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
         <p class="cover-tagline">מהסקרים ועד לשינויים באוכלוסייה — רואים מה באמת עומד מאחורי התחזית.</p>
-        <div class="cover-actions"><a class="cover-primary" href="#/forecast">לתחזית הברומטר <span aria-hidden="true">←</span></a><a class="cover-secondary" href="#/forecast/coalition">בנו קואליציה <span aria-hidden="true">←</span></a></div>
+        <div class="cover-actions"><a class="cover-primary" href="#/2022"><svg class="cover-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 20.5v-7h5v7M9.5 20.5V5.5h5v15M15.5 20.5v-10h5v10M2.5 20.5h19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>לדירוג מכוני הסקרים</a><a class="cover-secondary" href="#/map"><svg class="cover-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>למפת הבחירות</a></div>
         <p class="model-disclosure model-disclosure--dark">התחזית היא אומדן עצמאי המבוסס על סקרים והנחות מודל; היא אינה נתון רשמי. <a href="about.html">מקורות ומגבלות</a></p>
         <p class="cover-updated" id="cover-updated">מכינים את נתוני התחזית…</p>
         <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
       </div>
       <aside class="cover-chart" aria-label="מנדטים בתחזית">
+        <a class="cover-chart-link" href="#/forecast" aria-label="לתחזית הברומטר המלאה"></a>
         <div class="cover-gauges" id="cover-gauges" role="img" aria-label="חלוקת המנדטים בין הגושים"></div>      </aside>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
@@ -7379,7 +7419,6 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
       <header class="discovery-heading"><p class="kicker">עוד מבט על התמונה</p><h2 id="discovery-title">המספרים שמאחורי הכותרות</h2><p>תשעה סיפורים מפתיעים בשלושה מבטים. הסיפורים מתחלפים כל תשע שניות, וכל אחד מוביל לנתונים המלאים.</p></header>
       <div class="discovery-controls" id="discovery-controls" role="group" aria-label="בחירת מקבץ סיפורים"></div>
       <div class="discovery-stories" id="discovery-stories"></div>
-      <a class="discovery-forecast-link" href="#/forecast">לתחזית הברומטר המלאה <span aria-hidden="true">←</span></a>
     </div>
   </section>
 </section>
@@ -10285,7 +10324,7 @@ function renderCoverGauges(blocTot) {
   const share = seats => (clamp(seats, 0, 120) / 120 * 100).toFixed(2);
   host.setAttribute("aria-label", `תחזית המנדטים: גוש הימין והחרדים ${right}, מרכז־שמאל והרשימות הערביות ${left}${other ? `, לא משויך ${other}` : ""}. נדרשים 61 מנדטים לרוב. החלוקה לגושים אינה הרכב קואליציה.`);
   /* Bloc colours as on the forecast page; the bar shows the Arab lists inside the 61 side. */
-  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span></div>
+  host.innerHTML = `<div class="cover-score-head"><span>תחזית הברומטר</span><span class="cover-score-go" aria-hidden="true">←</span></div>
     <div class="cover-score-pair">
       <div class="cover-score cover-score--right"><strong>${right}</strong><span><i></i>ימין וחרדים</span></div>
       <div class="cover-score cover-score--left"><strong>${left}</strong><span><i></i>מרכז־שמאל וערבים</span></div>
@@ -12880,7 +12919,7 @@ function renderHaredHistory() {
       ["תוצאות לפי יישובים", "ועדת הבחירות · ספטמבר 2019 עד 2022 · ארבע מערכות", D.g.localities, "יישובים"],
       ["אוכלוסיות ובעלי זכות בחירה", "מרכז טאוב · המכון הישראלי לדמוקרטיה · פנקס הבוחרים", eligible, "בעלי זכות בחירה ב־5 קבוצות"],
       ["סקרי מנדטים", `${outlets} כלי תקשורת · ${firmsN} מכונים · ${FORECAST_MAX_AGE_DAYS} הימים האחרונים`, (S.forecastPolls || []).length, "סקרים"],
-      ["ציוני הדיוק של המכונים", "סקרי החודש שלפני 2020, 2021 ו־2022 מול התוצאה", S.stats.length, "מכונים עם ציון"]
+      ["ציוני הדיוק של המכונים", "ויקיפדיה · סקרי החודש שלפני בחירות 2020, 2021 ו־2022 מול התוצאה", S.stats.length, "מכונים עם ציון"]
     ];
     setStage(`<div class="ms-src">${srcs.map(([n, d, v, u], i) => `<div class="ms-src-row" data-i="${i}"><span class="ms-src-n">${i + 1}</span><div class="ms-src-t"><b>${esc(n)}</b><small>${esc(d)}</small></div><div class="ms-src-bar"><i></i></div><div class="ms-src-v"><b class="num">0</b><small>${esc(u)}</small></div><span class="ms-src-ok" aria-hidden="true">✓</span></div>`).join("")}</div>
       <p class="ms-foot" id="ms-data-foot"></p>`);
@@ -14319,15 +14358,28 @@ if (q("#view-map.on")) window.renderR22();
   const mobile = matchMedia('(max-width: 900px)');
   const $ = s => document.querySelector(s);
   const states = new Map();
-  let forecastControlsHome;
+  let forecastControlsHome, methodHome;
   let lastForecastHash;
+  // On a phone the simulation lives inside the forecast card, under the seat map,
+  // so "simulation" is a place on the overview, not a panel of its own.
   function selectForecast(panel, scroll = false) {
     const home = $('#view-home');
     if (!home) return;
+    const toSim = panel === 'simulation';
+    if (toSim) panel = 'overview';
     home.dataset.mobileForecast = panel;
     home.querySelectorAll('[data-mobile-forecast]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mobileForecast === panel)));
-    if (mobile.matches && panel !== 'simulation') document.dispatchEvent(new Event('barometer:simulation-hidden'));
-    if (scroll) home.scrollIntoView({block:'start', behavior:'auto'});
+    if (mobile.matches && panel !== 'overview') document.dispatchEvent(new Event('barometer:simulation-hidden'));
+    if (toSim) setTimeout(() => showSim(), 60);
+    else if (scroll) home.scrollIntoView({block:'start', behavior:'auto'});
+  }
+  // Put the simulation right under the sticky bars (masthead + forecast tabs).
+  function showSim(force = true) {
+    const sim = $('#method-sim');
+    if (!sim || !mobile.matches) return;
+    const bars = ($('.masthead')?.offsetHeight || 64) + ($('#view-home .mobile-forecast-nav')?.offsetHeight || 0);
+    const top = sim.getBoundingClientRect().top - bars - 8;
+    if (force || top < -4 || top > 60) window.scrollBy({top, behavior:'auto'});
   }
   document.addEventListener('barometer:forecast-panel', e => selectForecast(e.detail));
   const masthead = $('.masthead-in');
@@ -14383,7 +14435,7 @@ if (q("#view-map.on")) window.renderR22();
     if (home && !home.querySelector('.mobile-forecast-nav')) {
       const nav = document.createElement('nav'); nav.className = 'mobile-forecast-nav';
       nav.setAttribute('aria-label', 'מה מציגים בתחזית');
-      nav.innerHTML = [['overview','תמונת מצב'],['parties','מפלגות'],['simulation','הסימולציה'],['coalition','קואליציה']].map(([key,label]) => `<button type="button" data-mobile-forecast="${key}" aria-pressed="false">${label}</button>`).join('');
+      nav.innerHTML = [['overview','תמונת מצב'],['parties','מפלגות'],['coalition','קואליציה']].map(([key,label]) => `<button type="button" data-mobile-forecast="${key}" aria-pressed="false">${label}</button>`).join('');
       home.prepend(nav);
       nav.addEventListener('click', e => {
         const b = e.target.closest('[data-mobile-forecast]'); if (!b) return;
@@ -14399,6 +14451,12 @@ if (q("#view-map.on")) window.renderR22();
       if (!forecastControlsHome) { forecastControlsHome = document.createComment('forecast controls'); controls.before(forecastControlsHome); }
       if (mobile.matches && controls.parentElement !== center) center.append(controls);
       if (!mobile.matches && controls.previousSibling !== forecastControlsHome) forecastControlsHome.after(controls);
+    }
+    const method = $('#home-method-section'), card = $('#forecast-section .verdict-in');
+    if (method && card) {
+      if (!methodHome) { methodHome = document.createComment('home method'); method.before(methodHome); }
+      if (mobile.matches && method.parentElement !== card) card.append(method);
+      if (!mobile.matches && method.previousSibling !== methodHome) methodHome.after(method);
     }
     fold($('.ex-pickers'), 'explorer', 'בחירת ערוצים ומפלגות');
     fold($('.dm-side'), 'demography', 'המסקנות של המודל');
@@ -14478,6 +14536,7 @@ if (q("#view-map.on")) window.renderR22();
     if (mobile.matches) {
       const jump = e.target.closest('[data-home-section]');
       if (jump) selectForecast(jump.dataset.homeSection === 'election-coalition' ? 'coalition' : jump.dataset.homeSection === 'home-method-section' ? 'simulation' : 'overview');
+      if (jump && jump.dataset.homeSection === 'home-method-section') e.stopImmediatePropagation();
       const docJump = e.target.closest('.mdoc-nav [data-go]');
       if (docJump) { const d = document.getElementById(docJump.dataset.go)?.querySelector('.mobile-disclosure'); if (d) d.open = true; }
     }
@@ -14494,15 +14553,18 @@ if (q("#view-map.on")) window.renderR22();
     const fitSim = () => {
       fitQueued = false;
       const home = $('#view-home'), box = sim.querySelector('.ms-stagebox'), stage = sim.querySelector('#ms-stage');
-      const on = !!(mobile.matches && home?.classList.contains('on') && home.dataset.mobileForecast === 'simulation');
-      sim.classList.toggle('is-phone-fit', on);
+      const embedded = !!(mobile.matches && home?.classList.contains('on') && home.dataset.mobileForecast === 'overview' && sim.closest('#forecast-section'));
+      const on = embedded && sim.classList.contains('is-running');
+      sim.classList.toggle('is-phone-fit', embedded);
       if (!box || !stage) return;
       const kids = [...stage.children], zoom = z => kids.forEach(c => { c.style.zoom = z === 1 ? '' : String(z); });
       if (!on) { box.style.height = ''; zoom(1); fitFirst = null; return; }
-      // Height that is left when the forecast tabs sit right under the masthead.
-      const offset = box.getBoundingClientRect().top - home.getBoundingClientRect().top;
+      // Height left when the sim sits right under the masthead and the forecast tabs.
+      const offset = box.getBoundingClientRect().top - sim.getBoundingClientRect().top;
       const viewH = window.visualViewport?.height || innerHeight;
-      box.style.height = `${Math.max(300, Math.floor(viewH - mastH() - offset - 12))}px`;
+      const bars = mastH() + (home.querySelector('.mobile-forecast-nav')?.offsetHeight || 0);
+      const pad = parseFloat(getComputedStyle(sim).paddingBottom) || 0;
+      box.style.height = `${Math.max(300, Math.floor(viewH - bars - offset - pad - 16))}px`;
       const fresh = stage.firstElementChild !== fitFirst;
       if (!fresh && stage.scrollHeight <= stage.clientHeight + 1) return;
       if (fresh) { fitFirst = stage.firstElementChild; fitZoom = 1; }
@@ -14522,6 +14584,8 @@ if (q("#view-map.on")) window.renderR22();
     document.addEventListener('barometer:forecast-panel', queueFit);
     document.addEventListener('barometer:view', queueFit);
     $('#view-home')?.addEventListener('click', e => { if (e.target.closest('[data-mobile-forecast]')) queueFit(); });
+    // Starting or stepping the player brings it to the top of the screen.
+    sim.addEventListener('click', e => { if (e.target.closest('.ms-big-play,[data-ms-stage],.ms-prev,.ms-next')) setTimeout(() => showSim(false), 140); });
     window.addEventListener('resize', queueFit);
     window.visualViewport?.addEventListener('resize', queueFit);
     mobile.addEventListener('change', queueFit);

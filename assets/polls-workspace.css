@@ -266,3 +266,8 @@
 .ex-basis button[aria-selected="true"]{color:var(--ink);background:#f6efdc;border-color:#b8862b;box-shadow:0 1px 0 #b8862b}
 .ex-basis button:focus-visible{outline:2px solid #c9a24f;outline-offset:2px}
 .ex-workspace.has-basis .ex-body>.ex-data-table{bottom:36px}
+
+/* החלפת בסיס הממוצע: רק הקווים נחשפים מחדש משמאל לימין, בלי לזוז את הגרף */
+@keyframes ex-reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.ex-body.ex-redraw .tr-svg :is(.tr-line,circle){animation:ex-reveal .7s ease-out both}
+@media (prefers-reduced-motion:reduce){.ex-body.ex-redraw .tr-svg :is(.tr-line,circle){animation:none}}

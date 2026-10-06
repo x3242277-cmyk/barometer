@@ -215,6 +215,22 @@ function drawExplorer() {
   body.innerHTML = `<div class="tr-plot">${chart.svg}<div class="tr-tip" hidden></div></div>`;
   if (chart.geom) (overview ? wireTrackerHover : wireExplorerHover)(body, chart);
 }
+/* החלפת בסיס הממוצע בלי לבנות את הכרטיס מחדש: המסגרת, הלוגואים והלשוניות נשארים במקום,
+   ורק הקווים (והמספרים שמעליהם) נטענים מחדש */
+function setExplorerBasis(key) {
+  const root = document.querySelector('#poll-tracker'), P = trackerModel();
+  if (!root || !P || !root.querySelector('[data-ex-body]')) { S.trackBasis = key; renderExplorer(); return; }
+  S.trackBasis = key;
+  const fresh = document.createElement('div');
+  fresh.innerHTML = renderExplorerHTML(P, basisModel(P, key), basisModel(P, 'baro'));
+  ['.ex-keys', '.ex-tools'].forEach(sel => { const from = fresh.querySelector(sel), to = root.querySelector(sel); if (from && to) to.innerHTML = from.innerHTML; });
+  root.querySelectorAll('[data-ex-basis]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.exBasis === key)));
+  drawExplorer();
+  const body = root.querySelector('[data-ex-body]');
+  body.classList.remove('ex-redraw'); void body.offsetWidth; body.classList.add('ex-redraw');
+  clearTimeout(S.exRedrawTimer); S.exRedrawTimer = setTimeout(() => body.classList.remove('ex-redraw'), 900);
+  root.querySelector(`[data-ex-basis="${key}"]`)?.focus();
+}
 let exObserver = null;
 function renderExplorer() {
   const root = document.querySelector('#poll-tracker'), P = trackerModel(); if (!root || !P) return;
@@ -279,7 +295,7 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
     const sub=e.target.closest('[data-ex-sub]');
     if(sub){const key=sub.dataset.exSub,cur=(S.exSubjects||['blocs']).filter(k=>k!=='blocs');S.exSubjects=key==='blocs'?['blocs']:(cur.includes(key)?cur.filter(k=>k!==key):cur.concat(key));renderExplorer();refocus(`[data-ex-sub="${CSS.escape(key)}"]`);return;}
     const basis=e.target.closest('button[data-ex-basis]');
-    if(basis){S.trackBasis=basis.dataset.exBasis;renderExplorer();refocus(`button[data-ex-basis="${S.trackBasis}"]`);return;}
+    if(basis){setExplorerBasis(basis.dataset.exBasis);return;}
     const view=e.target.closest('[data-ex-view]');
     if(view){S.exploreView=view.dataset.exView;renderExplorer();refocus(`[data-ex-view="${S.exploreView}"]`);return;}
     const single=e.target.closest('[data-feed-poll]');

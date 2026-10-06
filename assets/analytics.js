@@ -9,7 +9,7 @@
   let enabled=false,started=false,page=current(),view='',seq=0,seconds=0,last=performance.now(),activity=last,session='';
   const notice=document.createElement('aside');
   notice.className='analytics-consent';notice.setAttribute('aria-label','בחירת מדידת שימוש');
-  notice.innerHTML='<div class="analytics-consent-inner"><p>לשיפור האתר נמדוד צפיות וזמן פעילות רק באישורך. הגלישה אפשרית גם ללא מדידה. <a href="privacy.html">פרטיות ופרטים נוספים</a></p><div class="analytics-consent-actions"><button type="button" data-choice="no">ללא מדידה</button><button type="button" data-choice="yes">אישור מדידה</button></div></div>';
+  notice.innerHTML='<div class="analytics-consent-inner"><p>נא אשרו את מדיניות הפרטיות. <a href="privacy.html">למדיניות הפרטיות</a></p><div class="analytics-consent-actions"><button type="button" data-choice="no">ללא מדידה</button><button type="button" data-choice="yes">אישור מדידה</button></div></div>';
   const stored=()=>{try{return localStorage.getItem(choiceKey)}catch{return null}};
   notice.hidden=stored()==='yes'||stored()==='no';
   document.body.append(notice);

@@ -7854,23 +7854,25 @@ function trackerModel() {
   const vec = new Map(polls.map(p => [p.id, pollVector(p)]));
   const ids = [...new Set(polls.flatMap(p => p.parties.map(x => normId(x.id))))];
   const t0 = parsePollDate(polls[0]), t1 = parsePollDate(polls.at(-1));
-  const avgWindow = end => {
+  /* חלון של 7 ימים: כל מכון נספר פעם אחת. ממוצע רגיל — משקל שווה; משוקלל דיוק — לפי דרגת המכון */
+  const window7 = (end, weighted) => {
     const inWin = polls.filter(p => { const t = parsePollDate(p); return t <= end && t > end - TRACK_WINDOW_DAYS * DAY_MS; });
     if (!inWin.length) return null;
     const byFirm = new Map();
-    inWin.forEach(p => { const f = firmOf(p.sourceId).firm; if (!byFirm.has(f)) byFirm.set(f, []); byFirm.get(f).push(vec.get(p.id)); });
-    const firms = [...byFirm.values()];
-    const mean = get => firms.reduce((s, list) => s + list.reduce((a, v) => a + (get(v) || 0), 0) / list.length, 0) / firms.length;
+    inWin.forEach(p => { const f = firmOf(p.sourceId); if (!byFirm.has(f.firm)) byFirm.set(f.firm, { w: weighted ? firmWeight(f.meta) : 1, list: [] }); byFirm.get(f.firm).list.push(vec.get(p.id)); });
+    const firms = [...byFirm.values()], tot = firms.reduce((s, f) => s + f.w, 0) || 1;
+    const mean = get => firms.reduce((s, f) => s + f.w * f.list.reduce((a, v) => a + (get(v) || 0), 0) / f.list.length, 0) / tot;
     return {
       t: end, n: inWin.length, firms: firms.length,
       parties: Object.fromEntries(ids.map(id => [id, mean(v => v.parties[id])])),
       blocs: Object.fromEntries(["Right", "Left", "Arabs", "Unknown"].map(k => [k, mean(v => v.blocs[k])]))
     };
   };
+  const avgWindow = end => window7(end, false);
   /* הסדרה מתחילה שבוע אחרי הסקר הראשון, כדי שבכל נקודה יהיה חלון מלא */
-  const series = [];
+  const series = [], wSeries = [];
   for (let t = Math.min(t1, t0 + (TRACK_WINDOW_DAYS - 1) * DAY_MS); t <= t1; t += DAY_MS) {
-    const a = avgWindow(t); if (a) series.push(a);
+    const a = avgWindow(t); if (a) { series.push(a); wSeries.push(window7(t, true)); }
   }
   const now = series.at(-1), before = series.find(s => s.t >= now.t - TRACK_CHANGE_DAYS * DAY_MS) || series[0];
   const names = {};
@@ -7884,7 +7886,7 @@ function trackerModel() {
     })
     .filter(x => x.now >= 0.5 || x.max >= 4)
     .sort((a, b) => b.now - a.now);
-  return { polls, vec, series, now, before, parties, recent };
+  return { polls, vec, series, wSeries, now, before, parties, recent };
 }
 
 /* ---------- על מה מבוססים המספרים: שלוש אפשרויות לבחירת הגולש ----------
@@ -7912,11 +7914,13 @@ function basisModel(P, basis) {
   };
   let live = null;
   try { live = point(Date.parse(S.cur.generatedAt), allocateSeats(forecast(B.mode, HIDE_FROM_HOME).parties), S.forecastPolls?.length || 0, S.series?.length || 0); } catch { /* בלי תחזית חיה — רק הצילומים */ }
-  /* המנדטים לפי כללי הבחירות (x.seats), כמו הנקודה החיה; צילום ישן בלי seats — שארית גדולה */
-  const series = (S.forecastHistory?.snapshots || []).filter(x => x[B.key])
+  /* משוקלל דיוק: הסדרה היומית המלאה (אותם ימים כמו הממוצע), והנקודה האחרונה היא התחזית החיה — כמו בעמוד התחזית.
+     שאר הבסיסים (תחזית הברומטר): צילומי התחזית שנשמרו, ובסוף הנקודה החיה. */
+  const fullWeighted = basis === "weighted" && P.wSeries?.length > 1;
+  const series = fullWeighted ? P.wSeries.slice() : (S.forecastHistory?.snapshots || []).filter(x => x[B.key])
     .map(x => point(Date.parse(x.updatedAt), x.seats?.[B.key] || x[B.key], x.polls, x.firms))
     .filter(x => !live || x.t < live.t - 36e5).sort((a, b) => a.t - b.t);
-  if (live) series.push(live);
+  if (live) { if (fullWeighted) series[series.length - 1] = { ...live, t: series.at(-1).t }; else series.push(live); }
   if (series.length < 2) return P;
   const now = series.at(-1), before = series.find(x => x.t >= now.t - TRACK_CHANGE_DAYS * DAY_MS) || series[0];
   const ids = [...new Set(series.flatMap(x => Object.keys(x.parties)))], range = Object.fromEntries(P.parties.map(x => [x.id, x]));

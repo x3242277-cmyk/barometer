@@ -115,7 +115,7 @@
 #view-home:not(#_):not(#__) .verdict .home-forecast-controls .show-btn{display:inline-flex;align-items:center}
 
 /* ההרצה: שכבה עם הלוגו והשלבים */
-.fs-run{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:#fdfbf6f0;backdrop-filter:blur(4px);transition:opacity .45s}
+.fs-run{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:#fdfbf6;transition:opacity .45s}
 .fs-run.is-out{opacity:0}
 .fs-run-box{display:grid;justify-items:center;gap:14px;width:min(520px,86%);text-align:center}
 .fs-run-logo{display:grid;place-items:center;padding:12px 28px;border-radius:14px;background:linear-gradient(110deg,#12345c,#0a1c33)}

@@ -1015,7 +1015,7 @@ function autoRunModel() {
   let seen = false; try { seen = sessionStorage.getItem("modelRunSeen") === "1"; } catch {}
   if (seen || !S.cur || S.modelRunning) return;
   try { sessionStorage.setItem("modelRunSeen", "1"); } catch {}
-  setTimeout(() => { if (S.view === "home") runModelUpdate(); }, 300);
+  runModelUpdate(); /* מיד, באותו פריים של הציור הראשון — כך שהתוצאה לא מוצגת לפני ההרצה */
 }
 async function runModelUpdate() {
   if (S.modelRunning) return;

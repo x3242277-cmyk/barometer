@@ -26,9 +26,7 @@ function explorerEntities(P, mode) {
 
 function explorerLogo(e) {
   if (e.svg) return `<span class="ex-avatar ex-avatar-svg">${e.svg}</span>`;
-  /* מפלגה: תמונת המנהיג (מקומית, מזוהה גם בעיגול קטן); אחרת — הלוגו, וראשי התיבות עד שהוא נטען */
-  const portrait = e.party ? S.leaders?.[e.key] : '';
-  if (portrait) return `<span class="ex-avatar"><img class="ex-portrait-image" src="${esc(portrait)}" alt="" loading="lazy"></span>`;
+  /* מפלגה: הלוגו של המפלגה (לא תמונת המנהיג); ראשי התיבות עד שהוא נטען */
   return `<span class="ex-avatar"><span class="ex-logo-fallback">${esc(e.short || initials(e.label))}</span>${e.logo ? `<img class="ex-logo-image" src="${esc(e.logo)}" alt="" loading="lazy" onload="this.parentNode.classList.add('ex-logo-ready')" onerror="this.remove()">` : ''}</span>`;
 }
 

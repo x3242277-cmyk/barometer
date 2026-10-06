@@ -5165,12 +5165,22 @@ body:has(#view-demography.on)>footer{display:none}
 .ex-picker-label{font-size:.72rem;font-weight:800;color:var(--ink-2)}
 .ex-picker-label small{margin-inline-start:6px;font-size:.68rem;font-weight:600;color:var(--ink-3)}
 .ex-picker-icons{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
-.ex-pickers .ex-logo-button{width:36px;height:36px}
-.ex-pickers .ex-avatar{width:28px;height:28px}
+.ex-pickers .ex-logo-button{width:48px;height:48px}
+.ex-pickers .ex-avatar{width:40px;height:40px;font-size:.78rem}
+.ex-pickers .ex-avatar img{padding:3px}
+.ex-picker-icons{gap:6px}
 .ex-avatar-svg{background:none;overflow:visible}
 .ex-avatar-svg svg{display:block;width:100%;height:100%}
 .ex-logo-special{border-color:#d9c58f}
 .ex-pickers .ex-sub .ex-count{align-self:flex-end;margin-top:-22px}
+/* המפלגות מוצמדות לשמאל, הערוצים לימין — בלי להישאר באמצע */
+.ex-pickers .ex-sub{align-items:flex-end}
+.ex-pickers .ex-sub .ex-picker-icons{justify-content:flex-end}
+.ex-pickers .ex-sub .ex-count{align-self:flex-end}
+/* לוגואי המפלגות הם רחבים: מלבן מעוגל קריא במקום עיגול */
+.ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special){width:68px;height:46px;border-radius:12px}
+.ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special) .ex-avatar{width:58px;height:36px;border-radius:7px}
+.ex-pickers .ex-sub .ex-logo-button:not(.ex-logo-special) .ex-avatar img{padding:1px}
 
 /* למה הסקרים חלוקים? — מסלול של קומות. נטען אחרי polls-workspace.css.
    קומה ראשונה: שני סקרים והשאלה. כל לחיצה על "הלאה" מוסיפה קומה מתחת לקודמת
@@ -8099,9 +8109,7 @@ function explorerEntities(P, mode) {
 
 function explorerLogo(e) {
   if (e.svg) return `<span class="ex-avatar ex-avatar-svg">${e.svg}</span>`;
-  /* מפלגה: תמונת המנהיג (מקומית, מזוהה גם בעיגול קטן); אחרת — הלוגו, וראשי התיבות עד שהוא נטען */
-  const portrait = e.party ? S.leaders?.[e.key] : '';
-  if (portrait) return `<span class="ex-avatar"><img class="ex-portrait-image" src="${esc(portrait)}" alt="" loading="lazy"></span>`;
+  /* מפלגה: הלוגו של המפלגה (לא תמונת המנהיג); ראשי התיבות עד שהוא נטען */
   return `<span class="ex-avatar"><span class="ex-logo-fallback">${esc(e.short || initials(e.label))}</span>${e.logo ? `<img class="ex-logo-image" src="${esc(e.logo)}" alt="" loading="lazy" onload="this.parentNode.classList.add('ex-logo-ready')" onerror="this.remove()">` : ''}</span>`;
 }
 

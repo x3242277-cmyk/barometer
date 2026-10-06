@@ -55,7 +55,7 @@ for(const [name,setup] of Object.entries(scenarios)) {
   run(`S.exploreView='chart';${setup}`);
   const html=run('renderExplorerHTML(realP,realP,realP)');
   assert(html.includes('ex-logo-button')&&html.includes('aria-label=')&&html.includes('data-ex-src=')&&html.includes('data-ex-sub='),'missing accessible two-row logo picker in '+name);
-  assert(html.includes('data-ex-sub="blocs"')&&html.includes('<svg'),'menorah (blocs) icon missing in '+name);
+  assert(html.includes('data-ex-sub="blocs"')&&html.includes('knesset-emblem.svg'),'Knesset emblem (blocs) icon missing in '+name);
   assert(!html.includes('data-ex-lens'),'the institutes/channels lens selector came back in '+name);
   assert(!/NaN|undefined/.test(html),'invalid value rendered in '+name);
 }

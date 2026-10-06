@@ -6,10 +6,9 @@ const EXPLORER_COLORS = ['#0f7c8a', '#c7871a', '#7c5aa6', '#475569', '#b0467d'];
 const EXPLORER_MODES = { overview: 'מבט כולל', channels: 'ערוצים', firms: 'מכונים', parties: 'מפלגות' };
 const EXPLORER_MAX = 5;
 /* שתי שורות אייקונים: מימין המקורות (ערוצים + הברומטר; בלי בחירה — ממוצע כל הסקרים),
-   משמאל הנושאים (מפלגות + המנורה = הגושים; ברירת המחדל). */
+   משמאל הנושאים (מפלגות + סמל הכנסת = הגושים; ברירת המחדל). */
 const EXPLORER_BARO = { key: 'baro', label: 'תחזית הברומטר', logo: 'assets/logo-icon.png', short: 'ה' };
-const MENORAH_SVG = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#12345c"/><g transform="translate(3.2 3.6) scale(.8)" fill="none" stroke="#e5c783" stroke-width="1.9" stroke-linecap="round"><path d="M16 7V26M11 26.5h10"/><path d="M16 22C12.2 22 12 17 12 8M16 19C9.5 19 8 15 8 8M16 16C7 16 4 12.5 4 8"/><path d="M16 22C19.8 22 20 17 20 8M16 19C22.5 19 24 15 24 8M16 16C25 16 28 12.5 28 8"/></g><g transform="translate(3.2 3.6) scale(.8)" fill="#f6e7bd"><circle cx="16" cy="5.4" r="1.5"/><circle cx="12" cy="6" r="1.5"/><circle cx="8" cy="6" r="1.5"/><circle cx="4" cy="6" r="1.5"/><circle cx="20" cy="6" r="1.5"/><circle cx="24" cy="6" r="1.5"/><circle cx="28" cy="6" r="1.5"/></g></svg>';
-const EXPLORER_BLOCS = { key: 'blocs', label: 'הגושים (ברירת מחדל)', svg: MENORAH_SVG };
+const EXPLORER_BLOCS = { key: 'blocs', label: 'הכנסת · הגושים (ברירת מחדל)', logo: 'assets/logos/knesset-emblem.svg', short: 'כנסת', special: true };
 const EXPLORER_METRICS = { Right: 'ימין וחרדים', Left: 'מרכז–שמאל', Arabs: 'הרשימות הערביות' };
 const EXPLORER_OUTLET_LOGOS = { 'חדשות 12':'assets/logos/channel12.svg', 'חדשות 13':'assets/logos/channel13.svg', 'ערוץ 14':'assets/logos/channel14.png', 'כאן 11':'assets/logos/kan11.svg', 'i24NEWS':'assets/logos/i24news.png', 'ערוץ 16':'assets/logos/channel-16.png', 'וואלה':'assets/logos/walla.png', 'זמן ישראל':'assets/logos/zman-israel.png', 'גלי צה״ל':'assets/logos/galatz.png' };
 const EXPLORER_NOTE = 'כל נקודה היא תאריך שבו פורסם סקר. כשיש כמה סקרים באותו יום מוצג ממוצע, עם משקל שווה לכל מכון. הקווים מחברים מדידות בלבד ונקטעים כששם הרשימה או הרכבה משתנים; אין נתון בתאריך מסוים אינו אפס (בטבלה: —). בהשוואת מפלגות, הממוצע בכל יום כולל רק מכונים שמדדו את המפלגה. המספרים במנדטים.';
@@ -161,18 +160,18 @@ function explorerTools(P, M, state) {
   return out.join('');
 }
 
-/* שתי שורות לוגואים: מימין מי פרסם (הברומטר והערוצים), משמאל על מה (המנורה = הגושים, והמפלגות) */
+/* שתי שורות לוגואים: מימין מי פרסם (הברומטר והערוצים), משמאל על מה (סמל הכנסת = הגושים, והמפלגות) */
 function explorerPicker(state, hasBaro) {
   const colorOf = (kind, key) => state.lines?.find(l => l[kind] === key)?.color;
   const count = explorerLineCount(state.sources, state.subjects);
-  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.svg || e.key === 'baro' ? ' ex-logo-special' : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
+  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.special || e.key === 'baro' ? ' ex-logo-special' : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
   const canSrc = k => state.sources.includes(k) || explorerLineCount([...state.sources, k], state.subjects) <= EXPLORER_MAX;
   const canSub = k => state.subjects.includes(k) || (state.subjects[0] === 'blocs' ? explorerLineCount(state.sources, [k]) : explorerLineCount(state.sources, [...state.subjects, k])) <= EXPLORER_MAX;
   const sources = [hasBaro ? btn('data-ex-src', EXPLORER_BARO, state.sources.includes('baro'), 'source', !canSrc('baro')) : '', ...state.channels.map(e => btn('data-ex-src', e, state.sources.includes(e.key), 'source', !canSrc(e.key)))].join('');
   const subjects = [btn('data-ex-sub', EXPLORER_BLOCS, state.subjects[0] === 'blocs', 'subject', false), ...state.parties.map(e => btn('data-ex-sub', e, state.subjects.includes(e.key), 'subject', !canSub(e.key)))].join('');
   return `<div class="ex-pickers">
     <div class="ex-picker ex-src" role="group" aria-label="מי פרסם — בלי בחירה מוצג ממוצע כל הסקרים"><span class="ex-picker-label">מי פרסם <small>בלי בחירה: ממוצע כולם</small></span><span class="ex-picker-icons">${sources}</span></div>
-    <div class="ex-picker ex-sub" role="group" aria-label="על מה — המנורה היא הגושים"><span class="ex-picker-label">על מה <small>המנורה: הגושים</small></span><span class="ex-picker-icons">${subjects}</span><span class="ex-count" title="לחצו על הלוגואים כדי להוסיף או להסיר">${count}/${EXPLORER_MAX}</span></div>
+    <div class="ex-picker ex-sub" role="group" aria-label="על מה — סמל הכנסת הוא הגושים"><span class="ex-picker-label">על מה <small>סמל הכנסת: הגושים</small></span><span class="ex-picker-icons">${subjects}</span><span class="ex-count" title="לחצו על הלוגואים כדי להוסיף או להסיר">${count}/${EXPLORER_MAX}</span></div>
   </div>`;
 }
 

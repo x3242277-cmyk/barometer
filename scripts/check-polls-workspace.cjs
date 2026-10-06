@@ -29,7 +29,7 @@ assert.equal(run("partyLines[0].points[0].v"),22,"the last snapshot of the day w
 assert.equal(run("partyLines[0].points[1].v"),0,"a list absent from the series counts as 0, like everywhere else on the site");
 assert.equal(run("explorerLinesFor({polls:[]},partyM,{mode:\"parties\",selected:[{key:\"likud\",label:\"x\"}]})[0].points.length"),2,"the parties lens must follow the chosen basis");
 assert.equal(run("Object.keys(TRACK_BASES).join()"),"avg,weighted,baro","basis order: average, reliability-weighted, Barometer forecast");
-run(`S.exploreMode='channels';S.exploreView='table';S.exploreSelections={channels:['ערוץ 14']};`);
+run(`S.exploreView='table';S.exSources=['ערוץ 14'];S.exSubjects=['likud'];`);
 assert.equal(run('explorerState(fixtureModel).view'),'table','selected comparison view was lost');
 const table=run(`explorerChart(fixtureModel,fixtureState).table`);
 assert(table.includes('ex-data-table')&&table.includes('3.9'),'table does not show the actual measurement dates');
@@ -43,12 +43,29 @@ const path=changedHTML.match(/class="tr-line[^"]*"[^>]+d="([^"]+)"/)[1];
 assert.equal((path.match(/M/g)||[]).length,2,'changed alliances are connected into a continuous trend');
 assert.equal((path.match(/L/g)||[]).length,0,'line implies a comparable change across different list definitions');
 run(`S.leaders={};const realP=trackerModel();`);
-for(const mode of ['channels','firms','parties']) {
-  run(`S.exploreMode='${mode}';S.exploreView='timeline';S.exploreSelections={};`);
-  const html=run('renderExplorerHTML(realP,realP)');
-  assert(html.includes('ex-logo-button')&&html.includes('aria-label='),'missing accessible circular picker in '+mode);
-  assert(!/NaN|undefined/.test(html),'invalid value rendered in '+mode);
+/* ברירת מחדל: ממוצע הסקרים של הגושים; מימין מקורות (הברומטר + ערוצים), משמאל נושאים (המנורה + מפלגות) */
+const scenarios={
+  'default (blocs average)':`S.exSources=[];S.exSubjects=['blocs'];`,
+  'Barometer blocs':`S.exSources=['baro'];S.exSubjects=['blocs'];`,
+  'one party average':`S.exSources=[];S.exSubjects=['likud'];`,
+  'channel × party':`S.exSources=['ערוץ 14'];S.exSubjects=['likud','shas'];`,
+  'channel + Barometer × blocs':`S.exSources=['ערוץ 14','baro'];S.exSubjects=['blocs'];`
+};
+for(const [name,setup] of Object.entries(scenarios)) {
+  run(`S.exploreView='chart';${setup}`);
+  const html=run('renderExplorerHTML(realP,realP,realP)');
+  assert(html.includes('ex-logo-button')&&html.includes('aria-label=')&&html.includes('data-ex-src=')&&html.includes('data-ex-sub='),'missing accessible two-row logo picker in '+name);
+  assert(html.includes('data-ex-sub="blocs"')&&html.includes('<svg'),'menorah (blocs) icon missing in '+name);
+  assert(!html.includes('data-ex-lens'),'the institutes/channels lens selector came back in '+name);
+  assert(!/NaN|undefined/.test(html),'invalid value rendered in '+name);
 }
+run(`S.exSources=[];S.exSubjects=['blocs'];S.exploreView='chart';renderExplorerHTML(realP,realP,realP)`);
+assert.equal(run('S.explorer.state.overview'),true,'default view must be the blocs average');
+run(`S.exSources=['ערוץ 14','כאן 11'];S.exSubjects=['likud','shas','noam'];renderExplorerHTML(realP,realP,realP)`);
+assert(run('explorerLineCount(S.explorer.state.sources,S.explorer.state.subjects)')>=1,'line counter broke');
+assert.equal(run(`explorerLineCount(['a','b'],['blocs'])`),2,'bloc subject should count one line per source');
+assert.equal(run(`explorerLineCount([],['x','y'])`),2,'no source means one aggregated source');
+run(`S.exSources=[];S.exSubjects=['blocs'];`);
 const gallery=run('feedCardHTML(realP.polls.at(-1),realP.polls,true)');
 assert(gallery.includes(' open')&&gallery.includes('data-feed-poll='),'gallery card is not expanded or has no individual expansion');
 assert(gallery.includes('מקור'),'gallery lost the original source link');
@@ -83,4 +100,4 @@ feedBox.opened=['feed-old'];
 run(`renderPollFeed({polls:[oldFeed,feedFixture,{...feedFixture,id:'feed-newer',date:'06.10.2026',dateTimestamp:Date.parse('2026-10-06')}]})`);
 assert(isOpen('feed-newer'),'newly arrived latest survey did not open');
 assert(isOpen('feed-old'),'rerender lost a survey the user had opened');
-console.log('Passed: survey aggregation, comparable trends, table dates, logo pickers, source cards, permanent Arab classification for Ra’am, hidden zero-seat lists and latest-poll expansion with preserved user choices.');
+console.log('Passed: survey aggregation, comparable trends, table dates, two-row logo pickers (sources and subjects), source cards, permanent Arab classification for Ra’am, hidden zero-seat lists and latest-poll expansion with preserved user choices.');

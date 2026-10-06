@@ -303,7 +303,7 @@ function wirePollTracker() {
     const a = e.target.closest("a[data-polls-go]");
     if (!a || S.view !== "polls" || a.dataset.pollsGo === "acc" || e.ctrlKey || e.metaKey || e.shiftKey) return;
     e.preventDefault();
-    if (a.dataset.exMode) S.exploreMode = a.dataset.exMode;
+    if (a.dataset.exMode === "overview") { S.exSources = []; S.exSubjects = ["blocs"]; }
     history.replaceState(null, "", a.getAttribute("href"));
     setPollsTab(a.dataset.pollsGo);
     $(`[data-polls-nav] a[aria-current="page"]`)?.focus();

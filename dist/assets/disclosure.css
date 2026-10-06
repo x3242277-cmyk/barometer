@@ -13,11 +13,8 @@
 #view-haredi .page-intro{padding-top:18px;padding-bottom:16px}
 #view-haredi .page-intro h2{font-size:clamp(2rem,2.7vw,2.55rem);line-height:1.16;max-width:32ch}
 #view-haredi .page-intro>p:not(.kicker){margin-top:10px;line-height:1.6}
-/* The method intro is a compact invitation; the full canvas appears during playback. */
+/* הסימולציה בגודל קבוע מההתחלה (ראו method-sim.css) — בלי חלון שמתרחב בהפעלה */
 @media (min-width:1100px){
-  #method-sim:not(.is-running) .ms-main{grid-template-columns:minmax(0,1fr)}
-  #method-sim:not(.is-running) .ms-ledger{display:none}
-  #method-sim:not(.is-running) .ms-stagebox .ms-stage{min-height:350px;max-height:350px}
   #method-sim:not(.is-running) .ms-idle::before{background:radial-gradient(46% 60% at 50% 52%,#e5c78324,transparent 75%)}
 }
 .model-disclosure{margin:8px 0 10px;max-width:67ch;padding:8px 12px;border-inline-start:3px solid #ad812f;background:#f6efe2;color:#36465a;font-size:.84rem;line-height:1.45}
@@ -89,11 +86,11 @@
 .privacy-actions button,.analytics-consent button{border:1px solid #244b72;border-radius:7px;background:#fff;color:#123f6c;padding:9px 15px;font:inherit;font-weight:750;cursor:pointer}
 .privacy-actions button:last-child,.analytics-consent button[data-choice="yes"]{background:#164d84;color:#fff}
 .privacy-actions button:focus-visible,.analytics-consent button:focus-visible{outline:3px solid #d4a94f;outline-offset:2px}
-.analytics-consent{position:fixed;z-index:1000;inset:auto 0 0;background:#0c2137;color:#fff;border-top:3px solid #d4a94f;box-shadow:0 -5px 22px #07142444}
+.analytics-consent{position:fixed;z-index:1000;inset:auto auto 16px 16px;width:min(330px,calc(100vw - 32px));background:#0c2137;color:#fff;border:1px solid #d4a94f;border-radius:12px;box-shadow:0 10px 30px #07142466}
 .analytics-consent[hidden]{display:none}
-.analytics-consent-inner{max-width:1320px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px}
+.analytics-consent-inner{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:14px 16px}
 .analytics-consent p{margin:0;font-size:.88rem;line-height:1.45}
 .analytics-consent a{color:#f4d389;text-decoration:underline}
-.analytics-consent-actions{display:flex;gap:9px;flex:none}
+.analytics-consent-actions{display:flex;gap:9px}.analytics-consent-actions button{flex:1}
 .analytics-consent button{padding:7px 12px;font-size:.84rem}
 @media print{.info-page .info-header{display:none}}

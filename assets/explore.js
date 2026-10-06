@@ -223,7 +223,7 @@ function wireExploration() {
       /* לחיצה על מפלגה פותחת את הגרף של אותה מפלגה: מצב "מפלגות", המפלגה בלבד */
       const id=focus.dataset.focusParty;
       S.focusParty=id;S.trendParty=id;
-      S.exploreMode='parties';S.exploreSelections={...S.exploreSelections,parties:[id]};
+      S.exSubjects=[id];S.exSources=[];
       if(location.hash==='#/polls/parties'&&S.view==='polls'){setPollsTab('trend');renderExplorer();window.scrollTo({top:0});}
       else location.hash='#/polls/parties';
     }

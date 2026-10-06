@@ -1,11 +1,16 @@
 /* כל הסקרים · מגמות והשוואות — כרטיס אחד בגובה המסך:
-   שורה אחת של מקרא וכלים, בחירת לוגואים (בהשוואות), והגרף או הטבלה בכל הגובה שנשאר.
-   מבט כולל = הגושים לפי בסיס המספרים שנבחר. ההשוואות לפי ערוץ / מכון / מפלגה
-   משתמשות בסקרים כפי שפורסמו: רשימה שלא נמדדה נשארת חסרה (לא 0), והקו נקטע
+   שורה אחת של מקרא וכלים, שתי שורות לוגואים (מימין מי פרסם, משמאל על מה), והגרף או הטבלה בכל הגובה שנשאר.
+   ברירת המחדל = ממוצע הסקרים של הגושים. בחירת ערוץ מציגה את הסקרים שלו כפי שפורסמו: רשימה שלא נמדדה נשארת חסרה (לא 0), והקו נקטע
    כשהרכב הרשימה משתנה. */
 const EXPLORER_COLORS = ['#0f7c8a', '#c7871a', '#7c5aa6', '#475569', '#b0467d'];
 const EXPLORER_MODES = { overview: 'מבט כולל', channels: 'ערוצים', firms: 'מכונים', parties: 'מפלגות' };
 const EXPLORER_MAX = 5;
+/* שתי שורות אייקונים: מימין המקורות (ערוצים + הברומטר; בלי בחירה — ממוצע כל הסקרים),
+   משמאל הנושאים (מפלגות + המנורה = הגושים; ברירת המחדל). */
+const EXPLORER_BARO = { key: 'baro', label: 'תחזית הברומטר', logo: 'assets/logo-icon.png', short: 'ה' };
+const MENORAH_SVG = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#12345c"/><g transform="translate(3.2 3.6) scale(.8)" fill="none" stroke="#e5c783" stroke-width="1.9" stroke-linecap="round"><path d="M16 7V26M11 26.5h10"/><path d="M16 22C12.2 22 12 17 12 8M16 19C9.5 19 8 15 8 8M16 16C7 16 4 12.5 4 8"/><path d="M16 22C19.8 22 20 17 20 8M16 19C22.5 19 24 15 24 8M16 16C25 16 28 12.5 28 8"/></g><g transform="translate(3.2 3.6) scale(.8)" fill="#f6e7bd"><circle cx="16" cy="5.4" r="1.5"/><circle cx="12" cy="6" r="1.5"/><circle cx="8" cy="6" r="1.5"/><circle cx="4" cy="6" r="1.5"/><circle cx="20" cy="6" r="1.5"/><circle cx="24" cy="6" r="1.5"/><circle cx="28" cy="6" r="1.5"/></g></svg>';
+const EXPLORER_BLOCS = { key: 'blocs', label: 'הגושים (ברירת מחדל)', svg: MENORAH_SVG };
+const EXPLORER_METRICS = { Right: 'ימין וחרדים', Left: 'מרכז–שמאל', Arabs: 'הרשימות הערביות' };
 const EXPLORER_OUTLET_LOGOS = { 'חדשות 12':'assets/logos/channel12.svg', 'חדשות 13':'assets/logos/channel13.svg', 'ערוץ 14':'assets/logos/channel14.png', 'כאן 11':'assets/logos/kan11.svg', 'i24NEWS':'assets/logos/i24news.png', 'ערוץ 16':'assets/logos/channel-16.png', 'וואלה':'assets/logos/walla.png', 'זמן ישראל':'assets/logos/zman-israel.png', 'גלי צה״ל':'assets/logos/galatz.png' };
 const EXPLORER_NOTE = 'כל נקודה היא תאריך שבו פורסם סקר. כשיש כמה סקרים באותו יום מוצג ממוצע, עם משקל שווה לכל מכון. הקווים מחברים מדידות בלבד ונקטעים כששם הרשימה או הרכבה משתנים; אין נתון בתאריך מסוים אינו אפס (בטבלה: —). בהשוואת מפלגות, הממוצע בכל יום כולל רק מכונים שמדדו את המפלגה. המספרים במנדטים.';
 
@@ -20,6 +25,7 @@ function explorerEntities(P, mode) {
 }
 
 function explorerLogo(e) {
+  if (e.svg) return `<span class="ex-avatar ex-avatar-svg">${e.svg}</span>`;
   /* מפלגה: תמונת המנהיג (מקומית, מזוהה גם בעיגול קטן); אחרת — הלוגו, וראשי התיבות עד שהוא נטען */
   const portrait = e.party ? S.leaders?.[e.key] : '';
   if (portrait) return `<span class="ex-avatar"><img class="ex-portrait-image" src="${esc(portrait)}" alt="" loading="lazy"></span>`;
@@ -27,16 +33,19 @@ function explorerLogo(e) {
 }
 
 function explorerState(P) {
-  if (!EXPLORER_MODES[S.exploreMode]) S.exploreMode = 'overview';
   if (S.exploreView !== 'table') S.exploreView = 'chart';
-  S.exploreSelections ||= {};
-  const mode = S.exploreMode, entities = mode === 'overview' ? [] : explorerEntities(P, mode);
-  if (!S.exploreSelections[mode]) S.exploreSelections[mode] = entities.slice(0, 2).map(e => e.key);
-  /* לפי סדר הבחירה — כך הצבע של מה שכבר נבחר לא משתנה כשמוסיפים עוד */
-  const selected = S.exploreSelections[mode].map(k => entities.find(e => e.key === k)).filter(Boolean).slice(0, EXPLORER_MAX);
-  S.exploreMetric ||= 'Right';
-  return { mode, entities, selected, metric: S.exploreMetric, view: S.exploreView };
+  const channels = explorerEntities(P, 'channels'), parties = explorerEntities(P, 'parties');
+  const chKeys = new Set(channels.map(e => e.key)), pKeys = new Set(parties.map(e => e.key));
+  S.exSources = (S.exSources || []).filter(k => k === 'baro' || chKeys.has(k)).slice(0, EXPLORER_MAX);
+  let subs = (S.exSubjects || ['blocs']).filter(k => k === 'blocs' || pKeys.has(k));
+  if (subs.length > 1) subs = subs.filter(k => k !== 'blocs');
+  S.exSubjects = (subs.length ? subs : ['blocs']).slice(0, EXPLORER_MAX);
+  if (!EXPLORER_METRICS[S.exploreMetric]) S.exploreMetric = 'Right';
+  const sources = S.exSources, subjects = S.exSubjects, hasChannel = sources.some(k => k !== 'baro');
+  return { channels, parties, sources, subjects, hasChannel, overview: subjects[0] === 'blocs' && !hasChannel, metric: S.exploreMetric, view: S.exploreView };
 }
+/* כמה קווים יצטרכו אם מוסיפים בחירה: מקורות (או ממוצע) כפול נושאים (או גוש אחד) */
+const explorerLineCount = (sources, subjects) => Math.max(1, sources.length) * (subjects[0] === 'blocs' ? 1 : subjects.length);
 
 function explorerLines(P, state) {
   const end = parsePollDate(P.polls.at(-1)), start = S.trackRange === 'month' ? end - 29 * DAY_MS : parsePollDate(P.polls[0]);
@@ -63,15 +72,40 @@ function explorerLines(P, state) {
 
 /* מפלגות לפי בסיס המספרים שנבחר: ממוצע נע, משוקלל אמינות או תחזית הברומטר — נקודה אחת ביום (האחרונה).
    רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר. */
-function explorerPartyLines(M, state) {
+function explorerSeriesDays(M) {
   const end = M.now.t, start = S.trackRange === 'month' ? end - 29 * DAY_MS : -Infinity;
   const day = t => new Date(t).toLocaleDateString('en-CA', { timeZone: 'Asia/Jerusalem' });
   const byDay = new Map(); M.series.filter(s => s.t >= start).forEach(s => byDay.set(day(s.t), s));
-  const series = [...byDay.values()];
+  return [...byDay.values()];
+}
+function explorerPartyLines(M, state) {
+  const series = explorerSeriesDays(M);
   return state.selected.map((e, i) => {
     const points = series.map(s => ({ t: s.t, v: s.parties[e.key] || 0, n: s.n, firms: s.firms, polls: [], signature: '' }));
     return { ...e, color: e.color || EXPLORER_COLORS[i], points, last: points.at(-1) };
   });
+}
+/* הקווים של ההשוואה: לכל מקור שנבחר (ערוץ, הברומטר, או הממוצע) ולכל נושא (גוש או מפלגה) */
+function explorerCompareLines(P, M, Mb, state) {
+  const srcs = state.sources.length ? state.sources : ['agg'];
+  const metrics = state.subjects[0] === 'blocs' ? [state.metric] : state.subjects;
+  const partyOf = id => state.parties.find(e => e.key === id);
+  const lines = [];
+  srcs.forEach((src, si) => metrics.forEach((metric, mi) => {
+    const subject = EXPLORER_METRICS[metric] ? { label: EXPLORER_METRICS[metric], color: BLOCS[metric].color } : { label: partyOf(metric)?.label || metric, color: partyOf(metric)?.color };
+    const channel = state.channels.find(e => e.key === src);
+    const source = src === 'agg' ? { label: TRACK_BASES[M.basis || 'avg'].label } : src === 'baro' ? EXPLORER_BARO : channel;
+    let points;
+    if (channel) points = explorerLines(P, { mode: 'channels', selected: [channel], metric })[0].points;
+    else {
+      const model = src === 'baro' ? Mb : M;
+      points = explorerSeriesDays(model).map(s => ({ t: s.t, v: EXPLORER_METRICS[metric] ? s.blocs[metric] : (s.parties[metric] || 0), n: s.n, firms: s.firms, polls: [], signature: '' }));
+    }
+    const label = srcs.length > 1 && (metrics.length > 1 || EXPLORER_METRICS[metric]) ? `${subject.label} · ${source.label}` : srcs.length > 1 ? source.label : subject.label;
+    const color = srcs.length === 1 ? subject.color : metrics.length === 1 ? EXPLORER_COLORS[si % EXPLORER_COLORS.length] : EXPLORER_COLORS[(si * metrics.length + mi) % EXPLORER_COLORS.length];
+    lines.push({ key: `${src}|${metric}`, source: src, subject: metric, label, color: color || EXPLORER_COLORS[lines.length % EXPLORER_COLORS.length], points, last: points.at(-1) });
+  }));
+  return lines;
 }
 const explorerLinesFor = (P, M, state) => state.mode === 'parties' && M ? explorerPartyLines(M, state) : explorerLines(P, state);
 
@@ -82,12 +116,12 @@ function explorerTable(lines, dates) {
 
 /* הגרף בגודל המקום שקיבל (S.trackWidth × S.trackH), כך שהטקסט לא נמתח */
 function explorerChart(P, state, M) {
-  const lines = explorerLinesFor(P, M, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
+  const lines = state.lines || explorerLinesFor(P, M, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
   const dates = [...new Set(points.map(p => p.t))].sort((a, b) => b - a), table = explorerTable(lines, dates);
-  if (!points.length) return { lines, dates, table, svg: `<div class="ex-empty">${state.selected.length ? 'אין מדידות בטווח הזה. נסו טווח רחב יותר.' : 'בחרו לוגו אחד או יותר כדי להשוות.'}</div>` };
+  if (!points.length) return { lines, dates, table, svg: `<div class="ex-empty">${(state.selected || state.lines || []).length ? 'אין מדידות בטווח הזה. נסו טווח רחב יותר.' : 'בחרו לוגו אחד או יותר כדי להשוות.'}</div>` };
   const W = Math.max(320, S.trackWidth || 850), H = Math.max(160, S.trackH || 260), m = { l: 34, r: 16, t: 14, b: 26 };
   const t0 = Math.min(...points.map(p => p.t)), t1 = Math.max(t0 + DAY_MS, ...points.map(p => p.t));
-  const vals = points.map(p => p.v), isRight = state.mode !== 'parties' && state.metric === 'Right';
+  const vals = points.map(p => p.v), isRight = state.isRight ?? (state.mode !== 'parties' && state.metric === 'Right');
   const span = Math.max(...vals) - Math.min(...vals), step = span > 30 ? 10 : span > 12 ? 5 : 2;
   let lo = Math.max(0, Math.floor((Math.min(...vals)-2)/step)*step), hi = Math.ceil((Math.max(...vals)+2)/step)*step;
   if (isRight) { lo = Math.min(lo, 58); hi = Math.max(hi, 64); }
@@ -99,7 +133,7 @@ function explorerChart(P, state, M) {
   for (let i=0;i<=ticks;i++) { const t=t0+(t1-t0)*i/ticks; grid += `<text class="tr-tick" x="${x(t)}" y="${H-8}" text-anchor="middle">${trDay(t)}</text>`; }
   const paths = valid.map(l => `<path class="tr-line ex-line" stroke="${l.color}" d="${l.points.map((p,i) => `${i && p.signature===l.points[i-1].signature?'L':'M'}${x(p.t).toFixed(1)} ${y(p.v).toFixed(1)}`).join('')}"/>${l.points.map(p => `<circle class="ex-point" cx="${x(p.t).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3.5" fill="${l.color}"><title>${esc(l.label)} · ${trDay(p.t)} · ${trFmt(p.v)} מנדטים · ${p.n} סקרים</title></circle>`).join('')}`).join('');
   const svg = `<svg class="tr-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="השוואת ${esc(lines.map(l=>l.label).join(', '))} לאורך זמן, במנדטים. הנתונים המלאים בתצוגת הטבלה.">${grid}${paths}<line class="tr-cursor" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/><rect class="tr-hit" x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}"/></svg>`;
-  const sub = state.mode === 'parties' && M ? TRACK_BASES[M.basis || 'avg'].label : '';
+  const sub = state.sub ?? (state.mode === 'parties' && M ? TRACK_BASES[M.basis || 'avg'].label : '');
   return { lines, dates, table, svg, sub, geom: { W, m, t0, t1, x, y } };
 }
 
@@ -109,7 +143,7 @@ const exSelect = (attr, label, options, value) => `<select ${attr} aria-label="$
 /* המקרא הוא גם שורת המספרים: במבט הכולל — שלושת הגושים והשינוי בשבועיים;
    בהשוואה — כל מה שנבחר, עם המדידה האחרונה ותאריכה */
 function explorerKeys(M, state, lines) {
-  if (state.mode === 'overview') return TRACK_BLOCS.map(([k, label]) => {
+  if (state.overview) return TRACK_BLOCS.map(([k, label]) => {
     const d = trDelta(M.now.blocs[k] - M.before.blocs[k]);
     return `<span class="ex-key${k === 'Arabs' ? ' no-line' : ''}" style="--c:${BLOCS[k].color}"><i></i><span>${label}</span><b>${trFmt(M.now.blocs[k])}</b><em class="${d.cls}" title="שינוי לעומת לפני שבועיים">${d.sym}</em></span>`;
   }).join('');
@@ -117,34 +151,49 @@ function explorerKeys(M, state, lines) {
 }
 
 function explorerTools(P, M, state) {
-  const out = [exSelect('data-ex-lens', 'מה להשוות', [['overview', 'מבט כולל · הגושים'], ['parties', 'מפלגות'], ['firms', 'מכונים'], ['channels', 'ערוצים']], state.mode)], basis = M.basis || 'avg';
-  if (state.mode !== 'overview' && state.mode !== 'parties') out.push(exSelect('data-ex-metric', 'מה משווים', [['Right','ימין וחרדים'],['Left','מרכז–שמאל'],['Arabs','הרשימות הערביות'],...P.parties.map(p=>[p.id,p.name])], state.metric));
-  const series = state.mode === 'overview' || state.mode === 'parties';
-  const first = series ? M.series[0].t : parsePollDate(P.polls[0]), last = series ? M.now.t : parsePollDate(P.polls.at(-1));
-  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', series && basis !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
+  const out = [];
+  if (!state.overview && state.subjects[0] === 'blocs') out.push(exSelect('data-ex-metric', 'איזה גוש', Object.entries(EXPLORER_METRICS), state.metric));
+  const model = state.hasChannel ? null : state.model;
+  const first = model ? model.series[0].t : parsePollDate(P.polls[0]), last = model ? model.now.t : parsePollDate(P.polls.at(-1));
+  if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', model && (model.basis || 'avg') !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
   out.push(`<div class="switch ex-view" role="group" aria-label="תצוגה"><button type="button" data-ex-view="chart" aria-pressed="${state.view === 'chart'}">גרף</button><button type="button" data-ex-view="table" aria-pressed="${state.view === 'table'}">טבלה</button></div>`);
-  out.push(exInfo(state.mode === 'overview' ? `${TRACK_BASES[basis].note} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
-    : state.mode === 'parties' ? `${TRACK_BASES[basis].note} כל קו הוא מפלגה אחת; רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר.` : EXPLORER_NOTE));
+  const modelNote = TRACK_BASES[((model || M).basis) || 'avg'].note;
+  out.push(exInfo(state.overview ? `${modelNote} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
+    : state.hasChannel ? EXPLORER_NOTE : `${modelNote} כל קו הוא מפלגה אחת; רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר.`));
   return out.join('');
 }
 
-function explorerPicker(state) {
-  const full = state.selected.length >= EXPLORER_MAX, colorOf = key => state.lines?.find(l => l.key === key)?.color;
-  return `<div class="ex-picker" role="group" aria-label="בחירת ${esc(EXPLORER_MODES[state.mode])} להשוואה, עד ${EXPLORER_MAX}">${state.entities.map(e => {
-    const on = state.selected.some(x => x.key === e.key);
-    return `<button type="button" class="ex-logo-button" data-ex-entity="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on ? ` style="--c:${colorOf(e.key)}"` : ''}${full && !on ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
-  }).join('')}<span class="ex-count" title="לחצו על הלוגואים כדי להוסיף או להסיר">${state.selected.length}/${EXPLORER_MAX}</span></div>`;
+/* שתי שורות לוגואים: מימין מי פרסם (הברומטר והערוצים), משמאל על מה (המנורה = הגושים, והמפלגות) */
+function explorerPicker(state, hasBaro) {
+  const colorOf = (kind, key) => state.lines?.find(l => l[kind] === key)?.color;
+  const count = explorerLineCount(state.sources, state.subjects);
+  const btn = (attr, e, on, kind, disabled) => `<button type="button" class="ex-logo-button${e.svg || e.key === 'baro' ? ' ex-logo-special' : ''}" ${attr}="${esc(e.key)}" title="${esc(e.label)}" aria-label="${esc(e.label)}" aria-pressed="${on}"${on && colorOf(kind, e.key) ? ` style="--c:${colorOf(kind, e.key)}"` : ''}${disabled ? ' disabled' : ''}>${explorerLogo(e)}</button>`;
+  const canSrc = k => state.sources.includes(k) || explorerLineCount([...state.sources, k], state.subjects) <= EXPLORER_MAX;
+  const canSub = k => state.subjects.includes(k) || (state.subjects[0] === 'blocs' ? explorerLineCount(state.sources, [k]) : explorerLineCount(state.sources, [...state.subjects, k])) <= EXPLORER_MAX;
+  const sources = [hasBaro ? btn('data-ex-src', EXPLORER_BARO, state.sources.includes('baro'), 'source', !canSrc('baro')) : '', ...state.channels.map(e => btn('data-ex-src', e, state.sources.includes(e.key), 'source', !canSrc(e.key)))].join('');
+  const subjects = [btn('data-ex-sub', EXPLORER_BLOCS, state.subjects[0] === 'blocs', 'subject', false), ...state.parties.map(e => btn('data-ex-sub', e, state.subjects.includes(e.key), 'subject', !canSub(e.key)))].join('');
+  return `<div class="ex-pickers">
+    <div class="ex-picker ex-src" role="group" aria-label="מי פרסם — בלי בחירה מוצג ממוצע כל הסקרים"><span class="ex-picker-label">מי פרסם <small>בלי בחירה: ממוצע כולם</small></span><span class="ex-picker-icons">${sources}</span></div>
+    <div class="ex-picker ex-sub" role="group" aria-label="על מה — המנורה היא הגושים"><span class="ex-picker-label">על מה <small>המנורה: הגושים</small></span><span class="ex-picker-icons">${subjects}</span><span class="ex-count" title="לחצו על הלוגואים כדי להוסיף או להסיר">${count}/${EXPLORER_MAX}</span></div>
+  </div>`;
 }
 
-function renderExplorerHTML(P, M) {
-  const state = explorerState(P);
-  state.lines = state.mode === 'overview' ? [] : explorerLinesFor(P, M, state);
-  S.explorer = { P, M, state };
-  const basis = M.basis || 'avg', tabs = state.mode === 'overview' || state.mode === 'parties'
-    ? `<div class="ex-tabs" role="tablist" aria-label="על מה מבוססים המספרים">${Object.entries(TRACK_BASES).map(([k, b]) => `<button type="button" role="tab" data-ex-basis="${k}" aria-selected="${basis === k}" title="${esc(b.note)}">${b.label}</button>`).join('')}</div>` : '';
-  return `<div class="tr-card ex-workspace" data-mode="${state.mode}">${tabs}
-    <div class="ex-bar"><div class="ex-keys">${explorerKeys(M, state, state.lines)}</div><div class="ex-tools">${explorerTools(P, M, state)}</div></div>
-    ${state.mode === 'overview' ? '' : explorerPicker(state)}
+function renderExplorerHTML(P, M, Mb) {
+  const state = explorerState(P), hasBaro = !!(Mb && Mb.basis);
+  if (!hasBaro) state.sources = S.exSources = state.sources.filter(k => k !== 'baro');
+  state.hasChannel = state.sources.some(k => k !== 'baro');
+  state.overview = state.subjects[0] === 'blocs' && !state.hasChannel;
+  /* הדגם של הקווים המצטברים: הברומטר אם נבחר, אחרת הממוצע שנבחר בלשונית */
+  state.model = state.sources.includes('baro') && !state.hasChannel ? Mb : M;
+  state.lines = state.overview ? [] : explorerCompareLines(P, M, hasBaro ? Mb : M, state);
+  state.isRight = state.subjects[0] === 'blocs' && state.metric === 'Right';
+  state.sub = state.hasChannel ? '' : TRACK_BASES[state.model.basis || 'avg'].label;
+  S.explorer = { P, M, Mb, state };
+  const basis = M.basis || 'avg', tabs = state.sources.length ? ''
+    : `<div class="ex-tabs" role="tablist" aria-label="על מה מבוסס הממוצע">${Object.entries(TRACK_BASES).filter(([k]) => k !== 'baro').map(([k, b]) => `<button type="button" role="tab" data-ex-basis="${k}" aria-selected="${basis === k}" title="${esc(b.note)}">${b.label}</button>`).join('')}</div>`;
+  return `<div class="tr-card ex-workspace" data-mode="${state.overview ? 'overview' : 'compare'}">${tabs}
+    <div class="ex-bar"><div class="ex-keys">${explorerKeys(state.model, state, state.lines)}</div><div class="ex-tools">${explorerTools(P, M, state)}</div></div>
+    ${explorerPicker(state, hasBaro)}
     <div class="ex-body" data-ex-body></div>
   </div>`;
 }
@@ -154,7 +203,7 @@ function drawExplorer() {
   const X = S.explorer, body = document.querySelector('#poll-tracker [data-ex-body]'); if (!X || !body) return;
   const w = Math.round(body.clientWidth), h = Math.round(body.clientHeight); if (!w || !h) return;
   S.trackWidth = w; S.trackH = h; S.exDrawn = `${w}x${h}`;
-  const overview = X.state.mode === 'overview', chart = overview ? trackerChart(X.M, 'blocs') : explorerChart(X.P, X.state, X.M);
+  const overview = X.state.overview, chart = overview ? trackerChart(X.state.model, 'blocs') : explorerChart(X.P, X.state, X.M);
   if (X.state.view === 'table') { body.innerHTML = chart.table; return; }
   body.innerHTML = `<div class="tr-plot">${chart.svg}<div class="tr-tip" hidden></div></div>`;
   if (chart.geom) (overview ? wireTrackerHover : wireExplorerHover)(body, chart);
@@ -162,8 +211,10 @@ function drawExplorer() {
 let exObserver = null;
 function renderExplorer() {
   const root = document.querySelector('#poll-tracker'), P = trackerModel(); if (!root || !P) return;
+  /* ״תחזית הברומטר״ כבר אינה לשונית אלא לוגו בשורת המקורות */
+  if (S.trackBasis === 'baro') { S.trackBasis = 'avg'; if (!(S.exSources || []).length) S.exSources = ['baro']; }
   S.trackBasis ||= 'avg'; S.trackRange ||= 'all';
-  root.innerHTML = renderExplorerHTML(P, basisModel(P, S.trackBasis));
+  root.innerHTML = renderExplorerHTML(P, basisModel(P, S.trackBasis), basisModel(P, 'baro'));
   S.exDrawn = ''; drawExplorer();
   const body = root.querySelector('[data-ex-body]');
   if (typeof ResizeObserver === 'undefined' || !body) return;
@@ -210,8 +261,10 @@ function openPollGallery(id) {
 if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',()=>{
   const refocus = sel => document.querySelector(sel)?.focus();
   document.addEventListener('click',e=>{
-    const entity=e.target.closest('[data-ex-entity]');
-    if(entity){const key=entity.dataset.exEntity,selected=S.exploreSelections[S.exploreMode];S.exploreSelections[S.exploreMode]=selected.includes(key)?selected.filter(k=>k!==key):selected.concat(key).slice(0,EXPLORER_MAX);renderExplorer();refocus(`[data-ex-entity="${CSS.escape(key)}"]`);return;}
+    const src=e.target.closest('[data-ex-src]');
+    if(src){const key=src.dataset.exSrc,cur=S.exSources||[];S.exSources=cur.includes(key)?cur.filter(k=>k!==key):cur.concat(key);renderExplorer();refocus(`[data-ex-src="${CSS.escape(key)}"]`);return;}
+    const sub=e.target.closest('[data-ex-sub]');
+    if(sub){const key=sub.dataset.exSub,cur=(S.exSubjects||['blocs']).filter(k=>k!=='blocs');S.exSubjects=key==='blocs'?['blocs']:(cur.includes(key)?cur.filter(k=>k!==key):cur.concat(key));renderExplorer();refocus(`[data-ex-sub="${CSS.escape(key)}"]`);return;}
     const basis=e.target.closest('button[data-ex-basis]');
     if(basis){S.trackBasis=basis.dataset.exBasis;renderExplorer();refocus(`button[data-ex-basis="${S.trackBasis}"]`);return;}
     const view=e.target.closest('[data-ex-view]');
@@ -221,7 +274,7 @@ if(typeof document!=='undefined') document.addEventListener('DOMContentLoaded',(
     if(e.target.closest('[data-gallery-close]'))$('#poll-gallery').close();
   });
   document.addEventListener('change',e=>{
-    const controls={'data-ex-lens':'exploreMode','data-ex-metric':'exploreMetric','data-ex-range':'trackRange'};
+    const controls={'data-ex-metric':'exploreMetric','data-ex-range':'trackRange'};
     for(const [attr,key] of Object.entries(controls)) if(e.target.hasAttribute?.(attr)){S[key]=e.target.value;renderExplorer();refocus(`[${attr}]`);return;}
   });
   $('#poll-gallery')?.addEventListener('click',e=>{if(e.target===$('#poll-gallery'))$('#poll-gallery').close();});

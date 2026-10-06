@@ -7,15 +7,19 @@
   const endpoint='/api/analytics/event';
   const consent=()=>{try{return localStorage.getItem(choiceKey)==='yes'}catch{return false}};
   let enabled=false,started=false,page=current(),view='',seq=0,seconds=0,last=performance.now(),activity=last,session='';
-  const notice=document.createElement('aside');
-  notice.className='analytics-consent';notice.setAttribute('aria-label','בחירת מדידת שימוש');
-  notice.innerHTML='<div class="analytics-consent-inner"><p>נא אשרו את מדיניות הפרטיות. <a href="privacy.html">למדיניות הפרטיות</a></p><div class="analytics-consent-actions"><button type="button" data-choice="no">לא מאשר</button><button type="button" data-choice="yes">מאשר</button></div></div>';
+  const notice=document.createElement('dialog');
+  notice.className='analytics-consent';notice.setAttribute('aria-label','אישור תנאי שימוש ופרטיות');
+  notice.innerHTML='<div class="analytics-consent-inner"><p>אני מאשר/ת את כל האמור בתנאי השימוש ובמדיניות הפרטיות, ומבין/ה שכל האמור באתר הוא פרשנות ואומדנים ולא נתונים רשמיים. האתר אינו משתמש בעוגיות, ומדידת השימוש בו אנונימית. <a href="about.html" target="_blank" rel="noopener" tabindex="-1">לקריאת תנאי השימוש והפרטיות</a></p><div class="analytics-consent-actions"><button type="button" data-choice="yes" autofocus>קראתי ואני מאשר/ת</button></div></div>';
   const stored=()=>{try{return localStorage.getItem(choiceKey)}catch{return null}};
-  notice.hidden=stored()==='yes'||stored()==='no';
+  const root=document.documentElement;
+  const open=()=>{root.classList.add('consent-open');if(!notice.open)notice.showModal()};
+  const close=()=>{root.classList.remove('consent-open');if(notice.open)notice.close()};
   document.body.append(notice);
+  notice.addEventListener('cancel',event=>event.preventDefault());
+  if(stored()!=='yes'&&stored()!=='no')open();
   notice.querySelectorAll('[data-choice]').forEach(button=>button.addEventListener('click',()=>{
     try{localStorage.setItem(choiceKey,button.dataset.choice)}catch{}
-    notice.hidden=true;
+    close();
     if(button.dataset.choice==='yes')start();
   }));
   function tick(){const now=performance.now();if(!document.hidden&&now-activity<60000)seconds+=Math.min(5,(now-last)/1000);last=now;}
@@ -29,7 +33,7 @@
   if(consent())start();
   ['pointerdown','keydown','scroll','pointermove'].forEach(name=>addEventListener(name,()=>{if(!enabled)return;tick();activity=performance.now()},{passive:true}));
   addEventListener('hashchange',()=>{const next=current();if(next===page)return;send();page=next;view=crypto.randomUUID();seq=0;seconds=0;last=activity=performance.now();send()});
-  addEventListener('storage',event=>{if(event.key!==choiceKey)return;if(!consent()){enabled=false;started=false;notice.hidden=stored()==='no'}else{notice.hidden=true;start()}});
+  addEventListener('storage',event=>{if(event.key!==choiceKey)return;if(!consent()){enabled=false;started=false;if(stored()==='no')close();else open()}else{close();start()}});
   document.addEventListener('visibilitychange',()=>{send();last=performance.now();if(!document.hidden)activity=last});
   addEventListener('pagehide',send);setInterval(()=>{if(enabled)tick()},1000);setInterval(send,15000);
 })();

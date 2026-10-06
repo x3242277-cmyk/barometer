@@ -189,7 +189,7 @@ function wireExplorerHover(box, chart) {
 /* ---------- כרטיס סקר בעמודת הסקרים האחרונים (ובתצוגה המוגדלת) ---------- */
 function feedCardHTML(p, list, expanded = false) {
   const v=pollVector(p), f=firmOf(p.sourceId), previous=previousComparablePoll(p,list);
-  const ids=Object.keys(v.parties).sort((a,b)=>v.parties[b]-v.parties[a]);
+  const ids=Object.keys(v.parties).filter(id=>v.parties[id]>0).sort((a,b)=>v.parties[b]-v.parties[a]);
   const row=id=>{ const value=v.parties[id], pv=comparablePartyValue(p,previous,id), d=pv === null ? null : value-pv;
     return `<li style="--c:${partyHue(id)}"><i></i><span>${esc(p.parties.find(x=>normId(x.id)===id)?.name||partyMeta(id).name)}</span><b>${value}</b><em class="flat" title="${d===null?'אין מדידה קודמת בת השוואה':'לעומת הסקר הקודם של אותו ערוץ ומכון'}">${d===null?'—':d>0?'↑'+d:d<0?'↓'+Math.abs(d):'='}</em></li>`; };
   const blocs=['Right','Unknown','Arabs','Left'].filter(k=>v.blocs[k]>0), bar=blocs.map(k=>`<span style="flex:${v.blocs[k]};background:${BLOCS[k].color}">${v.blocs[k]>=7?v.blocs[k]:''}</span>`).join('');

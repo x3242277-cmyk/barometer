@@ -173,7 +173,7 @@
         </div>
         <div class="signal-bottom"><div class="signal-steps" aria-hidden="true">${phases.map((p, i) => `<span class="signal-step">${STEP_ICON[i]}<b dir="ltr">0${i + 1}</b>${p.label}</span>`).join('')}</div><button class="signal-pause" type="button" aria-label="השהיית הפתיח">השהיה <span aria-hidden="true">Ⅱ</span></button></div>
       </main>
-      <footer class="signal-footer"><span>${data.polls.length} סקרים · ${data.firms} מכונים · ${S.mode === 'weighted' ? 'משוקלל אמינות' : 'תחזית הברומטר'}</span><span>נתונים מעודכנים ל־${esc(heDate(S.cur.generatedAt))}</span></footer>
+      <footer class="signal-footer"><span>${data.polls.length} סקרים · ${data.firms} מכונים · ${S.mode === 'weighted' ? 'משוקלל דיוק' : 'תחזית הברומטר'}</span><span>נתונים מעודכנים ל־${esc(heDate(S.cur.generatedAt))}</span></footer>
       <div class="signal-progress" aria-hidden="true"></div>`;
     document.body.appendChild(stage);
     inertElements = [...document.body.children].filter(el => el !== stage && !['SCRIPT','STYLE','LINK'].includes(el.tagName)).map(el => [el, el.inert]);

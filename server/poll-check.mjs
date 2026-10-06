@@ -23,7 +23,7 @@ export function normalizePoll(p, sourceUrl = '', now = Date.now()) {
   const dateTimestamp = Number(p.dateTimestamp) || (dateMatch ? Date.parse(`${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`) : Date.parse(p.date));
   const aliases = { zionut_datit_zehut: 'zionut_datit' };
   const parties = p.parties.map(x => ({ id: aliases[x.id] || String(x.id || ''), name: String(x.name || x.hebrewName || x.id || '').slice(0, 160),
-    mandates: Number(x.mandates ?? x.seats), alignment: ['Coalition', 'Opposition', 'Arabs', 'Unknown'].includes(x.alignment) ? x.alignment : 'Unknown' }));
+    mandates: Number(x.mandates ?? x.seats), alignment: x.id === 'raam' ? 'Arabs' : ['Coalition', 'Opposition', 'Arabs', 'Unknown'].includes(x.alignment) ? x.alignment : 'Unknown' }));
   if (!p.id || !p.sourceId || !p.channelHebrewName || !Number.isFinite(dateTimestamp) || dateTimestamp > now + DAY ||
       parties.some(x => !x.id || !Number.isFinite(x.mandates) || x.mandates < 0 || x.mandates > 120) ||
       new Set(parties.map(x => x.id)).size !== parties.length || Math.abs(parties.reduce((t, x) => t + x.mandates, 0) - 120) > .01) return null;

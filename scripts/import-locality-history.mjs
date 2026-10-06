@@ -389,6 +389,31 @@ function buildRegions(sites, own, R, cbs) {
     /* חלק של אזור שהתפצל: "סביבת <היישוב הגדול>" — ולא שם שנשמע כמו העיר עצמה */
     if (g.part) { g.name = name + " · סביבת " + sites[g.members[0]].name; g.short = "סביבת " + sites[g.members[0]].name + tag; }
   }
+  /* איחוד אזורים שכנים באותו גוון בדיוק (אותו גוש ואותה דרגה ב־2022 — בטוח עם
+     בטוח, סביר עם סביר), עד 4% מהקולות לאזור. ערים שהן אזור נשארות לבד. */
+  const rating = g => {
+    const w = W(g), R = g.members.reduce((t, i) => t + sites[i].r * sites[i].w, 0) / w * 100, A = g.members.reduce((t, i) => t + sites[i].a * sites[i].w, 0) / w * 100, L = 100 - R - A;
+    const [[c1, v1], [, v2]] = Object.entries({ R, L, A }).sort((a, b) => b[1] - a[1]), m = v1 - v2;
+    return c1 + ":" + (m >= 30 ? "safe" : m >= 15 ? "likely" : m >= 7 ? "leans" : m >= 2 ? "tilt" : "tossup");
+  };
+  for (;;) {
+    const of = new Int32Array(n).fill(-1); final.forEach((g, gi) => g.members.forEach(i => { of[i] = gi; }));
+    let best = null;
+    final.forEach((g, gi) => {
+      if (g.city) return; const rg = rating(g);
+      const nb = new Map(); for (const i of g.members) for (const [j, len] of adj[i]) { const gj = of[j]; if (gj > gi && !final[gj].city) nb.set(gj, (nb.get(gj) || 0) + len); }
+      for (const [gj, len] of nb) if (rating(final[gj]) === rg && W(g) + W(final[gj]) <= 4 * T && (!best || len > best.len)) best = { gi, gj, len };
+    });
+    if (!best) break;
+    const a = final[best.gi], b = final[best.gj], big = W(a) >= W(b) ? a : b, small = big === a ? b : a;
+    const names = [big.name, small.name];
+    big.members.push(...small.members); big.members.sort((x, y) => sites[y].w - sites[x].w);
+    big.parts = [...(big.parts || [big.name]), ...(small.parts || [small.name])];
+    big.name = big.parts.slice(0, 2).join(" ו") + (big.parts.length > 2 ? " ועוד " + (big.parts.length - 2) : "");
+    big.short = big.short + "+";
+    final.splice(final.indexOf(small), 1);
+  }
+  final.forEach(g => { if (g.short) g.short = g.short.replace(/++$/, "+"); });
   return final;
 }
 

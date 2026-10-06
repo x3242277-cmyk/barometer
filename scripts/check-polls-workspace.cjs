@@ -52,4 +52,35 @@ for(const mode of ['channels','firms','parties']) {
 const gallery=run('feedCardHTML(realP.polls.at(-1),realP.polls,true)');
 assert(gallery.includes(' open')&&gallery.includes('data-feed-poll='),'gallery card is not expanded or has no individual expansion');
 assert(gallery.includes('מקור'),'gallery lost the original source link');
-console.log('Passed: channels/institutes/party aggregation, missing vs zero, explicit dates in the table view, empty selections, alliance changes, accessible logo pickers and expanded source cards.');
+run(`const feedFixture={...fixtureRows[0],id:'feed-new',date:'04.10.2026',dateTimestamp:Date.parse('2026-10-04'),parties:[
+  {id:'likud',name:'הליכוד',mandates:60,alignment:'Coalition'},
+  {id:'beyahad',name:'ביחד',mandates:46,alignment:'Opposition'},
+  {id:'raam',name:'רע״ם',mandates:6,alignment:'Opposition'},
+  {id:'reshima_meshutefet',name:'הרשימה המשותפת',mandates:8,alignment:'Arabs'},
+  {id:'noam',name:'רשימה מתחת לסף',mandates:0,alignment:'Coalition'}]};
+const oldFeed={...feedFixture,id:'feed-old',date:'03.10.2026',dateTimestamp:Date.parse('2026-10-03')};`);
+assert.equal(run(`alignOf({id:'raam',alignment:'Opposition'})`),'Arabs','source alignment overrode the permanent Ra’am classification');
+assert.equal(run(`partyMeta('raam').alignment`),'Arabs','Ra’am metadata does not use Arab classification');
+assert.equal(run(`sideOf('raam')`),'mid','Ra’am remained in the center-left party column');
+assert.equal(run('pollVector(feedFixture).blocs.Arabs'),14,'Ra’am was omitted from Arab poll totals');
+assert.equal(run('pollVector(feedFixture).blocs.Left'),46,'Ra’am remained in center-left poll totals');
+assert.equal(run('buildSeries([feedFixture])[0].blocs.Arabs'),14,'weighted series does not use the Arab classification');
+const filteredFeed=run('feedCardHTML(feedFixture,[oldFeed,feedFixture],true)');
+assert(!filteredFeed.includes('רשימה מתחת לסף'),'latest poll feed still displays a zero-seat list');
+assert(filteredFeed.includes('רע״ם')&&filteredFeed.includes('הרשימה המשותפת'),'passing Arab lists disappeared from the feed');
+const feedBox={innerHTML:'',seen:[],opened:[],querySelectorAll(selector){return (selector.includes(':has(')?this.opened:this.seen).map(id=>({dataset:{feedId:id}}));}};
+const feedNodes={'#polls-feed':feedBox,'#polls-stats':{},'#feed-all':{}};
+context.document={querySelector:selector=>feedNodes[selector]};
+run(`S.forecastHistory={weekly:[{date:'2026-10-05',week:'2026-10-05',seats:{likud:120}}]};renderPollFeed({polls:[oldFeed,feedFixture]});`);
+const isOpen=id=>new RegExp('data-feed-id="'+id+'"><details[^>]* open').test(feedBox.innerHTML);
+assert(isOpen('feed-new'),'latest actual poll did not open on first render');
+assert(!isOpen('feed-old'),'an older poll opened by default');
+assert(!isOpen('barometer-2026-10-05'),'a weekly forecast opened instead of the latest survey');
+feedBox.seen=['feed-new','feed-old','barometer-2026-10-05'];
+run('renderPollFeed({polls:[oldFeed,feedFixture]})');
+assert(!isOpen('feed-new'),'rerender reopened a survey the user had closed');
+feedBox.opened=['feed-old'];
+run(`renderPollFeed({polls:[oldFeed,feedFixture,{...feedFixture,id:'feed-newer',date:'06.10.2026',dateTimestamp:Date.parse('2026-10-06')}]})`);
+assert(isOpen('feed-newer'),'newly arrived latest survey did not open');
+assert(isOpen('feed-old'),'rerender lost a survey the user had opened');
+console.log('Passed: survey aggregation, comparable trends, table dates, logo pickers, source cards, permanent Arab classification for Ra’am, hidden zero-seat lists and latest-poll expansion with preserved user choices.');

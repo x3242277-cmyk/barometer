@@ -4,7 +4,7 @@
  *   dist/index.html    — עמוד HTML מלא, אפשר לפתוח ישירות מהדיסק
  *   dist/artifact.html — תוכן בלבד (בלי doctype/head/body), לפרסום כ-Artifact
  */
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rd = f => readFile(path.join(ROOT, f), "utf8");
 
 const html = await rd("index.html");
-const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "pipeline", "election", "election-pages", "election-tools", "refinement", "clarity", "exit-showcase", "usability", "landing", "poll-tracker", "theme", "results2022", "demography", "polls-workspace", "polls-gap", "accuracy", "method-sim", "board", "acc-hero", "forecast"];
+const stylesheets = ["styles", "upgrade", "home", "fit", "intro", "layout", "editorial", "experience", "pipeline", "election", "election-pages", "election-tools", "refinement", "clarity", "exit-showcase", "usability", "landing", "poll-tracker", "theme", "results2022", "demography", "polls-workspace", "polls-gap", "accuracy", "method-sim", "acc-hero", "forecast", "board", "disclosure"];
 let css = (await Promise.all(stylesheets.map(name => rd(`assets/${name}.css`)))).join("\n");
 // Imports must precede CSS rules, including imports from the final design layer.
 // Font URLs themselves contain semicolons (weight lists), so keep each whole line.
@@ -111,6 +111,9 @@ ${scriptTag}
 await mkdir(path.join(ROOT, "dist"), { recursive: true });
 await writeFile(path.join(ROOT, "dist/index.html"), standalone, "utf8");
 await writeFile(path.join(ROOT, "dist/artifact.html"), artifact, "utf8");
+await Promise.all(["about.html", "privacy.html"].map(file => copyFile(path.join(ROOT, file), path.join(ROOT, "dist", file))));
+await mkdir(path.join(ROOT, "dist/assets"), { recursive: true });
+await Promise.all(["styles.css", "editorial.css", "disclosure.css"].map(file => copyFile(path.join(ROOT, "assets", file), path.join(ROOT, "dist/assets", file))));
 const kb = s => (Buffer.byteLength(s) / 1024).toFixed(0) + " KB";
 console.log("· dist/index.html   ", kb(standalone));
 console.log("· dist/artifact.html", kb(artifact));

@@ -131,7 +131,7 @@ function makeNormalizer(archivePolls) {
     const outlet = outletInfo.get(w.sourceId) || { channel: "", channelHebrewName: w.sourceId };
     const parties = [...w.seats].map(([id, mandates]) => {
       const info = partyInfo.get(id), own = w.fallback?.[id];
-      return { id, name: info?.name || own?.name || id, logoUrl: info?.logoUrl || "", mandates, alignment: info?.alignment || own?.alignment || "Unknown" };
+      return { id, name: info?.name || own?.name || id, logoUrl: info?.logoUrl || "", mandates, alignment: id === "raam" ? "Arabs" : info?.alignment || own?.alignment || "Unknown" };
     }).sort((a, b) => b.mandates - a.mandates);
     return {
       id: w.id || `wiki-${w.sourceId}-${w.dateStr}`,

@@ -34,7 +34,7 @@ http.createServer(async (req, res) => {
   if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405); res.end(); return; }
   if (urlPath === '/') urlPath = '/index.html';
   const filePath = path.resolve(root, '.' + urlPath);
-  if (!filePath.startsWith(root + path.sep) || !/^\/(?:index\.html|analytics\.html|privacy\.html|favicon\.svg|assets\/[^.].*|data\/[^.].*)$/.test(urlPath) || urlPath.includes('..')) { res.writeHead(403); res.end(); return; }
+  if (!filePath.startsWith(root + path.sep) || !/^\/(?:index\.html|analytics\.html|privacy\.html|about\.html|favicon\.svg|assets\/[^.].*|data\/[^.].*)$/.test(urlPath) || urlPath.includes('..')) { res.writeHead(403); res.end(); return; }
   fs.readFile(filePath, (err, data) => {
     if (err) { res.writeHead(404); res.end('not found'); return; }
     const ext = path.extname(filePath).toLowerCase();

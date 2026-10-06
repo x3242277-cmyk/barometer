@@ -4,9 +4,9 @@ import archive from '../data/polls-archive.json' with { type: 'json' };
 import firms from '../data/pollsters.json' with { type: 'json' };
 import baselineLive from '../data/live-results.json' with { type: 'json' };
 import { checkRemotePolls } from './poll-check.mjs';
+import { pruneUsage } from './analytics-retention.mjs';
 
-const DAY = 864e5;
-const PAGES = new Set(['home','polls','2022','map','crossover','haredi','regions','demography','method','live','results']);
+const PAGES = new Set(['home','forecast','polls','polls/list','polls/gap','polls/channels','polls/firms','polls/parties','2022','map','crossover','haredi','regions','demography','method','live','results']);
 const uuid = /^[a-f0-9-]{36}$/;
 const parties = Object.fromEntries(current.polls.flatMap(p => p.parties).reverse().map(p => [p.id,p]));
 const equal = (a,b) => timingSafeEqual(createHash('sha256').update(String(a)).digest(),createHash('sha256').update(String(b)).digest());
@@ -67,11 +67,7 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
     return [...map.values()].sort((a,b)=>b.dateTimestamp-a.dateTimestamp || b.publishedAt-a.publishedAt);
   }
   async function summary() {
-    const store=usage(),blobs=[],floor=clock()-90*DAY;
-    for await(const page of store.list({prefix:'visits/',paginate:true})) blobs.push(...page.blobs);
-    const fresh=blobs.filter(b=>Date.parse(b.key.split('/')[1])+DAY>=floor);
-    // Remove expired first-party records, independently of visits to specific pages.
-    await Promise.all(blobs.filter(b=>Date.parse(b.key.split('/')[1])+DAY<floor).map(b=>store.delete(b.key)));
+    const store=usage(),{fresh}=await pruneUsage(store,clock());
     const rows=[];
     for(let i=0;i<fresh.length;i+=100) rows.push(...(await Promise.all(fresh.slice(i,i+100).map(b=>store.get(b.key,{type:'json'})))).filter(Boolean));
     const sessions=new Set(),pages=new Map(),days=new Map();let seconds=0;

@@ -7,7 +7,7 @@
     { label: "שולפים נתונים", say: "שולפים את הנתונים: תוצאות 2022, יישובים, אוכלוסיות וסקרים" },
     { label: "המודל הדמוגרפי", say: "המודל הדמוגרפי: מי גדל מאז 2022, ומה זה עושה לחלק הגושים" },
     { label: "המודל הגיאוגרפי", say: "המודל הגיאוגרפי: כל יישוב ממשיך את הקו שלו עד 2026" },
-    { label: "סקרים לפי אמינות", say: "הסקרים: כל מכון נכנס לפי הדרגה שהרוויח בבחירות הקודמות" },
+    { label: "סקרים לפי דיוק עבר", say: "הסקרים: כל מכון נכנס לפי הדרגה שחושבה מבחירות קודמות" },
     { label: "כמה עברו צד", say: "כמה עברו צד: הפער בין הסקרים לצפי של שני המודלים" },
     { label: "תחשיב הברומטר", say: "תחשיב הברומטר: מהממוצע המשוקלל ל־120 מנדטים" }
   ];
@@ -111,7 +111,7 @@
         { key: "geo", title: "המודל הגיאוגרפי", note: `המשך הקו של כל יישוב: ${sg(dr.geographic ?? 0)} מנדטים לימין ולחרדים`, bloc: shiftR(baseCf, dr.geographic ?? 0), ref: baseCf },
         { key: "zero", title: "נקודת האפס: הממוצע של שני המודלים", note: `זה מה שהיה קורה אילו איש לא עבר צד: ${sg(dr.seats)} מנדטים, כ־${Math.round(baseCf.right + dr.seats)} לימין ולחרדים`, bloc: shiftR(baseCf, dr.seats), ref: baseCf }
       ] : []),
-      { key: "avg", title: "ממוצע הסקרים, משוקלל לפי אמינות", note: "ממצעים כל מכון, ואז משקללים בין המכונים לפי הדרגה: 45 · 35 · 20", bloc: norm(blocOf(allocateSeats(wF.parties))) },
+      { key: "avg", title: "ממוצע הסקרים, משוקלל לפי דיוק עבר", note: "ממצעים כל מכון, ואז משקללים בין המכונים לפי הדרגה: 45 · 35 · 20", bloc: norm(blocOf(allocateSeats(wF.parties))) },
       { key: "house", title: "תיקון הטעות הקבועה של כל מכון", note: "מזיז מנדטים בתוך הגוש בלבד, לא בין גושים", bloc: null },
       { key: "fixed", title: "ש״ס, יהדות התורה ורע״ם: מספר קבוע", note: `ש״ס ${FIXED_SEATS.shas}, יהדות התורה ${FIXED_SEATS.yahadut_hatora}, רע״ם ${FIXED_SEATS.raam} במקום ממוצע הסקרים: מדגם קטן מודד מגזרים סגורים נמוך מדי`, bloc: norm(blocOf(scenarioForecast(scF.raw, { ...rawOpts, blend: 0, demographic: 0 }).parties)) },
       { key: "anchor", title: "קירוב למאזן 2022", note: `היעד הוא 62 לגוש הימין והחרדים (לא 64), בחצי הדרך · הוזזו ${r1(scF.scenario?.anchor ?? 0)} מנדטים`, bloc: norm(blocOf(scenarioForecast(scF.raw, { ...rawOpts, blend: sopt.blend ?? .5, demographic: 0 }).parties)) },
@@ -289,7 +289,7 @@
       await sleep(430); row.classList.remove("is-on"); row.classList.add("is-done");
     }
     stage.querySelector(".ms-pl-avg").classList.add("is-fin");
-    st.ledger.polls = D.seatsRef.polls; ledger(); say(`ממוצע הסקרים, משוקלל לפי אמינות: ימין וחרדים ${sn(D.cb.seatsAvgBy.right)} · ערבים ${sn(D.cb.seatsAvgBy.arab)} · מרכז־שמאל ${sn(D.cb.seatsAvgBy.left)} מנדטים`);
+    st.ledger.polls = D.seatsRef.polls; ledger(); say(`ממוצע הסקרים, משוקלל לפי דיוק עבר: ימין וחרדים ${sn(D.cb.seatsAvgBy.right)} · ערבים ${sn(D.cb.seatsAvgBy.arab)} · מרכז־שמאל ${sn(D.cb.seatsAvgBy.left)} מנדטים`);
     await sleep(2400);
   }
 
@@ -361,7 +361,7 @@
   const CHIPS = [
     ["demo", "צפי דמוגרפי, מנדטים לימין ולחרדים", v => r1(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
     ["geo", "צפי גיאוגרפי, מנדטים", v => r1(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
-    ["polls", "ממוצע הסקרים, מנדטים", v => r1(v), "משוקלל לפי אמינות"],
+    ["polls", "ממוצע הסקרים, מנדטים", v => r1(v), "משוקלל לפי דיוק עבר"],
     ["switch", "הפער מול הצפי, מנדטים", v => `${v >= 0 ? "+" : "−"}${r1(Math.abs(v))}`, "מדד לבדיקה, לא משנה מנדט"],
     ["final", "מנדטים לימין ולחרדים", v => String(v), "תחזית הברומטר"]
   ];

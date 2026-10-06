@@ -5,6 +5,11 @@ c.demo=JSON.parse(fs.readFileSync('data/demographics.json','utf8'));
 vm.runInContext(`
 S.demo=demo;
 const baseline=JSON.stringify(runDemoModel(0));
+if(histBlocs(runDemoModel(0).seats,BLOCS_2022).netanyahu!==64)throw Error('Actual 2022 allocation changed');
+const projection=demoBlocProjection();
+if(projection.right2022!==62||projection.right2026!==63)throw Error('Demographic projection must use the Meretz counterfactual: 62 to 63');
+if(projection.right2022+projection.other2022!==120||projection.right2026+projection.other2026!==120)throw Error('Demographic projection seat total');
+if(demoBlocProjection(0).right2026!==62)throw Error('Zero demographic drift changed the counterfactual baseline');
 S.demoOverrides.haredi={growth:0.06,turnout:0.5};
 if(baseline!==JSON.stringify(runDemoModel(0)))throw Error('2022 baseline changed');
 if(runDemoModel(4).votes.utj===runDemoModel(0).votes.utj)throw Error('2026 controls had no effect');
@@ -24,4 +29,4 @@ const bo=allocateSeats({likud:30,zionut_datit:10,shas:10.5,yahadut_hatora:7.8,ra
 if(Object.values(bo).reduce((a,b)=>a+b,0)!==120)throw Error('allocateSeats total');
 if(bo.tiny)throw Error('threshold not applied');
 `,c);
-console.log('Passed: fixed 10.5/7.8/4.8, Bader-Ofer 120 seats, parameter extremes, absent donor groups, immutable 2022 baseline, demographic controls.');
+console.log('Passed: fixed 10.5/7.8/4.8, Bader-Ofer 120 seats, parameter extremes, absent donor groups, immutable 2022 baseline, demographic controls, and the 62-to-63 Meretz counterfactual projection.');

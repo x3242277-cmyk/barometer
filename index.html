@@ -27,16 +27,16 @@
 <link rel="stylesheet" href="assets/home.css?v=ba378fa4">
 <link rel="stylesheet" href="assets/fit.css?v=06753059">
 <script src="assets/scenario.js?v=dabf9f26" defer></script>
-<script src="assets/upgrade.js?v=ad968bb2" defer></script>
-<script src="assets/analytics.js?v=6076f79f" defer></script>
-<script src="assets/explore.js?v=5f643732" defer></script>
-<script src="assets/poll-tracker.js?v=f8608ce6" defer></script>
+<script src="assets/upgrade.js?v=7ead554d" defer></script>
+<script src="assets/analytics.js?v=bf774c0a" defer></script>
+<script src="assets/explore.js?v=399085a4" defer></script>
+<script src="assets/poll-tracker.js?v=0887a4e4" defer></script>
 <script src="assets/polls-gap.js?v=1204926a" defer></script>
-<script src="assets/polls-workspace.js?v=936b21e4" defer></script>
+<script src="assets/polls-workspace.js?v=7ca749a5" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=b386fb28" defer></script>
-<script src="assets/intro.js?v=e2e945a9" defer></script>
-<script src="assets/method-sim.js?v=6fc98a7f" defer></script>
+<script src="assets/app.js?v=f8134f0f" defer></script>
+<script src="assets/intro.js?v=41d319d1" defer></script>
+<script src="assets/method-sim.js?v=5013a5bb" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -50,21 +50,22 @@
 <link rel="stylesheet" href="assets/exit-showcase.css?v=a41afb9e">
 <link rel="stylesheet" href="assets/usability.css?v=8d0bf0ce">
 <link rel="stylesheet" href="assets/landing.css?v=63e434e7">
-<link rel="stylesheet" href="assets/poll-tracker.css?v=60c149bc">
+<link rel="stylesheet" href="assets/poll-tracker.css?v=c16e7a78">
 <link rel="stylesheet" href="assets/theme.css?v=2852f412">
 <script src="assets/inline-admin.js?v=0316234a" defer></script>
-<script src="assets/election-tools.js?v=e91c490a" defer></script>
+<script src="assets/election-tools.js?v=1d9de14f" defer></script>
 <script src="assets/election.js?v=aba0ee3c" defer></script>
 <link rel="stylesheet" href="assets/results2022.css?v=a4fa5d4b">
 <link rel="stylesheet" href="assets/demography.css?v=d9a2c515">
-<script src="assets/results2022.js?v=8d4fdb48" defer></script>
+<script src="assets/results2022.js?v=23fb0270" defer></script>
 <link rel="stylesheet" href="assets/polls-workspace.css?v=86e06e36">
 <link rel="stylesheet" href="assets/polls-gap.css?v=dfde44d9">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
 <link rel="stylesheet" href="assets/method-sim.css?v=b65092d3">
 <link rel="stylesheet" href="assets/acc-hero.css?v=8d9090ad">
-<link rel="stylesheet" href="assets/forecast.css?v=2760bb12">
+<link rel="stylesheet" href="assets/forecast.css?v=a999bc05">
 <link rel="stylesheet" href="assets/board.css?v=f51617ed">
+<link rel="stylesheet" href="assets/disclosure.css?v=a1852c27">
 </head>
 <body>
 
@@ -79,12 +80,12 @@
     <nav class="mainnav" aria-label="ניווט ראשי">
       <div class="tabs">
         <a class="tab" href="#/" data-view="landing">ראשי</a>
-        <a class="tab" href="#/forecast" data-view="home">תחזית הברומטר</a>
+        <a class="tab" href="#/forecast" data-view="home">התחזית</a>
         <a class="tab" href="#/polls" data-view="polls" data-section="all">כל הסקרים</a>
-        <a class="tab" href="#/polls/gap" data-view="polls" data-section="rel" data-group="polls e2022">מודל אמינות הסוקרים</a>
-        <a class="tab" href="#/demography" data-view="demography">המודל הדמוגרפי</a>
-        <a class="tab" href="#/map" data-view="map">המודל הגיאוגרפי</a>
-        <a class="tab" href="#/method" data-view="method" data-group="method haredi">שיטת החישוב</a>
+        <a class="tab" href="#/polls/gap" data-view="polls" data-section="rel" data-group="polls e2022">דיוק הסוקרים</a>
+        <a class="tab" href="#/demography" data-view="demography">דמוגרפיה</a>
+        <a class="tab" href="#/map" data-view="map">מפת הבחירות</a>
+        <a class="tab" href="#/method" data-view="method" data-group="method haredi">איך מחשבים</a>
         <a class="tab tab-live" href="#/live" data-view="live" data-group="live results">ליל הבחירות</a>
       </div>
     </nav>
@@ -116,18 +117,14 @@
         <div class="cover-edition"><span class="cover-dot"></span> ישראל בוחרת <span class="edition-line"></span> הכנסת ה־26</div>
         <h1 id="election-title">בחירות <span dir="ltr">2026</span><br>התמונה הגדולה</h1>
         <p class="cover-tagline">מהסקרים ועד לשינויים באוכלוסייה — רואים מה באמת עומד מאחורי התחזית.</p>
-        <p class="cover-purpose">הברומטר משקלל סקרים לפי דיוק המכונים, משווה לבחירות עבר ובודק תרחישי קצה וגידול דמוגרפי — כדי לראות איך כל גורם משנה את חלוקת המנדטים.</p>
-        <ul class="cover-points">
-          <li>סקרים לפי דיוק המכונים</li>
-          <li>נתוני עבר ותרחישי קצה</li>
-          <li>גידול והצבעה של כל אוכלוסייה</li>
-        </ul>
         <div class="cover-actions"><a class="cover-primary" href="#/forecast">לתחזית הברומטר <span aria-hidden="true">←</span></a><a class="cover-secondary" href="#/forecast/coalition">בנו קואליציה <span aria-hidden="true">←</span></a></div>
+        <p class="model-disclosure model-disclosure--dark">התחזית היא אומדן עצמאי המבוסס על סקרים והנחות מודל; היא אינה נתון רשמי. <a href="about.html">מקורות ומגבלות</a></p>
         <p class="cover-updated" id="cover-updated">מכינים את נתוני התחזית…</p>
         <div class="election-countdown hero-countdown" id="election-countdown" role="timer" aria-live="off" aria-label="ספירה לאחור לבחירות"></div>
       </div>
       <aside class="cover-chart" aria-label="מנדטים בתחזית">
         <div class="cover-gauges" id="cover-gauges" role="img" aria-label="חלוקת המנדטים בין הגושים"></div>
+        <p class="cover-estimate">אומדן של הברומטר · חלוקת גושים לפי הגדרת האתר</p>
       </aside>
     </div>
     <span class="cover-credit">הדמיה אמנותית של הכנסת</span>
@@ -156,27 +153,17 @@
         <aside class="fs-side fs-right" id="fs-right" aria-label="גוש הימין והחרדים"></aside>
         <div class="fs-center">
         <div class="election-copy">
-          <h2 id="verdict-head" class="fs-title" tabindex="-1" aria-label="בחירות 2026">
-            <svg class="fs-ballot" viewBox="0 0 120 112" aria-hidden="true" focusable="false">
-              <g class="fs-slip"><g transform="rotate(-13 62 24)"><rect x="40" y="6" width="46" height="32" rx="3" fill="#fff" stroke="#17457F" stroke-width="2.4"/><path d="M41 8l22 17 22-17" fill="none" stroke="#17457F" stroke-width="2.4" stroke-linejoin="round"/></g></g>
-              <path d="M16 54l12-14h64l12 14z" fill="#3b82c4" stroke="#17457F" stroke-width="2.4" stroke-linejoin="round"/>
-              <rect x="42" y="44.5" width="36" height="4.5" rx="2.2" fill="#0a2a52"/>
-              <rect x="14" y="54" width="92" height="9" rx="2" fill="#2d6fb6" stroke="#17457F" stroke-width="2.4"/>
-              <rect x="18" y="63" width="84" height="45" fill="#fff" stroke="#17457F" stroke-width="2.4"/>
-              <rect x="18" y="68" width="84" height="6" fill="#2d6fb6"/><rect x="18" y="97" width="84" height="6" fill="#2d6fb6"/>
-              <g fill="none" stroke="#2d6fb6" stroke-width="2.2" stroke-linejoin="round"><path d="M60 76l8 14H52z"/><path d="M60 92l-8-14h16z"/></g>
-            </svg>
-            <span class="fs-title-text"><span class="fs-title-word">בחירות</span><b class="fs-title-year" dir="ltr">2026</b></span></h2>
+          <h2 id="verdict-head" class="fs-title" tabindex="-1">בחירות 2026</h2>
+          <p class="forecast-headline" id="election-headline"></p>
           <p class="fs-updated" id="fs-updated"></p>
           <p class="fs-teaser" id="fs-teaser" hidden role="status"></p>
-          <p class="forecast-headline" id="election-headline"></p>
-          <p class="hero-description">זו התמונה שמתקבלת אחרי שבודקים את הסקרים מול העבר, משקללים את המכונים ומוסיפים בדיקות של אחוז החסימה והדמוגרפיה. אפשר לעבור בין ממוצע המכונים לתחזית המלאה.</p>
           <div class="hero-faces" id="hero-faces" aria-hidden="true"></div>
         </div>
         <div class="election-visual">
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
-          <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
           <div class="readout" id="home-readout"></div>
+          <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
+          <p class="model-disclosure">אומדן ופרשנות עצמאיים; אינם נתונים רשמיים. <a href="about.html">מקורות ומגבלות</a></p>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
         </div>
 
@@ -186,7 +173,7 @@
       <div class="home-forecast-controls">
         <div class="switch home-switch" role="group" aria-label="אופן החישוב">
           <button type="button" data-mode="scenario" aria-pressed="true">תחזית הברומטר</button>
-          <button type="button" data-mode="weighted" aria-pressed="false">משוקלל אמינות</button>
+          <button type="button" data-mode="weighted" aria-pressed="false">משוקלל דיוק</button>
         </div>
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
         <div class="hero-cta"><button type="button" class="btn show-btn" id="run-model"><span class="play" aria-hidden="true">▶</span> להרצת מודל הברומטר</button><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
@@ -244,6 +231,7 @@
 
     <section class="sec polls-sec" data-polls-panel="list" hidden>
       <a class="allpolls-back" href="#/polls" data-polls-go="trend" data-ex-mode="overview">→ חזרה למבט כולל ומגמות</a>
+      <p class="poll-publication-note">תוצאות הסקרים הובאו מפרסומים של צדדים שלישיים. פרטי המדגם, השאלות ומרווח הטעות אינם שמורים לכל סקר במאגר; פתחו את פרסום המקור ובדקו אותם לפני ציטוט או שידור. <a href="about.html">על מקורות הנתונים</a></p>
       <div class="polls-sec-head"><p class="polls-list-info" id="polls-list-info"></p>
       <div class="poll-view-tabs switch" role="group" aria-label="תצוגת הסקרים">
         <button type="button" data-pollview="table" aria-pressed="false"><span class="view-icon" aria-hidden="true">☰</span><span>טבלה</span></button>
@@ -254,7 +242,7 @@
         <label class="field"><span>סינון לפי כלי תקשורת</span><select id="poll-outlet"><option value="all">כל הפרסומים</option></select></label>
         <label class="field"><span>הדגשת מפלגה</span><select id="poll-party"><option value="">כל המפלגות</option></select></label>
       </div>
-      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-table" class="polls-table" hidden></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי אמינות</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
+      <section id="party-focus-summary" class="focus-summary" hidden aria-live="polite"></section><div id="polls-cards" class="pollcards"></div><div id="polls-table" class="polls-table" hidden></div><div id="polls-compare" hidden><fieldset id="compare-picker"></fieldset><p id="compare-status" aria-live="polite"></p><div id="compare-table" class="tablewrap" tabindex="0" role="region" aria-label="השוואת סקרים"></div></div><section id="polls-average" class="poll-average" hidden aria-label="ממוצע הסקרים"><div class="average-toolbar"><div><span class="control-label">חלון זמן</span><div class="average-days" role="group" aria-label="מספר ימים לממוצע"><button type="button" data-avg-days="1" aria-pressed="false">היום האחרון</button><button type="button" data-avg-days="5" aria-pressed="false">5 ימים</button><button type="button" data-avg-days="7" aria-pressed="true">שבוע</button><button type="button" data-avg-days="10" aria-pressed="false">10 ימים</button></div></div><label class="field"><span>אופן החישוב</span><select id="average-weight"><option value="simple">ממוצע רגיל</option><option value="reliability">משוקלל לפי דיוק עבר</option></select></label></div><div id="average-status" class="average-status" aria-live="polite"></div><div id="average-results" class="average-results"></div><div id="average-firms" class="average-firms"></div></section>
     </section>
 
 
@@ -267,7 +255,7 @@
   </div>
 </section>
 
-<!-- ==================== מדד אמינות המכונים ==================== -->
+<!-- ==================== ציון דיוק עבר למכונים ==================== -->
 <section class="view" id="view-e2022" aria-label="דיוק המכונים">
   <div class="wrap">
     <nav class="polls-tabbar" data-polls-nav aria-label="כל הסקרים"></nav>
@@ -275,10 +263,10 @@
       <div class="acc-hero-main">
         <p class="acc-kicker"><span aria-hidden="true">★</span> דיוק המכונים · המדד המרכזי של הברומטר</p>
         <h2 class="acc-title">מי דייק?</h2>
-        <p class="acc-sub">כל מכון נמדד באותה נוסחה מול תוצאות האמת של הבחירות הקודמות, והציון קובע את משקלו בתחזית. הסקרים והחישוב, בפירוט של כל מכון.</p>
+        <p class="acc-sub">ציון חישובי לפי סקרים נבחרים מול תוצאות בחירות עבר. הוא קובע משקל במודל, אך מושפע ממספר הסקרים ומהזמן שבין הסקר לבחירות; אינו מדד ליושרה או לאיכות המקצועית הכוללת של מכון.</p>
         <div class="acc-facts" id="acc-facts"></div>
       </div>
-      <ol class="acc-podium" id="acc-podium" aria-label="שלושת המכונים המדויקים ביותר"></ol>
+      <ol class="acc-podium" id="acc-podium" aria-label="שלושת ציוני דיוק העבר הגבוהים במדגם"></ol>
     </header>
     <div id="accuracy-method"></div>
     <section class="sec reliability-ranking" aria-label="דירוג המכונים">
@@ -659,7 +647,7 @@
         <button type="button" data-go="msec-1"><span>1</span>הנתונים</button>
         <button type="button" data-go="msec-2"><span>2</span>המודל הדמוגרפי</button>
         <button type="button" data-go="msec-3"><span>3</span>המודל הגיאוגרפי</button>
-        <button type="button" data-go="msec-4"><span>4</span>סקרים לפי אמינות</button>
+        <button type="button" data-go="msec-4"><span>4</span>סקרים לפי דיוק עבר</button>
         <button type="button" data-go="msec-5"><span>5</span>כמה עברו צד</button>
         <button type="button" data-go="msec-6"><span>6</span>תחשיב הברומטר</button>
         <button type="button" data-go="msec-7" class="mdoc-aux">מקורות הנתונים</button>
@@ -715,7 +703,7 @@
 
         <section class="msec" id="msec-4">
           <header class="msec-head"><span class="msec-num" aria-hidden="true">4</span>
-            <div class="msec-title"><h2>סקרים לפי אמינות</h2><p>כל מכון מקבל ציון לפי הדיוק שלו בעבר, והציון קובע את דרגתו ואת משקלו בממוצע.</p></div>
+            <div class="msec-title"><h2>סקרים לפי דיוק עבר</h2><p>כל מכון מקבל ציון לפי הדיוק שלו בעבר, והציון קובע את דרגתו ואת משקלו בממוצע.</p></div>
             <div class="msec-actions"><button type="button" class="msec-sim" data-sim="3">▶ הצגה בסימולציה</button><a class="mstep-link" href="#/2022">לדיוק המכונים ↙</a></div></header>
           <div class="msec-body msec-wide">
             <div class="msec-text">
@@ -744,7 +732,7 @@
             <div class="msec-text">
               <ul class="mlist">
                 <li><b>נקודת האפס.</b> חלק הימין והחרדים מהקולות שנספרים ב־2022, ועוד הגידול הדמוגרפי עד 2026 מהשלב השני. זה מה שהיה קורה אילו כל מצביע נשאר במקומו. במנדטים: 2022 כאילו מרצ עברה (62) ועוד התוספת הדמוגרפית, כ־63 — אותה נקודת בסיס כמו בתחזית עצמה.</li>
-                <li><b>הפער.</b> לכל מכון: חלק הימין והחרדים בסקר האחרון שלו פחות נקודת האפס. הממוצע משוקלל לפי דרגות האמינות. בשלב הזה אין חלון זמן, וכל מכון מיוצג בסקר האחרון שלו.</li>
+                <li><b>הפער.</b> לכל מכון: חלק הימין והחרדים בסקר האחרון שלו פחות נקודת האפס. הממוצע משוקלל לפי דרגות דיוק העבר. בשלב הזה אין חלון זמן, וכל מכון מיוצג בסקר האחרון שלו.</li>
                 <li><b>קולות ומנדטים.</b> נקודות האחוז מתורגמות לקולות לפי מספר המצביעים הצפוי ב־2026, ולמנדטים לפי 1.2 מנדטים לנקודת אחוז. יתר הרשימות, מרכז–שמאל והרשימות הערביות, זזות באותו שיעור בכיוון ההפוך.</li>
                 <li><b>הצפי הגיאוגרפי.</b> הסקרים מושווים גם לצפי של המודל הגיאוגרפי, כדי לראות אם שתי נקודות הייחוס מצביעות לאותו כיוון.</li>
               </ul>
@@ -765,7 +753,7 @@
               <div class="msec-cards msec-cards-2">
                 <div class="msec-card"><span class="msec-step">א</span><h4>תיקון הטעות הקבועה של כל מכון, רק בתוך הגוש</h4>
                   <p>כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022. התיקון מדייק את החלוקה בתוך הגוש ואינו מזיז מנדטים בין הגושים.</p>
-                  <details><summary>הפירוט המלא</summary><p>לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״מ, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 4, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע ״משוקלל אמינות״ אינו מתוקן.</p></details></div>
+                  <details><summary>הפירוט המלא</summary><p>לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס, יהדות התורה ורע״מ, שמקובעות בצעד הבא, אינן מתוקנות. התיקון של כל מכון מופיע בטבלה שבשלב 4, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע ״משוקלל דיוק״ אינו מתוקן.</p></details></div>
                 <div class="msec-card"><span class="msec-step">ב</span><h4>ש״ס 10.5, יהדות התורה 7.8 ורע״ם 4.8: מספר קבוע</h4>
                   <p>במקום ממוצע הסקרים של שלוש הרשימות האלה. מדגם קטן מודד מגזרים סגורים כמו החרדי או הערבי נמוך מדי, באופן שיטתי.</p>
                   <details><summary>הפירוט המלא</summary><p>מדגם של כמה מאות איש מדגמים מגזרים סגורים וממודדים כמו החרדי או הערבי בצורה גרועה יותר, ובאופן שיטתי כלפי מטה, לא רנדומלי — כך שאי אפשר לתקן את זה סתם בהגדלת המדגם (ראו הערת טעות הדגימה בדיוק המכונים). העיגול למנדטים שלמים נעשה רק בסוף, ביחד עם כל שאר הרשימות.</p></details></div>
@@ -810,7 +798,7 @@
             <details class="math" open>
         <summary>הנוסחאות המדויקות, למי שרוצה</summary>
         <div class="body">
-          <p class="kicker">ציון האמינות של מכון</p>
+          <p class="kicker">ציון דיוק העבר של מכון</p>
           <span class="formula">blocScore    = clamp(100 − 10 × (Σ|blocError| / 3))</span>
           <span class="formula">partyScore   = clamp(100 − 15 × MAE_parties)</span>
           <span class="formula">stability    = clamp(100 − 25 × SD(netanyahuBloc))</span>
@@ -849,22 +837,22 @@
     <div>
       <div class="fbrand"><img class="brand-logo" src="assets/logo-wordmark.png?v=52e13ba5" alt="הברומטר" width="756" height="128"></div>
       <p>תמונת מצב עצמאית של סקרי הבחירות בישראל.</p>
-      <nav class="footer-nav" aria-label="ניווט בתחתית האתר"><a href="#/polls">כל הסקרים</a><a href="#/polls/gap">מודל אמינות הסוקרים</a><a href="#/demography">המודל הדמוגרפי</a><a href="#/map">המודל הגיאוגרפי</a><a href="#/method">שיטת החישוב</a></nav>
+      <nav class="footer-nav" aria-label="ניווט בתחתית האתר"><a href="#/polls">כל הסקרים</a><a href="#/2022">דיוק הסוקרים</a><a href="#/demography">המודל הדמוגרפי</a><a href="#/map">המודל הגיאוגרפי</a><a href="#/method">שיטת החישוב</a></nav>
       <details class="footer-details"><summary>מקורות הנתונים</summary><div class="srclist" id="footer-sources"></div></details>
     </div>
     <div>
       <details class="footer-details"><summary>על הנתונים, השימוש והנגישות</summary>
-      <p><strong>אופי האתר.</strong> האתר מציג ניתוח וחוות דעת עצמאיים, פרטיים ובלתי־מסחריים, המבוססים על נתוני צד שלישי שלא אומתו כאן מול המקור המקורי מעבר למצוין. הוא אינו סקר בעצמו, אינו תחזית רשמית, אינו פרסום של אף מכון סקרים, כלי תקשורת, מפלגה או גורם רשמי, ואינו ערובה לתוצאת בחירות כלשהי או לכל תוצאה אחרת. השימוש באתר ובתוכנו הוא באחריות המשתמש בלבד ועל דעתו בלבד.</p>
-      <p><strong>מהות הציונים ומגבלותיהם — קריאה חשובה למכוני הסקרים ולציבור.</strong> ציוני "האמינות" וה"דיוק" המוצגים כאן הם תוצר של תהליך חישובי-סטטיסטי אוטומטי בלבד, המשווה בין מספרים שפורסמו בעבר על-ידי כל מכון לבין תוצאות הבחירות הרשמיות שאושרו על-ידי ועדת הבחירות המרכזית, לפי נוסחה קבועה ומפורסמת באתר (דיוק בגושים, דיוק במפלגות ועקביות, במשקלים המצוינים). זהו מדד סטטיסטי צר של התאמה היסטורית לתוצאה שכבר התבררה בדיעבד — ותו לא. <u>אין בציון, בדירוג, בתיאור המילולי ("אמינות גבוהה/טובה/בינונית") או בכל אלמנט אחר באתר משום טענה עובדתית, ביטוי דעה שיפוטית, או רמיזה כלשהי</u> בדבר מקצועיות, יושרה, כשירות, אמינות עסקית, כוונה להטעות, הטיה מכוונת, רשלנות, או איכות העבודה הכוללת של מכון מחקר, סוקר, עיתונאי או כלי תקשורת כלשהו — לא של אלה שקיבלו ציון גבוה ולא של אלה שקיבלו ציון נמוך. סטייה היסטורית בין תחזית לתוצאה יכולה לנבוע מסיבות מקצועיות לגיטימיות רבות שאינן קשורות לאיכות המכון: גודל מדגם, מועד איסוף הנתונים ביחס ליום הבחירות, שיטת שקלול, הגדרת אוכלוסיית המדגם, טעות דגימה סטטיסטית רגילה, ושינויים במצב הפוליטי בין מועד הפרסום למועד ההצבעה בפועל. מכון שלא כויל כלל (בשל היעדר סדרת סקרים בחלון הכיול) מקבל משקל ניטרלי קבוע — העדר ציון אינו ציון שלילי ואינו מעיד על דבר. האתר, מפעילו ומי מטעמו אינם טוענים ואינם מתיימרים לדרג את "האיכות" הכוללת, המוניטין או המהימנות המקצועית של אף מכון, עיתונאי או כלי תקשורת, ואינם מביעים כל עמדה שיפוטית לגביהם; מי שסבור שהצגת הנתונים לגביו אינה מדויקת מוזמן לפנות למפעיל האתר בצירוף מקור מאומת, והתיקון ייבדק ויתוקן במקרה הצורך.</p>
+      <p><strong>אופי האתר.</strong> האתר מציג ניתוח ופרשנות עצמאיים על בסיס נתונים רשמיים, פרסומי סקרים של צדדים שלישיים והנחות מודל. בכל מקום שבו לא צוין במפורש שמדובר בנתון רשמי, התוצאה היא אומדן או פרשנות של מפעיל האתר. האתר אינו סקר עצמאי ואינו תחזית רשמית או פרסום מטעם מכון סקרים, כלי תקשורת, מפלגה או רשות ציבורית. <a href="about.html">פירוט המקורות והמגבלות</a>.</p>
+      <p><strong>מה הציון מודד.</strong> ציון המכונים הוא פרשנות חישובית מוגבלת: התאמה בין סקרים שפורסמו בחלונות הכיול לבין תוצאות בחירות עבר, על פי הנוסחה המוצגת באתר. הוא אינו מדד ליושרה, למקצועיות הכוללת או לאיכות כל עבודתו של מכון. פערים יכולים לנבוע גם משינוי בדעת הקהל, ממועד הסקר ומטעות דגימה. ציון המבוסס על מעט סקרים רגיש במיוחד למקריות; למכון שלא כויל ניתן משקל ברירת מחדל. <a href="#/method">לשיטת החישוב</a>.</p>
       <p><strong>ללא כל אחריות או מצג.</strong> האתר, נתוניו, חישוביו וכלל תוכנו מוצגים <strong>"כפי שהם" (AS IS)</strong> ו"כפי שזמינים" (AS AVAILABLE), בלי כל התחייבות, מצג או אחריות מכל סוג, מפורשת או משתמעת, לרבות (ולא רק) אחריות לדיוק, לשלמות, לעדכניות, לאמינות, להתאמה למטרה מסוימת, או לפעילות רציפה וללא תקלות. ייתכנו טעויות אנוש או מערכת, חוסרים, נתונים חסרים או שגויים במקור, שיהוי בעדכון, שינויי שיטה ושינויי שיוך של מכונים וסוקרים לאורך זמן, ותקלות טכניות בשרתי צד שלישי שהאתר תלוי בהם. אין באתר משום ייעוץ מכל סוג — לא משפטי, לא פוליטי, לא פיננסי ולא מקצועי אחר — ואין להסתמך עליו ככזה.</p>
       <p><strong>הגבלת אחריות.</strong> ככל שהדין המקומי מתיר זאת, מפעיל האתר, יוצריו ומי מטעמם לא יישאו באחריות לכל נזק — ישיר, עקיף, תוצאתי, מקרי, מיוחד או אחר — הנובע משימוש באתר, מהסתמכות על תוכנו, מאי-זמינותו, או משגיאה בו, לרבות נזק הנובע מהחלטה שהתקבלה על סמך המידע המוצג. האתר עשוי לשנות, לעדכן, להסיר או להפסיק כל חלק מתוכנו, כולל נוסחאות החישוב, הציונים והמתודולוגיה, בכל עת ולפי שיקול דעתו הבלעדי וללא הודעה מוקדמת; תמונות ארכיון של תחזיות קודמות עשויות להיראות שונה מהתצוגה הנוכחית בעקבות שינויים כאלה.</p>
-      <p><strong>סימנים מסחריים, לוגואים ותוכן צד שלישי.</strong> שמות, סמלים, לוגואים וסימני מסחר של מכוני סקרים, כלי תקשורת ואחרים מוצגים באתר לצורכי זיהוי ומידע בלבד, בהתאם לשימוש ההוגן המקובל בדיווח ובניתוח עיתונאי-נתוני. הצגתם אינה מהווה ואינה מרמזת על מתן חסות, אישור, שיתוף פעולה, מיזוג, הזדהות עם האתר, או כל קשר עסקי, מסחרי או אחר בין בעליהם לבין מפעיל האתר. איורי הרקע באתר הם איורים וקטוריים מקוריים. האתר מכיל קישורים והפניות לתכנים ולשירותים של צדדים שלישיים (ובהם מקור הנתונים הגולמיים); האתר אינו שולט בהם ואינו אחראי לתוכנם, לזמינותם או למדיניותם.</p>
-      <p>נאספים נתוני שימוש כלליים וללא פרטים מזהים. <a href="privacy.html">על מדידת השימוש</a></p>
+      <p><strong>סימנים מסחריים ותוכן צד שלישי.</strong> שמות, סמלים ולוגואים של מכוני סקרים וכלי תקשורת מוצגים לצורך זיהוי מקור; אין בכך עדות לחסות, אישור או קשר עסקי. הזכויות בכל צילום, סמל, לוגו ומפה נשמרות לבעליהן, ושימוש מסחרי בהם מחייב בדיקת זכויות והרשאות נפרדת. קישורים חיצוניים מובילים לפרסומים שאינם בשליטת האתר.</p>
+      <p>בעת שימוש באתר עשויים להישמר מזהי הפעלה אקראיים ונתוני פעילות. <a href="privacy.html">מדיניות הפרטיות</a></p>
       <p>לפני פרסום ציבורי בתקופת בחירות מומלץ לקבל ייעוץ משפטי ישראלי פרטני ולוודא עמידה בהוראות פרסום סקרי בחירות ובכל דין רלוונטי אחר (לרבות דיני לשון הרע). נוסח זה, על כל סעיפיו, אינו ייעוץ משפטי ואינו תחליף לו. ככל שסעיף מסעיפי הבהרה זו יימצא בלתי-אכיף על-ידי ערכאה מוסמכת, יתר הסעיפים יעמדו בתוקפם המלא.</p>
-      <p>נגישות: האתר מותאם לניווט מקלדת, לקוראי מסך ולתצוגה במכשירים ניידים. לדיווח על טעות בנתונים יש לפנות למפעיל האתר בצירוף המקור.</p>
+      <p>נגישות: חלק מהתרשימים והטבלאות מורכבים. לפרטי ההתאמות שבוצעו ולמגבלות הידועות ראו <a href="about.html#accessibility">הצהרת נגישות</a>. לדיווח על טעות בנתונים יש לפנות למפעיל האתר בצירוף המקור.</p>
       </details>
       <p>הציונים מציגים דיוק היסטורי לפי שיטת החישוב המפורסמת באתר. התחזית אינה תוצאת בחירות.</p>
-      <div class="footer-utility"><a href="privacy.html">פרטיות ומדידת שימוש</a><span aria-hidden="true">·</span><form id="inline-admin" class="inline-admin"><button id="admin-trigger" type="button" aria-expanded="false" aria-controls="admin-password">ניהול</button><label id="admin-password" hidden><span class="sr-only">סיסמת ניהול</span><input type="password" name="token" minlength="13" autocomplete="current-password" placeholder="סיסמת ניהול" aria-label="סיסמת ניהול" disabled></label><button id="admin-submit" type="submit" hidden>כניסה</button></form></div>
+      <div class="footer-utility"><a href="about.html">על האתר, מקורות ונגישות</a><span aria-hidden="true">·</span><a href="privacy.html">פרטיות ומדידת שימוש</a><span aria-hidden="true">·</span><form id="inline-admin" class="inline-admin"><button id="admin-trigger" type="button" aria-expanded="false" aria-controls="admin-password">ניהול</button><label id="admin-password" hidden><span class="sr-only">סיסמת ניהול</span><input type="password" name="token" minlength="13" autocomplete="current-password" placeholder="סיסמת ניהול" aria-label="סיסמת ניהול" disabled></label><button id="admin-submit" type="submit" hidden>כניסה</button></form></div>
       <p id="admin-inline-status" class="admin-inline-status" role="status" aria-live="polite"></p>
     </div>
   </div>

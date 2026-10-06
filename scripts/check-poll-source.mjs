@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { parseTheMadadHtml } from "./themadad-source.mjs";
-import { checkRemotePolls } from "../server/poll-check.mjs";
+import { checkRemotePolls, normalizePoll } from "../server/poll-check.mjs";
 
 const firms = JSON.parse(readFileSync("data/pollsters.json", "utf8"));
 const cfg = JSON.parse(readFileSync("scripts/config.json", "utf8"));
@@ -29,4 +29,6 @@ const remote = await checkRemotePolls({
 });
 assert.equal(remote.status, "complete");
 assert.equal(remote.polls[0].sourceId, "channel_14");
+const staleAlignment={...remote.polls[0],parties:remote.polls[0].parties.map(p=>p.id==='raam'?{...p,alignment:'Opposition'}:p)};
+assert.equal(normalizePoll(staleAlignment,'',Date.parse('2026-09-24')).parties.find(p=>p.id==='raam').alignment,'Arabs','new survey normalization must retain the permanent Arab classification');
 console.log("Passed: alternate poll feed mapping, firm attribution and 120-seat validation.");

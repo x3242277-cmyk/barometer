@@ -44,9 +44,11 @@
 .feed-who b{font-size:.95rem;color:var(--ink)}
 .feed-who small{font-size:.76rem;color:var(--ink-3)}
 .feed-top time{margin-inline-start:auto;font-size:.76rem;font-weight:700;color:var(--gold);white-space:nowrap}
-.feed-bar{position:relative;display:flex;height:20px;border-radius:5px;overflow:hidden}
+.feed-bar{position:relative;display:flex;height:20px;border-radius:5px}
 .feed-bar span{display:grid;place-items:center;font-size:.72rem;font-weight:800;color:#fff;min-width:0}
-.feed-61{position:absolute;top:-2px;bottom:-2px;right:calc(61 / 120 * 100%);width:2px;background:#14233a;box-shadow:0 0 0 1px #fff}
+.feed-bar>span:first-of-type{border-start-start-radius:5px;border-end-start-radius:5px}
+.feed-bar>span:last-of-type{border-start-end-radius:5px;border-end-end-radius:5px}
+.feed-61{position:absolute;bottom:-5px;height:5px;right:calc(61 / 120 * 100%);width:2px;background:#14233a}
 .feed-lead{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.8rem;color:var(--ink-2)}
 .feed-lead span{display:inline-flex;align-items:center;gap:5px}
 .feed-lead b{color:var(--ink)}

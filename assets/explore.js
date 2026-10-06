@@ -115,7 +115,7 @@ function renderPollCards(rows, polls) {
     /* דירוג האמינות של המכון (הציון המשוקלל של מערכות הכיול) */
     const score = firmScore(f.meta), grade = gradeOf(score);
     const gradeTag = p.barometer ? '' : f.meta.calibrated
-      ? `<span class="poll-grade grade-${grade.key}" title="ציון אמינות ${r1(score)} מתוך 100 — לפי דיוק המכון בבחירות 2020–2022">${grade.label} · ${r1(score)}</span>`
+      ? `<span class="poll-grade grade-${grade.key}" title="ציון דיוק עבר ${r1(score)} מתוך 100 — לפי התאמת סקרי המכון לתוצאות בחירות 2020–2022">${grade.label} · ${r1(score)}</span>`
       : `<span class="poll-grade grade-none" title="אין למכון סקרים במערכות הכיול — הוא מקבל משקל ניטרלי">ללא כיול · משקל ניטרלי</span>`;
     return `<article class="poll-result-card" style="--firm:${firmColor(p.sourceId)}"><header><div class="orgcell">${outletLogo(p.channelHebrewName)}<div><h3>${esc(p.channelHebrewName)}</h3><p>${esc(f.meta.he)}</p>${gradeTag}</div></div>${list.length > 1
         ? `<label class="poll-date-pick"><span class="sr-only">תאריך הסקר של ${esc(p.channelHebrewName)}</span><select data-card-outlet="${esc(key)}">${
@@ -168,7 +168,7 @@ function renderPollAverage(rows) {
   const start = new Date(Math.min(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const end = new Date(Math.max(...included.map(parsePollDate))).toLocaleDateString('he-IL', {day:'2-digit',month:'2-digit'});
   const sources = included.slice().sort((a,b)=>parsePollDate(b)-parsePollDate(a)).map(p => `<li>${esc(p.date)} · ${esc(p.channelHebrewName)} · ${esc(firmOf(p.sourceId).meta.he)}</li>`).join('');
-  status.innerHTML = `<span><b>${included.length} סקרים</b> ${start === end ? `מ־${end}` : `בין ${start} ל־${end}`}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון אמינות גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
+  status.innerHTML = `<span><b>${included.length} סקרים</b> ${start === end ? `מ־${end}` : `בין ${start} ל־${end}`}${S.avgWeight === 'reliability' ? ' · משקל גבוה יותר למכון בעל ציון דיוק עבר גבוה' : ''}</span><details class="average-source-popover"><summary>הסקרים שנכללו</summary><ul>${sources}</ul></details>`;
   const donutStyle = `background:conic-gradient(${BLOCS.Right.color} 0 ${right}%,${BLOCS.Left.color} ${right}% ${right+left}%,${BLOCS.Arabs.color} ${right+left}% ${right+left+arabs}%,${BLOCS.Unknown.color} ${right+left+arabs}% 100%)`;
   const max = Math.max(1, ...averages.map(x => x.seats));
   box.innerHTML = `<aside class="average-blocs"><div class="bloc-donut" style="${donutStyle}"><span><b>120</b><small>מנדטים</small></span></div><div class="bloc-legend">${[['Right','גוש הימין'],['Left','מרכז־שמאל'],['Arabs','הרשימות הערביות'],['Unknown','לא משויך']].filter(([k])=>k !== 'Unknown' || blocSeats[k] > 0).map(([k,l])=>`<div style="--c:${BLOCS[k].color}"><i></i><span>${l}</span><b>${blocSeats[k]}</b></div>`).join('')}</div></aside><div class="average-party-list">${averages.map(x => {
@@ -180,7 +180,7 @@ function renderPollAverage(rows) {
     const sample = included.find(p => firmOf(p.sourceId).firm === id), meta = firmOf(sample.sourceId).meta;
     return { meta, score:firmScore(meta), n:included.filter(p => firmOf(p.sourceId).firm === id).length };
   }).sort((a,b)=>b.score-a.score);
-  firmsBox.innerHTML = `<h3>המכונים בחלון לפי רמת אמינות</h3><div>${firmRows.map((f,i)=>`<span style="--firm:${esc(f.meta.color||'#64707C')}"><b>${i+1}</b>${logoBox(f.meta,30)}<strong>${esc(f.meta.he)}</strong><em>${r1(f.score)}</em><small>${f.n} סקרים</small></span>`).join('')}</div>`;
+  firmsBox.innerHTML = `<h3>המכונים בחלון לפי ציון דיוק עבר</h3><div>${firmRows.map((f,i)=>`<span style="--firm:${esc(f.meta.color||'#64707C')}"><b>${i+1}</b>${logoBox(f.meta,30)}<strong>${esc(f.meta.he)}</strong><em>${r1(f.score)}</em><small>${f.n} סקרים</small></span>`).join('')}</div>`;
 }
 
 function renderPartyTrend(polls) {

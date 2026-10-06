@@ -95,7 +95,7 @@
       root.addEventListener("click", handleClick);
     }
     const historyLabel = S.homeHistory === "current" ? "התחזית המוצגת כעת" : `תחזית הארכיון · ${heDate(S.homeHistory)}`;
-    const modeLabel = S.mode === "weighted" ? "משוקלל אמינות" : "תחזית הברומטר";
+    const modeLabel = S.mode === "weighted" ? "משוקלל דיוק" : "תחזית הברומטר";
     root.setAttribute("aria-labelledby", "ec-title");
     root.innerHTML = `<div class="ec-panel">
       <header class="ec-heading">

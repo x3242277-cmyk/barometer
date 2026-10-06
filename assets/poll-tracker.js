@@ -71,7 +71,7 @@ function trackerModel() {
 const TRACK_BASES = {
   avg: { label: "ממוצע כל הסקרים", kicker: "ממוצע הסקרים",
     note: "ממוצע נע של 7 ימים: כל מכון נספר פעם אחת, בלי משקלים ובלי תיקונים. כל נקודה בגרף היא סקר." },
-  weighted: { label: "משוקלל אמינות", kicker: "משוקלל אמינות", key: "weighted", mode: "weighted",
+  weighted: { label: "משוקלל דיוק", kicker: "משוקלל דיוק", key: "weighted", mode: "weighted",
     note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון — בלי ההנחות של תחזית הברומטר." },
   baro: { label: "תחזית הברומטר", kicker: "תחזית הברומטר", key: "scenario", mode: "scenario",
     note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות הקבועה, ש״ס, יהדות התורה ורע״מ קבועים, והתוספת הדמוגרפית (ממוצע המודל הדמוגרפי והגיאוגרפי) — במנדטים לפי כללי הבחירות." }
@@ -207,8 +207,10 @@ function renderPollFeed(M) {
   $("#polls-stats").textContent = `${c.firms} מכונים · ${c.outlets} כלי תקשורת · מאז ${c.from}`;
   if (all) all.textContent = `כל ${c.n} הסקרים ←`;
   const list = [...M.polls, ...weeklyBaro()].sort((a, b) => parsePollDate(b) - parsePollDate(a) || (b.publishedAt || 0) - (a.publishedAt || 0));
+  const latestPoll = list.find(p => !p.barometer);
+  const seen = new Set([...box.querySelectorAll("[data-feed-id]")].map(el => el.dataset.feedId));
   const opened = new Set([...box.querySelectorAll("[data-feed-id]:has(details[open])")].map(el => el.dataset.feedId));
-  box.innerHTML = list.slice(0, 12).map(p => feedCardHTML(p, list, opened.has(p.id))).join("");
+  box.innerHTML = list.slice(0, 12).map(p => feedCardHTML(p, list, opened.has(p.id) || (p.id === latestPoll?.id && !seen.has(p.id)))).join("");
 }
 
 /* ---------- טבלת כל הסקרים ---------- */

@@ -1,5 +1,5 @@
 const $=s=>document.querySelector(s);
-const names={home:'תמונת מצב',polls:'סקרים',2022:'דיוק המכונים',map:'מפת ההצבעה',crossover:'כמה עברו צד',haredi:'תרחיש חרדי',demography:'דמוגרפיה',regions:'מפת ההצבעה',method:'שיטת החישוב',live:'ליל הבחירות',results:'תוצאות אמת'};
+const names={home:'תמונת מצב',forecast:'תחזית',polls:'מגמות בסקרים','polls/list':'כל הסקרים','polls/gap':'פערי הסקרים','polls/channels':'סקרים לפי ערוצים','polls/firms':'סקרים לפי מכונים','polls/parties':'סקרים לפי מפלגות',2022:'דיוק המכונים',map:'מפת ההצבעה',crossover:'כמה עברו צד',haredi:'תרחיש חרדי',demography:'דמוגרפיה',regions:'מפת ההצבעה',method:'שיטת החישוב',live:'ליל הבחירות',results:'תוצאות אמת'};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const date=v=>new Date(v).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'});
 let config=null,pending=null,busy=false;

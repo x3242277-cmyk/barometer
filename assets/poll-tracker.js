@@ -132,7 +132,7 @@ function smoothPath(pts) {
 /* ---------- גרף הקווים (גושים או מפלגה אחת) ---------- */
 function trackerChart(M, mode) {
   /* ה־viewBox בגודל המקום שהגרף קיבל בפועל (drawExplorer), כך שהטקסט לא נמתח */
-  const W = Math.max(320, S.trackWidth || 920), H = Math.max(160, S.trackH || 260), m = { l: 30, r: 18, t: 14, b: 26 };
+  const W = Math.max(320, S.trackWidth || 920), H = Math.max(160, S.trackH || 260), m = { l: 30, r: 18, t: 14, b: 26 + (S.exBasisOn ? 34 : 0) };
   const days = S.trackRange === "month" ? 30 : 400;
   const tMin = Math.max(M.series[0].t, M.now.t - (days - 1) * DAY_MS);
   const S2 = M.series.filter(s => s.t >= tMin), polls = (M.dotPolls || M.polls).filter(p => parsePollDate(p) >= tMin - 0.5 * DAY_MS);

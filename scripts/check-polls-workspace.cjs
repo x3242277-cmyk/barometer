@@ -84,6 +84,8 @@ assert.equal(run('pollVector(feedFixture).blocs.Left'),46,'Ra’am remained in c
 assert.equal(run('buildSeries([feedFixture])[0].blocs.Arabs'),14,'weighted series does not use the Arab classification');
 const filteredFeed=run('feedCardHTML(feedFixture,[oldFeed,feedFixture],true)');
 assert(!filteredFeed.includes('רשימה מתחת לסף'),'latest poll feed still displays a zero-seat list');
+const galleryFeed=run('feedCardHTML(feedFixture,[oldFeed,feedFixture],true,true)');
+assert(galleryFeed.includes('feed-below')&&galleryFeed.includes('רשימה מתחת לסף'),'the full-screen poll must also list parties below the threshold');
 assert(filteredFeed.includes('רע״ם')&&filteredFeed.includes('הרשימה המשותפת'),'passing Arab lists disappeared from the feed');
 const feedBox={innerHTML:'',seen:[],opened:[],querySelectorAll(selector){return (selector.includes(':has(')?this.opened:this.seen).map(id=>({dataset:{feedId:id}}));}};
 const feedNodes={'#polls-feed':feedBox,'#polls-stats':{},'#feed-all':{}};

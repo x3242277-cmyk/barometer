@@ -123,7 +123,7 @@ function explorerChart(P, state, M) {
   const lines = state.lines || explorerLinesFor(P, M, state), valid = lines.filter(l => l.points.length), points = valid.flatMap(l => l.points);
   const dates = [...new Set(points.map(p => p.t))].sort((a, b) => b - a), table = explorerTable(lines, dates);
   if (!points.length) return { lines, dates, table, svg: `<div class="ex-empty">${(state.selected || state.lines || []).length ? 'אין מדידות בטווח הזה. נסו טווח רחב יותר.' : 'בחרו לוגו אחד או יותר כדי להשוות.'}</div>` };
-  const W = Math.max(320, S.trackWidth || 850), H = Math.max(160, S.trackH || 260), m = { l: 34, r: 16, t: 14, b: 26 };
+  const W = Math.max(320, S.trackWidth || 850), H = Math.max(160, S.trackH || 260), m = { l: 34, r: 16, t: 14, b: 26 + (S.exBasisOn ? 34 : 0) };
   const t0 = Math.min(...points.map(p => p.t)), t1 = Math.max(t0 + DAY_MS, ...points.map(p => p.t));
   const vals = points.map(p => p.v), isRight = state.isRight ?? (state.mode !== 'parties' && state.metric === 'Right');
   const span = Math.max(...vals) - Math.min(...vals), step = span > 30 ? 10 : span > 12 ? 5 : 2;
@@ -194,12 +194,14 @@ function renderExplorerHTML(P, M, Mb) {
   state.isRight = state.subjects[0] === 'blocs';
   state.sub = state.hasChannel ? '' : TRACK_BASES[state.model.basis || 'avg'].label;
   S.explorer = { P, M, Mb, state };
-  const basis = M.basis || 'avg', tabs = state.sources.length ? ''
-    : `<div class="ex-tabs" role="tablist" aria-label="על מה מבוסס הממוצע">${Object.entries(TRACK_BASES).filter(([k]) => k !== 'baro').map(([k, b]) => `<button type="button" role="tab" data-ex-basis="${k}" aria-selected="${basis === k}" title="${esc(b.note)}">${b.label}</button>`).join('')}</div>`;
-  return `<div class="tr-card ex-workspace" data-mode="${state.overview ? 'overview' : 'compare'}">${tabs}
+  /* בחירת בסיס הממוצע יושבת בתחתית הגרף, מעל התאריכים, ונעלמת כשנבחר מקור (ערוץ או הברומטר) */
+  const basis = M.basis || 'avg', hasBasis = !state.sources.length;
+  S.exBasisOn = hasBasis;
+  const tabs = hasBasis ? `<div class="ex-basis" role="tablist" aria-label="על מה מבוסס הממוצע">${Object.entries(TRACK_BASES).filter(([k]) => k !== 'baro').map(([k, b]) => `<button type="button" role="tab" data-ex-basis="${k}" aria-selected="${basis === k}" title="${esc(b.note)}">${b.label}</button>`).join('')}</div>` : '';
+  return `<div class="tr-card ex-workspace${hasBasis ? ' has-basis' : ''}" data-mode="${state.overview ? 'overview' : 'compare'}">
     <div class="ex-bar"><div class="ex-keys">${explorerKeys(state.model, state, state.lines)}</div><div class="ex-tools">${explorerTools(P, M, state)}</div></div>
     ${explorerPicker(state, hasBaro)}
-    <div class="ex-body" data-ex-body></div>
+    <div class="ex-stage"><div class="ex-body" data-ex-body></div>${tabs}</div>
   </div>`;
 }
 
@@ -243,13 +245,16 @@ function wireExplorerHover(box, chart) {
 }
 
 /* ---------- כרטיס סקר בעמודת הסקרים האחרונים (ובתצוגה המוגדלת) ---------- */
-function feedCardHTML(p, list, expanded = false) {
+function feedCardHTML(p, list, expanded = false, gallery = false) {
   const v=pollVector(p), f=firmOf(p.sourceId), previous=previousComparablePoll(p,list);
   const ids=Object.keys(v.parties).filter(id=>v.parties[id]>0).sort((a,b)=>v.parties[b]-v.parties[a]);
   const row=id=>{ const value=v.parties[id], pv=comparablePartyValue(p,previous,id), d=pv === null ? null : value-pv;
     return `<li style="--c:${partyHue(id)}"><i></i><span>${esc(p.parties.find(x=>normId(x.id)===id)?.name||partyMeta(id).name)}</span><b>${value}</b><em class="flat" title="${d===null?'אין מדידה קודמת בת השוואה':'לעומת הסקר הקודם של אותו ערוץ ומכון'}">${d===null?'—':d>0?'↑'+d:d<0?'↓'+Math.abs(d):'='}</em></li>`; };
+  /* בסקר שנפתח במסך מלא מוצגות גם הרשימות שלא עוברות את אחוז החסימה (0 מנדטים) */
+  const belowNames=gallery?Object.keys(v.parties).filter(id=>v.parties[id]===0).map(id=>p.parties.find(x=>normId(x.id)===id)?.name||partyMeta(id).name):[];
+  const belowHTML=belowNames.length?`<div class="feed-below"><b>לא עברו את אחוז החסימה</b><span>${belowNames.map(n=>`<em>${esc(n)}</em>`).join('')}</span></div>`:'';
   const blocs=['Right','Unknown','Arabs','Left'].filter(k=>v.blocs[k]>0), bar=blocs.map(k=>`<span style="flex:${v.blocs[k]};background:${BLOCS[k].color}">${v.blocs[k]>=7?v.blocs[k]:''}</span>`).join('');
-  return `<article class="feed-card-shell" data-feed-id="${esc(p.id)}"><details class="feed-item${p.barometer?' is-baro':''}"${expanded?' open':''}><summary><span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer?'ניתוח שבועי':esc(f.meta.he)}</small></span><time title="${esc(p.date)}">${esc(feedWhen(p))}${p.barometer?' · 20:00':''}</time></span><span class="feed-bar" role="img" aria-label="${esc(blocs.map(k=>`${BLOCS[k].he}: ${v.blocs[k]}`).join(', '))}">${bar}<i class="feed-61"></i></span><span class="feed-lead">${ids.filter(id=>v.parties[id]>0).slice(0,3).map(id=>`<span>${esc(partyMeta(id).name)} <b>${v.parties[id]}</b></span>`).join('')}</span></summary><div class="feed-cols">${[['Right','ימין וחרדים'],['rest','יתר הרשימות']].map(([side,label])=>{const col=ids.filter(id=>(partyMeta(id).alignment==='Right')===(side==='Right'));return `<div><p class="feed-col-head">${label}<b>${col.reduce((n,id)=>n+v.parties[id],0)}</b></p><ol class="feed-parties">${col.map(row).join('')}</ol></div>`;}).join('')}</div><p class="feed-src">${previous?'השינוי מול הסקר הקודם של אותו ערוץ ומכון · '+esc(previous.date):'אין סקר קודם בר השוואה'}${p.sourceUrl?` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>`:''}<button type="button" class="feed-expand-one" data-feed-poll="${esc(p.id)}" aria-label="הגדלת הסקר של ${esc(p.channelHebrewName)} מ־${esc(p.date)}">⤢ הגדלה</button></p></details></article>`;
+  return `<article class="feed-card-shell" data-feed-id="${esc(p.id)}"><details class="feed-item${p.barometer?' is-baro':''}"${expanded?' open':''}><summary><span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer?'ניתוח שבועי':esc(f.meta.he)}</small></span><time title="${esc(p.date)}">${esc(feedWhen(p))}${p.barometer?' · 20:00':''}</time></span><span class="feed-bar" role="img" aria-label="${esc(blocs.map(k=>`${BLOCS[k].he}: ${v.blocs[k]}`).join(', '))}">${bar}<i class="feed-61"></i></span><span class="feed-lead">${ids.filter(id=>v.parties[id]>0).slice(0,3).map(id=>`<span>${esc(partyMeta(id).name)} <b>${v.parties[id]}</b></span>`).join('')}</span></summary><div class="feed-cols">${[['Right','ימין וחרדים'],['rest','יתר הרשימות']].map(([side,label])=>{const col=ids.filter(id=>(partyMeta(id).alignment==='Right')===(side==='Right'));return `<div><p class="feed-col-head">${label}<b>${col.reduce((n,id)=>n+v.parties[id],0)}</b></p><ol class="feed-parties">${col.map(row).join('')}</ol></div>`;}).join('')}</div>${belowHTML}<p class="feed-src">${previous?'השינוי מול הסקר הקודם של אותו ערוץ ומכון · '+esc(previous.date):'אין סקר קודם בר השוואה'}${p.sourceUrl?` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>`:''}<button type="button" class="feed-expand-one" data-feed-poll="${esc(p.id)}" aria-label="הגדלת הסקר של ${esc(p.channelHebrewName)} מ־${esc(p.date)}">⤢ הגדלה</button></p></details></article>`;
 }
 
 /* סקר אחד במסך מלא — לקריאה נוחה של כל הרשימות */
@@ -257,9 +262,12 @@ function openPollGallery(id) {
   const P=trackerModel(); if(!P)return;
   const list=[...P.polls,...weeklyBaro()].sort((a,b)=>parsePollDate(b)-parsePollDate(a)), poll=list.find(p=>p.id===id), dlg=$('#poll-gallery');
   if(!poll||!dlg)return;
-  $('#poll-gallery-title').textContent=`${poll.channelHebrewName} · ${poll.barometer?'ניתוח שבועי':firmOf(poll.sourceId).meta.he}`;
+  const firm=poll.barometer?null:firmOf(poll.sourceId).meta;
+  $('#poll-gallery-title').textContent=`${poll.channelHebrewName} · ${poll.barometer?'ניתוח שבועי':firm.he}`;
   $('#poll-gallery-count').textContent=`${poll.date} · המספרים במנדטים`;
-  $('#poll-gallery-cards').innerHTML=feedCardHTML(poll,list,true);
+  /* בראש הסקר, באמצע: לוגו הערוץ בגדול, ולצדו לוגו המכון שסוקר */
+  $('#poll-gallery-logos').innerHTML=`<span class="pg-channel">${outletLogo(poll.channelHebrewName)}</span>${firm?`<span class="pg-firm">${logoBox(firm,64)}</span>`:''}`;
+  $('#poll-gallery-cards').innerHTML=feedCardHTML(poll,list,true,true);
   dlg.showModal();dlg.scrollTop=0;
 }
 

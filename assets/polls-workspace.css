@@ -234,3 +234,35 @@
 /* מקור מקווקו בגרף = עיגול מקווקו סביב הלוגו שלו */
 .ex-logo-button.is-dashed[aria-pressed="true"]{border:3px dashed var(--c,#b0842a);box-shadow:none}
 .ex-logo-button.is-dotted[aria-pressed="true"]{border:3px dotted var(--c,#b0842a);box-shadow:none}
+
+/* ---------- סקר אחד במסך מלא: לוגו הערוץ והמכון בראש, והכול בלי גלילה ---------- */
+#poll-gallery{width:min(760px,94vw);max-height:98dvh}
+.poll-gallery-head{position:relative;display:grid;justify-items:center;align-content:center;gap:4px;padding:clamp(8px,1.6dvh,16px) 18px clamp(6px,1.2dvh,12px)}
+.poll-gallery-head>button{position:absolute;inset-block-start:10px;inset-inline-start:12px}
+.pg-logos{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2.4dvh,22px)}
+.pg-logos .orglogo{display:grid;place-items:center;background:#fff;border:3px solid #e5c783;border-radius:50%;overflow:hidden;box-shadow:0 8px 20px -10px #000000a0;font-weight:800;color:#12345c}
+.pg-logos .orglogo img{width:100%;height:100%;object-fit:contain;padding:10%;box-sizing:border-box}
+.pg-channel .orglogo{width:clamp(76px,14dvh,118px)!important;height:clamp(76px,14dvh,118px)!important;border-width:4px;border-color:#d1ad62}
+.pg-firm .orglogo{width:clamp(54px,9.5dvh,78px)!important;height:clamp(54px,9.5dvh,78px)!important}
+.pg-titles{text-align:center}
+.pg-titles h2{margin:0;font-size:clamp(1rem,2.4dvh,1.25rem)}
+.pg-titles p{margin:1px 0 0}
+.poll-gallery-cards{padding:clamp(6px,1.2dvh,12px) 18px clamp(10px,1.6dvh,16px)}
+.poll-gallery-cards .feed-parties li{padding:clamp(3px,.7dvh,6px) 0;font-size:clamp(.84rem,1.9dvh,.95rem)}
+.poll-gallery-cards .feed-src{padding-block:clamp(2px,.6dvh,6px)}
+.feed-below{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:clamp(4px,1dvh,10px) 12px 0;padding-top:clamp(4px,.9dvh,8px);border-top:1px dashed var(--rule-strong);font-size:.78rem;color:var(--ink-3)}
+.feed-below b{font-size:.74rem;color:var(--ink-2)}
+.feed-below span{display:flex;flex-wrap:wrap;gap:3px 10px}
+.feed-below em{font-style:normal;font-weight:600}
+.feed-below em::after{content:" · 0";color:var(--ink-3);font-weight:700}
+.poll-gallery-head{grid-template-columns:minmax(0,1fr);justify-content:stretch}
+
+/* בחירת בסיס הממוצע: בתחתית הגרף, מעל התאריכים, בסגנון הגרף */
+.ex-stage{position:relative;flex:1 1 0;min-height:160px;display:flex}
+.ex-stage>.ex-body{flex:1 1 auto;min-height:0}
+.ex-basis{position:absolute;inset-inline:0;bottom:24px;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.ex-basis button{pointer-events:auto;padding:3px 12px;border:1px solid var(--rule-strong,#d9cfba);border-radius:999px;background:#fffdf8e6;color:var(--ink-3);font:700 .72rem/1.4 var(--sans);cursor:pointer;transition:color .15s,border-color .15s,background .15s}
+.ex-basis button:hover{color:var(--ink);border-color:#a48b5d}
+.ex-basis button[aria-selected="true"]{color:var(--ink);background:#f6efdc;border-color:#b8862b;box-shadow:0 1px 0 #b8862b}
+.ex-basis button:focus-visible{outline:2px solid #c9a24f;outline-offset:2px}
+.ex-workspace.has-basis .ex-body>.ex-data-table{bottom:36px}

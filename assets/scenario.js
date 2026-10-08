@@ -31,9 +31,9 @@ function scenarioForecast(raw, options = {}) {
   const pollBaselineRight = rawHaredi + rawRestRight / total * (120 - rawHaredi - (fixed.raam || 0));
   const beforeDemographicRight = sum(rightIds) + (fixed.shas || 0) + (fixed.yahadut_hatora || 0);
   const harediBlocGain = Math.max(0, beforeDemographicRight - pollBaselineRight);
-  /* הרצפה בנקודות אחוז מהמצביעים: ממוצע שני המודלים פחות deviationPoints נקודות.
+  /* הרצפה בנקודות אחוז מהמצביעים: ממוצע שני המודלים פחות deviationPoints נקודות (ברירת המחדל 0: בדיוק הממוצע).
      היחידה הפנימית היא חלק מתוך 120, ולכן נקודת אחוז אחת = 1.2. */
-  const deviationPoints = Math.max(0,Math.min(50,options.deviationPoints ?? 1));
+  const deviationPoints = Math.max(0,Math.min(50,options.deviationPoints ?? 0));
   const structuralRight = Number.isFinite(options.structuralRight) ? options.structuralRight : null;
   const structuralLowerBound = structuralRight == null ? null : structuralRight - deviationPoints * 1.2;
   const demographicProposed = structuralLowerBound == null

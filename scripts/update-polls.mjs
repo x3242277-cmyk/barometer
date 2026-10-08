@@ -246,6 +246,10 @@ async function main() {
   }
   if (WIKI_ONLY || !source) { source = "ויקיפדיה"; incoming = await wikiIncoming(archive.polls, normalize); }
 
+  /* סקר שנמחק בניהול האתר לא מיובא שוב מהמקור (archive.deleted, נכתב בסנכרון מהאתר החי) */
+  const deletedIds = new Set((archive.deleted || []).map(d => d.id));
+  incoming = incoming.filter(p => !deletedIds.has(p.id));
+
   const incomingProblems = validate(incoming);
   if (incomingProblems.length) throw new Error(incomingProblems.join("\n"));
 
@@ -278,7 +282,7 @@ async function main() {
   if (DRY) { log("--dry: לא נכתב דבר."); return; }
   await mkdir(path.join(ROOT, "data"), { recursive: true });
   await writeFile(path.join(ROOT, cfg.outFile), JSON.stringify(out, null, 2), "utf8");
-  await writeFile(archPath, JSON.stringify({ updatedAt: out.generatedAt, polls: all }, null, 2), "utf8");
+  await writeFile(archPath, JSON.stringify({ updatedAt: out.generatedAt, polls: all, ...(archive.deleted ? { deleted: archive.deleted } : {}) }, null, 2), "utf8");
   log(`נכתב ${cfg.outFile} ו-data/polls-archive.json ✓`);
 }
 

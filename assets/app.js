@@ -598,7 +598,7 @@ function forecast(mode, exclude) {
     const opts = { ...(S.scenarioOptions || {}), rawFull };
     const structural = structuralRightSupport();
     if (opts.structuralRight == null && opts.demographic == null && structural) opts.structuralRight = structural.mean;
-    if (opts.deviationPoints == null) opts.deviationPoints = S.demo?.meta.structuralDeviationPoints ?? 1;
+    if (opts.deviationPoints == null) opts.deviationPoints = S.demo?.meta.structuralDeviationPoints ?? 0;
     const scenario = scenarioForecast(raw, opts);
     return { raw, rawFull, parties: scenario.parties, blocs, fix, scenario, below: belowShare, structural };
   }
@@ -1004,7 +1004,7 @@ function renderHome() {
 /* תחזית הברומטר: הגושים משני צידי מפת המושבים — דיוקנאות גדולים, ופס עבה לכיוון האמצע (בלי רקע אפור מתחת).
    מפלגות הקואליציה מימין; מפלגות האופוזיציה (וגם הלא־משויכות) משמאל. */
 /* ---- שעון המודל: שורת העדכון, קדימון שעה לפני, והרצה (ידנית או בשעת העדכון) ---- */
-const MODEL_STEPS = ["אוספים את הסקרים החדשים", "משקללים לפי דיוק עבר של המכונים", "שומרים את תמיכת וינטר והנדל/זליכה במפלגות הקואליציה", "מתקנים את הטעות הקבועה של כל מכון ומחשבים את המודל החרדי", "משלימים עד הרצפה: נקודת אחוז מתחת למודלים הדמוגרפי והגיאוגרפי", "מחלקים 120 מנדטים לפי כללי הבחירות"];
+const MODEL_STEPS = ["אוספים את הסקרים החדשים", "משקללים לפי דיוק עבר של המכונים", "שומרים את תמיכת וינטר והנדל/זליכה במפלגות הקואליציה", "מתקנים את הטעות הקבועה של כל מכון ומחשבים את המודל החרדי", "משלימים עד הרצפה: ממוצע המודלים הדמוגרפי והגיאוגרפי", "מחלקים 120 מנדטים לפי כללי הבחירות"];
 const waitMs = ms => new Promise(r => setTimeout(r, ms));
 function paintModelClock() {
   const up = $("#fs-updated"), tz = $("#fs-teaser"); if (!up) return;
@@ -2022,6 +2022,7 @@ const blocSeats = m => largestRemainder(Object.fromEntries(
 const BLOC_LABEL = { right: "ימין", center: "שמאל", haredi: "חרדים", arab: "ערבים" };
 
 const seatsHe = n => Math.abs(Math.round(n * 10) / 10) === 1 ? "מנדט אחד" : `${r1(Math.abs(n))} מנדטים`;
+const floorHe = p => p ? `הרצפה נמוכה ממנו ב־${pointsHe(p)}` : "זו גם הרצפה";
 const pointsHe = n => Math.abs(Math.round(n * 10) / 10) === 1 ? "נקודת אחוז אחת" : `${r1(Math.abs(n))} נקודות אחוז`;
 const kfmt = v => fmt(Math.round(v / 1000) * 1000);          // עיגול לאלפים — מספרים מוערכים
 
@@ -2082,7 +2083,7 @@ function renderDemography() {
   const seats = d / 100 * 120;
   const st = structuralRightSupport();
   renderDemoConclusions();
-  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} למפלגות הקואליציה ${pointsHe(d)} עד 2026 . זו התחזית העצמאית לגודל הגושים. ${st && st.demographic != null ? `בתחזית הברומטר המודל נותן למפלגות הקואליציה <b>${pct(st.demographic / 1.2)}</b> מהקולות${st.geographic != null ? `, והמודל הגיאוגרפי <b>${pct(st.geographic / 1.2)}</b>. ממוצע שניהם הוא ${pct(st.mean / 1.2)}; הרצפה נמוכה ממנו ב־${pointsHe(S.demo.meta.structuralDeviationPoints ?? 1)}, והתחזית מועלית עד אליה, ולא מעבר לכך` : ""}.` : ""} הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
+  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} למפלגות הקואליציה ${pointsHe(d)} עד 2026 . זו התחזית העצמאית לגודל הגושים. ${st && st.demographic != null ? `בתחזית הברומטר המודל נותן למפלגות הקואליציה <b>${pct(st.demographic / 1.2)}</b> מהקולות${st.geographic != null ? `, והמודל הגיאוגרפי <b>${pct(st.geographic / 1.2)}</b>. ממוצע שניהם הוא ${pct(st.mean / 1.2)}; ${floorHe(S.demo.meta.structuralDeviationPoints ?? 0)}, והתחזית מועלית עד אליה, ולא מעבר לכך` : ""}.` : ""} הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
 }
 
 /* המסקנות: העמודה שליד הכרטיסיות, משפט הכותרת, ושורת מסקנה בראש כל כרטיסייה.
@@ -2123,7 +2124,7 @@ function renderDemoConclusions() {
       ${fast[0] && slow ? `<li><b>${esc(fast[0].name)} גדלים הכי מהר</b> — ${pct(P[fast[0].id].growth * 100)} בשנה, מול ${pct(P[slow.id].growth * 100)} אצל ה${esc(slow.name)}${times && times >= 2 ? ` (פי ${Math.round(times)})` : ""}.</li>` : ""}
       ${top ? `<li><b>הזהות מכריעה את ההצבעה</b> — ${esc(top.sc.name)}: ${Math.round(top.v.rightShare)}% למפלגות הקואליציה; ${esc(low.sc.name)}: ${Math.round(low.v.rightShare)}%.</li>` : ""}
       ${swing != null ? `<li><b>אחוז ההצבעה הערבי רגיש</b> — 10 נקודות למעלה או למטה מזיזות כ־${pointsHe(swing)}.</li>` : ""}
-      <li><b>מול תחזית הברומטר</b> — אותו מספר (${pct(P2.share2026)}) נכנס לתחזית${st ? `, בממוצע עם המודל הגיאוגרפי: ${pct(st.mean / 1.2)}. הרצפה נמוכה ממנו ב־${pointsHe(S.demo.meta.structuralDeviationPoints ?? 1)}: ${pct(st.mean / 1.2 - (S.demo.meta.structuralDeviationPoints ?? 1))}` : ""}. התחזית מועלית רק עד הרצפה, ולא מעבר לה.</li>
+      <li><b>מול תחזית הברומטר</b> — אותו מספר (${pct(P2.share2026)}) נכנס לתחזית${st ? `, בממוצע עם המודל הגיאוגרפי: ${pct(st.mean / 1.2)}. ${floorHe(S.demo.meta.structuralDeviationPoints ?? 0)}: ${pct(st.mean / 1.2 - (S.demo.meta.structuralDeviationPoints ?? 0))}` : ""}. התחזית מועלית רק עד הרצפה, ולא מעבר לה.</li>
     </ol>`;
 
   const lead = (id, html) => { const el = $("#dm-lead-" + id); if (el) el.innerHTML = html; };
@@ -2341,11 +2342,11 @@ function renderMethod() {
   const sumRight = p => Object.entries(p).reduce((sum, [id, value]) => sum + (isRightAt(id, value) ? value : 0), 0);
   const rightFloat = sumRight(sc.parties), demographic = sc.scenario?.demographic ?? 0;
   const proposed = sc.scenario?.demographicProposed ?? 0, harediGain = sc.scenario?.harediBlocGain ?? 0;
-  document.querySelectorAll('[data-model-deviation]').forEach(el => { el.textContent = pointsHe(sc.scenario?.deviationPoints ?? 1); });
+  document.querySelectorAll('[data-model-deviation]').forEach(el => { el.textContent = (sc.scenario?.deviationPoints ?? 0) ? `${pointsHe(sc.scenario.deviationPoints)} מתחתיו` : "בדיוק בממוצע"; });
   const deviationControl = $("#method-deviation");
   if (deviationControl) {
-    deviationControl.value = sc.scenario?.deviationPoints ?? 1;
-    $("#method-deviation-value").textContent = pointsHe(Number(deviationControl.value));
+    deviationControl.value = sc.scenario?.deviationPoints ?? 0;
+    $("#method-deviation-value").textContent = Number(deviationControl.value) ? pointsHe(Number(deviationControl.value)) : "בדיוק בממוצע";
     deviationControl.onchange = event => {
       S.scenarioOptions = { ...S.scenarioOptions, deviationPoints: Number(event.target.value) };
       delete S.scenarioOptions.demographic;
@@ -2355,12 +2356,12 @@ function renderMethod() {
   }
   const scenarioSeats = allocateSeats(sc.parties);
   const pc1 = v => `${(v / 1.2).toFixed(1)}%`, pt1 = v => `${v >= 0 ? "+" : "−"}${Math.abs(v / 1.2).toFixed(1)}`;
-  $("#m-live-scenario").innerHTML = [[pc1(sumRight(sc.rawFull)), "מפלגות הקואליציה בסקרים המשוקללים, אחרי שימור תמיכת וינטר והנדל/זליכה"], [pc1(rightFloat - demographic), "אחרי המודל החרדי"], [pt1(harediGain), "תוספת המודל החרדי, בנקודות אחוז"], [pc1(sc.structural?.mean ?? 0), "ממוצע המודל הדמוגרפי והגיאוגרפי"], [`−${(sc.scenario?.deviationPoints ?? 1).toFixed(1)}`, "הרצפה: נקודות אחוז מתחת לממוצע המודלים"], [pc1(sc.scenario?.structuralLowerBound ?? 0), "הרצפה"], [pt1(demographic), "ההשלמה עד הרצפה, בנקודות אחוז (אפס אם הסקרים מעליה)"], [pc1(rightFloat), "מפלגות הקואליציה לפני חלוקת המושבים"], [sumRight(scenarioSeats), "מנדטים למפלגות הקואליציה אחרי אחוז החסימה והסכמי העודפים"], [Object.values(scenarioSeats).reduce((sum, seats) => sum + seats, 0), "סך הכול מנדטים בכנסת"]]
+  $("#m-live-scenario").innerHTML = [[pc1(sumRight(sc.rawFull)), "מפלגות הקואליציה בסקרים המשוקללים, אחרי שימור תמיכת וינטר והנדל/זליכה"], [pc1(rightFloat - demographic), "אחרי המודל החרדי"], [pt1(harediGain), "תוספת המודל החרדי, בנקודות אחוז"], [pc1(sc.structural?.mean ?? 0), "ממוצע המודל הדמוגרפי והגיאוגרפי"], [pc1(sc.scenario?.structuralLowerBound ?? 0), (sc.scenario?.deviationPoints ?? 0) ? `הרצפה: ${r1(sc.scenario.deviationPoints)} נקודות מתחת לממוצע` : "הרצפה: ממוצע המודלים"], [pt1(demographic), "ההשלמה עד הרצפה, בנקודות אחוז (אפס אם הסקרים מעליה)"], [pc1(rightFloat), "מפלגות הקואליציה לפני חלוקת המושבים"], [sumRight(scenarioSeats), "מנדטים למפלגות הקואליציה אחרי אחוז החסימה והסכמי העודפים"], [Object.values(scenarioSeats).reduce((sum, seats) => sum + seats, 0), "סך הכול מנדטים בכנסת"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   // 5 · the two structural models, in one unit: right + Haredi vote share x 120
   {
     const st = sc.structural;
-    if (st) $("#m-live-demo").innerHTML = [[st.demographic == null ? "—" : pc1(st.demographic), "המודל הדמוגרפי: מפלגות הקואליציה, אחוז מהמצביעים"], [st.geographic == null ? "—" : pc1(st.geographic), "המודל הגיאוגרפי: מפלגות הקואליציה, אחוז מהמצביעים"], [pc1(st.mean), "ממוצע שני המודלים"], [pc1(sc.scenario?.structuralLowerBound ?? 0), "הרצפה, נקודת אחוז מתחת לממוצע"]]
+    if (st) $("#m-live-demo").innerHTML = [[st.demographic == null ? "—" : pc1(st.demographic), "המודל הדמוגרפי: מפלגות הקואליציה, אחוז מהמצביעים"], [st.geographic == null ? "—" : pc1(st.geographic), "המודל הגיאוגרפי: מפלגות הקואליציה, אחוז מהמצביעים"], [pc1(st.mean), "ממוצע שני המודלים"], [pc1(sc.scenario?.structuralLowerBound ?? 0), (sc.scenario?.deviationPoints ?? 0) ? `הרצפה, ${r1(sc.scenario.deviationPoints)} נקודות מתחת לממוצע` : "הרצפה: בדיוק הממוצע"]]
       .map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   }
   // תרחיש חרדי — תקציר בתחתית התחשיב

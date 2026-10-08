@@ -56,11 +56,19 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
     for await(const page of store.list({prefix:'polls/',paginate:true})) blobs.push(...page.blobs);
     return (await Promise.all(blobs.map(b=>store.get(b.key,{type:'json'})))).filter(Boolean);
   }
+  /* סקר שנמחק בניהול נשמר כ"מצבה" (deleted/<id>): הוא מוסתר מיד מהאתר החי, והגיבוי
+     ל־GitHub (scripts/sync-live-polls.mjs) מוחק אותו גם מהקבצים במאגר. */
+  async function deletedPolls() {
+    const store=content(),blobs=[];
+    for await(const page of store.list({prefix:'deleted/',paginate:true})) blobs.push(...page.blobs);
+    return (await Promise.all(blobs.map(b=>store.get(b.key,{type:'json'})))).filter(Boolean);
+  }
   async function mergedPolls() {
-    const extra=await storedPolls();
-    const map=new Map([...archive.polls,...current.polls].map(p=>[p.id,p]));
+    const extra=await storedPolls(),gone=new Set((await deletedPolls()).map(d=>d.id));
+    const map=new Map([...archive.polls,...current.polls].filter(p=>!gone.has(p.id)).map(p=>[p.id,p]));
     // One entry per publisher and day, including manual records and later imports.
     for(const p of extra) {
+      if(gone.has(p.id)) continue;
       for(const [id,old] of map) if(old.sourceId===p.sourceId && old.dateTimestamp===p.dateTimestamp) map.delete(id);
       map.set(p.id,p);
     }
@@ -126,7 +134,7 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
         if(!['current-polls.json','polls-archive.json'].includes(publicFile)) return json({},404);
         const all=await mergedPolls();
         const generatedAt=new Date(Math.max(Date.parse(current.generatedAt),...all.map(p=>Number(p.publishedAt)||0))).toISOString();
-        if(publicFile==='polls-archive.json') return json({updatedAt:generatedAt,polls:all});
+        if(publicFile==='polls-archive.json') return json({updatedAt:generatedAt,polls:all,deleted:await deletedPolls()});
         const counts=new Map();
         const shown=all.filter(p=>p.dateTimestamp>=Date.parse('2026-08-01')&&new Date(p.dateTimestamp).getUTCFullYear()===2026).filter(p=>{const key=p.channelHebrewName,n=(counts.get(key)||0)+1;counts.set(key,n);return n<=4;});
         return json({...current,generatedAt,polls:shown});
@@ -140,7 +148,27 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
       if(path==='/api/analytics/summary' && request.method==='GET') return json(await summary());
       if(path==='/api/admin/state' && request.method==='GET') {
         const polls=await mergedPolls();
-        return json({generatedAt:current.generatedAt,latestPollDate:polls[0]?.dateTimestamp,outlets:firms.sourceMap,firms:firms.firms.map(f=>({id:f.id,he:f.he})),parties:Object.values(parties),lastCheck:await content().get('last-check',{type:'json'})});
+        /* המפלגות מהגדולה לקטנה, לפי הממוצע בסקרים שמוצגים באתר */
+        const recent=polls.slice(0,20),avg=id=>{const xs=recent.map(p=>p.parties.find(x=>x.id===id)).filter(Boolean);return xs.length?xs.reduce((t,x)=>t+x.mandates,0)/xs.length:0;};
+        const ordered=Object.values(parties).map(p=>({id:p.id,name:p.name,alignment:p.alignment,average:Math.round(avg(p.id)*10)/10})).sort((a,b)=>b.average-a.average||a.name.localeCompare(b.name,'he'));
+        return json({generatedAt:current.generatedAt,latestPollDate:polls[0]?.dateTimestamp,outlets:firms.sourceMap,firms:firms.firms.map(f=>({id:f.id,he:f.he})),parties:ordered,lastCheck:await content().get('last-check',{type:'json'})});
+      }
+      if(path==='/api/admin/polls' && request.method==='GET') {
+        const polls=(await mergedPolls()).slice(0,40);
+        const rightPass=new Set(['ofer_vinter_party','hendel_zeliha_party']);
+        return json({polls:polls.map(p=>({id:p.id,outlet:p.channelHebrewName,sourceId:p.sourceId,date:p.date,manual:String(p.id).startsWith('manual-'),sourceUrl:p.sourceUrl||'',
+          coalition:p.parties.reduce((t,x)=>t+(x.alignment==='Coalition'||rightPass.has(x.id)&&x.mandates>=4?x.mandates:0),0),
+          parties:p.parties.filter(x=>x.mandates>0).sort((a,b)=>b.mandates-a.mandates).map(x=>({name:x.name,mandates:x.mandates}))}))});
+      }
+      if(path==='/api/admin/delete' && request.method==='POST') {
+        const input=await body(request,2048),id=String(input?.id||'');
+        const poll=(await mergedPolls()).find(p=>p.id===id);
+        if(!poll) throw fail('הסקר לא נמצא במאגר. אולי כבר נמחק.',404);
+        const store=content();
+        await store.setJSON('deleted/'+encodeURIComponent(id),{id,sourceId:poll.sourceId,dateTimestamp:poll.dateTimestamp,date:poll.date,outlet:poll.channelHebrewName,at:new Date(now).toISOString()});
+        const key='polls/'+poll.sourceId+'-'+new Date(poll.dateTimestamp).toISOString().slice(0,10);
+        if((await store.get(key,{type:'json'}))?.id===id) await store.delete(key);
+        return json({message:'הסקר של '+poll.channelHebrewName+' מ־'+poll.date+' נמחק מהאתר. הגיבוי ב־GitHub יתעדכן בסנכרון הבא (עד רבע שעה).'});
       }
       if(path==='/api/admin/save' && request.method==='POST') {
         const input=await body(request),poll=validateManual(input,now),store=content();
@@ -150,6 +178,7 @@ export function createManagementHandler({getStore,secret=()=>process.env.BAROMET
         }
         const all=await mergedPolls();
         if(all.some(p=>p.sourceId===poll.sourceId&&p.dateTimestamp===poll.dateTimestamp)) throw fail('כבר קיים סקר של כלי התקשורת בתאריך הזה. לא נוצרה כפילות.',409);
+        await store.delete('deleted/'+encodeURIComponent(poll.id));          // הזנה מחדש אחרי מחיקה בטעות
         const {modified}=await store.setJSON(`polls/${poll.sourceId}-${input.date}`,poll,{onlyIfNew:true});
         if(!modified) throw fail('הסקר כבר נשמר.',409);
         return json({message:'הסקר נשמר ופורסם באתר. רעננו את תמונת המצב להצגת התחזית המעודכנת.'});

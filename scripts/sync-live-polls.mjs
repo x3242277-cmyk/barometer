@@ -58,8 +58,15 @@ export async function syncLivePolls({ root = ROOT, siteUrl, file, fetcher = fetc
   const sources = (await read(root, 'data/pollsters.json')).sourceMap;
   const incoming = validateLiveFeed(feed, sources);
   const archive = await read(root, 'data/polls-archive.json'), current = await read(root, 'data/current-polls.json');
-  const merged = mergeLivePolls([...archive.polls, ...current.polls], incoming);
-  if (!merged.added && !merged.changed) return { added: 0, changed: 0, total: merged.polls.length };
+  /* סקרים שנמחקו בניהול: האתר החי מחזיר את רשימת המחיקות, והיא מקור האמת — נשמרת
+     בארכיון (archive.deleted) כדי שעדכון הסקרים האוטומטי לא ייבא אותם שוב. */
+  const deleted = validateDeleted(feed.deleted);
+  const gone = new Set(deleted.map(d => d.id));
+  const kept = [...archive.polls, ...current.polls].filter(p => !gone.has(p.id));
+  const removed = new Set([...archive.polls, ...current.polls].filter(p => gone.has(p.id)).map(p => p.id)).size;
+  const sameDeleted = JSON.stringify((archive.deleted || []).map(d => d.id).sort()) === JSON.stringify([...gone].sort());
+  const merged = mergeLivePolls(kept, incoming.filter(p => !gone.has(p.id)));
+  if (!merged.added && !merged.changed && !removed && sameDeleted) return { added: 0, changed: 0, removed: 0, total: merged.polls.length };
   const backupDir = path.join(root, '.site-stage', 'poll-backups');
   await mkdir(backupDir, { recursive: true });
   const backupDate = new Date().toISOString().replaceAll(':', '-');
@@ -68,13 +75,22 @@ export async function syncLivePolls({ root = ROOT, siteUrl, file, fetcher = fetc
   const generatedAt = new Date(Math.max(Date.parse(current.generatedAt) || 0, Date.parse(feed.updatedAt || feed.generatedAt) || 0, ...merged.polls.map(publication))).toISOString();
   const polls = selectDisplayPolls(merged.polls, { year: config.year, maxPerOutlet: config.maxPerOutlet, from: Date.parse(config.from) });
   const nextCurrent = { ...current, generatedAt, selection: { ...current.selection, outlets: new Set(polls.map(p => p.channelHebrewName)).size }, polls };
-  await writeFile(path.join(root, 'data/polls-archive.json'), JSON.stringify({ ...archive, updatedAt: generatedAt, polls: merged.polls }, null, 2) + '\n');
+  await writeFile(path.join(root, 'data/polls-archive.json'), JSON.stringify({ ...archive, updatedAt: generatedAt, polls: merged.polls, deleted }, null, 2) + '\n');
   await writeFile(path.join(root, 'data/current-polls.json'), JSON.stringify(nextCurrent, null, 2) + '\n');
-  return { added: merged.added, changed: merged.changed, total: merged.polls.length };
+  return { added: merged.added, changed: merged.changed, removed, total: merged.polls.length };
+}
+
+export function validateDeleted(list) {
+  if (list == null) return [];
+  if (!Array.isArray(list) || list.length > 500) throw Error('רשימת הסקרים שנמחקו אינה תקינה. הקבצים הקיימים נשמרו.');
+  return list.map(d => {
+    if (!d || typeof d.id !== 'string' || !d.id || d.id.length > 200) throw Error('רשומת מחיקה לא תקינה. הקבצים הקיימים נשמרו.');
+    return { id: d.id, sourceId: d.sourceId, dateTimestamp: d.dateTimestamp, date: d.date, outlet: d.outlet, at: d.at };
+  }).sort((a, b) => a.id.localeCompare(b.id));
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const arg = name => { const index = process.argv.indexOf(name); return index < 0 ? undefined : process.argv[index + 1]; };
   const result = await syncLivePolls({ siteUrl: arg('--url'), file: arg('--file') });
-  console.log('סנכרון האתר: נוספו ' + result.added + ', עודכנו ' + result.changed + ', בארכיון ' + result.total + ' סקרים.');
+  console.log('סנכרון האתר: נוספו ' + result.added + ', עודכנו ' + result.changed + ', נמחקו ' + (result.removed || 0) + ', בארכיון ' + result.total + ' סקרים.');
 }

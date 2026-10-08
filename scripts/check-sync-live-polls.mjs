@@ -43,4 +43,13 @@ assert.equal(await readFile(path.join(root, 'data/polls-archive.json'), 'utf8'),
 await assert.rejects(syncLivePolls({ root, fetcher: async () => Response.json({ polls: [fresh] }, { headers: { 'X-Barometer-Data-Status': 'fallback' } }) }));
 await assert.rejects(syncLivePolls({ root, fetcher: async () => Response.json({ polls: [] }) }));
 assert.equal(await readFile(path.join(root, 'data/polls-archive.json'), 'utf8'), bytes);
-console.log('Passed: live polls retained with repository history, repeat sync without changes, publisher/date deduplication, newer correction, older-deploy protection, validation, backup before writing and failure without data loss.');
+const deletedFeed = async () => Response.json({ updatedAt: '2026-10-08T10:00:00Z', polls: [], deleted: [{ id: fresh.id, sourceId: fresh.sourceId, dateTimestamp: fresh.dateTimestamp }] });
+const removal = await syncLivePolls({ root, fetcher: async () => Response.json({ updatedAt: '2026-10-08T10:00:00Z', polls: [first], deleted: [{ id: fresh.id, sourceId: fresh.sourceId, dateTimestamp: fresh.dateTimestamp }] }) });
+assert.equal(removal.removed, 1);
+const afterRemoval = JSON.parse(await readFile(path.join(root, 'data/polls-archive.json'), 'utf8'));
+assert(!afterRemoval.polls.some(p => p.id === fresh.id), 'a survey deleted in the admin area stayed in the repository');
+assert(afterRemoval.deleted.some(d => d.id === fresh.id));
+assert(!JSON.parse(await readFile(path.join(root, 'data/current-polls.json'), 'utf8')).polls.some(p => p.id === fresh.id));
+await assert.rejects(syncLivePolls({ root, fetcher: async () => Response.json({ polls: [first], deleted: 'all' }) }));
+void deletedFeed;
+console.log('Passed: live polls retained with repository history, repeat sync without changes, publisher/date deduplication, newer correction, older-deploy protection, validation, backup before writing, deletions from the admin area and failure without data loss.');

@@ -49,7 +49,7 @@ export function weekKey(ts) {
 /* מריץ את המנוע על סט סקרים. now — הזמן שהמנוע "חושב" שהוא עכשיו (לשחזור שבועות
    קודמים: חלון 8 הימים של התחזית נספר ממנו). select — האם לבחור את סקרי התצוגה
    (לכל היותר 4 לכל ערוץ) מתוך הסט, כמו שהאתר עושה; current-polls.json כבר בחור. */
-export function runEngine(polls, { now = Date.now(), select = false } = {}) {
+export function runEngine(polls, { now = Date.now(), select = false, detail = false } = {}) {
   const RealDate = Date;
   class EngineDate extends RealDate {
     constructor(...a) { super(...(a.length ? a : [now])); }
@@ -61,7 +61,7 @@ export function runEngine(polls, { now = Date.now(), select = false } = {}) {
   }
   /* אותן מערכות כיול כמו בדפדפן (2022, 2021, 2020) — כדי שהמשקלים ותיקון
      הטעות הקבועה בתחזית הברומטר יהיו בצילום זהים למה שהאתר מציג */
-  ctx.fx = { polls, select, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters"), demo: read("demographics"), haredi: read("haredi"), trends: read("trends") };
+  ctx.fx = { polls, select, detail, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters"), demo: read("demographics"), haredi: read("haredi"), trends: read("trends") };
   return JSON.parse(vm.runInContext(`
     S.hist = fx.hist; S.firms = fx.firms;
     /* המודלים הדמוגרפי והגיאוגרפי (טווח הסטייה) — אותם נתונים כמו בדפדפן */
@@ -83,14 +83,24 @@ export function runEngine(polls, { now = Date.now(), select = false } = {}) {
     /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
     const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));
     JSON.stringify({
-      modelVersion: "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
+      modelVersion: "haredi-locality-parties-turnout-raam-polls-v13-pass-rule-weighted-floor-at-model-mean",
       scenario: largestRemainder(__fsc.parties),
       weighted: largestRemainder(__fw.parties),
       below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },
       polls: S.forecastPolls.length,
       firms: S.series.length,
       seats: allocateSeats(__fsc.parties),
-      seatsWeighted: allocateSeats(__fw.parties)
+      seatsWeighted: allocateSeats(__fw.parties),
+      /* לטבלת התרחישים באזור הניהול: גושים אחרי חלוקת המושבים, וחלק הקואליציה באחוזים */
+      ...(fx.detail ? (() => {
+        const seats = allocateSeats(__fsc.parties), blocs = {};
+        Object.entries(seats).forEach(([id, n]) => { const al = partyMeta(id).alignment; blocs[al] = (blocs[al] || 0) + n; });
+        const sumR = p => Object.entries(p).reduce((t, [id, v]) => t + (isRightAt(id, v) ? v : 0), 0);
+        const pollRight = p => p.parties.reduce((t, x) => t + (isRightAt(normId(x.id), x.mandates) ? x.mandates : 0), 0);
+        return { blocs, coalitionShare: sumR(__fsc.parties) / 1.2, lift: (__fsc.scenario?.demographic || 0) / 1.2,
+          floorShare: (__fsc.scenario?.structuralLowerBound ?? 0) / 1.2,
+          windowPolls: S.forecastPolls.map(p => ({ sourceId: p.sourceId, outlet: p.channelHebrewName, date: p.date, coalition: pollRight(p) })) };
+      })() : {})
     })
   `, ctx));
 }

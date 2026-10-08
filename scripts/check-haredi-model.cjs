@@ -12,8 +12,20 @@ S.elections=[[2022,fixture.hist],[2021,fixture.hist2021],[2020,fixture.hist2020]
 S.stats=combineCalibrations(S.elections); S.house=houseEffects(S.elections); S.houseIndustry=houseIndustry(S.house);
 S.forecastPolls=recentForForecast(S.cur.polls); S.series=buildSeries(S.forecastPolls); S.seriesScenario=buildSeries(S.forecastPolls.map(correctWithinBlocs));
 const model=harediForecast();
-assert.ok(model); assert.equal(model.geoTotal,18);
-assert.equal(model.components.shas.geographic,11); assert.equal(model.components.yahadut_hatora.geographic,7);
+assert.ok(model);
+assert.equal(model.components.shas.geographic,fixture.trends.national.partyForecast.shas.seats);
+assert.equal(model.components.yahadut_hatora.geographic,fixture.trends.national.partyForecast.utj.seats);
+assert.ok(Math.abs(model.components.shas.geographic/model.components.yahadut_hatora.geographic-11/7)>.001,'geographic estimates must not split a combined total by the 2022 mandate ratio');
+const defaults=Object.fromEntries(S.demo.sectors.map(s=>[s.id,{growth:s.growth,turnout:s.turnout}]));
+const electorate=projectedElectorate(0,defaults);
+assert.ok(Math.abs(electorate.validVotes-S.demo.meta.validVotes2022)<1e-8);
+assert.ok(Math.abs(electorate.cast-S.demo.meta.voted2022)<1e-8);
+const projected=projectedElectorate(4,defaults);
+const lowerTurnout=Object.fromEntries(Object.entries(defaults).map(([id,p])=>[id,{...p,turnout:p.turnout*.9}]));
+const lower=projectedElectorate(4,lowerTurnout);
+assert.equal(lower.eligible,projected.eligible);
+assert.ok(Math.abs(lower.validVotes/projected.validVotes-.9)<1e-12);
+assert.ok(Math.abs(projectedMandateCost(lower.validVotes).cost/projectedMandateCost(projected.validVotes).cost-.9)<1e-12);
 for(const id of ['shas','yahadut_hatora']) {
  const x=model.components[id];
  assert.ok(Math.abs(x.combined-(.25*x.demographic+.25*x.geographic+.5*x.polls))<1e-12);
@@ -30,20 +42,29 @@ for(const row of model.rows)for(const id of ['shas','yahadut_hatora']) {
 assert.ok(Math.abs(model.rows.reduce((n,r)=>n+r.weight,0)-1)<1e-12);
 const before=JSON.stringify(model.parties); S.harGrowth=6;S.harTurnout=60;S.harWasted=10;
 assert.equal(JSON.stringify(harediForecast().parties),before); S.harGrowth=null;S.harTurnout=null;S.harWasted=null;
+S.demoOverrides.haredi={growth:.08,turnout:.6};
+assert.equal(JSON.stringify(harediForecast().parties),before); S.demoOverrides={};
 for(const poll of S.forecastPolls) {
  const corrected=correctWithinBlocs(poll);
- for(const id of ['shas','yahadut_hatora'])assert.equal(corrected.parties.find(p=>p.id===id)?.mandates,poll.parties.find(p=>p.id===id)?.mandates);
+ for(const id of ['shas','yahadut_hatora','raam'])assert.equal(corrected.parties.find(p=>p.id===id)?.mandates,poll.parties.find(p=>p.id===id)?.mandates);
 }
 const weighted=forecast('weighted',HIDE_FROM_HOME);
 for(const id of ['shas','yahadut_hatora'])assert.ok(Math.abs(weighted.parties[id]-model.components[id].rawPolls)<1e-12);
 for(const blend of [0,.5,1])for(const demographic of [-6,0,2,6]) {
  const result=scenarioForecast(weighted.raw,{harediSeats:model.parties,blend,demographic});
  assert.equal(result.parties.shas,model.parties.shas);assert.equal(result.parties.yahadut_hatora,model.parties.yahadut_hatora);
+ assert.equal(result.parties.raam,weighted.raw.raam);
  assert.ok(Math.abs(Object.values(result.parties).reduce((a,b)=>a+b,0)-120)<1e-8);
  const allocated=allocateSeats(result.parties);
  assert.equal(Object.values(allocated).reduce((a,b)=>a+b,0),120);
  assert.ok(Object.values(allocated).every(x=>Number.isInteger(x)&&x>=0));
 }
+const liveScenario=forecast('scenario',HIDE_FROM_HOME);
+assert.equal(liveScenario.parties.raam,weighted.rawFull.raam,'Raam must use the uncorrected reliability-weighted poll average');
+const savedRaam=[S.series,S.seriesScenario].map(list=>list.map(s=>s.parties.raam));
+for(const list of [S.series,S.seriesScenario])for(const s of list)s.parties.raam=3.8;
+assert.equal(forecast('scenario',HIDE_FROM_HOME).parties.raam,undefined,'a below-threshold poll average must not create Raam seats');
+[S.series,S.seriesScenario].forEach((list,i)=>list.forEach((s,j)=>{s.parties.raam=savedRaam[i][j];}));
 const changed=S.series[0], was=changed.parties.shas, weight=model.rows[0].weight;
 changed.parties.shas+=1;assert.ok(Math.abs(harediForecast().parties.shas-model.parties.shas-.5*weight)<1e-12);changed.parties.shas=was;
 assert.equal(ELECTION_RULES.surplusAgreements.length,5);

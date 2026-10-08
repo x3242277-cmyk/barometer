@@ -49,7 +49,7 @@ export function weekKey(ts) {
 /* מריץ את המנוע על סט סקרים. now — הזמן שהמנוע "חושב" שהוא עכשיו (לשחזור שבועות
    קודמים: חלון 8 הימים של התחזית נספר ממנו). select — האם לבחור את סקרי התצוגה
    (לכל היותר 4 לכל ערוץ) מתוך הסט, כמו שהאתר עושה; current-polls.json כבר בחור. */
-function runEngine(polls, { now = Date.now(), select = false } = {}) {
+export function runEngine(polls, { now = Date.now(), select = false } = {}) {
   const RealDate = Date;
   class EngineDate extends RealDate {
     constructor(...a) { super(...(a.length ? a : [now])); }
@@ -83,7 +83,7 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
     /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
     const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));
     JSON.stringify({
-      modelVersion: "haredi-25-25-50-v1",
+      modelVersion: "haredi-locality-parties-turnout-raam-polls-v3",
       scenario: largestRemainder(__fsc.parties),
       weighted: largestRemainder(__fw.parties),
       below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },
@@ -95,7 +95,7 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
   `, ctx));
 }
 
-const weeklyEntry = (week, ts, r) => ({ week, date: week, time: "20:00", recordedAt: new Date(ts).toISOString(), polls: r.polls, firms: r.firms, seats: r.seats });
+const weeklyEntry = (week, ts, r) => ({ week, date: week, time: "20:00", recordedAt: new Date(ts).toISOString(), modelVersion: r.modelVersion, polls: r.polls, firms: r.firms, seats: r.seats });
 /* צילום: שארית גדולה + המנדטים לפי כללי הבחירות לשני הבסיסים */
 const snapshotOf = ({ seats, seatsWeighted, ...rest }) => ({ ...rest, seats: { scenario: seats, weighted: seatsWeighted } });
 
@@ -163,21 +163,27 @@ export function backfillWeekly({ rebuild = false } = {}) {
   return added;
 }
 
-/* מחשב מחדש את כל הצילומים במנוע הנוכחי: לכל צילום — current-polls.json מהקומיט
-   שבו generatedAt שלו שווה ל־updatedAt של הצילום. צילום שאין לו קומיט כזה נשאר. */
+/* לכל צילום משתמשים בסקרים שנשמרו בזמן העדכון. אם הקובץ אינו בהיסטוריית Git,
+   משחזרים מהארכיון עד זמן הצילום. אף צילום אינו נשאר עם גרסת מודל קודמת. */
 export function rebuildSnapshots() {
   const history = JSON.parse(fs.readFileSync(FILE, "utf8"));
-  const git = args => execFileSync("git", args, { cwd: ROOT, encoding: "utf8", maxBuffer: 1e9 });
+  const git = args => execFileSync("git", ["-c", `safe.directory=${ROOT.replace(/\\/g, "/")}`, ...args], { cwd: ROOT, encoding: "utf8", maxBuffer: 1e9 });
   const byTime = new Map();
   for (const h of git(["log", "--format=%H", "--", "data/current-polls.json"]).trim().split(/\s+/)) {
     try { const cur = JSON.parse(git(["show", `${h}:data/current-polls.json`])); if (!byTime.has(cur.generatedAt)) byTime.set(cur.generatedAt, cur); } catch { /* קומיט בלי הקובץ */ }
   }
+  const current = read("current-polls"), archive = read("polls-archive").polls;
+  byTime.set(current.generatedAt, current);
+  const recalculatedAt = new Date().toISOString();
   let done = 0;
   history.snapshots = history.snapshots.map(snap => {
     const cur = byTime.get(snap.updatedAt);
-    if (!cur) return snap;
+    const now = Date.parse(snap.updatedAt);
+    if (!Number.isFinite(now)) throw new Error(`Invalid forecast timestamp: ${snap.updatedAt}`);
+    const polls = cur?.polls || archive.filter(p => p.dateTimestamp <= now && (!p.publishedAt || (typeof p.publishedAt === "number" ? p.publishedAt : Date.parse(p.publishedAt)) <= now));
+    const result = snapshotOf(runEngine(polls, { now, select: !cur }));
     done++;
-    return { updatedAt: snap.updatedAt, recordedAt: snap.recordedAt, ...snapshotOf(runEngine(cur.polls, { now: Date.parse(cur.generatedAt) })) };
+    return { updatedAt: snap.updatedAt, recordedAt: snap.recordedAt, recalculatedAt, pollSetSource: cur ? "repository" : "archive", ...result };
   });
   fs.writeFileSync(FILE, JSON.stringify(history, null, 2) + "\n");
   return [done, history.snapshots.length];

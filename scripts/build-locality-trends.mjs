@@ -60,13 +60,18 @@ const cidx = new Map(codes.map((c, i) => [c, i]));
 const N = codes.length, K = E.length;
 const mk = () => Array.from({ length: N }, () => new Array(K).fill(0));
 const elig = mk(), voted = mk(), valid = mk();
+const harediVotes = Array.from({ length: N }, () => Array.from({ length: K }, () => [0, 0]));
 const gv = Array.from({ length: N }, () => Array.from({ length: K }, () => [0, 0, 0, 0, 0]));
 E.forEach((e, k) => {
   const grp = e.parties.map(p => G.indexOf(p.camp));
   for (const r of e.rows) {
     const i = cidx.get(r[0]);
     elig[i][k] = r[1]; voted[i][k] = r[2]; valid[i][k] = r[3];
-    r.slice(4).forEach((v, j) => { gv[i][k][grp[j]] += v; });
+    r.slice(4).forEach((v, j) => {
+      gv[i][k][grp[j]] += v;
+      const h = ["shas", "utj"].indexOf(e.parties[j].id);
+      if (h >= 0) harediVotes[i][k][h] += v;
+    });
   }
 });
 const sum = a => a.reduce((s, x) => s + x, 0);
@@ -74,6 +79,12 @@ const add = (a, b) => a.map((x, j) => x + b[j]);
 /* המכנה של החלקים: כל הכשרים, או רק ארבע הקבוצות; ו"אחרות" מתאפסות */
 const den = (i, k) => EXCLUDE_OTHERS ? sum(gv[i][k].slice(0, 4)) : valid[i][k];
 const cells = g => EXCLUDE_OTHERS ? [...g.slice(0, 4), 0] : g;
+// Each Haredi party has its own locality history and trend. The map combines them only for display.
+const forecastCells = (i, k) => {
+  const g = cells(gv[i][k]), h = harediVotes[i][k];
+  return [g[0], h[0], h[1], g[2], g[3], g[4]];
+};
+const groupCells = s => [s[0], s[1] + s[2], s[3], s[4], s[5]];
 
 /* ריבועים פחותים משוקללים: שיפוע של y על t (המשקל exp(tt/TAU)); null עם פחות מ־minN נקודות */
 function wslope(t, y, mask, tLast, minN) {
@@ -86,7 +97,7 @@ function wslope(t, y, mask, tLast, minN) {
 }
 function trendSlopes(shares, present, t, last) {
   const s = wslope(t, null, present, t[last], 3);
-  return s && [0, 1, 2, 3, 4].map(j => s(k => shares[k][j]));
+  return s && shares[0].map((_, j) => s(k => shares[k][j]));
 }
 function growthRate(e, t, last) {
   const mask = e.map((x, k) => x > 0 && k <= last);
@@ -96,17 +107,18 @@ function growthRate(e, t, last) {
 
 function model(upto, targetYear, damp) {
   const last = upto, ks = [...Array(upto + 1).keys()], t = T.slice(0, upto + 1), dt = targetYear - T[last];
-  const shOf = i => ks.map(k => den(i, k) > 0 ? cells(gv[i][k]).map(x => 100 * x / den(i, k)) : [0, 0, 0, 0, 0]);
-  const natsh = ks.map(k => { const v = sum(codes.map((_, i) => den(i, k))); return [0, 1, 2, 3, 4].map(j => 100 * sum(gv.map(r => cells(r[k])[j])) / v); });
+  const empty = [0, 0, 0, 0, 0, 0];
+  const shOf = i => ks.map(k => den(i, k) > 0 ? forecastCells(i, k).map(x => 100 * x / den(i, k)) : [...empty]);
+  const natsh = ks.map(k => { const v = sum(codes.map((_, i) => den(i, k))); return empty.map((_, j) => 100 * sum(codes.map((_, i) => forecastCells(i, k)[j])) / v); });
   const rel = sh => RELATIVE ? sh.map((r, k) => r.map((x, j) => x - natsh[k][j])) : sh;
   const areas = new Map();
   codes.forEach((c, i) => { const a = areaOf.get(c) ?? -1; if (!areas.has(a)) areas.set(a, []); areas.get(a).push(i); });
   const areaSlope = new Map(), areaGrowth = new Map(), areaTurn = new Map();
   for (const [a, ii] of areas) {
     const av = ks.map(k => sum(ii.map(i => valid[i][k])));
-    const ag = ks.map(k => ii.reduce((s, i) => add(s, cells(gv[i][k])), [0, 0, 0, 0, 0]));
+    const ag = ks.map(k => ii.reduce((s, i) => add(s, forecastCells(i, k)), [...empty]));
     const ad = ks.map(k => sum(ii.map(i => den(i, k))));
-    const ash = ks.map(k => ad[k] > 0 ? ag[k].map(x => 100 * x / ad[k]) : [0, 0, 0, 0, 0]);
+    const ash = ks.map(k => ad[k] > 0 ? ag[k].map(x => 100 * x / ad[k]) : [...empty]);
     areaSlope.set(a, trendSlopes(rel(ash), ad.map(v => v > 0), t, last));
     areaGrowth.set(a, growthRate(ks.map(k => sum(ii.map(i => elig[i][k]))), t, last));
     const ae = sum(ks.map(k => sum(ii.map(i => elig[i][k])))), at = sum(ks.map(k => sum(ii.map(i => voted[i][k]))));
@@ -119,7 +131,7 @@ function model(upto, targetYear, damp) {
     const a = areaOf.get(c) ?? -1, sh = shOf(i), present = ks.map(k => den(i, k) > 0);
     const own = trendSlopes(rel(sh), present, t, last), ref = areaSlope.get(a);
     const pv = ks.filter(k => present[k]).map(k => valid[i][k]), nv = sum(pv) / pv.length;
-    const slope = !own ? (ref || [0, 0, 0, 0, 0]) : !ref ? own : own.map((s, j) => { const w = nv / (nv + SHRINK_VOTES); return w * s + (1 - w) * ref[j]; });
+    const slope = !own ? (ref || [...empty]) : !ref ? own : own.map((s, j) => { const w = nv / (nv + SHRINK_VOTES); return w * s + (1 - w) * ref[j]; });
     const shift = slope.map(s => Math.min(MAX_SHIFT, Math.max(-MAX_SHIFT, damp * s * dt)));
     let s = sh[last].map((x, j) => Math.max(0, x + shift[j]));
     s = sum(s) > 0 ? s.map(x => 100 * x / sum(s)) : sh[last];
@@ -141,7 +153,10 @@ function model(upto, targetYear, damp) {
       const vr = voted[i][last] ? valid[i][last] / voted[i][last] : .99;
       v26 = e26 * turn * vr;
     }
-    out.set(c, { i, share: s, shift, e: e26, turn, v: v26 });
+    const share = groupCells(s);
+    // Use the normalized projection so the grouped map and the party calculation agree even after clipping.
+    const groupShift = share.map((x, j) => x - groupCells(sh[last])[j]);
+    out.set(c, { i, share, shift: groupShift, partyShare: { shas: s[1], utj: s[2] }, e: e26, turn, v: v26 });
   });
   return out;
 }
@@ -178,6 +193,11 @@ const [sTurn] = national(proj, last, "turnout");
 /* ברירת המחדל: המגמה בעוצמה DEFAULT_TREND */
 const projDef = DEFAULT_TREND === 1 ? proj : model(last, target, DEFAULT_TREND);
 const [s26, v26] = DEFAULT_TREND ? national(projDef, last, "full") : national(proj, last, "turnout");
+const projectedValid = sum([...projDef.values()].map(p => p.v));
+const partyForecast = Object.fromEntries(["shas", "utj"].map(id => {
+  const votes = sum([...projDef.values()].map(p => p.v * p.partyShare[id] / 100));
+  return [id, { votes, seats: 120 * votes / projectedValid }];
+}));
 const actual22 = GROUPS.map(g => sum(E[last].parties.filter(p => p.camp === g).map(p => p.seats || 0)));
 /* 2022 כאילו מרצ עברה את אחוז החסימה (חסרו לה 4,062 קולות): חלוקה מחדש של 120 המנדטים, כמו COUNTERFACTUAL ב־assets/app.js.
    נקודת המוצא של מנדטי 2026 — כדי שהתחזית לא תירש את 4 המנדטים של מרצ שנפלו אל הימין בספירה בפועל. */
@@ -227,7 +247,9 @@ for (const [c, p] of proj) {
     e: elig[i].map(Math.round),
     t: voted[i].map(Math.round),
     f: [Math.round(p.e), p.turn ? Math.round(1000 * p.turn) : 0, Math.round(p.v)],   // 2026: בעלי זכות, אחוז הצבעה ‰, כשרים
-    tr: r1(p.shift)                                 // המגמה המלאה עד 2026, בנקודות לכל תא
+    tr: r1(p.shift),                                // המגמה המלאה עד 2026, בנקודות לכל תא
+    h: harediVotes[i].flat(),                       // ש״ס וג׳ בנפרד בכל אחת מארבע הבחירות
+    hf: [p.v * p.partyShare.shas / 100, p.v * p.partyShare.utj / 100]
   };
 }
 const data = {
@@ -236,8 +258,9 @@ const data = {
     groups: { R: "ימין", H: "חרדים", L: "מרכז־שמאל", A: "ערבים", O: "אחרות" },
     target: TARGET,
     method: "כל יישוב ממשיך את הקו שלו: חלקה של כל קבוצה ב־2022 ועוד המגמה של היישוב — קו ישר דרך ארבע הבחירות מספטמבר 2019, "
-      + `לכל היותר ${MAX_SHIFT} נקודות לקבוצה; יישוב קטן נשען על מגמת האזור שלו. ״אחרות״ (רשימות מתחת ל־1.5%) מושמטות — החלקים מתוך ארבע הקבוצות. בעלי זכות הבחירה גדלים בקצב של היישוב `
+      + `ש״ס ויהדות התורה נבדקות בנפרד, ואז מצורפות לקבוצת החרדים בתצוגה. לכל היותר ${MAX_SHIFT} נקודות לכל רכיב לפני נרמול; יישוב קטן נשען על מגמת האזור שלו. ״אחרות״ (רשימות מתחת ל־1.5%) מושמטות — החלקים מתוך ארבע הקבוצות. בעלי זכות הבחירה גדלים בקצב של היישוב `
       + "מספטמבר 2019 עד 2022, ואחוז ההצבעה — הממוצע שלו בארבע הבחירות. רשימה נספרת בקבוצה שלה מ־1.5% מהקולות, גם אם לא עברה את אחוז החסימה.",
+    harediMethod: "ש״ס ויהדות התורה מחושבות בנפרד בכל יישוב: מגמת חלקה של המפלגה בארבע הבחירות מספטמבר 2019, גידול בבעלי זכות הבחירה ושיעור ההצבעה הצפוי. ביישוב קטן המגמה נשענת גם על מגמת אותה מפלגה באזור. האומדן הארצי הוא סכום קולות המפלגה בכל היישובים והמעטפות החיצוניות; שברי המנדטים הם חלקה בקולות התחזית כפול 120, ללא פיצול לפי יחס מנדטים קבוע.",
     sources: "ועדת הבחירות המרכזית — תוצאות לפי יישובים, ספטמבר 2019–2022"
   },
   national: {
@@ -246,6 +269,7 @@ const data = {
     eligible: [...Array(K).keys()].map(k => sum(elig.map(r => r[k]))),
     f26: r1(s26), votes26: v26.map(Math.round), eligible26: Math.round(sum([...proj.values()].map(p => p.e))),
     defaultTrend: DEFAULT_TREND,
+    partyForecast, projectedValid,
     // 2022 — המנדטים הרשמיים לפי קבוצה (seats22) וכאילו מרצ עברה (base22); 2026 — base22 ועוד השינוי במנדטים היחסיים
     seats22: actual22, base22, prop22: seats(nat22), seats26: base22.map((a, k) => a + seats(s26)[k] - seats(nat22)[k]),
     steps: { demography: r1(sDemo.map((x, j) => x - nat22[j])), turnout: r1(sTurn.map((x, j) => x - sDemo[j])), trend: r1(s26.map((x, j) => x - sTurn[j])) },

@@ -26,17 +26,17 @@
 <link rel="stylesheet" href="assets/upgrade.css?v=d9aa856d">
 <link rel="stylesheet" href="assets/home.css?v=ba378fa4">
 <link rel="stylesheet" href="assets/fit.css?v=06753059">
-<script src="assets/scenario.js?v=7121f9a7" defer></script>
-<script src="assets/upgrade.js?v=49538f3a" defer></script>
+<script src="assets/scenario.js?v=312e90d1" defer></script>
+<script src="assets/upgrade.js?v=2f952535" defer></script>
 <script src="assets/analytics.js?v=3d84f48b" defer></script>
 <script src="assets/explore.js?v=193a71fe" defer></script>
-<script src="assets/poll-tracker.js?v=333afc5a" defer></script>
+<script src="assets/poll-tracker.js?v=52235bd3" defer></script>
 <script src="assets/polls-gap.js?v=eb3969c2" defer></script>
 <script src="assets/polls-workspace.js?v=d1a53e3d" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=d4b2b0f2" defer></script>
+<script src="assets/app.js?v=af760838" defer></script>
 <script src="assets/intro.js?v=41d319d1" defer></script>
-<script src="assets/method-sim.js?v=546639cb" defer></script>
+<script src="assets/method-sim.js?v=7fbdaee3" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -55,7 +55,7 @@
 <script src="assets/election.js?v=aba0ee3c" defer></script>
 <link rel="stylesheet" href="assets/results2022.css?v=a4fa5d4b">
 <link rel="stylesheet" href="assets/demography.css?v=d9a2c515">
-<script src="assets/results2022.js?v=69dc547f" defer></script>
+<script src="assets/results2022.js?v=eca2485b" defer></script>
 <link rel="stylesheet" href="assets/polls-workspace.css?v=a83f4793">
 <link rel="stylesheet" href="assets/polls-gap.css?v=dfde44d9">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
@@ -434,18 +434,18 @@
 <section class="msec" id="hsec-1"><header class="msec-head"><span class="msec-num" aria-hidden="true">1</span><div class="msec-title"><h2>המודל המשולב</h2><p>שלושה מקורות מידע במקום קיבוע של מספר מנדטים.</p></div></header><div class="msec-body msec-wide"><div class="msec-text">
 <p><b>25% מהאומדן הדמוגרפי + 25% מהאומדן הגיאוגרפי + 50% מממוצע הסקרים המתוקן והמשוקלל.</b> לפני שקלול הסקרים מתקנים לכל מכון את הטעות ההיסטורית שלו, בנפרד לכל מפלגה.</p>
 <div id="h-model-summary"></div><div class="mlive" id="h-live-fixed"></div>
-<p>המודל מחליף את ההנחות הקודמות של 10.5 מנדטים לש״ס ו־7.8 ליהדות התורה. בסימולציה המקורית מ־6 באוקטובר 2026 התקבלו כ־10.0 ו־7.7, יחד כ־17.7. זו דוגמה לפי הנתונים של אותו יום, ולא יעד שהחישוב חייב להגיע אליו.</p>
-<p class="msec-note">רע״ם נשארת הנחה נפרדת של 4.8 מנדטים בתחזית; היא אינה חלק מהמודל החרדי. הממוצע הפשוט והממוצע המשוקלל של הסקרים נשארים ללא השילוב החרדי.</p></div></div></section>
+<p class="msec-note">רע״ם מחושבת לפי ממוצע הסקרים המשוקלל בלבד, ללא קיבוע או תיקון היסטורי; היא אינה חלק מהמודל החרדי. הממוצע הפשוט והממוצע המשוקלל של הסקרים נשארים ללא השילוב החרדי.</p></div></div></section>
 <section class="msec" id="hsec-2"><header class="msec-head"><span class="msec-num" aria-hidden="true">2</span><div class="msec-title"><h2>המרכיב הדמוגרפי — 25%</h2><p>מקולות 2022 אל שנת היעד, כולל הבוחרים שאינם חרדים.</p></div></header><div class="msec-body msec-wide"><div class="msec-text">
 <p>המחשבון מתחיל מקולות ש״ס ויהדות התורה בבחירות 2022, ומחשב את הגידול בבעלי זכות הבחירה החרדים, את שיעור ההצבעה ואת הנאמנות לרשימות החרדיות. לכל מפלגה מחושב גם החלק הלא חרדי של בוחריה וקצב הגידול שלו — במיוחד הקהל המסורתי והדתי של ש״ס.</p>
 <div class="grid g3" id="haredi-pillars"></div>
-<p>הקולות מתחלקים במודד מנדטים משוער: היקף הקולות הכשרים הארצי הצפוי, פחות הקולות לרשימות שלא יעברו את הסף, חלקי 120. ברירת המחדל מניחה 5% קולות לרשימות שלא יעברו; זו הנחת עבודה גלויה.</p>
+<p>תחילה מעריכים את שיעור ההצבעה הארצי לפי גודל קבוצות האוכלוסייה ושיעורי ההצבעה שלהן, בכיול להיקף ההצבעה בפועל ב־2022. מכפילים במספר בעלי זכות הבחירה הצפוי, מתאימים לחלקם של הקולות הכשרים, מפחיתים את הקולות לרשימות שלא יעברו את הסף ומחלקים ב־120. כך מתקבל מודד המנדטים המשוער. ברירת המחדל מניחה 5% קולות לרשימות שלא יעברו.</p>
 <p>המחוונים הבאים מאפשרים לבדוק רגישות. השינוי כאן הוא תרחיש בדיקה; תחזית האתר משתמשת בהנחות ברירת המחדל.</p>
 <div class="split"><div class="card pad" id="haredi-calc"></div><div class="card pad" id="haredi-verdict"></div></div>
 <p class="msec-note">גידול באוכלוסייה אינו מבטיח גידול זהה במנדטים: גם קבוצות אחרות גדלות, שיעורי ההצבעה משתנים ובוחרים עשויים לבחור במפלגות אחרות.</p></div></div></section>
-<section class="msec" id="hsec-3"><header class="msec-head"><span class="msec-num" aria-hidden="true">3</span><div class="msec-title"><h2>המרכיב הגיאוגרפי — 25%</h2><p>אומדן משותף לשתי הרשימות לפי יישובים.</p></div></header><div class="msec-body msec-wide"><div class="msec-text">
-<p>המודל הגיאוגרפי משלב את דפוסי ההצבעה המקומיים, הגידול בבעלי זכות הבחירה, שיעורי ההצבעה והמגמה במערכות הבחירות הקודמות. הוא מחשב את הרשימות החרדיות כקבוצה משותפת.</p><p id="h-model-geo"></p>
-<p>לצורך המודל המשולב, האומדן המשותף מפוצל לפי יחס המנדטים ב־2022: 11 לש״ס ו־7 ליהדות התורה. יחס זה הוא הנחת פיצול, ולא מדידה נפרדת לכל מפלגה.</p><p><a href="#/map">למודל הגיאוגרפי לפי יישובים ↙</a></p></div></div></section>
+<section class="msec" id="hsec-3"><header class="msec-head"><span class="msec-num" aria-hidden="true">3</span><div class="msec-title"><h2>המרכיב הגיאוגרפי — 25%</h2><p>תחזית נפרדת לכל מפלגה בכל יישוב, מנתוני 2019–2022.</p></div></header><div class="msec-body msec-wide"><div class="msec-text">
+<p>בכל יישוב נבדקים קולות ש״ס וקולות יהדות התורה בנפרד בארבע מערכות הבחירות מספטמבר 2019 עד 2022. לכל מפלגה מחושבת מגמת חלקה בקולות באמצעות קו ישר משוקלל, ומשליכים אותה ל־2026. ביישובים קטנים משולבת גם מגמת אותה מפלגה באזור, והשינוי מוגבל ל־8 נקודות אחוז לכל מפלגה לפני נרמול החלקים.</p>
+<p>במקביל מעריכים את הגידול בבעלי זכות הבחירה בכל יישוב ואת שיעור ההצבעה הצפוי, לפי הממוצע בארבע הבחירות. מכפילים את היקף ההצבעה בחלקה הצפוי של כל מפלגה, וסוכמים את הקולות מכל היישובים והמעטפות החיצוניות. הרשימות הקטנות מקבוצת ״אחרות״ אינן נכללות בחלוקת החלקים של המודל הגיאוגרפי.</p><p id="h-model-geo"></p>
+<p><a href="#/map">למודל הגיאוגרפי לפי יישובים ↙</a></p></div></div></section>
 <section class="msec" id="hsec-4"><header class="msec-head"><span class="msec-num" aria-hidden="true">4</span><div class="msec-title"><h2>הסקרים לאחר תיקון הטעות — 50%</h2><p>מתקנים את כיוון הטעות, ואז משקללים לפי דיוק העבר.</p></div></header><div class="msec-body msec-wide"><div class="msec-text">
 <p>נלקחים סקרי חלון התחזית הנוכחי — 8 ימים, או חלון רחב יותר אם אין בו לפחות שלושה מכונים. לכל מכון מחשבים תחילה את ממוצע הסקרים שלו בחלון, כדי שכמות הפרסומים לא תיתן לו משקל נוסף.</p>
 <h3>שלב א: הטעות ההיסטורית</h3><p>בכל מערכת בחירות: <b>טעות = ממוצע סקרי הכיול של המכון − תוצאת האמת של המפלגה.</b> טעות שלילית היא הערכת חסר וחיובית היא הערכת יתר. ממצעים את הטעויות במשקל שווה בין מערכות הכיול הזמינות של 2020, 2021 ו־2022.</p>
@@ -458,6 +458,7 @@
 <p>לכל מפלגה בנפרד: <b>25% דמוגרפיה + 25% גיאוגרפיה + 50% סקרים מתוקנים ומשוקללים.</b></p><div id="h-model-combination"></div>
 <p>שברי המנדטים המשולבים נכנסים לתחזית המלאה במקום הקיבוע החרדי. יתר הרשימות מתחלקות ביתרת המנדטים, והעוגן לגושים מביא בחשבון את השינוי שהמודל החרדי כבר הוסיף, כדי לא להוסיף אותו שוב. רק בסוף מופעלים אחוז החסימה, חלוקת 120 המושבים והסכמי העודפים.</p>
 <p><b>הסכמי העודפים במודל:</b> הליכוד–הציונות הדתית; ש״ס–יהדות התורה; ישר–הדמוקרטים; ביחד–ישראל ביתנו; הרשימה המשותפת–רע״ם. עוצמה יהודית ללא הסכם. זוג נלקח בחשבון רק אם שתי הרשימות עוברות את אחוז החסימה.</p>
+<p>תחזיות הברומטר בארכיון מחושבות באותה שיטה, עם הסקרים שהיו זמינים בכל מועד, כדי לאפשר השוואה לאורך זמן.</p>
 <p class="msec-note">המשקלים הם הנחת מודל גלויה, ולא תוצאה של הוכחה שהשילוב הוא המדויק ביותר. שברי מנדטים אינם טווח ביטחון ואינם תוצאה מובטחת.</p></div></div></section>
 <section class="msec" id="hsec-6"><header class="msec-head"><span class="msec-num" aria-hidden="true">6</span><div class="msec-title"><h2>ההיסטוריה: קולות ומנדטים</h2><p>סדרה הכוללת עליות וגם ירידות.</p></div></header><div class="msec-body msec-wide"><div class="msec-text"><div id="haredi-history"></div><div class="tablewrap"><table id="haredi-table"></table></div></div></div></section>
 <section class="msec" id="hsec-7"><header class="msec-head"><span class="msec-num" aria-hidden="true">7</span><div class="msec-title"><h2>מגבלות המודל</h2><p>מדגם, כיול והנחות אינם מבטיחים תוצאת בחירות.</p></div></header><div class="msec-body msec-wide"><div class="msec-text"><div class="split"><div class="card pad" id="haredi-why"></div><div class="card pad"><p class="kicker">הפער שנמדד ב־2022</p><div class="lbars" id="haredi-gap"></div></div></div><p class="msec-note">מספר מערכות הכיול מוגבל. הקשר בין אוכלוסייה, גיאוגרפיה וסקרים אינו בהכרח עצמאי, והמשקלים שנבחרו דורשים בדיקה לאורך זמן.</p></div></div></section>
@@ -683,9 +684,9 @@
               <div class="msec-cards msec-cards-2">
                 <div class="msec-card"><span class="msec-step">א</span><h4>תיקון הטעות הקבועה של כל מכון, רק בתוך הגוש</h4>
                   <p>כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022. התיקון מדייק את החלוקה בתוך הגוש ואינו מזיז מנדטים בין הגושים.</p>
-                  <details><summary>הפירוט המלא</summary><p>לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס ויהדות התורה מתוקנות בנפרד במודל המשולב בצעד הבא; רע״מ היא הנחה נפרדת. הן אינן מתוקנות גם בצעד הזה. התיקון של כל מכון מופיע בטבלה שבשלב 4, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע ״משוקלל דיוק״ אינו מתוקן.</p></details></div>
+                  <details><summary>הפירוט המלא</summary><p>לפני הממוצע, כל סקר מתוקן לפי הטעות הממוצעת של המכון שלו בבחירות 2020–2022 בכל רשימה (בחלק יחסי לכמות ההיסטוריה: שתי מערכות → שני שלישים, שלוש → שלושה רבעים; מכון בלי היסטוריה — חצי מהטעות הממוצעת של כל המכונים). אחרי התיקון רשימות כל גוש חוזרות יחד לסכום הגוש באותו סקר — כך שהתיקון מדייק את החלוקה <b>בתוך</b> גוש, ואינו מזיז מנדטים בין הגושים. ש״ס ויהדות התורה מתוקנות בנפרד במודל המשולב בצעד הבא; רע״ם מחושבת לפי ממוצע הסקרים בלבד. שלוש הרשימות אינן מתוקנות גם בצעד הזה. התיקון של כל מכון מופיע בטבלה שבשלב 4, והטעויות הקבועות עצמן — הערה אחת לכל מכון — בעמוד <a href="#/2022">דיוק המכונים</a>. ממוצע ״משוקלל דיוק״ אינו מתוקן.</p></details></div>
                 <div class="msec-card"><span class="msec-step">ב</span><h4>ש״ס ויהדות התורה: המודל המשולב</h4>
-                  <p>25% דמוגרפיה, 25% גיאוגרפיה ו־50% סקרים לאחר תיקון הטעות ההיסטורית לכל מכון ולכל מפלגה ושקלול דיוק העבר. רע״ם נשארת 4.8 כהנחה נפרדת. אלה שברי מנדטים; העיגול נעשה בסוף.</p>
+                  <p>25% דמוגרפיה, 25% גיאוגרפיה ו־50% סקרים לאחר תיקון הטעות ההיסטורית לכל מכון ולכל מפלגה ושקלול דיוק העבר. רע״ם לפי ממוצע הסקרים המשוקלל בלבד, ללא קיבוע. אלה שברי מנדטים; העיגול נעשה בסוף.</p>
                   <details><summary>הפירוט המלא</summary><p>לכל מפלגה מחשבים את הטעות הממוצעת של כל מכון במערכות הכיול, הופכים את הסימן ומקטינים לפי n/(n+1). משקל האמינות קובע את השפעתו בממוצע. האומדנים הדמוגרפי והגיאוגרפי משלימים את התמונה. אין תיקון כפול דרך התיקון הכללי בתוך הגושים. העיגול נעשה רק בסוף.</p></details></div>
                 <div class="msec-card"><span class="msec-step">ג</span><h4>קירוב למאזן 2022: היעד 62 לגוש הימין והחרדים, לא 64</h4>
                   <p>הגוש קיבל 64 ב־2022, אבל כ־2 מהם הגיעו רק כי מרצ פספסה את אחוז החסימה ב־4,062 קולות בלבד. מהפער שנשאר בין הסקרים לעוגן סוגרים רק חצי.</p>

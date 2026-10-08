@@ -15,15 +15,21 @@ if(baseline!==JSON.stringify(runDemoModel(0)))throw Error('2022 baseline changed
 if(runDemoModel(4).votes.utj===runDemoModel(0).votes.utj)throw Error('2026 controls had no effect');
 for(const blend of [0,.5,1])for(const demographic of [-6,0,2,6]){
  const r=scenarioForecast({likud:24,shas:7,yahadut_hatora:7,beyahad:20,yashar:20,hademokratim:12,ozma_yehudit:8,ndi:8,raam:6,reshima_meshutefet:8},{harediSeats:{shas:10,yahadut_hatora:7.7},blend,demographic});
- if(r.parties.shas!==10||r.parties.yahadut_hatora!==7.7||r.parties.raam!==4.8)throw Error('Modeled inputs changed');
+ if(r.parties.shas!==10||r.parties.yahadut_hatora!==7.7||r.parties.raam!==6)throw Error('Modeled or poll-only inputs changed');
  if(Math.abs(Object.values(r.parties).reduce((a,b)=>a+b,0)-120)>1e-6)throw Error('Seat total');
  const seats=allocateSeats(r.parties);
  if(Object.values(seats).reduce((a,b)=>a+b,0)!==120)throw Error('Bader-Ofer seat total');
  if(Object.values(seats).some(x=>x<0||!Number.isInteger(x)))throw Error('Invalid seats');
- if(![10,11].includes(seats.shas)||![7,8].includes(seats.yahadut_hatora)||![4,5].includes(seats.raam))throw Error('Fixed lists rounded wrongly');
+ if(![10,11].includes(seats.shas)||![7,8].includes(seats.yahadut_hatora)||![5,6,7].includes(seats.raam))throw Error('Party allocation outside expected rounding');
 }
 for(const raw of [{likud:120},{beyahad:120},{shas:10,raam:110}]){
 const r=scenarioForecast(raw);if(Math.abs(Object.values(r.parties).reduce((a,b)=>a+b,0)-120)>1e-6)throw Error('Missing donor group broke total');}
+for(const support of [4,5,6,7,8]) {
+ const raw={likud:24,shas:7,yahadut_hatora:7,beyahad:20,yashar:20,hademokratim:12,ozma_yehudit:8,ndi:8,raam:support,reshima_meshutefet:8};
+ const r=scenarioForecast(raw,{harediSeats:{shas:10,yahadut_hatora:7.7},blend:1,demographic:6});
+ if(r.parties.raam!==support)throw Error('Raam stopped following the polls');
+}
+if('raam' in scenarioForecast({likud:50,yashar:50}).parties)throw Error('Raam was injected without polling support');
 /* baderOfer: a pair counts once, threshold drops small lists */
 const bo=allocateSeats({likud:30,zionut_datit:10,shas:10.5,yahadut_hatora:7.8,raam:4.8,hadash_taal:5,reshima_meshutefet:4,beyahad:20,yashar:16,hademokratim:8,tiny:2});
 if(Object.values(bo).reduce((a,b)=>a+b,0)!==120)throw Error('allocateSeats total');

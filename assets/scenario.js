@@ -1,10 +1,10 @@
 /* Explicit counterfactual assumptions, separate from the unmodified poll average. */
-/* רע״ם נשארת הנחה נפרדת. שתי הרשימות החרדיות מחושבות במודל המשולב,
-   בשברי מנדטים לפני החלוקה הסופית. */
-const FIXED_SEATS = { raam: 4.8 };
+/* שתי הרשימות החרדיות מחושבות במודל המשולב. אומדן רע״ם נשמר לפי ממוצע
+   הסקרים המשוקלל, ללא קיבוע או תוספת, לפני חלוקת המושבים הסופית. */
 function scenarioForecast(raw, options = {}) {
   const haredi = options.harediSeats || (typeof harediForecast === "function" ? harediForecast()?.parties : null);
-  const fixed = { ...FIXED_SEATS, ...(haredi || { shas: raw.shas || 0, yahadut_hatora: raw.yahadut_hatora || 0 }) };
+  const fixed = { ...(haredi || { shas: raw.shas || 0, yahadut_hatora: raw.yahadut_hatora || 0 }),
+    ...(Number.isFinite(raw.raam) && raw.raam > 0 ? { raam: raw.raam } : {}) };
   const fixedSum = Object.values(fixed).reduce((a, b) => a + b, 0);
   const REST = 120 - fixedSum;
   const rightIds = new Set(['likud','ozma_yehudit','zionut_datit','ofer_vinter_party','noam']);
@@ -12,7 +12,7 @@ function scenarioForecast(raw, options = {}) {
   const rest = Object.fromEntries(Object.entries(raw).filter(([id,v]) => !(id in fixed) && Number.isFinite(v) && v > 0));
   const total = Object.values(rest).reduce((a,b)=>a+b,0);
   if (!total) {                                             // רק הרשימות הקבועות בסקרים — מותחים אותן ל-120
-    const f = 120 / fixedSum;
+    const f = fixedSum > 0 ? 120 / fixedSum : 1;
     return {parties:Object.fromEntries(Object.entries(fixed).map(([id,v])=>[id,v*f])), fixed, initialRight:0, anchor:0, demographic:0, blend:Math.min(1,Math.max(0,options.blend ?? 0.5)), demographicCorrected:null};
   }
   const p = Object.fromEntries(Object.entries(rest).map(([id,v])=>[id, v/total*REST]));

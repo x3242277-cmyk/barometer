@@ -505,17 +505,17 @@ function houseCorrection(meta) {
 /* תחזית הברומטר: התיקון מדייק רק את החלוקה בתוך כל גוש. כל קבוצה מקבלת את
    התיקון שלה (בקבוצה של שתי רשימות — לפי הגודל שלהן בסקר), ואז רשימות הגוש
    מתכווצות או מתרחבות יחד בחזרה לסכום הגוש בסקר עצמו — כך שסך הגושים לא
-   משתנה. ש״ס ויהדות התורה מתוקנות בנפרד במודל החרדי, ורע״ם היא הנחה
-   נפרדת; שלושתן אינן משתתפות בתיקון הכללי בתוך הגוש. */
-const isFixedSeat = id => ["shas", "yahadut_hatora"].includes(id) || (typeof FIXED_SEATS !== "undefined" && id in FIXED_SEATS);
+   משתנה. ש״ס ויהדות התורה מתוקנות בנפרד במודל החרדי, ורע״ם מחושבת ישירות
+   מממוצע הסקרים; שלושתן אינן משתתפות בתיקון הכללי בתוך הגוש. */
+const isSeparateEstimate = id => ["shas", "yahadut_hatora", "raam"].includes(id);
 function correctWithinBlocs(p) {
   const c = houseCorrection(firmOf(p.sourceId).meta);
   const parties = p.parties.map(x => ({ ...x }));
-  const free = parties.filter(x => x.mandates > 0 && !isFixedSeat(normId(x.id)));
+  const free = parties.filter(x => x.mandates > 0 && !isSeparateEstimate(normId(x.id)));
   const blocSum = () => free.reduce((m, x) => { const b = alignOf(x); m[b] = (m[b] || 0) + x.mandates; return m; }, {});
   const before = blocSum();
   Object.entries(HOUSE_GROUPS).forEach(([g, def]) => {
-    if (def.members.some(isFixedSeat)) return;
+    if (def.members.some(isSeparateEstimate)) return;
     const inGroup = free.filter(x => def.members.includes(normId(x.id)));
     const tot = inGroup.reduce((t, x) => t + x.mandates, 0);
     if (tot) inGroup.forEach(x => { x.mandates = Math.max(0, x.mandates + c[g] * x.mandates / tot); });
@@ -2291,8 +2291,8 @@ function renderMethod() {
   }<tr><th scope="row">סך הכול</th><td class="n">${Object.values(ss).reduce((t, v) => t + v, 0)}</td><td class="n"><b>${Object.values(ws).reduce((t, v) => t + v, 0)}</b></td><td></td></tr></tbody>`;
   // 4 · scenario assumptions (live)
   const sc = forecast("scenario", HIDE_FROM_HOME), o = S.scenarioOptions || {};
-  const fx = sc.scenario?.fixed || { ...FIXED_SEATS, ...harediForecast()?.parties };
-  $("#m-live-scenario").innerHTML = [[`${r1(fx.shas)} · ${r1(fx.yahadut_hatora)} · ${fx.raam}`, "ש״ס וג׳ במודל המשולב · רע״מ כהנחה נפרדת"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
+  const fx = sc.scenario?.fixed || harediForecast()?.parties || {};
+  $("#m-live-scenario").innerHTML = [[`${r1(fx.shas)} · ${r1(fx.yahadut_hatora)}`, "ש״ס וג׳ במודל המשולב"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   // 5 · demographic addition = mean of the demographic and geographic models
   {
@@ -2887,6 +2887,18 @@ function projectedMandateCost(validVotes, wastedPercent = 5) {
     rangeLow: validVotes * .93 / 120, rangeHigh: validVotes * .97 / 120 };
 }
 
+function projectedElectorate(years, params) {
+  const D = S.demo;
+  const baseCast = D.sectors.reduce((t, s) => t + s.eligible2022 * s.turnout, 0);
+  const turnoutCalibration = D.meta.voted2022 / baseCast;
+  const eligible = D.sectors.reduce((t, s) => t + s.eligible2022 * Math.pow(1 + params[s.id].growth, years), 0);
+  const expectedCast = D.sectors.reduce((t, s) => t + s.eligible2022 * Math.pow(1 + params[s.id].growth, years) * params[s.id].turnout, 0) * turnoutCalibration;
+  const turnout = expectedCast / eligible;
+  const cast = eligible * turnout;
+  const validRatio = D.meta.validVotes2022 / D.meta.voted2022;
+  return { eligible, turnout, cast, validRatio, validVotes: cast * validRatio };
+}
+
 function harediState(useOverrides = true) {
   const H = S.haredi, D = S.demo;
   const controls = useOverrides ? S : {};
@@ -2895,9 +2907,11 @@ function harediState(useOverrides = true) {
   const eligible2026 = sec.eligible2022 * Math.pow(1 + (controls.harGrowth ?? sec.growth * 100) / 100, years);
   const turnout = (controls.harTurnout ?? H.turnout.harediCities2022) / 100;
   const loyalty = (controls.harLoyalty ?? H.loyalty[0].harediLists) / 100;
-  const model = runDemoModel(years);
+  const params = useOverrides ? demoParams() : Object.fromEntries(D.sectors.map(s => [s.id, { growth: s.growth, turnout: s.turnout }]));
+  params.haredi = { growth: (controls.harGrowth ?? sec.growth * 100) / 100, turnout };
+  const electorate = projectedElectorate(years, params);
   // 5% is an explicit working assumption; 3–7% is a sensitivity scenario, not a confidence interval.
-  const costEstimate = projectedMandateCost(model.totalValid, controls.harWasted ?? 5);
+  const costEstimate = projectedMandateCost(electorate.validVotes, controls.harWasted ?? 5);
   const { passingVotes, cost } = costEstimate;
   const thr2022 = D.meta.validVotes2022 * D.meta.threshold;
   const cost2022 = D.parties2022.filter(p => p.votes >= thr2022).reduce((a, p) => a + p.votes, 0) / 120;
@@ -2911,7 +2925,7 @@ function harediState(useOverrides = true) {
   /* כל רשימה מתחילה מהקולות שלה ב-2022 ומתפצלת לחרדים / לא־חרדים לפי הרכב
      הבוחרים (mix ב-data/demographics.json; ש״ס — מחוון). החרדים גדלים במקדם
      המגזר; הלא־חרדים — בגידול של המגזרים שלהם (מסורתיים, דתיים, חילונים). */
-  const sectorGrowth = Object.fromEntries(D.sectors.map(x => [x.id, Math.pow(1 + x.growth, years)]));
+  const sectorGrowth = Object.fromEntries(D.sectors.map(x => [x.id, Math.pow(1 + params[x.id].growth, years) * params[x.id].turnout / x.turnout]));
   const party = (id, harediShare) => {
     const p22 = D.parties2022.find(p => p.id === id);
     const nonMix = Object.entries(p22.mix).filter(([k]) => k !== "haredi"), nonSum = nonMix.reduce((t, [, v]) => t + v, 0) || 1;
@@ -2923,18 +2937,18 @@ function harediState(useOverrides = true) {
   const shasMix = D.parties2022.find(p => p.id === "shas").mix, utjMix = D.parties2022.find(p => p.id === "utj").mix;
   const shas = party("shas", controls.harShasHaredi != null ? controls.harShasHaredi / 100 : shasMix.haredi);
   const utj = party("utj", utjMix.haredi || 0);
-  return { H, sec, eligible2026, turnout, loyalty, cost, cost2022, costEstimate, passingVotes, cast, toHaredi, haredi22, harediFactor, seatsFromSector, shas, utj, shasOutside: shas.outsideVotes / cost, total: shas.seats + utj.seats, model };
+  return { H, sec, eligible2026, turnout, loyalty, cost, cost2022, costEstimate, passingVotes, cast, toHaredi, haredi22, harediFactor, seatsFromSector, shas, utj, shasOutside: shas.outsideVotes / cost, total: shas.seats + utj.seats, electorate };
 }
 
 /* שלושת המרכיבים מחושבים מנתוני האתר, בלי קיבוע ובלי עיגול ביניים.
    הסקרים הגולמיים משמשים כאן: התיקון החרדי אינו עובר גם דרך correctWithinBlocs. */
 function harediForecast() {
-  if (!S.haredi || !S.demo || !S.series?.length || !S.trendsNat?.seats26) return null;
+  if (!S.haredi || !S.demo || !S.series?.length || !S.trendsNat?.partyForecast) return null;
   const demographicState = harediState(false);
   const ids = { shas: "shas", yahadut_hatora: "utj" };
   const weights = { demographic: .25, geographic: .25, polls: .5 };
-  const geoTotal = S.trendsNat.seats26[1];
-  const baseTotal = S.demo.parties2022.filter(p => ["shas", "utj"].includes(p.id)).reduce((t, p) => t + p.seats, 0);
+  const geographicParties = S.trendsNat.partyForecast;
+  const geoTotal = geographicParties.shas.seats + geographicParties.utj.seats;
   const W = S.series.reduce((t, s) => t + firmWeight(s.meta), 0);
   const rows = S.series.map(s => {
     const correction = houseCorrection(s.meta), own = houseOf(s.meta)?.groups || {};
@@ -2950,13 +2964,13 @@ function harediForecast() {
   const components = {}, parties = {};
   for (const [id, historicalId] of Object.entries(ids)) {
     const demographic = demographicState[historicalId].seats;
-    const geographic = geoTotal * S.demo.parties2022.find(p => p.id === historicalId).seats / baseTotal;
+    const geographic = geographicParties[historicalId].seats;
     const rawPolls = rows.reduce((t, row) => t + row.parties[id].raw * row.weight, 0);
     const polls = rows.reduce((t, row) => t + row.parties[id].corrected * row.weight, 0);
     parties[id] = weights.demographic * demographic + weights.geographic * geographic + weights.polls * polls;
     components[id] = { demographic, geographic, rawPolls, polls, combined: parties[id] };
   }
-  return { parties, components, weights, rows, geoTotal, demographicState,
+  return { parties, components, weights, rows, geoTotal, geographicParties, demographicState,
     total: parties.shas + parties.yahadut_hatora, polls: S.series.reduce((t, s) => t + s.polls.length, 0) };
 }
 
@@ -2964,7 +2978,7 @@ function renderHarediModel(model) {
   const n = v => Number(v).toFixed(2), sign = v => `${v < 0 ? "−" : "+"}${n(Math.abs(v))}`;
   const ids = [["shas", "ש״ס"], ["yahadut_hatora", "יהדות התורה"]];
   $("#h-model-summary").innerHTML = `<p>לפי ${model.polls} הסקרים של ${model.rows.length} המכונים בחלון הנוכחי, האומדן המשולב הוא <b>${n(model.parties.shas)}</b> לש״ס ו־<b>${n(model.parties.yahadut_hatora)}</b> ליהדות התורה — יחד <b>${n(model.total)}</b>. אלה שברי מנדטים; חלוקת 120 המושבים נעשית בסוף.</p>`;
-  $("#h-model-geo").innerHTML = `המודל הגיאוגרפי מעריך <b>${n(model.geoTotal)}</b> מנדטים לשתי הרשימות יחד. הפיצול לפי יחס 11:7 בבחירות 2022 נותן <b>${n(model.components.shas.geographic)}</b> לש״ס ו־<b>${n(model.components.yahadut_hatora.geographic)}</b> ליהדות התורה. זהו פיצול של אומדן משותף, ולא שתי תחזיות גיאוגרפיות עצמאיות.`;
+  $("#h-model-geo").innerHTML = `סכימת התחזיות הנפרדות בכל היישובים והמעטפות החיצוניות נותנת <b>${fmt(model.geographicParties.shas.votes)}</b> קולות לש״ס ו־<b>${fmt(model.geographicParties.utj.votes)}</b> ליהדות התורה ב־2026. במונחי מנדטים: <b>${n(model.components.shas.geographic)}</b> לש״ס ו־<b>${n(model.components.yahadut_hatora.geographic)}</b> ליהדות התורה, יחד <b>${n(model.geoTotal)}</b>. שברי המנדטים מחושבים לפי חלקה של כל מפלגה בקולות התחזית הגיאוגרפית כפול 120.`;
   $("#h-model-corrections").innerHTML = ids.map(([id, name]) => `<h3>התיקון ל${name}</h3><div class="tablewrap"><table><thead><tr><th scope="col">מכון</th><th scope="col">ממוצע סקרים</th><th scope="col">טעות היסטורית</th><th scope="col">מערכות כיול</th><th scope="col">תיקון</th><th scope="col">לאחר התיקון</th><th scope="col">דרגה · משקל</th></tr></thead><tbody>${model.rows.map(row => {
     const p = row.parties[id];
     return `<tr><th scope="row">${esc(row.name)}</th><td dir="ltr">${n(p.raw)}</td><td dir="ltr">${p.meanError == null ? "ללא כיול אישי" : sign(p.meanError)}</td><td>${p.years || "—"}</td><td dir="ltr">${sign(p.correction)}</td><td dir="ltr"><b>${n(p.corrected)}</b></td><td>${esc(row.grade.label)} · ${pct(row.weight * 100)}</td></tr>`;
@@ -3016,10 +3030,10 @@ function renderHaredi() {
     <section class="mandate-estimate" aria-label="אומדן קולות למנדט">
       <p class="kicker">אומדן עבודה · לא נתון שנמדד</p>
       <h4>כ־<span class="num">${fmt(Math.round(st.cost / 100) * 100)}</span> קולות למנדט</h4>
-      <p>המודל צופה כ־${r1(st.model.totalValid / 1e6)} מיליון קולות כשרים. מניחים ש־${pct(st.costEstimate.wasted)} מהם יינתנו לרשימות שלא יעברו את הסף, ואת השאר מחלקים ב־120. לא מניחים שמרצ ורשימות אחרות ייפלו שוב כפי שקרה ב־2022.</p>
+      <p>תחילה מחושב שיעור ההצבעה הארצי הצפוי: <b>${pct(st.electorate.turnout * 100)}</b>, לפי גודל קבוצות האוכלוסייה ושיעורי ההצבעה שלהן, בכיול להיקף ההצבעה בפועל ב־2022. מכפילים בכ־${r1(st.electorate.eligible / 1e6)} מיליון בעלי זכות בחירה, ומקבלים כ־${r1(st.electorate.cast / 1e6)} מיליון מצביעים. לאחר התאמה לחלקם של הקולות הכשרים ב־2022 מתקבלים כ־${r1(st.electorate.validVotes / 1e6)} מיליון קולות כשרים. מפחיתים ${pct(st.costEstimate.wasted)} לרשימות שלא יעברו את הסף ומחלקים ב־120.</p>
       <p><b>טווח רגישות: ${fmt(Math.round(st.costEstimate.rangeLow / 100) * 100)}–${fmt(Math.round(st.costEstimate.rangeHigh / 100) * 100)}</b>, אם 3%–7% מהקולות יישארו מחוץ לחלוקה. 5% היא הנחת אמצע, לא מסקנה מסקר; זה אינו טווח ביטחון ואינו כולל שינוי בהיקף ההצבעה הארצי.</p>
       <label class="slider"><span>הנחת הקולות לרשימות שלא יעברו את הסף<b>${pct(st.costEstimate.wasted)}</b></span><input id="har-wasted" type="range" min="0" max="12" step="0.5" value="${st.costEstimate.wasted}"></label>
-      <p class="sec-note">אחוז החסימה עצמו נשאר <b>3.25%</b> מכל הקולות הכשרים — כ־${fmt(Math.ceil(st.model.totalValid * .0325))} קולות לפי היקף ההצבעה שבמודל. ב־2022 המודד היה ${fmt(st.cost2022)} קולות למנדט. המודד אינו מבטיח את המנדט האחרון, שמושפע גם מחלוקת העודפים. <a href="https://main.knesset.gov.il/About/Lexicon/pages/qualifying-threshold.aspx" target="_blank" rel="noopener">הסבר הכנסת ↗</a> · <a href="https://votes25.bechirot.gov.il/" target="_blank" rel="noopener">תוצאות 2022 ↗</a></p>
+      <p class="sec-note">אחוז החסימה עצמו נשאר <b>3.25%</b> מכל הקולות הכשרים — כ־${fmt(Math.ceil(st.electorate.validVotes * .0325))} קולות לפי היקף ההצבעה שבמודל. ב־2022 המודד היה ${fmt(st.cost2022)} קולות למנדט. המודד אינו מבטיח את המנדט האחרון, שמושפע גם מחלוקת העודפים. <a href="https://main.knesset.gov.il/About/Lexicon/pages/qualifying-threshold.aspx" target="_blank" rel="noopener">הסבר הכנסת ↗</a> · <a href="https://votes25.bechirot.gov.il/" target="_blank" rel="noopener">תוצאות 2022 ↗</a></p>
     </section>
     <div class="calcline"><span>בעלי זכות בחירה חרדים ב־${S.demo.meta.targetYear}</span><b class="num">${fmt(st.eligible2026)}</b></div>
     <div class="calcline"><span>× שיעור הצבעה</span><b class="num">${pct(st.turnout * 100)}</b></div>
@@ -3027,7 +3041,7 @@ function renderHaredi() {
     <div class="calcline"><span>× נאמנות לרשימות החרדיות</span><b class="num">${pct(st.loyalty * 100)}</b></div>
     <div class="calcline"><span>= קולות לש״ס ולג׳ מהמגזר ב־${S.demo.meta.targetYear}</span><b class="num">${fmt(st.toHaredi)}</b></div>
     <div class="calcline"><span>÷ אותו חשבון ב־2022 (${fmt(st.sec.eligible2022)} × ${pct(H.turnout.harediCities2022)} × ${pct(H.loyalty[0].harediLists)} = ${fmt(st.haredi22)}) = מקדם הגידול של הקולות החרדיים</span><b class="num">× ${x2(st.harediFactor)}</b></div>
-    <div class="calcline"><span>אומדן קולות למנדט: ${fmt(st.model.totalValid)} קולות כשרים × ${pct(100 - st.costEstimate.wasted)} שנכנסים לחלוקה ÷ 120</span><b class="num">כ־${fmt(Math.round(st.cost / 100) * 100)}</b></div>
+    <div class="calcline"><span>אומדן קולות למנדט: בעלי זכות הבחירה הארצי × ${pct(st.electorate.turnout * 100)} הצבעה × ${pct(st.electorate.validRatio * 100)} קולות כשרים × ${pct(100 - st.costEstimate.wasted)} שנכנסים לחלוקה ÷ 120</span><b class="num">כ־${fmt(Math.round(st.cost / 100) * 100)}</b></div>
     <div class="calcsplit">
       ${partyCalc("ש״ס", st.shas, "לא־חרדים (מסורתיים, דתיים, חילונים)", "#1B1D21")}
       ${partyCalc("יהדות התורה", st.utj, "לא־חרדים (דתיים, מסורתיים)", "#4A4F57")}

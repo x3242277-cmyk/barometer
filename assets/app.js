@@ -596,7 +596,7 @@ function forecast(mode, exclude) {
     const opts = { ...(S.scenarioOptions || {}), rawFull };
     const structural = structuralRightSupport();
     if (opts.structuralRight == null && opts.demographic == null && structural) opts.structuralRight = structural.mean;
-    if (opts.deviationPercent == null) opts.deviationPercent = S.demo?.meta.structuralDeviationPercent ?? 1.5;
+    if (opts.deviationPercent == null) opts.deviationPercent = S.demo?.meta.structuralDeviationPercent ?? 1.2;
     const scenario = scenarioForecast(raw, opts);
     return { raw, rawFull, parties: scenario.parties, blocs, fix, scenario, below: belowShare, structural };
   }
@@ -2077,7 +2077,7 @@ function renderDemography() {
   const seats = d / 100 * 120;
   const st = structuralRightSupport();
   renderDemoConclusions();
-  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים. ${st && st.demographic != null ? `בתחזית הברומטר המודל נמדד כחלק הימין והחרדים מהקולות כפול 120: <b>${r1(st.demographic)}</b>${st.geographic != null ? `, והמודל הגיאוגרפי <b>${r1(st.geographic)}</b>. ממוצע שניהם הוא ${r1(st.mean)}; התחזית מועלית עד הקצה התחתון של טווח סטייה מונח של ${S.demo.meta.structuralDeviationPercent ?? 1.5}% סביבו, ולא מעבר לכך` : ""}.` : ""} הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
+  $("#demo-takeaway").innerHTML = `<b>מה לומדים מזה לתחזית:</b> בלי אף סקר, הדמוגרפיה לבדה ${d >= 0 ? "מוסיפה" : "גורעת"} לימין ולחרדים ${pointsHe(d)} עד 2026 — כ־${seatsHe(seats)}. זו התחזית העצמאית לגודל הגושים. ${st && st.demographic != null ? `בתחזית הברומטר המודל נמדד כחלק הימין והחרדים מהקולות כפול 120: <b>${r1(st.demographic)}</b>${st.geographic != null ? `, והמודל הגיאוגרפי <b>${r1(st.geographic)}</b>. ממוצע שניהם הוא ${r1(st.mean)}; התחזית מועלית עד הקצה התחתון של טווח סטייה מונח של ${S.demo.meta.structuralDeviationPercent ?? 1.2}% סביבו, ולא מעבר לכך` : ""}.` : ""} הזיזו את הידיות בשלב 4 כדי לראות כמה ההנחה הזו רגישה.`;
 }
 
 /* המסקנות: העמודה שליד הכרטיסיות, משפט הכותרת, ושורת מסקנה בראש כל כרטיסייה.
@@ -2337,10 +2337,10 @@ function renderMethod() {
   const sumRight = p => Object.entries(p).reduce((sum, [id, value]) => sum + (isRightAt(id, value) ? value : 0), 0);
   const rightFloat = sumRight(sc.parties), demographic = sc.scenario?.demographic ?? 0;
   const proposed = sc.scenario?.demographicProposed ?? 0, harediGain = sc.scenario?.harediBlocGain ?? 0;
-  document.querySelectorAll('[data-model-deviation]').forEach(el => { el.textContent = `${sc.scenario?.deviationPercent ?? 1.5}%`; });
+  document.querySelectorAll('[data-model-deviation]').forEach(el => { el.textContent = `${sc.scenario?.deviationPercent ?? 1.2}%`; });
   const deviationControl = $("#method-deviation");
   if (deviationControl) {
-    deviationControl.value = sc.scenario?.deviationPercent ?? 1.5;
+    deviationControl.value = sc.scenario?.deviationPercent ?? 1.2;
     $("#method-deviation-value").textContent = `${deviationControl.value}%`;
     deviationControl.onchange = event => {
       S.scenarioOptions = { ...S.scenarioOptions, deviationPercent: Number(event.target.value) };
@@ -2350,7 +2350,7 @@ function renderMethod() {
     };
   }
   const scenarioSeats = allocateSeats(sc.parties);
-  $("#m-live-scenario").innerHTML = [[sumRight(sc.rawFull).toFixed(3), "סקרים משוקללים לימין לאחר שימור תמיכת וינטר והנדל/זליכה"], [(rightFloat - demographic).toFixed(3), "ימין אחרי המודל החרדי והתאמה ל־120"], [harediGain.toFixed(3), "תוספת החרדים נטו לגוש הימין"], [(sc.structural?.mean ?? 0).toFixed(3), "ממוצע אומדני התמיכה של המודלים הדמוגרפי והגיאוגרפי"], [`${sc.scenario?.deviationPercent ?? 1.5}%`, "הנחת טווח סטייה מהאומדן המשותף"], [(sc.scenario?.structuralLowerBound ?? 0).toFixed(3), "הקצה התחתון של טווח הסטייה"], [proposed.toFixed(3), "ההשלמה המרבית מול בסיס הסקרים"], [demographic.toFixed(3), "ההשלמה לאחר הפחתת תוספת החרדים"], [rightFloat.toFixed(3), "ימין לפני חלוקת המושבים"], [sumRight(scenarioSeats), "מושבים לימין לאחר הסכמי העודפים"], [Object.values(scenarioSeats).reduce((sum, seats) => sum + seats, 0), "סך הכול מושבים בכנסת"]]
+  $("#m-live-scenario").innerHTML = [[sumRight(sc.rawFull).toFixed(3), "סקרים משוקללים לימין לאחר שימור תמיכת וינטר והנדל/זליכה"], [(rightFloat - demographic).toFixed(3), "ימין אחרי המודל החרדי והתאמה ל־120"], [harediGain.toFixed(3), "תוספת החרדים נטו לגוש הימין"], [(sc.structural?.mean ?? 0).toFixed(3), "ממוצע אומדני התמיכה של המודלים הדמוגרפי והגיאוגרפי"], [`${sc.scenario?.deviationPercent ?? 1.2}%`, "הנחת טווח סטייה מהאומדן המשותף"], [(sc.scenario?.structuralLowerBound ?? 0).toFixed(3), "הקצה התחתון של טווח הסטייה"], [proposed.toFixed(3), "ההשלמה המרבית מול בסיס הסקרים"], [demographic.toFixed(3), "ההשלמה לאחר הפחתת תוספת החרדים"], [rightFloat.toFixed(3), "ימין לפני חלוקת המושבים"], [sumRight(scenarioSeats), "מושבים לימין לאחר הסכמי העודפים"], [Object.values(scenarioSeats).reduce((sum, seats) => sum + seats, 0), "סך הכול מושבים בכנסת"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   // 5 · the two structural models, in one unit: right + Haredi vote share x 120
   {

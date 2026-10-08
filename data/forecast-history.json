@@ -1,77 +1,6 @@
 {
   "snapshots": [
     {
-      "updatedAt": "2026-09-07T08:18:11.220Z",
-      "recordedAt": "2026-09-07T13:56:43.876Z",
-      "recalculatedAt": "2026-10-08T11:44:43.678Z",
-      "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v4-no-anchor",
-      "scenario": {
-        "yashar": 23,
-        "likud": 25,
-        "beyahad": 12,
-        "hademokratim": 9,
-        "ndi": 7,
-        "ozma_yehudit": 8,
-        "reshima_meshutefet": 7,
-        "zionut_datit": 6,
-        "shas": 10,
-        "yahadut_hatora": 8,
-        "raam": 5
-      },
-      "weighted": {
-        "yashar": 23,
-        "likud": 24,
-        "beyahad": 13,
-        "hademokratim": 9,
-        "yahadut_hatora": 8,
-        "ndi": 8,
-        "ozma_yehudit": 8,
-        "reshima_meshutefet": 8,
-        "shas": 8,
-        "raam": 5,
-        "zionut_datit": 6
-      },
-      "below": {
-        "scenario": {
-          "ofer_vinter_party": 2.42
-        },
-        "weighted": {
-          "ofer_vinter_party": 2.51
-        }
-      },
-      "polls": 10,
-      "firms": 8,
-      "seats": {
-        "scenario": {
-          "likud": 25,
-          "zionut_datit": 6,
-          "shas": 10,
-          "yahadut_hatora": 7,
-          "yashar": 23,
-          "hademokratim": 9,
-          "beyahad": 13,
-          "ndi": 7,
-          "reshima_meshutefet": 7,
-          "raam": 5,
-          "ozma_yehudit": 8
-        },
-        "weighted": {
-          "likud": 26,
-          "zionut_datit": 5,
-          "shas": 8,
-          "yahadut_hatora": 8,
-          "yashar": 24,
-          "hademokratim": 9,
-          "beyahad": 13,
-          "ndi": 8,
-          "reshima_meshutefet": 7,
-          "raam": 5,
-          "ozma_yehudit": 7
-        }
-      }
-    },
-    {
       "updatedAt": "2026-09-07T08:29:58.654Z",
       "recordedAt": "2026-09-07T14:12:17.952Z",
       "recalculatedAt": "2026-10-08T11:44:43.678Z",
@@ -2802,6 +2731,75 @@
       "recordedAt": "2026-10-08T10:06:20.659Z",
       "recalculatedAt": "2026-10-08T11:44:43.678Z",
       "pollSetSource": "repository",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v4-no-anchor",
+      "scenario": {
+        "zionut_datit": 7,
+        "ozma_yehudit": 8,
+        "ndi": 7,
+        "hademokratim": 9,
+        "beyahad": 11,
+        "yashar": 22,
+        "likud": 25,
+        "reshima_meshutefet": 8,
+        "shas": 10,
+        "yahadut_hatora": 8,
+        "raam": 5
+      },
+      "weighted": {
+        "zionut_datit": 6,
+        "raam": 6,
+        "shas": 8,
+        "yahadut_hatora": 8,
+        "ozma_yehudit": 8,
+        "ndi": 8,
+        "hademokratim": 9,
+        "beyahad": 11,
+        "yashar": 23,
+        "likud": 25,
+        "reshima_meshutefet": 8
+      },
+      "below": {
+        "scenario": {
+          "ofer_vinter_party": 1.95
+        },
+        "weighted": {
+          "ofer_vinter_party": 2.01
+        }
+      },
+      "polls": 9,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "updatedAt": "2026-10-08T12:54:58.487Z",
+      "recordedAt": "2026-10-08T12:54:59.661Z",
       "modelVersion": "haredi-locality-parties-turnout-raam-polls-v4-no-anchor",
       "scenario": {
         "zionut_datit": 7,

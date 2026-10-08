@@ -510,7 +510,7 @@ function renderLayer() {
   const svg = svgEl(); if (!svg) return;
   const layer = svg.querySelector(".r22-layer"), top = svg.querySelector(".r22-top"), u = unitsPerPx();
   svg.dataset.mode = st.mode;
-  q("#r22-map-legend").innerHTML = GROUPS.map(k => `<span><i style="background:${campColor(k)}"></i>${CAMP_HE[k]}</span>`).join("") + (st.mode === "nation"
+  q("#r22-map-legend").innerHTML = GROUPS.map(k => `<span><i style="background:${campColor(k)}"></i>${CAMP_HE[k]}</span>`).join("") + `<span class="r22-legend-note">${isForecast() ? "אחוזים מתוך קולות התחזית" : "אחוזים מתוך כל הקולות הכשרים"}</span>` + (st.mode === "nation"
     ? (blocVotes(D.nat, ["O"]) ? `<span class="r22-legend-note">${n0(blocVotes(D.nat, ["O"]))} קולות לרשימות אחרות — לא בשום קבוצה</span>` : "")
     : st.mode === "areas" ? `<span class="r22-legend-note">הצבע — הקבוצה המובילה · כהה = יתרון גדול</span>` : `<span class="r22-dimkey"><i></i>מחוץ לסינון</span>`);
   if (st.mode === "nation") {

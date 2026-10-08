@@ -1874,7 +1874,7 @@ function baseBlocsHTML() {
   const R = S.regions, N = R.national, w = R.wasted;
   const r22 = S.hist ? histBlocs(S.hist.actual || {}, S.hist.blocs || BLOCS_2022).netanyahu : 64;
   const nb = 120 - r22, vN = w.blocNetanyahu, vO = w.blocChange;
-  return `<div class="base-row"><span class="base-lbl">בקולות</span>
+  return `<div class="base-row"><span class="base-lbl" title="אחוזים מתוך קולות הרשימות שנכללות במודל">בקולות שבמודל</span>
       <div class="base-blocbar votes" role="img" aria-label="גוש הימין והחרדים ${fmt(vN)} קולות, מרכז–שמאל והרשימות הערביות ${fmt(vO)} קולות">
         <span style="flex:${vN};background:${BLOCS.Right.color}"><b>${fmt(vN)}</b> גוש הימין והחרדים · ${pct(100 * vN / (vN + vO))}</span>
         <span style="flex:${vO};background:${BLOCS.Left.color}"><b>${fmt(vO)}</b> מרכז–שמאל והרשימות הערביות · ${pct(100 * vO / (vN + vO))}</span></div></div>
@@ -1884,7 +1884,7 @@ function baseBlocsHTML() {
         <span style="flex:${nb};background:${BLOCS.Left.color}"><b>${nb}</b></span>
         <i class="bc-61" title="קו הרוב: מעבר לאמצע = 61 ומעלה"></i></div></div>
     <div class="base-drama"><b>ב־2022 מרכז–שמאל והרשימות הערביות קיבלו ${fmt(w.blocGap)} קולות יותר מגוש הימין והחרדים, ו־56 מנדטים מול 64.</b> ההבדל נובע מכללי הבחירות: ${fmt(w.total)} קולות של רשימות שלא עברו את אחוז החסימה (מרצ ${fmt(w.meretz)}, בל״ד ${fmt(w.balad)}) לא הפכו למנדטים; מרצ החמיצה את הסף ב־${fmt(w.meretzGap)} קולות.</div>
-    <p class="sec-note base-note">גוש הימין והחרדים = הליכוד, ש״ס, יהדות התורה והציונות הדתית. מרכז–שמאל והרשימות הערביות = יש עתיד, המחנה הממלכתי, העבודה, ישראל ביתנו, מרצ, רע״מ, חד״ש–תע״ל ובל״ד. נספרות רשימות שקיבלו 1.5% ומעלה; הבית היהודי (${fmt(N.parties.find(p => p.id === "jewish_home")?.votes || 0)}, 1.19%) אינו נספר. מקור: <a href="${esc(w.source.url)}" target="_blank" rel="noopener">${esc(w.source.name)} ↗</a>.</p>`;
+    <p class="sec-note base-note">האחוזים כאן מחושבים מתוך ${fmt(vN + vO)} קולות הרשימות שבמודל. במפת תוצאות האמת האחוזים מחושבים מתוך כל ${fmt(N.valid)} הקולות הכשרים: ${pct(100 * vN / N.valid)} לימין ולחרדים ו־${pct(100 * vO / N.valid)} למרכז–שמאל ולרשימות הערביות. גוש הימין והחרדים = הליכוד, ש״ס, יהדות התורה והציונות הדתית. מרכז–שמאל והרשימות הערביות = יש עתיד, המחנה הממלכתי, העבודה, ישראל ביתנו, מרצ, רע״מ, חד״ש–תע״ל ובל״ד. נספרות במודל רשימות שקיבלו 1.5% ומעלה; הבית היהודי (${fmt(N.parties.find(p => p.id === "jewish_home")?.votes || 0)}, 1.19%) אינו נספר. מקור: <a href="${esc(w.source.url)}" target="_blank" rel="noopener">${esc(w.source.name)} ↗</a>.</p>`;
 }
 
 /* שלב 1 של המודל הדמוגרפי + שורת המקור של שלב 2 */
@@ -2290,9 +2290,9 @@ function renderMethod() {
     ids.map(id => { const d = (ws[id] || 0) - (ss[id] || 0); return `<tr><td><strong>${esc(partyMeta(id).name)}</strong></td><td class="n">${ss[id] || 0}</td><td class="n"><b>${ws[id] || 0}</b></td><td class="n"><span dir="ltr" class="chip ${d > 0 ? "good" : d < 0 ? "bad" : ""}">${d > 0 ? "+" : ""}${d}</span></td></tr>`; }).join("")
   }<tr><th scope="row">סך הכול</th><td class="n">${Object.values(ss).reduce((t, v) => t + v, 0)}</td><td class="n"><b>${Object.values(ws).reduce((t, v) => t + v, 0)}</b></td><td></td></tr></tbody>`;
   // 4 · scenario assumptions (live)
-  const sc = forecast("scenario", HIDE_FROM_HOME), o = S.scenarioOptions || {};
+  const sc = forecast("scenario", HIDE_FROM_HOME);
   const fx = sc.scenario?.fixed || harediForecast()?.parties || {};
-  $("#m-live-scenario").innerHTML = [[`${r1(fx.shas)} · ${r1(fx.yahadut_hatora)}`, "ש״ס וג׳ במודל המשולב"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
+  $("#m-live-scenario").innerHTML = [[`${r1(fx.shas)} · ${r1(fx.yahadut_hatora)}`, "ש״ס וג׳ במודל המשולב"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "ממוצע התוספות הדמוגרפית והגיאוגרפית, מנדטים"], [Object.values(allocateSeats(sc.parties)).reduce((sum, seats) => sum + seats, 0), "מנדטים בחלוקה הסופית"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   // 5 · demographic addition = mean of the demographic and geographic models
   {

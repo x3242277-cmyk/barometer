@@ -13,11 +13,10 @@ function scenarioForecast(raw, options = {}) {
   const total = Object.values(rest).reduce((a,b)=>a+b,0);
   if (!total) {                                             // רק הרשימות הקבועות בסקרים — מותחים אותן ל-120
     const f = fixedSum > 0 ? 120 / fixedSum : 1;
-    return {parties:Object.fromEntries(Object.entries(fixed).map(([id,v])=>[id,v*f])), fixed, initialRight:0, anchor:0, demographic:0, blend:Math.min(1,Math.max(0,options.blend ?? 0.5)), demographicCorrected:null};
+    return {parties:Object.fromEntries(Object.entries(fixed).map(([id,v])=>[id,v*f])), fixed, demographic:0, demographicCorrected:null};
   }
   const p = Object.fromEntries(Object.entries(rest).map(([id,v])=>[id, v/total*REST]));
   const sum = ids => Object.entries(p).reduce((n,[id,v])=>n+(ids.has(id)?v:0),0);
-  const blend = Math.min(1,Math.max(0,options.blend ?? 0.5));
   const transfer = requested => {
     const from = requested >= 0 ? leftIds : rightIds, to = requested >= 0 ? rightIds : leftIds;
     const a=sum(from), b=sum(to), amount=Math.min(Math.abs(requested),a);
@@ -25,35 +24,9 @@ function scenarioForecast(raw, options = {}) {
     Object.keys(p).forEach(id=>{if(from.has(id))p[id]-=amount*p[id]/a;else if(to.has(id))p[id]+=amount*p[id]/b;});
     return Math.sign(requested)*amount;
   };
-  /* עוגן הגושים וקיבוע ש״ס/יה״ת הן אותה הנחה — "הימין חזק מהסקרים" — ואסור
-     לספור אותה פעמיים. מחשבים את ההזזה הימינה הכוללת הרצויה (חצי הדרך למאזן
-     היעד), ומחסירים ממנה את מה שהקיבוע כבר תרם. העוגן משלים רק את היתרה.
-     היעד הוא 62, לא 64: גוש הימין והחרדים קיבל בפועל 64 ב-2022, אבל כ-2 מנדטים
-     מתוכם הגיעו רק כי מרצ פספסה את אחוז החסימה ב-4,062 קולות בלבד (ראו
-     COUNTERFACTUAL ב-app.js — "אילו מרצ עברה" נותן לגוש הימין והחרדים 62, לא 64).
-     זה מקרה קצה חד-פעמי בספירת העודפים, לא אות יציב לגודל הגוש, ולכן לא
-     בונים עליו את התחזית ל-2026. */
-  const ANCHOR_TARGET_2022 = 62;
-  const rawSum = Object.values(raw).reduce((s,v)=>s+(Number.isFinite(v)&&v>0?v:0),0);
-  const k = rawSum ? 120/rawSum : 1;                       // נרמול הסקרים ל-120
-  const pollShasUtj = k*((raw.shas||0)+(raw.yahadut_hatora||0));
-  /* רשימות ימין שכרגע מתחת לאחוז החסימה (כמו עופר וינטר) לא נכנסות ל-raw
-     בכלל, ואם לא היינו מחזירים אותן כאן pollRight היה סופר אותן כתמיכה
-     אפסית — בדיוק אותה עיוות "מקרה קצה בסף החסימה" שמתקנים ב-62 למעלה,
-     רק בכיוון ההפוך. rawFull (לפני סינון הסף) מחזיר את התמיכה שלהן לצורך
-     חישוב הפער בלבד — הן עדיין לא מקבלות מנדטים אמיתיים בחלוקה הסופית. */
-  const rf = options.rawFull || raw;
-  const wastedRight = Object.entries(rf).reduce((s,[id,v]) =>
-    s + (rightIds.has(id) && !(id in raw) && Number.isFinite(v) && v > 0 ? v : 0), 0);
-  const pollRight = k*(sum(rightIds)/REST)*total + pollShasUtj + wastedRight;
-  const fixGain = (fixed.shas + fixed.yahadut_hatora) - pollShasUtj;   // מה שהקיבוע כבר הוסיף לימין
-  const wantMove = Math.max(0,(ANCHOR_TARGET_2022-pollRight)*blend);   // ההזזה הימינה הכוללת הרצויה
-  const anchorSeats = Math.max(0, wantMove - fixGain);     // העוגן משלים רק את היתרה
-  const initialRight = pollRight;
-  const anchor = transfer(anchorSeats*REST/120);
   const demographic = transfer(Math.max(-6,Math.min(6,options.demographic ?? 2)));
   /* התוצאה בשברי מנדטים (סכום 120); העיגול למנדטים שלמים נעשה בשלב האחרון,
      לפי כללי הבחירות (allocateSeats). */
-  return {parties:{...p,...fixed}, fixed, initialRight, anchor, demographic, blend,
+  return {parties:{...p,...fixed}, fixed, demographic,
           demographicCorrected: options.demographicCorrected || null};
 }

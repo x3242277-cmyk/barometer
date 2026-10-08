@@ -113,8 +113,7 @@
       ] : []),
       { key: "avg", title: "ממוצע הסקרים, משוקלל לפי דיוק עבר", note: "ממצעים כל מכון, ואז משקללים בין המכונים לפי הדרגה: 45 · 35 · 20", bloc: norm(blocOf(allocateSeats(wF.parties))) },
       { key: "house", title: "תיקון הטעות הקבועה של כל מכון", note: "מזיז מנדטים בתוך הגוש בלבד, לא בין גושים", bloc: null },
-      { key: "fixed", title: "המודל החרדי המשולב", note: `ש״ס ${r1(scF.scenario.fixed.shas)}, יהדות התורה ${r1(scF.scenario.fixed.yahadut_hatora)}: 25% דמוגרפיה, 25% גיאוגרפיה, 50% סקרים מתוקנים. רע״ם לפי ממוצע הסקרים המשוקלל בלבד`, bloc: norm(blocOf(scenarioForecast(scF.raw, { ...rawOpts, blend: 0, demographic: 0 }).parties)) },
-      { key: "anchor", title: "קירוב למאזן 2022", note: `היעד הוא 62 לגוש הימין והחרדים (לא 64), בחצי הדרך · הוזזו ${r1(scF.scenario?.anchor ?? 0)} מנדטים`, bloc: norm(blocOf(scenarioForecast(scF.raw, { ...rawOpts, blend: sopt.blend ?? .5, demographic: 0 }).parties)) },
+      { key: "fixed", title: "המודל החרדי המשולב", note: `ש״ס ${r1(scF.scenario.fixed.shas)}, יהדות התורה ${r1(scF.scenario.fixed.yahadut_hatora)}: 25% דמוגרפיה, 25% גיאוגרפיה, 50% סקרים מתוקנים. רע״ם לפי ממוצע הסקרים המשוקלל בלבד`, bloc: norm(blocOf(scenarioForecast(scF.raw, { ...rawOpts, demographic: 0 }).parties)) },
       { key: "demoAdd", title: "תוספת דמוגרפית: ממוצע שני המודלים", note: dr ? `המודל הדמוגרפי ${sg(dr.demographic ?? 0)} והגיאוגרפי ${sg(dr.geographic ?? 0)}. הממוצע, מעוגל לרבע מנדט: ${sg(dr.seats)}` : "אין מודל טעון, ולכן נשארת ברירת המחדל", bloc: norm(blocOf(scF.parties)) },
       { key: "final", title: "אחוז חסימה ובאדר־עופר: 120 מנדטים", note: "רשימה מתחת ל־3.25% לא מקבלת מושב; השאר מחולקים מנדט אחד־אחד, כולל הסכמי עודפים", bloc: null }
     ];

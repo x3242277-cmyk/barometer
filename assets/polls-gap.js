@@ -1,6 +1,6 @@
 /* למה הסקרים חלוקים? — הלשונית הראשונה בכל הסקרים.
    פותחים בשני סקרים — כברירת מחדל הקיצוניים של השבועיים האחרונים (הכי הרבה והכי
-   מעט מנדטים לגוש הימין והחרדים) — עם הפער ביניהם במנדטים, במצביעים ובאחוזים,
+   מעט מנדטים למפלגות הקואליציה) — עם הפער ביניהם במנדטים, במצביעים ובאחוזים,
    ושואלים מי מהם קרוב יותר לאמת. אחרי הבחירה מפרקים את הפער (באיזו רשימה הוא
    נוצר, ואיפה שני הסקרים יושבים מול שאר הסקרים ומול תחזית הברומטר), מזמינים
    לבדוק מי צדק בפעם הקודמת (כל מכון מול התוצאה האמיתית בשלוש הבחירות האחרונות),
@@ -9,7 +9,7 @@
    הכול מחושב מהנתונים החיים של האתר; אין כאן טענה על כוונות של מכון. */
 const GAP_WINDOW_DAYS = 14, GAP_MAJORITY = 61, GAP_ROWS = 4;
 const GAP_MINUS = "−";
-const GAP_BLOC_HE = { Right: "ימין וחרדים", Left: "מרכז–שמאל", Arabs: "ערבים", Unknown: "לא משויך" };
+const GAP_BLOC_HE = { Right: "מפלגות הקואליציה", Left: "מרכז–שמאל", Arabs: "ערבים", Unknown: "לא משויך" };
 const gapSigned = v => Math.abs(v) < 0.05 ? "0" : `${v < 0 ? GAP_MINUS : "+"}${trFmt(Math.abs(v))}`;
 
 /* הסקר האחרון של כל צירוף מכון + ערוץ בחלון הזמן, מהחדש לישן */
@@ -44,7 +44,7 @@ function gapParties(vHi, vLo) {
     .map(r => ({ ...r, d: r.hi - r.lo })).filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
 }
 
-/* לכל מערכת בחירות: ההפרש של כל מכון בגוש הימין והחרדים — ממוצע סקרי 30 הימים שלפני הבחירות פחות התוצאה */
+/* לכל מערכת בחירות: ההפרש של כל מכון במפלגות הקואליציה — ממוצע סקרי 30 הימים שלפני הבחירות פחות התוצאה */
 function gapRecordRows(elections) {
   return elections.map(e => {
     const defs = e.data.blocs || BLOCS_2022, actual = histBlocs(e.data.actual, defs).netanyahu, by = {};
@@ -116,7 +116,7 @@ function gapCard(s, kind, picked, m) {
   return `<article class="tr-card gap-poll gap-${kind}${picked === kind ? " is-picked" : ""}">
     <span class="gap-logo">${outletLogo(s.outlet)}</span><header><label class="gap-choose"><span class="sr-only">${kind === "hi" ? "הסקר הימני" : "הסקר השמאלי"} — החלפה</span><select data-gap-side="${kind}">${m.options.map(o =>
       `<option value="${esc(o.id)}"${o.id === s.p.id ? " selected" : ""}${o.id === other.p.id ? " disabled" : ""}>${esc(o.label)}</option>`).join("")}</select></label></header>
-    <div class="gap-num"><b dir="ltr">${s.right}</b><span>מנדטים לגוש<br>הימין והחרדים</span></div>
+    <div class="gap-num"><b dir="ltr">${s.right}</b><span>מנדטים לגוש<br>מפלגות הקואליציה</span></div>
     <div class="gap-bar" role="img" aria-label="${esc(["Right", "Unknown", "Arabs", "Left"].filter(k => s.v.blocs[k] > 0).map(k => `${BLOCS[k].he} ${s.v.blocs[k]}`).join(", "))}">${bar}<i class="gap-61" title="${GAP_MAJORITY}"></i></div>
     <p class="gap-legend">${legend}</p></article>`;
 }
@@ -124,7 +124,7 @@ function gapCard(s, kind, picked, m) {
 /* הפער במנדטים, ובאנשים: כך וכך מצביעים, כך וכך אחוז מהם */
 function gapDiff(m) {
   const p = m.people;
-  return `<div class="gap-diff"><b>${m.gap}</b><span>מנדטים הפרש<br>בגוש הימין והחרדים</span>
+  return `<div class="gap-diff"><b>${m.gap}</b><span>מנדטים הפרש<br>במפלגות הקואליציה</span>
     <div class="gap-people" title="${esc(GAP_PEOPLE_NOTE)}">${p ? `<strong dir="ltr">≈ ${p.kv(p.voters)}</strong><span>מצביעים</span>` : ""}<em dir="ltr">${gapPctText(m)}</em><span>מהמצביעים</span></div></div>`;
 }
 
@@ -150,7 +150,7 @@ function gapScale(m) {
   return `<div class="tr-card gap-scale">
     <h3>${m.n} סקרים אחרונים · החציון <span dir="ltr">${trFmt(m.median)}</span></h3>
     <p>${m.baro == null ? "כל נקודה היא סקר אחרון של מכון בערוץ." : `כל נקודה היא סקר אחרון של מכון בערוץ. תחזית הברומטר: <b>${m.baro}</b> — משוקללת לפי דיוק המכונים בעבר ${gapInfo("סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון, עם תיקון הטעות הקבועה שלו, המודל החרדי, ההשלמה לטווח המודלים וחלוקת המנדטים לפי כללי הבחירות.")}`}</p>
-    <div class="gap-plot" dir="ltr" role="img" aria-label="${esc(`סקרים לפי מנדטים לגוש הימין: ${m.hi.outlet} ${m.hi.right}, ${m.lo.outlet} ${m.lo.right}, החציון ${trFmt(m.median)}${m.baro == null ? "" : `, תחזית הברומטר ${m.baro}`}`)}">
+    <div class="gap-plot" dir="ltr" role="img" aria-label="${esc(`סקרים לפי מנדטים למפלגות הקואליציה: ${m.hi.outlet} ${m.hi.right}, ${m.lo.outlet} ${m.lo.right}, החציון ${trFmt(m.median)}${m.baro == null ? "" : `, תחזית הברומטר ${m.baro}`}`)}">
       <i class="gap-maj" style="left:${x(GAP_MAJORITY)}%"><em>${GAP_MAJORITY} · רוב</em></i>
       ${dots}${flag(m.hi, "hi")}${m.lo.right === m.hi.right ? "" : flag(m.lo, "lo")}
       <div class="gap-axis">${ticks.map(v => `<span style="left:${x(v)}%">${v}</span>`).join("")}</div>
@@ -170,7 +170,7 @@ function gapRecord(m) {
   const ticks = []; for (let v = Math.ceil(from / 2) * 2; v <= to; v += 2) ticks.push(v);
   const label = (id, s) => `${nameOf(id)}${s.heir ? ` (היום ${s.meta.he})` : ""}`;
   const hiName = label(hiId, m.hi), loName = label(loId, m.lo);
-  /* מנדטים: כמה כל מכון חזה לגוש הימין והחרדים (התוצאה + ההפרש), ובכל שורה — התוצאה בפועל מתחת לקו המקווקו */
+  /* מנדטים: כמה כל מכון חזה למפלגות הקואליציה (התוצאה + ההפרש), ובכל שורה — התוצאה בפועל מתחת לקו המקווקו */
   const seatTxt = v => String(Math.round(v * 10) / 10).replace(/[.]0$/, "");
   const rowHTML = r => {
     const role = d => d.firm === hiId ? "hi" : d.firm === loId && !same ? "lo" : "";
@@ -190,10 +190,10 @@ function gapRecord(m) {
     : st.loCloser === st.compared ? `${loName} היה קרוב יותר לתוצאה מ${hiName} ${both}.`
     : !st.hiCloser && !st.loCloser ? `${hiName} ו${loName} סטו מהתוצאה באותה מידה.`
     : `${hiName} היה קרוב יותר לתוצאה מ${loName} ב־${st.hiCloser} מתוך ${st.compared} בחירות.`;
-  const what = "כל נקודה היא מכון, ולידה — כמה מנדטים חזה לגוש הימין והחרדים (ממוצע הסקרים שלו ב־30 הימים שלפני הבחירות). הקו המקווקו הוא התוצאה בפועל, והמרחק ממנו הוא הטעות.";
+  const what = "כל נקודה היא מכון, ולידה — כמה מנדטים חזה למפלגות הקואליציה (ממוצע הסקרים שלו ב־30 הימים שלפני הבחירות). הקו המקווקו הוא התוצאה בפועל, והמרחק ממנו הוא הטעות.";
   const how = `${what} מינוס — המכון נתן לגוש פחות ממה שקיבל; פלוס — יותר. מה שהסקרים לא נתנו לגוש נרשם אצל יתר הרשימות, כי סך המנדטים קבוע. המכונים והבחירות לפי ארכיון הסקרים של האתר; במכון עם סקר אחד או שניים הממוצע מבוסס על מעט נתונים.`;
   return `<div class="tr-card gap-record">
-    <h3>גוש הימין והחרדים: ${st.below} מתוך ${st.total} מדידות היו מתחת לתוצאה האמיתית${st.total - st.below ? `, ${st.total - st.below} מעליה` : ""} ${gapInfo(how)}</h3>
+    <h3>מפלגות הקואליציה: ${st.below} מתוך ${st.total} מדידות היו מתחת לתוצאה האמיתית${st.total - st.below ? `, ${st.total - st.below} מעליה` : ""} ${gapInfo(how)}</h3>
     <p class="gap-rec-sub">${what}</p>
     <p class="gap-rec-mobile-note">המנדטים שחזה כל מכון, ולצדם הפער מתוצאת הבחירות. המכונים שבחרתם מודגשים בצבע.</p>
     <div class="gap-rec-plotwrap">
@@ -228,11 +228,11 @@ function renderPollGap() {
   if (!m) { box.innerHTML = '<p class="gap-empty">עוד אין מספיק סקרים אחרונים כדי להשוות ביניהם.</p>'; return; }
   const picked = S.gapPick || null, revealed = !!picked, top = gapTopFloor(), fresh = n => n === top && top > (S.gapShown || 1);
   const label = { hi: m.hi.outlet, lo: m.lo.outlet, none: "אף אחד מהם" }[picked];
-  const people = m.gap === 0 ? "" : m.people ? `כל מנדט שווה בערך <b>${fmt(Math.round(m.people.perSeat / 1000) * 1000)}</b> מצביעים, כך ש־${m.gap} מנדטים (בגוש הימין והחרדים) הם כ־<b>${m.people.kv(m.people.voters)}</b> איש — <b>${gapPctText(m)}</b> מהמצביעים. ${gapInfo(GAP_PEOPLE_NOTE)}` : `${m.gap} מנדטים בגוש הימין והחרדים הם <b>${gapPctText(m)}</b> מהמצביעים.`;
+  const people = m.gap === 0 ? "" : m.people ? `כל מנדט שווה בערך <b>${fmt(Math.round(m.people.perSeat / 1000) * 1000)}</b> מצביעים, כך ש־${m.gap} מנדטים (במפלגות הקואליציה) הם כ־<b>${m.people.kv(m.people.voters)}</b> איש — <b>${gapPctText(m)}</b> מהמצביעים. ${gapInfo(GAP_PEOPLE_NOTE)}` : `${m.gap} מנדטים במפלגות הקואליציה הם <b>${gapPctText(m)}</b> מהמצביעים.`;
   const first = `
-    <div class="gap-head"><div class="gap-head-text"><h2>${m.gap ? `<span dir="ltr">${m.gap}</span> מנדטים בגוש הימין והחרדים בין שני סקרים מהשבועיים האחרונים` : `שני הסקרים נותנים לגוש אותו מספר מנדטים`}</h2>
+    <div class="gap-head"><div class="gap-head-text"><h2>${m.gap ? `<span dir="ltr">${m.gap}</span> מנדטים במפלגות הקואליציה בין שני סקרים מהשבועיים האחרונים` : `שני הסקרים נותנים לגוש אותו מספר מנדטים`}</h2>
       ${people ? `<p class="gap-lead">${people}</p>` : ""}
-      <p class="gap-note">${m.custom ? "הסקרים שבחרת" : "הקיצוני ביותר לכל כיוון"}, מתוך ${m.n} סקרים אחרונים (אחד לכל מכון וערוץ). המספרים — מנדטים לגוש הימין והחרדים; ${GAP_MAJORITY} הוא רוב.</p>
+      <p class="gap-note">${m.custom ? "הסקרים שבחרת" : "הקיצוני ביותר לכל כיוון"}, מתוך ${m.n} סקרים אחרונים (אחד לכל מכון וערוץ). המספרים — מנדטים למפלגות הקואליציה; ${GAP_MAJORITY} הוא רוב.</p>
       ${revealed ? `<p class="gap-picked">הניחוש שלך: <b>${esc(label)}</b> <button type="button" class="gap-redo" data-gap-pick="reset">לנחש שוב</button></p>` : ""}</div>
       <div class="gap-tools"><button type="button" class="gap-tool" data-gap-random>⇄ הגרילו שני סקרים</button>${m.custom ? `<button type="button" class="gap-tool" data-gap-extremes>חזרה לקיצוניים</button>` : ""}</div></div>
     <div class="gap-board">${gapCard(m.hi, "hi", picked, m)}${gapDiff(m)}${gapCard(m.lo, "lo", picked, m)}

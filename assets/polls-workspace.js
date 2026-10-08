@@ -9,7 +9,7 @@ const EXPLORER_MAX = 5;
    משמאל הנושאים (מפלגות + סמל הכנסת = הגושים; ברירת המחדל). */
 const EXPLORER_BARO = { key: 'baro', label: 'תחזית הברומטר', logo: 'assets/logos/barometer-mark.png', short: 'ה' };
 const EXPLORER_BLOCS = { key: 'blocs', label: 'הכנסת · הגושים (ברירת מחדל)', logo: 'assets/logos/knesset-emblem.svg', short: 'כנסת', special: true };
-const EXPLORER_METRICS = { Right: 'ימין וחרדים', Left: 'מרכז–שמאל', Arabs: 'הרשימות הערביות' };
+const EXPLORER_METRICS = { Right: 'מפלגות הקואליציה', Left: 'מרכז–שמאל', Arabs: 'הרשימות הערביות' };
 const EXPLORER_OUTLET_LOGOS = { 'חדשות 12':'assets/logos/channel12.svg', 'חדשות 13':'assets/logos/channel13.svg', 'ערוץ 14':'assets/logos/channel14.png', 'כאן 11':'assets/logos/kan11.svg', 'i24NEWS':'assets/logos/i24news.png', 'ערוץ 16':'assets/logos/channel-16.png', 'וואלה':'assets/logos/walla.png', 'זמן ישראל':'assets/logos/zman-israel.png', 'גלי צה״ל':'assets/logos/galatz.png' };
 const EXPLORER_NOTE = 'כל נקודה היא תאריך שבו פורסם סקר. כשיש כמה סקרים באותו יום מוצג ממוצע, עם משקל שווה לכל מכון. הקווים מחברים מדידות בלבד ונקטעים כששם הרשימה או הרכבה משתנים; אין נתון בתאריך מסוים אינו אפס (בטבלה: —). בהשוואת מפלגות, הממוצע בכל יום כולל רק מכונים שמדדו את המפלגה. המספרים במנדטים.';
 
@@ -44,7 +44,7 @@ function explorerState(P) {
   return { channels, parties, sources, subjects, hasChannel, overview: subjects[0] === 'blocs' && !hasChannel, metric: S.exploreMetric, view: S.exploreView };
 }
 /* כמה קווים יצטרכו אם מוסיפים בחירה: מקורות (או ממוצע) כפול נושאים (או גוש אחד) */
-/* גושים = שני קווים לכל מקור (ימין וחרדים, מרכז–שמאל), מפלגות = קו לכל מפלגה */
+/* גושים = שני קווים לכל מקור (מפלגות הקואליציה, מרכז–שמאל), מפלגות = קו לכל מפלגה */
 const EXPLORER_BLOC_LINES = ['Right', 'Left'];
 const explorerLineCount = (sources, subjects) => Math.max(1, sources.length) * (subjects[0] === 'blocs' ? EXPLORER_BLOC_LINES.length : subjects.length);
 
@@ -163,7 +163,7 @@ function explorerTools(P, M, state) {
   if (last - first > 31 * DAY_MS) out.push(exSelect('data-ex-range', 'טווח זמן', [['all', span && (span.basis || 'avg') !== 'avg' ? `מאז ${trDay(first)}` : 'מאז אוגוסט'], ['month', 'חודש אחרון']], S.trackRange));
   out.push(`<div class="switch ex-view" role="group" aria-label="תצוגה"><button type="button" data-ex-view="chart" aria-pressed="${state.view === 'chart'}">גרף</button><button type="button" data-ex-view="table" aria-pressed="${state.view === 'table'}">טבלה</button></div>`);
   const modelNote = TRACK_BASES[((model || M).basis) || 'avg'].note;
-  out.push(exInfo(state.overview ? `${modelNote} בגרף: ימין וחרדים מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
+  out.push(exInfo(state.overview ? `${modelNote} בגרף: מפלגות הקואליציה מול מרכז–שמאל; הרשימות הערביות — במספר בלבד.`
     : state.hasChannel ? EXPLORER_NOTE : `${modelNote} כל קו הוא מפלגה אחת; רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר.`));
   return out.join('');
 }
@@ -272,7 +272,7 @@ function feedCardHTML(p, list, expanded = false, gallery = false) {
   const belowNames=gallery?Object.keys(v.parties).filter(id=>v.parties[id]===0).map(id=>NAME_OVERRIDE[id]||p.parties.find(x=>normId(x.id)===id)?.name||partyMeta(id).name):[];
   const belowHTML=belowNames.length?`<div class="feed-below"><b>לא עברו את אחוז החסימה</b><span>${belowNames.map(n=>`<em>${esc(n)}</em>`).join('')}</span></div>`:'';
   const blocs=['Right','Unknown','Arabs','Left'].filter(k=>v.blocs[k]>0), bar=blocs.map(k=>`<span style="flex:${v.blocs[k]};background:${BLOCS[k].color}">${v.blocs[k]>=7?v.blocs[k]:''}</span>`).join('');
-  return `<article class="feed-card-shell" data-feed-id="${esc(p.id)}"><details class="feed-item${p.barometer?' is-baro':''}"${expanded?' open':''}><summary><span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer?'ניתוח שבועי':esc(f.meta.he)}</small></span><time title="${esc(p.date)}">${esc(feedWhen(p))}${p.barometer?' · 20:00':''}</time></span><span class="feed-bar" role="img" aria-label="${esc(blocs.map(k=>`${BLOCS[k].he}: ${v.blocs[k]}`).join(', '))}">${bar}<i class="feed-61"></i></span><span class="feed-lead">${ids.filter(id=>v.parties[id]>0).slice(0,3).map(id=>`<span>${esc(partyMeta(id).name)} <b>${v.parties[id]}</b></span>`).join('')}</span></summary><div class="feed-cols">${[['Right','ימין וחרדים'],['rest','יתר הרשימות']].map(([side,label])=>{const col=ids.filter(id=>(partyMeta(id).alignment==='Right')===(side==='Right'));return `<div><p class="feed-col-head">${label}<b>${col.reduce((n,id)=>n+v.parties[id],0)}</b></p><ol class="feed-parties">${col.map(row).join('')}</ol></div>`;}).join('')}</div>${belowHTML}<p class="feed-src">${previous?'השינוי מול הסקר הקודם של אותו ערוץ ומכון · '+esc(previous.date):'אין סקר קודם בר השוואה'}${p.sourceUrl?` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>`:''}<button type="button" class="feed-expand-one" data-feed-poll="${esc(p.id)}" aria-label="הגדלת הסקר של ${esc(p.channelHebrewName)} מ־${esc(p.date)}">⤢ הגדלה</button></p></details></article>`;
+  return `<article class="feed-card-shell" data-feed-id="${esc(p.id)}"><details class="feed-item${p.barometer?' is-baro':''}"${expanded?' open':''}><summary><span class="feed-top">${outletLogo(p.channelHebrewName)}<span class="feed-who"><b>${esc(p.channelHebrewName)}</b><small>${p.barometer?'ניתוח שבועי':esc(f.meta.he)}</small></span><time title="${esc(p.date)}">${esc(feedWhen(p))}${p.barometer?' · 20:00':''}</time></span><span class="feed-bar" role="img" aria-label="${esc(blocs.map(k=>`${BLOCS[k].he}: ${v.blocs[k]}`).join(', '))}">${bar}<i class="feed-61"></i></span><span class="feed-lead">${ids.filter(id=>v.parties[id]>0).slice(0,3).map(id=>`<span>${esc(partyMeta(id).name)} <b>${v.parties[id]}</b></span>`).join('')}</span></summary><div class="feed-cols">${[['Right','מפלגות הקואליציה'],['rest','יתר הרשימות']].map(([side,label])=>{const col=ids.filter(id=>(partyMeta(id).alignment==='Right')===(side==='Right'));return `<div><p class="feed-col-head">${label}<b>${col.reduce((n,id)=>n+v.parties[id],0)}</b></p><ol class="feed-parties">${col.map(row).join('')}</ol></div>`;}).join('')}</div>${belowHTML}<p class="feed-src">${previous?'השינוי מול הסקר הקודם של אותו ערוץ ומכון · '+esc(previous.date):'אין סקר קודם בר השוואה'}${p.sourceUrl?` · <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">מקור ↗</a>`:''}<button type="button" class="feed-expand-one" data-feed-poll="${esc(p.id)}" aria-label="הגדלת הסקר של ${esc(p.channelHebrewName)} מ־${esc(p.date)}">⤢ הגדלה</button></p></details></article>`;
 }
 
 /* סקר אחד במסך מלא — לקריאה נוחה של כל הרשימות */

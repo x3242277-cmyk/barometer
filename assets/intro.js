@@ -163,7 +163,7 @@
           <div class="sc sc-hemi">
             <svg class="hemi" viewBox="0 0 600 310">${hemicycle(data.blocTot)}<line class="hemi-61" x1="300" y1="30" x2="300" y2="300"/><text class="hemi-61-t" x="300" y="22">61</text></svg>
             <div class="hemi-tot">
-              <span style="--c:${BLOCS.Right.color}"><i></i>גוש הימין <b class="num" data-n="${R}">0</b></span>
+              <span style="--c:${BLOCS.Right.color}"><i></i>מפלגות הקואליציה <b class="num" data-n="${R}">0</b></span>
               <span style="--c:${BLOCS.Left.color}"><i></i>מרכז־שמאל <b class="num" data-n="${L}">0</b></span>
               <span style="--c:${BLOCS.Arabs.color}"><i></i>הרשימות הערביות <b class="num" data-n="${A}">0</b></span>
             </div>

@@ -4,7 +4,7 @@
    אחת (ממוצע הסקרים שלו בחלון), ואז ממוצע פשוט בין המכונים — כך מכון שמפרסם כל
    יום לא מכריע לבד. רשימה שלא הופיעה בסקר נספרת 0, כמו בשאר האתר. */
 const TRACK_WINDOW_DAYS = 7, TRACK_CHANGE_DAYS = 14, DAY_MS = 864e5;
-const TRACK_BLOCS = [["Right", "גוש הימין והחרדים"], ["Left", "מרכז–שמאל"], ["Arabs", "הרשימות הערביות"]];
+const TRACK_BLOCS = [["Right", "מפלגות הקואליציה"], ["Left", "מרכז–שמאל"], ["Arabs", "הרשימות הערביות"]];
 
 function trackerPolls() {
   const byId = new Map();
@@ -74,9 +74,9 @@ const TRACK_BASES = {
   avg: { label: "ממוצע כל הסקרים", kicker: "ממוצע הסקרים",
     note: "ממוצע נע של 7 ימים: כל מכון נספר פעם אחת, בלי משקלים ובלי תיקונים. כל נקודה בגרף היא סקר." },
   weighted: { label: "משוקלל דיוק", kicker: "משוקלל דיוק", key: "weighted", mode: "weighted",
-    note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון. וינטר והנדל/זליכה נספרות לגוש הימין בכל סקר שבו הן מקבלות לפחות 4 מנדטים; בלי שאר ההנחות של תחזית הברומטר." },
+    note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון. וינטר והנדל/זליכה נספרות למפלגות הקואליציה בכל סקר שבו הן מקבלות לפחות 4 מנדטים; בלי שאר ההנחות של תחזית הברומטר." },
   baro: { label: "תחזית הברומטר", kicker: "תחזית הברומטר", key: "scenario", mode: "scenario",
-    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות ההיסטורית, המודל החרדי המשולב (25% דמוגרפיה, 25% גיאוגרפיה, 50% סקרים מתוקנים), רע״ם לפי ממוצע הסקרים בלבד, שימור תמיכת וינטר והנדל/זליכה בגוש הימין, והשלמה רק עד הקצה התחתון של טווח הסטייה סביב ממוצע המודל הדמוגרפי והגיאוגרפי — במנדטים לפי כללי הבחירות. תחזיות העבר מחושבות באותה שיטה לפי הסקרים של כל מועד." }
+    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות ההיסטורית, המודל החרדי המשולב (25% דמוגרפיה, 25% גיאוגרפיה, 50% סקרים מתוקנים), רע״ם לפי ממוצע הסקרים בלבד, שימור תמיכת וינטר והנדל/זליכה במפלגות הקואליציה, והשלמה רק עד הקצה התחתון של טווח הסטייה סביב ממוצע המודל הדמוגרפי והגיאוגרפי — במנדטים לפי כללי הבחירות. תחזיות העבר מחושבות באותה שיטה לפי הסקרים של כל מועד." }
 };
 function basisModel(P, basis) {
   const B = TRACK_BASES[basis];
@@ -238,7 +238,7 @@ function renderTrackerTable(M) {
   const cols = M.parties.filter(x => x.now >= 3).slice(0, 12), c = pollsCount(M), info = $("#polls-list-info");
   const allN = $("#allpolls-n"); if (allN) allN.textContent = c.n;
   if (info) info.innerHTML = `<b>${c.n}</b> סקרים · ${c.firms} מכונים · ${c.outlets} כלי תקשורת · מהחדש לישן, במנדטים <span class="tr-info" tabindex="0" role="note" title="תא מודגש: המכון נתן למפלגה 2 מנדטים או יותר מעל (כחול) או מתחת (כתום) לממוצע של 7 הימים האחרונים. בשורות הזהב — הניתוח השבועי של הברומטר (לא סקר).">ⓘ</span>`;
-  box.innerHTML = `<div class="tablewrap tr-table-wrap" tabindex="0" role="region" aria-label="כל הסקרים בטבלה"><table class="tr-table"><thead><tr><th scope="col">תאריך</th><th scope="col">פורסם ב־</th><th scope="col">מכון</th>${cols.map(c => `<th scope="col" class="n" style="--c:${c.color}"><span>${esc(c.name)}</span></th>`).join("")}<th scope="col" class="n bloc">ימין וחרדים</th></tr></thead><tbody>${
+  box.innerHTML = `<div class="tablewrap tr-table-wrap" tabindex="0" role="region" aria-label="כל הסקרים בטבלה"><table class="tr-table"><thead><tr><th scope="col">תאריך</th><th scope="col">פורסם ב־</th><th scope="col">מכון</th>${cols.map(c => `<th scope="col" class="n" style="--c:${c.color}"><span>${esc(c.name)}</span></th>`).join("")}<th scope="col" class="n bloc">מפלגות הקואליציה</th></tr></thead><tbody>${
     `<tr class="tr-avg-row"><td>${trDay(M.now.t)}</td><td colspan="2"><b>ממוצע 7 הימים האחרונים</b></td>${cols.map(c => `<td class="n"><b>${trFmt(c.now)}</b></td>`).join("")}<td class="n bloc"><b>${trFmt(M.now.blocs.Right)}</b></td></tr>` +
     rows.map(p => { const v = M.vec.get(p.id) || pollVector(p), f = firmOf(p.sourceId), r = v.blocs.Right;
       return `<tr${p.barometer ? ' class="tr-baro"' : ""}><td class="date">${esc(p.date)}${p.barometer ? " · 20:00" : ""}</td><td><div class="orgcell">${outletLogo(p.channelHebrewName)}<span>${esc(p.channelHebrewName)}</span></div></td><td>${p.barometer ? "ניתוח שבועי" : esc(f.meta.he)}</td>${cols.map(c => {

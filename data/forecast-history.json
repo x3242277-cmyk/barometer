@@ -2951,5 +2951,1959 @@
         "ozma_yehudit": 9
       }
     }
+  ],
+  "daily": [
+    {
+      "day": "2026-08-13",
+      "at": "2026-08-13T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 4,
+      "firms": 3,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 20,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "likud": 23,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 11,
+          "beyahad": 14,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-14",
+      "at": "2026-08-14T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 6,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 21,
+          "hademokratim": 10,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 11,
+          "beyahad": 12,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-15",
+      "at": "2026-08-15T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 6,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 21,
+          "hademokratim": 10,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 11,
+          "beyahad": 12,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-16",
+      "at": "2026-08-16T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 6,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 21,
+          "hademokratim": 10,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 11,
+          "beyahad": 12,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-17",
+      "at": "2026-08-17T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 7,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-18",
+      "at": "2026-08-18T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 6,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 10,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-19",
+      "at": "2026-08-19T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 7,
+      "firms": 6,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 10,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-20",
+      "at": "2026-08-20T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 9,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-21",
+      "at": "2026-08-21T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 7,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-22",
+      "at": "2026-08-22T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 7,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-23",
+      "at": "2026-08-23T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 7,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 10,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-24",
+      "at": "2026-08-24T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 7,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 9,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-25",
+      "at": "2026-08-25T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 5,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 9,
+          "reshima_meshutefet": 6,
+          "raam": 4,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-26",
+      "at": "2026-08-26T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 9,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-27",
+      "at": "2026-08-27T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 6,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 9,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-28",
+      "at": "2026-08-28T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 11,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 31,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 26,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 9,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 26,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-29",
+      "at": "2026-08-29T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 31,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 11,
+          "beyahad": 12,
+          "ndi": 9,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 26,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-30",
+      "at": "2026-08-30T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 31,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 11,
+          "beyahad": 12,
+          "ndi": 9,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 26,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-08-31",
+      "at": "2026-08-31T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 11,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 31,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 25,
+          "ozma_yehudit": 7,
+          "ofer_vinter_party": 4
+        }
+      }
+    },
+    {
+      "day": "2026-09-01",
+      "at": "2026-09-01T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 32,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 25,
+          "ozma_yehudit": 7,
+          "ofer_vinter_party": 5
+        }
+      }
+    },
+    {
+      "day": "2026-09-02",
+      "at": "2026-09-02T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 32,
+          "ozma_yehudit": 10
+        },
+        "weighted": {
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "likud": 25,
+          "ozma_yehudit": 7,
+          "ofer_vinter_party": 5
+        }
+      }
+    },
+    {
+      "day": "2026-09-03",
+      "at": "2026-09-03T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 4,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7,
+          "ofer_vinter_party": 4
+        }
+      }
+    },
+    {
+      "day": "2026-09-04",
+      "at": "2026-09-04T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 12,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 28,
+          "zionut_datit": 5,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-05",
+      "at": "2026-09-05T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 11,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-06",
+      "at": "2026-09-06T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 11,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-07",
+      "at": "2026-09-07T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-08",
+      "at": "2026-09-08T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 11,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-09",
+      "at": "2026-09-09T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 12,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-10",
+      "at": "2026-09-10T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 15,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-11",
+      "at": "2026-09-11T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 14,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-12",
+      "at": "2026-09-12T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 13,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-13",
+      "at": "2026-09-13T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 13,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-14",
+      "at": "2026-09-14T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 12,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 5,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 25,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-15",
+      "at": "2026-09-15T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 13,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-16",
+      "at": "2026-09-16T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 12,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-17",
+      "at": "2026-09-17T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 7,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 25,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 8,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 23,
+          "zionut_datit": 6,
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 13,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-18",
+      "at": "2026-09-18T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 11,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-19",
+      "at": "2026-09-19T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 21,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-20",
+      "at": "2026-09-20T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 21,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-21",
+      "at": "2026-09-21T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 21,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 24,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-22",
+      "at": "2026-09-22T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-09-23",
+      "at": "2026-09-23T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 10,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-24",
+      "at": "2026-09-24T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 12,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-25",
+      "at": "2026-09-25T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 8,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 10,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 9,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-26",
+      "at": "2026-09-26T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 7,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 10,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 9,
+          "yahadut_hatora": 7,
+          "yashar": 24,
+          "hademokratim": 10,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-27",
+      "at": "2026-09-27T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 8,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 10,
+          "ndi": 8,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 9,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-28",
+      "at": "2026-09-28T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-29",
+      "at": "2026-09-29T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    },
+    {
+      "day": "2026-09-30",
+      "at": "2026-09-30T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 10,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-01",
+      "at": "2026-10-01T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 12,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 10,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-02",
+      "at": "2026-10-02T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 8,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 21,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-03",
+      "at": "2026-10-03T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 8,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 27,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 21,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-04",
+      "at": "2026-10-04T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 7,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-05",
+      "at": "2026-10-05T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 21,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 9
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-06",
+      "at": "2026-10-06T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 9,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 7,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 25,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 23,
+          "hademokratim": 9,
+          "beyahad": 12,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-07",
+      "at": "2026-10-07T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule",
+      "polls": 8,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 26,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 24,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 7
+        }
+      }
+    }
   ]
 }

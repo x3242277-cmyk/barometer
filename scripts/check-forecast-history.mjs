@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { runEngine } from './record-forecast.mjs';
+import { runEngine, israelTime, asJointList } from './record-forecast.mjs';
 const read = name => JSON.parse(fs.readFileSync(`data/${name}.json`, 'utf8'));
 const history = read('forecast-history'), current = read('current-polls'), archive = read('polls-archive');
 const version = 'haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule';
@@ -19,6 +19,19 @@ for (const snap of history.snapshots) {
   }
 }
 for (const week of history.weekly) assert.equal(Object.values(week.seats).reduce((a, b) => a + b, 0), 120);
+/* הסדרה היומית: כל יום מאז תחילת החלון, במנוע הנוכחי, עם הסקרים שפורסמו עד 20:00 באותו יום */
+assert.ok(history.daily?.length > 0, 'daily Barometer series is missing');
+for (const d of history.daily) {
+  assert.equal(d.modelVersion, version, `daily ${d.day} uses an older model`);
+  for (const seats of Object.values(d.seats)) assert.equal(Object.values(seats).reduce((a, b) => a + b, 0), 120);
+}
+const pubOf = p => p.publishedAt == null ? null : typeof p.publishedAt === 'number' ? p.publishedAt : Date.parse(p.publishedAt);
+for (const d of [history.daily[0], history.daily[Math.floor(history.daily.length / 2)], history.daily.at(-1)]) {
+  const at = israelTime(d.day, 20);
+  const polls = archive.polls.filter(p => p.dateTimestamp <= at && (pubOf(p) == null || pubOf(p) <= at)).map(asJointList);
+  const r = runEngine(polls, { now: at, select: true });
+  assert.deepEqual(d.seats.scenario, r.seats, `daily forecast differs at ${d.day}`);
+}
 const git = args => execFileSync('git', ['-c', `safe.directory=${process.cwd().replace(/\\/g, '/')}`, ...args], { encoding: 'utf8' });
 const selected = history.snapshots;   // כל הצילומים מחושבים מחדש במנוע הנוכחי
 const byTime = new Map([[current.generatedAt, current]]);
@@ -38,4 +51,4 @@ for (const snap of selected) {
   future.id = 'future-poll-for-test'; future.dateTimestamp = now + 864e5; future.publishedAt = now + 864e5;
   assert.deepEqual(runEngine([...polls, future], { now, select: !original }).seats, result.seats, 'future polls changed an earlier forecast');
 }
-console.log(`Passed: all ${history.snapshots.length} snapshots and ${history.weekly.length} weekly forecasts use the current model, total 120 seats, and match original dated poll sets without future polls.`);
+console.log(`Passed: all ${history.snapshots.length} snapshots, ${history.daily.length} daily and ${history.weekly.length} weekly forecasts use the current model, total 120 seats, and match original dated poll sets without future polls.`);

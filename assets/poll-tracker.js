@@ -69,7 +69,7 @@ function trackerModel() {
 
 /* ---------- על מה מבוססים המספרים: שלוש אפשרויות לבחירת הגולש ----------
    ממוצע כל הסקרים — הממוצע הנע שלמעלה. תחזית הברומטר ומשוקלל אמינות — אותם
-   מספרים כמו בעמוד התחזית, והקו לאורך זמן מצילומי התחזית (פעמיים ביום). */
+   מספרים כמו בעמוד התחזית; הקו לאורך זמן — תחזית לכל יום, מחושבת רטרואקטיבית במנוע הנוכחי. */
 const TRACK_BASES = {
   avg: { label: "ממוצע כל הסקרים", kicker: "ממוצע הסקרים",
     note: "ממוצע נע של 7 ימים: כל מכון נספר פעם אחת, בלי משקלים ובלי תיקונים. כל נקודה בגרף היא סקר." },
@@ -84,7 +84,7 @@ function basisModel(P, basis) {
   const point = (t, seats, n, firms) => {
     const parties = {}, blocs = { Right: 0, Left: 0, Arabs: 0, Unknown: 0 };
     Object.entries(seats || {}).forEach(([id, v]) => {
-      const k = normId(id), al = partyMeta(k).alignment;
+      const k = normId(id), al = isRightAt(k, v) ? "Right" : partyMeta(k).alignment;
       parties[k] = (parties[k] || 0) + v;
       blocs[al in blocs ? al : "Unknown"] += v;
     });
@@ -93,9 +93,12 @@ function basisModel(P, basis) {
   let live = null;
   try { live = point(Date.parse(S.cur.generatedAt), allocateSeats(forecast(B.mode, HIDE_FROM_HOME).parties), S.forecastPolls?.length || 0, S.series?.length || 0); } catch { /* בלי תחזית חיה — רק הצילומים */ }
   /* משוקלל דיוק: הסדרה היומית המלאה (אותם ימים כמו הממוצע), והנקודה האחרונה היא התחזית החיה — כמו בעמוד התחזית.
-     שאר הבסיסים (תחזית הברומטר): צילומי התחזית שנשמרו, ובסוף הנקודה החיה. */
+     תחזית הברומטר: הסדרה היומית מ־forecast-history.json (daily) — כל יום מחושב רטרואקטיבית במנוע
+     הנוכחי, עם הסקרים שפורסמו עד 20:00 באותו יום — ובסוף הנקודה החיה. בלי סדרה יומית: צילומי התחזית. */
   const fullWeighted = basis === "weighted" && P.wSeries?.length > 1;
-  const series = fullWeighted ? P.wSeries.slice() : (S.forecastHistory?.snapshots || []).filter(x => x[B.key])
+  const daily = (S.forecastHistory?.daily || []).map(x => ({ updatedAt: x.at, seats: x.seats, [B.key]: x.seats?.[B.key], polls: x.polls, firms: x.firms }));
+  const stored = daily.length ? daily : (S.forecastHistory?.snapshots || []);
+  const series = fullWeighted ? P.wSeries.slice() : stored.filter(x => x[B.key])
     .map(x => point(Date.parse(x.updatedAt), x.seats?.[B.key] || x[B.key], x.polls, x.firms))
     .filter(x => !live || x.t < live.t - 36e5).sort((a, b) => a.t - b.t);
   if (live) { if (fullWeighted) series[series.length - 1] = { ...live, t: series.at(-1).t }; else series.push(live); }

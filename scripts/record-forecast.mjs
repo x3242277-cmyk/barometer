@@ -64,7 +64,7 @@ export function runEngine(polls, { now = Date.now(), select = false } = {}) {
   ctx.fx = { polls, select, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters"), demo: read("demographics"), haredi: read("haredi"), trends: read("trends") };
   return JSON.parse(vm.runInContext(`
     S.hist = fx.hist; S.firms = fx.firms;
-    /* התוספת הדמוגרפית היא ממוצע שני המודלים — אותם נתונים כמו בדפדפן */
+    /* המודלים הדמוגרפי והגיאוגרפי (טווח הסטייה) — אותם נתונים כמו בדפדפן */
     S.demo = fx.demo; S.haredi = fx.haredi; S.trendsNat = fx.trends.national;
     S.cur = { polls: fx.select ? selectDisplayPolls(fx.polls) : fx.polls };
     S.elections = [[2022, fx.hist], [2021, fx.hist2021], [2020, fx.hist2020]].map(([year, data]) => ({ year, data, stats: scoreFirms(data) }));
@@ -126,7 +126,7 @@ export function recordForecast() {
 }
 
 const JOINT_PARTS = new Set(["hadash_taal", "balad"]);
-function asJointList(p) {
+export function asJointList(p) {
   if (!p.parties.some(x => JOINT_PARTS.has(x.id))) return p;
   const joint = p.parties.filter(x => x.id === "reshima_meshutefet" || JOINT_PARTS.has(x.id)).reduce((t, x) => t + x.mandates, 0);
   const base = p.parties.find(x => x.id === "reshima_meshutefet") || p.parties.find(x => x.id === "hadash_taal");
@@ -161,6 +161,31 @@ export function backfillWeekly({ rebuild = false } = {}) {
   history.weekly.sort((a, b) => a.week.localeCompare(b.week));
   fs.writeFileSync(FILE, JSON.stringify(history, null, 2) + "\n");
   return added;
+}
+
+/* תחזית הברומטר לכל יום מאז תחילת חלון הסקרים, רטרואקטיבית במנוע הנוכחי: לכל יום —
+   הסקרים מהארכיון שפורסמו עד 20:00 באותו יום, והמנוע רץ כאילו השעה 20:00. הסדרה כולה
+   מחושבת מחדש בכל הרצה, כך ששינוי באלגוריתם חל מיד גם על כל העבר. */
+export function rebuildDaily() {
+  const archive = read("polls-archive").polls;
+  const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, "scripts/config.json"), "utf8"));
+  const history = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, "utf8")) : { snapshots: [] };
+  const pub = p => p.publishedAt == null ? null : typeof p.publishedAt === "number" ? p.publishedAt : Date.parse(p.publishedAt);
+  const daily = [];
+  for (let day = Date.parse(cfg.from || "2026-08-01"); ; day += 864e5) {
+    const key = new Date(day).toISOString().slice(0, 10), at = israelTime(key, 20);
+    if (at > Date.now()) break;
+    const polls = archive.filter(p => p.dateTimestamp <= at && (pub(p) == null || pub(p) <= at)).map(asJointList);
+    let r;
+    try { r = runEngine(polls, { now: at, select: true }); }
+    catch (e) { if (String(e.message).includes("NO_POLLS")) continue; throw e; }
+    if (r.firms < 3) continue;                            // יום עם פחות משלושה מכונים — לא תחזית
+    daily.push({ day: key, at: new Date(at).toISOString(), modelVersion: r.modelVersion, polls: r.polls, firms: r.firms,
+      seats: { scenario: r.seats, weighted: r.seatsWeighted } });
+  }
+  history.daily = daily;
+  fs.writeFileSync(FILE, JSON.stringify(history, null, 2) + "\n");
+  return daily.length;
 }
 
 /* לכל צילום משתמשים בסקרים שנשמרו בזמן העדכון. אם הקובץ אינו בהיסטוריית Git,
@@ -198,6 +223,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const added = backfillWeekly({ rebuild: process.argv.includes("--rebuild-weekly") });
     console.log(`· שוחזרו ${added.length} שבועות: ${added.join(", ") || "—"}`);
   }
-  const h = recordForecast();
-  console.log(`· data/forecast-history.json — ${h.snapshots.length} צילומים · ${h.weekly.length} תחזיות שבועיות`);
+  recordForecast();
+  const days = rebuildDaily();
+  const h = JSON.parse(fs.readFileSync(FILE, "utf8"));
+  console.log(`· data/forecast-history.json — ${h.snapshots.length} צילומים · ${h.weekly.length} תחזיות שבועיות · ${days} ימים בסדרה היומית`);
 }

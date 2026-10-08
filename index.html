@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
 <script src="assets/app.js?v=ec961747" defer></script>
 <script src="assets/intro.js?v=39d0a7d5" defer></script>
-<script src="assets/method-sim.js?v=a27b0973" defer></script>
+<script src="assets/method-sim.js?v=9620ef12" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -59,9 +59,9 @@
 <link rel="stylesheet" href="assets/polls-workspace.css?v=a83f4793">
 <link rel="stylesheet" href="assets/polls-gap.css?v=dfde44d9">
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
-<link rel="stylesheet" href="assets/method-sim.css?v=f1ed07d3">
+<link rel="stylesheet" href="assets/method-sim.css?v=3c6e6ae0">
 <link rel="stylesheet" href="assets/acc-hero.css?v=8d9090ad">
-<link rel="stylesheet" href="assets/forecast.css?v=4716cbaf">
+<link rel="stylesheet" href="assets/forecast.css?v=b5d255c3">
 <link rel="stylesheet" href="assets/board.css?v=f51617ed">
 <link rel="stylesheet" href="assets/disclosure.css?v=ad9bfb2f">
 <link rel="stylesheet" href="assets/mobile.css?v=89a8a186">
@@ -161,7 +161,7 @@
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
           <div class="readout" id="home-readout"></div>
           <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
-          <p class="fs-sim-cta"><button type="button" class="fs-sim-play"><span class="fs-sim-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת הסימולציה</button></p>
+          <p class="fs-sim-cta"><button type="button" class="fs-sim-play"><span class="fs-sim-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span><span class="fs-sim-txt"><b>הפעלת הסימולציה</b><small>איך הברומטר מגיע למספר · כדקה</small></span></button></p>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
         </div>
 
@@ -176,9 +176,9 @@
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
         <div class="hero-cta"><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
       </div>
-      <div class="fs-sim-slot"><button type="button" class="fs-sim-close">חזרה לתחזית <span aria-hidden="true">✕</span></button></div>
+      <div class="fs-sim-slot"><span class="fs-sim-label">סימולציה · איך הברומטר מגיע למספר</span><button type="button" class="fs-sim-close">חזרה לתחזית <span aria-hidden="true">✕</span></button></div>
     </div>
-    <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — איך נבנית התמונה"><span aria-hidden="true">↓</span></button>
+    <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — מרכיבים קואליציה"><span aria-hidden="true">↓</span></button>
   </div>
   <div class="wrap board" id="election-parties" tabindex="-1" hidden>
     <div class="board-title"><div><p class="kicker">מפלגה אחר מפלגה</p><h2>לוח המנדטים</h2></div><p>בחרו מפלגה כדי לראות את הנתונים שלה בסקרים</p>
@@ -201,15 +201,14 @@
     </div>
     <p class="board-note">המספרים מציגים את המודל שנבחר למעלה. שיוך לגוש אינו תחזית להרכב קואליציה.</p>
     <section class="printsheet" id="home-printsheet" aria-hidden="true"></section>
-    <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — איך נבנית התמונה"><span aria-hidden="true">↓</span></button>
+    <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — מרכיבים קואליציה"><span aria-hidden="true">↓</span></button>
   </div>
-  <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — מאחורי המספרים"><span aria-hidden="true">↓</span></button>
-  <section class="home-method" id="home-method-section" tabindex="-1">
+  <!-- הסימולציה נטענת כאן מוסתרת, ועוברת למסך התחזית כשלוחצים על ״הפעלת הסימולציה״ -->
+  <section class="home-method" id="home-method-section" tabindex="-1" hidden>
     <div class="wrap">
       <section id="method-sim" aria-label="סימולציה של שיטת החישוב"></section>
     </div>
   </section>
-  <button type="button" class="section-next" data-home-section="election-coalition" aria-label="לקטע הבא — מרכיבים קואליציה"><span aria-hidden="true">↓</span></button>
   <section id="election-coalition" class="election-coalition wrap" tabindex="-1"></section>
 </section>
 

@@ -522,3 +522,10 @@
 @media (min-width:981px){
   .ms-stagebox .ms-stage{height:clamp(480px,calc(100dvh - 190px),740px);min-height:0;max-height:none}
 }
+
+/* רצועת התוצאות: כרטיס שהמספר שלו נכנס עכשיו מהבהב פעמיים בזהב, והמספר קופץ — כדי שיבחינו בו בין כל מה שזז */
+.ms-chip.is-new{animation:ms-chip-flash 1.6s ease-out 2}
+.ms-chip.is-new b{display:inline-block;transform-origin:100% 50%;animation:ms-chip-pop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes ms-chip-flash{0%{box-shadow:0 0 0 0 #d1ad62cc;border-color:#d1ad62;background:#f6e3b2}35%{box-shadow:0 0 0 7px #d1ad6240;background:#fbf0d4}100%{box-shadow:0 0 0 12px #d1ad6200}}
+@keyframes ms-chip-pop{0%{transform:scale(.6);opacity:0}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.ms-chip.is-new,.ms-chip.is-new b{animation:none}}

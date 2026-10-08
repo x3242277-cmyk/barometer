@@ -366,9 +366,13 @@
     ["switch", "הפער מול המודלים, נקודות אחוז", v => `${v >= 0 ? "+" : "−"}${r1(Math.abs(v / 1.2))}`, "מדד לבדיקה, לא משנה מנדט"],
     ["final", "מנדטים למפלגות הקואליציה", v => String(v), "תחזית הברומטר"]
   ];
-  function ledger() {
+  /* כרטיס שהמספר שלו נכנס עכשיו מהבהב, כדי שיהיה ברור מה התעדכן. בדילוג בין שלבים (silent) אין הבהוב. */
+  let ledgerShown = {};
+  function ledger(silent = false) {
     const el = q(".ms-ledger"); if (!el) return;
-    el.innerHTML = CHIPS.map(([k, n, f, tag]) => `<div class="ms-chip ${st.ledger[k] != null ? "is-on" : ""}" title="${esc(tag)}"><small>${esc(n)}</small><b dir="ltr">${st.ledger[k] != null ? esc(f(st.ledger[k])) : "—"}</b><em>${esc(tag)}</em></div>`).join("");
+    const fresh = k => !silent && st.ledger[k] != null && ledgerShown[k] !== st.ledger[k];
+    el.innerHTML = CHIPS.map(([k, n, f, tag]) => `<div class="ms-chip ${st.ledger[k] != null ? "is-on" : ""} ${fresh(k) ? "is-new" : ""}" title="${esc(tag)}"><small>${esc(n)}</small><b dir="ltr">${st.ledger[k] != null ? esc(f(st.ledger[k])) : "—"}</b><em>${esc(tag)}</em></div>`).join("");
+    ledgerShown = { ...st.ledger };
   }
   function fillLedgerUpTo(i) {
     st.ledger = {};
@@ -403,7 +407,7 @@
   async function go(i) {
     clearTimeout(backTimer);
     cancelAll(); const run = st.run;
-    st.stage = i; st.paused = false; st.t = 0; fillLedgerUpTo(i); ledger(); paintNav();
+    st.stage = i; st.paused = false; st.t = 0; fillLedgerUpTo(i); ledger(true); paintNav();
     q(".ms-count").textContent = `${i + 1} / ${STAGES.length}`;
     try {
       await SCENES[i]();
@@ -449,13 +453,13 @@
     go(i);
     return true;
   }
-  function backToForecast() {
+  function backToForecast(byKey = false) {
     if (!inForecast()) return;
     reset();
     const sec = forecastSection();
     sec.classList.remove("is-sim"); simHome?.after(root);
     if (typeof playForecastReveal === "function") playForecastReveal();
-    sec.querySelector(".fs-sim-play")?.focus({ preventScroll: true });
+    if (byKey) sec.querySelector(".fs-sim-play")?.focus({ preventScroll: true });
   }
 
   function build() {
@@ -514,7 +518,7 @@
       if (e.target.closest(".fs-sim-play")) playInForecast(0);
       else if (e.target.closest(".fs-sim-close")) backToForecast();
     });
-    document.addEventListener("keydown", e => { if (e.key === "Escape" && inForecast()) backToForecast(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && inForecast()) backToForecast(true); });
     const secs = [...document.querySelectorAll(".msec")];
     if (secs.length && "IntersectionObserver" in window) {
       const io = new IntersectionObserver(es => es.forEach(e => {

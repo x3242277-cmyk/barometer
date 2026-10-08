@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { runEngine } from './record-forecast.mjs';
 const read = name => JSON.parse(fs.readFileSync(`data/${name}.json`, 'utf8'));
 const history = read('forecast-history'), current = read('current-polls'), archive = read('polls-archive');
-const version = 'haredi-locality-parties-turnout-raam-polls-v7-one-percent-shaked-support-no-overlap';
+const version = 'haredi-locality-parties-turnout-raam-polls-v8-net-votes-pass-rule';
 assert.ok(history.snapshots.length > 0 && history.snapshots.length <= 40);
 assert.ok(history.weekly.length >= 8);
 for (const item of [...history.snapshots, ...history.weekly]) assert.equal(item.modelVersion, version);
@@ -20,7 +20,7 @@ for (const snap of history.snapshots) {
 }
 for (const week of history.weekly) assert.equal(Object.values(week.seats).reduce((a, b) => a + b, 0), 120);
 const git = args => execFileSync('git', ['-c', `safe.directory=${process.cwd().replace(/\\/g, '/')}`, ...args], { encoding: 'utf8' });
-const selected = [history.snapshots[0], history.snapshots[19], history.snapshots.at(-1)];
+const selected = history.snapshots;   // כל הצילומים מחושבים מחדש במנוע הנוכחי
 const byTime = new Map([[current.generatedAt, current]]);
 for (const hash of git(['log', '--format=%H', '--', 'data/current-polls.json']).trim().split(/\s+/)) {
   const data = JSON.parse(git(['show', `${hash}:data/current-polls.json`]));

@@ -2108,7 +2108,7 @@ function renderDemoConclusions() {
   const times = fast[0] && slow && P[slow.id].growth > 0 ? P[fast[0].id].growth / P[slow.id].growth : null;
   const changed = Object.keys(S.demoOverrides).length > 0;
 
-  $("#dm-verdict").innerHTML = `בלי אף סקר: הימין והחרדים קיבלו ב־2022 ${pct(P2.share2022)} מהקולות (${r1(R22)} מתוך 120). הגידול הדמוגרפי מביא אותם ל־${pct(P2.share2026)}, כלומר <b>${r1(R26)} מתוך 120</b> ב־2026${changed ? " · לפי ההנחות ששונו" : ""}.`;
+  $("#dm-verdict").innerHTML = `בלי אף סקר: הימין והחרדים קיבלו ב־2022 ${pct(P2.share2022)} מהקולות (${r1(R22)} מתוך 120, ולא 64 כמו במנדטים בפועל, שנבעו מנפילת מרצ ובל״ד מתחת לאחוז החסימה).הגידול הדמוגרפי מביא אותם ל־${pct(P2.share2026)}, כלומר <b>${r1(R26)} מתוך 120</b> ב־2026${changed ? " · לפי ההנחות ששונו" : ""}.`;
   $("#dm-conclusions").innerHTML = `
     <div class="dm-big" style="--c:${BLOCS.Right.color}"><b>${dR > 0 ? "+" : dR < 0 ? "−" : "±"}${r1(Math.abs(dR))}</b><span>מנדטים לימין ולחרדים עד 2026</span><small>בקולות נטו: ${sgn(d)} נק׳ אחוז, כ־${fmt(Math.round(Math.abs(P2.netVotes) / 100) * 100)} קולות ${P2.netVotes >= 0 ? "ממרכז־שמאל והרשימות הערביות לימין ולחרדים" : "מהימין והחרדים למרכז־שמאל ולרשימות הערביות"} — בלי שאף אחד משנה את דעתו</small></div>
     <figure class="dm-seats" role="img" aria-label="חלק הגושים מהקולות כפול 120. 2022: ימין וחרדים ${r1(R22)}, מרכז־שמאל וערבים ${r1(L22)}. 2026: ימין וחרדים ${r1(R26)}, מרכז־שמאל וערבים ${r1(L26)}.">

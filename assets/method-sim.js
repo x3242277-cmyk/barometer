@@ -77,7 +77,7 @@
     /* החלקים של 2022 מתוך ארבע הקבוצות = התחזית פחות שלושת הצעדים (דמוגרפיה, הצבעה, מגמה) */
     const f0 = n.f26.map((x, i) => x - n.steps.demography[i] - n.steps.turnout[i] - n.steps.trend[i]);
     const stepShare = (extra) => right(f0.map((x, i) => x + extra.reduce((s, e) => s + n.steps[e][i], 0)));
-    const g = { start: right(f0), afterDemo: stepShare(["demography"]), afterTurn: stepShare(["demography", "turnout"]), end: geo26, geo22, seatsPts: (geo26 - right(f0)) * 1.2, seats22: n.base22[0] + n.base22[1], seats26: n.seats26[0] + n.seats26[1], localities: Object.keys(T.loc).filter(c => c !== "99999").length };
+    const g = { start: right(f0), afterDemo: stepShare(["demography"]), afterTurn: stepShare(["demography", "turnout"]), end: geo26, geo22, seatsPts: (geo26 - right(f0)) * 1.2, seats22: right(f0) * 1.2, seats26: geo26 * 1.2, localities: Object.keys(T.loc).filter(c => c !== "99999").length };
 
     /* סקרים: הסקר האחרון של כל מכון, כמו בעמוד הסקרים מול 2022 */
     const rows = cb.rows.map(r => ({ meta: r.meta, share: r.share, left: r.left, arab: r.arab, seats: r.seats, date: r.date, delta: r.delta, score: firmScore(r.meta), grade: gradeOf(firmScore(r.meta)), w: firmWeight(r.meta) }))
@@ -90,31 +90,34 @@
     const sopt = S.scenarioOptions || {};
     const blocOf = parties => {
       const o = { right: 0, left: 0, arab: 0, other: 0 };
-      Object.entries(parties).forEach(([id, v]) => { const al = partyMeta(id).alignment; if (al === "Right" || al === "Haredi") o.right += v; else if (al === "Arabs" || ARAB_FAMILY.has(normId(id))) o.arab += v; else o.left += v; });
+      Object.entries(parties).forEach(([id, v]) => { const al = partyMeta(id).alignment; if (isRightAt(id, v)) o.right += v; else if (al === "Arabs" || ARAB_FAMILY.has(normId(id))) o.arab += v; else o.left += v; });
       return o;
     };
     const norm = o => { const t = o.right + o.left + o.arab + o.other || 1; const k = 120 / t; return { right: o.right * k, left: o.left * k, arab: o.arab * k, other: o.other * k }; };
     const rawOpts = { ...sopt, rawFull: scF.rawFull };
-    const dr = scF.drift, sgnS = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+    const dr = scF.structural, sgnS = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
     const defs22 = S.hist?.blocs || BLOCS_2022;
     /* 2022 לפי שלושת הגושים: ימין וחרדים, ערבים (רע״ם, חד״ש־תע״ל, בל״ד), והשאר מרכז־שמאל */
     const bloc22 = p => { const b = histBlocs(p, defs22), a = (p.raam || 0) + (p.hadash_taal || 0) + (p.balad || 0); return { right: b.netanyahu, arab: a, left: 120 - b.netanyahu - a, other: 0 }; };
-    const base22 = bloc22(S.hist?.actual || {}), baseCf = bloc22(COUNTERFACTUAL);
+    const base22 = bloc22(S.hist?.actual || {});
     /* שינוי של d מנדטים לימין ולחרדים; השאר מתכווצים באותו יחס (סכום תמיד 120) */
     const shiftR = (b, d) => { const R = b.right + d, rest = b.left + b.arab || 1, k = (120 - R) / rest; return { right: R, left: b.left * k, arab: b.arab * k, other: 0 }; };
     const sg = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
+    /* נקודת המוצא של המודלים: 2022 בקולות נטו — חלק הגוש מהקולות כפול 120, לא המנדטים בפועל */
+    const v22 = 120 * cb.rightShare0 / 100, votesCf = shiftR(base22, v22 - base22.right);
     const stepsCalc = [
       { key: "y22", title: "בחירות 2022", note: `התוצאה בפועל: ימין וחרדים ${base22.right} · מרכז־שמאל ${base22.left} · ערבים ${base22.arab}`, bloc: base22 },
-      { key: "meretz", title: "אילו מרצ עברה את אחוז החסימה", note: `חסרו לה 4,062 קולות. בחישוב מחדש היא מקבלת ${COUNTERFACTUAL.meretz} מנדטים, והימין והחרדים יורדים ל־${baseCf.right}`, bloc: baseCf },
+      { key: "votes22", title: "2022 בקולות נטו", note: `ימין וחרדים קיבלו ${r1(cb.rightShare0)}% מקולות הרשימות שנספרות (מעל 1%). כפול 120: ${r1(v22)}. ההפרש מ־${base22.right} המנדטים בפועל נובע מקולות שנפלו מתחת לאחוז החסימה`, bloc: votesCf },
       ...(dr ? [
-        { key: "demo", title: "המודל הדמוגרפי", note: `גידול האוכלוסייה בלבד, בלי אף סקר: ${sg(dr.demographic ?? 0)} מנדטים לימין ולחרדים`, bloc: shiftR(baseCf, dr.demographic ?? 0), ref: baseCf },
-        { key: "geo", title: "המודל הגיאוגרפי", note: `המשך הקו של כל יישוב: ${sg(dr.geographic ?? 0)} מנדטים לימין ולחרדים`, bloc: shiftR(baseCf, dr.geographic ?? 0), ref: baseCf },
-        { key: "zero", title: "נקודת האפס: הממוצע של שני המודלים", note: `זה מה שהיה קורה אילו איש לא עבר צד: ${sg(dr.seats)} מנדטים, כ־${Math.round(baseCf.right + dr.seats)} לימין ולחרדים`, bloc: shiftR(baseCf, dr.seats), ref: baseCf }
+        { key: "demo", title: "המודל הדמוגרפי", note: `גידול האוכלוסייה בלבד, בלי אף סקר: ${r1(dr.demographic ?? 0)} מנדטים לימין ולחרדים (חלקם בקולות כפול 120, לפני אחוז החסימה)`, bloc: shiftR(base22, (dr.demographic ?? v22) - base22.right) },
+        { key: "geo", title: "המודל הגיאוגרפי", note: `המשך הקו של כל יישוב: ${r1(dr.geographic ?? 0)} מנדטים לימין ולחרדים`, bloc: shiftR(base22, (dr.geographic ?? v22) - base22.right) },
+        { key: "zero", title: "טווח הסטייה של שני המודלים", note: `החישוב בקולות נטו. ממוצע האומדנים ${r1(dr.mean)}. טווח מונח של ${scF.scenario.deviationPercent ?? 1.5}% מטה נותן קצה תחתון של ${r1(scF.scenario.structuralLowerBound ?? 0)}: אליו, ולא מעבר, תועלה התחזית אם היא נמוכה ממנו`, bloc: shiftR(base22, (scF.scenario.structuralLowerBound ?? v22) - base22.right) }
       ] : []),
-      { key: "avg", title: "ממוצע הסקרים, משוקלל לפי דיוק עבר", note: "ממצעים כל מכון, ואז משקללים בין המכונים לפי הדרגה: 45 · 35 · 20", bloc: norm(blocOf(allocateSeats(wF.parties))) },
+      { key: "avg", title: "ממוצע הסקרים, משוקלל לפי דיוק עבר", note: "ממצעים כל מכון, ואז משקללים בין המכונים לפי הדרגה: 45 · 35 · 20. כאן עוד לפני שימור התמיכה של וינטר והנדל/זליכה, ולכן רשימה שהממוצע שלה מתחת לסף לא נספרת", bloc: norm(blocOf(allocateSeats(wF.parties))) },
+      { key: "support", title: "שימור תמיכת וינטר והנדל/זליכה בגוש הימין", note: "בכל סקר שבו הרשימה מקבלת לפחות 4 מנדטים, התמיכה נשמרת לגוש פעם אחת ומחולקת בין שלוש רשימות הימין. בסקר שבו היא מקבלת פחות מ־4 היא לא נספרת לגוש", bloc: norm(blocOf(scF.rawFull)) },
       { key: "house", title: "תיקון הטעות הקבועה של כל מכון", note: "מזיז מנדטים בתוך הגוש בלבד, לא בין גושים", bloc: null },
       { key: "fixed", title: "המודל החרדי המשולב", note: `ש״ס ${r1(scF.scenario.fixed.shas)}, יהדות התורה ${r1(scF.scenario.fixed.yahadut_hatora)}: 25% דמוגרפיה, 25% גיאוגרפיה, 50% סקרים מתוקנים. רע״ם לפי ממוצע הסקרים המשוקלל בלבד`, bloc: norm(blocOf(scenarioForecast(scF.raw, { ...rawOpts, demographic: 0 }).parties)) },
-      { key: "demoAdd", title: "תוספת דמוגרפית: ממוצע שני המודלים", note: dr ? `המודל הדמוגרפי ${sg(dr.demographic ?? 0)} והגיאוגרפי ${sg(dr.geographic ?? 0)}. הממוצע, מעוגל לרבע מנדט: ${sg(dr.seats)}` : "אין מודל טעון, ולכן נשארת ברירת המחדל", bloc: norm(blocOf(scF.parties)) },
+      { key: "demoAdd", title: "טווח סטייה והשלמה ללא כפילות", note: `טווח מונח של ${scF.scenario.deviationPercent ?? 1.5}% מהאומדן המשותף. תיקון החרדים כבר הוסיף לגוש ${r1(scF.scenario.harediBlocGain)}; ההשלמה בפועל היא רק ${r1(scF.scenario.demographic)} מנדטים`, bloc: norm(blocOf(scF.parties)) },
       { key: "final", title: "אחוז חסימה ובאדר־עופר: 120 מנדטים", note: "רשימה מתחת ל־3.25% לא מקבלת מושב; השאר מחולקים מנדט אחד־אחד, כולל הסכמי עודפים", bloc: null }
     ];
     const iHouse = stepsCalc.findIndex(s => s.key === "house");
@@ -127,9 +130,9 @@
       .sort((a, b) => armRank(a) - armRank(b) || b.n - a.n);
 
     return {
-      seatsRef: { demo: baseCf.right + (dr?.demographic ?? 0), geo: baseCf.right + (dr?.geographic ?? 0), polls: cb.seatsAvgBy.right }, cb, g, rows, W, simpleAvg, stepsCalc, fin, partySeats, simpleBloc: blocOf(allocateSeats(sF.parties)), weightedBloc: blocOf(allocateSeats(wF.parties)),
+      seatsRef: { demo: dr?.demographic ?? v22, geo: dr?.geographic ?? v22, polls: cb.seatsAvgBy.right }, cb, g, rows, W, simpleAvg, stepsCalc, fin, partySeats, simpleBloc: blocOf(allocateSeats(sF.parties)), weightedBloc: blocOf(allocateSeats(wF.parties)),
       sectors: S.demo.sectors.map(s => ({ id: s.id, name: s.name, e: s.eligible2022, growth: s.growth, turnout: s.turnout })),
-      demo: { r22: cb.rightShare0, base: cb.base, pts: cb.growth, seats: demoDriftSeats() ?? 0, years: S.demo.meta.years },
+      demo: { r22: cb.rightShare0, base: dr?.demographic != null ? dr.demographic / 1.2 : cb.rightShare0 + cb.growth, pts: dr?.demographic != null ? dr.demographic / 1.2 - cb.rightShare0 : cb.growth, seats: dr?.demographic ?? 0, years: S.demo.meta.years },
       nVotes: S.regions.national.valid
     };
   }
@@ -194,8 +197,8 @@
     await sleep(900);
     await tween(1500, p => { const v = lerp(D.demo.r22, D.demo.base, p); bar.innerHTML = split(v); big.textContent = pc(v); });
     const l1 = stage.querySelector("#ms-demo-l1"); l1.hidden = false;
-    l1.innerHTML = `עד 2026 חלק הימין והחרדים ${D.demo.pts >= 0 ? "עולה" : "יורד"} בערך <b>${pointsHe(D.demo.pts)}</b>, כ־<b>${r1(Math.abs(D.demo.seats))}</b> מנדטים. זה הצפי הדמוגרפי, <b>בלי שום סקר</b>.`;
-    st.ledger.demo = D.seatsRef.demo; ledger(); say(`הצפי הדמוגרפי: ${r1(D.seatsRef.demo)} מנדטים לימין ולחרדים (${pc(D.demo.base)} מהקולות)`);
+    l1.innerHTML = `עד 2026 חלק הימין והחרדים עובר מ־<b>${pc(D.demo.r22)}</b> ל־<b>${pc(D.demo.base)}</b> מהקולות, כלומר <b>${r1(D.demo.seats)}</b> מתוך 120. זה האומדן הדמוגרפי, <b>בלי שום סקר</b>, והוא אחד משני האומדנים שקובעים את טווח הסטייה. החישוב נעשה בקולות נטו: חלק הגוש מכלל הקולות, ורק בסוף מתורגם למנדטים.`;
+    st.ledger.demo = D.seatsRef.demo; ledger(); say(`האומדן הדמוגרפי: ${r1(D.seatsRef.demo)} מנדטים לימין ולחרדים (${pc(D.demo.base)} מהקולות)`);
     await sleep(2200);
   }
 
@@ -262,7 +265,7 @@
       });
       el.classList.remove("is-on");
     }
-    st.ledger.geo = D.seatsRef.geo; ledger(); say(`הצפי הגיאוגרפי: ${r1(D.seatsRef.geo)} מנדטים לימין ולחרדים (${pc(g.end)} מהקולות)`);
+    st.ledger.geo = D.seatsRef.geo; ledger(); say(`האומדן הגיאוגרפי: ${r1(D.seatsRef.geo)} מנדטים לימין ולחרדים (${pc(g.end)} מהקולות)`);
     await sleep(2200);
   }
 
@@ -358,8 +361,8 @@
 
   /* ---------- מה כבר חושב — רצועת התוצאות ---------- */
   const CHIPS = [
-    ["demo", "צפי דמוגרפי, מנדטים לימין ולחרדים", v => r1(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
-    ["geo", "צפי גיאוגרפי, מנדטים", v => r1(v), "נכנס לחישוב: חצי מהתוספת הדמוגרפית"],
+    ["demo", "השוואה דמוגרפית, מנדטים לימין ולחרדים", v => r1(v), "ההשלמה מותנית בטווח הסטייה ובתיקון החרדים"],
+    ["geo", "השוואה גיאוגרפית, מנדטים", v => r1(v), "ההשלמה מותנית בטווח הסטייה ובתיקון החרדים"],
     ["polls", "ממוצע הסקרים, מנדטים", v => r1(v), "משוקלל לפי דיוק עבר"],
     ["switch", "הפער מול הצפי, מנדטים", v => `${v >= 0 ? "+" : "−"}${r1(Math.abs(v))}`, "מדד לבדיקה, לא משנה מנדט"],
     ["final", "מנדטים לימין ולחרדים", v => String(v), "תחזית הברומטר"]
@@ -448,9 +451,9 @@
   function fillLive() {
     const chips = (id, items) => { const el = document.getElementById(id); if (el) el.innerHTML = items.map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join(""); };
     const g = D.g, cb = D.cb, sg = x => `${x >= 0 ? "+" : "−"}${r1(Math.abs(x))}`;
-    chips("m-live-geo", [[fmt(g.localities), "יישובים בחישוב"], [pc(g.start), "ימין וחרדים ב־2022, מארבע הקבוצות"], [sg(g.afterDemo - g.start), "נקודות אחוז מהגידול הדמוגרפי"], [sg(g.afterTurn - g.afterDemo), "נקודות אחוז משיעורי ההצבעה"], [sg(g.end - g.afterTurn), "נקודות אחוז ממגמת היישובים"], [pc(g.end), "הצפי ל־2026"], [sg(g.seatsPts), "הערכת מנדטים: שינוי לימין וחרדים"], [String(g.seats26), `ימין וחרדים ב־2026, מנדטים (2022 עם מרצ: ${g.seats22})`]]);
+    chips("m-live-geo", [[fmt(g.localities), "יישובים בחישוב"], [pc(g.start), "ימין וחרדים ב־2022, מארבע הקבוצות"], [sg(g.afterDemo - g.start), "נקודות אחוז מהגידול הדמוגרפי"], [sg(g.afterTurn - g.afterDemo), "נקודות אחוז משיעורי ההצבעה"], [sg(g.end - g.afterTurn), "נקודות אחוז ממגמת היישובים"], [pc(g.end), "הצפי ל־2026"], [sg(g.seatsPts), "הערכת מנדטים: שינוי לימין וחרדים"], [r1(g.seats26), `ימין וחרדים ב־2026, חלק הקולות כפול 120 (2022: ${r1(g.seats22)})`]]);
     const above = D.rows.filter(r => r.delta > .05).length, below = D.rows.filter(r => r.delta < -.05).length;
-    chips("m-live-switch", [[sg(cb.deltaAvg), `הפער במנדטים (בלי מעבר צד: כ־${Math.round(cb.zeroSeats)})`], [`≈ ${cb.kv(cb.votersAvg)}`, "קולות"], [String(above), "מכונים מעל הצפי"], [String(below), "מכונים מתחתיו"]]);
+    chips("m-live-switch", [[sg(cb.deltaAvg), `הפער במנדטים (בלי מעבר צד: כ־${r1(cb.zeroSeats)})`], [`≈ ${cb.kv(cb.votersAvg)}`, "קולות"], [String(above), "מכונים מעל הצפי"], [String(below), "מכונים מתחתיו"]]);
   }
   function wireDoc() {
     const smooth = reduce() ? "auto" : "smooth";
@@ -481,6 +484,14 @@
     try { const heavy = await loadHeavy(); D = collect(heavy); D.dots = localityDots(heavy.T, heavy.RES); st.ready = true; root.classList.add("is-ready"); fillLive(); }
     catch (e) { console.error(e); q(".ms-idle p").textContent = "הסימולציה לא נטענה כרגע"; }
   }
+  window.refreshMethodSim = async () => {
+    if (!root || !st.ready) return;
+    cancelAll(); st.ready = false;
+    const heavy = await loadHeavy();
+    D = collect(heavy); D.dots = localityDots(heavy.T, heavy.RES);
+    st.stage = -1; st.done = -1; st.finished = false; st.paused = false; st.ledger = {};
+    build(); st.ready = true; fillLive();
+  };
   window.initMethodSim = init;
   if (S.cur) init();
 })();

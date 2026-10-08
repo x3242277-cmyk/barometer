@@ -54,6 +54,12 @@ function renderComparison(rows, ids) {
   const order = [...ids].sort(byMandates(id => selected.reduce((n,f) => n + (pollValue(f.poll,id) || 0), 0)));
   $('#compare-table').innerHTML = selected.length ? `<table><caption>הסקר האחרון של כל מכון שנבחר, מהמנדטים הרבים למעטים</caption><thead><tr><th scope="col">מפלגה</th>${selected.map(f=>`<th scope="col" style="--firm:${esc(f.meta.color||'#64707C')}">${esc(f.meta.he)}<br><small>${esc(f.poll.channelHebrewName)} · ${esc(f.poll.date)}</small></th>`).join('')}</tr></thead><tbody>${order.map(id=>`<tr class="${id===S.focusParty?'party-highlight':''}"><th scope="row"><button type="button" data-select-party="${esc(id)}" aria-pressed="${id===S.focusParty}">${esc(partyMeta(id).name)}</button></th>${selected.map(f=>`<td>${pollValue(f.poll,id)??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table>` : '<p class="empty">בחרו מכונים מהרשימה כדי להתחיל בהשוואה.</p>';
 }
+/* שיוך הרשימה לגוש הימין בסקר הזה: וינטר והנדל/זליכה נספרות לימין רק אם קיבלו 4 מנדטים ומעלה באותו סקר */
+const rightInPoll = (poll, id) => {
+  const rows = poll.parties.filter(x => normId(x.id) === id);
+  const mandates = rows.reduce((t, x) => t + x.mandates, 0);
+  return alignOf({ id, mandates, alignment: rows[0]?.alignment }) === "Right";
+};
 function renderPollCards(rows, polls) {
   const selected = S.focusParty;
   /* התחזית השבועית של הברומטר מופיעה בכרטיסים ובהשוואה, אבל לא בממוצע הסקרים */
@@ -124,8 +130,8 @@ function renderPollCards(rows, polls) {
         : `<time>${esc(p.date)}</time>`}</header>
       ${seatbar}
       <div class="poll-cols">
-        <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment === 'Right').map(rowHTML).join('')}</ol>
-        <ol class="poll-list">${displayIds.filter(id => partyMeta(id).alignment !== 'Right').map(rowHTML).join('')}</ol>
+        <ol class="poll-list">${displayIds.filter(id => rightInPoll(p, id)).map(rowHTML).join('')}</ol>
+        <ol class="poll-list">${displayIds.filter(id => !rightInPoll(p, id)).map(rowHTML).join('')}</ol>
       </div>
       ${zeros.length ? `<details class="zero-results"><summary>${zeros.length} רשימות עם 0 מנדטים במאגר</summary><p>${zeros.map(x=>esc(partyMeta(normId(x.id)).name)).join(' · ')}</p></details>` : ''}
 </article>`;

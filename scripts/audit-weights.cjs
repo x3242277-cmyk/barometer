@@ -7,7 +7,7 @@ const result=vm.runInContext(`
 S.cur=data['current-polls'];S.hist=data['historical-polls'];S.firms=data.pollsters;S.demo=data.demographics;S.trendsNat=data.trends.national;
 S.elections=[2022,2021,2020].map(year=>{const electionData=data[year===2022?'historical-polls':'historical-polls-'+year];return {year,data:electionData,stats:scoreFirms(electionData)};});
 S.stats=combineCalibrations(S.elections);S.house=houseEffects(S.elections);S.houseIndustry=houseIndustry(S.house);
-S.forecastPolls=recentForForecast(S.cur.polls);S.series=buildSeries(S.forecastPolls);S.seriesScenario=buildSeries(S.forecastPolls.map(correctWithinBlocs));
+S.forecastPolls=recentForForecast(S.cur.polls);S.series=buildSeries(S.forecastPolls);S.seriesScenario=buildScenarioSeries(S.forecastPolls);
 const totals=p=>Object.entries(p).reduce((o,[id,n])=>{const b=partyMeta(id).alignment;o[b]=(o[b]||0)+n;return o;},{});
 const snap=mode=>{const f=forecast(mode,HIDE_FROM_HOME),seats=allocateSeats(f.parties);return {raw:totals(f.rawFull),beforeRounding:totals(f.parties),blocs:totals(seats),seats,assumptions:f.scenario};};
 const weighted=snap('weighted'),scenario=snap('scenario'),simple=snap('simple');

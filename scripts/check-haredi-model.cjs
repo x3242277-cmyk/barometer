@@ -10,7 +10,7 @@ vm.runInContext(`
 Object.assign(S,{hist:fixture.hist,demo:fixture.demo,haredi:fixture.haredi,firms:fixture.firms,cur:fixture.current,trendsNat:fixture.trends.national});
 S.elections=[[2022,fixture.hist],[2021,fixture.hist2021],[2020,fixture.hist2020]].map(([year,data])=>({year,data,stats:scoreFirms(data)}));
 S.stats=combineCalibrations(S.elections); S.house=houseEffects(S.elections); S.houseIndustry=houseIndustry(S.house);
-S.forecastPolls=recentForForecast(S.cur.polls); S.series=buildSeries(S.forecastPolls); S.seriesScenario=buildSeries(S.forecastPolls.map(correctWithinBlocs));
+S.forecastPolls=recentForForecast(S.cur.polls); S.series=buildSeries(S.forecastPolls); S.seriesScenario=buildScenarioSeries(S.forecastPolls);
 const model=harediForecast();
 assert.ok(model);
 assert.equal(model.components.shas.geographic,fixture.trends.national.partyForecast.shas.seats);
@@ -50,8 +50,8 @@ for(const poll of S.forecastPolls) {
 }
 const weighted=forecast('weighted',HIDE_FROM_HOME);
 for(const id of ['shas','yahadut_hatora'])assert.ok(Math.abs(weighted.parties[id]-model.components[id].rawPolls)<1e-12);
-for(const blend of [0,.5,1])for(const demographic of [-6,0,2,6]) {
- const result=scenarioForecast(weighted.raw,{harediSeats:model.parties,blend,demographic});
+for(const demographic of [-6,0,2,6]) {
+ const result=scenarioForecast(weighted.raw,{harediSeats:model.parties,demographic});
  assert.equal(result.parties.shas,model.parties.shas);assert.equal(result.parties.yahadut_hatora,model.parties.yahadut_hatora);
  assert.equal(result.parties.raam,weighted.raw.raam);
  assert.ok(Math.abs(Object.values(result.parties).reduce((a,b)=>a+b,0)-120)<1e-8);

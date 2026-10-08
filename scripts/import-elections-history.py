@@ -16,8 +16,9 @@ Every list is placed in one of four groups (the user's decisions, 04.10.2026):
   R ימין · H חרדים · L מרכז–שמאל · A ערבים   (O = other, no group)
 by its ideology — Kadima, Shinui, Gil, Hatnua are centre–left; Kulanu is right —
 except Yisrael Beiteinu (from September 2019) and New Hope (2021), counted
-centre–left because they sat against Netanyahu. A list counts in its group from
-1.5% of the national vote, also when it missed the threshold; smaller lists are O.
+centre–left because they sat against Netanyahu. For comparison with 2026, Jewish
+Home in 2022 is assigned to centre–left as a modelling assumption. A list counts
+in its group above 1% of the national vote, also when it missed the threshold; smaller lists are O.
 
 Output: data/elections/<id>.json — the lists (name, group, colour, official seats),
 the national totals and, per locality (CBS code, stable across elections),
@@ -101,6 +102,7 @@ ELECTIONS = [
 ]
 # Yisrael Beiteinu sat against Netanyahu from September 2019 (the user's rule)
 GROUP_OVERRIDE = {("yisrael_beiteinu", e): "L" for e in ("2019b", "2020", "2021", "2022")}
+GROUP_OVERRIDE[("jewish_home", "2022")] = "L"
 
 # id → (name, short, group, colour)
 PARTY = {
@@ -156,7 +158,7 @@ OTHER = {"R": ("אחרות — ימין", "#8FA6C4"), "H": ("אחרות — חר
          "A": ("אחרות — ערבים", "#8DB3A3"), "O": ("אחרות", "#96A0AB")}
 
 FROM = "2019b"
-MIN_SHARE = 1.5            # % of the valid votes for a list to count in its group
+MIN_SHARE = 1              # strictly above this % of valid votes to count in a group
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36"}
 
 
@@ -231,12 +233,12 @@ for e in ELECTIONS[[x["id"] for x in ELECTIONS].index(FROM):]:
             pid, seats = e["lists"][L]
             name, short, grp, color = PARTY[pid]
             grp = GROUP_OVERRIDE.get((pid, e["id"]), grp)
-            if 100 * nat[L] / valid < MIN_SHARE:
+            if 100 * nat[L] / valid <= MIN_SHARE:
                 grp = "O"
             parties.append(dict(id=pid, name=name, short=short, camp=grp, color=color, seats=seats, letter=L))
             cols.append([L])
     rest = [L for L in letters if L not in e["lists"] and nat[L] > 0]
-    big = [L for L in rest if 100 * nat[L] / valid >= MIN_SHARE]
+    big = [L for L in rest if 100 * nat[L] / valid > MIN_SHARE]
     if big:
         raise SystemExit(f"{e['label']}: רשימה בלי שיוך עם יותר מ־{MIN_SHARE}%: {big}")
     if rest:

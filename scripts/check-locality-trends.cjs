@@ -3,12 +3,12 @@ const root = process.cwd();
 const source = fs.readFileSync('scripts/build-locality-trends.mjs', 'utf8')
   .replace(/^import .*;\r?\n/gm, '')
   .replace(/const ROOT = .*;/, 'const ROOT = taskRoot;');
-function build(change) {
+function build(change, years = ['2019b', '2020', '2021']) {
   const outputs = new Map();
   const context = vm.createContext({ taskRoot: root, path, console: { log() {} },
     readFileSync(file) {
       const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-      if (change && /[\\/]elections[\\/](2019b|2020|2021)\.json$/.test(file)) change(data);
+      if (change && years.some(year => file.endsWith(path.join('elections', year + '.json')))) change(data);
       return JSON.stringify(data);
     },
     writeFileSync(file, value) { outputs.set(path.basename(file), value); },
@@ -19,6 +19,15 @@ function build(change) {
 }
 const baseline = build(), actual = JSON.parse(fs.readFileSync('data/trends.json', 'utf8'));
 assert.deepEqual(baseline, actual, 'generated locality data is stale');
+const election2022 = JSON.parse(fs.readFileSync('data/elections/2022.json', 'utf8'));
+const shaked = election2022.parties.findIndex(p => p.id === 'jewish_home');
+assert.equal(election2022.parties[shaked].camp, 'L');
+assert.equal(election2022.national.votes[shaked], 56775);
+assert.equal(election2022.parties[shaked].seats, 0);
+const unassigned = build(election => { election.parties.find(p => p.id === 'jewish_home').camp = 'O'; }, ['2022']);
+assert.ok(baseline.national.f26[0] + baseline.national.f26[1] < unassigned.national.f26[0] + unassigned.national.f26[1], 'including Jewish Home with centre-left must affect locality trends');
+assert.equal(baseline.national.eligible26, unassigned.national.eligible26);
+assert.equal(baseline.national.projectedValid, unassigned.national.projectedValid);
 for (const [i, id] of ['shas', 'utj'].entries()) {
   const votes = Object.values(actual.loc).reduce((s, l) => s + l.hf[i], 0);
   assert.ok(Math.abs(votes - actual.national.partyForecast[id].votes) < 1e-6);

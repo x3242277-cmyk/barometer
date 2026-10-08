@@ -178,7 +178,7 @@ function fragility(e, nat) {
   while (!flipped(hi) && hi < nat.valid / 4) hi *= 2;
   for (let step = 0; step < 30 && hi - lo > 50; step++) { const mid = (lo + hi) / 2; flipped(mid) ? hi = mid : lo = mid; }
   /* רשימות קרובות לרף: כמה חסר להן, ומה היה קורה אילו עברו */
-  const nearThreshold = Object.entries(totals).filter(([L, v]) => v / nat.valid < THRESHOLD && v / nat.valid > 0.015 && e.lists[L])
+  const nearThreshold = Object.entries(totals).filter(([L, v]) => v / nat.valid < THRESHOLD && v / nat.valid > 0.01 && e.lists[L])
     .map(([L, v]) => {
       const need = Math.ceil(THRESHOLD * nat.valid - v) + 1;
       const t = { ...totals, [L]: v + need };

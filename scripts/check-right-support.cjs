@@ -1,0 +1,25 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const c=vm.createContext({console,Intl,Date,assert});
+for(const name of ['scenario','app'])vm.runInContext(fs.readFileSync(`assets/${name}.js`,'utf8'),c);
+vm.runInContext(`
+const make=mandates=>({id:'fixture',date:'07.10.2026',sourceId:'channel_14',parties:Object.entries(mandates).map(([id,n])=>({id,mandates:n}))});
+const right=p=>p.parties.filter(x=>['likud','ozma_yehudit','zionut_datit','ofer_vinter_party'].includes(x.id)).reduce((sum,x)=>sum+x.mandates,0);
+const sum=p=>p.parties.reduce((s,x)=>s+x.mandates,0);
+const poll=make({likud:30,ozma_yehudit:10,zionut_datit:10,ofer_vinter_party:4,hendel_zeliha_party:5,shas:10,yahadut_hatora:7,raam:5,yashar:39});
+const original=JSON.stringify(poll),kept=retainSmallRightSupport(poll);
+assert.equal(JSON.stringify(poll),original,'published poll was mutated');
+assert.equal(sum(kept),120,'retaining support changed the 120-seat total');
+assert.equal(right(kept),right(poll)+5,'Winter was counted twice or Zeliha was omitted');
+assert.equal(kept.parties.find(x=>x.id==='ofer_vinter_party').mandates,0);
+assert.equal(kept.parties.find(x=>x.id==='hendel_zeliha_party').mandates,0);
+for(const id of ['shas','yahadut_hatora','raam','yashar'])assert.equal(kept.parties.find(x=>x.id===id).mandates,poll.parties.find(x=>x.id===id).mandates);
+assert.ok(Math.abs(kept.parties.find(x=>x.id==='likud').mandates-35.4)<1e-12);
+assert.ok(Math.abs(kept.parties.find(x=>x.id==='ozma_yehudit').mandates-11.8)<1e-12);
+const below=make({likud:30,hendel_zeliha_party:3,yashar:87});
+assert.equal(JSON.stringify(retainSmallRightSupport(below)),JSON.stringify(below),'the per-poll four-seat condition was ignored');
+const exact=make({likud:30,hendel_zeliha_party:4,yashar:86});
+assert.equal(retainSmallRightSupport(exact).parties.find(x=>x.id==='likud').mandates,34);
+const noRecipient=make({hendel_zeliha_party:4,yashar:116});
+assert.equal(JSON.stringify(retainSmallRightSupport(noRecipient)),JSON.stringify(noRecipient),'absent recipients lost support');
+`,c);
+console.log('Passed: the per-poll four-seat boundary, Winter counted once, Zeliha inclusion, original polls, Haredi and Raam inputs, proportional recipients, 120 seats and absent recipients.');

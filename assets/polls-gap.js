@@ -40,7 +40,7 @@ function gapRandomPair(sources, rnd = Math.random) {
 /* הרשימות שבהן שני הסקרים נבדלים ביותר, מהפער הגדול לקטן */
 function gapParties(vHi, vLo) {
   const ids = [...new Set([...Object.keys(vHi.parties), ...Object.keys(vLo.parties)])];
-  return ids.map(id => ({ id, name: NAME_OVERRIDE[id] || partyMeta(id).name, right: partyMeta(id).alignment === "Right", hi: vHi.parties[id] || 0, lo: vLo.parties[id] || 0 }))
+  return ids.map(id => ({ id, name: NAME_OVERRIDE[id] || partyMeta(id).name, right: isRightAt(id, Math.max(vHi.parties[id] || 0, vLo.parties[id] || 0)), hi: vHi.parties[id] || 0, lo: vLo.parties[id] || 0 }))
     .map(r => ({ ...r, d: r.hi - r.lo })).filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
 }
 
@@ -149,7 +149,7 @@ function gapScale(m) {
   const flag = (s, cls) => `<span class="gap-flag ${cls}" style="left:${x(s.right)}%"><b dir="ltr">${s.right}</b> ${esc(s.outlet)}</span><i class="gap-pin ${cls}" style="left:${x(s.right)}%"></i>`;
   return `<div class="tr-card gap-scale">
     <h3>${m.n} סקרים אחרונים · החציון <span dir="ltr">${trFmt(m.median)}</span></h3>
-    <p>${m.baro == null ? "כל נקודה היא סקר אחרון של מכון בערוץ." : `כל נקודה היא סקר אחרון של מכון בערוץ. תחזית הברומטר: <b>${m.baro}</b> — משוקללת לפי דיוק המכונים בעבר ${gapInfo("סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון, עם תיקון הטעות הקבועה שלו ועם חלוקת המנדטים לפי כללי הבחירות.")}`}</p>
+    <p>${m.baro == null ? "כל נקודה היא סקר אחרון של מכון בערוץ." : `כל נקודה היא סקר אחרון של מכון בערוץ. תחזית הברומטר: <b>${m.baro}</b> — משוקללת לפי דיוק המכונים בעבר ${gapInfo("סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון, עם תיקון הטעות הקבועה שלו, המודל החרדי, ההשלמה לטווח המודלים וחלוקת המנדטים לפי כללי הבחירות.")}`}</p>
     <div class="gap-plot" dir="ltr" role="img" aria-label="${esc(`סקרים לפי מנדטים לגוש הימין: ${m.hi.outlet} ${m.hi.right}, ${m.lo.outlet} ${m.lo.right}, החציון ${trFmt(m.median)}${m.baro == null ? "" : `, תחזית הברומטר ${m.baro}`}`)}">
       <i class="gap-maj" style="left:${x(GAP_MAJORITY)}%"><em>${GAP_MAJORITY} · רוב</em></i>
       ${dots}${flag(m.hi, "hi")}${m.lo.right === m.hi.right ? "" : flag(m.lo, "lo")}

@@ -83,7 +83,7 @@ export function runEngine(polls, { now = Date.now(), select = false, detail = fa
     /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
     const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));
     JSON.stringify({
-      modelVersion: "haredi-locality-parties-turnout-raam-polls-v13-pass-rule-weighted-floor-at-model-mean",
+      modelVersion: "haredi-locality-parties-turnout-raam-polls-v14-pass-rule-weighted-floor-1pt-below-model-mean",
       scenario: largestRemainder(__fsc.parties),
       weighted: largestRemainder(__fw.parties),
       below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },

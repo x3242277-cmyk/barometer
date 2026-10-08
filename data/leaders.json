@@ -1,19 +1,19 @@
 {
   "//": "תמונות מנהיגי המפלגות לכרטיסי התוצאה. מפתח = מזהה המפלגה בנתוני הסקר. ערך = נתיב מקומי (assets/leaders/<id>.jpg) או כתובת URL. הבנייה מטמיעה נתיבים מקומיים כ-data URI. מפלגה עם ערך ריק — מוצג איור המילואים.",
   "photos": {
-    "likud": "assets/leaders/likud-full.jpg?v=d364d63d",
-    "yashar": "assets/leaders/yashar-full.jpg?v=b6bae9f6",
-    "hademokratim": "assets/leaders/hademokratim-full.jpg?v=022cb445",
-    "shas": "assets/leaders/shas-full.jpg?v=d59ec904",
-    "yahadut_hatora": "assets/leaders/yahadut_hatora-full.jpg?v=878b7a4d",
-    "beyahad": "assets/leaders/beyahad-full.jpg?v=ea91b4d7",
-    "ndi": "assets/leaders/ndi-full.jpg?v=682c0c3d",
-    "ozma_yehudit": "assets/leaders/ozma_yehudit-full.jpg?v=ec848b92",
-    "reshima_meshutefet": "assets/leaders/reshima_meshutefet-full.jpg?v=5572919e",
-    "raam": "assets/leaders/raam-full.jpg?v=6b9cc602",
-    "zionut_datit": "assets/leaders/zionut_datit-full.jpg?v=1a5a9991",
-    "zionut_datit_zehut": "assets/leaders/zionut_datit-full.jpg?v=1a5a9991",
-    "ofer_vinter_party": "assets/leaders/ofer_vinter_party-full.jpg?v=75a86320",
+    "likud": "assets/leaders/likud-full.jpg?v=32190b61",
+    "yashar": "assets/leaders/yashar-full.jpg?v=532b87a8",
+    "hademokratim": "assets/leaders/hademokratim-full.jpg?v=ee5e92b2",
+    "shas": "assets/leaders/shas-full.jpg?v=93699bf1",
+    "yahadut_hatora": "assets/leaders/yahadut_hatora-full.jpg?v=d988a523",
+    "beyahad": "assets/leaders/beyahad-full.jpg?v=93c82acc",
+    "ndi": "assets/leaders/ndi-full.jpg?v=dcd559f7",
+    "ozma_yehudit": "assets/leaders/ozma_yehudit-full.jpg?v=e8447a44",
+    "reshima_meshutefet": "assets/leaders/reshima_meshutefet-full.jpg?v=e71ba6b2",
+    "raam": "assets/leaders/raam-full.jpg?v=94b20f2e",
+    "zionut_datit": "assets/leaders/zionut_datit-full.jpg?v=07bc6a2d",
+    "zionut_datit_zehut": "assets/leaders/zionut_datit-full.jpg?v=07bc6a2d",
+    "ofer_vinter_party": "assets/leaders/ofer_vinter_party-full.jpg?v=65e61629",
     "ahdut_party": "",
     "bait_zioni": "",
     "kahollavan": "",
@@ -26,7 +26,7 @@
     "hadash_taal": "assets/leaders/hadash_taal.jpg",
     "balad": "",
     "miluimnikim_party": "",
-    "hendel_zeliha_party": "assets/leaders/hendel_zeliha_party-full.jpg?v=7438c88e"
+    "hendel_zeliha_party": "assets/leaders/hendel_zeliha_party-full.jpg?v=c0a21b18"
   },
-  "mappingNote": "שיוך לפי שמות הקבצים שסופקו בתיקיית תמונות; האיורים נשמרים ללא חיתוך בתוך מסגרת 4:5, עם גרסאות מוקטנות וחותמת תוכן לעדכון המטמון."
+  "mappingNote": "שיוך לפי שמות הקבצים שסופקו בתיקיית תמונות; האיורים נחתכים כך שימלאו מסגרת 4:5 בלי פסי ריפוד, עם גרסאות מוקטנות וחותמת תוכן לעדכון המטמון."
 }

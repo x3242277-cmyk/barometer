@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""הכנת דיוקנאות המנהיגים מהמקור ברזולוציה מלאה שבתיקיית תמונות/, ללא חיתוך.
+"""הכנת דיוקנאות המנהיגים מהמקור ברזולוציה מלאה שבתיקיית תמונות/, בחיתוך שממלא את המסגרת.
 הפלט: assets/leaders/<id>-full.jpg — מסגרת 4:5, 720px, איכות גבוהה,
 ולצדו <id>-64/96/128/192/256/384.jpg לכרטיסים הקטנים (srcset).
 תמונות/ אינה נכנסת ל-Git; רק הפלט המעובד נשמר במאגר.
@@ -39,13 +39,18 @@ ASPECT = 4 / 5          # רוחב/גובה של הכרטיס
 # מוקטן (zoom-out). עם srcset צפוף הדפדפן תמיד מקבל גרסה שגודלה קרוב לגודל
 # התצוגה בפיקסלים אמיתיים, וההקטנה שנותרה היא ≤1.5:1 — נקייה בכל זום.
 SMALL = [64, 96, 128, 192, 256, 384]
+# נקודת ההתמקדות האנכית בחיתוך (0 = ראש התמונה). ברירת המחדל 0.3; באיור של
+# "ביחד" הראשים צמודים לחלק העליון, ולכן שומרים את החלק העליון במלואו.
+CENTER_Y = {"beyahad": 0.0}
 
 def process(src_path, out_path, party):
     im = Image.open(src_path)
     im = ImageOps.exif_transpose(im).convert("RGB")
-    # Keep the supplied artwork intact, including both people in joint portraits.
-    im = ImageOps.pad(im, (TARGET_W, int(round(TARGET_W / ASPECT))),
-                      method=Image.Resampling.LANCZOS, color=im.getpixel((0, 0)))
+    # האיור ממלא את כל מסגרת 4:5, בלי פסי ריפוד: מקור צר נחתך מלמעלה ומלמטה
+    # (ההתמקדות גבוהה, כדי שהראש יישאר), מקור רחב — מהצדדים, במרכז. שני האנשים
+    # בדיוקנאות המשותפים נשארים, כי המקורות האלה צרים והחיתוך שלהם אנכי.
+    im = ImageOps.fit(im, (TARGET_W, int(round(TARGET_W / ASPECT))),
+                      method=Image.Resampling.LANCZOS, centering=(0.5, CENTER_Y.get(party, 0.3)))
     # באיורים יש הרבה קווים דקים. דחיסת JPEG רגילה והפחתת צבע יוצרות סביבם
     # רעש וטשטוש ב-DPI גבוה, לכן שומרים ברזולוציה גדולה ובדגימת צבע מלאה.
     im.save(out_path, "JPEG", quality=94, subsampling=0, optimize=True, progressive=True)
@@ -71,7 +76,7 @@ def main():
             with open(os.path.join(ROOT, local_path), "rb") as image:
                 version = hashlib.sha256(image.read()).hexdigest()[:8]
             registry["photos"][party] = f"{local_path}?v={version}"
-    registry["mappingNote"] = "שיוך לפי שמות הקבצים שסופקו בתיקיית תמונות; האיורים נשמרים ללא חיתוך בתוך מסגרת 4:5, עם גרסאות מוקטנות וחותמת תוכן לעדכון המטמון."
+    registry["mappingNote"] = "שיוך לפי שמות הקבצים שסופקו בתיקיית תמונות; האיורים נחתכים כך שימלאו מסגרת 4:5 בלי פסי ריפוד, עם גרסאות מוקטנות וחותמת תוכן לעדכון המטמון."
     with open(registry_path, "w", encoding="utf-8", newline="\n") as target:
         target.write(json.dumps(registry, ensure_ascii=False, indent=2) + "\n")
 

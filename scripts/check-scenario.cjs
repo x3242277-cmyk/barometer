@@ -52,12 +52,12 @@ assert.ok(Math.abs(excess.demographic-1)<1e-9,'only the uncovered remainder shou
 const rawHarediFull=overlapRaw.shas+overlapRaw.yahadut_hatora;
 assert.ok(harediOnly.harediBlocGain<harediOptions.shas+harediOptions.yahadut_hatora-rawHarediFull,'bloc gain must account for the 120-seat adjustment');
 const target=harediOnly.beforeDemographicRight+3;
-const band=scenarioForecast(overlapRaw,{harediSeats:harediOptions,structuralRight:target,deviationPercent:1.5});
-assert.ok(Math.abs(band.structuralLowerBound-target*.985)<1e-9,'1.5% must be relative to the structural support estimate');
-assert.ok(Math.abs(band.demographic-(target*.985-harediOnly.beforeDemographicRight))<1e-9,'lift only the gap left after Haredim');
-const within=scenarioForecast(overlapRaw,{harediSeats:harediOptions,structuralRight:harediOnly.beforeDemographicRight,deviationPercent:1.5});
+const band=scenarioForecast(overlapRaw,{harediSeats:harediOptions,structuralRight:target,deviationPoints:1});
+assert.ok(Math.abs(band.structuralLowerBound-(target-1.2))<1e-9,'the floor is one percentage point of voters (1.2 of 120) below the model average');
+assert.ok(Math.abs(band.demographic-(target-1.2-harediOnly.beforeDemographicRight))<1e-9,'lift only the gap left after Haredim');
+const within=scenarioForecast(overlapRaw,{harediSeats:harediOptions,structuralRight:harediOnly.beforeDemographicRight,deviationPoints:1});
 assert.deepEqual(within.parties,harediOnly.parties,'support already above the lower bound must stay unchanged');
-const noBand=scenarioForecast(overlapRaw,{harediSeats:harediOptions,structuralRight:target,deviationPercent:0});
+const noBand=scenarioForecast(overlapRaw,{harediSeats:harediOptions,structuralRight:target,deviationPoints:0});
 assert.ok(Math.abs(noBand.demographic-3)<1e-9,'the configurable zero-error case must lift exactly to the model estimate');
 for(const result of [band,within,noBand]){
  assert.equal(result.parties.shas,harediOptions.shas);assert.equal(result.parties.yahadut_hatora,harediOptions.yahadut_hatora);assert.equal(result.parties.raam,overlapRaw.raam);

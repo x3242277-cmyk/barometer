@@ -31,15 +31,17 @@ function scenarioForecast(raw, options = {}) {
   const pollBaselineRight = rawHaredi + rawRestRight / total * (120 - rawHaredi - (fixed.raam || 0));
   const beforeDemographicRight = sum(rightIds) + (fixed.shas || 0) + (fixed.yahadut_hatora || 0);
   const harediBlocGain = Math.max(0, beforeDemographicRight - pollBaselineRight);
-  const deviationPercent = Math.max(0,Math.min(100,options.deviationPercent ?? 2.5));
+  /* הרצפה בנקודות אחוז מהמצביעים: ממוצע שני המודלים פחות deviationPoints נקודות.
+     היחידה הפנימית היא חלק מתוך 120, ולכן נקודת אחוז אחת = 1.2. */
+  const deviationPoints = Math.max(0,Math.min(50,options.deviationPoints ?? 1));
   const structuralRight = Number.isFinite(options.structuralRight) ? options.structuralRight : null;
-  const structuralLowerBound = structuralRight == null ? null : structuralRight * (1 - deviationPercent / 100);
+  const structuralLowerBound = structuralRight == null ? null : structuralRight - deviationPoints * 1.2;
   const demographicProposed = structuralLowerBound == null
     ? Math.max(0,Math.min(6,options.demographic ?? 0))
     : Math.max(0,structuralLowerBound - pollBaselineRight);
   const demographic = transfer(Math.max(0, demographicProposed - harediBlocGain));
   /* התוצאה בשברי מנדטים (סכום 120); העיגול למנדטים שלמים נעשה בשלב האחרון,
      לפי כללי הבחירות (allocateSeats). */
-  return {parties:{...p,...fixed}, fixed, demographic, demographicProposed, harediBlocGain, pollBaselineRight, beforeDemographicRight, structuralRight, structuralLowerBound, deviationPercent,
+  return {parties:{...p,...fixed}, fixed, demographic, demographicProposed, harediBlocGain, pollBaselineRight, beforeDemographicRight, structuralRight, structuralLowerBound, deviationPoints,
           demographicCorrected: options.demographicCorrected || null};
 }

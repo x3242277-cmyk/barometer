@@ -2,14 +2,16 @@
 /**
  * בדיקה לאחור של שני המודלים המבניים (דמוגרפי וגיאוגרפי) בארבע מערכות הבחירות האחרונות:
  * ספטמבר 2019, 2020, 2021, 2022. כל מערכת "נחזית" רק מהבחירות שקדמו לה, באותה יחידה כמו
- * בתחזית: חלק גוש הימין והחרדים מקולות הימין, מרכז־שמאל והרשימות הערביות, כפול 120.
+ * בתחזית: חלק מפלגות הקואליציה (הגוש של נתניהו) מקולות שלושת הגושים, באחוזים מהמצביעים.
  *
  *   node scripts/backtest-structural.mjs        → data/structural-backtest.json
  *
- * הגושים: מי שתמך בנתניהו בימין (כולל החרדים). ימינה של בנט נספרת בימין גם ב־2021 — קולות
- * ימין. ישראל ביתנו: ב־2019 עברה לצד השני עם קולות ימין (עלתה מ־4.0% ל־7.1%), ולכן בבדיקה
- * של ספטמבר 2019 היא נספרת בימין גם בבסיס וגם בתוצאה; מ־2020 — במרכז־שמאל, כמו במודל, וכך גם
- * בבחירות הבסיס. כל בדיקה משתמשת באותה הגדרה לבסיס ולתוצאה. הבית היהודי ב־2022 במרכז־שמאל.
+ * הגושים: מפלגות הקואליציה = הגוש של נתניהו (כולל החרדים). ימינה של בנט נספרת בגוש גם ב־2021 —
+ * מצביעיה הצביעו לרשימת ימין, וב־2022 חזרו ברובם לליכוד ולציונות הדתית. ישראל ביתנו: מספטמבר
+ * 2019 באופוזיציה — אחרי אפריל 2019 ליברמן סירב להצטרף לממשלה ורץ נגד ממשלת ימין וחרדים; כך גם
+ * בבחירות הבסיס (אפריל 2019), כדי שכל בדיקה תשתמש באותה הגדרה לבסיס ולתוצאה. מעבר הקולות אליו
+ * (מ־4.0% ל־7.0%) נספר לכן כטעות של המודלים — מעבר צד שמודל דמוגרפי אינו יכול לחזות.
+ * הבית היהודי ב־2022 באופוזיציה.
  * רשימות "אחרות" מושמטות. 2019b–2022 מ־data/elections (אותם נתונים כמו המודל), 2015 ו־2019a
  * מ־locality-history.
  *
@@ -18,8 +20,9 @@
  * המודל הגיאוגרפי: כמו הדמוגרפי, ועוד המגמה של היישוב — קו ישר משוקלל דרך הבחירות הקודמות
  * (לפחות שלוש), יישוב קטן נשען על המגמה הארצית, ועד 8 נקודות לקבוצה.
  *
- * "טווח הסטייה" הוא הירידה הגדולה ביותר של התוצאה בפועל מתחת לממוצע שני המודלים: רצפה
- * של (1 − טווח) × הממוצע לא הייתה עוברת את התוצאה האמיתית באף אחת מארבע המערכות.
+ * הפלט: לכל מערכת — חלק מפלגות הקואליציה בתחזית ובפועל, באחוזים מהמצביעים, והפער בנקודות אחוז
+ * (בפועל פחות התחזית; שלילי = התוצאה מתחת למודלים). הרצפה של התחזית (structuralDeviationPoints
+ * ב־data/demographics.json) היא הנחת מודל, לא תוצאה של הבדיקה; כאן רק נספר באילו מערכות היא נחצתה.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -103,36 +106,36 @@ function backtest(k) {
     const tot = sum(shifted) || 1;
     geo = geo.map((v, j) => v + V * shifted[j] / tot);
   }
-  const actual = 120 * shareR(nat(target));
-  const d = 120 * shareR(demo), g = 120 * shareR(geo), mean = (d + g) / 2;
-  const dev = p => 100 * (actual - p) / p;                     // באחוזים מהאומדן; שלילי = התוצאה מתחתיו
+  const actual = 100 * shareR(nat(target));
+  const d = 100 * shareR(demo), g = 100 * shareR(geo), mean = (d + g) / 2;
+  const dev = p => actual - p;                                  // בנקודות אחוז; שלילי = התוצאה מתחת לתחזית
   return { election: target.id, base: base.id, history: H.map(E => E.id), years: +dt.toFixed(2),
-    baseRight: +(120 * shareR(nat(base))).toFixed(2), actual: +actual.toFixed(2),
+    baseRight: +(100 * shareR(nat(base))).toFixed(2), actual: +actual.toFixed(2),
     demographic: +d.toFixed(2), geographic: +g.toFixed(2), mean: +mean.toFixed(2),
     deviation: { demographic: +dev(d).toFixed(2), geographic: +dev(g).toFixed(2), mean: +dev(mean).toFixed(2) } };
 }
 
-const rows = [2, 3, 4, 5].map(k => { ybRight = elections[k].id === "2019b"; const r = backtest(k); ybRight = false; return { ...r, yisraelBeiteinu: elections[k].id === "2019b" ? "ימין (מעבר עם קולות ימין)" : "מרכז־שמאל" }; });
-const shortfall = rows.map(r => Math.max(0, -r.deviation.mean));
+const rows = [2, 3, 4, 5].map(k => backtest(k));
 const avgAbs = key => +(sum(rows.map(r => Math.abs(r.deviation[key]))) / rows.length).toFixed(2);
+const floor = JSON.parse(readFileSync(path.join(ROOT, "data/demographics.json"), "utf8")).meta.structuralDeviationPoints ?? 1;
 const out = {
   meta: {
     title: "בדיקה לאחור של המודלים הדמוגרפי והגיאוגרפי · ארבע מערכות הבחירות האחרונות",
-    unit: "חלק גוש הימין והחרדים מקולות הימין, מרכז־שמאל והרשימות הערביות, כפול 120",
-    blocRule: "מי שתמך בנתניהו בימין (כולל החרדים); ימינה של בנט בימין גם ב־2021; ישראל ביתנו בימין בבדיקת ספטמבר 2019 (עברה לצד השני עם קולות ימין) ובמרכז־שמאל מ־2020; אותה הגדרה לבסיס ולתוצאה; הבית היהודי ב־2022 במרכז־שמאל; אחרות מושמטות",
-    deviation: "(התוצאה בפועל − האומדן) / האומדן, באחוזים. שלילי = התוצאה מתחת לאומדן",
+    unit: "חלק מפלגות הקואליציה (הגוש של נתניהו) מקולות שלושת הגושים, באחוזים מהמצביעים",
+    blocRule: "מפלגות הקואליציה = הגוש של נתניהו, כולל החרדים; ימינה של בנט בגוש גם ב־2021; ישראל ביתנו באופוזיציה מספטמבר 2019 (גם בבסיס, אפריל 2019); אותה הגדרה לבסיס ולתוצאה; הבית היהודי ב־2022 באופוזיציה; אחרות מושמטות",
+    deviation: "התוצאה בפועל פחות התחזית, בנקודות אחוז. שלילי = התוצאה מתחת לתחזית",
+    floorPoints: floor,
     generatedAt: new Date().toISOString()
   },
   elections: rows,
   summary: {
     averageAbsoluteDeviation: { demographic: avgAbs("demographic"), geographic: avgAbs("geographic"), mean: avgAbs("mean") },
     averageSignedDeviation: +(sum(rows.map(r => r.deviation.mean)) / rows.length).toFixed(2),
-    largestShortfallBelowMean: +Math.max(...shortfall).toFixed(2),
-    /* הטווח שמבטיח שהרצפה לא עברה את התוצאה באף מערכת: הירידה הגדולה ביותר, מעוגלת למעלה לעשירית */
-    band: Math.ceil(Math.max(...shortfall) * 10 - 1e-9) / 10
+    largestShortfallBelowMean: +Math.max(0, ...rows.map(r => -r.deviation.mean)).toFixed(2),
+    belowFloor: rows.filter(r => r.deviation.mean < -floor).map(r => r.election)
   }
 };
 writeFileSync(path.join(ROOT, "data/structural-backtest.json"), JSON.stringify(out, null, 2) + "\n");
-console.log("בחירות   בסיס   בפועל  דמוגרפי גיאוגרפי ממוצע   סטייה מהממוצע");
-for (const r of rows) console.log(`${r.election.padEnd(7)} ${r.base.padEnd(6)} ${r.actual.toFixed(2).padStart(6)} ${r.demographic.toFixed(2).padStart(7)} ${r.geographic.toFixed(2).padStart(7)} ${r.mean.toFixed(2).padStart(7)}   ${r.deviation.mean.toFixed(2)}%`);
+console.log("בחירות   בסיס   בפועל  דמוגרפי גיאוגרפי ממוצע   פער (נק׳)");
+for (const r of rows) console.log(`${r.election.padEnd(7)} ${r.base.padEnd(6)} ${r.actual.toFixed(2).padStart(6)} ${r.demographic.toFixed(2).padStart(7)} ${r.geographic.toFixed(2).padStart(7)} ${r.mean.toFixed(2).padStart(7)}   ${r.deviation.mean.toFixed(2)}`);
 console.log(JSON.stringify(out.summary));

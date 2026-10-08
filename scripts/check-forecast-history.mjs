@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { runEngine, israelTime, asJointList } from './record-forecast.mjs';
 const read = name => JSON.parse(fs.readFileSync(`data/${name}.json`, 'utf8'));
 const history = read('forecast-history'), current = read('current-polls'), archive = read('polls-archive');
-const version = 'haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest';
+const version = 'haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters';
 assert.ok(history.snapshots.length > 0 && history.snapshots.length <= 40);
 assert.ok(history.weekly.length >= 8);
 for (const item of [...history.snapshots, ...history.weekly]) assert.equal(item.modelVersion, version);

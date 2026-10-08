@@ -3,9 +3,9 @@
     {
       "updatedAt": "2026-09-07T08:29:58.654Z",
       "recordedAt": "2026-09-07T14:12:17.952Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -70,9 +70,9 @@
     {
       "updatedAt": "2026-09-09T20:49:39.960Z",
       "recordedAt": "2026-09-09T20:49:40.027Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -137,9 +137,9 @@
     {
       "updatedAt": "2026-09-09T22:42:55.065Z",
       "recordedAt": "2026-09-09T22:42:55.116Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -204,9 +204,9 @@
     {
       "updatedAt": "2026-09-10T09:00:34.737Z",
       "recordedAt": "2026-09-10T09:00:34.801Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -271,9 +271,9 @@
     {
       "updatedAt": "2026-09-10T09:48:40.975Z",
       "recordedAt": "2026-09-10T09:48:41.071Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -338,9 +338,9 @@
     {
       "updatedAt": "2026-09-10T20:44:35.492Z",
       "recordedAt": "2026-09-10T20:44:35.556Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "likud": 26,
         "yashar": 22,
@@ -405,9 +405,9 @@
     {
       "updatedAt": "2026-09-11T20:50:33.801Z",
       "recordedAt": "2026-09-11T20:50:33.847Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -416,9 +416,9 @@
         "ndi": 7,
         "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 10,
-        "yahadut_hatora": 8,
+        "yahadut_hatora": 7,
         "raam": 5
       },
       "weighted": {
@@ -442,13 +442,13 @@
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -472,9 +472,9 @@
     {
       "updatedAt": "2026-09-12T20:26:55.582Z",
       "recordedAt": "2026-09-12T20:26:55.649Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -483,9 +483,9 @@
         "ndi": 7,
         "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 10,
-        "yahadut_hatora": 8,
+        "yahadut_hatora": 7,
         "raam": 5
       },
       "weighted": {
@@ -509,13 +509,13 @@
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -539,9 +539,9 @@
     {
       "updatedAt": "2026-09-13T20:38:09.223Z",
       "recordedAt": "2026-09-13T20:38:09.291Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -550,9 +550,9 @@
         "ndi": 7,
         "ozma_yehudit": 9,
         "reshima_meshutefet": 7,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 10,
-        "yahadut_hatora": 8,
+        "yahadut_hatora": 7,
         "raam": 5
       },
       "weighted": {
@@ -576,13 +576,13 @@
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -606,9 +606,9 @@
     {
       "updatedAt": "2026-09-14T19:05:55.700Z",
       "recordedAt": "2026-09-14T19:05:55.753Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -617,9 +617,9 @@
         "ndi": 7,
         "reshima_meshutefet": 7,
         "ozma_yehudit": 9,
-        "zionut_datit": 6,
+        "zionut_datit": 7,
         "shas": 10,
-        "yahadut_hatora": 8,
+        "yahadut_hatora": 7,
         "raam": 5
       },
       "weighted": {
@@ -643,13 +643,13 @@
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -673,9 +673,9 @@
     {
       "updatedAt": "2026-09-15T17:59:57.135Z",
       "recordedAt": "2026-09-15T17:59:57.187Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -740,9 +740,9 @@
     {
       "updatedAt": "2026-09-18T20:46:24.986Z",
       "recordedAt": "2026-09-18T20:46:25.038Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 25,
@@ -807,9 +807,9 @@
     {
       "updatedAt": "2026-09-22T23:08:09.669Z",
       "recordedAt": "2026-09-22T23:08:09.719Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -874,9 +874,9 @@
     {
       "updatedAt": "2026-09-23T08:59:08.526Z",
       "recordedAt": "2026-09-23T08:59:08.873Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 25,
@@ -941,9 +941,9 @@
     {
       "updatedAt": "2026-09-30T13:02:11.053Z",
       "recordedAt": "2026-09-30T13:02:11.109Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1008,9 +1008,9 @@
     {
       "updatedAt": "2026-09-30T13:18:09.998Z",
       "recordedAt": "2026-09-30T13:18:10.149Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1075,9 +1075,9 @@
     {
       "updatedAt": "2026-09-30T22:07:34.897Z",
       "recordedAt": "2026-09-30T22:07:34.965Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1142,9 +1142,9 @@
     {
       "updatedAt": "2026-10-01T12:33:14.383Z",
       "recordedAt": "2026-10-01T12:33:14.439Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1209,9 +1209,9 @@
     {
       "updatedAt": "2026-10-01T12:53:01.259Z",
       "recordedAt": "2026-10-01T12:53:01.397Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1276,9 +1276,9 @@
     {
       "updatedAt": "2026-10-01T20:54:25.819Z",
       "recordedAt": "2026-10-01T20:54:25.957Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1343,9 +1343,9 @@
     {
       "updatedAt": "2026-10-01T20:55:58.729Z",
       "recordedAt": "2026-10-01T20:55:58.871Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1410,9 +1410,9 @@
     {
       "updatedAt": "2026-10-01T20:57:53.554Z",
       "recordedAt": "2026-10-01T20:57:53.684Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1477,9 +1477,9 @@
     {
       "updatedAt": "2026-10-01T22:34:26.679Z",
       "recordedAt": "2026-10-01T22:34:26.730Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -1544,9 +1544,9 @@
     {
       "updatedAt": "2026-10-02T11:58:39.139Z",
       "recordedAt": "2026-10-02T11:58:39.230Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -1611,9 +1611,9 @@
     {
       "updatedAt": "2026-10-02T22:04:00.211Z",
       "recordedAt": "2026-10-02T22:04:00.293Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -1678,9 +1678,9 @@
     {
       "updatedAt": "2026-10-03T11:11:52.399Z",
       "recordedAt": "2026-10-03T11:11:52.476Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -1745,9 +1745,9 @@
     {
       "updatedAt": "2026-10-03T20:55:27.091Z",
       "recordedAt": "2026-10-03T20:55:27.184Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -1812,9 +1812,9 @@
     {
       "updatedAt": "2026-10-04T08:39:47.310Z",
       "recordedAt": "2026-10-04T08:39:47.386Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -1879,9 +1879,9 @@
     {
       "updatedAt": "2026-10-04T21:00:47.000Z",
       "recordedAt": "2026-10-04T21:00:55.155Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -1946,9 +1946,9 @@
     {
       "updatedAt": "2026-10-04T21:11:16.800Z",
       "recordedAt": "2026-10-04T21:11:16.857Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2013,9 +2013,9 @@
     {
       "updatedAt": "2026-10-05T13:46:31.590Z",
       "recordedAt": "2026-10-05T13:46:31.720Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2080,9 +2080,9 @@
     {
       "updatedAt": "2026-10-05T20:17:11.629Z",
       "recordedAt": "2026-10-05T20:17:11.787Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2147,9 +2147,9 @@
     {
       "updatedAt": "2026-10-05T23:57:15.931Z",
       "recordedAt": "2026-10-05T23:57:16.055Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2214,9 +2214,9 @@
     {
       "updatedAt": "2026-10-06T12:51:53.953Z",
       "recordedAt": "2026-10-06T12:51:54.047Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2281,9 +2281,9 @@
     {
       "updatedAt": "2026-10-06T17:56:43.144Z",
       "recordedAt": "2026-10-06T17:56:50.569Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2348,9 +2348,9 @@
     {
       "updatedAt": "2026-10-06T22:34:24.941Z",
       "recordedAt": "2026-10-06T22:34:25.290Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 21,
         "likud": 26,
@@ -2415,9 +2415,9 @@
     {
       "updatedAt": "2026-10-07T12:45:47.161Z",
       "recordedAt": "2026-10-07T12:45:47.305Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -2482,9 +2482,9 @@
     {
       "updatedAt": "2026-10-07T22:58:30.681Z",
       "recordedAt": "2026-10-08T09:31:56.611Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "yashar": 22,
         "likud": 26,
@@ -2549,12 +2549,12 @@
     {
       "updatedAt": "2026-10-08T07:37:33.481Z",
       "recordedAt": "2026-10-08T10:06:20.659Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "zionut_datit": 7,
-        "ozma_yehudit": 8,
+        "ozma_yehudit": 9,
         "ndi": 7,
         "hademokratim": 9,
         "beyahad": 11,
@@ -2562,7 +2562,7 @@
         "likud": 26,
         "reshima_meshutefet": 7,
         "shas": 10,
-        "yahadut_hatora": 8,
+        "yahadut_hatora": 7,
         "raam": 5
       },
       "weighted": {
@@ -2616,12 +2616,12 @@
     {
       "updatedAt": "2026-10-08T12:54:58.487Z",
       "recordedAt": "2026-10-08T14:44:35.787Z",
-      "recalculatedAt": "2026-10-08T15:51:19.489Z",
+      "recalculatedAt": "2026-10-08T19:16:31.891Z",
       "pollSetSource": "repository",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "scenario": {
         "zionut_datit": 7,
-        "ozma_yehudit": 8,
+        "ozma_yehudit": 9,
         "ndi": 7,
         "hademokratim": 9,
         "beyahad": 11,
@@ -2629,7 +2629,7 @@
         "likud": 26,
         "reshima_meshutefet": 7,
         "shas": 10,
-        "yahadut_hatora": 8,
+        "yahadut_hatora": 7,
         "raam": 5
       },
       "weighted": {
@@ -2687,7 +2687,7 @@
       "date": "2026-08-15",
       "time": "20:00",
       "recordedAt": "2026-08-15T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 6,
       "firms": 6,
       "seats": {
@@ -2709,15 +2709,15 @@
       "date": "2026-08-22",
       "time": "20:00",
       "recordedAt": "2026-08-22T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
-        "likud": 27,
+        "likud": 28,
         "zionut_datit": 5,
         "shas": 10,
         "yahadut_hatora": 7,
-        "yashar": 23,
+        "yashar": 22,
         "hademokratim": 9,
         "beyahad": 12,
         "ndi": 8,
@@ -2731,16 +2731,16 @@
       "date": "2026-08-29",
       "time": "20:00",
       "recordedAt": "2026-08-29T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
         "shas": 10,
-        "yahadut_hatora": 7,
+        "yahadut_hatora": 8,
         "yashar": 22,
         "hademokratim": 9,
         "beyahad": 11,
-        "ndi": 8,
+        "ndi": 7,
         "reshima_meshutefet": 7,
         "raam": 5,
         "likud": 31,
@@ -2752,7 +2752,7 @@
       "date": "2026-09-05",
       "time": "20:00",
       "recordedAt": "2026-09-05T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
@@ -2774,17 +2774,17 @@
       "date": "2026-09-12",
       "time": "20:00",
       "recordedAt": "2026-09-12T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 13,
       "firms": 8,
       "seats": {
-        "likud": 26,
+        "likud": 27,
         "zionut_datit": 6,
         "shas": 10,
         "yahadut_hatora": 7,
         "yashar": 22,
         "hademokratim": 9,
-        "beyahad": 12,
+        "beyahad": 11,
         "ndi": 7,
         "reshima_meshutefet": 7,
         "raam": 5,
@@ -2796,7 +2796,7 @@
       "date": "2026-09-19",
       "time": "20:00",
       "recordedAt": "2026-09-19T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -2818,7 +2818,7 @@
       "date": "2026-09-26",
       "time": "20:00",
       "recordedAt": "2026-09-26T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 7,
       "firms": 7,
       "seats": {
@@ -2840,7 +2840,7 @@
       "date": "2026-10-03",
       "time": "20:00",
       "recordedAt": "2026-10-03T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 8,
       "firms": 7,
       "seats": {
@@ -2862,7 +2862,7 @@
     {
       "day": "2026-08-13",
       "at": "2026-08-13T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 4,
       "firms": 3,
       "seats": {
@@ -2897,7 +2897,7 @@
     {
       "day": "2026-08-14",
       "at": "2026-08-14T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 6,
       "firms": 6,
       "seats": {
@@ -2932,7 +2932,7 @@
     {
       "day": "2026-08-15",
       "at": "2026-08-15T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 6,
       "firms": 6,
       "seats": {
@@ -2967,7 +2967,7 @@
     {
       "day": "2026-08-16",
       "at": "2026-08-16T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 6,
       "firms": 6,
       "seats": {
@@ -3002,7 +3002,7 @@
     {
       "day": "2026-08-17",
       "at": "2026-08-17T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 7,
       "firms": 7,
       "seats": {
@@ -3037,7 +3037,7 @@
     {
       "day": "2026-08-18",
       "at": "2026-08-18T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 6,
       "firms": 6,
       "seats": {
@@ -3072,7 +3072,7 @@
     {
       "day": "2026-08-19",
       "at": "2026-08-19T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 7,
       "firms": 6,
       "seats": {
@@ -3107,7 +3107,7 @@
     {
       "day": "2026-08-20",
       "at": "2026-08-20T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
@@ -3115,8 +3115,8 @@
           "likud": 27,
           "zionut_datit": 5,
           "shas": 10,
-          "yahadut_hatora": 7,
-          "yashar": 23,
+          "yahadut_hatora": 8,
+          "yashar": 22,
           "hademokratim": 9,
           "beyahad": 12,
           "ndi": 8,
@@ -3142,15 +3142,15 @@
     {
       "day": "2026-08-21",
       "at": "2026-08-21T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 7,
       "seats": {
         "scenario": {
-          "likud": 27,
+          "likud": 28,
           "zionut_datit": 5,
           "shas": 10,
-          "yahadut_hatora": 8,
+          "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
           "beyahad": 12,
@@ -3177,16 +3177,16 @@
     {
       "day": "2026-08-22",
       "at": "2026-08-22T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
         "scenario": {
-          "likud": 27,
+          "likud": 28,
           "zionut_datit": 5,
           "shas": 10,
           "yahadut_hatora": 7,
-          "yashar": 23,
+          "yashar": 22,
           "hademokratim": 9,
           "beyahad": 12,
           "ndi": 8,
@@ -3212,16 +3212,16 @@
     {
       "day": "2026-08-23",
       "at": "2026-08-23T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
         "scenario": {
-          "likud": 27,
+          "likud": 28,
           "zionut_datit": 5,
           "shas": 10,
           "yahadut_hatora": 7,
-          "yashar": 23,
+          "yashar": 22,
           "hademokratim": 9,
           "beyahad": 12,
           "ndi": 8,
@@ -3247,16 +3247,16 @@
     {
       "day": "2026-08-24",
       "at": "2026-08-24T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
         "scenario": {
           "likud": 27,
-          "zionut_datit": 5,
+          "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
-          "yashar": 23,
+          "yashar": 22,
           "hademokratim": 9,
           "beyahad": 12,
           "ndi": 8,
@@ -3282,7 +3282,7 @@
     {
       "day": "2026-08-25",
       "at": "2026-08-25T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -3317,18 +3317,18 @@
     {
       "day": "2026-08-26",
       "at": "2026-08-26T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 5,
           "shas": 10,
           "yahadut_hatora": 8,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 8,
           "reshima_meshutefet": 6,
           "raam": 5,
@@ -3352,7 +3352,7 @@
     {
       "day": "2026-08-27",
       "at": "2026-08-27T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -3387,17 +3387,17 @@
     {
       "day": "2026-08-28",
       "at": "2026-08-28T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
         "scenario": {
           "shas": 10,
-          "yahadut_hatora": 7,
+          "yahadut_hatora": 8,
           "yashar": 22,
           "hademokratim": 9,
           "beyahad": 11,
-          "ndi": 8,
+          "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
           "likud": 31,
@@ -3420,17 +3420,17 @@
     {
       "day": "2026-08-29",
       "at": "2026-08-29T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
         "scenario": {
           "shas": 10,
-          "yahadut_hatora": 7,
+          "yahadut_hatora": 8,
           "yashar": 22,
           "hademokratim": 9,
           "beyahad": 11,
-          "ndi": 8,
+          "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
           "likud": 31,
@@ -3453,17 +3453,17 @@
     {
       "day": "2026-08-30",
       "at": "2026-08-30T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
         "scenario": {
           "shas": 10,
-          "yahadut_hatora": 7,
+          "yahadut_hatora": 8,
           "yashar": 22,
           "hademokratim": 9,
           "beyahad": 11,
-          "ndi": 8,
+          "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
           "likud": 31,
@@ -3486,7 +3486,7 @@
     {
       "day": "2026-08-31",
       "at": "2026-08-31T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
@@ -3519,7 +3519,7 @@
     {
       "day": "2026-09-01",
       "at": "2026-09-01T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -3552,7 +3552,7 @@
     {
       "day": "2026-09-02",
       "at": "2026-09-02T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -3585,7 +3585,7 @@
     {
       "day": "2026-09-03",
       "at": "2026-09-03T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -3620,7 +3620,7 @@
     {
       "day": "2026-09-04",
       "at": "2026-09-04T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 12,
       "firms": 8,
       "seats": {
@@ -3655,7 +3655,7 @@
     {
       "day": "2026-09-05",
       "at": "2026-09-05T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
@@ -3690,7 +3690,7 @@
     {
       "day": "2026-09-06",
       "at": "2026-09-06T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
@@ -3725,7 +3725,7 @@
     {
       "day": "2026-09-07",
       "at": "2026-09-07T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -3760,7 +3760,7 @@
     {
       "day": "2026-09-08",
       "at": "2026-09-08T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
@@ -3795,7 +3795,7 @@
     {
       "day": "2026-09-09",
       "at": "2026-09-09T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 12,
       "firms": 8,
       "seats": {
@@ -3803,10 +3803,10 @@
           "likud": 26,
           "zionut_datit": 7,
           "shas": 10,
-          "yahadut_hatora": 7,
+          "yahadut_hatora": 8,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -3830,7 +3830,7 @@
     {
       "day": "2026-09-10",
       "at": "2026-09-10T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 15,
       "firms": 8,
       "seats": {
@@ -3865,18 +3865,18 @@
     {
       "day": "2026-09-11",
       "at": "2026-09-11T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 14,
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -3900,18 +3900,18 @@
     {
       "day": "2026-09-12",
       "at": "2026-09-12T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 13,
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -3935,18 +3935,18 @@
     {
       "day": "2026-09-13",
       "at": "2026-09-13T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 13,
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
           "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
-          "beyahad": 12,
+          "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
@@ -3970,15 +3970,15 @@
     {
       "day": "2026-09-14",
       "at": "2026-09-14T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 12,
       "firms": 8,
       "seats": {
         "scenario": {
-          "likud": 26,
+          "likud": 27,
           "zionut_datit": 6,
           "shas": 10,
-          "yahadut_hatora": 8,
+          "yahadut_hatora": 7,
           "yashar": 22,
           "hademokratim": 9,
           "beyahad": 11,
@@ -4005,7 +4005,7 @@
     {
       "day": "2026-09-15",
       "at": "2026-09-15T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 13,
       "firms": 8,
       "seats": {
@@ -4040,7 +4040,7 @@
     {
       "day": "2026-09-16",
       "at": "2026-09-16T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 12,
       "firms": 8,
       "seats": {
@@ -4075,7 +4075,7 @@
     {
       "day": "2026-09-17",
       "at": "2026-09-17T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 7,
       "firms": 7,
       "seats": {
@@ -4083,9 +4083,9 @@
           "likud": 25,
           "zionut_datit": 7,
           "shas": 10,
-          "yahadut_hatora": 7,
+          "yahadut_hatora": 8,
           "yashar": 22,
-          "hademokratim": 9,
+          "hademokratim": 8,
           "beyahad": 12,
           "ndi": 7,
           "reshima_meshutefet": 7,
@@ -4110,7 +4110,7 @@
     {
       "day": "2026-09-18",
       "at": "2026-09-18T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 11,
       "firms": 8,
       "seats": {
@@ -4145,7 +4145,7 @@
     {
       "day": "2026-09-19",
       "at": "2026-09-19T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -4180,7 +4180,7 @@
     {
       "day": "2026-09-20",
       "at": "2026-09-20T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -4215,7 +4215,7 @@
     {
       "day": "2026-09-21",
       "at": "2026-09-21T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -4250,7 +4250,7 @@
     {
       "day": "2026-09-22",
       "at": "2026-09-22T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
@@ -4285,7 +4285,7 @@
     {
       "day": "2026-09-23",
       "at": "2026-09-23T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 7,
       "seats": {
@@ -4320,7 +4320,7 @@
     {
       "day": "2026-09-24",
       "at": "2026-09-24T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 12,
       "firms": 7,
       "seats": {
@@ -4355,7 +4355,7 @@
     {
       "day": "2026-09-25",
       "at": "2026-09-25T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 8,
       "firms": 7,
       "seats": {
@@ -4390,7 +4390,7 @@
     {
       "day": "2026-09-26",
       "at": "2026-09-26T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 7,
       "firms": 7,
       "seats": {
@@ -4425,7 +4425,7 @@
     {
       "day": "2026-09-27",
       "at": "2026-09-27T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 8,
       "firms": 8,
       "seats": {
@@ -4460,7 +4460,7 @@
     {
       "day": "2026-09-28",
       "at": "2026-09-28T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 8,
       "seats": {
@@ -4469,13 +4469,13 @@
           "zionut_datit": 7,
           "shas": 10,
           "yahadut_hatora": 7,
-          "yashar": 23,
+          "yashar": 22,
           "hademokratim": 9,
           "beyahad": 11,
           "ndi": 7,
           "reshima_meshutefet": 7,
           "raam": 5,
-          "ozma_yehudit": 8
+          "ozma_yehudit": 9
         },
         "weighted": {
           "likud": 27,
@@ -4495,7 +4495,7 @@
     {
       "day": "2026-09-29",
       "at": "2026-09-29T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 8,
       "seats": {
@@ -4503,8 +4503,8 @@
           "likud": 26,
           "zionut_datit": 7,
           "shas": 10,
-          "yahadut_hatora": 7,
-          "yashar": 23,
+          "yahadut_hatora": 8,
+          "yashar": 22,
           "hademokratim": 9,
           "beyahad": 11,
           "ndi": 7,
@@ -4530,7 +4530,7 @@
     {
       "day": "2026-09-30",
       "at": "2026-09-30T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 10,
       "firms": 7,
       "seats": {
@@ -4565,7 +4565,7 @@
     {
       "day": "2026-10-01",
       "at": "2026-10-01T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 12,
       "firms": 7,
       "seats": {
@@ -4600,7 +4600,7 @@
     {
       "day": "2026-10-02",
       "at": "2026-10-02T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 8,
       "firms": 7,
       "seats": {
@@ -4635,7 +4635,7 @@
     {
       "day": "2026-10-03",
       "at": "2026-10-03T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 8,
       "firms": 7,
       "seats": {
@@ -4670,7 +4670,7 @@
     {
       "day": "2026-10-04",
       "at": "2026-10-04T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 7,
       "seats": {
@@ -4705,7 +4705,7 @@
     {
       "day": "2026-10-05",
       "at": "2026-10-05T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 8,
       "seats": {
@@ -4740,7 +4740,7 @@
     {
       "day": "2026-10-06",
       "at": "2026-10-06T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 9,
       "firms": 8,
       "seats": {
@@ -4775,8 +4775,43 @@
     {
       "day": "2026-10-07",
       "at": "2026-10-07T17:00:00.000Z",
-      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v11-pass-rule-weighted-band-2.5-backtest",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
       "polls": 8,
+      "firms": 8,
+      "seats": {
+        "scenario": {
+          "likud": 26,
+          "zionut_datit": 7,
+          "shas": 10,
+          "yahadut_hatora": 7,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 7,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        },
+        "weighted": {
+          "likud": 27,
+          "zionut_datit": 6,
+          "shas": 8,
+          "yahadut_hatora": 8,
+          "yashar": 22,
+          "hademokratim": 9,
+          "beyahad": 11,
+          "ndi": 8,
+          "reshima_meshutefet": 8,
+          "raam": 5,
+          "ozma_yehudit": 8
+        }
+      }
+    },
+    {
+      "day": "2026-10-08",
+      "at": "2026-10-08T17:00:00.000Z",
+      "modelVersion": "haredi-locality-parties-turnout-raam-polls-v12-pass-rule-weighted-floor-1pt-voters",
+      "polls": 9,
       "firms": 8,
       "seats": {
         "scenario": {

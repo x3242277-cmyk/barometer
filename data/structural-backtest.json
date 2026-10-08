@@ -1,10 +1,11 @@
 {
   "meta": {
     "title": "בדיקה לאחור של המודלים הדמוגרפי והגיאוגרפי · ארבע מערכות הבחירות האחרונות",
-    "unit": "חלק גוש הימין והחרדים מקולות הימין, מרכז־שמאל והרשימות הערביות, כפול 120",
-    "blocRule": "מי שתמך בנתניהו בימין (כולל החרדים); ימינה של בנט בימין גם ב־2021; ישראל ביתנו בימין בבדיקת ספטמבר 2019 (עברה לצד השני עם קולות ימין) ובמרכז־שמאל מ־2020; אותה הגדרה לבסיס ולתוצאה; הבית היהודי ב־2022 במרכז־שמאל; אחרות מושמטות",
-    "deviation": "(התוצאה בפועל − האומדן) / האומדן, באחוזים. שלילי = התוצאה מתחת לאומדן",
-    "generatedAt": "2026-10-08T15:50:01.154Z"
+    "unit": "חלק מפלגות הקואליציה (הגוש של נתניהו) מקולות שלושת הגושים, באחוזים מהמצביעים",
+    "blocRule": "מפלגות הקואליציה = הגוש של נתניהו, כולל החרדים; ימינה של בנט בגוש גם ב־2021; ישראל ביתנו באופוזיציה מספטמבר 2019 (גם בבסיס, אפריל 2019); אותה הגדרה לבסיס ולתוצאה; הבית היהודי ב־2022 באופוזיציה; אחרות מושמטות",
+    "deviation": "התוצאה בפועל פחות התחזית, בנקודות אחוז. שלילי = התוצאה מתחת לתחזית",
+    "floorPoints": 1,
+    "generatedAt": "2026-10-08T19:10:16.382Z"
   },
   "elections": [
     {
@@ -15,17 +16,16 @@
         "2019a"
       ],
       "years": 0.44,
-      "baseRight": 67.08,
-      "actual": 64.65,
-      "demographic": 66.25,
-      "geographic": 66.25,
-      "mean": 66.25,
+      "baseRight": 51.85,
+      "actual": 46.81,
+      "demographic": 51.2,
+      "geographic": 51.2,
+      "mean": 51.2,
       "deviation": {
-        "demographic": -2.42,
-        "geographic": -2.42,
-        "mean": -2.42
-      },
-      "yisraelBeiteinu": "ימין (מעבר עם קולות ימין)"
+        "demographic": -4.39,
+        "geographic": -4.39,
+        "mean": -4.39
+      }
     },
     {
       "election": "2020",
@@ -36,17 +36,16 @@
         "2019b"
       ],
       "years": 0.46,
-      "baseRight": 56.18,
-      "actual": 58.52,
-      "demographic": 56.34,
-      "geographic": 55.83,
-      "mean": 56.09,
+      "baseRight": 46.81,
+      "actual": 48.77,
+      "demographic": 46.95,
+      "geographic": 46.53,
+      "mean": 46.74,
       "deviation": {
-        "demographic": 3.87,
-        "geographic": 4.81,
-        "mean": 4.34
-      },
-      "yisraelBeiteinu": "מרכז־שמאל"
+        "demographic": 1.82,
+        "geographic": 2.24,
+        "mean": 2.03
+      }
     },
     {
       "election": "2021",
@@ -58,17 +57,16 @@
         "2020"
       ],
       "years": 1.05,
-      "baseRight": 58.52,
-      "actual": 58.84,
-      "demographic": 59.17,
-      "geographic": 58.16,
-      "mean": 58.67,
+      "baseRight": 48.77,
+      "actual": 49.04,
+      "demographic": 49.31,
+      "geographic": 48.47,
+      "mean": 48.89,
       "deviation": {
-        "demographic": -0.56,
-        "geographic": 1.17,
-        "mean": 0.3
-      },
-      "yisraelBeiteinu": "מרכז־שמאל"
+        "demographic": -0.27,
+        "geographic": 0.57,
+        "mean": 0.15
+      }
     },
     {
       "election": "2022",
@@ -81,27 +79,28 @@
         "2021"
       ],
       "years": 1.61,
-      "baseRight": 58.84,
-      "actual": 58.93,
-      "demographic": 58.05,
-      "geographic": 56.51,
-      "mean": 57.28,
+      "baseRight": 49.04,
+      "actual": 49.11,
+      "demographic": 48.37,
+      "geographic": 47.09,
+      "mean": 47.73,
       "deviation": {
-        "demographic": 1.53,
-        "geographic": 4.29,
-        "mean": 2.89
-      },
-      "yisraelBeiteinu": "מרכז־שמאל"
+        "demographic": 0.74,
+        "geographic": 2.02,
+        "mean": 1.38
+      }
     }
   ],
   "summary": {
     "averageAbsoluteDeviation": {
-      "demographic": 2.09,
-      "geographic": 3.17,
-      "mean": 2.49
+      "demographic": 1.81,
+      "geographic": 2.31,
+      "mean": 1.99
     },
-    "averageSignedDeviation": 1.28,
-    "largestShortfallBelowMean": 2.42,
-    "band": 2.5
+    "averageSignedDeviation": -0.21,
+    "largestShortfallBelowMean": 4.39,
+    "belowFloor": [
+      "2019b"
+    ]
   }
 }

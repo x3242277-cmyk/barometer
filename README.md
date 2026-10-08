@@ -76,6 +76,19 @@ node scripts/dev-server.mjs
 
 ## עדכון הסקרים
 
+סקרים שמוסיפים דרך ניהול האתר נשמרים במאגר הקבוע של אותו אתר ב־Netlify.
+פריסה חדשה ממזגת אותם עם קובצי המאגר ואינה מוחקת אותם. גיבוי ל־GitHub נעשה
+באמצעות `scripts/sync-live-polls.mjs`, שמושך את הארכיון הציבורי מ־
+`https://www.barometer26.com` (`liveSiteUrl` ב־`scripts/config.json`).
+הסנכרון מצרף סקרים חסרים, שומר סקרים שכבר במאגר ומקבל תיקון רק אם הוא חדש
+יותר. לפני כתיבה נשמר גיבוי מקומי תחת `.site-stage/poll-backups/`.
+
+`.github/workflows/sync-live-polls.yml` מנסה לסנכרן כל רבע שעה, וגם מאפשר
+הרצה ידנית מ־Actions. זמני ההרצות המתוזמנות אינם מובטחים על ידי GitHub.
+עדכון המקורות הרגיל מסנכרן אף הוא את הארכיון החי לפני השמירה. לפני העלאה
+ידנית של שינויי אתר יש להריץ `node scripts/sync-live-polls.mjs` ולשמור את
+השינויים בקובצי הנתונים יחד עם הקוד. המאגר החי ב־Netlify נשאר גם אם הסנכרון נכשל.
+
 ```bash
 node scripts/update-polls.mjs                      # המדד; אם הוא לא זמין — ויקיפדיה
 node scripts/update-polls.mjs --full               # כל סקרי השנה

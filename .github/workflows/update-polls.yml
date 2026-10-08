@@ -125,6 +125,9 @@ jobs:
       - name: שליפת סקרים חדשים מהמדד (ויקיפדיה כגיבוי)
         run: node scripts/update-polls.mjs
 
+      - name: צירוף סקרים שנשמרו דרך ניהול האתר
+        run: node scripts/sync-live-polls.mjs
+
       - name: שמירת צילום התחזית להצגת חיווי שינוי
         run: node scripts/record-forecast.mjs || echo "צילום התחזית דולג הפעם — לא חוסם את עדכון הסקרים"
 
@@ -145,6 +148,7 @@ jobs:
               echo "master השתנה בזמן ההרצה — טוען את הגרסה החדשה ובונה שוב (ניסיון $attempt/3)"
               git reset --hard origin/master
               node scripts/update-polls.mjs
+              node scripts/sync-live-polls.mjs
               node scripts/record-forecast.mjs || echo "צילום התחזית דולג הפעם — לא חוסם את עדכון הסקרים"
               node scripts/build-single-file.mjs
             fi

@@ -1,6 +1,7 @@
 {
   "//": "מקור הסקרים: עמוד הסקרים של המדד (alternateUrl, scripts/themadad-source.mjs); אם הוא לא זמין — ויקיפדיה (wikipedia למטה, scripts/wiki-polls.mjs). התצוגה כוללת סקרים מ-from ואילך, ולכל היותר maxPerOutlet האחרונים לכל כלי תקשורת.",
   "alternateUrl": "https://themadad.com/polls26/",
+  "liveSiteUrl": "https://www.barometer26.com",
   "madadTrustSourceMap": [
     "israel_hayom"
   ],

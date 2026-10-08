@@ -22,6 +22,9 @@ assert.equal((await req('/api/admin/save',draft)).status,200);assert.equal((awai
 const saved=feed=>feed.polls.find(p=>p.sourceId==='channel_12'&&p.date==='23.09.2026');
 const feed=(await req('/api/content/current-polls.json',undefined,{anonymous:true})).data;assert(saved(feed));assert.equal(saved(feed).parties.reduce((s,p)=>s+p.mandates,0),120);
 assert(saved((await req('/data/current-polls.json',undefined,{anonymous:true})).data));
+const redeployed=createManagementHandler({getStore,secret:()=>token,clock:()=>now});
+const afterDeploy=await redeployed(new Request(origin+'/data/polls-archive.json'));
+assert(saved(await afterDeploy.json()),'a new deployment lost a survey from the persistent store');
 assert.equal((await req('/api/admin/refresh',{})).status,502);assert(saved((await req('/api/content/current-polls.json')).data));
 assert.equal((await req('/api/admin/save',{...draft,kind:'sample'})).status,200);
 assert.equal((await req('/api/admin/save',{...draft,kind:'sample',sourceId:'kan_news'})).status,200);

@@ -1,0 +1,48 @@
+name: גיבוי סקרים מהאתר
+
+on:
+  schedule:
+    - cron: '11,26,41,56 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-live-polls
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: סנכרון בטוח של הסקרים ושמירה ב־GitHub
+        run: |
+          git config user.name "barometer-bot"
+          git config user.email "bot@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin master
+            # This is an ephemeral CI checkout; reread the live store after each retry.
+            git reset --hard origin/master
+            node scripts/sync-live-polls.mjs
+            if git diff --quiet -- data/current-polls.json data/polls-archive.json; then
+              echo "כל הסקרים החיים כבר מגובים"
+              exit 0
+            fi
+            node scripts/record-forecast.mjs
+            node scripts/build-single-file.mjs
+            git add data/current-polls.json data/polls-archive.json data/forecast-history.json dist/index.html dist/artifact.html
+            git commit -m "גיבוי סקרים מהאתר החי"
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+          done
+          echo "הסנכרון לא נשמר לאחר שלושה ניסיונות"
+          exit 1

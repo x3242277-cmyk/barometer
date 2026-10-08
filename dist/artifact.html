@@ -6476,6 +6476,49 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
 #view-home .hero-link.hero-learn:hover{color:#14233a}
 #view-home .hero-link.hero-learn span{display:inline;width:auto;height:auto;border:0;font-size:1em}
 
+/* כפתור הסימולציה מתחת למפת המושבים, בסגנון כפתור הפתיחה של הסימולטור */
+#view-home .fs-sim-cta{margin:2px 0 0;text-align:center}
+#view-home .fs-sim-play{display:inline-flex;align-items:center;gap:12px;height:50px;padding-block:0;padding-inline:8px 24px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font:800 1.05rem/1 var(--sans,inherit);cursor:pointer;box-shadow:0 12px 26px -14px #b8862b;transition:transform .15s,filter .15s}
+#view-home .fs-sim-play:hover{transform:translateY(-1px);filter:brightness(1.05)}
+#view-home .fs-sim-play:focus-visible{outline:3px solid #12345c;outline-offset:3px}
+#view-home .fs-sim-ico{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#14233a;color:#f6e7bd}
+
+/* בזמן הסימולציה: כל מסך התחזית מוסתר, והסימולציה תופסת את מקומו */
+.fs-sim-slot{display:none}
+#forecast-section.is-sim .verdict-in>:not(.fs-sim-slot){display:none!important}
+#forecast-section.is-sim>.section-next{display:none}
+#forecast-section.is-sim .fs-sim-slot{display:grid;gap:6px;padding:8px 0 12px}
+.fs-sim-close{justify-self:end;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid #d1ad62;border-radius:999px;background:#fbf4e3;color:#855a0c;font:800 .86rem/1.2 var(--sans,inherit);cursor:pointer}
+.fs-sim-close:hover{background:#f4ead2;color:#14233a}
+
+/* שתי עמודות הגושים באותו גובה: השורות נפרשות לכל הגובה, כך שהדיוקן הראשון והאחרון
+   מיושרים בשני הצדדים גם כשבגוש אחד יש מפלגה פחות */
+#view-home:not(#_):not(#__) .verdict .fs-side{grid-template-rows:auto minmax(0,1fr)}
+#view-home:not(#_):not(#__) .verdict .fs-rows{align-content:space-between}
+
+/* מחשב נייד (למשל 15.6״ בהגדלה של 125%: כ־730 פיקסלים גובה בדפדפן): כל המסך — הכותרת העליונה,
+   הגושים, מפת המושבים, כפתור הסימולציה ושורת הבקרות — נכנס בלי גלילה, בכל גובה מסך של מחשב */
+@media (min-width:1100px){
+  #view-home:not(#_):not(#__).on>.verdict{min-height:calc(100dvh - var(--masthead-h,81px));align-items:stretch}
+  #view-home:not(#_):not(#__) .verdict .verdict-in{display:flex;flex-direction:column;gap:8px;padding-top:6px}
+  #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{flex:1 1 auto;width:100%;min-height:0}
+  #view-home:not(#_):not(#__) .fs-center{gap:10px;padding-block:2px}
+  #view-home:not(#_):not(#__) .fs-center .election-visual{gap:10px}
+  #view-home:not(#_):not(#__) .fs-center .home-hemicycle{max-width:min(540px,calc((100dvh - var(--masthead-h,81px) - 360px) * 1.95))}
+  #view-home:not(#_) .verdict .fs-side{--ph:clamp(46px,calc((var(--avail) - 250px) / var(--rows,7) - 8px),128px)}
+  #view-home .fs-sim-play{height:44px}
+  #view-home .fs-sim-ico{width:30px;height:30px}
+}
+/* הסימולציה בתוך מסך התחזית: הבמה קטנה מעט, כדי שהכול — כולל ״חזרה לתחזית״ — ייכנס במסך אחד */
+@media (min-width:981px){
+  #forecast-section #method-sim .ms-stagebox .ms-stage{height:clamp(380px,calc(100dvh - var(--masthead-h,81px) - 190px),640px)}
+}
+#forecast-section.is-sim .fs-sim-slot{padding:4px 0 6px}
+/* בזמן הסימולציה המסך מקבל את הרקע הכהה של האתר — אותו רקע שהסימולציה עוצבה עליו */
+#view-home:not(#_):not(#__).on>.verdict.is-sim{background:none;color:#ecf2f8}
+#forecast-section.is-sim .fs-sim-close{border-color:#e5c78366;background:#ffffff0d;color:#f6e7bd}
+#forecast-section.is-sim .fs-sim-close:hover{background:#e5c78326;color:#fff3cf}
+
 /* לוח המנדטים (#/forecast) — עיצוב לפי גושים: סיכום מעל, כרטיס לכל גוש, מספר המנדטים הוא האלמנט הבולט,
    צבע הגוש כעוגן עדין (פס, מסגרת תמונה), שינוי מהעדכון הקודם קטן ועמום, ורמז לחיצה בסוף כל שורה.
    נטען אחרון, כדי לגבור על שכבות הלוח הישנות (editorial / election / experience). */
@@ -6606,9 +6649,6 @@ table.accuracy-breakdown {width:100%;min-width:0;border-collapse:collapse;margin
   #view-map .r22-modes button b,#view-map .r22-seatparty{font-size:.88rem}
 }
 @media (min-width:1100px) and (max-height:820px){
-  #view-home:not(#_):not(#__).on>.verdict{min-height:850px}
-  #view-home .fs-side{--avail:770px;gap:11px}
-  #view-home .fs-rows{gap:7px}
   #view-map.on>.r22{height:850px;min-height:0}
   #view-map .r22-dash{gap:13px}
   #view-map .r22-card-head{padding:10px 14px 7px}
@@ -7480,10 +7520,8 @@ body>footer .footer-details[open]{flex:0 0 100%}
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
           <div class="readout" id="home-readout"></div>
           <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
-          <p class="fs-learn"><button type="button" class="hero-link hero-learn" data-home-section="home-method-section">לחצו כאן כדי ללמוד איך המודל עובד <span aria-hidden="true">↓</span></button></p>
-          <p class="model-disclosure">אומדן ופרשנות עצמאיים; אינם נתונים רשמיים. <a href="about.html">מקורות ומגבלות</a></p>
+          <p class="fs-sim-cta"><button type="button" class="fs-sim-play"><span class="fs-sim-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת הסימולציה</button></p>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
-          <p class="model-disclosure">החישוב נעשה בקולות נטו: כמה קולות זזו בין הגושים, כחלק מכלל הקולות, והתוצאה מתורגמת למנדטים רק בסוף לפי 120. הסקרים נכנסים כמנדטים; הרצפה — נקודת אחוז אחת מתחת לממוצע המודל הדמוגרפי והגיאוגרפי — נמדדת באחוזים מהמצביעים.</p>
         </div>
 
         </div>
@@ -7497,6 +7535,7 @@ body>footer .footer-details[open]{flex:0 0 100%}
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
         <div class="hero-cta"><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
       </div>
+      <div class="fs-sim-slot"><button type="button" class="fs-sim-close">חזרה לתחזית <span aria-hidden="true">✕</span></button></div>
     </div>
     <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — איך נבנית התמונה"><span aria-hidden="true">↓</span></button>
   </div>
@@ -8023,7 +8062,6 @@ body>footer .footer-details[open]{flex:0 0 100%}
                     <tr><td>2022</td><td class="n">47.7%</td><td class="n">49.1%</td><td class="n">+1.4</td></tr>
                   </tbody></table>
                   <p>מאז 2020 מפלגות הקואליציה קיבלו תמיד יותר מממוצע שני המודלים: ב־2020 ב־2.0 נקודות, ב־2021 ב־0.1 (כמעט בדיוק; 0.3 מתחת למודל הדמוגרפי לבדו) וב־2022 ב־1.4. לכן הרצפה נקבעה נקודת אחוז אחת מתחת לממוצע: מרווח ביטחון מתחת לתוצאה בכל אחת מהן, גם ב־2021. החריגה היחידה היא ספטמבר 2019, לפני שהגושים התייצבו: מפלגות הקואליציה קיבלו 4.4 נקודות פחות מהמודלים — כ־2.6 נקודות עברו לליברמן, שעזב את הגוש אחרי אפריל 2019, וכ־1.8 נקודות נבעו מזינוק בהצבעה בחברה הערבית. מעבר צד כזה מודל דמוגרפי אינו יכול לחזות. הרצפה היא הנחה, לא ערובה.</p></details></div></div>
-              </div>
               <div class="mlive" id="m-live-scenario"></div>
               <label class="slider"><span>הרצפה: נקודות אחוז מתחת לממוצע המודלים <b id="method-deviation-value">נקודת אחוז אחת</b></span><input type="range" id="method-deviation" min="0" max="5" step="0.1" value="1"></label>
               <h3>חלוקה של 120 מנדטים</h3>
@@ -13244,7 +13282,8 @@ function renderHaredHistory() {
     right: svg(stroke("M9 5l7 7-7 7")),
     left: svg(stroke("M15 5l-7 7 7 7"))
   };
-  const SPEEDS = [1, 2, 4];
+  /* 1 → 2 → 4 → חצי מהירות → 1: אפשר גם להאט */
+  const SPEEDS = [1, 2, 4, 0.5];
   function paintNav() {
     root.querySelectorAll("[data-ms-stage]").forEach((b, i) => { b.classList.toggle("is-on", i === st.stage); b.classList.toggle("is-done", i < st.done + 1 && i !== st.stage); b.setAttribute("aria-current", i === st.stage ? "step" : "false"); });
     const play = q(".ms-play"), mode = st.stage < 0 ? "play" : st.finished ? "again" : st.paused ? "play" : "pause";
@@ -13255,6 +13294,7 @@ function renderHaredHistory() {
     root.classList.toggle("is-running", st.stage >= 0);
   }
   async function go(i) {
+    clearTimeout(backTimer);
     cancelAll(); const run = st.run;
     st.stage = i; st.paused = false; st.t = 0; fillLedgerUpTo(i); ledger(); paintNav();
     q(".ms-count").textContent = `${i + 1} / ${STAGES.length}`;
@@ -13263,22 +13303,60 @@ function renderHaredHistory() {
       if (run !== st.run) return;
       st.done = Math.max(st.done, i);
       if (i < STAGES.length - 1) go(i + 1);
-      else { st.finished = true; paintNav(); }
+      else { st.finished = true; paintNav(); if (inForecast()) backTimer = setTimeout(backToForecast, 4000); }
     } catch (e) { if (e !== CANCEL) { console.error(e); setStage(`<p class="ms-foot">לא הצלחנו להציג את השלב הזה.</p>`); } }
   }
 
-  function build() {
+  const SAY_IDLE = "לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.";
+  function idleHTML() {
     const logoSrc = document.querySelector(".masthead img.brand-logo")?.getAttribute("src") || "assets/logo-wordmark.png";
-    root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
-    </div>
-      <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
-      <p class="ms-say" aria-live="polite">לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.</p>
-      <div class="ms-main"><div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><img class="ms-idle-logo" src="${logoSrc}" alt="" width="756" height="128">
+    return `<div class="ms-idle"><img class="ms-idle-logo" src="${logoSrc}" alt="" width="756" height="128">
           <p class="ms-idle-kicker">סימולציה · בזמן אמת, מהנתונים של היום</p>
           <h3 class="ms-idle-title">איך הברומטר מגיע למספר</h3>
           <p class="ms-idle-sub">שישה שלבים, כדקה: מהנתונים הגולמיים ועד תחזית הברומטר</p>
           <button type="button" class="ms-big-play"><span class="ms-big-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת המודל</button>
-          <p class="ms-idle-hint">אפשר לעצור ולדלג בכל רגע</p></div></div>
+          <p class="ms-idle-hint">אפשר לעצור ולדלג בכל רגע</p></div>`;
+  }
+  /* חזרה למסך הפתיחה של הסימולציה, בלי לבנות אותה מחדש */
+  function reset() {
+    cancelAll(); clearTimeout(backTimer);
+    Object.assign(st, { stage: -1, done: -1, finished: false, paused: false, t: 0, ledger: {} });
+    setStage(idleHTML()); q(".ms-big-play").onclick = () => { if (st.ready) go(0); };
+    q(".ms-say").textContent = SAY_IDLE; q(".ms-count").textContent = "";
+    ledger(); paintNav();
+  }
+
+  /* ---------- הסימולציה במקום מסך התחזית: הכפתור מתחת למפת המושבים מסתיר את התחזית ומריץ
+     את הסימולציה באותו מקום, בלי לגלול לקטע אחר. בסוף ההסבר, אחרי כמה שניות על התוצאה,
+     התחזית חוזרת. ״חזרה לתחזית״ או Esc יוצאים באמצע. ---------- */
+  let simHome = null, backTimer = 0;
+  const forecastSection = () => document.getElementById("forecast-section");
+  const inForecast = () => !!forecastSection()?.classList.contains("is-sim");
+  function playInForecast(i = 0) {
+    const sec = forecastSection(), slot = sec?.querySelector(".fs-sim-slot");
+    if (!root || !st.ready || !slot) return false;
+    if (!simHome) { simHome = document.createComment("method-sim"); root.before(simHome); }
+    slot.append(root); sec.classList.add("is-sim");
+    const top = sec.getBoundingClientRect().top + scrollY - (document.querySelector(".masthead")?.offsetHeight || 0);
+    if (Math.abs(scrollY - top) > 4) scrollTo({ top: Math.max(0, top), behavior: "instant" });
+    go(i);
+    return true;
+  }
+  function backToForecast() {
+    if (!inForecast()) return;
+    reset();
+    const sec = forecastSection();
+    sec.classList.remove("is-sim"); simHome?.after(root);
+    if (typeof playForecastReveal === "function") playForecastReveal();
+    sec.querySelector(".fs-sim-play")?.focus({ preventScroll: true });
+  }
+
+  function build() {
+    root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
+    </div>
+      <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
+      <p class="ms-say" aria-live="polite">${SAY_IDLE}</p>
+      <div class="ms-main"><div class="ms-stagebox"><div class="ms-stage" id="ms-stage">${idleHTML()}</div>
         <div class="ms-ctl" role="group" aria-label="בקרת הסימולציה"><button type="button" class="ms-prev" aria-label="לשלב הקודם" title="לשלב הקודם">${ICON.right}</button><button type="button" class="ms-play"></button><button type="button" class="ms-next" aria-label="לשלב הבא" title="לשלב הבא">${ICON.left}</button><span class="ms-count" dir="ltr" aria-hidden="true"></span><button type="button" class="ms-speed" aria-label="מהירות הסימולציה" title="מהירות הסימולציה"></button></div></div>
       <div class="ms-ledger" aria-label="מה כבר חושב"></div></div>`;
     stage = q("#ms-stage"); ledger();
@@ -13296,7 +13374,10 @@ function renderHaredHistory() {
     /* rAF לחלקלקות, וטיימר כגיבוי כשהדפדפן מקפיא פריימים (חלונית מוסתרת/מוטמעת); שניהם מחשבים לפי השעון, לכן אין ספירה כפולה */
     const loop = () => { tick(); st.raf = requestAnimationFrame(loop); };
     st.raf = requestAnimationFrame(loop); st.timer = setInterval(tick, 40);
-    document.addEventListener("barometer:view", () => { if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
+    document.addEventListener("barometer:view", () => {
+      if (S.view !== "home" && inForecast()) return backToForecast();
+      if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); }
+    });
     document.addEventListener("barometer:simulation-hidden", () => { if (st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
   }
 
@@ -13316,8 +13397,17 @@ function renderHaredHistory() {
       if (!st.ready) return;
       /* הסימולטור יושב בעמוד התחזית: עוברים אליו ומתחילים מהשלב שנבחר */
       if (S.view !== "home") location.hash = "#/forecast";
-      setTimeout(() => { document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'simulation'})); root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
+      setTimeout(() => {
+        const i = Number(b.dataset.sim);
+        if (forecastSection()?.querySelector(".fs-sim-slot")) { document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'overview'})); playInForecast(i); return; }
+        document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'simulation'})); root.scrollIntoView({ behavior: smooth, block: "start" }); go(i);
+      }, 60);
     });
+    document.addEventListener("click", e => {
+      if (e.target.closest(".fs-sim-play")) playInForecast(0);
+      else if (e.target.closest(".fs-sim-close")) backToForecast();
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && inForecast()) backToForecast(); });
     const secs = [...document.querySelectorAll(".msec")];
     if (secs.length && "IntersectionObserver" in window) {
       const io = new IntersectionObserver(es => es.forEach(e => {

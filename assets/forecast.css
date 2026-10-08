@@ -182,3 +182,46 @@
 #view-home .hero-link.hero-learn{appearance:none;display:inline;background:none;border:0;padding:0;min-height:0;font:inherit;font-size:.9rem;font-weight:800;color:#855a0c;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 #view-home .hero-link.hero-learn:hover{color:#14233a}
 #view-home .hero-link.hero-learn span{display:inline;width:auto;height:auto;border:0;font-size:1em}
+
+/* כפתור הסימולציה מתחת למפת המושבים, בסגנון כפתור הפתיחה של הסימולטור */
+#view-home .fs-sim-cta{margin:2px 0 0;text-align:center}
+#view-home .fs-sim-play{display:inline-flex;align-items:center;gap:12px;height:50px;padding-block:0;padding-inline:8px 24px;border:0;border-radius:999px;background:var(--champagne,linear-gradient(110deg,#f1d99d,#d1ad62));color:#14233a;font:800 1.05rem/1 var(--sans,inherit);cursor:pointer;box-shadow:0 12px 26px -14px #b8862b;transition:transform .15s,filter .15s}
+#view-home .fs-sim-play:hover{transform:translateY(-1px);filter:brightness(1.05)}
+#view-home .fs-sim-play:focus-visible{outline:3px solid #12345c;outline-offset:3px}
+#view-home .fs-sim-ico{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#14233a;color:#f6e7bd}
+
+/* בזמן הסימולציה: כל מסך התחזית מוסתר, והסימולציה תופסת את מקומו */
+.fs-sim-slot{display:none}
+#forecast-section.is-sim .verdict-in>:not(.fs-sim-slot){display:none!important}
+#forecast-section.is-sim>.section-next{display:none}
+#forecast-section.is-sim .fs-sim-slot{display:grid;gap:6px;padding:8px 0 12px}
+.fs-sim-close{justify-self:end;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid #d1ad62;border-radius:999px;background:#fbf4e3;color:#855a0c;font:800 .86rem/1.2 var(--sans,inherit);cursor:pointer}
+.fs-sim-close:hover{background:#f4ead2;color:#14233a}
+
+/* שתי עמודות הגושים באותו גובה: השורות נפרשות לכל הגובה, כך שהדיוקן הראשון והאחרון
+   מיושרים בשני הצדדים גם כשבגוש אחד יש מפלגה פחות */
+#view-home:not(#_):not(#__) .verdict .fs-side{grid-template-rows:auto minmax(0,1fr)}
+#view-home:not(#_):not(#__) .verdict .fs-rows{align-content:space-between}
+
+/* מחשב נייד (למשל 15.6״ בהגדלה של 125%: כ־730 פיקסלים גובה בדפדפן): כל המסך — הכותרת העליונה,
+   הגושים, מפת המושבים, כפתור הסימולציה ושורת הבקרות — נכנס בלי גלילה, בכל גובה מסך של מחשב */
+@media (min-width:1100px){
+  #view-home:not(#_):not(#__).on>.verdict{min-height:calc(100dvh - var(--masthead-h,81px));align-items:stretch}
+  #view-home:not(#_):not(#__) .verdict .verdict-in{display:flex;flex-direction:column;gap:8px;padding-top:6px}
+  #view-home:not(#_):not(#__) .verdict .election-hero.fs-hero{flex:1 1 auto;width:100%;min-height:0}
+  #view-home:not(#_):not(#__) .fs-center{gap:10px;padding-block:2px}
+  #view-home:not(#_):not(#__) .fs-center .election-visual{gap:10px}
+  #view-home:not(#_):not(#__) .fs-center .home-hemicycle{max-width:min(540px,calc((100dvh - var(--masthead-h,81px) - 360px) * 1.95))}
+  #view-home:not(#_) .verdict .fs-side{--ph:clamp(46px,calc((var(--avail) - 250px) / var(--rows,7) - 8px),128px)}
+  #view-home .fs-sim-play{height:44px}
+  #view-home .fs-sim-ico{width:30px;height:30px}
+}
+/* הסימולציה בתוך מסך התחזית: הבמה קטנה מעט, כדי שהכול — כולל ״חזרה לתחזית״ — ייכנס במסך אחד */
+@media (min-width:981px){
+  #forecast-section #method-sim .ms-stagebox .ms-stage{height:clamp(380px,calc(100dvh - var(--masthead-h,81px) - 190px),640px)}
+}
+#forecast-section.is-sim .fs-sim-slot{padding:4px 0 6px}
+/* בזמן הסימולציה המסך מקבל את הרקע הכהה של האתר — אותו רקע שהסימולציה עוצבה עליו */
+#view-home:not(#_):not(#__).on>.verdict.is-sim{background:none;color:#ecf2f8}
+#forecast-section.is-sim .fs-sim-close{border-color:#e5c78366;background:#ffffff0d;color:#f6e7bd}
+#forecast-section.is-sim .fs-sim-close:hover{background:#e5c78326;color:#fff3cf}

@@ -389,7 +389,8 @@
     right: svg(stroke("M9 5l7 7-7 7")),
     left: svg(stroke("M15 5l-7 7 7 7"))
   };
-  const SPEEDS = [1, 2, 4];
+  /* 1 → 2 → 4 → חצי מהירות → 1: אפשר גם להאט */
+  const SPEEDS = [1, 2, 4, 0.5];
   function paintNav() {
     root.querySelectorAll("[data-ms-stage]").forEach((b, i) => { b.classList.toggle("is-on", i === st.stage); b.classList.toggle("is-done", i < st.done + 1 && i !== st.stage); b.setAttribute("aria-current", i === st.stage ? "step" : "false"); });
     const play = q(".ms-play"), mode = st.stage < 0 ? "play" : st.finished ? "again" : st.paused ? "play" : "pause";
@@ -400,6 +401,7 @@
     root.classList.toggle("is-running", st.stage >= 0);
   }
   async function go(i) {
+    clearTimeout(backTimer);
     cancelAll(); const run = st.run;
     st.stage = i; st.paused = false; st.t = 0; fillLedgerUpTo(i); ledger(); paintNav();
     q(".ms-count").textContent = `${i + 1} / ${STAGES.length}`;
@@ -408,22 +410,60 @@
       if (run !== st.run) return;
       st.done = Math.max(st.done, i);
       if (i < STAGES.length - 1) go(i + 1);
-      else { st.finished = true; paintNav(); }
+      else { st.finished = true; paintNav(); if (inForecast()) backTimer = setTimeout(backToForecast, 4000); }
     } catch (e) { if (e !== CANCEL) { console.error(e); setStage(`<p class="ms-foot">לא הצלחנו להציג את השלב הזה.</p>`); } }
   }
 
-  function build() {
+  const SAY_IDLE = "לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.";
+  function idleHTML() {
     const logoSrc = document.querySelector(".masthead img.brand-logo")?.getAttribute("src") || "assets/logo-wordmark.png";
-    root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
-    </div>
-      <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
-      <p class="ms-say" aria-live="polite">לחצו על ״הפעלת הסימולציה״ כדי לראות את החישוב שלב אחר שלב, מהנתונים הגולמיים ועד תחזית הברומטר.</p>
-      <div class="ms-main"><div class="ms-stagebox"><div class="ms-stage" id="ms-stage"><div class="ms-idle"><img class="ms-idle-logo" src="${logoSrc}" alt="" width="756" height="128">
+    return `<div class="ms-idle"><img class="ms-idle-logo" src="${logoSrc}" alt="" width="756" height="128">
           <p class="ms-idle-kicker">סימולציה · בזמן אמת, מהנתונים של היום</p>
           <h3 class="ms-idle-title">איך הברומטר מגיע למספר</h3>
           <p class="ms-idle-sub">שישה שלבים, כדקה: מהנתונים הגולמיים ועד תחזית הברומטר</p>
           <button type="button" class="ms-big-play"><span class="ms-big-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת המודל</button>
-          <p class="ms-idle-hint">אפשר לעצור ולדלג בכל רגע</p></div></div>
+          <p class="ms-idle-hint">אפשר לעצור ולדלג בכל רגע</p></div>`;
+  }
+  /* חזרה למסך הפתיחה של הסימולציה, בלי לבנות אותה מחדש */
+  function reset() {
+    cancelAll(); clearTimeout(backTimer);
+    Object.assign(st, { stage: -1, done: -1, finished: false, paused: false, t: 0, ledger: {} });
+    setStage(idleHTML()); q(".ms-big-play").onclick = () => { if (st.ready) go(0); };
+    q(".ms-say").textContent = SAY_IDLE; q(".ms-count").textContent = "";
+    ledger(); paintNav();
+  }
+
+  /* ---------- הסימולציה במקום מסך התחזית: הכפתור מתחת למפת המושבים מסתיר את התחזית ומריץ
+     את הסימולציה באותו מקום, בלי לגלול לקטע אחר. בסוף ההסבר, אחרי כמה שניות על התוצאה,
+     התחזית חוזרת. ״חזרה לתחזית״ או Esc יוצאים באמצע. ---------- */
+  let simHome = null, backTimer = 0;
+  const forecastSection = () => document.getElementById("forecast-section");
+  const inForecast = () => !!forecastSection()?.classList.contains("is-sim");
+  function playInForecast(i = 0) {
+    const sec = forecastSection(), slot = sec?.querySelector(".fs-sim-slot");
+    if (!root || !st.ready || !slot) return false;
+    if (!simHome) { simHome = document.createComment("method-sim"); root.before(simHome); }
+    slot.append(root); sec.classList.add("is-sim");
+    const top = sec.getBoundingClientRect().top + scrollY - (document.querySelector(".masthead")?.offsetHeight || 0);
+    if (Math.abs(scrollY - top) > 4) scrollTo({ top: Math.max(0, top), behavior: "instant" });
+    go(i);
+    return true;
+  }
+  function backToForecast() {
+    if (!inForecast()) return;
+    reset();
+    const sec = forecastSection();
+    sec.classList.remove("is-sim"); simHome?.after(root);
+    if (typeof playForecastReveal === "function") playForecastReveal();
+    sec.querySelector(".fs-sim-play")?.focus({ preventScroll: true });
+  }
+
+  function build() {
+    root.innerHTML = `<div class="ms-bar"><div class="ms-title"><p class="kicker">סימולציה · בזמן אמת, מהנתונים של היום</p><h2>איך הברומטר מגיע למספר</h2></div>
+    </div>
+      <nav class="ms-nav" aria-label="שלבי הסימולציה">${STAGES.map((s, i) => `<button type="button" data-ms-stage="${i}"><span>${i + 1}</span>${s.label}</button>`).join("")}</nav>
+      <p class="ms-say" aria-live="polite">${SAY_IDLE}</p>
+      <div class="ms-main"><div class="ms-stagebox"><div class="ms-stage" id="ms-stage">${idleHTML()}</div>
         <div class="ms-ctl" role="group" aria-label="בקרת הסימולציה"><button type="button" class="ms-prev" aria-label="לשלב הקודם" title="לשלב הקודם">${ICON.right}</button><button type="button" class="ms-play"></button><button type="button" class="ms-next" aria-label="לשלב הבא" title="לשלב הבא">${ICON.left}</button><span class="ms-count" dir="ltr" aria-hidden="true"></span><button type="button" class="ms-speed" aria-label="מהירות הסימולציה" title="מהירות הסימולציה"></button></div></div>
       <div class="ms-ledger" aria-label="מה כבר חושב"></div></div>`;
     stage = q("#ms-stage"); ledger();
@@ -441,7 +481,10 @@
     /* rAF לחלקלקות, וטיימר כגיבוי כשהדפדפן מקפיא פריימים (חלונית מוסתרת/מוטמעת); שניהם מחשבים לפי השעון, לכן אין ספירה כפולה */
     const loop = () => { tick(); st.raf = requestAnimationFrame(loop); };
     st.raf = requestAnimationFrame(loop); st.timer = setInterval(tick, 40);
-    document.addEventListener("barometer:view", () => { if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
+    document.addEventListener("barometer:view", () => {
+      if (S.view !== "home" && inForecast()) return backToForecast();
+      if (S.view !== "home" && st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); }
+    });
     document.addEventListener("barometer:simulation-hidden", () => { if (st.stage >= 0 && !st.paused) { st.paused = true; paintNav(); } });
   }
 
@@ -461,8 +504,17 @@
       if (!st.ready) return;
       /* הסימולטור יושב בעמוד התחזית: עוברים אליו ומתחילים מהשלב שנבחר */
       if (S.view !== "home") location.hash = "#/forecast";
-      setTimeout(() => { document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'simulation'})); root.scrollIntoView({ behavior: smooth, block: "start" }); go(Number(b.dataset.sim)); }, 60);
+      setTimeout(() => {
+        const i = Number(b.dataset.sim);
+        if (forecastSection()?.querySelector(".fs-sim-slot")) { document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'overview'})); playInForecast(i); return; }
+        document.dispatchEvent(new CustomEvent('barometer:forecast-panel', {detail:'simulation'})); root.scrollIntoView({ behavior: smooth, block: "start" }); go(i);
+      }, 60);
     });
+    document.addEventListener("click", e => {
+      if (e.target.closest(".fs-sim-play")) playInForecast(0);
+      else if (e.target.closest(".fs-sim-close")) backToForecast();
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && inForecast()) backToForecast(); });
     const secs = [...document.querySelectorAll(".msec")];
     if (secs.length && "IntersectionObserver" in window) {
       const io = new IntersectionObserver(es => es.forEach(e => {

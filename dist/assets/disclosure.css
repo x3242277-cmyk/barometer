@@ -49,9 +49,6 @@
   #view-map .r22-modes button b,#view-map .r22-seatparty{font-size:.88rem}
 }
 @media (min-width:1100px) and (max-height:820px){
-  #view-home:not(#_):not(#__).on>.verdict{min-height:850px}
-  #view-home .fs-side{--avail:770px;gap:11px}
-  #view-home .fs-rows{gap:7px}
   #view-map.on>.r22{height:850px;min-height:0}
   #view-map .r22-dash{gap:13px}
   #view-map .r22-card-head{padding:10px 14px 7px}

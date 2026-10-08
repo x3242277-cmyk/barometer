@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
 <script src="assets/app.js?v=ec961747" defer></script>
 <script src="assets/intro.js?v=39d0a7d5" defer></script>
-<script src="assets/method-sim.js?v=b2e3ef28" defer></script>
+<script src="assets/method-sim.js?v=a27b0973" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -61,9 +61,9 @@
 <link rel="stylesheet" href="assets/accuracy.css?v=1a4760bd">
 <link rel="stylesheet" href="assets/method-sim.css?v=f1ed07d3">
 <link rel="stylesheet" href="assets/acc-hero.css?v=8d9090ad">
-<link rel="stylesheet" href="assets/forecast.css?v=66368b87">
+<link rel="stylesheet" href="assets/forecast.css?v=4716cbaf">
 <link rel="stylesheet" href="assets/board.css?v=f51617ed">
-<link rel="stylesheet" href="assets/disclosure.css?v=fb1b0f27">
+<link rel="stylesheet" href="assets/disclosure.css?v=ad9bfb2f">
 <link rel="stylesheet" href="assets/mobile.css?v=89a8a186">
 <script src="assets/mobile.js?v=928a672c" defer></script>
 </head>
@@ -161,10 +161,8 @@
           <div class="visual-topline"><span>מפת המנדטים</span><span id="home-model-label">תחזית הברומטר</span></div>
           <div class="readout" id="home-readout"></div>
           <div id="home-hemicycle" class="home-hemicycle" aria-live="polite"></div>
-          <p class="fs-learn"><button type="button" class="hero-link hero-learn" data-home-section="home-method-section">לחצו כאן כדי ללמוד איך המודל עובד <span aria-hidden="true">↓</span></button></p>
-          <p class="model-disclosure">אומדן ופרשנות עצמאיים; אינם נתונים רשמיים. <a href="about.html">מקורות ומגבלות</a></p>
+          <p class="fs-sim-cta"><button type="button" class="fs-sim-play"><span class="fs-sim-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>הפעלת הסימולציה</button></p>
           <p class="visual-footnote">חלוקה לפי שיוך הרשימות · 61 מנדטים נדרשים לרוב</p>
-          <p class="model-disclosure">החישוב נעשה בקולות נטו: כמה קולות זזו בין הגושים, כחלק מכלל הקולות, והתוצאה מתורגמת למנדטים רק בסוף לפי 120. הסקרים נכנסים כמנדטים; הרצפה — נקודת אחוז אחת מתחת לממוצע המודל הדמוגרפי והגיאוגרפי — נמדדת באחוזים מהמצביעים.</p>
         </div>
 
         </div>
@@ -178,6 +176,7 @@
         <label class="home-history-pick"><span>תחזית מתאריך</span><select id="home-history"><option value="current">העדכון הנוכחי</option></select></label>
         <div class="hero-cta"><a class="hero-link" href="#/polls">לכל הסקרים <span aria-hidden="true">↙</span></a></div>
       </div>
+      <div class="fs-sim-slot"><button type="button" class="fs-sim-close">חזרה לתחזית <span aria-hidden="true">✕</span></button></div>
     </div>
     <button type="button" class="section-next" data-home-section="home-method-section" aria-label="לקטע הבא — איך נבנית התמונה"><span aria-hidden="true">↓</span></button>
   </div>
@@ -704,7 +703,6 @@
                     <tr><td>2022</td><td class="n">47.7%</td><td class="n">49.1%</td><td class="n">+1.4</td></tr>
                   </tbody></table>
                   <p>מאז 2020 מפלגות הקואליציה קיבלו תמיד יותר מממוצע שני המודלים: ב־2020 ב־2.0 נקודות, ב־2021 ב־0.1 (כמעט בדיוק; 0.3 מתחת למודל הדמוגרפי לבדו) וב־2022 ב־1.4. לכן הרצפה נקבעה נקודת אחוז אחת מתחת לממוצע: מרווח ביטחון מתחת לתוצאה בכל אחת מהן, גם ב־2021. החריגה היחידה היא ספטמבר 2019, לפני שהגושים התייצבו: מפלגות הקואליציה קיבלו 4.4 נקודות פחות מהמודלים — כ־2.6 נקודות עברו לליברמן, שעזב את הגוש אחרי אפריל 2019, וכ־1.8 נקודות נבעו מזינוק בהצבעה בחברה הערבית. מעבר צד כזה מודל דמוגרפי אינו יכול לחזות. הרצפה היא הנחה, לא ערובה.</p></details></div></div>
-              </div>
               <div class="mlive" id="m-live-scenario"></div>
               <label class="slider"><span>הרצפה: נקודות אחוז מתחת לממוצע המודלים <b id="method-deviation-value">נקודת אחוז אחת</b></span><input type="range" id="method-deviation" min="0" max="5" step="0.1" value="1"></label>
               <h3>חלוקה של 120 מנדטים</h3>

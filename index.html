@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="assets/upgrade.css?v=d9aa856d">
 <link rel="stylesheet" href="assets/home.css?v=ba378fa4">
 <link rel="stylesheet" href="assets/fit.css?v=06753059">
-<script src="assets/scenario.js?v=0970295e" defer></script>
+<script src="assets/scenario.js?v=c8d37757" defer></script>
 <script src="assets/upgrade.js?v=96cb04c6" defer></script>
 <script src="assets/analytics.js?v=3d84f48b" defer></script>
 <script src="assets/explore.js?v=4cfdb49d" defer></script>
@@ -34,9 +34,9 @@
 <script src="assets/polls-gap.js?v=9408c325" defer></script>
 <script src="assets/polls-workspace.js?v=2a17490f" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=f16b9e40" defer></script>
+<script src="assets/app.js?v=648eacc8" defer></script>
 <script src="assets/intro.js?v=41d319d1" defer></script>
-<script src="assets/method-sim.js?v=f2b17c0e" defer></script>
+<script src="assets/method-sim.js?v=5bbd917e" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
 <link rel="stylesheet" href="assets/editorial.css?v=21740e8e">
 <link rel="stylesheet" href="assets/experience.css?v=6433f820">
@@ -691,11 +691,11 @@
                   <p>25% דמוגרפיה, 25% גיאוגרפיה ו־50% סקרים לאחר תיקון הטעות ההיסטורית לכל מכון ולכל מפלגה ושקלול דיוק העבר. רע״ם לפי ממוצע הסקרים המשוקלל בלבד, ללא קיבוע. אלה שברי מנדטים; העיגול נעשה בסוף.</p>
                   <details><summary>הפירוט המלא</summary><p>לכל מפלגה מחשבים את הטעות הממוצעת של כל מכון במערכות הכיול, הופכים את הסימן ומקטינים לפי n/(n+1). משקל האמינות קובע את השפעתו בממוצע. האומדנים הדמוגרפי והגיאוגרפי משלימים את התמונה. אין תיקון כפול דרך התיקון הכללי בתוך הגושים. העיגול נעשה רק בסוף.</p></details></div>
                 <div class="msec-card"><span class="msec-step">ג</span><h4>טווח הסטייה: השלמה עד הקצה התחתון של שני המודלים</h4>
-                  <p>ממוצע אומדני התמיכה של המודל הדמוגרפי והגיאוגרפי מקבל טווח סטייה מונח של <span data-model-deviation>1.2%</span> מהאומדן. אם גוש הימין אחרי תיקון החרדים נמוך מהקצה התחתון של הטווח, משלימים רק את הפער עד לקצה הזה. אם הוא בתוך הטווח או מעליו, ההשלמה היא אפס.</p>
-                  <details><summary>הפירוט המלא</summary><p>לכל מודל מחשבים את חלק הימין והחרדים בקולות העתידיים ומתרגמים אותו לאומדן תמיכה מתוך 120, לפני אחוז החסימה והסכמי העודפים. לוקחים ממוצע שווה של שני האומדנים, ומפחיתים <span data-model-deviation>1.2%</span> ממנו כדי לקבל את הקצה התחתון. זהו פרמטר של הנחת המודל, שניתן לשנות, ואינו טווח שהוכח בבדיקת עבר. ההשלמה נמדדת מול גודל הגוש שכבר התקבל לאחר תיקון החרדים והתאמה ל־120, ולכן תיקון החרדים נכלל פעם אחת. האומדנים של ש״ס, יהדות התורה ורע״ם נשמרים בהעברה זו. הסכום נשאר 120, וחלוקת המושבים נעשית בשלב האחרון.</p></details></div>
+                  <p>ממוצע אומדני התמיכה של המודל הדמוגרפי והגיאוגרפי מקבל טווח סטייה של <span data-model-deviation>2.5%</span> מהאומדן. אם גוש הימין אחרי תיקון החרדים נמוך מהקצה התחתון של הטווח, משלימים רק את הפער עד לקצה הזה. אם הוא בתוך הטווח או מעליו, ההשלמה היא אפס.</p>
+                  <details><summary>הפירוט המלא</summary><p>לכל מודל מחשבים את חלק הימין והחרדים בקולות העתידיים ומתרגמים אותו לאומדן תמיכה מתוך 120, לפני אחוז החסימה והסכמי העודפים. לוקחים ממוצע שווה של שני האומדנים, ומפחיתים <span data-model-deviation>2.5%</span> ממנו כדי לקבל את הקצה התחתון. הטווח נקבע בבדיקה לאחור של ארבע מערכות הבחירות האחרונות (ספטמבר 2019 עד 2022): כל מערכת נחזתה רק מהבחירות שקדמו לה, והירידה הגדולה ביותר של התוצאה בפועל מתחת לממוצע שני המודלים הייתה 2.4%, בספטמבר 2019. בשלוש המערכות האחרות התוצאה הייתה מעל המודלים. לכן רצפה של 2.5% מתחת לממוצע לא הייתה עוברת את התוצאה באף אחת מהן. אפשר לשנות את הטווח במחוון. ההשלמה נמדדת מול גודל הגוש שכבר התקבל לאחר תיקון החרדים והתאמה ל־120, ולכן תיקון החרדים נכלל פעם אחת. האומדנים של ש״ס, יהדות התורה ורע״ם נשמרים בהעברה זו. הסכום נשאר 120, וחלוקת המושבים נעשית בשלב האחרון.</p></details></div>
               </div>
               <div class="mlive" id="m-live-scenario"></div>
-              <label class="slider"><span>הנחת טווח סטייה מהאומדן המשותף <b id="method-deviation-value">1.2%</b></span><input type="range" id="method-deviation" min="0" max="10" step="0.1" value="1.2"></label>
+              <label class="slider"><span>הנחת טווח סטייה מהאומדן המשותף <b id="method-deviation-value">2.5%</b></span><input type="range" id="method-deviation" min="0" max="10" step="0.1" value="2.5"></label>
               <h3>חלוקה של 120 מנדטים</h3>
               <p>בדיוק כמו ועדת הבחירות:</p>
               <div class="msec-cards msec-cards-3">

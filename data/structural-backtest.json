@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "בדיקה לאחור של המודלים הדמוגרפי והגיאוגרפי · ארבע מערכות הבחירות האחרונות",
+    "unit": "חלק גוש הימין והחרדים מקולות הימין, מרכז־שמאל והרשימות הערביות, כפול 120",
+    "blocRule": "מי שתמך בנתניהו בימין (כולל החרדים); ימינה של בנט בימין גם ב־2021; ישראל ביתנו בימין בבדיקת ספטמבר 2019 (עברה לצד השני עם קולות ימין) ובמרכז־שמאל מ־2020; אותה הגדרה לבסיס ולתוצאה; הבית היהודי ב־2022 במרכז־שמאל; אחרות מושמטות",
+    "deviation": "(התוצאה בפועל − האומדן) / האומדן, באחוזים. שלילי = התוצאה מתחת לאומדן",
+    "generatedAt": "2026-10-08T15:50:01.154Z"
+  },
+  "elections": [
+    {
+      "election": "2019b",
+      "base": "2019a",
+      "history": [
+        "2015",
+        "2019a"
+      ],
+      "years": 0.44,
+      "baseRight": 67.08,
+      "actual": 64.65,
+      "demographic": 66.25,
+      "geographic": 66.25,
+      "mean": 66.25,
+      "deviation": {
+        "demographic": -2.42,
+        "geographic": -2.42,
+        "mean": -2.42
+      },
+      "yisraelBeiteinu": "ימין (מעבר עם קולות ימין)"
+    },
+    {
+      "election": "2020",
+      "base": "2019b",
+      "history": [
+        "2015",
+        "2019a",
+        "2019b"
+      ],
+      "years": 0.46,
+      "baseRight": 56.18,
+      "actual": 58.52,
+      "demographic": 56.34,
+      "geographic": 55.83,
+      "mean": 56.09,
+      "deviation": {
+        "demographic": 3.87,
+        "geographic": 4.81,
+        "mean": 4.34
+      },
+      "yisraelBeiteinu": "מרכז־שמאל"
+    },
+    {
+      "election": "2021",
+      "base": "2020",
+      "history": [
+        "2015",
+        "2019a",
+        "2019b",
+        "2020"
+      ],
+      "years": 1.05,
+      "baseRight": 58.52,
+      "actual": 58.84,
+      "demographic": 59.17,
+      "geographic": 58.16,
+      "mean": 58.67,
+      "deviation": {
+        "demographic": -0.56,
+        "geographic": 1.17,
+        "mean": 0.3
+      },
+      "yisraelBeiteinu": "מרכז־שמאל"
+    },
+    {
+      "election": "2022",
+      "base": "2021",
+      "history": [
+        "2015",
+        "2019a",
+        "2019b",
+        "2020",
+        "2021"
+      ],
+      "years": 1.61,
+      "baseRight": 58.84,
+      "actual": 58.93,
+      "demographic": 58.05,
+      "geographic": 56.51,
+      "mean": 57.28,
+      "deviation": {
+        "demographic": 1.53,
+        "geographic": 4.29,
+        "mean": 2.89
+      },
+      "yisraelBeiteinu": "מרכז־שמאל"
+    }
+  ],
+  "summary": {
+    "averageAbsoluteDeviation": {
+      "demographic": 2.09,
+      "geographic": 3.17,
+      "mean": 2.49
+    },
+    "averageSignedDeviation": 1.28,
+    "largestShortfallBelowMean": 2.42,
+    "band": 2.5
+  }
+}

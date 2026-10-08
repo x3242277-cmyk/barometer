@@ -31,7 +31,7 @@ function scenarioForecast(raw, options = {}) {
   const pollBaselineRight = rawHaredi + rawRestRight / total * (120 - rawHaredi - (fixed.raam || 0));
   const beforeDemographicRight = sum(rightIds) + (fixed.shas || 0) + (fixed.yahadut_hatora || 0);
   const harediBlocGain = Math.max(0, beforeDemographicRight - pollBaselineRight);
-  const deviationPercent = Math.max(0,Math.min(100,options.deviationPercent ?? 1.2));
+  const deviationPercent = Math.max(0,Math.min(100,options.deviationPercent ?? 2.5));
   const structuralRight = Number.isFinite(options.structuralRight) ? options.structuralRight : null;
   const structuralLowerBound = structuralRight == null ? null : structuralRight * (1 - deviationPercent / 100);
   const demographicProposed = structuralLowerBound == null

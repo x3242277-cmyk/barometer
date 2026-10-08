@@ -48,8 +48,9 @@ const MIME = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "i
 const embedLocal = async (src, fallbackMime = "image/jpeg") => {
   if (typeof src !== "string" || !src.startsWith("assets/")) return src;
   try {
-    const buf = await readFile(path.join(ROOT, src));
-    return `data:${MIME[src.split(".").pop().toLowerCase()] || fallbackMime};base64,${buf.toString("base64")}`;
+    const localPath = src.split("?")[0];
+    const buf = await readFile(path.join(ROOT, localPath));
+    return `data:${MIME[localPath.split(".").pop().toLowerCase()] || fallbackMime};base64,${buf.toString("base64")}`;
   } catch { return ""; }
 };
 if (data["data/leaders.json"]?.photos) {

@@ -321,7 +321,7 @@ const humanUpdate = iso => {
    של גוש הימין נשאר רק במודל הדמוגרפי, שם הוא נגזר מ-HAREDI_PARTIES. */
 const ALIGN_OVERRIDE = { ofer_vinter_party: "Right", noam: "Right", raam: "Arabs", bait_zioni: "Left" };
 /* שם שהאתר קובע לרשימה, מעל לשם שמופיע בנתוני הסקר הגולמיים — כדי שרענון נתונים לא ידרוס אותו */
-const NAME_OVERRIDE = { hendel_zeliha_party: "המילואימניקים/הכלכלית", zionut_datit: "הציונות הדתית/זהות" };
+const NAME_OVERRIDE = { yashar: "ישר!", hendel_zeliha_party: "המילואימניקים/הכלכלית", zionut_datit: "הציונות הדתית/זהות" };
 /* תחזית הברומטר השבועית (forecast-history.json → weekly) מוצגת בעמוד "כל הסקרים"
    כמו סקר, תחת המקור הזה. היא לעולם לא נכנסת לתחזית, לממוצעים או לכיול. */
 const BAROMETER_SOURCE = "barometer", BAROMETER_OUTLET = "תחזית הברומטר";
@@ -1171,8 +1171,8 @@ function outletIconStrip(outlets = []) {
    אפור. crop-leaders.py מפיק גרסאות 128/256 מוקטנות ב-LANCZOS, וה-srcset נותן
    לדפדפן לבחור את הקרובה לגודל התצוגה. */
 const LEADER_WIDTHS = [64, 96, 128, 192, 256, 384];
-const leaderSrcset = (photo, sizes) => /-full[.]jpg$/.test(photo)
-  ? ` srcset="${LEADER_WIDTHS.map(w => `${esc(photo.replace(/-full[.]jpg$/, `-${w}.jpg`))} ${w}w`).join(", ")}, ${esc(photo)} 720w" sizes="${sizes}"` : "";
+const leaderSrcset = (photo, sizes) => /-full[.]jpg(?:[?].*)?$/.test(photo)
+  ? ` srcset="${LEADER_WIDTHS.map(w => `${esc(photo.replace(/-full[.]jpg(?=[?]|$)/, `-${w}.jpg`))} ${w}w`).join(", ")}, ${esc(photo)} 720w" sizes="${sizes}"` : "";
 const LEADER_PLACEHOLDER = "data:image/svg+xml," + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><g fill="none" stroke="#94A0AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="48" cy="34" r="16.5"/><path d="M18.5 84c1.8-15.6 12.8-24.6 29.5-24.6S75.7 68.4 77.5 84"/><path d="M39 75c2.6 3.6 6 5.4 9 5.4s6.4-1.8 9-5.4" opacity=".5"/></g></svg>`);
 
@@ -2341,9 +2341,9 @@ async function refreshLiveResults(force = false) {
 function livePartyMeta(row = {}) {
   const id = normId(row.id || "");
   const alignment = alignOf({ id, alignment: row.alignment });
-  if (row.name) return { name: row.name, logo: row.logoUrl || "", alignment };
+  if (row.name) return { name: NAME_OVERRIDE[id] || row.name, logo: row.logoUrl || "", alignment };
   const fromPolls = S.cur?.polls?.flatMap(p => p.parties || []).find(p => normId(p.id) === id);
-  if (fromPolls) return { name: fromPolls.name, logo: fromPolls.logoUrl, alignment: alignOf(fromPolls) };
+  if (fromPolls) return { name: NAME_OVERRIDE[id] || fromPolls.name, logo: fromPolls.logoUrl, alignment: alignOf(fromPolls) };
   return { name: row.id || "לא ידוע", logo: "", alignment };
 }
 

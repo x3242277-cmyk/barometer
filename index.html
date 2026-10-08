@@ -32,9 +32,9 @@
 <script src="assets/explore.js?v=193a71fe" defer></script>
 <script src="assets/poll-tracker.js?v=52235bd3" defer></script>
 <script src="assets/polls-gap.js?v=eb3969c2" defer></script>
-<script src="assets/polls-workspace.js?v=d1a53e3d" defer></script>
+<script src="assets/polls-workspace.js?v=2a17490f" defer></script>
 <link rel="stylesheet" href="assets/intro.css?v=3c94704c">
-<script src="assets/app.js?v=af760838" defer></script>
+<script src="assets/app.js?v=29cd9359" defer></script>
 <script src="assets/intro.js?v=41d319d1" defer></script>
 <script src="assets/method-sim.js?v=7fbdaee3" defer></script>
 <link rel="stylesheet" href="assets/layout.css?v=d3b130db">
@@ -745,7 +745,7 @@
           <span class="formula">correction(f,p) = −error(f,p) × n/(n+1); no personal history: −industryError(p)/2</span>
           <span class="formula">correctedPolls(p) = Σ max(0, seriesAvg(f,p) + correction(f,p)) × w(f) / Σ w(f)</span>
           <span class="formula">haredi(p) = 0.25 × demographic(p) + 0.25 × geographic(p) + 0.50 × correctedPolls(p)</span>
-          <span class="formula">geographic(shas,utj) = jointGeographicSeats × (11/18, 7/18)</span>
+          <span class="formula">geographic(p) = 120 × Σ_locality projectedVotes(locality,p) / Σ_locality projectedValidVotes(locality)</span>
           <span class="formula">seats         = BaderOfer(raw ≥ 3.25%, surplus agreements 2026, 120)</span>
           <p class="kicker" style="margin-top:14px">המודל הגיאוגרפי</p>
           <span class="formula">share2026(locality, group) = normalize( share2022 + trend(locality, group) )  ·  trend = line through 2019b–2022, capped ±8 pts</span>

@@ -8,7 +8,7 @@ ctx.fixtures=Object.fromEntries(['current-polls','historical-polls','historical-
 const steps=vm.runInContext(`
 S.cur=fixtures['current-polls'];S.hist=fixtures['historical-polls'];S.firms=fixtures.pollsters;S.demo=fixtures.demographics;
 S.elections=[2022,2021,2020].map(year=>({year,stats:scoreFirms(fixtures[year===2022?'historical-polls':'historical-polls-'+year])}));
-S.stats=combineCalibrations(S.elections);S.forecastPolls=recentForForecast(S.cur.polls);S.series=buildSeries(S.forecastPolls);
+S.stats=combineCalibrations(S.elections);S.forecastPolls=recentForForecast(S.cur.polls);S.series=buildWeightedSeries(S.forecastPolls);
 window.storyStagesForAudit();`,ctx);
 assert.equal(steps.length,6);
 assert.equal(steps[0].right,64);assert.equal(steps[1].right,62);

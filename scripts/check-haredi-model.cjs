@@ -10,7 +10,7 @@ vm.runInContext(`
 Object.assign(S,{hist:fixture.hist,demo:fixture.demo,haredi:fixture.haredi,firms:fixture.firms,cur:fixture.current,trendsNat:fixture.trends.national});
 S.elections=[[2022,fixture.hist],[2021,fixture.hist2021],[2020,fixture.hist2020]].map(([year,data])=>({year,data,stats:scoreFirms(data)}));
 S.stats=combineCalibrations(S.elections); S.house=houseEffects(S.elections); S.houseIndustry=houseIndustry(S.house);
-S.forecastPolls=recentForForecast(S.cur.polls); S.series=buildSeries(S.forecastPolls); S.seriesScenario=buildScenarioSeries(S.forecastPolls);
+S.forecastPolls=recentForForecast(S.cur.polls); S.series=buildWeightedSeries(S.forecastPolls); S.seriesScenario=buildScenarioSeries(S.forecastPolls);
 const model=harediForecast();
 assert.ok(model);
 assert.equal(model.components.shas.geographic,fixture.trends.national.partyForecast.shas.seats);

@@ -72,7 +72,7 @@ export function runEngine(polls, { now = Date.now(), select = false } = {}) {
     S.house = houseEffects(S.elections);
     S.houseIndustry = houseIndustry(S.house);
     S.forecastPolls = recentForForecast(S.cur.polls);
-    S.series = buildSeries(S.forecastPolls);
+    S.series = buildWeightedSeries(S.forecastPolls);
     S.seriesScenario = buildScenarioSeries(S.forecastPolls);
     if (!S.forecastPolls.length) throw new Error("NO_POLLS");
     /* חד״ש–תע״ל מוסתרת כי היא רצה בתוך הרשימה המשותפת. בשבועות ששוחזרו מלפני
@@ -83,7 +83,7 @@ export function runEngine(polls, { now = Date.now(), select = false } = {}) {
     /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
     const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));
     JSON.stringify({
-      modelVersion: "haredi-locality-parties-turnout-raam-polls-v9-net-votes-pass-rule-band-1.2",
+      modelVersion: "haredi-locality-parties-turnout-raam-polls-v10-pass-rule-weighted-band-1.2",
       scenario: largestRemainder(__fsc.parties),
       weighted: largestRemainder(__fw.parties),
       below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },

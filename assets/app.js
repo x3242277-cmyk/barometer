@@ -530,6 +530,8 @@ function retainSmallRightSupport(poll) {
   }
   return { ...poll, parties };
 }
+/* כלל וינטר והנדל/זליכה חל על כל ממוצע: גם "משוקלל דיוק" סופר את התמיכה בהן לגוש בכל סקר שבו הן עוברות */
+const buildWeightedSeries = polls => buildSeries(polls.map(retainSmallRightSupport));
 const buildScenarioSeries = polls => buildSeries(polls.map(retainSmallRightSupport).map(correctWithinBlocs));
 function correctWithinBlocs(p) {
   const c = houseCorrection(firmOf(p.sourceId).meta);
@@ -1026,7 +1028,7 @@ function startModelClock() {
 }
 function rebuildForecastSet(rerender) {
   S.forecastPolls = recentForForecast(S.cur.polls);
-  S.series = buildSeries(S.forecastPolls);
+  S.series = buildWeightedSeries(S.forecastPolls);
   S.seriesScenario = buildScenarioSeries(S.forecastPolls);
   if (rerender) renderHome();
 }
@@ -2848,7 +2850,7 @@ async function boot() {
     S.houseIndustry = houseIndustry(S.house);
     S.counterStats = scoreFirms(hist, COUNTERFACTUAL);
     S.forecastPolls = recentForForecast(S.cur.polls);
-    S.series = buildSeries(S.forecastPolls);
+    S.series = buildWeightedSeries(S.forecastPolls);
     S.seriesScenario = buildScenarioSeries(S.forecastPolls);
 
     $("#hero-art").innerHTML = KNESSET_SVG;

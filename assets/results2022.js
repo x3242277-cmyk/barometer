@@ -288,15 +288,16 @@ function renderTable() {
     if (isForecast()) {
       const n = { seats22: D.E.base22, actual22: D.E.seats22, seats26: D.E.seats26 }, d = D.E.steps;
       q("#r22-table-title").textContent = "מנדטים לפי קבוצה · 2022 מול 2026";
-            q("#r22-table-note").textContent = `המנדטים מחושבים בקולות נטו: חלק הקבוצה מהקולות כפול 120, לפני אחוז החסימה, גם ב־2022. לכן 2022 בטבלה אינה התוצאה הרשמית: בפועל — ${GROUPS.map((k, i) => `${CAMP_HE[k]} ${n.actual22[i]}`).join(", ")}. ימין וחרדים ב־2026: ${n.seats26[0] + n.seats26[1]} מנדטים.`;
+      const A = n.actual22[0] + n.actual22[1], V = n.seats22[0] + n.seats22[1], N = n.seats26[0] + n.seats26[1];
+      q("#r22-table-note").textContent = `ב־2022 ימין וחרדים קיבלו ${A} מנדטים, אבל בקולות נטו רק ${V}: ${A - V} מנדטים הגיעו אליהם מקולות של מרכז־שמאל והרשימות הערביות שנפלו מתחת לאחוז החסימה (מרצ ובל״ד). התחזית ל־2026 בנויה על הקולות, ולכן היא מתחילה מ־${V} ולא מ־${A}: ימין וחרדים ב־2026 — ${N} מנדטים, ${N >= V ? "+" : "−"}${Math.abs(N - V)} מ־2022 בקולות.`;
       q("#r22-table-note").hidden = false;
       grid.classList.add("r22-seatgrid-groups");
       grid.style.removeProperty("--rows");
       grid.innerHTML = GROUPS.map((k, i) => {
         const old = n.seats22[i], next = n.seats26[i], diff = next - old;
-        return `<li class="r22-seatitem r22-groupitem"><i class="r22-sw" style="--c:${campColor(k)}"></i><span class="r22-seatname"><strong>${CAMP_HE[k]}</strong><small title="השינוי בנקודות אחוז מ־2022">דמוגרפיה ${signed(d.demography[i])} · הצבעה ${signed(d.turnout[i])} · מגמה ${signed(d.trend[i])}</small></span><span class="r22-seatnum" title="2022 בחלקי קולות · בפועל: ${n.actual22[i]}"><small>2022 בקולות</small><b>${old}</b></span><span class="r22-seatnum r22-seat-next"><small>2026</small><b>${next}</b></span><span class="r22-seat-delta ${diff > 0 ? "up" : diff < 0 ? "down" : "flat"}">${diff > 0 ? "+" : ""}${diff}</span></li>`;
+        return `<li class="r22-seatitem r22-groupitem"><i class="r22-sw" style="--c:${campColor(k)}"></i><span class="r22-seatname"><strong>${CAMP_HE[k]}</strong><small title="השינוי בנקודות אחוז מ־2022">דמוגרפיה ${signed(d.demography[i])} · הצבעה ${signed(d.turnout[i])} · מגמה ${signed(d.trend[i])}</small></span><span class="r22-seatnum" title="2022 — המנדטים בפועל"><small>2022 בפועל</small><b>${n.actual22[i]}</b></span><span class="r22-seatnum" title="2022 בקולות נטו: חלק הקבוצה מהקולות כפול 120"><small>2022 בקולות</small><b>${old}</b></span><span class="r22-seatnum r22-seat-next"><small>2026</small><b>${next}</b></span><span class="r22-seat-delta ${diff > 0 ? "up" : diff < 0 ? "down" : "flat"}">${diff > 0 ? "+" : ""}${diff}</span></li>`;
       }).join("");
-      q("#r22-count").textContent = "השינוי בנקודות: גידול היישובים · אחוז ההצבעה · מגמה בתוך היישובים";
+      q("#r22-count").textContent = "השינוי (מול 2022 בקולות) בנקודות: גידול היישובים · אחוז ההצבעה · מגמה בתוך היישובים";
       q(".r22-scroll").setAttribute("aria-label", "מנדטים לפי קבוצה");
       return;
     }

@@ -1,11 +1,12 @@
 /* Explicit counterfactual assumptions, separate from the unmodified poll average. */
-/* הרשימות הקבועות של "תחזית הברומטר" — בשברי מנדטים, לפני חלוקת המנדטים
-   בשיטת באדר-עופר (שם הן מתעגלות יחד עם כל השאר). */
-const FIXED_SEATS = { shas: 10.5, yahadut_hatora: 7.8, raam: 4.8 };
+/* רע״ם נשארת הנחה נפרדת. שתי הרשימות החרדיות מחושבות במודל המשולב,
+   בשברי מנדטים לפני החלוקה הסופית. */
+const FIXED_SEATS = { raam: 4.8 };
 function scenarioForecast(raw, options = {}) {
-  const fixed = { ...FIXED_SEATS };
+  const haredi = options.harediSeats || (typeof harediForecast === "function" ? harediForecast()?.parties : null);
+  const fixed = { ...FIXED_SEATS, ...(haredi || { shas: raw.shas || 0, yahadut_hatora: raw.yahadut_hatora || 0 }) };
   const fixedSum = Object.values(fixed).reduce((a, b) => a + b, 0);
-  const REST = 120 - fixedSum;                              // 96.9 מנדטים לשאר הרשימות
+  const REST = 120 - fixedSum;
   const rightIds = new Set(['likud','ozma_yehudit','zionut_datit','ofer_vinter_party','noam']);
   const leftIds = new Set(['yashar','beyahad','hademokratim','ndi','kahollavan','bait_zioni']);
   const rest = Object.fromEntries(Object.entries(raw).filter(([id,v]) => !(id in fixed) && Number.isFinite(v) && v > 0));

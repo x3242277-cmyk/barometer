@@ -76,7 +76,7 @@ const TRACK_BASES = {
   weighted: { label: "משוקלל דיוק", kicker: "משוקלל דיוק", key: "weighted", mode: "weighted",
     note: "סקרי 8 הימים האחרונים משוקללים לפי ציון הדיוק של כל מכון — בלי ההנחות של תחזית הברומטר." },
   baro: { label: "תחזית הברומטר", kicker: "תחזית הברומטר", key: "scenario", mode: "scenario",
-    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות הקבועה, ש״ס, יהדות התורה ורע״מ קבועים, והתוספת הדמוגרפית (ממוצע המודל הדמוגרפי והגיאוגרפי) — במנדטים לפי כללי הבחירות." }
+    note: "התחזית של האתר: סקרי 8 הימים האחרונים משוקללים לפי דיוק המכונים, עם תיקון הטעות ההיסטורית, המודל החרדי המשולב (25% דמוגרפיה, 25% גיאוגרפיה, 50% סקרים מתוקנים), רע״מ כהנחה נפרדת והתוספת הדמוגרפית (ממוצע המודל הדמוגרפי והגיאוגרפי) — במנדטים לפי כללי הבחירות." }
 };
 function basisModel(P, basis) {
   const B = TRACK_BASES[basis];
@@ -147,6 +147,12 @@ function trackerChart(M, mode, base) {
   const lines = party
     ? [{ key: party.id, label: party.name, color: party.color, get: s => s.parties[party.id], dot: p => M.vec.get(p.id).parties[party.id] || 0 }]
     : TRACK_BLOCS.filter(([k]) => k !== "Arabs").map(([k, label]) => ({ key: k, label, color: BLOCS[k].color, get: s => s.blocs[k], dot: p => M.vec.get(p.id).blocs[k] }));
+  const tooltipLines = party ? lines : [
+    ...TRACK_BLOCS.map(([k, label]) => ({ key: k, label, color: BLOCS[k].color, get: s => s.blocs[k] })),
+    ...[...new Set(S2.flatMap(s => Object.keys(s.parties)))].filter(id => partyMeta(id).alignment === "Unknown")
+      .map(id => ({ key: id, label: M.parties.find(p => p.id === id)?.name || partyMeta(id).name, color: BLOCS.Unknown.color,
+        get: s => s.parties[id] || 0, show: s => (s.parties[id] || 0) >= THRESHOLD_MANDATES }))
+  ];
   const vals = lines.flatMap(l => [...S2.map(l.get), ...Sb.map(l.get), ...polls.map(l.dot)]);
   let lo = Math.floor(Math.min(...vals) - 1), hi = Math.ceil(Math.max(...vals) + 1);
   if (!party) { lo = Math.min(lo, 58); hi = Math.max(hi, 64); }
@@ -174,7 +180,7 @@ function trackerChart(M, mode, base) {
   const rows = S2.slice().reverse().filter((_, i) => i % 2 === 0);
   const cols = party ? lines : TRACK_BLOCS.map(([k, label]) => ({ label, color: BLOCS[k].color, get: s => s.blocs[k] }));
   const table = `<div class="tablewrap ex-data-table" tabindex="0" role="region" aria-label="נתוני הגרף"><table><thead><tr><th scope="col">תאריך</th>${cols.map(l => `<th scope="col" style="--c:${l.color}">${esc(l.label)}</th>`).join("")}<th scope="col">סקרים</th></tr></thead><tbody>${rows.map(s => `<tr><th scope="row">${trDay(s.t)}</th>${cols.map(l => `<td><b>${trFmt(l.get(s))}</b></td>`).join("")}<td>${s.n}</td></tr>`).join("")}</tbody></table></div>`;
-  return { svg, table, S2, lines, basis: M.basis || "avg", geom: { W, m, t0, t1, x, y } };
+  return { svg, table, S2, lines, tooltipLines, basis: M.basis || "avg", geom: { W, m, t0, t1, x, y } };
 }
 
 function wireTrackerHover(box, chart) {
@@ -187,7 +193,7 @@ function wireTrackerHover(box, chart) {
     const px = geom.x(s.t);
     cur.setAttribute("x1", px); cur.setAttribute("x2", px); cur.removeAttribute("hidden");
     tip.hidden = false;
-    tip.innerHTML = `<b>${trDay(s.t)}</b><small>${chart.basis === "avg" ? `${s.n} סקרים · ${s.firms} מכונים בשבוע שהסתיים ביום זה` : `${TRACK_BASES[chart.basis].label} · ${s.n} סקרים מ־${s.firms} מכונים`}</small>${lines.map(l => `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${trFmt(l.get(s))}</b></span>`).join("")}`;
+    tip.innerHTML = `<b>${trDay(s.t)}</b><small>${chart.basis === "avg" ? `${s.n} סקרים · ${s.firms} מכונים בשבוע שהסתיים ביום זה` : `${TRACK_BASES[chart.basis].label} · ${s.n} סקרים מ־${s.firms} מכונים`}</small>${(chart.tooltipLines || lines).filter(l => !l.show || l.show(s)).map(l => `<span style="--c:${l.color}"><i></i>${esc(l.label)}<b>${trFmt(l.get(s))}</b></span>`).join("")}`;
     const left = px / geom.W * r.width;
     tip.style.left = Math.min(r.width - tip.offsetWidth - 4, Math.max(4, left - tip.offsetWidth - 14)) + "px";
   };

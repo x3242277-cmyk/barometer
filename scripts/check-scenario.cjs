@@ -14,8 +14,8 @@ S.demoOverrides.haredi={growth:0.06,turnout:0.5};
 if(baseline!==JSON.stringify(runDemoModel(0)))throw Error('2022 baseline changed');
 if(runDemoModel(4).votes.utj===runDemoModel(0).votes.utj)throw Error('2026 controls had no effect');
 for(const blend of [0,.5,1])for(const demographic of [-6,0,2,6]){
- const r=scenarioForecast({likud:24,shas:7,yahadut_hatora:7,beyahad:20,yashar:20,hademokratim:12,ozma_yehudit:8,ndi:8,raam:6,reshima_meshutefet:8},{blend,demographic});
- if(r.parties.shas!==10.5||r.parties.yahadut_hatora!==7.8||r.parties.raam!==4.8)throw Error('Fixed assumptions changed');
+ const r=scenarioForecast({likud:24,shas:7,yahadut_hatora:7,beyahad:20,yashar:20,hademokratim:12,ozma_yehudit:8,ndi:8,raam:6,reshima_meshutefet:8},{harediSeats:{shas:10,yahadut_hatora:7.7},blend,demographic});
+ if(r.parties.shas!==10||r.parties.yahadut_hatora!==7.7||r.parties.raam!==4.8)throw Error('Modeled inputs changed');
  if(Math.abs(Object.values(r.parties).reduce((a,b)=>a+b,0)-120)>1e-6)throw Error('Seat total');
  const seats=allocateSeats(r.parties);
  if(Object.values(seats).reduce((a,b)=>a+b,0)!==120)throw Error('Bader-Ofer seat total');
@@ -29,4 +29,4 @@ const bo=allocateSeats({likud:30,zionut_datit:10,shas:10.5,yahadut_hatora:7.8,ra
 if(Object.values(bo).reduce((a,b)=>a+b,0)!==120)throw Error('allocateSeats total');
 if(bo.tiny)throw Error('threshold not applied');
 `,c);
-console.log('Passed: fixed 10.5/7.8/4.8, Bader-Ofer 120 seats, parameter extremes, absent donor groups, immutable 2022 baseline, demographic controls, and the 62-to-63 Meretz counterfactual projection.');
+console.log('Passed: modeled Haredi inputs, Bader-Ofer 120 seats, parameter extremes, absent donor groups, immutable 2022 baseline, demographic controls, and the 62-to-63 Meretz counterfactual projection.');

@@ -186,13 +186,11 @@ function baderOfer(votes, pairs, seats = 120) {
   return final;
 }
 
-/* כללי הבחירות שמופעלים על התחזית בשלב האחרון: אחוז החסימה, 120 מנדטים
-   בשיטת באדר-עופר, והסכמי העודפים. ההסכמים ל־2026 טרם נחתמו — עד הגשת
-   הרשימות מניחים את הזוגות שחזרו על עצמם במערכות האחרונות. */
+/* הסכמי העודפים לפי הנחות המודל; רק זוג ששני צדדיו עוברים את הסף משתתף. */
 const ELECTION_RULES = {
   threshold: 0.0325, seats: 120,
-  surplusAgreements: [["likud", "zionut_datit"], ["shas", "yahadut_hatora"], ["raam", "hadash_taal"]],
-  agreementsStatus: "הנחה עד הגשת הרשימות — הזוגות שחתמו לקראת בחירות 2022; הסכם חדש יתווסף כשייחתם"
+  surplusAgreements: [["likud", "zionut_datit"], ["shas", "yahadut_hatora"], ["yashar", "hademokratim"], ["beyahad", "ndi"], ["reshima_meshutefet", "raam"]],
+  agreementsStatus: "הסכמי העודפים שהוגדרו במודל; עוצמה יהודית ללא הסכם. הסכם פועל רק כששתי הרשימות עוברות את אחוז החסימה"
 };
 /* values = אומדני מנדטים (או קולות) לכל רשימה; ההקצאה אינה תלויה בסולם.
    רשימה מתחת לאחוז החסימה מושמטת וקולותיה לא נספרים; השאר — באדר-עופר. */
@@ -298,7 +296,7 @@ const normId = id => (id === "zionut_datit_zehut" || id === "zehut") ? "zionut_d
 const HIDE_FROM_HOME = new Set(["hadash_taal"]);
 /* אחוז החסימה — 3.25% מהקולות הכשרים ≈ 3.9 מנדטים. רשימה מתחתיו אינה נכנסת
    לחלוקת המושבים; קולותיה אינם משוקללים לתחזית. */
-const THRESHOLD_MANDATES = 120 * 0.0325;
+const THRESHOLD_MANDATES = 3.9; // 120 × 3.25%, exact decimal avoids excluding a 3.9 average.
 /* רשימה שמתחת לאחוז החסימה תוצג עם 0 מנדטים ואחוז התמיכה שלה, אם היא נמדדת
    מעל הסף הזה. מתחתיו — היא נשמטת מהתצוגה. */
 const SHOW_BELOW_MIN = 2;
@@ -507,9 +505,9 @@ function houseCorrection(meta) {
 /* תחזית הברומטר: התיקון מדייק רק את החלוקה בתוך כל גוש. כל קבוצה מקבלת את
    התיקון שלה (בקבוצה של שתי רשימות — לפי הגודל שלהן בסקר), ואז רשימות הגוש
    מתכווצות או מתרחבות יחד בחזרה לסכום הגוש בסקר עצמו — כך שסך הגושים לא
-   משתנה. ש״ס, יהדות התורה ורע״ם מקובעות בתחזית (FIXED_SEATS), ולכן אינן
-   מתוקנות ואינן משתתפות בחלוקה מחדש. */
-const isFixedSeat = id => typeof FIXED_SEATS !== "undefined" && id in FIXED_SEATS;
+   משתנה. ש״ס ויהדות התורה מתוקנות בנפרד במודל החרדי, ורע״ם היא הנחה
+   נפרדת; שלושתן אינן משתתפות בתיקון הכללי בתוך הגוש. */
+const isFixedSeat = id => ["shas", "yahadut_hatora"].includes(id) || (typeof FIXED_SEATS !== "undefined" && id in FIXED_SEATS);
 function correctWithinBlocs(p) {
   const c = houseCorrection(firmOf(p.sourceId).meta);
   const parties = p.parties.map(x => ({ ...x }));
@@ -545,20 +543,6 @@ const houseExplain = (h, what) => `${what}: בכל ${h.runs.length} מערכות
 /* ============================================================
    3. מודל התחזית
    ============================================================ */
-const FLOORS = { shas: 10.4, yahadut_hatora: 7.8 };
-
-function structuralFix(raw) {
-  const p = { ...raw };
-  const shasBefore = p.shas || 0, utjBefore = p.yahadut_hatora || 0;
-  p.shas = Math.max(shasBefore, FLOORS.shas);
-  p.yahadut_hatora = Math.max(utjBefore, FLOORS.yahadut_hatora);
-  const added = (p.shas - shasBefore) + (p.yahadut_hatora - utjBefore);
-  const donors = ["likud", "ozma_yehudit", "zionut_datit", "ofer_vinter_party", "noam"].filter(id => (p[id] || 0) > 0);
-  const tot = donors.reduce((s, id) => s + p[id], 0);
-  if (tot > 0) donors.forEach(id => { p[id] = Math.max(0, p[id] - added * p[id] / tot); });
-  return { parties: p, shasBefore, utjBefore, added, donors };
-}
-
 function forecast(mode, exclude) {
   const skip = exclude || new Set();
   /* תחזית הברומטר מחושבת מהסקרים אחרי תיקון הטעות הקבועה בתוך כל גוש (correctWithinBlocs) */
@@ -2307,8 +2291,8 @@ function renderMethod() {
   }<tr><th scope="row">סך הכול</th><td class="n">${Object.values(ss).reduce((t, v) => t + v, 0)}</td><td class="n"><b>${Object.values(ws).reduce((t, v) => t + v, 0)}</b></td><td></td></tr></tbody>`;
   // 4 · scenario assumptions (live)
   const sc = forecast("scenario", HIDE_FROM_HOME), o = S.scenarioOptions || {};
-  const fx = sc.scenario?.fixed || FIXED_SEATS;
-  $("#m-live-scenario").innerHTML = [[`${fx.shas} · ${fx.yahadut_hatora} · ${fx.raam}`, "ש״ס · יהדות התורה · רע״מ, קבועות"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
+  const fx = sc.scenario?.fixed || { ...FIXED_SEATS, ...harediForecast()?.parties };
+  $("#m-live-scenario").innerHTML = [[`${r1(fx.shas)} · ${r1(fx.yahadut_hatora)} · ${fx.raam}`, "ש״ס וג׳ במודל המשולב · רע״מ כהנחה נפרדת"], [`${Math.round((o.blend ?? .5) * 100)}%`, "קירוב למאזן 2022"], [`+${r1(sc.scenario?.demographic ?? 0)}`, "תוספת דמוגרפית לימין, מנדטים"], [sc.scenario ? r1(sc.scenario.anchor + sc.scenario.demographic) : "—", "מנדטים שההנחות הזיזו היום"]]
     .map(([n, l]) => `<div><b class="num">${n}</b><span>${esc(l)}</span></div>`).join("");
   // 5 · demographic addition = mean of the demographic and geographic models
   {
@@ -2318,8 +2302,8 @@ function renderMethod() {
   }
   // תרחיש חרדי — תקציר בתחתית התחשיב
   try {
-    const hs = harediState();
-    $("#m-live-haredi").innerHTML = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7"], [r1(hs.total), "התרחיש הדמוגרפי, שתיהן יחד"]]
+    const hs = harediForecast();
+    $("#m-live-haredi").innerHTML = [[r1(hs.parties.shas), "ש״ס במודל המשולב · 2022: 11"], [r1(hs.parties.yahadut_hatora), "יהדות התורה במודל המשולב · 2022: 7"], [r1(hs.total), "המודל המשולב, שתיהן יחד"]]
       .map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   } catch (e) { console.error(e); }
   // 6 · result
@@ -2838,7 +2822,7 @@ async function boot() {
 }
 
 if (typeof module !== "undefined" && module.exports)
-  module.exports = { scoreFirms, combineCalibrations, histBlocs, buildSeries, forecast, largestRemainder, baderOfer, allocateSeats, ELECTION_RULES, histBlocs, structuralFix, COUNTERFACTUAL };
+  module.exports = { scoreFirms, combineCalibrations, histBlocs, buildSeries, forecast, largestRemainder, baderOfer, allocateSeats, ELECTION_RULES, histBlocs, COUNTERFACTUAL };
 if (typeof document !== "undefined") boot();
 
 /* ============================================================
@@ -2903,16 +2887,17 @@ function projectedMandateCost(validVotes, wastedPercent = 5) {
     rangeLow: validVotes * .93 / 120, rangeHigh: validVotes * .97 / 120 };
 }
 
-function harediState() {
+function harediState(useOverrides = true) {
   const H = S.haredi, D = S.demo;
+  const controls = useOverrides ? S : {};
   const sec = D.sectors.find(x => x.id === "haredi");
   const years = D.meta.years;
-  const eligible2026 = sec.eligible2022 * Math.pow(1 + (S.harGrowth ?? sec.growth * 100) / 100, years);
-  const turnout = (S.harTurnout ?? H.turnout.harediCities2022) / 100;
-  const loyalty = (S.harLoyalty ?? H.loyalty[0].harediLists) / 100;
+  const eligible2026 = sec.eligible2022 * Math.pow(1 + (controls.harGrowth ?? sec.growth * 100) / 100, years);
+  const turnout = (controls.harTurnout ?? H.turnout.harediCities2022) / 100;
+  const loyalty = (controls.harLoyalty ?? H.loyalty[0].harediLists) / 100;
   const model = runDemoModel(years);
   // 5% is an explicit working assumption; 3–7% is a sensitivity scenario, not a confidence interval.
-  const costEstimate = projectedMandateCost(model.totalValid, S.harWasted ?? 5);
+  const costEstimate = projectedMandateCost(model.totalValid, controls.harWasted ?? 5);
   const { passingVotes, cost } = costEstimate;
   const thr2022 = D.meta.validVotes2022 * D.meta.threshold;
   const cost2022 = D.parties2022.filter(p => p.votes >= thr2022).reduce((a, p) => a + p.votes, 0) / 120;
@@ -2936,13 +2921,64 @@ function harediState() {
     return { id, votes22, seats22, harediShare, haredi22v, outside22, harediVotes, outsideVotes, outsideGrowth, votes, seats: votes / cost };
   };
   const shasMix = D.parties2022.find(p => p.id === "shas").mix, utjMix = D.parties2022.find(p => p.id === "utj").mix;
-  const shas = party("shas", S.harShasHaredi != null ? S.harShasHaredi / 100 : shasMix.haredi);
+  const shas = party("shas", controls.harShasHaredi != null ? controls.harShasHaredi / 100 : shasMix.haredi);
   const utj = party("utj", utjMix.haredi || 0);
   return { H, sec, eligible2026, turnout, loyalty, cost, cost2022, costEstimate, passingVotes, cast, toHaredi, haredi22, harediFactor, seatsFromSector, shas, utj, shasOutside: shas.outsideVotes / cost, total: shas.seats + utj.seats, model };
 }
 
+/* שלושת המרכיבים מחושבים מנתוני האתר, בלי קיבוע ובלי עיגול ביניים.
+   הסקרים הגולמיים משמשים כאן: התיקון החרדי אינו עובר גם דרך correctWithinBlocs. */
+function harediForecast() {
+  if (!S.haredi || !S.demo || !S.series?.length || !S.trendsNat?.seats26) return null;
+  const demographicState = harediState(false);
+  const ids = { shas: "shas", yahadut_hatora: "utj" };
+  const weights = { demographic: .25, geographic: .25, polls: .5 };
+  const geoTotal = S.trendsNat.seats26[1];
+  const baseTotal = S.demo.parties2022.filter(p => ["shas", "utj"].includes(p.id)).reduce((t, p) => t + p.seats, 0);
+  const W = S.series.reduce((t, s) => t + firmWeight(s.meta), 0);
+  const rows = S.series.map(s => {
+    const correction = houseCorrection(s.meta), own = houseOf(s.meta)?.groups || {};
+    return { firm: s.key, name: s.meta.he || s.key, grade: gradeOf(firmScore(s.meta)), weight: firmWeight(s.meta) / W,
+      calibrationFirm: calibrationId(s.meta), pollCount: s.polls.length,
+      parties: Object.fromEntries(Object.entries(ids).map(([id, group]) => {
+        const raw = s.parties[id] || 0, history = own[group];
+        return [id, { raw, meanError: history?.mean ?? null, years: history?.runs.length || 0,
+          runs: history?.runs || [], correction: correction[group], corrected: Math.max(0, raw + correction[group]),
+          consistent: history?.consistent || false }];
+      })) };
+  });
+  const components = {}, parties = {};
+  for (const [id, historicalId] of Object.entries(ids)) {
+    const demographic = demographicState[historicalId].seats;
+    const geographic = geoTotal * S.demo.parties2022.find(p => p.id === historicalId).seats / baseTotal;
+    const rawPolls = rows.reduce((t, row) => t + row.parties[id].raw * row.weight, 0);
+    const polls = rows.reduce((t, row) => t + row.parties[id].corrected * row.weight, 0);
+    parties[id] = weights.demographic * demographic + weights.geographic * geographic + weights.polls * polls;
+    components[id] = { demographic, geographic, rawPolls, polls, combined: parties[id] };
+  }
+  return { parties, components, weights, rows, geoTotal, demographicState,
+    total: parties.shas + parties.yahadut_hatora, polls: S.series.reduce((t, s) => t + s.polls.length, 0) };
+}
+
+function renderHarediModel(model) {
+  const n = v => Number(v).toFixed(2), sign = v => `${v < 0 ? "−" : "+"}${n(Math.abs(v))}`;
+  const ids = [["shas", "ש״ס"], ["yahadut_hatora", "יהדות התורה"]];
+  $("#h-model-summary").innerHTML = `<p>לפי ${model.polls} הסקרים של ${model.rows.length} המכונים בחלון הנוכחי, האומדן המשולב הוא <b>${n(model.parties.shas)}</b> לש״ס ו־<b>${n(model.parties.yahadut_hatora)}</b> ליהדות התורה — יחד <b>${n(model.total)}</b>. אלה שברי מנדטים; חלוקת 120 המושבים נעשית בסוף.</p>`;
+  $("#h-model-geo").innerHTML = `המודל הגיאוגרפי מעריך <b>${n(model.geoTotal)}</b> מנדטים לשתי הרשימות יחד. הפיצול לפי יחס 11:7 בבחירות 2022 נותן <b>${n(model.components.shas.geographic)}</b> לש״ס ו־<b>${n(model.components.yahadut_hatora.geographic)}</b> ליהדות התורה. זהו פיצול של אומדן משותף, ולא שתי תחזיות גיאוגרפיות עצמאיות.`;
+  $("#h-model-corrections").innerHTML = ids.map(([id, name]) => `<h3>התיקון ל${name}</h3><div class="tablewrap"><table><thead><tr><th scope="col">מכון</th><th scope="col">ממוצע סקרים</th><th scope="col">טעות היסטורית</th><th scope="col">מערכות כיול</th><th scope="col">תיקון</th><th scope="col">לאחר התיקון</th><th scope="col">דרגה · משקל</th></tr></thead><tbody>${model.rows.map(row => {
+    const p = row.parties[id];
+    return `<tr><th scope="row">${esc(row.name)}</th><td dir="ltr">${n(p.raw)}</td><td dir="ltr">${p.meanError == null ? "ללא כיול אישי" : sign(p.meanError)}</td><td>${p.years || "—"}</td><td dir="ltr">${sign(p.correction)}</td><td dir="ltr"><b>${n(p.corrected)}</b></td><td>${esc(row.grade.label)} · ${pct(row.weight * 100)}</td></tr>`;
+  }).join("")}</tbody></table></div>`).join("");
+  const rows = [["המחשבון הדמוגרפי החרדי", "25%", "demographic"], ["המודל הגיאוגרפי", "25%", "geographic"], ["סקרים לאחר תיקון ושקלול", "50%", "polls"], ["התחזית המשולבת", "100%", "combined"]];
+  $("#h-model-combination").innerHTML = `<div class="tablewrap"><table><thead><tr><th scope="col">מרכיב</th><th scope="col">משקל</th><th scope="col">ש״ס</th><th scope="col">יהדות התורה</th><th scope="col">יחד</th></tr></thead><tbody>${rows.map(([name, weight, key]) => `<tr><th scope="row">${name}</th><td>${weight}</td>${ids.map(([id]) => `<td dir="ltr">${n(model.components[id][key])}</td>`).join("")}<td dir="ltr"><b>${n(ids.reduce((t, [id]) => t + model.components[id][key], 0))}</b></td></tr>`).join("")}</tbody></table></div><p>לפני תיקון הטעות, ממוצע הסקרים המשוקלל הוא ${n(model.components.shas.rawPolls)} לש״ס ו־${n(model.components.yahadut_hatora.rawPolls)} ליהדות התורה. לעומת 11 ו־7 בבחירות 2022, השינוי המשולב הוא <b dir="ltr">${sign(model.parties.shas - 11)}</b> ו־<b dir="ltr">${sign(model.parties.yahadut_hatora - 7)}</b>. החישוב משתמש בדיוק המלא; הטבלאות מעוגלות לתצוגה.</p>`;
+}
+
 function renderHaredi() {
   const st = harediState(), H = S.haredi;
+  const model = harediForecast();
+  if (model) renderHarediModel(model);
+  else $("#h-model-summary").innerHTML = "<p>חלק מנתוני המודל אינם זמינים כרגע. התחזית משתמשת בממוצע הסקרים לשתי הרשימות עד לטעינת כל המרכיבים.</p>";
+  const modeled = model?.parties || forecast("scenario", HIDE_FROM_HOME).scenario.fixed;
 
   /* עמודי היסוד */
   $("#haredi-pillars").innerHTML = [
@@ -3012,19 +3048,18 @@ function renderHaredi() {
     <div class="calcline"><span>ש״ס · ממוצע הסקרים → התרחיש</span><b class="num" dir="ltr">${r1(pollShas)} → ${r1(st.shas.seats)}</b></div>
     <div class="calcline"><span>יהדות התורה · ממוצע הסקרים → התרחיש</span><b class="num" dir="ltr">${r1(pollUtj)} → ${r1(st.utj.seats)}</b></div>
     <div class="calcline"><span>יחד</span><b class="num" dir="ltr">${r1(pollSum)} → ${r1(st.total)}</b></div>
-    <p class="sec-note">אלה שתי שיטות שונות עם הנחות ואי־ודאות שונות. הפער אינו מוכיח איזו מהן מדויקת יותר. תחזית הברומטר בעמוד הראשי מקבעת ש״ס ${FIXED_SEATS.shas} וג׳ ${FIXED_SEATS.yahadut_hatora} — הנחה נפרדת; המחשבון כאן אינו מוכיח רצפת מנדטים.</p>`;
+    <p class="sec-note">המחשבון הוא המרכיב הדמוגרפי בלבד (25%). תחזית האתר משתמשת בברירות המחדל שלו, לצד 25% גיאוגרפיה ו־50% סקרים מתוקנים. הזזת המחוונים כאן בודקת רגישות ואינה משנה את התחזית הראשית. אין כאן רצפת מנדטים.</p>`;
 
   /* היסטוריה */
   renderHaredHistory();
 
   /* למה מפספסים */
-  $("#haredi-why").innerHTML = `<h3>שלוש מגבלות, לא אג׳נדה</h3>
+  $("#haredi-why").innerHTML = `<h3>מה החישוב אינו מבטיח</h3>
     <div class="grid" style="gap:12px;margin-top:14px">
-      <div><b>1. מדגם קטן מדי.</b> <span style="color:var(--ink-2)">סקר טלוויזיה טיפוסי דוגם כ־${H.polling.sampleSize} נשאלים. טעות הדגימה שלו עולה על ${H.polling.marginOfError}% — גדולה מאחוז החסימה עצמו (${H.polling.threshold}%).</span></div>
-      <div><b>2. הנדגם לא עונה.</b> <span style="color:var(--ink-2)">חרדים מחוברים פחות לתקשורת הכללית ונענים פחות לסקרים, במיוחד לסקרי אינטרנט. אותה בעיה בדיוק קיימת מול בוחרים ערבים ועולים מברית המועצות לשעבר.</span></div>
-      <div><b>3. השקלול מגדיל את השגיאה.</b> <span style="color:var(--ink-2)">המכונים מתקנים תת־ייצוג במשקלות דמוגרפיים. כשמכפילים קומץ נשאלים במקדם גבוה, כל אחד מהם מזיז את התוצאה הרבה יותר ממה שהוא אמור.</span></div>
-    </div>
-    <span class="src">מקור: <a href="${esc(H.sources[H.polling.src].url)}" target="_blank" rel="noopener">${esc(H.sources[H.polling.src].name)} ↗</a></span>`;
+      <div><b>1. סקרים הם אומדן.</b> גם אחרי שקלול ותיקון היסטורי נשארות אי־ודאות בדגימה, במענה ובבחירת המצביעים.</div>
+      <div><b>2. כיול מוגבל.</b> התיקון נשען על מערכות הבחירות הזמינות באתר. ממוצע של מספר מערכות אינו מבטיח אותה טעות בבחירות הבאות, ואינו תמיד דפוס עקבי.</div>
+      <div><b>3. הנחות משולבות.</b> הדמוגרפיה, הגיאוגרפיה והסקרים אינם בהכרח מקורות בלתי תלויים. המשקלים 25%–25%–50% הם הנחת מודל שצריך לבדוק לאורך זמן.</div>
+    </div>`;
 
   const keys = ["shas", "utj"];
   $("#haredi-gap").innerHTML = keys.map(k => {
@@ -3038,15 +3073,15 @@ function renderHaredi() {
   $("#haredi-sources").innerHTML = `<ul class="h-src-list">${Object.values(H.sources).map(x =>
     `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>${x.use ? `<span>${esc(x.use)}</span>` : ""}</li>`).join("")}</ul>`;
   /* ההנחות הקבועות של התחזית — אותם ערכים כמו בשיטת החישוב */
-  const fixedChips = [[FIXED_SEATS.shas, "ש״ס בתחזית · 2022: 11 מנדטים"], [FIXED_SEATS.yahadut_hatora, "יהדות התורה בתחזית · 2022: 7 מנדטים"], [FIXED_SEATS.raam, "רע״ם בתחזית · 2022: 5 מנדטים"], [r1(st.total), "התרחיש הדמוגרפי, ש״ס ויהדות התורה יחד"]];
-  /* ראש העמוד: תמונות הרשימות המקובעות בתחזית */
-  const HP = [["shas", "ש״ס", 11], ["yahadut_hatora", "יהדות התורה", 7], ["raam", "רע״ם", 5]];
+  const fixedChips = [[r1(modeled.shas), "ש״ס במודל המשולב"], [r1(modeled.yahadut_hatora), "יהדות התורה במודל המשולב"], [r1(modeled.shas + modeled.yahadut_hatora), "יחד לפני חלוקת המושבים"]];
+  /* ראש העמוד: שתי הרשימות במודל המשולב */
+  const HP = [["shas", "ש״ס", 11], ["yahadut_hatora", "יהדות התורה", 7]];
   $("#h-parties").innerHTML = HP.map(([id, name, a22]) => {
     const photo = (S.leaders && S.leaders[normId(id)]) || LEADER_PLACEHOLDER;
     return `<article class="h-party" style="--c:${partyColor(id, partyMeta(id).alignment)}">
       <span class="h-party-photo"><img src="${esc(photo)}"${leaderSrcset(photo, "72px")} alt="" width="720" height="900" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${LEADER_PLACEHOLDER}'"></span>
       <span class="h-party-body"><b>${esc(name)}</b><small>${esc(PARTY_LEADER[id] || "")}</small></span>
-      <span class="h-party-seats"><b class="num" dir="ltr">${FIXED_SEATS[id]}</b><small>בתחזית · 2022: ${a22}</small></span></article>`;
+      <span class="h-party-seats"><b class="num" dir="ltr">${r1(modeled[id])}</b><small>בתחזית · 2022: ${a22}</small></span></article>`;
   }).join("");
   $("#h-live-fixed").innerHTML = fixedChips.map(([n, l]) => `<div><b class="num" dir="ltr">${n}</b><span>${esc(l)}</span></div>`).join("");
   wireHarediDoc();

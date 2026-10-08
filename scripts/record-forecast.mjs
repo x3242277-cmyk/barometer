@@ -61,11 +61,11 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
   }
   /* אותן מערכות כיול כמו בדפדפן (2022, 2021, 2020) — כדי שהמשקלים ותיקון
      הטעות הקבועה בתחזית הברומטר יהיו בצילום זהים למה שהאתר מציג */
-  ctx.fx = { polls, select, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters"), demo: read("demographics"), trends: read("trends") };
+  ctx.fx = { polls, select, hist: read("historical-polls"), hist2021: read("historical-polls-2021"), hist2020: read("historical-polls-2020"), firms: read("pollsters"), demo: read("demographics"), haredi: read("haredi"), trends: read("trends") };
   return JSON.parse(vm.runInContext(`
     S.hist = fx.hist; S.firms = fx.firms;
     /* התוספת הדמוגרפית היא ממוצע שני המודלים — אותם נתונים כמו בדפדפן */
-    S.demo = fx.demo; S.trendsNat = fx.trends.national;
+    S.demo = fx.demo; S.haredi = fx.haredi; S.trendsNat = fx.trends.national;
     S.cur = { polls: fx.select ? selectDisplayPolls(fx.polls) : fx.polls };
     S.elections = [[2022, fx.hist], [2021, fx.hist2021], [2020, fx.hist2020]].map(([year, data]) => ({ year, data, stats: scoreFirms(data) }));
     S.stats = combineCalibrations(S.elections);
@@ -83,6 +83,7 @@ function runEngine(polls, { now = Date.now(), select = false } = {}) {
     /* רשימות מתחת לאחוז החסימה (באחוזים) — כדי שגם תחזית ארכיון תציג אותן. */
     const __belowPct = b => Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 100) / 100]));
     JSON.stringify({
+      modelVersion: "haredi-25-25-50-v1",
       scenario: largestRemainder(__fsc.parties),
       weighted: largestRemainder(__fw.parties),
       below: { scenario: __belowPct(__fsc.below), weighted: __belowPct(__fw.below) },
@@ -103,8 +104,11 @@ export function recordForecast() {
   const r = runEngine(current.polls), result = snapshotOf(r), seats = r.seats;
 
   const history = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, "utf8")) : { snapshots: [] };
-  if (!history.snapshots.some(s => s.updatedAt === current.generatedAt)) {
+  const existing = history.snapshots.findIndex(s => s.updatedAt === current.generatedAt);
+  if (existing < 0) {
     history.snapshots.push({ updatedAt: current.generatedAt, recordedAt: new Date().toISOString(), ...result });
+  } else if (history.snapshots[existing].modelVersion !== result.modelVersion) {
+    history.snapshots[existing] = { updatedAt: current.generatedAt, recordedAt: new Date().toISOString(), ...result };
   }
   /* שומרים את 40 הצילומים האחרונים — מספיק להצגת מגמה, בלי לנפח את הקובץ. */
   history.snapshots = history.snapshots

@@ -1,6 +1,108 @@
 {
-  "updatedAt": "2026-10-08T23:12:32.341Z",
+  "updatedAt": "2026-10-09T07:55:14.736Z",
   "polls": [
+    {
+      "id": "manual-maariv-2026-10-09",
+      "date": "09.10.2026",
+      "dateTimestamp": 1791504000000,
+      "publishedAt": 1791532514736,
+      "sourceId": "maariv",
+      "channelHebrewName": "מעריב",
+      "sourceUrl": "https://hagizra.news/",
+      "parties": [
+        {
+          "id": "likud",
+          "name": "הליכוד",
+          "logoUrl": "",
+          "mandates": 20,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yashar",
+          "name": "ישר! עם איזנקוט.",
+          "logoUrl": "",
+          "mandates": 21,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "beyahad",
+          "name": "ביחד",
+          "logoUrl": "",
+          "mandates": 13,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "hademokratim",
+          "name": "הדמוקרטים",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ndi",
+          "name": "ישראל ביתנו",
+          "logoUrl": "",
+          "mandates": 9,
+          "alignment": "Opposition"
+        },
+        {
+          "id": "ozma_yehudit",
+          "name": "עוצמה יהודית",
+          "logoUrl": "",
+          "mandates": 8,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "shas",
+          "name": "ש\"ס",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "yahadut_hatora",
+          "name": "יהדות התורה",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "reshima_meshutefet",
+          "name": "הרשימה המשותפת",
+          "logoUrl": "",
+          "mandates": 7,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "zionut_datit",
+          "name": "הציונות הדתית",
+          "logoUrl": "",
+          "mandates": 6,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "raam",
+          "name": "רע\"מ",
+          "logoUrl": "",
+          "mandates": 5,
+          "alignment": "Arabs"
+        },
+        {
+          "id": "ofer_vinter_party",
+          "name": "עמך ישראל",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fofer_vinter_party_1787681910315_rJIPQHsPGx_2_215_1079_607_0_x-large.jpg?alt=media&token=aa42d9da-2941-421d-9975-51416c58cabb",
+          "mandates": 4,
+          "alignment": "Coalition"
+        },
+        {
+          "id": "hendel_zeliha_party",
+          "name": "מפלגת יועז הנדל וירון זליכה",
+          "logoUrl": "https://firebasestorage.googleapis.com/v0/b/bluesky-ec76e.appspot.com/o/manual_party_imgs%2Fhendel_zeliha_party_1788717804102_hendel_zeliha_party.png?alt=media&token=c6a5107c-b7db-4411-94cc-dc406e3e8184",
+          "mandates": 4,
+          "alignment": "Unknown"
+        }
+      ]
+    },
     {
       "id": "manual-i24news-2026-10-08",
       "date": "08.10.2026",
